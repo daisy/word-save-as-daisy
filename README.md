@@ -1,4 +1,5 @@
-word-save-as-daisy
-==================
+# "Save as DAISY" Add-In for Microsoft Word
 
-"Save as DAISY" add-in for Microsoft Word
+The "Save as DAISY" Add-In for Microsoft Word is a collaborative standards-based development project initiated in 2007 by the DAISY Consortium and Microsoft. It was initially developed by [Sonata Software](http://www.sonata-software.com/) (versions 1.x), then further developed by [Intergen](http://intergen.co.nz/) (up to version 2.5.5.1).
+
+The code available in this GitHub project has been initially copied from its original location on SourceForge as the [openxml-daisy project](http://sourceforge.net/projects/openxml-daisy/).
