@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- <!DOCTYPE catalog PUBLIC "-//OASIS//DTD XML Catalogs V1.1//EN" "http://www.oasis-open.org/committees/entity/release/1.1/catalog.dtd"> -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
+  
+  <group>
+    <system systemId="sv" uri="lang/sv.xml" />
+    <system systemId="fr" uri="lang/fr.xml" />
+    <system systemId="en" uri="lang/en.xml" />
+    <system systemId="common" uri="lang/common.xml" />
+  </group>
+    
+</catalog>

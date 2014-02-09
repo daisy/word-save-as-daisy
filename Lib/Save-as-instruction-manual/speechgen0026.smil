@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE smil
+  PUBLIC "-//NISO//DTD dtbsmil 2005-2//EN" "http://www.daisy.org/z3986/2005/dtbsmil-2005-2.dtd">
+<smil xmlns="http://www.w3.org/2001/SMIL20/">
+	  <head>
+		    <meta content="AUTO-UID-4814644028218017414" name="dtb:uid"/>
+		    <meta content="TPB Narrator" name="dtb:generator"/>
+		    <meta content="0:37:32.330" name="dtb:totalElapsedTime"/>
+		
+	  </head>
+	  <body>
+		    <seq dur="0:00:14.449" fill="remove" id="mseq">
+		       <par id="tcp467">
+            <text id="text467"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb438"/>
+            <audio clipBegin="0:00:00" clipEnd="0:00:04.697" src="speechgen0026.mp3"/>
+         </par>
+         <par id="tcp468">
+            <text id="text468"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb439"/>
+            <audio clipBegin="0:00:04.697" clipEnd="0:00:14.449" src="speechgen0026.mp3"/>
+         </par>
+      </seq>
+	  </body>
+</smil>

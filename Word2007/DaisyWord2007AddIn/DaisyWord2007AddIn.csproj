@@ -1,0 +1,288 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <StartupObject>
+    </StartupObject>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>DaisyWord2007AddIn</AssemblyName>
+    <RootNamespace>DaisyWord2007AddIn</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>DaisyTranslatorPhaseTwo.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <OutputPath>.\bin\Debug\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <IncrementalBuild>false</IncrementalBuild>
+    <RegisterForComInterop>true</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <OutputPath>.\bin\Release\</OutputPath>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>4</WarningLevel>
+    <IncrementalBuild>false</IncrementalBuild>
+    <RegisterForComInterop>true</RegisterForComInterop>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release to Client%28signed%29|AnyCPU' ">
+    <OutputPath>bin\Release to Client%28signed%29\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugWord2003|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugWord2003\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <RegisterForComInterop>true</RegisterForComInterop>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\extensibility.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\word2007\Microsoft.Office.Interop.Word.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Vbe.Interop, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\word2007\Microsoft.Vbe.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="OFFICE, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\word2007\OFFICE.DLL</HintPath>
+    </Reference>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\stdole.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>System.dll</HintPath>
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>System.Data.dll</HintPath>
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML">
+      <HintPath>System.XML.dll</HintPath>
+      <Name>System.XML</Name>
+    </Reference>
+    <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\WindowsBase.dll</HintPath>
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abbreviation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Abbreviation.designer.cs">
+      <DependentUpon>Abbreviation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Connect.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IPluginEventsHandler.cs" />
+    <Compile Include="Language.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Language.Designer.cs">
+      <DependentUpon>Language.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Mark.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Mark.Designer.cs">
+      <DependentUpon>Mark.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PreparetionResult.cs" />
+    <Compile Include="progressBar.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="progressBar.designer.cs">
+      <DependentUpon>progressBar.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SuggestedReferences.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SuggestedReferences.designer.cs">
+      <DependentUpon>SuggestedReferences.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ValidateInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValidateInput.designer.cs">
+      <DependentUpon>ValidateInput.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Abbreviation.resx">
+      <DependentUpon>Abbreviation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mark.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Mark.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\customUI.xml" />
+    <EmbeddedResource Include="SuggestedReferences.resx">
+      <DependentUpon>SuggestedReferences.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidateInput.resx">
+      <DependentUpon>ValidateInput.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Addin\Addin.csproj">
+      <Project>{5FBF8430-AF2F-4E5E-BA37-7A70310BA709}</Project>
+      <Name>Addin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
+      <Project>{599773FF-1E86-4AC2-8B24-34BBAC707370}</Project>
+      <Name>DaisyAddinLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Abbreviation.ja-JP.resx">
+      <DependentUpon>Abbreviation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Abbreviation.ru-RU.resx">
+      <DependentUpon>Abbreviation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language.ja-JP.resx">
+      <DependentUpon>Language.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language.resx">
+      <DependentUpon>Language.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Language.ru-RU.resx">
+      <DependentUpon>Language.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Mark.ja-JP.resx">
+      <DependentUpon>Mark.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="progressBar.ja-JP.resx">
+      <DependentUpon>progressBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="progressBar.resx">
+      <DependentUpon>progressBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="progressBar.ru-RU.resx">
+      <DependentUpon>progressBar.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\customUIOld.xml" />
+    <EmbeddedResource Include="SuggestedReferences.ja-JP.resx">
+      <DependentUpon>SuggestedReferences.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SuggestedReferences.ru-RU.resx">
+      <DependentUpon>SuggestedReferences.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidateInput.ja-JP.resx">
+      <DependentUpon>ValidateInput.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ValidateInput.ru-RU.resx">
+      <DependentUpon>ValidateInput.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="DaisyTranslatorPhaseTwo.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>IF NOT EXIST "$(TargetDir)pipeline-lite-ms"  xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"
+IF NOT EXIST "$(TargetDir)DaisyWord2007Shim.dll" xcopy "$(SolutionDir)Word2007\DaisyWord2007Shim\$(ConfigurationName)\DaisyWord2007Shim.dll"  "$(TargetDir)"
+regsvr32 /s /c "$(TargetDir)DaisyWord2007Shim.dll"
+IF NOT EXIST "$(TargetDir)ManagedAggregator.dll" xcopy "$(SolutionDir)Word2007\DaisyWord2007Shim\$(ConfigurationName)\ManagedAggregator.dll"  "$(TargetDir)"
+xcopy /E /Y "$(SolutionDir)Converter\bin\$(ConfigurationName)\resources"  "$(TargetDir)resources\"
+
+</PostBuildEvent>
+  </PropertyGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

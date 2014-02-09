@@ -1,0 +1,89 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E185-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.WindowsClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E187-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.LinkedWindowsClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E119-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.ReferencesEventsClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E132-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.CommandBarEventsClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{32CDF9E0-1602-11CE-BFDC-08002B2B8CDA}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.ProjectTemplateClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E169-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.VBProjectClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E101-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.VBProjectsClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{BE39F3D6-1B13-11D0-887F-00A0C90F2744}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.ComponentsClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{BE39F3D7-1B13-11D0-887F-00A0C90F2744}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.VBComponentsClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{BE39F3D8-1B13-11D0-887F-00A0C90F2744}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.ComponentClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{BE39F3DA-1B13-11D0-887F-00A0C90F2744}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.VBComponentClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E18B-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.PropertiesClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{DA936B63-AC8B-11D1-B6E5-00A0C90F2744}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.AddinsClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E170-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.CodeModuleClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E174-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.CodePanesClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E178-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.CodePaneClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0002E17C-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Vbe.Interop.ReferencesClass"
+"Assembly"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\TypeLib\{0002E157-0000-0000-C000-000000000046}\5.3]
+"PrimaryInteropAssemblyName"="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"

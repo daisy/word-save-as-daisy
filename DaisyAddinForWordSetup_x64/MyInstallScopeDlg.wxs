@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ * Copyright (c) 2008, DIaLOGIKa
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ * 
+ *     * Redistributions of source code must retain the above copyright
+ *       notice, this list of conditions and the following disclaimer.
+ *     * Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *     * Neither the names of copyright holders, nor the names of its contributors
+ *       may be used to endorse or promote products derived from this software
+ *       without specific prior written permission.
+ * 
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+ * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-->
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<Property Id="WixAppFolder" Value="PerUser" />
+
+		<WixVariable Id="WixUISupportPerUser" Value="1" />
+		<WixVariable Id="WixUISupportPerMachine" Value="1" />
+
+		<UI>
+			<Dialog Id="MyInstallScopeDlg" Width="370" Height="270" Title="[ProductName] Setup" KeepModeless="yes">
+				<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />
+				<Control Id="BannerLine" Type="Line" X="0" Y="44" Width="370" Height="0" />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+
+				<Control Id="Title" Type="Text" X="15" Y="6" Width="200" Height="15" Transparent="yes" NoPrefix="yes" Text="{\WixUI_Font_Title}Installation Scope" />
+				<Control Id="Description" Type="Text" X="25" Y="23" Width="280" Height="20" Transparent="yes" NoPrefix="yes" Text="Choose the installation scope" />
+
+				<Control Id="BothScopes" Type="RadioButtonGroup" X="25" Y="55" Width="330" Height="120" Property="WixAppFolder" Hidden="no" Disabled="yes">
+					<RadioButtonGroup Property="WixAppFolder">
+						<RadioButton Value="PerUser" X="0" Y="0" Width="295" Height="16" Text="Install &amp;just for you" />
+						<RadioButton Value="PerMachine" X="0" Y="60" Width="295" Height="16" Text="Install for all users of this &amp;machine" />
+					</RadioButtonGroup>
+					<Condition Action="enable">Privileged AND (!(wix.WixUISupportPerUser) AND !(wix.WixUISupportPerMachine))</Condition>
+				</Control>
+				<Control Id="PerUserDescription" Type="Text" X="37" Y="70" Width="300" Height="36" Hidden="yes" NoPrefix="yes" Text="[ProductName] will be installed in a per-user folder and be available just for your user account. You do not need local Administrator privileges.">
+					<Condition Action="show">!(wix.WixUISupportPerUser)</Condition>
+				</Control>
+				<Control Id="NoPerUserDescription" Type="Text" X="37" Y="70" Width="300" Height="36" Hidden="yes" NoPrefix="yes" Text="[ProductName] does not support per-user installation.">
+					<Condition Action="show">NOT !(wix.WixUISupportPerUser)</Condition>
+				</Control>
+				<Control Id="PerMachineDescription" Type="Text" X="37" Y="131" Width="300" Height="36" Hidden="no" NoPrefix="yes" Text="[ProductName] will be installed in a per-machine folder by default and be available for all users. You can change the default installation folder. You must have local Administrator privileges." Disabled="yes">
+					<Condition Action="enable">Privileged</Condition>
+				</Control>
+
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Text="!(loc.WixUIBack)" />
+				<Control Id="Next" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Text="!(loc.WixUINext)" >
+					<Publish Property="ALLUSERS" Value="{}">WixAppFolder = "PerUser"</Publish>
+					<Publish Property="TEMPLATES" Value="{}">WixAppFolder = "PerMachine"</Publish>
+					<Publish Property="ALLUSERS" Value="1">WixAppFolder = "PerMachine"</Publish>
+					<Publish Event="DoAction" Value="FindRelatedProducts">1</Publish>
+				</Control>
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Cancel="yes" Text="!(loc.WixUICancel)">
+					<Publish Event="SpawnDialog" Value="CancelDlg">1</Publish>
+				</Control>
+			</Dialog>
+		</UI>
+	</Fragment>
+</Wix>

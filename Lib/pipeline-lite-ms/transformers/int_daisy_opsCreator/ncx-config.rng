@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- 
+
+RelaxNG grammar for an NCX builder configuration.
+
+The NCX configuration is used this to determine which elements in a content document
+should appear in the NCX, and in which way. This is achieved by defining template
+elements that are matched against element occurences in the instance.
+
+The navMap element contains definitions of elements to be included in the NCX navMap.
+
+The navLists element contains definitions of elements to be included in NCX navLists.
+
+Each template element within navMap and navLists is an empty element in any namespace. 
+The element may contain any number of attributes in any namespace. 
+
+The definition element may have a label attribute in the http://www.daisy.org/pipeline/ncxconfig# 
+namespace which contains an XPath statement (where the template element is the context node) 
+that defines a child of the context node that carries a label for the element.
+
+If the label attribute is not included on an element, the effect is the same
+as ncx:label='./text()', ie that label will be all the text appearing within the 
+element.
+
+The navListLabels element defines explicit language-dependent labels to use for lists.
+
+-->
+
+<grammar 
+	xmlns="http://relaxng.org/ns/structure/1.0" 
+	ns="http://www.daisy.org/pipeline/ncxconfig#"
+	xmlns:ncx="http://www.daisy.org/pipeline/ncxconfig#"
+    datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+	
+	<start>
+		<ref name="root"/>
+	</start>
+	
+	<define name="root">
+		<element name="ncx-include">
+			<element name="navMap">
+				<oneOrMore>	
+					<ref name="templateElement.empty" />
+				</oneOrMore>	
+			</element>
+			<element name="navLists">
+				<zeroOrMore>	
+					<ref name="templateElement.empty" />
+				</zeroOrMore>			
+			</element>
+			<optional>
+				<element name="navListLabels">
+					<zeroOrMore>	
+						<ref name="templateElement.label" />
+					</zeroOrMore>			
+				</element>
+			</optional>	
+		</element>
+	</define>
+
+	<define name="templateElement.empty">
+	  <element>
+	    <anyName>
+	      <except>
+	        <nsName ns="http://www.daisy.org/pipeline/ncxconfig#" />
+	      </except>	      
+	    </anyName>
+	    <interleave>  
+		    <zeroOrMore>	
+			  <choice>
+				  <ref name="label.attribute"/> <!-- only one label attribute -->
+				  <attribute>
+					<anyName>
+		      			<except>
+		        			<nsName ns="http://www.daisy.org/pipeline/ncxconfig#" />
+		      			</except>	      
+		    		</anyName>
+				  </attribute>
+			  </choice>
+	        </zeroOrMore>
+	    </interleave>
+		<empty/>
+	  </element>
+	</define>	
+
+	<define name="templateElement.label">
+	  <element>
+	    <anyName>
+	      <except>
+	        <nsName ns="http://www.daisy.org/pipeline/ncxconfig#" />
+	      </except>	      
+	    </anyName>	    
+	    <zeroOrMore>	
+		  <attribute>
+		    					<anyName>
+		      			<except>
+		        			<nsName ns="http://www.daisy.org/pipeline/ncxconfig#" />
+		      			</except>	      
+		    		</anyName>
+		  </attribute>
+        </zeroOrMore>
+        <oneOrMore>	    
+		  <ref name="label.element"/>
+		</oneOrMore>	      
+	  </element>
+	</define>	
+
+
+	<define name="label.attribute">
+      <attribute name="label">
+        <!-- an xpath statement -->
+	    <data type="normalizedString"/>
+	  </attribute>
+	</define>
+
+	<define name="label.element">
+      <element name="label">
+        <attribute name="xml:lang"/>
+	    <attribute name="ncx:text"/>
+	  </element>
+	</define>
+	
+</grammar>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<transformer version="1.0">
+	<name>DTBook MathML fallback provider</name>
+	<description>Provides text and image fallbacks to MathML islands in DTBook</description>
+	<classname>int_daisy_mathAltCreator.MathAltCreator</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/int_daisy_mathAltCreator.html"/>
+	
+	<parameters>
+
+		<parameter required="true" direction="in" type="application/x-dtbook+xml">
+			<name>input</name>
+			<description>The input DTBook+MathML document</description>
+			<example>C://path/to/dtbook-input.xml</example>
+		</parameter>
+				
+		<parameter required="true" direction="out" type="application/x-dtbook+xml">
+			<name>output</name>
+			<description>The output DTBook+MathML document</description>
+			<example>C://path/to/dtbook-output.xml</example>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="enum">
+			<name>overwrite</name>
+			<description>Overwrite existing MathML alttext and altimg attributes</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>false</default>
+		</parameter>		
+
+	</parameters>	
+
+</transformer>

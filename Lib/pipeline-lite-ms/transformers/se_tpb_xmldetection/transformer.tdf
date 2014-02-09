@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformer version="1.0">
+	<name>XML Detection</name>
+	<description>Performs abbreviation, acronym, sentence and word detection on XML documents.</description>
+	<classname>se_tpb_xmldetection.XMLDetection</classname>
+	<license>unknown</license>
+	<author>Linus Ericson</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/se_tpb_xmldetection.html"/>
+	
+	<parameters>
+
+		<parameter required="true" direction="in" type="application/xml">
+			<name>input</name>
+			<description>Input XML document</description>
+			<example>file:///path/to/input/document.xml</example>
+		</parameter>
+		
+		<parameter required="true" direction="out" type="application/xml">
+			<name>output</name>
+			<description>Output XML document</description>
+			<example>file:///path/to/output/document.xml</example>
+		</parameter>
+	
+	<!--	
+		<parameter required="false" direction="out" type="text/plain">
+			<name>logFile</name>
+			<description>Log file</description>
+			<example>/path/to/log/file</example>
+			<default></default>
+		</parameter>
+	-->
+		
+		<parameter required="false" type="enum">
+			<name>doAbbrAcronymDetection</name>
+			<description>Perform abbreviation and acronym detection</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>		
+		
+		<parameter required="false" type="enum">
+			<name>doSentenceDetection</name>
+			<description>Perform sentence detection</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>		
+		
+		<parameter required="false" type="enum">
+			<name>doWordDetection</name>
+			<description>Perform word detection</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>		
+		
+		<parameter required="false" type="enum">
+			<name>doSingleSentAdd</name>
+			<description>Whether to add single sent elements</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>
+				
+		<parameter required="false" direction="in" type="application/xml">
+			<name>customLang</name>
+			<description>User supplied language file.</description>
+			<example>/path/to/lang/file</example>
+			<default></default>
+		</parameter>
+		
+		<parameter required="false" type="enum">
+			<name>doOverride</name>
+			<description>Override languages defined in input document with contents from custom language file.</description>
+			<example>false</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>false</default>
+		</parameter>
+		
+		<parameter required="false" type="enum">
+			<name>copyReferredFiles</name>
+			<description>Copy files referred by input file</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>	
+		
+	</parameters>	
+
+</transformer>

@@ -1,0 +1,31 @@
+<transformer version="1.1">
+	<name>System cleanup</name>
+	<description>Delete resources on the filesystem</description>
+	<classname>pipeline_system_deleter.Deleter</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/pipeline_system_deleter.html"/>	
+	
+	<parameters>		
+	
+		<parameter required="true" direction="in" type="application/anonymous">
+			<name>delete</name>
+			<description>path to resource (file or directory) to delete</description>
+			<example>D:/path/to/something</example>
+		</parameter>		
+
+		<parameter required="false" type="enum">
+			<name>active</name>
+			<description>Whether to perform deletion</description>
+			<example>false</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>				
+																		
+	</parameters>	
+
+</transformer>

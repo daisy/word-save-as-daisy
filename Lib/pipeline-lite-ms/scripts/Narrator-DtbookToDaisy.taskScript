@@ -1,0 +1,386 @@
+<?xml version='1.0' encoding='utf-8'?>
+<taskScript version="2.0" name="narrator">
+	<nicename>TTS Narrator (DAISY XML to DAISY Book)</nicename>
+	<description>Converts a DTBook 2005 file to a complete DAISY/NISO 2005 DTB and a Daisy 2.02 DTB file set</description>
+	<documentation uri="../../../doc/scripts/Narrator-DtbookToDaisy.html"/>
+		
+	<parameter name="input" value="" required="true">
+		<nicename>Input DTBook file</nicename>
+		<description>Select the DTBook input file</description>
+		<datatype>
+			<file mime="application/x-dtbook+xml" type="input"/>
+		</datatype>
+	</parameter>
+	
+	<parameter name="outputPath" value="" required="true">
+		<nicename>Output directory</nicename>
+		<description>Select directory for the output Narrator DTBs</description>
+		<datatype>
+			<directory type="output"/>
+		</datatype>
+	</parameter>
+
+	<parameter name="dtbookFix" value="REPAIR_TIDY_NARRATOR" required="false">
+		<nicename>DTBook Fix</nicename>
+		<description>Select whether to apply DTBook Fix routines</description>
+		<datatype>
+			<enum>
+				<item nicename="Do not apply DTBook Fix routines" value="NOTHING"/>
+				<item nicename="Apply DTBook Fix routines" value="REPAIR_TIDY_NARRATOR"/>
+			</enum>
+		</datatype>
+	</parameter>
+
+	<parameter name="doSentDetection" value="true" required="false">
+		<nicename>Apply sentence detection</nicename>
+		<description>Select whether to apply sentence detection</description>
+		<datatype>
+			<boolean/>
+		</datatype>
+	</parameter>
+	
+	<parameter name="multiLang" value="true" required="false">
+		<nicename>Multi-language support</nicename>
+		<description>Select whether to use different TTS voices depending on the xml:lang attributes.</description>
+		<datatype>
+			<boolean/>
+		</datatype>
+	</parameter>
+
+	<parameter name="bitrate" value="32" required="false">
+		<nicename>MP3 Bitrate</nicename>
+		<description>Select output MP3 encoding bitrate</description>
+		<datatype>
+			<enum>
+				<item nicename="32 kbit/s" value="32"/>
+				<item nicename="48 kbit/s" value="48"/>
+				<item nicename="64 kbit/s" value="64"/>
+				<item nicename="128 kbit/s" value="128"/>
+			</enum>
+		</datatype>
+	</parameter>
+	
+	<parameter name="202hrefTarget" value="TEXT" required="false">
+		<nicename>2.02 href target</nicename>
+		<description>Select the SMIL element targeted by href URIs: par or text</description>
+		<datatype>
+			<enum>
+				<item nicename="par" value="PAR"/>
+				<item nicename="text" value="TEXT"/>
+			</enum>
+		</datatype>
+	</parameter>
+	
+	<!-- *************************
+	      DTBook Fix - run Narrator category (which *includes* repair executors)
+	     ************************* -->
+	<task name="se_tpb_dtbookFix" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${input}</value>
+		</parameter>
+
+		<parameter>
+			<name>output</name>
+			<value>${outputPath}/pipeline__temp/tmp0/00-dtbookfix.xml</value>
+		</parameter>
+
+		<parameter>
+			<name>runCategories</name>
+			<value>${dtbookFix}</value>
+		</parameter>
+		
+		<parameter>
+			<name>simplifyHeadingLayout</name>
+			<value>false</value>
+		</parameter>
+
+		<parameter>
+			<name>forceRun</name>
+			<value>false</value>
+		</parameter>
+		
+		<parameter>
+			<name>renameIllegalFilenames</name>
+			<value>true</value>
+		</parameter>
+			
+	</task>
+	
+	<!-- **********************************************************
+	      File Set Renamer - to fix possible illegal resource names
+	     ********************************************************** -->
+	<task name="int_daisy_filesetRenamer" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/pipeline__temp/tmp0/00-dtbookfix.xml</value>
+		</parameter>
+
+		<parameter>
+			<name>output</name>
+			<value>${outputPath}/pipeline__temp/tmp1/</value>
+		</parameter>
+		
+		<parameter>
+			<name>renamingPattern</name>
+			<value>echo</value>
+		</parameter>
+
+		<parameter>
+			<name>filesystemSafe</name>
+			<value>true</value>
+		</parameter>
+		
+		<parameter>
+			<name>exclude</name>
+			<value>None</value>
+		</parameter>
+			
+	</task>
+	
+	<!-- *************************
+			int_daisy_mathAltCreator
+			add alttext and altimg 
+	 ************************* -->		
+	<task name="int_daisy_mathAltCreator" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/pipeline__temp/tmp1/00-dtbookfix.xml</value>
+		</parameter>
+
+		<parameter>
+			<name>output</name>
+			<value>${outputPath}/pipeline__temp/tmp1/01-mathFlow.xml</value>
+		</parameter>
+	</task>
+	
+	
+	<!-- *************************
+	      DTBook second input validation, this time abort if not valid including Narrator tests. 
+	     ************************* -->
+	<task name="int_daisy_validator" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/pipeline__temp/tmp1/01-mathFlow.xml</value>
+		</parameter>
+		<parameter>
+			<name>schemas</name>
+			<value>-//TPB//SCH dtbook 2005 Narrator//EN;-//DAISY//SCH dtbook 2005 MathML</value>
+		</parameter>
+		<parameter>
+			<name>requireInputType</name>
+			<value>Dtbook document</value>
+		</parameter>
+		<parameter>
+			<name>abortThreshold</name>
+			<value>ERROR</value>
+		</parameter>
+	</task>
+
+	<!-- ****************************
+	      Abbr and Acronym detection 
+	     **************************** -->
+	<task name="se_tpb_xmldetection" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/pipeline__temp/tmp1/01-mathFlow.xml</value>
+		</parameter>		
+		<parameter>
+			<name>output</name>
+			<value>${outputPath}/pipeline__temp/tmp1/02-abbracro.xml</value>
+		</parameter>		
+		<parameter>
+			<name>doAbbrAcronymDetection</name>
+			<value>true</value>
+		</parameter>		
+		<parameter>
+			<name>doSentenceDetection</name>
+			<value>false</value>
+		</parameter>		
+		<parameter>
+			<name>doWordDetection</name>
+			<value>false</value>
+		</parameter>
+	</task>
+
+	<!-- *********************
+	      Structure announcer 
+	     ********************* -->
+	<task name="se_tpb_annonsator" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/pipeline__temp/tmp1/02-abbracro.xml</value>
+		</parameter>		
+		<parameter>
+			<name>output</name>
+			<value>${outputPath}/pipeline__temp/tmp1/03-struct.xml</value>
+		</parameter>		
+	</task>
+	
+	<!-- ********************
+	      Sentence detection 
+	     ******************** -->
+	<task name="se_tpb_xmldetection" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/pipeline__temp/tmp1/03-struct.xml</value>
+		</parameter>		
+		<parameter>
+			<name>output</name>
+			<value>${outputPath}/pipeline__temp/tmp1/04-sent.xml</value>
+		</parameter>		
+		<parameter>
+			<name>doAbbrAcronymDetection</name>
+			<value>false</value>
+		</parameter>		
+		<parameter>
+			<name>doSentenceDetection</name>
+			<value>${doSentDetection}</value>
+		</parameter>		
+		<parameter>
+			<name>doWordDetection</name>
+			<value>false</value>
+		</parameter>
+		<parameter>
+			<name>doSingleSentAdd</name>
+			<value>false</value>
+		</parameter>
+	</task>
+	
+	<!-- *****************************
+	      Synchronization point normalization 
+	     ***************************** -->
+	<task name="int_daisy_mixedContentNormalizer" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/pipeline__temp/tmp1/04-sent.xml</value>
+		</parameter>		
+		<parameter>
+			<name>output</name>
+			<value>${outputPath}/pipeline__temp/tmp1/05-syncpoint.xml</value>
+		</parameter>
+	</task>
+ 
+ 
+	<!-- ******************
+	      SpeechGen2
+	     ****************** -->
+	<task name="se_tpb_speechgen2" interactive="false">
+		<parameter>
+			<name>inputFilename</name>
+			<value>${outputPath}/pipeline__temp/tmp1/05-syncpoint.xml</value>
+		</parameter>
+		<parameter>
+			<name>outputDirectory</name>
+			<value>${outputPath}/pipeline__temp/speechgen/</value>
+		</parameter>
+		<parameter>
+			<name>outputFilename</name>
+			<value>${outputPath}/pipeline__temp/speechgen/speechgen.xml</value>
+		</parameter>
+		
+		<parameter>
+			<name>mp3Output</name>
+			<value>true</value>
+		</parameter>
+		<parameter>
+			<name>mp3bitrate</name>
+			<value>${bitrate}</value>
+		</parameter>		
+		
+		<parameter>
+			<name>concurrentAudioMerge</name>
+			<value>true</value>
+		</parameter>
+		<parameter>
+			<name>doSmilSyncAttributeBasedSyncPointLocation</name>
+			<value>true</value>
+		</parameter>
+		<parameter>
+			<name>failOnError</name>
+			<value>false</value>
+		</parameter>
+		<parameter>
+			<name>multiLang</name>
+			<value>${multiLang}</value>
+		</parameter>
+	</task>
+
+	<!-- ******************
+	      File Set Creator
+	     ****************** -->
+	<task name="se_tpb_filesetcreator" interactive="false">
+		<parameter>
+			<name>outputDirectory</name>
+			<value>${outputPath}/z3986</value>
+		</parameter>
+		<parameter>
+			<name>manuscriptFilename</name>
+			<value>${outputPath}/pipeline__temp/speechgen/speechgen.xml</value>
+		</parameter>
+		<parameter>
+			<name>outputDTBFilename</name>
+			<value>${outputPath}/z3986/$filename{input}</value>
+		</parameter>		
+	</task>
+	
+	
+	<!-- *************************
+	      z3986 Validation (zedval)
+	     ************************* -->
+	<task name="int_daisy_validator" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/z3986/speechgen.opf</value>
+		</parameter>		
+		<parameter>
+			<name>abortThreshold</name>
+			<value>ERROR</value>
+		</parameter>
+	</task>
+
+	
+	<!-- ************************************
+	      Z3986-2005 to Daisy 2.02 Converter
+	     ************************************ -->
+	<task name="se_tpb_zed2daisy202" interactive="false">
+		<parameter>
+			<name>manifest</name>
+			<value>${outputPath}/z3986/speechgen.opf</value>
+		</parameter>					
+		<parameter>
+			<name>outDir</name>
+			<value>${outputPath}/daisy202</value>
+		</parameter>					
+		<parameter>
+			<name>hrefTarget</name>
+			<value>${202hrefTarget}</value>
+		</parameter>				
+	</task>
+
+	
+	<!-- *************************
+	      Daisy 2.02 Validation 
+	     ************************* -->
+	<task name="int_daisy_validator" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${outputPath}/daisy202/ncc.html</value>
+		</parameter>		
+		<parameter>
+			<name>abortThreshold</name>
+			<value>ERROR</value>
+		</parameter>
+	</task>
+	
+	<!-- *************************
+	      Delete temporary
+	  	 ************************* --> 
+	<task name="pipeline_system_deleter" interactive="false">
+		<parameter>
+			<name>delete</name>
+			<value>${outputPath}/pipeline__temp/</value>
+		</parameter>					
+	</task>
+	
+</taskScript>

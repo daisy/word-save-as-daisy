@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='utf-8'?>
+<transformer version="1.0">
+	<name>Zed 2005 to Daisy 2.02</name>
+	<description>Transforms a Z3986 2005 fileset to a Daisy 2.02 fileset</description>
+	<classname>se_tpb_zed2daisy202.Zed2Daisy202</classname>
+	<license>LGPL</license>
+	<author>Linus Ericson</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/se_tpb_zed2daisy202.html"/>
+	
+	<parameters>
+
+		<parameter required="true" direction="in" type="application/xml">
+			<name>manifest</name>
+			<description>The Z3986 2005 manifest</description>
+			<example>/path/to/file.xml</example>
+		</parameter>
+	
+		<parameter required="true" direction="out" type="application/x-filesystemDirectory">
+			<name>outDir</name>
+			<description>The output Daisy 2.02 file set directory</description>
+			<example>/path/to/</example>
+		</parameter>
+
+		<parameter required="false" type="enum">
+			<name>hrefTarget</name>
+			<description>Select the SMIL element targeted by href URIs: par or text</description>
+			<example>TEXT</example>
+			<enum>
+				<value>PAR</value>				
+				<value>TEXT</value>				
+			</enum>
+			<default>PAR</default>
+		</parameter>
+		
+		<parameter required="false" type="string">
+			<name>smilPrefix</name>
+			<description>Prefix to add to the Daisy 2.02 smil files</description>
+			<example>d202-</example>
+			<default></default>
+		</parameter>
+				
+	</parameters>	
+
+</transformer>

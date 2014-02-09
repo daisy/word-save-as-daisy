@@ -1,0 +1,49 @@
+HKCR
+{
+	DaisyWord2007AddIn.Connect = s 'Connect Class'
+	{
+		CLSID = s '{18cbc6a8-bcb5-45ed-8ff3-655599e1f872}'
+	}
+	NoRemove CLSID
+	{
+		ForceRemove '{18cbc6a8-bcb5-45ed-8ff3-655599e1f872}' = s 'DaisyWord2007AddIn.Connect'
+		{
+			ProgID = s 'DaisyWord2007AddIn.Connect'
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			
+		}
+	}
+}
+
+HKLM
+{
+	NoRemove Software
+	{
+		NoRemove Microsoft
+		{
+			NoRemove Office
+			{
+				NoRemove Word
+				{
+					NoRemove Addins
+					{
+						ForceRemove DaisyWord2007AddIn.Connect
+						{
+							val 'Description' = s 'DAISY Addin'
+							val 'FriendlyName' = s 'DAISY Addin'
+							val 'LoadBehavior' = d 3
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+
+

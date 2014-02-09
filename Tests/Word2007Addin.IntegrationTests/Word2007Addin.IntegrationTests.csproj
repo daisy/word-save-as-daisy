@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8BDDCAB0-E3C5-4906-83AF-124863C84531}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Word2007Addin.IntegrationTests</RootNamespace>
+    <AssemblyName>Word2007Addin.IntegrationTests</AssemblyName>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugWord2003|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugWord2003\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\extensibility.dll</HintPath>
+    </Reference>
+    <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\word2007\Microsoft.Office.Interop.Word.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Vbe.Interop, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\word2007\Microsoft.Vbe.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="OFFICE, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\word2007\OFFICE.DLL</HintPath>
+    </Reference>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\stdole.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\WindowsBase.dll</HintPath>
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="OoxToDaisyFromMultipleDocxTests.cs" />
+    <Compile Include="OoxToDaisyFromSingleDocxTests.cs" />
+    <Compile Include="OoxToDaisyTestsBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="TestData\FromMultipleDocx\Test 10\input\F1.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 10\input\F10.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 10\Params 10-1.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 1\input\F 2.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 1\input\F1.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 1\Params 1-2.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 2\input\F 2.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 2\input\F 3.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 2\Params 2-3.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 3\input\F 3.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 3\input\F4.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 3\Params 3-4.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 4\input\F4.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 4\input\F5.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 4\Params 4-5.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 5\input\F5.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 5\input\F6.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 5\Params 5-6.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 6\input\F6.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 6\input\F7.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 6\Params 6-7.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 7\input\F7.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 7\input\F8.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 7\Params 7-8.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 8\input\F8.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 8\input\F9s.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 8\Params 8-9.docx" />
+    <None Include="TestData\FromMultipleDocx\Test 9\input\F10.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 9\input\F9s.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromMultipleDocx\Test 9\Params 9-10.docx" />
+    <None Include="TestData\FromSingleDocx\Test 10\Input\F10.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 10\Params 10.docx" />
+    <None Include="TestData\FromSingleDocx\Test 1\Input\F1.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 1\Params 1.docx" />
+    <None Include="TestData\FromSingleDocx\Test 2\Input\F 2.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 2\Params 2.docx" />
+    <None Include="TestData\FromSingleDocx\Test 3\Input\F 3.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 3\Params 3.docx" />
+    <None Include="TestData\FromSingleDocx\Test 4\Input\F4.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 4\Params 4.docx" />
+    <None Include="TestData\FromSingleDocx\Test 5\Input\F5.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 5\Params 5.docx" />
+    <None Include="TestData\FromSingleDocx\Test 6\Input\F6.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 6\Params 6.docx" />
+    <None Include="TestData\FromSingleDocx\Test 7\Input\F7.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 7\Params 7.docx" />
+    <None Include="TestData\FromSingleDocx\Test 8\Input\F8.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 8\Params 8.docx" />
+    <None Include="TestData\FromSingleDocx\Test 9\Input\F9.docx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TestData\FromSingleDocx\Test 9\Params 9.docx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
+      <Project>{599773FF-1E86-4AC2-8B24-34BBAC707370}</Project>
+      <Name>DaisyAddinLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Word2007\DaisyWord2007AddIn\DaisyWord2007AddIn.csproj">
+      <Project>{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}</Project>
+      <Name>DaisyWord2007AddIn</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="TestData\FromMultipleDocx\Test 10\output\Doc 10-1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 10\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 10\output\F1-Picture 1.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 10\output\F1-Picture 2.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 10\output\F1-Picture 4.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 10\output\F1-Picture 6.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 10\output\F10-Picture 1.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 10\output\F10-Picture 3.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 1\output\Doc 1-2.xml">
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 1\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 1\output\F 2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 2\output\Doc 2-3.xml" />
+    <Content Include="TestData\FromMultipleDocx\Test 2\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 2\output\F 2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\Doc 3-4.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 1.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 10.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 11.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 12.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 14.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 15.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 16.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 17.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 18.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 19.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 2.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 20.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 21.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 22.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 23.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 24.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 25.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 26.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 27.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 3.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 4.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 5.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 6.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 7.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 8.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 3\output\F4-Picture 9.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\Doc4-5.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 1.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 10.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 11.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 12.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 14.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 15.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 16.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 17.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 18.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 19.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 2.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 20.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 21.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 22.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 23.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 24.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 25.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 26.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 27.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 3.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 4.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 5.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 6.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 7.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 8.png" />
+    <Content Include="TestData\FromMultipleDocx\Test 4\output\F4-Picture 9.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 5\output\Doc 5-6.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 5\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 6\output\Doc 6-7.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 6\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 7\output\Doc 7-8.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 7\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 7\output\F8-Picture 1.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 8\output\Doc 8-9.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 8\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 8\output\F8-Picture 1.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 9\output\Doc 9-10.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromMultipleDocx\Test 9\output\dtbookbasic.css" />
+    <Content Include="TestData\FromMultipleDocx\Test 9\output\F10-Picture 1.jpg" />
+    <Content Include="TestData\FromMultipleDocx\Test 9\output\F10-Picture 3.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 10\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 10\Output\F10-Picture 1.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 10\Output\F10-Picture 3.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 10\Output\F10.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 1\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 1\Output\F1-Picture 1.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 1\Output\F1-Picture 2.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 1\Output\F1-Picture 4.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 1\Output\F1-Picture 6.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 1\Output\F1.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 2\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 2\Output\F 2.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 3\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 3\Output\F 3.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 1.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 10.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 11.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 12.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 14.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 15.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 16.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 17.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 18.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 19.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 2.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 20.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 21.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 22.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 23.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 24.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 25.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 26.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 27.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 3.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 4.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 5.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 6.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 7.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 8.png" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4-Picture 9.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 4\Output\F4.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 5\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 5\Output\F5.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 6\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 6\Output\F6.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 7\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 7\Output\F7.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 8\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 8\Output\F8-Picture 1.jpg" />
+    <Content Include="TestData\FromSingleDocx\Test 8\Output\F8.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestData\FromSingleDocx\Test 9\Output\dtbookbasic.css" />
+    <Content Include="TestData\FromSingleDocx\Test 9\Output\F9.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>IF NOT EXIST "$(TargetDir)pipeline-lite-ms"  xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"</PostBuildEvent>
+  </PropertyGroup>
+</Project>

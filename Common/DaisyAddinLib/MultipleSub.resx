@@ -1,0 +1,1173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 12</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>67, 15</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>O&amp;utput file:</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>groupBoxXml</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tBx_output.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="tBx_output.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 33</value>
+  </data>
+  <data name="tBx_output.Size" type="System.Drawing.Size, System.Drawing">
+    <value>267, 23</value>
+  </data>
+  <data name="tBx_output.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="tBx_output.ToolTip" xml:space="preserve">
+    <value>Select the output file</value>
+  </data>
+  <data name="&gt;&gt;tBx_output.Name" xml:space="preserve">
+    <value>tBx_output</value>
+  </data>
+  <data name="&gt;&gt;tBx_output.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tBx_output.Parent" xml:space="preserve">
+    <value>groupBoxXml</value>
+  </data>
+  <data name="&gt;&gt;tBx_output.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btn_Output.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="btn_Output.Location" type="System.Drawing.Point, System.Drawing">
+    <value>274, 33</value>
+  </data>
+  <data name="btn_Output.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 23</value>
+  </data>
+  <data name="btn_Output.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="btn_Output.Text" xml:space="preserve">
+    <value>&amp;Output</value>
+  </data>
+  <data name="&gt;&gt;btn_Output.Name" xml:space="preserve">
+    <value>btn_Output</value>
+  </data>
+  <data name="&gt;&gt;btn_Output.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Output.Parent" xml:space="preserve">
+    <value>groupBoxXml</value>
+  </data>
+  <data name="&gt;&gt;btn_Output.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="grpBox_Properties.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="grpBox_Properties.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="tableLayoutPanel1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="label_Unique.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="label_Unique.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_Unique.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label_Unique.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 111</value>
+  </data>
+  <data name="label_Unique.Size" type="System.Drawing.Size, System.Drawing">
+    <value>28, 15</value>
+  </data>
+  <data name="label_Unique.TabIndex" type="System.Int32, mscorlib">
+    <value>20</value>
+  </data>
+  <data name="label_Unique.Text" xml:space="preserve">
+    <value>&amp;Uid:</value>
+  </data>
+  <data name="&gt;&gt;label_Unique.Name" xml:space="preserve">
+    <value>label_Unique</value>
+  </data>
+  <data name="&gt;&gt;label_Unique.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_Unique.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;label_Unique.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btn_Populate.Location" type="System.Drawing.Point, System.Drawing">
+    <value>74, 134</value>
+  </data>
+  <data name="btn_Populate.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="btn_Populate.TabIndex" type="System.Int32, mscorlib">
+    <value>58</value>
+  </data>
+  <data name="btn_Populate.Text" xml:space="preserve">
+    <value>Up&amp;date</value>
+  </data>
+  <data name="&gt;&gt;btn_Populate.Name" xml:space="preserve">
+    <value>btn_Populate</value>
+  </data>
+  <data name="&gt;&gt;btn_Populate.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Populate.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;btn_Populate.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="lbl_Subject.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="lbl_Subject.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbl_Subject.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="lbl_Subject.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 85</value>
+  </data>
+  <data name="lbl_Subject.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 15</value>
+  </data>
+  <data name="lbl_Subject.TabIndex" type="System.Int32, mscorlib">
+    <value>18</value>
+  </data>
+  <data name="lbl_Subject.Text" xml:space="preserve">
+    <value>&amp;Subject:</value>
+  </data>
+  <data name="&gt;&gt;lbl_Subject.Name" xml:space="preserve">
+    <value>lbl_Subject</value>
+  </data>
+  <data name="&gt;&gt;lbl_Subject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbl_Subject.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;lbl_Subject.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tBx_Creator.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tBx_Creator.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="tBx_Creator.Location" type="System.Drawing.Point, System.Drawing">
+    <value>74, 30</value>
+  </data>
+  <data name="tBx_Creator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>265, 23</value>
+  </data>
+  <data name="tBx_Creator.TabIndex" type="System.Int32, mscorlib">
+    <value>54</value>
+  </data>
+  <data name="tBx_Creator.ToolTip" xml:space="preserve">
+    <value>Creator</value>
+  </data>
+  <data name="&gt;&gt;tBx_Creator.Name" xml:space="preserve">
+    <value>tBx_Creator</value>
+  </data>
+  <data name="&gt;&gt;tBx_Creator.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tBx_Creator.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tBx_Creator.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="label_Publisher.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="label_Publisher.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_Publisher.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label_Publisher.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 59</value>
+  </data>
+  <data name="label_Publisher.Size" type="System.Drawing.Size, System.Drawing">
+    <value>59, 15</value>
+  </data>
+  <data name="label_Publisher.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="label_Publisher.Text" xml:space="preserve">
+    <value>&amp;Publisher:</value>
+  </data>
+  <data name="&gt;&gt;label_Publisher.Name" xml:space="preserve">
+    <value>label_Publisher</value>
+  </data>
+  <data name="&gt;&gt;label_Publisher.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_Publisher.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;label_Publisher.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="tBx_Title.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tBx_Title.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="tBx_Title.Location" type="System.Drawing.Point, System.Drawing">
+    <value>74, 3</value>
+  </data>
+  <data name="tBx_Title.Size" type="System.Drawing.Size, System.Drawing">
+    <value>265, 23</value>
+  </data>
+  <data name="tBx_Title.TabIndex" type="System.Int32, mscorlib">
+    <value>53</value>
+  </data>
+  <data name="tBx_Title.ToolTip" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="&gt;&gt;tBx_Title.Name" xml:space="preserve">
+    <value>tBx_Title</value>
+  </data>
+  <data name="&gt;&gt;tBx_Title.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tBx_Title.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tBx_Title.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="label_Creator.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="label_Creator.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_Creator.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label_Creator.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 33</value>
+  </data>
+  <data name="label_Creator.Size" type="System.Drawing.Size, System.Drawing">
+    <value>49, 15</value>
+  </data>
+  <data name="label_Creator.TabIndex" type="System.Int32, mscorlib">
+    <value>14</value>
+  </data>
+  <data name="label_Creator.Text" xml:space="preserve">
+    <value>&amp;Creator:</value>
+  </data>
+  <data name="&gt;&gt;label_Creator.Name" xml:space="preserve">
+    <value>label_Creator</value>
+  </data>
+  <data name="&gt;&gt;label_Creator.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_Creator.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;label_Creator.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="tBx_Publisher.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tBx_Publisher.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="tBx_Publisher.Location" type="System.Drawing.Point, System.Drawing">
+    <value>74, 57</value>
+  </data>
+  <data name="tBx_Publisher.Size" type="System.Drawing.Size, System.Drawing">
+    <value>265, 23</value>
+  </data>
+  <data name="tBx_Publisher.TabIndex" type="System.Int32, mscorlib">
+    <value>55</value>
+  </data>
+  <data name="tBx_Publisher.ToolTip" xml:space="preserve">
+    <value>Publisher</value>
+  </data>
+  <data name="&gt;&gt;tBx_Publisher.Name" xml:space="preserve">
+    <value>tBx_Publisher</value>
+  </data>
+  <data name="&gt;&gt;tBx_Publisher.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tBx_Publisher.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tBx_Publisher.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="label_Title.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="label_Title.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label_Title.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label_Title.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 6</value>
+  </data>
+  <data name="label_Title.Size" type="System.Drawing.Size, System.Drawing">
+    <value>33, 15</value>
+  </data>
+  <data name="label_Title.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="label_Title.Text" xml:space="preserve">
+    <value>T&amp;itle:</value>
+  </data>
+  <data name="&gt;&gt;label_Title.Name" xml:space="preserve">
+    <value>label_Title</value>
+  </data>
+  <data name="&gt;&gt;label_Title.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label_Title.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;label_Title.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="tBx_Uid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tBx_Uid.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Calibri, 9pt</value>
+  </data>
+  <data name="tBx_Uid.Location" type="System.Drawing.Point, System.Drawing">
+    <value>74, 109</value>
+  </data>
+  <data name="tBx_Uid.Size" type="System.Drawing.Size, System.Drawing">
+    <value>265, 22</value>
+  </data>
+  <data name="tBx_Uid.TabIndex" type="System.Int32, mscorlib">
+    <value>57</value>
+  </data>
+  <data name="tBx_Uid.ToolTip" xml:space="preserve">
+    <value>Unique Identifier</value>
+  </data>
+  <data name="&gt;&gt;tBx_Uid.Name" xml:space="preserve">
+    <value>tBx_Uid</value>
+  </data>
+  <data name="&gt;&gt;tBx_Uid.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tBx_Uid.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tBx_Uid.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="tBx_Subject.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tBx_Subject.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="tBx_Subject.Location" type="System.Drawing.Point, System.Drawing">
+    <value>74, 83</value>
+  </data>
+  <data name="tBx_Subject.Size" type="System.Drawing.Size, System.Drawing">
+    <value>265, 23</value>
+  </data>
+  <data name="tBx_Subject.TabIndex" type="System.Int32, mscorlib">
+    <value>56</value>
+  </data>
+  <data name="tBx_Subject.ToolTip" xml:space="preserve">
+    <value>Subject</value>
+  </data>
+  <data name="&gt;&gt;tBx_Subject.Name" xml:space="preserve">
+    <value>tBx_Subject</value>
+  </data>
+  <data name="&gt;&gt;tBx_Subject.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tBx_Subject.Parent" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tBx_Subject.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 16</value>
+  </data>
+  <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
+  </data>
+  <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>342, 162</value>
+  </data>
+  <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
+    <value>52</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Name" xml:space="preserve">
+    <value>tableLayoutPanel1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.Parent" xml:space="preserve">
+    <value>grpBox_Properties</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel1.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label_Unique" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btn_Populate" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbl_Subject" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Creator" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Publisher" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Title" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Creator" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Publisher" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Title" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Uid" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Subject" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,71,Percent,100" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,26,Absolute,26,Absolute,25,Absolute,30" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="grpBox_Properties.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="grpBox_Properties.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 246</value>
+  </data>
+  <data name="grpBox_Properties.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
+  </data>
+  <data name="grpBox_Properties.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="grpBox_Properties.Size" type="System.Drawing.Size, System.Drawing">
+    <value>350, 194</value>
+  </data>
+  <data name="grpBox_Properties.TabIndex" type="System.Int32, mscorlib">
+    <value>51</value>
+  </data>
+  <data name="grpBox_Properties.Text" xml:space="preserve">
+    <value>Document properties</value>
+  </data>
+  <data name="&gt;&gt;grpBox_Properties.Name" xml:space="preserve">
+    <value>grpBox_Properties</value>
+  </data>
+  <data name="&gt;&gt;grpBox_Properties.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;grpBox_Properties.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;grpBox_Properties.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="lBx_SubDocs.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="lBx_SubDocs.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="lBx_SubDocs.HorizontalScrollbar" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lBx_SubDocs.ItemHeight" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="lBx_SubDocs.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 29</value>
+  </data>
+  <data name="lBx_SubDocs.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 107</value>
+  </data>
+  <data name="lBx_SubDocs.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="lBx_SubDocs.ToolTip" xml:space="preserve">
+    <value>All Sub documents contained in the selected folder</value>
+  </data>
+  <data name="&gt;&gt;lBx_SubDocs.Name" xml:space="preserve">
+    <value>lBx_SubDocs</value>
+  </data>
+  <data name="&gt;&gt;lBx_SubDocs.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lBx_SubDocs.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;lBx_SubDocs.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="tBx_Browse.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="tBx_Browse.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="tBx_Browse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 3</value>
+  </data>
+  <data name="tBx_Browse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>263, 23</value>
+  </data>
+  <data name="tBx_Browse.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tBx_Browse.ToolTip" xml:space="preserve">
+    <value>Select input folder</value>
+  </data>
+  <data name="&gt;&gt;tBx_Browse.Name" xml:space="preserve">
+    <value>tBx_Browse</value>
+  </data>
+  <data name="&gt;&gt;tBx_Browse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tBx_Browse.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;tBx_Browse.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="groupBoxXml.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="groupBoxXml.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="groupBoxXml.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 164</value>
+  </data>
+  <data name="groupBoxXml.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
+  </data>
+  <data name="groupBoxXml.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="groupBoxXml.Size" type="System.Drawing.Size, System.Drawing">
+    <value>350, 72</value>
+  </data>
+  <data name="groupBoxXml.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="groupBoxXml.Text" xml:space="preserve">
+    <value>Destination</value>
+  </data>
+  <data name="&gt;&gt;groupBoxXml.Name" xml:space="preserve">
+    <value>groupBoxXml</value>
+  </data>
+  <data name="&gt;&gt;groupBoxXml.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBoxXml.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;groupBoxXml.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="btnShow.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 448</value>
+  </data>
+  <data name="btnShow.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 26</value>
+  </data>
+  <data name="btnShow.TabIndex" type="System.Int32, mscorlib">
+    <value>59</value>
+  </data>
+  <data name="btnShow.Text" xml:space="preserve">
+    <value>Show Ad&amp;vanced&gt;&gt;</value>
+  </data>
+  <data name="&gt;&gt;btnShow.Name" xml:space="preserve">
+    <value>btnShow</value>
+  </data>
+  <data name="&gt;&gt;btnShow.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnShow.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnShow.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="btnHide.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 451</value>
+  </data>
+  <data name="btnHide.Size" type="System.Drawing.Size, System.Drawing">
+    <value>116, 23</value>
+  </data>
+  <data name="btnHide.TabIndex" type="System.Int32, mscorlib">
+    <value>101</value>
+  </data>
+  <data name="btnHide.Text" xml:space="preserve">
+    <value>&lt;&lt;&amp;Hide Advanced</value>
+  </data>
+  <data name="&gt;&gt;btnHide.Name" xml:space="preserve">
+    <value>btnHide</value>
+  </data>
+  <data name="&gt;&gt;btnHide.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btnHide.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btnHide.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="mLayoutPanel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="mLayoutPanel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="mLayoutPanel.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
+    <value>TopDown</value>
+  </data>
+  <data name="mLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 241</value>
+  </data>
+  <data name="mLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 3, 0</value>
+  </data>
+  <data name="mLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>0, 0</value>
+  </data>
+  <data name="mLayoutPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;mLayoutPanel.Name" xml:space="preserve">
+    <value>mLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;mLayoutPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;mLayoutPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;mLayoutPanel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="oLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 476</value>
+  </data>
+  <data name="oLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>320, 35</value>
+  </data>
+  <data name="oLayoutPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>33</value>
+  </data>
+  <data name="&gt;&gt;oLayoutPanel.Name" xml:space="preserve">
+    <value>oLayoutPanel</value>
+  </data>
+  <data name="&gt;&gt;oLayoutPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;oLayoutPanel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;oLayoutPanel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="btn_Delete.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="btn_Delete.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 13</value>
+  </data>
+  <data name="btn_Delete.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 23</value>
+  </data>
+  <data name="btn_Delete.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="btn_Delete.Text" xml:space="preserve">
+    <value>Re&amp;move</value>
+  </data>
+  <data name="&gt;&gt;btn_Delete.Name" xml:space="preserve">
+    <value>btn_Delete</value>
+  </data>
+  <data name="&gt;&gt;btn_Delete.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Delete.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;btn_Delete.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="button1.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 38</value>
+  </data>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 23</value>
+  </data>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>&amp;Add</value>
+  </data>
+  <data name="&gt;&gt;button1.Name" xml:space="preserve">
+    <value>button1</value>
+  </data>
+  <data name="&gt;&gt;button1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btn_Up.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="btn_Up.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 63</value>
+  </data>
+  <data name="btn_Up.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 23</value>
+  </data>
+  <data name="btn_Up.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="btn_Up.Text" xml:space="preserve">
+    <value>Move &amp;up</value>
+  </data>
+  <data name="&gt;&gt;btn_Up.Name" xml:space="preserve">
+    <value>btn_Up</value>
+  </data>
+  <data name="&gt;&gt;btn_Up.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Up.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;btn_Up.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="btn_Down.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 8.25pt</value>
+  </data>
+  <data name="btn_Down.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 88</value>
+  </data>
+  <data name="btn_Down.Size" type="System.Drawing.Size, System.Drawing">
+    <value>74, 23</value>
+  </data>
+  <data name="btn_Down.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="btn_Down.Text" xml:space="preserve">
+    <value>Move &amp;down</value>
+  </data>
+  <data name="&gt;&gt;btn_Down.Name" xml:space="preserve">
+    <value>btn_Down</value>
+  </data>
+  <data name="&gt;&gt;btn_Down.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Down.Parent" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;btn_Down.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>269, 26</value>
+  </data>
+  <data name="groupBox2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="groupBox2.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>79, 113</value>
+  </data>
+  <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
+    <value>35</value>
+  </data>
+  <data name="groupBox2.Text" xml:space="preserve">
+    <value>Documents</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Name" xml:space="preserve">
+    <value>groupBox2</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;groupBox2.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btn_Browse.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="btn_Browse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>272, 3</value>
+  </data>
+  <data name="btn_Browse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>73, 20</value>
+  </data>
+  <data name="btn_Browse.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="btn_Browse.Text" xml:space="preserve">
+    <value>&amp;Browse..</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse.Name" xml:space="preserve">
+    <value>btn_Browse</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse.Parent" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;btn_Browse.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
+    <value>9, 24</value>
+  </data>
+  <data name="tableLayoutPanel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
+  </data>
+  <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
+    <value>348, 139</value>
+  </data>
+  <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
+    <value>tableLayoutPanel2</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;tableLayoutPanel2.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="groupBox2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btn_Browse" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lBx_SubDocs" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Browse" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,79" /&gt;&lt;Rows Styles="Percent,18,70968,Percent,81,29032" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="lbl_Subdocuments.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="lbl_Subdocuments.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="lbl_Subdocuments.Location" type="System.Drawing.Point, System.Drawing">
+    <value>11, 3</value>
+  </data>
+  <data name="lbl_Subdocuments.Size" type="System.Drawing.Size, System.Drawing">
+    <value>109, 15</value>
+  </data>
+  <data name="lbl_Subdocuments.TabIndex" type="System.Int32, mscorlib">
+    <value>37</value>
+  </data>
+  <data name="lbl_Subdocuments.Text" xml:space="preserve">
+    <value>Source docum&amp;ents:</value>
+  </data>
+  <data name="&gt;&gt;lbl_Subdocuments.Name" xml:space="preserve">
+    <value>lbl_Subdocuments</value>
+  </data>
+  <data name="&gt;&gt;lbl_Subdocuments.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;lbl_Subdocuments.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;lbl_Subdocuments.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="btn_Ok.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="btn_Ok.Location" type="System.Drawing.Point, System.Drawing">
+    <value>127, 450</value>
+  </data>
+  <data name="btn_Ok.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="btn_Ok.TabIndex" type="System.Int32, mscorlib">
+    <value>102</value>
+  </data>
+  <data name="btn_Ok.Text" xml:space="preserve">
+    <value>&amp;Translate</value>
+  </data>
+  <data name="&gt;&gt;btn_Ok.Name" xml:space="preserve">
+    <value>btn_Ok</value>
+  </data>
+  <data name="&gt;&gt;btn_Ok.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Ok.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btn_Ok.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="btn_Reset.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="btn_Reset.Location" type="System.Drawing.Point, System.Drawing">
+    <value>204, 450</value>
+  </data>
+  <data name="btn_Reset.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="btn_Reset.TabIndex" type="System.Int32, mscorlib">
+    <value>103</value>
+  </data>
+  <data name="btn_Reset.Text" xml:space="preserve">
+    <value>&amp;Reset</value>
+  </data>
+  <data name="&gt;&gt;btn_Reset.Name" xml:space="preserve">
+    <value>btn_Reset</value>
+  </data>
+  <data name="&gt;&gt;btn_Reset.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Reset.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btn_Reset.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="btn_Cancel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="btn_Cancel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>281, 450</value>
+  </data>
+  <data name="btn_Cancel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 23</value>
+  </data>
+  <data name="btn_Cancel.TabIndex" type="System.Int32, mscorlib">
+    <value>104</value>
+  </data>
+  <data name="btn_Cancel.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;btn_Cancel.Name" xml:space="preserve">
+    <value>btn_Cancel</value>
+  </data>
+  <data name="&gt;&gt;btn_Cancel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;btn_Cancel.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;btn_Cancel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
+  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>45</value>
+  </metadata>
+  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
+    <value>6, 13</value>
+  </data>
+  <data name="$this.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="$this.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>363, 539</value>
+  </data>
+  <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
+    <value>CenterScreen</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Daisy Translator - Multiple documents</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
+    <value>toolTip1</value>
+  </data>
+  <data name="&gt;&gt;toolTip1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;$this.Name" xml:space="preserve">
+    <value>MultipleSub</value>
+  </data>
+  <data name="&gt;&gt;$this.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+</root>

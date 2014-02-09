@@ -1,0 +1,87 @@
+<transformer version="1.1">
+	<name>OPS Creator</name>
+	<description>Create an Open Publication Structure (OPS 2.0) fileset from DTBook or XHTML input.</description>
+	<classname>int_daisy_opsCreator.OpsCreator</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/int_daisy_opsCreator.html"/>	
+	
+	<parameters>
+		
+		<parameter required="true" direction="in" type="application/xml">
+			<name>input</name>
+			<description>The input content files (XHTML or DTBook)</description>
+			<example>D:/path/to/inputFile1.xml, D:/path/to/inputFile2.xml</example>
+		</parameter>
+		
+		<parameter required="true" direction="out" type="application/x-filesystemDirectory">
+			<name>output</name>			
+			<description>The output directory</description>
+			<example>D:/path/to/outputDir/</example>
+		</parameter>
+
+		<parameter required="false" type="application/xml">
+			<name>ncxConfig</name>			
+			<description>Custom NCX configuration file</description>
+			<example>D:/path/to/myNcxConfig.xml</example>
+			<default/>
+		</parameter>
+		
+		<parameter required="false" type="string">
+			<name>forceXhtml</name>			
+			<description>Whether to always create an XHTML-based EPUB, even if the input is DTBook 2005-2</description>
+			<example>true</example>
+			<default>true</default>
+		</parameter>
+														
+		<!-- optional metadata (else retrieved from input docs) -->
+		
+		<parameter required="false" type="string">
+			<name>dc:title</name>			
+			<description>Dublin Core Title</description>
+			<example>In Cold Blood: A True Account of a Multiple Murder and Its Consequences</example>
+			<default/>
+		</parameter>
+
+		<parameter required="false" type="string">
+			<name>dc:creator</name>			
+			<description>Dublin Core Creator</description>
+			<example>Truman Capote</example>
+			<default/>
+		</parameter>
+
+		<parameter required="false" type="string">
+			<name>dc:publisher</name>			
+			<description>Dublin Core Publisher</description>
+			<example>Random House</example>
+			<default/>			
+		</parameter>
+
+		<parameter required="false" type="string">
+			<name>dc:date</name>			
+			<description>Dublin Core Date (date of publication)</description>
+			<example>1966</example>
+			<default/>
+		</parameter>
+	
+		<parameter required="false" type="string">
+			<name>dc:identifier</name>			
+			<description>Dublin Core Identifier</description>
+			<example>0-679-74558-0</example>
+			<default/>
+		</parameter>
+
+		<parameter required="false" type="string">
+			<name>dc:language</name>			
+			<description>Dublin Core Language</description>
+			<example>en</example>
+			<default/>
+		</parameter>
+		
+		<!-- end optional metadata  -->
+		
+															
+	</parameters>	
+
+</transformer>

@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language xml:lang="sv">
+	<initialism before=".*[\s(]|^" after="([\-,\.\s:;?!)].*)|$" suffix="s|:s">
+		<key>
+			<name>TPB</name>
+			<expansion id="tpbLibrary">Talboks- och punktskriftsbiblioteket</expansion>
+		</key>
+		<key>
+			<name>SMHI</name>
+			<expansion>Sveriges meteorologiska och hydrologiska institut</expansion>
+		</key>
+	</initialism>
+	<acronym before=".*[\s(]|^" after="([\-,\.\s:;?!)].*)|$" suffix="s|:s">
+		<key>
+			<name>DAISY</name>
+			<expansion id="daisyBook">Digitalt Anpassat Informationssystem</expansion>
+		</key>
+	</acronym>
+	<abbreviation before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$">
+		<key>
+			<name>a.d.</name>
+			<expansion>anno domine</expansion>
+		</key>
+		<key>
+			<name>adr.</name>
+			<expansion>adress</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">art.</name>
+			<expansion>artikel</expansion>
+		</key>
+		<key>
+			<name>avd.</name>
+			<expansion>avdelning</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">ang.</name>
+			<expansion>angående</expansion>
+		</key>
+		<key>
+			<name>anm.</name>
+			<expansion>anmärkning</expansion>
+		</key>
+		<key>
+			<name>artnr.</name>
+			<expansion>artikelnummer</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">Art.</name>
+			<expansion>artikel</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">betr.</name>
+			<expansion>beträffande</expansion>
+		</key>
+		<key>
+			<name>bg.</name>
+			<expansion>bankgiro</expansion>
+		</key>
+		<key>
+			<name>bl.a.</name>
+			<name>bl.a</name>
+			<name>bl a</name>
+			<expansion>bland annat</expansion>
+		</key>
+		<key>
+			<name>c:a</name>
+			<name>ca.</name>
+			<expansion>circa</expansion>
+		</key>
+		<key>
+			<name>ca</name>
+			<expansion>circa</expansion>
+		</key>
+		<key>
+			<name>d.v.s.</name>
+			<name>d.v.s</name>
+			<name>dvs.</name>
+			<name>dvs</name>
+			<expansion>det vill säga</expansion>
+		</key>
+		<key>
+			<name>d.y.</name>
+			<name>d.y</name>
+			<expansion>den yngre</expansion>
+		</key>
+		<key>
+			<name>d.ä.</name>
+			<expansion>den äldre</expansion>
+		</key>
+		<key>
+			<name>d.ä</name>
+			<expansion>den äldre</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">d:r</name>
+			<name mayEndSentence="no">dr.</name>
+			<expansion>doktor</expansion>
+		</key>
+		<key>
+			<name>e.d.</name>
+			<name>e.d</name>
+			<name>e.dyl.</name>
+			<name>e.dyl</name>
+			<name>e dyl</name>
+			<name>el.dyl.</name>
+			<name>el dyl.</name>
+			<name>el dyl</name>
+			<expansion>eller dylikt</expansion>
+		</key>
+		<key>
+			<name>e.kr.</name>
+			<name>e.kr</name>
+			<expansion>efter kristus</expansion>
+		</key>
+		<key>
+			<name>e.l.</name>
+			<expansion>eller liknande</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">enl.</name>
+			<name mayEndSentence="no">enl</name>
+			<expansion>enligt</expansion>
+		</key>
+		<key>
+			<name>e.u.</name>
+			<expansion>enligt uppdrag</expansion>
+		</key>
+		<key>
+			<name>em.</name>
+			<expansion>eftermiddag</expansion>
+		</key>
+		<key>
+			<name>etc.</name>
+			<name>etc</name>
+			<expansion>etectera</expansion>
+		</key>
+		<key>
+			<name>ev.</name>
+			<expansion>eventuellt</expansion>
+		</key>
+		<key>
+			<name>exkl.</name>
+			<name>exkl</name>
+			<expansion>exklusiv</expansion>
+		</key>
+		<key>
+			<name>exv.</name>
+			<name>exv</name>
+			<expansion>exempelvis</expansion>
+		</key>
+		<key>
+			<name>f.d.</name>
+			<name>f.d</name>
+			<expansion>före detta</expansion>
+		</key>
+		<key>
+			<name>f. kr.</name>
+			<name>f.kr</name>
+			<expansion>före kristus</expansion>
+		</key>
+		<key>
+			<name>f.n.</name>
+			<expansion>för närvarande</expansion>
+		</key>
+		<key>
+			<name>f.ö.</name>
+			<expansion>för övrigt</expansion>
+		</key>
+		<key>
+			<name>fig.</name>
+			<expansion>figur</expansion>
+		</key>
+		<key>
+			<name>fm.</name>
+			<expansion>förmiddag</expansion>
+		</key>
+		<key>
+			<name>forts.</name>
+			<expansion>fortsättning</expansion>
+		</key>
+		<key>
+			<name>fr.a.</name>
+			<expansion>framför allt</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">fr.o.m.</name>
+			<name mayEndSentence="no">fr.o.m</name>
+			<expansion>från och med</expansion>
+		</key>
+		<key>
+			<name>ggr.</name>
+			<expansion>gånger</expansion>
+		</key>
+		<key>
+			<name>gm.</name>
+			<expansion>genom</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">hr.</name>
+			<expansion>herr</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">hrr.</name>
+			<expansion>herrar</expansion>
+		</key>
+		<key>
+			<name>i.o.f.s.</name>
+			<name>i.o.f.s</name>
+			<name>i o f s</name>
+			<expansion>i och för sig</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">i.st.f.</name>
+			<name mayEndSentence="no">i.st.f</name>
+			<expansion>i stället för</expansion>
+		</key>
+		<key>
+			<name>inkl.</name>
+			<name>inkl</name>
+			<expansion>inklusive</expansion>
+		</key>
+		<key>
+			<name>jmf.</name>
+			<name>jfr.</name>
+			<name>jr.</name>
+			<expansion>jämför</expansion>
+		</key>
+		<key>
+			<name>Kr.</name>
+			<expansion>kronor</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">kungl.</name>
+			<name mayEndSentence="no">Kungl.</name>
+			<expansion>kungliga</expansion>
+		</key>
+		<key>
+			<name>kl.</name>
+			<expansion>klockan</expansion>
+		</key>
+		<key>
+			<name>maj:t</name>
+			<expansion>majestät</expansion>
+		</key>
+		<key>
+			<name>m.a.o.</name>
+			<expansion>med andra ord</expansion>
+		</key>
+		<key>
+			<name>m.a.o</name>
+			<expansion>med andra ord</expansion>
+		</key>
+		<key>
+			<name>m.e.m.</name>
+			<name>m.e.m</name>
+			<expansion>mer eller mindre</expansion>
+		</key>
+		<key>
+			<name>m.fl.</name>
+			<name>m.fl</name>
+			<expansion>med flera</expansion>
+		</key>
+		<key>
+			<name>m.m.</name>
+			<name>m.m</name>
+			<expansion>med mera</expansion>
+		</key>
+		<key>
+			<name>milj.</name>
+			<expansion>miljon</expansion>
+		</key>
+		<key>
+			<name>mom.</name>
+			<expansion>moment</expansion>
+		</key>
+		<key>
+			<name>m.ö.h.</name>
+			<expansion>meter över havet</expansion>
+		</key>
+		<key>
+			<name>m.v.h.</name>
+			<name>mvh</name>
+			<expansion>med vänlig hälsning</expansion>
+		</key>
+		<key>
+			<name>nr.</name>
+			<name>n:r</name>
+			<expansion>nummer</expansion>
+		</key>
+		<key>
+			<name>ngn.</name>
+			<name>ngn</name>
+			<expansion>någon</expansion>
+		</key>
+		<key>
+			<name>ngt.</name>
+			<expansion>något</expansion>
+		</key>
+		<key>
+			<name>ngt</name>
+			<expansion>något</expansion>
+		</key>
+		<key>
+			<name>o.a.</name>
+			<name>o.a</name>
+			<expansion>och andra</expansion>
+		</key>
+		<key>
+			<name>o.d.</name>
+			<name>o.dyl.</name>
+			<expansion>och dylikt</expansion>
+		</key>
+		<key>
+			<name>o.dyl</name>
+			<expansion>och dylikt</expansion>
+		</key>
+		<key>
+			<name>o.l.</name>
+			<name>o.likn.</name>
+			<expansion>och liknande</expansion>
+		</key>
+		<key>
+			<name>o.s.v.</name>
+			<name>o.s.v</name>
+			<name>osv.</name>
+			<name>o s v</name>
+			<expansion>och så vidare</expansion>
+		</key>
+		<key>
+			<name>obs.</name>
+			<name>obs</name>
+			<expansion>observera</expansion>
+		</key>
+		<key>
+			<name>omkr.</name>
+			<expansion>omkring</expansion>
+		</key>
+		<key>
+			<name>pl.</name>
+			<expansion>plural</expansion>
+		</key>
+		<key>
+			<name>prop.</name>
+			<expansion>proposition</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">p.g.a.</name>
+			<name mayEndSentence="no">p.g.a</name>
+			<name mayEndSentence="no">pga.</name>
+			<name mayEndSentence="no">pga</name>
+			<expansion>på grund av</expansion>
+		</key>
+		<key>
+			<name>pg.</name>
+			<expansion>plusgiro</expansion>
+		</key>
+		<key>
+			<name>resp.</name>
+			<name>resp</name>
+			<expansion>repektive</expansion>
+		</key>
+		<key>
+			<name>s.a.s.</name>
+			<name>s.a.s</name>
+			<expansion>så att säga</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">s.k.</name>
+			<name mayEndSentence="no">sk.</name>
+			<expansion>så kallad</expansion>
+			<expansion>så kallat</expansion>
+		</key>
+		<key>
+			<name>s:a</name>
+			<expansion>summa</expansion>
+		</key>
+		<key>
+			<name>s:t</name>
+			<expansion>sankt</expansion>
+		</key>
+		<key>
+			<name>s:ta</name>
+			<expansion>sankta</expansion>
+		</key>
+		<key>
+			<name>St.</name>
+			<expansion>stycken</expansion>
+		</key>
+		<key>
+			<name>t.ex.</name>
+			<name>t.ex</name>
+			<name>t ex.</name>
+			<name>t ex</name>
+			<expansion>till exempel</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">tekn.</name>
+			<expansion>tekniska</expansion>
+		</key>
+		<key>
+			<name>t.v.</name>
+			<expansion>till vänster</expansion>
+		</key>
+		<key>
+			<name>t.h.</name>
+			<expansion>till höger</expansion>
+		</key>
+		<key>
+			<name>t.o.m.</name>
+			<name>t.o.m</name>
+			<expansion>till och med</expansion>
+		</key>
+		<key>
+			<name>tf.</name>
+			<expansion>tillförordnad</expansion>
+		</key>
+		<key>
+			<name>tfn.</name>
+			<name>tel.</name>
+			<expansion>telefon</expansion>
+		</key>
+		<key>
+			<name>uppl.</name>
+			<expansion>upplagan</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">v.g.</name>
+			<name mayEndSentence="no">v.g</name>
+			<expansion>var god</expansion>
+		</key>
+		<key>
+			<name>vol.</name>
+			<expansion>volym</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">äv.</name>
+			<expansion>även</expansion>
+		</key>
+		<key>
+			<name>övr.</name>
+			<expansion>övrigt</expansion>
+		</key>
+	</abbreviation>
+	<fix before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$">
+		<item key="\d+(?:,\d+)?-\p{L}+" value="num-word"/>
+		<item key="\d+(?: \d{3})+" value="num-with-space"/>
+	</fix>
+</language>

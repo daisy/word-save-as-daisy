@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transformer version="1.1">
+	<name>DTB Audio Encoder</name>
+	<description>Encodes all wav files in a Daisy 2.02 or Z3986-2005 fileset to mp3 format</description>
+	<classname>se_tpb_dtbAudioEncoder.DtbAudioEncoder</classname>
+	<license>unknown</license>
+	<author>Linus Ericson</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/se_tpb_dtbAudioEncoder.html"/>
+	
+	<parameters>
+
+		<parameter required="true" direction="in" type="application/xml">
+			<name>manifest</name>
+			<description>The manifest file (ncc, opf)</description>
+			<example>/path/to/ncc.html</example>
+		</parameter>
+		
+		<parameter required="true" direction="in" type="application/x-filesystemDirectory">
+			<name>outDir</name>
+			<description>The output directory</description>
+			<example>/path/to/</example>
+		</parameter>
+		
+		<parameter required="false" type="enum">
+			<name>bitrate</name>
+			<description>The bitrate of the encoded files</description>
+			<example>48</example>
+			<enum>
+				<value>32</value>
+				<value>48</value>
+				<value>64</value>
+				<value>128</value>
+			</enum>
+			<default>32</default>
+		</parameter>		
+		
+		<parameter required="false" type="enum">
+			<name>stereo</name>
+			<description>The stereo mode of the encoded files</description>
+			<example>stereo</example>
+			<enum>
+				<value>mono</value>
+				<value>stereo</value>
+			</enum>
+			<default>mono</default>
+		</parameter>
+		
+		<parameter required="false" type="enum">
+			<name>freq</name>
+			<description>The sample rate of the encoded files</description>
+			<example>22050</example>
+			<enum>
+				<value>11025</value>
+				<value>22050</value>
+				<value>44100</value>
+				<value>48000</value>
+			</enum>
+			<default>22050</default>
+		</parameter>
+		
+		<parameter required="false" type="enum">
+			<name>filesetType</name>
+			<description>The fileset type</description>			
+			<example>DAISY_202</example>
+			<enum>
+				<value>DAISY_202</value>
+				<value>Z3986</value>
+				<value>OTHER</value>
+			</enum>
+			<default>DAISY_202</default>
+		</parameter>					
+	</parameters>	
+
+</transformer>

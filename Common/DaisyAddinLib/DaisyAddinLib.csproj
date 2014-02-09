@@ -1,0 +1,594 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{599773FF-1E86-4AC2-8B24-34BBAC707370}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DaisyAddinLib</RootNamespace>
+    <AssemblyName>DaisyAddinLib</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>DaisyTranslatorPhaseTwo.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release to Client%28signed%29|AnyCPU' ">
+    <OutputPath>bin\Release to Client%28signed%29\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release to Client%28signed%29|x86' ">
+    <OutputPath>bin\x86\Release to Client%28signed%29\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugWord2003|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\DebugWord2003\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugWord2003|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\DebugWord2003\</OutputPath>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Reference Assemblies\Microsoft\Framework\v3.0\WindowsBase.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="About.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="About.designer.cs">
+      <DependentUpon>About.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AddinLogger.cs" />
+    <Compile Include="bDatatype.cs" />
+    <Compile Include="BoolControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BoolControl.Designer.cs">
+      <DependentUpon>BoolControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="bUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="bUserControl.Designer.cs">
+      <DependentUpon>bUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ChainResourceManager.cs" />
+    <Compile Include="CleanOutputDirDlg.cs">
+      <SubType>Form</SubType>
+      <CustomToolNamespace>Sonata.DaisyConverter.DaisyConverterLib</CustomToolNamespace>
+    </Compile>
+    <Compile Include="CleanOutputDirDlg.Designer.cs">
+      <DependentUpon>CleanOutputDirDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConverterForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ConverterForm.Designer.cs">
+      <DependentUpon>ConverterForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\AddInHelper.cs" />
+    <Compile Include="Converters\ConvertResult.cs" />
+    <Compile Include="Converters\ConvertResultType.cs" />
+    <Compile Include="Converters\PrepopulateDaisyOutput.cs" />
+    <Compile Include="Converters\PrepopulateDaisyXml.cs" />
+    <Compile Include="Converters\SingleConverter.cs" />
+    <Compile Include="Converters\SingleConverterUI.cs" />
+    <Compile Include="Converters\SubdocumentInfo.cs" />
+    <Compile Include="Converters\SubdocumentsList.cs" />
+    <Compile Include="Converters\TranslationParametersBuilder.cs" />
+    <Compile Include="Converters\SubdocumentsManager.cs" />
+    <Compile Include="DAISY Settings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DAISY Settings.designer.cs">
+      <DependentUpon>DAISY Settings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DaisyTranslationSettings.cs" />
+    <Compile Include="DesignForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DesignForm.Designer.cs">
+      <DependentUpon>DesignForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="eDataType.cs" />
+    <Compile Include="EnumControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EnumControl.Designer.cs">
+      <DependentUpon>EnumControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Fidility.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Fidility.Designer.cs">
+      <DependentUpon>Fidility.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DaisyAddinLib.cs">
+    </Compile>
+    <Compile Include="InfoBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InfoBox.designer.cs">
+      <DependentUpon>InfoBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Initialize.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Initialize.Designer.cs">
+      <DependentUpon>Initialize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="IntegerDataType.cs" />
+    <Compile Include="IntUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="IntUserControl.Designer.cs">
+      <DependentUpon>IntUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MasterSubValidation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MasterSubValidation.designer.cs">
+      <DependentUpon>MasterSubValidation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MultipleSub.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MultipleSub.designer.cs">
+      <DependentUpon>MultipleSub.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\OoxToDaisyParameters.cs" />
+    <Compile Include="OoxPageStylesValidator.cs" />
+    <Compile Include="PathBrowserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="PathBrowserControl.Designer.cs">
+      <DependentUpon>PathBrowserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="pDataType.cs" />
+    <Compile Include="PipelineInfo.cs" />
+    <Compile Include="Progress.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Progress.designer.cs">
+      <DependentUpon>Progress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ProgressValidation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgressValidation.Designer.cs">
+      <DependentUpon>ProgressValidation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="ScriptParameter.cs" />
+    <Compile Include="ScriptParser.cs" />
+    <Compile Include="ShapesObject.cs" />
+    <Compile Include="StringDataType.cs" />
+    <Compile Include="StrUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="StrUserControl.Designer.cs">
+      <DependentUpon>StrUserControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Validation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Validation.designer.cs">
+      <DependentUpon>Validation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="WindowHandle.cs" />
+    <EmbeddedResource Include="ConverterForm.resx">
+      <DependentUpon>ConverterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\Labels.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DesignForm.resx">
+      <DependentUpon>DesignForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DaisyConverterLib\DaisyConverterLib.csproj">
+      <Project>{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}</Project>
+      <Name>DaisyConverterLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Fidility.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>Fidility.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Images\help.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="InfoBox.resx">
+      <DependentUpon>InfoBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Images\speaker.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Images\ABBR.png" />
+    <EmbeddedResource Include="resources\Images\ABBR2.png" />
+    <EmbeddedResource Include="resources\Images\ACR.png" />
+    <EmbeddedResource Include="resources\Images\ACR2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Images\abbr1.gif" />
+    <EmbeddedResource Include="resources\Images\abbr2.gif" />
+    <EmbeddedResource Include="resources\Images\acr1.gif" />
+    <EmbeddedResource Include="resources\Images\acr2.gif" />
+    <EmbeddedResource Include="resources\Images\help.gif" />
+    <EmbeddedResource Include="resources\Images\speaker.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="About.resx">
+      <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSubValidation.resx">
+      <DependentUpon>MasterSubValidation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultipleSub.resx">
+      <DependentUpon>MultipleSub.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Progress.resx">
+      <DependentUpon>Progress.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\Images\DaisyLogo.png" />
+    <EmbeddedResource Include="Validation.resx">
+      <DependentUpon>Validation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\dtbook-2005-3.dtd" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Shematron.xsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isoamsa.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isoamsb.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isoamsc.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isoamsn.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isoamso.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isoamsr.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isobox.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isocyr1.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isocyr2.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isodia.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isogrk3.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isolat1.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isolat2.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isomfrk.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isomopf.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isomscr.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isonum.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isopub.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\isotech.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\mathml2-qname-1.mod" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\mathml2.DTD" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\MATHML\mmlalias.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ProgressValidation.resx">
+      <DependentUpon>ProgressValidation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\MATHML\mmlextra.ent" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Images\import.png" />
+    <EmbeddedResource Include="resources\Images\subfolder.png" />
+    <EmbeddedResource Include="resources\Images\validate.png" />
+    <EmbeddedResource Include="resources\Images\version.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="BoolControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>BoolControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnumControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EnumControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathBrowserControl.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>PathBrowserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <SubType>Designer</SubType>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Sonata.DaisyConverter.DaisyConverterLib.Properties</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\Images\import.gif" />
+    <EmbeddedResource Include="resources\Images\subfolder.gif" />
+    <EmbeddedResource Include="resources\Images\validate.gif" />
+    <EmbeddedResource Include="resources\Images\version.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DAISY Settings.resx">
+      <DependentUpon>DAISY Settings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="IntUserControl.resx">
+      <DependentUpon>IntUserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\Images\Footnotes.gif" />
+    <EmbeddedResource Include="resources\Images\footnotes.png" />
+    <EmbeddedResource Include="StrUserControl.resx">
+      <DependentUpon>StrUserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DaisyTranslatorPhaseTwo.snk" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Initialize.resx">
+      <DependentUpon>Initialize.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Images\Multiplexml.gif" />
+    <EmbeddedResource Include="resources\Images\Multiplexml.png" />
+    <EmbeddedResource Include="resources\Images\Singlexml.gif" />
+    <EmbeddedResource Include="resources\Images\Singlexml.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Images\gear.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\Images\gear.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="About.ja-JP.resx">
+      <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="About.ru-RU.resx">
+      <DependentUpon>About.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CleanOutputDirDlg.ja-JP.resx">
+      <DependentUpon>CleanOutputDirDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CleanOutputDirDlg.resx">
+      <DependentUpon>CleanOutputDirDlg.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ConverterForm.ja-JP.resx">
+      <DependentUpon>ConverterForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DAISY Settings.ja-JP.resx">
+      <DependentUpon>DAISY Settings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DAISY Settings.ru-RU.resx">
+      <DependentUpon>DAISY Settings.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DesignForm.ja-JP.resx">
+      <DependentUpon>DesignForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnumControl.ja-JP.resx">
+      <DependentUpon>EnumControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fidility.ja-JP.resx">
+      <DependentUpon>Fidility.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Fidility.ru-RU.resx">
+      <DependentUpon>Fidility.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfoBox.ja-JP.resx">
+      <DependentUpon>InfoBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InfoBox.ru-RU.resx">
+      <DependentUpon>InfoBox.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Initialize.ja-JP.resx">
+      <DependentUpon>Initialize.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Initialize.ru-RU.resx">
+      <DependentUpon>Initialize.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MasterSubValidation.ja-JP.resx">
+      <DependentUpon>MasterSubValidation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MultipleSub.ja-JP.resx">
+      <DependentUpon>MultipleSub.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PathBrowserControl.ja-JP.resx">
+      <DependentUpon>PathBrowserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Progress.ja-JP.resx">
+      <DependentUpon>Progress.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Progress.ru-RU.resx">
+      <DependentUpon>Progress.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressValidation.ja-JP.resx">
+      <DependentUpon>ProgressValidation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgressValidation.ru-RU.resx">
+      <DependentUpon>ProgressValidation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\Images\language.gif" />
+    <EmbeddedResource Include="resources\Images\Language.png" />
+    <EmbeddedResource Include="StrUserControl.ja-JP.resx">
+      <DependentUpon>StrUserControl.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Validation.ja-JP.resx">
+      <DependentUpon>Validation.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

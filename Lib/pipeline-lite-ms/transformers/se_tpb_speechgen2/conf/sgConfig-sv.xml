@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sgConfig>
+
+	<absoluteSynch>
+		<item>pagenum</item>
+		<item>noteref</item>
+		<item>annoref</item>
+		<item>linenum</item>
+	</absoluteSynch>
+	
+	<containsSynch>
+		<item>sent</item>
+	</containsSynch>
+	
+	<announceAttributes>
+		<item id="before" uri="http://www.daisy.org/ns/pipeline/annon" prefix="annon" local="before"/>
+		<item id="after" uri="http://www.daisy.org/ns/pipeline/annon" prefix="annon" local="after"/>
+	</announceAttributes>
+	
+	<mergeAudio>
+		<item>h1</item>
+		<item>h2</item>
+		<item>h3</item>
+		<item>h4</item>
+		<item>h5</item>
+		<item>h6</item>
+		<item>level/hd</item>
+	</mergeAudio>
+	
+	<silence>
+		<afterLast>2000</afterLast>
+		<afterFirst>800</afterFirst>
+		<beforeAnnouncement>300</beforeAnnouncement>
+		<afterAnnouncement>300</afterAnnouncement>
+		<afterRegularPhrase>700</afterRegularPhrase>
+	</silence>
+	
+</sgConfig>

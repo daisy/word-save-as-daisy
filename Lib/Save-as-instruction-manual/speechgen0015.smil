@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE smil
+  PUBLIC "-//NISO//DTD dtbsmil 2005-2//EN" "http://www.daisy.org/z3986/2005/dtbsmil-2005-2.dtd">
+<smil xmlns="http://www.w3.org/2001/SMIL20/">
+	  <head>
+		    <meta content="AUTO-UID-4814644028218017414" name="dtb:uid"/>
+		    <meta content="TPB Narrator" name="dtb:generator"/>
+		    <meta content="0:21:50.918" name="dtb:totalElapsedTime"/>
+		    <customAttributes>
+		       <customTest defaultState="false" id="pagenum" override="visible"/>
+      </customAttributes>
+	  </head>
+	  <body>
+		    <seq dur="0:00:40.322" fill="remove" id="mseq">
+		       <par id="tcp296">
+            <text id="text296"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb268"/>
+            <audio clipBegin="0:00:00" clipEnd="0:00:07.628" src="speechgen0015.mp3"/>
+         </par>
+         <par id="tcp297">
+            <text id="text297"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb269"/>
+            <audio clipBegin="0:00:07.628" clipEnd="0:00:16.675" src="speechgen0015.mp3"/>
+         </par>
+         <par id="tcp298">
+            <text id="text298"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb270"/>
+            <audio clipBegin="0:00:16.675" clipEnd="0:00:29.421" src="speechgen0015.mp3"/>
+         </par>
+         <par id="tcp299">
+            <text id="text299"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb271"/>
+            <audio clipBegin="0:00:29.421" clipEnd="0:00:38.763" src="speechgen0015.mp3"/>
+         </par>
+         <par customTest="pagenum" id="tcp300">
+            <text id="text300"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#page26"/>
+            <audio clipBegin="0:00:38.763" clipEnd="0:00:40.322" src="speechgen0015.mp3"/>
+         </par>
+      </seq>
+	  </body>
+</smil>

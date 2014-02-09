@@ -1,0 +1,14 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\CLSID\{0BE35203-8F91-11CE-9DE3-00AA004BB851}\InprocServer32]
+"Class"="stdole.StdFontClass"
+"Assembly"="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{0BE35204-8F91-11CE-9DE3-00AA004BB851}\InprocServer32]
+"Class"="stdole.StdPictureClass"
+"Assembly"="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\TypeLib\{00020430-0000-0000-C000-000000000046}\2.0]
+"PrimaryInteropAssemblyName"="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"

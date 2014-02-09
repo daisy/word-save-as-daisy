@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE ncx
+  PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en-US">
+	  <head>
+		    <meta content="AUTO-UID-4814644028218017414" name="dtb:uid"/>
+		    <meta content="3" name="dtb:depth"/>
+		
+		    <meta content="TPB Narrator" name="dtb:generator"/>
+		    <meta content="46" name="dtb:totalPageCount"/>
+		    <meta content="46" name="dtb:maxPageNumber"/>
+	     <smilCustomTest bookStruct="PAGE_NUMBER" defaultState="false" id="pagenum" override="visible"/>
+   </head>
+  
+	  <docTitle>
+	     <text>Open XML to DAISY XML Translator Instructions Guide</text>
+      <audio clipBegin="0:00:00" clipEnd="0:00:05.156" src="speechgen0001.mp3"/>
+   </docTitle>
+  
+	  <docAuthor>
+	     <text>dheeraj.k</text>
+      <audio clipBegin="0:00:05.156" clipEnd="0:00:08.178" src="speechgen0001.mp3"/>
+   </docAuthor>
+	
+	  <navMap id="navMap">
+      <navPoint class="h1" id="ncx-3" playOrder="3">
+         <navLabel>
+            <text>1 Introduction
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:04.223" src="speechgen0002.mp3"/>
+         </navLabel>
+         <content src="speechgen0002.smil#tcp9"/>
+         <navPoint class="h2" id="ncx-4" playOrder="4">
+            <navLabel>
+               <text>1.1 Prerequisites For Installing The Open XML to DAISY XML Translator
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:08.902" src="speechgen0003.mp3"/>
+            </navLabel>
+            <content src="speechgen0003.smil#tcp22"/>
+         </navPoint>
+      </navPoint>
+      <navPoint class="h1" id="ncx-6" playOrder="6">
+         <navLabel>
+            <text>2 Features Provided 
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:04.476" src="speechgen0004.mp3"/>
+         </navLabel>
+         <content src="speechgen0004.smil#tcp32"/>
+      </navPoint>
+      <navPoint class="h1" id="ncx-8" playOrder="8">
+         <navLabel>
+            <text>3 Do’s/Don’ts and FYI’s
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:06.404" src="speechgen0005.mp3"/>
+         </navLabel>
+         <content src="speechgen0005.smil#tcp64"/>
+      </navPoint>
+      <navPoint class="h1" id="ncx-10" playOrder="10">
+         <navLabel>
+            <text>4   Installing The Add-in
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:04.814" src="speechgen0006.mp3"/>
+         </navLabel>
+         <content src="speechgen0006.smil#tcp67"/>
+         <navPoint class="h2" id="ncx-11" playOrder="11">
+            <navLabel>
+               <text>4.1 Installing The Add-in from DaisyAddinForWordSetup.exe
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:07.922" src="speechgen0007.mp3"/>
+            </navLabel>
+            <content src="speechgen0007.smil#tcp70"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-17" playOrder="17">
+            <navLabel>
+               <text>4.2 Confirmation Procedure after Installation is complete and quickstart guide
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:08.540" src="speechgen0008.mp3"/>
+            </navLabel>
+            <content src="speechgen0008.smil#tcp102"/>
+         </navPoint>
+      </navPoint>
+      <navPoint class="h1" id="ncx-19" playOrder="19">
+         <navLabel>
+            <text>5 Save As DAISY Function
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:05.012" src="speechgen0009.mp3"/>
+         </navLabel>
+         <content src="speechgen0009.smil#tcp115"/>
+         <navPoint class="h2" id="ncx-20" playOrder="20">
+            <navLabel>
+               <text>  Word 2007
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:04.638" src="speechgen0010.mp3"/>
+            </navLabel>
+            <content src="speechgen0010.smil#tcp117"/>
+            <navPoint class="h3" id="ncx-22" playOrder="22">
+               <navLabel>
+                  <text>  Word 2010
+</text>
+                  <audio clipBegin="0:00:00" clipEnd="0:00:04.432" src="speechgen0011.mp3"/>
+               </navLabel>
+               <content src="speechgen0011.smil#tcp123"/>
+            </navPoint>
+         </navPoint>
+         <navPoint class="h2" id="ncx-24" playOrder="24">
+            <navLabel>
+               <text>5.1 Converting Word Documents In to DAISY XML format
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:07.749" src="speechgen0012.mp3"/>
+            </navLabel>
+            <content src="speechgen0012.smil#tcp135"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-30" playOrder="30">
+            <navLabel>
+               <text>5.2 Converting Word Documents In to DAISY DTBook 
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:06.666" src="speechgen0013.mp3"/>
+            </navLabel>
+            <content src="speechgen0013.smil#tcp180"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-36" playOrder="36">
+            <navLabel>
+               <text>5.3 Converting Multiple Documents 
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:06.170" src="speechgen0014.mp3"/>
+            </navLabel>
+            <content src="speechgen0014.smil#tcp257"/>
+         </navPoint>
+      </navPoint>
+      <navPoint class="h1" id="ncx-39" playOrder="39">
+         <navLabel>
+            <text>6 Save As DAISY FEATURES WORD2003/wordXP
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:07.628" src="speechgen0015.mp3"/>
+         </navLabel>
+         <content src="speechgen0015.smil#tcp296"/>
+      </navPoint>
+      <navPoint class="h1" id="ncx-41" playOrder="41">
+         <navLabel>
+            <text>7 Accessibility Ribbon
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:04.744" src="speechgen0016.mp3"/>
+         </navLabel>
+         <content src="speechgen0016.smil#tcp301"/>
+         <navPoint class="h2" id="ncx-43" playOrder="43">
+            <navLabel>
+               <text>7.1 How to use Accessibility ribbon
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:06.196" src="speechgen0017.mp3"/>
+            </navLabel>
+            <content src="speechgen0017.smil#tcp317"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-46" playOrder="46">
+            <navLabel>
+               <text>7.2 Importing Custom Styles:
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:05.954" src="speechgen0018.mp3"/>
+            </navLabel>
+            <content src="speechgen0018.smil#tcp357"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-48" playOrder="48">
+            <navLabel>
+               <text>7.3 Translator Help
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:05.388" src="speechgen0019.mp3"/>
+            </navLabel>
+            <content src="speechgen0019.smil#tcp373"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-50" playOrder="50">
+            <navLabel>
+               <text>7.4 Helper Wizard - Validating the document against DAISY validation rules
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:08.896" src="speechgen0020.mp3"/>
+            </navLabel>
+            <content src="speechgen0020.smil#tcp380"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-52" playOrder="52">
+            <navLabel>
+               <text>7.5 Language Detection
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:05.434" src="speechgen0021.mp3"/>
+            </navLabel>
+            <content src="speechgen0021.smil#tcp399"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-53" playOrder="53">
+            <navLabel>
+               <text>7.6 Daisy Settings
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:05.401" src="speechgen0022.mp3"/>
+            </navLabel>
+            <content src="speechgen0022.smil#tcp409"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-56" playOrder="56">
+            <navLabel>
+               <text>7.7 Footnotes
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:04.883" src="speechgen0023.mp3"/>
+            </navLabel>
+            <content src="speechgen0023.smil#tcp423"/>
+         </navPoint>
+      </navPoint>
+      <navPoint class="h1" id="ncx-61" playOrder="61">
+         <navLabel>
+            <text>8 Text-to-Speech Configuration
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:05.436" src="speechgen0024.mp3"/>
+         </navLabel>
+         <content src="speechgen0024.smil#tcp451"/>
+      </navPoint>
+      <navPoint class="h1" id="ncx-63" playOrder="63">
+         <navLabel>
+            <text>9 Multiple Versions of Office
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:05.244" src="speechgen0025.mp3"/>
+         </navLabel>
+         <content src="speechgen0025.smil#tcp464"/>
+      </navPoint>
+      <navPoint class="h1" id="ncx-65" playOrder="65">
+         <navLabel>
+            <text>10 Command Line Utility
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:04.697" src="speechgen0026.mp3"/>
+         </navLabel>
+         <content src="speechgen0026.smil#tcp467"/>
+         <navPoint class="h2" id="ncx-66" playOrder="66">
+            <navLabel>
+               <text>10.1 Command line Usage
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:05.386" src="speechgen0027.mp3"/>
+            </navLabel>
+            <content src="speechgen0027.smil#tcp469"/>
+         </navPoint>
+      </navPoint>
+      <navPoint class="h1" id="ncx-68" playOrder="68">
+         <navLabel>
+            <text>11 Reader and Producer Software
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:05.425" src="speechgen0028.mp3"/>
+         </navLabel>
+         <content src="speechgen0028.smil#tcp497"/>
+      </navPoint>
+      <navPoint class="h1" id="ncx-70" playOrder="70">
+         <navLabel>
+            <text>12 Table of Short Cut Keys
+</text>
+            <audio clipBegin="0:00:00" clipEnd="0:00:05.239" src="speechgen0029.mp3"/>
+         </navLabel>
+         <content src="speechgen0029.smil#tcp510"/>
+         <navPoint class="h2" id="ncx-71" playOrder="71">
+            <navLabel>
+               <text>12.1        General shortcut keys:
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:05.736" src="speechgen0030.mp3"/>
+            </navLabel>
+            <content src="speechgen0030.smil#tcp511"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-72" playOrder="72">
+            <navLabel>
+               <text>12.2         Shortcut keys for DAISY XML (from Single docx) Form:
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:08.882" src="speechgen0031.mp3"/>
+            </navLabel>
+            <content src="speechgen0031.smil#tcp533"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-74" playOrder="74">
+            <navLabel>
+               <text>12.3 Shortcut keys for Full DAISY(from Single docx) Form
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:07.891" src="speechgen0032.mp3"/>
+            </navLabel>
+            <content src="speechgen0032.smil#tcp565"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-76" playOrder="76">
+            <navLabel>
+               <text>12.4 Shortcut keys for DAISY XML(from Multiple docx) Form
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:08.613" src="speechgen0033.mp3"/>
+            </navLabel>
+            <content src="speechgen0033.smil#tcp600"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-78" playOrder="78">
+            <navLabel>
+               <text>12.5 Shortcut keys for Full DAISY(from Multiple docx) Form
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:08.073" src="speechgen0034.mp3"/>
+            </navLabel>
+            <content src="speechgen0034.smil#tcp641"/>
+         </navPoint>
+         <navPoint class="h2" id="ncx-80" playOrder="80">
+            <navLabel>
+               <text>12.6 Shortcut keys for Abbreviations and Acronyms
+</text>
+               <audio clipBegin="0:00:00" clipEnd="0:00:07.154" src="speechgen0035.mp3"/>
+            </navLabel>
+            <content src="speechgen0035.smil#tcp688"/>
+         </navPoint>
+      </navPoint>
+   </navMap>
+	
+	  <pageList id="page">
+      <pageTarget class="pagenum" id="ncx-1" playOrder="1" type="normal" value="1">
+         <navLabel>
+            <text>1</text>
+            <audio clipBegin="0:00:08.178" clipEnd="0:00:09.071" src="speechgen0001.mp3"/>
+         </navLabel>
+         <content src="speechgen0001.smil#tcp3"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-2" playOrder="2" type="normal" value="2">
+         <navLabel>
+            <text>2</text>
+            <audio clipBegin="0:00:33.629" clipEnd="0:00:34.619" src="speechgen0001.mp3"/>
+         </navLabel>
+         <content src="speechgen0001.smil#tcp8"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-5" playOrder="5" type="normal" value="3">
+         <navLabel>
+            <text>3</text>
+            <audio clipBegin="0:01:07.648" clipEnd="0:01:08.744" src="speechgen0003.mp3"/>
+         </navLabel>
+         <content src="speechgen0003.smil#tcp31"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-7" playOrder="7" type="normal" value="4">
+         <navLabel>
+            <text>4</text>
+            <audio clipBegin="0:00:53.258" clipEnd="0:00:54.366" src="speechgen0004.mp3"/>
+         </navLabel>
+         <content src="speechgen0004.smil#tcp63"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-9" playOrder="9" type="normal" value="5">
+         <navLabel>
+            <text>5</text>
+            <audio clipBegin="0:00:08.430" clipEnd="0:00:09.591" src="speechgen0005.mp3"/>
+         </navLabel>
+         <content src="speechgen0005.smil#tcp66"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-12" playOrder="12" type="normal" value="6">
+         <navLabel>
+            <text>6</text>
+            <audio clipBegin="0:01:20.344" clipEnd="0:01:21.532" src="speechgen0007.mp3"/>
+         </navLabel>
+         <content src="speechgen0007.smil#tcp85"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-13" playOrder="13" type="normal" value="7">
+         <navLabel>
+            <text>7</text>
+            <audio clipBegin="0:01:37.026" clipEnd="0:01:38.157" src="speechgen0007.mp3"/>
+         </navLabel>
+         <content src="speechgen0007.smil#tcp89"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-14" playOrder="14" type="normal" value="8">
+         <navLabel>
+            <text>8</text>
+            <audio clipBegin="0:01:54.215" clipEnd="0:01:55.287" src="speechgen0007.mp3"/>
+         </navLabel>
+         <content src="speechgen0007.smil#tcp93"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-15" playOrder="15" type="normal" value="9">
+         <navLabel>
+            <text>9</text>
+            <audio clipBegin="0:02:14.430" clipEnd="0:02:15.480" src="speechgen0007.mp3"/>
+         </navLabel>
+         <content src="speechgen0007.smil#tcp97"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-16" playOrder="16" type="normal" value="10">
+         <navLabel>
+            <text>10</text>
+            <audio clipBegin="0:02:24.068" clipEnd="0:02:25.077" src="speechgen0007.mp3"/>
+         </navLabel>
+         <content src="speechgen0007.smil#tcp100"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-18" playOrder="18" type="normal" value="11">
+         <navLabel>
+            <text>11</text>
+            <audio clipBegin="0:00:49.989" clipEnd="0:00:51.044" src="speechgen0008.mp3"/>
+         </navLabel>
+         <content src="speechgen0008.smil#tcp114"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-21" playOrder="21" type="normal" value="12">
+         <navLabel>
+            <text>12</text>
+            <audio clipBegin="0:00:29.458" clipEnd="0:00:30.669" src="speechgen0010.mp3"/>
+         </navLabel>
+         <content src="speechgen0010.smil#tcp122"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-23" playOrder="23" type="normal" value="13">
+         <navLabel>
+            <text>13</text>
+            <audio clipBegin="0:01:07.842" clipEnd="0:01:09.129" src="speechgen0011.mp3"/>
+         </navLabel>
+         <content src="speechgen0011.smil#tcp132"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-25" playOrder="25" type="normal" value="14">
+         <navLabel>
+            <text>14</text>
+            <audio clipBegin="0:00:39.379" clipEnd="0:00:40.695" src="speechgen0012.mp3"/>
+         </navLabel>
+         <content src="speechgen0012.smil#tcp142"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-26" playOrder="26" type="normal" value="15">
+         <navLabel>
+            <text>15</text>
+            <audio clipBegin="0:01:24.351" clipEnd="0:01:25.656" src="speechgen0012.mp3"/>
+         </navLabel>
+         <content src="speechgen0012.smil#tcp149"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-27" playOrder="27" type="normal" value="16">
+         <navLabel>
+            <text>16</text>
+            <audio clipBegin="0:02:21.489" clipEnd="0:02:22.796" src="speechgen0012.mp3"/>
+         </navLabel>
+         <content src="speechgen0012.smil#tcp163"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-28" playOrder="28" type="normal" value="17">
+         <navLabel>
+            <text>17</text>
+            <audio clipBegin="0:02:42.330" clipEnd="0:02:43.643" src="speechgen0012.mp3"/>
+         </navLabel>
+         <content src="speechgen0012.smil#tcp170"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-29" playOrder="29" type="normal" value="18">
+         <navLabel>
+            <text>18</text>
+            <audio clipBegin="0:03:40.735" clipEnd="0:03:42.017" src="speechgen0012.mp3"/>
+         </navLabel>
+         <content src="speechgen0012.smil#tcp178"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-31" playOrder="31" type="normal" value="19">
+         <navLabel>
+            <text>19</text>
+            <audio clipBegin="0:00:27.297" clipEnd="0:00:28.678" src="speechgen0013.mp3"/>
+         </navLabel>
+         <content src="speechgen0013.smil#tcp185"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-32" playOrder="32" type="normal" value="20">
+         <navLabel>
+            <text>20</text>
+            <audio clipBegin="0:01:54.239" clipEnd="0:01:55.339" src="speechgen0013.mp3"/>
+         </navLabel>
+         <content src="speechgen0013.smil#tcp204"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-33" playOrder="33" type="normal" value="21">
+         <navLabel>
+            <text>21</text>
+            <audio clipBegin="0:03:42.922" clipEnd="0:03:44.382" src="speechgen0013.mp3"/>
+         </navLabel>
+         <content src="speechgen0013.smil#tcp234"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-34" playOrder="34" type="normal" value="22">
+         <navLabel>
+            <text>22</text>
+            <audio clipBegin="0:04:07.762" clipEnd="0:04:09.092" src="speechgen0013.mp3"/>
+         </navLabel>
+         <content src="speechgen0013.smil#tcp239"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-35" playOrder="35" type="normal" value="23">
+         <navLabel>
+            <text>23</text>
+            <audio clipBegin="0:05:46.785" clipEnd="0:05:48.138" src="speechgen0013.mp3"/>
+         </navLabel>
+         <content src="speechgen0013.smil#tcp254"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-37" playOrder="37" type="normal" value="24">
+         <navLabel>
+            <text>24</text>
+            <audio clipBegin="0:00:43.079" clipEnd="0:00:44.619" src="speechgen0014.mp3"/>
+         </navLabel>
+         <content src="speechgen0014.smil#tcp264"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-38" playOrder="38" type="normal" value="25">
+         <navLabel>
+            <text>25</text>
+            <audio clipBegin="0:02:23.719" clipEnd="0:02:25.240" src="speechgen0014.mp3"/>
+         </navLabel>
+         <content src="speechgen0014.smil#tcp295"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-40" playOrder="40" type="normal" value="26">
+         <navLabel>
+            <text>26</text>
+            <audio clipBegin="0:00:38.763" clipEnd="0:00:40.322" src="speechgen0015.mp3"/>
+         </navLabel>
+         <content src="speechgen0015.smil#tcp300"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-42" playOrder="42" type="normal" value="27">
+         <navLabel>
+            <text>27</text>
+            <audio clipBegin="0:01:51.192" clipEnd="0:01:52.693" src="speechgen0016.mp3"/>
+         </navLabel>
+         <content src="speechgen0016.smil#tcp316"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-44" playOrder="44" type="normal" value="28">
+         <navLabel>
+            <text>28</text>
+            <audio clipBegin="0:01:40.881" clipEnd="0:01:42.257" src="speechgen0017.mp3"/>
+         </navLabel>
+         <content src="speechgen0017.smil#tcp340"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-45" playOrder="45" type="normal" value="29">
+         <navLabel>
+            <text>29</text>
+            <audio clipBegin="0:02:54.539" clipEnd="0:02:56.001" src="speechgen0017.mp3"/>
+         </navLabel>
+         <content src="speechgen0017.smil#tcp353"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-47" playOrder="47" type="normal" value="30">
+         <navLabel>
+            <text>30</text>
+            <audio clipBegin="0:01:11.359" clipEnd="0:01:12.449" src="speechgen0018.mp3"/>
+         </navLabel>
+         <content src="speechgen0018.smil#tcp369"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-49" playOrder="49" type="normal" value="31">
+         <navLabel>
+            <text>31</text>
+            <audio clipBegin="0:00:13.478" clipEnd="0:00:14.850" src="speechgen0019.mp3"/>
+         </navLabel>
+         <content src="speechgen0019.smil#tcp377"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-51" playOrder="51" type="normal" value="32">
+         <navLabel>
+            <text>32</text>
+            <audio clipBegin="0:01:22.380" clipEnd="0:01:23.675" src="speechgen0020.mp3"/>
+         </navLabel>
+         <content src="speechgen0020.smil#tcp394"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-54" playOrder="54" type="normal" value="33">
+         <navLabel>
+            <text>33</text>
+            <audio clipBegin="0:00:21.206" clipEnd="0:00:22.525" src="speechgen0022.mp3"/>
+         </navLabel>
+         <content src="speechgen0022.smil#tcp413"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-55" playOrder="55" type="normal" value="34">
+         <navLabel>
+            <text>34</text>
+            <audio clipBegin="0:01:00.538" clipEnd="0:01:03.137" src="speechgen0022.mp3"/>
+         </navLabel>
+         <content src="speechgen0022.smil#tcp419"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-57" playOrder="57" type="normal" value="35">
+         <navLabel>
+            <text>35</text>
+            <audio clipBegin="0:00:57.471" clipEnd="0:00:58.957" src="speechgen0023.mp3"/>
+         </navLabel>
+         <content src="speechgen0023.smil#tcp435"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-58" playOrder="58" type="normal" value="36">
+         <navLabel>
+            <text>36</text>
+            <audio clipBegin="0:01:25.132" clipEnd="0:01:26.654" src="speechgen0023.mp3"/>
+         </navLabel>
+         <content src="speechgen0023.smil#tcp442"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-59" playOrder="59" type="normal" value="37">
+         <navLabel>
+            <text>37</text>
+            <audio clipBegin="0:01:43.926" clipEnd="0:01:45.391" src="speechgen0023.mp3"/>
+         </navLabel>
+         <content src="speechgen0023.smil#tcp446"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-60" playOrder="60" type="normal" value="38">
+         <navLabel>
+            <text>38</text>
+            <audio clipBegin="0:01:54.092" clipEnd="0:01:55.473" src="speechgen0023.mp3"/>
+         </navLabel>
+         <content src="speechgen0023.smil#tcp450"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-62" playOrder="62" type="normal" value="39">
+         <navLabel>
+            <text>39</text>
+            <audio clipBegin="0:01:15.357" clipEnd="0:01:16.783" src="speechgen0024.mp3"/>
+         </navLabel>
+         <content src="speechgen0024.smil#tcp463"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-64" playOrder="64" type="normal" value="40">
+         <navLabel>
+            <text>40</text>
+            <audio clipBegin="0:00:19.114" clipEnd="0:00:20.297" src="speechgen0025.mp3"/>
+         </navLabel>
+         <content src="speechgen0025.smil#tcp466"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-67" playOrder="67" type="normal" value="41">
+         <navLabel>
+            <text>41</text>
+            <audio clipBegin="0:01:57.897" clipEnd="0:01:59.390" src="speechgen0027.mp3"/>
+         </navLabel>
+         <content src="speechgen0027.smil#tcp496"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-69" playOrder="69" type="normal" value="42">
+         <navLabel>
+            <text>42</text>
+            <audio clipBegin="0:01:10.955" clipEnd="0:01:12.392" src="speechgen0028.mp3"/>
+         </navLabel>
+         <content src="speechgen0028.smil#tcp509"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-73" playOrder="73" type="normal" value="43">
+         <navLabel>
+            <text>43</text>
+            <audio clipBegin="0:00:08.882" clipEnd="0:00:10.265" src="speechgen0031.mp3"/>
+         </navLabel>
+         <content src="speechgen0031.smil#tcp534"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-75" playOrder="75" type="normal" value="44">
+         <navLabel>
+            <text>44</text>
+            <audio clipBegin="0:00:50.766" clipEnd="0:00:52.292" src="speechgen0032.mp3"/>
+         </navLabel>
+         <content src="speechgen0032.smil#tcp599"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-77" playOrder="77" type="normal" value="45">
+         <navLabel>
+            <text>45</text>
+            <audio clipBegin="0:00:59.098" clipEnd="0:01:00.703" src="speechgen0033.mp3"/>
+         </navLabel>
+         <content src="speechgen0033.smil#tcp640"/>
+      </pageTarget>
+      <pageTarget class="pagenum" id="ncx-79" playOrder="79" type="normal" value="46">
+         <navLabel>
+            <text>46</text>
+            <audio clipBegin="0:01:06.101" clipEnd="0:01:07.680" src="speechgen0034.mp3"/>
+         </navLabel>
+         <content src="speechgen0034.smil#tcp687"/>
+      </pageTarget>
+   </pageList>
+  
+</ncx>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE smil PUBLIC "-//NISO//DTD dtbsmil 2005-2//EN" "http://www.daisy.org/z3986/2005/dtbsmil-2005-2.dtd">
+<smil xmlns="http://www.w3.org/2001/SMIL20/">
+	<head>
+		<meta name="dtb:uid" content=""/>
+		<meta name="dtb:generator" content="TPB Narrator"/>
+		<meta name="dtb:totalElapsedTime" content="00:00:00.000"/>
+		<customAttributes>
+		</customAttributes>
+	</head>
+	<body>
+		<seq dur="00:00:00.000" id="mseq">
+		</seq>
+	</body>
+</smil>

@@ -1,0 +1,9 @@
+; DaisyWord2007Shim.def : Declares the module parameters.
+
+LIBRARY      "DaisyWord2007Shim.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

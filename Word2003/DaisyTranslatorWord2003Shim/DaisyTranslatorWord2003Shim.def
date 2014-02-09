@@ -1,0 +1,9 @@
+; DaisyTranslatorWord2003Shim.def : Declares the module parameters.
+
+LIBRARY      "DaisyTranslatorWord2003Shim.DLL"
+
+EXPORTS
+	DllCanUnloadNow		PRIVATE
+	DllGetClassObject	PRIVATE
+	DllRegisterServer	PRIVATE
+	DllUnregisterServer	PRIVATE

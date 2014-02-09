@@ -1,0 +1,37 @@
+<transformer version="1.1">
+	<name>Pretty Printer</name>
+	<description>Pretty print XML members of filesets</description>
+	<classname>int_daisy_prettyPrinter.PrettyPrinter</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/int_daisy_prettyPrinter.html"/>
+		
+	<parameters>
+	
+		<parameter required="true" direction="in" type="application/xml">
+			<name>input</name>
+			<description>Input fileset manifest file (NCC, OPF, etc)</description>
+			<example>D:/path/to/inputFile.xml</example>
+		</parameter>
+
+		<parameter required="true" direction="out" type="application/x-filesystemDirectory">
+			<name>output</name>			
+			<description>The output directory, may be same as input dir</description>
+			<example>D:/path/to/outputDir/</example>
+		</parameter>
+
+		<parameter required="false"  type="enum">
+			<name>linebreak</name>			
+			<description>Type of linebreak to use</description>
+			<example>DOS</example>
+			<enum>
+				<value>DOS</value>
+				<value>UNIX</value>
+			</enum>
+			<default>DOS</default>
+		</parameter>
+		
+	</parameters>	
+
+</transformer>

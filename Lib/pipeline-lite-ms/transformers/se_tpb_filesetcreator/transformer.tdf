@@ -1,0 +1,70 @@
+<transformer version="1.1">
+	<name>Fileset Creator</name>
+	<description>
+	Creates a z39.86-2005 fileset given input 
+	such as the output from se_tpb_speechgenerator.
+	</description>
+	<classname>se_tpb_filesetcreator.FileSetCreator</classname>
+	<license>LGPL</license>
+	<author>Martin Blomberg</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/se_tpb_filesetcreator.html"/>
+	
+	<parameters>
+
+		<parameter required="true" direction="in" type="application/x-filesystemDirectory">
+			<name>outputDirectory</name>
+			<description>file://path/to/directory/</description>
+			<example>c:/books/</example>
+		</parameter>
+
+		<parameter required="true" direction="in" type="application/xml">
+			<name>manuscriptFilename</name>
+			<description>file://path/to/file.xml</description>
+			<example>c:/books/manuscript.xml</example>
+		</parameter>
+		
+		<parameter required="true" direction="in" type="application/x-dtbook+xml">
+			<name>outputDTBFilename</name>
+			<description>filename.xml</description>
+			<example>finishedDTB.xml</example>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="application/x-dtbresource+xml">
+			<name>resourceFilename</name>
+			<description>/path/to/file.res</description>
+			<example>${transformer_dir}/resource/tpbnarrator.res</example>
+			<default>${transformer_dir}/resource/tpbnarrator.res</default>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="application/smil">
+			<name>smilTemplateFilename</name>
+			<description>/path/to/file.xml</description>
+			<example>${transformer_dir}/templates/smil.template.xml</example>
+			<default>${transformer_dir}/templates/smil.template.xml</default>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="application/x-dtbncx+xml">
+			<name>ncxTemplateFilename</name>
+			<description>/path/to/file.xml</description>
+			<example>${transformer_dir}/templates/ncx.template.xml</example>
+			<default>${transformer_dir}/templates/ncx.template.xml</default>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="text/xml">
+			<name>opfTemplateFilename</name>
+			<description>/path/to/file.xml</description>
+			<example>${transformer_dir}/templates/opf.template.xml</example>
+			<default>${transformer_dir}/templates/opf.template.xml</default>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="text/xml">
+			<name>fscConfigFilename</name>
+			<description>/path/to/file.xml</description>
+			<example>${transformer_dir}/config/fileSetCreatorConfig.xml</example>
+			<default>${transformer_dir}/config/fileSetCreatorConfig.xml</default>
+		</parameter>
+		
+	</parameters>
+
+</transformer>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE smil
+  PUBLIC "-//NISO//DTD dtbsmil 2005-2//EN" "http://www.daisy.org/z3986/2005/dtbsmil-2005-2.dtd">
+<smil xmlns="http://www.w3.org/2001/SMIL20/">
+	  <head>
+		    <meta content="AUTO-UID-4814644028218017414" name="dtb:uid"/>
+		    <meta content="TPB Narrator" name="dtb:generator"/>
+		    <meta content="0:00:34.619" name="dtb:totalElapsedTime"/>
+		
+	  </head>
+	  <body>
+		    <seq dur="0:01:02.913" fill="remove" id="mseq">
+		       <par id="tcp9">
+            <text id="text9"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb11"/>
+            <audio clipBegin="0:00:00" clipEnd="0:00:04.223" src="speechgen0002.mp3"/>
+         </par>
+         <par id="tcp10">
+            <text id="text10"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb12"/>
+            <audio clipBegin="0:00:04.223" clipEnd="0:00:21.876" src="speechgen0002.mp3"/>
+         </par>
+         <par id="tcp11">
+            <text id="text11"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb13"/>
+            <audio clipBegin="0:00:21.876" clipEnd="0:00:29.695" src="speechgen0002.mp3"/>
+         </par>
+         <par id="tcp12">
+            <text id="text12"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb14"/>
+            <audio clipBegin="0:00:29.695" clipEnd="0:00:32.640" src="speechgen0002.mp3"/>
+         </par>
+         <par id="tcp13">
+            <text id="text13"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb15"/>
+            <audio clipBegin="0:00:32.640" clipEnd="0:00:36.353" src="speechgen0002.mp3"/>
+         </par>
+         <seq class="list" end="DTBuserEscape;tcp21.end" fill="remove" id="tcs5">
+            <par id="tcp14">
+               <text id="text14"
+                     src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb17"/>
+               <audio clipBegin="0:00:36.353" clipEnd="0:00:43.047" src="speechgen0002.mp3"/>
+            </par>
+            <par id="tcp15">
+               <text id="text15"
+                     src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb18"/>
+               <audio clipBegin="0:00:43.047" clipEnd="0:00:45.935" src="speechgen0002.mp3"/>
+            </par>
+            <par id="tcp16">
+               <text id="text16"
+                     src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb19"/>
+               <audio clipBegin="0:00:45.935" clipEnd="0:00:51.041" src="speechgen0002.mp3"/>
+            </par>
+            <par id="tcp17">
+               <text id="text17"
+                     src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb20"/>
+               <audio clipBegin="0:00:51.041" clipEnd="0:00:56.022" src="speechgen0002.mp3"/>
+            </par>
+            <par id="tcp18">
+               <text id="text18"
+                     src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb21"/>
+               <audio clipBegin="0:00:56.022" clipEnd="0:00:58.059" src="speechgen0002.mp3"/>
+            </par>
+            <par id="tcp19">
+               <text id="text19"
+                     src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb22"/>
+               <audio clipBegin="0:00:58.059" clipEnd="0:00:59.688" src="speechgen0002.mp3"/>
+            </par>
+            <par id="tcp20">
+               <text id="text20"
+                     src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb23"/>
+               <audio clipBegin="0:00:59.688" clipEnd="0:01:01.262" src="speechgen0002.mp3"/>
+            </par>
+            <par id="tcp21">
+               <text id="text21"
+                     src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb24"/>
+               <audio clipBegin="0:01:01.262" clipEnd="0:01:02.913" src="speechgen0002.mp3"/>
+            </par>
+         </seq>
+      </seq>
+	  </body>
+</smil>

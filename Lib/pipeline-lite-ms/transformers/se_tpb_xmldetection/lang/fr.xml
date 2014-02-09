@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language xml:lang="fr">
+	<!--
+	*
+	*	INITIALES LUES
+	*
+	-->
+	<initialism before=".*[\s(]|^" after="([\-,\.\s:;?!)].*)|$" suffix="s|:s">
+	    <key>
+			<name>ACP</name>
+			<expansion>Afrique, Caraîbes et Pacifique</expansion>
+		</key>
+		<key>
+			<name>BCE</name>
+			<expansion>Banque Centrale Européenne</expansion>
+		</key>
+		<key>
+			<name>BERD</name>
+			<expansion>Banque Européenne pour la Reconstruction et le Dévelopement</expansion>
+		</key>
+		<key>
+			<name>CE</name>
+			<expansion>Communauté Européenne</expansion>
+		</key>
+		<key>
+			<name>CECA</name>
+			<expansion>Communauté Européenne du Charbon et de l'Acier</expansion>
+		</key>
+		<key>
+			<name>CEE</name>
+			<expansion>Communauté économique Européenne</expansion>
+		</key>
+		<key>
+			<name>CIG</name>
+			<expansion>Conférence Intergouvernementale</expansion>
+		</key>
+		<key>
+			<name>DG</name>
+			<expansion>Direction Générale</expansion>
+		</key>
+		<key>
+			<name>ECOFIN</name>
+			<expansion>Conseil des Ministres de l'économie et des finances</expansion>
+		</key>
+		<key>
+			<name>EDF</name>
+			<expansion>électricité de france</expansion>
+		</key>
+		<key>
+			<name>FMI</name>
+			<expansion>Fonds Monétaire International</expansion>
+		</key>
+		<key>
+			<name>FSE</name>
+			<expansion>Fonds Social Européen</expansion>
+		</key>
+		<key>
+			<name>G7</name>
+			<expansion>Groupe des sept</expansion>
+		</key>
+		<key>
+			<name>G8</name>
+			<expansion>Groupe des huit</expansion>
+		</key>
+		<key>
+			<name>GATT</name>
+			<expansion>General Agreement on Tariffs and Trade</expansion>
+		</key>
+		<key>
+			<name>JO</name>
+			<expansion>Journal Officiel</expansion>
+		</key>
+		<key>
+			<name>OCDE</name>
+			<expansion>Organisation pour la Coopération et le Développement économique</expansion>
+		</key>
+		<key>
+			<name>OMC</name>
+			<expansion>Organisation Mondiale du Commerce</expansion>
+		</key>
+		<key>
+			<name>ONG</name>
+			<expansion>Organisation Non Gouvernementale</expansion>
+		</key>
+		<key>
+			<name>ONU</name>
+			<expansion>Organisation des Nations Unies</expansion>
+		</key>
+		<key>
+			<name>OSCE</name>
+			<expansion>Organisation pour la Sécurité et la Co-opération en Europe</expansion>
+		</key>
+		<key>
+			<name>OTAN</name>
+			<expansion>Organisation du Traité de l'Atlantique Nord</expansion>
+		</key>
+		<key>
+			<name>PAC</name>
+			<expansion>Politique Agricole commune</expansion>
+		</key>
+		<key>
+			<name>PECO</name>
+			<expansion>Pays d'Europe Centrale et Orientale</expansion>
+		</key>
+		<key>
+			<name>PIB</name>
+			<expansion>Produit Intérieur Brut</expansion>
+		</key>
+		<key>
+			<name>PME</name>
+			<expansion>Petites et Moyennes Entreprises</expansion>
+		</key>
+		<key>
+			<name>PNB</name>
+			<expansion>Produit National Brut</expansion>
+		</key>
+		<key>
+			<name>PS</name>
+			<expansion>Parti Socialiste</expansion>
+		</key>
+		<key>
+			<name>RNIB</name>
+			<expansion>Royal National Institute of the Blind</expansion>
+		</key>
+		<key>
+			<name>TVA</name>
+			<expansion>Taxe sur la Valeur Ajoutée</expansion>
+		</key>
+		<key>
+			<name>UE</name>
+			<expansion>Union Européenne</expansion>
+		</key>
+		<key>
+			<name>USA</name>
+			<expansion>United States of America</expansion>
+		</key>
+	</initialism>
+
+	<!--
+	*
+	*	A C R O N Y M S
+	*
+	-->
+	<acronym before=".*[\s(]|^" after="([\-,\.\s:;?!)].*)|$" suffix="s|:s">				
+		<key>
+			<name>DAISY</name>
+			<expansion id="daisyBook">Digital Accessible Information System</expansion>
+		</key>
+	</acronym>
+	<!--
+	*
+	*	ABBREVIATIONS
+	*
+	-->
+	<abbreviation before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$">
+		<key>
+			<name>etc</name>
+			<name>etc.</name>
+			<expansion>etcetera</expansion>
+		</key>
+		<key>
+			<name>QSLD</name>
+			<expansion>Qu'on se le dise</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">vs.</name>
+			<expansion>versus</expansion>
+		</key>
+	</abbreviation>
+	<!--
+	*
+	*	FIX
+	*
+	-->	
+	<fix before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$">
+		<item key="\d+-\p{L}+" value="num-word"/>
+		<item key="\d+(?: \d{3})+" value="num-with-space"/>
+	</fix>	
+</language>

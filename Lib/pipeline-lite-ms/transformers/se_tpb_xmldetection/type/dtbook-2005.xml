@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<elementInfo>
+
+	<expAttribute namespace="http://www.tpb.se/vnml" prefix="vnml" name="exp"/>
+
+	<sentenceElement namespace="http://www.daisy.org/z3986/2005/dtbook/" prefix="" name="sent"/>
+	
+	<wordElement namespace="http://www.daisy.org/z3986/2005/dtbook/" prefix="" name="w"/>
+
+	<abbrElement namespace="http://www.daisy.org/z3986/2005/dtbook/" prefix="" name="abbr" expandAttribute="title"/>
+	
+	<acronymElement namespace="http://www.daisy.org/z3986/2005/dtbook/" prefix="" name="acronym" expandAttribute="title">
+		<attribute name="pronounce" value="yes"/>
+	</acronymElement>
+	
+	<initialismElement namespace="http://www.daisy.org/z3986/2005/dtbook/" prefix="" name="acronym" expandAttribute="title">
+		<attribute name="pronounce" value="no"/>
+	</initialismElement>
+
+	<fixElement namespace="http://www.daisy.org/z3986/2005/dtbook/" prefix="" name="w" expandAttribute="class"/>
+	
+	<defaultPaths>
+		<path name="/dtbook/book"/>
+	</defaultPaths>
+
+	<nonSentenceBreaking>
+		<element name="a"/>
+		<element name="abbr"/>
+		<element name="acronym"/>
+		<element name="annoref"/>
+		<element name="b"/>
+		<element name="br"/>
+		<element name="em"/>
+		<element name="img"/>
+		<element name="kbd"/>
+		<!--<element name="linenum"/>-->
+		<element name="noteref"/>
+		<element name="pagenum"/>
+		<!--<element name="prodnote"/>-->
+		<element name="q"/>
+		<element name="span"/>
+		<element name="strong"/>
+		<element name="sub"/>
+		<element name="sup"/>
+		<element name="w"/>
+	</nonSentenceBreaking>
+	
+	<sentenceSkip>
+		<element name="address"/>
+		<!-- <element name="code"/> -->
+		<element name="head"/>
+		<element name="sent"/>
+		
+		<element name="linenum"/>
+	</sentenceSkip>
+	
+	<wordSkip>
+		<element name="abbr"/>
+		<element name="acronym"/>
+		<element name="annoref"/>
+		<element name="pagenum"/>
+		<element name="noteref"/>
+		<element name="linenum"/>
+		<element name="w"/>
+	</wordSkip>
+	
+	<mayContainText>
+		<element name="a"/>
+		<element name="abbr"/>
+		<element name="acronym"/>
+		<element name="annoref"/>
+		<element name="author"/>	<!-- jpritchett@rfbd.org, 15 May 2008 -->
+		<element name="b"/>
+		<element name="bdo"/>
+		<element name="caption"/>
+		<element name="cite"/>	<!-- jpritchett@rfbd.org, 15 May 2008 -->
+		<element name="code"/>
+		<element name="dd"/>
+		<element name="docauthor"/>
+		<element name="doctitle"/>
+		<element name="dt"/>
+		<element name="em"/>
+		<element name="h1"/>
+		<element name="h2"/>
+		<element name="h3"/>
+		<element name="h4"/>
+		<element name="h5"/>
+		<element name="h6"/>
+		<element name="hd"/>
+		<element name="li"/>
+		<element name="lic"/>
+		<element name="line"/>
+		<element name="linenum"/>
+		<element name="noteref"/>
+		<element name="p"/>
+		<element name="pagenum"/>
+		<element name="prodnote"/>
+		<element name="q"/>
+		<element name="sent"/>
+		<element name="sidebar"/>
+		<element name="span"/>
+		<element name="strong"/>
+		<element name="sub"/>
+		<element name="sup"/>
+		<element name="th"/>
+		<element name="title"/>	<!-- jpritchett@rfbd.org, 15 May 2008 -->
+		<element name="td"/>
+		<element name="w"/>
+	</mayContainText>
+
+</elementInfo>

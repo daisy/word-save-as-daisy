@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="OnLoad">
+	<ribbon>
+		<officeMenu>
+			<menu id="DaisyMenu" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" itemSize="large" getImage="GetImage">
+				<button id="DaisySingle" label="DAISY XML (from &amp;Single docx)"  onAction="SaveAsDaisy"  enabled="true" getImage="GetImageSingleXML" keytip="s" getDescription="GetDescriptionSingle"/>
+				<dynamicMenu id="DaisyDTBookSingle" label="Full D&amp;AISY (from single docx)"  getContent="GetDTbook" getImage="GetImage" getDescription="GetDescriptionSingleDTBook"/>
+				<button id="DaisyMultiple" label="DAISY XML (from &amp;Multiple docx)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" getDescription="GetDescriptionMultiple"/>
+				<dynamicMenu id="DaisyDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx)" getContent="GetDTbook" getImage="GetImage7" getDescription="GetDescriptionMultipleDTBook"/>
+			</menu>
+		</officeMenu>
+		<tabs>
+			<tab id="CustomTab" label="Accessibility">
+				<group id="SampleGroup" label="Save As DAISY">
+					<menu id="DaisyMnu" label="S&amp;aveAsDAISY" size="large" getImage="GetImage" >
+						<button id="DaisyTabSingle" label="DAISY XML (from &amp;Single docx)" onAction="SaveAsDaisy" enabled="true" getImage="GetImageSingleXML" keytip="s" screentip="DAISY XML only (dtbook dtd)"/>
+						<dynamicMenu id="DaisyTabDTBookSingle" label="Full D&amp;AISY (from single docx)" getContent="GetDTbook" getImage="GetImage" />
+						<button id="DaisyTabMultiple" label="DAISY XML (from &amp;Multiple docx)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
+						<dynamicMenu id="DaisyTabDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx)" getContent="GetDTbook" getImage="GetImage7" />
+					</menu>
+				</group >
+
+				<group id="SampleGroup2" label="Abbreviations">
+					<button id="Button3"  label="Mark As A&amp;bbreviation" size="large" onAction="MarkAsAbbreviationUI" getImage="GetImage1"/>
+					<button id="Button4" label="Ma&amp;nage Abbreviation" size="large" onAction="ManageAbbreviation" getImage="GetImage2"/>
+				</group>
+				<group id="SampleGroup3" label="Acronyms">
+					<button id="Button5"  label="Mark As A&amp;cronym" size="large" onAction="MarkAsAcronymUI" getImage="GetImage3"/>
+					<button id="Button6" label="Mana&amp;ge Acronym" size="large" onAction="ManageAcronym" getImage="GetImage4"/>
+				</group >
+				<group id="SampleGroup4" label="Validate">
+					<toggleButton id="toggleValidate" label="&amp;Validate" size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="GetImage9"/>
+				</group>
+				<group id="SampleGroup5" label ="DAISY Styles">
+					<button id="Button7" label="&amp;Import" size="large" onAction="Update_Styles" getEnabled="getEnabled" getImage="GetImage10"/>
+				</group>
+				<group id="SampleGroup9" label="AddFootnote">
+					<button id="Button11" label="Add&amp;Footnote" size="large" onAction="AddFotenote" getImage="GetImage11"/>
+				</group >
+				<group id="SampleGroup10" label ="Language">
+					<button id="Button12" label="&amp;Language" size="large" onAction="GetlanguageSettings" getImage="GetImage13"/>
+				</group>
+				<group id="SampleGroup7" label ="DAISY Settings">
+					<button id="Button10" label="&amp;Settings" size="large" onAction="GetDaisySettings" getImage="GetImage12"/>
+				</group>
+				<group id="SampleGroup6" label="Help">
+					<button id="Button8"  label="Version &amp;Details" size="large" onAction="AboutUI" getImage="GetImage8"/>
+					<menu id="DaisyHelpMnu" label="Translator &amp;Help" size="large" getImage="GetImage" >
+						<button id="Button9"  label="DAISY Manual in Word DOCX Format" onAction="ShowWordManual" />
+						<button id="Button13"  label="DAISY Manual in DTBook Format" onAction="ShowDtBookManual" />
+					</menu>
+				</group>
+			</tab>
+		</tabs>
+	</ribbon>
+</customUI>

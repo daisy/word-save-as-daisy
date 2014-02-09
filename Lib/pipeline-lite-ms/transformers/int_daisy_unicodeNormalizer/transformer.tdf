@@ -1,0 +1,51 @@
+<transformer version="1.0">
+	<name>Unicode Normalizer</name>
+	<description>Performs unicode normalization on all XML documents in a fileset 
+	using one of the four standard normalization forms provided by the Unicode Consortium.</description>
+	<classname>int_daisy_unicodeNormalizer.UCNormalizer</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/int_daisy_unicodeNormalizer.html"/>	
+	
+	<parameters>
+	
+		<parameter required="true" direction="in" type="application/xml">
+			<name>input</name>
+			<description>The input XML file</description>
+			<example>D:/path/to/inputFile.xml</example>
+		</parameter>
+		
+		<parameter required="true" direction="out" type="application/x-filesystemDirectory">
+			<name>output</name>			
+			<description>The output directory, may (but should rather not) be same as input dir</description>
+			<example>D:/path/to/outputDir/</example>
+		</parameter>		
+		
+		<parameter required="false" type="enum">
+			<name>textnodesOnly</name>
+			<description>If valued true, will only normalize element text nodes (and not attribute values, and other types of valuecarrying nodes)</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>				
+			</enum>
+			<default>false</default>
+		</parameter>									
+		
+		<parameter required="false" type="enum">
+			<name>normalizationForm</name>
+			<description>see http://www.w3.org/TR/charmod-norm/#sec-ChoiceNFC</description>
+			<example>NKFC</example>
+			<enum>
+				<value>NFD</value>
+				<value>NFKD</value>
+				<value>NFC</value>
+				<value>NFKC</value>				
+			</enum>
+			<default>NFC</default>
+		</parameter>		
+									
+	</parameters>	
+
+</transformer>

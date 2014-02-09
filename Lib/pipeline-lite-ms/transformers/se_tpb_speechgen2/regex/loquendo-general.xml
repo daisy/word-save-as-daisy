@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleSet>
+
+	<!-- request from richard stones 2006-11-01: simon unable to pronounce american spelled words.. -->
+	<rule match="\bCataloging\b" replace="catalogging" />
+	<rule match="\bcataloging\b" replace="catalogging" />
+
+
+<!-- Intervals -->
+   <rule match="\b[Pp]\.?\s*(\d)" replace="page $1" />
+
+   <rule match="([Pp]p?\.?|page)\s*(\d+)-(\d+)" replace="$1 $2 to $3" />
+
+
+
+   <rule match="(\d[\.\d]*)\s*(hours|minutes|seconds|[ap]+m)\s*-\s*(\d[\.\d]*)\s*(hours|minutes|seconds|[ap]+m)\b" replace="$1 $2 to $3 $4 hey hey hey" />
+   <rule match="(\d[\.\d]*)\s*-\s*(\d[\.\d]*)\s*(%|hours|minutes|seconds|[ap]+m)\b" replace="$1 to $2 $3  way way way" />
+
+   <rule match="(\d[\.\d]*)\s*-\s*(\d[\d\.]*\s*%)" replace="$1 to $2" />
+   <rule match="(\d[\.\d]*\s*%)\s*-\s*(\d[\d\.]*\s*%)" replace="$1 to $2" />
+
+
+
+
+<!-- CE 060504 Roman numerals (big): spelled instead of read as one word -->
+   <rule match="(\b[MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI]\b)" replace="$1 $2 $3 $4 $5 $6 $7 $8" />
+   <rule match="(\b[MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI]\b)" replace="$1 $2 $3 $4 $5 $6 $7" />
+   <rule match="(\b[MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI]\b)" replace="$1 $2 $3 $4 $5 $6" />
+   <rule match="(\b[MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI])([MDCLXVI]\b)" replace="$1 $2 $3 $4 $5" />
+
+
+<!-- CE 060427
+     Big numbers with chunks of three digits (ending in 000)
+     1 000 000 --> 1,000,000 (read as "one million")
+-->
+   <rule match="(\b|\d)(\d) (\d\d\d) (\d\d\d) (000)(\b[^\d]|$)" replace="$1$2,$3,$4,$5$6" />
+   <rule match="(\b|\d)(\d)\.(\d\d\d)\.(\d\d\d)\.(000)(\b[^\d]|$)" replace="$1$2,$3,$4,$5$6" />
+
+   <rule match="(\b|\d)(\d) (\d\d\d) (000)(\b[^\d]|$)" replace="$1$2,$3,$4$5" />
+   <rule match="(\b|\d)(\d)\.(\d\d\d)\.(000)(\b[^\d]|$)" replace="$1$2,$3,$4$5" />
+
+   <rule match="(\b|\d)(\d) (000)(\b[^\d]|$)" replace="$1$2,$3$4" />
+   <rule match="(\b|\d)(\d)\.(000)(\b[^\d]|$)" replace="$1$2,$3$4" />
+
+<!-- CE 060427
+     Numbers before currencies and measures of space and capacity.
+     Will probalby overgenerate if all four digits are put together (2 point 123).
+     Last two digits must be "0".
+     2 000 roubles      900 000 km2      $ 100 000
+-->
+
+   <rule match="(\b|\d+)(\d) (\d\d\d) (\d\d\d)\s*(dollars?|pounds?|roubles?|euros?|francs?)(\b)" replace="$1$2,$3,$4 $5 $6" />
+
+   <rule match="(\b|\d+)(\d) (\d\d\d)\s*(dollars?|pounds?|roubles?|euros?|francs?)(\b)" replace="$1$2,$3 $4 $5" />
+
+   <rule match="(\b|\d+)(\d)\.(\d00)\s*(dollars?|pounds?|roubles?|euros?|francs?)(\b)" replace="$1$2,$3 $4 $5" />
+
+   <rule match="(\b|\d+)(\d)[\s\.](\d\d\d)\s*([mcdk]?m[23]\b)" replace="$1$2,$3 $4" />
+
+   <rule match="([\$\£\€])\s*(\d\d?\d?)[\s\.](\d00)([^\d][^\d][^\d]|$)" replace="$1 $2,$3 $4" />
+
+   <rule match="([\$\£\€])\s*(\d\d?\d?) (\d\d\d) (\d00)([^\d][^\d][^\d]|$)" replace="$1 $2,$3,$4 $5" />
+   <rule match="([\$\£\€])\s*(\d\d?\d?)\.(\d\d\d)\.(\d00)([^\d][^\d][^\d]|$)" replace="$1 $2,$3,$4 $5" />
+
+   <rule match="(\b\d\d?\d?)[\s\.](\d00)\s*([\$\£\€])" replace="$1,$2 $3" />
+
+ 
+<!--CE 060502    Decimals    Brief pause between zeroes.   -->
+
+   <rule match="([^\d])0\.0" replace="$1 naught point 0" />
+
+   <rule match="\.00" replace="\. 0 , 0" />
+
+
+<!--CE 060502    1a --> 1 A .   -->
+   <rule match="(\d)a(\.|\))" replace="$1 A \." />
+
+
+<!--CE 060504   + and - within brackets. -->
+   <rule match="\[\+" replace="\[ plus " />
+   <rule match="\[\-" replace="\[ minus " />
+
+
+<!--CE 060504  +/-   -->
+   <rule match="\+\/\-" replace="plus minus" />
+
+<!--CE 060505 Read "-" -->
+   <rule match=" -(\d)" replace=" minus $1" />
+
+
+
+<!--CE 060505 don't read "-" -->
+   <rule match="([a-z])-(\d)" replace="$1 $2" />
+
+
+<!--CE 060502    Digits and colons within brackets.   -->
+   <rule match="\[(\d[\d\:\-]*)\]" replace=" \($1\) " />
+
+
+<!--CE 060502   One digit within parenthesis   -->
+  
+   <rule match="(\(\d\))" replace="$1 :" />
+
+
+<!--CE 060504   Dash -->
+   <rule match="([a-z]|\d) - ([a-z])" replace="$1, $2" />
+   
+<!--CE 070508	Dash -->
+   <rule match="([a-z]) - (\d)" replace="$1, $2" />
+
+<!--CE 060502   Multiplication  -->
+
+   <rule match="(\d)\s*[\·\*\×]\s*(\d)" replace="$1 times $2" />
+
+
+
+<!--CE 060428
+   Greek alphabet/Mathematical symbols
+-->
+   <rule match="(\b)Φ(\b)" replace="phi" />
+   <rule match="(\b)ψ(\b)" replace="psai" />
+   <rule match="(\b)Ψ(\b)" replace="psy" />
+   <rule match="(\b)Ω(\b)" replace="ommega" />
+   <rule match="(\b)ω(\b)" replace="ommega" />
+   <rule match="(\b)α(\b)" replace="alpha" />
+   <rule match="(\b)β(\b)" replace="beta" />
+   <rule match="(\b)γ(\b)" replace="gamma" />
+   <rule match="(\b)δ(\b)" replace="delta" />
+   <rule match="(\b)ε(\b)" replace="epsillon" />
+   <rule match="(\b)ζ(\b)" replace="zeeta" />
+   <rule match="(\b)η(\b)" replace="eta" />
+   <rule match="(\b)θ(\b)" replace="theeta" /> 
+   <rule match="(\b)ι(\b)" replace="iota" />
+   <rule match="(\b)κ(\b)" replace="kappa" />
+   <rule match="(\b)λ(\b)" replace="lambda" />
+   <rule match="(\b)μ(\b)" replace="mu" />
+   <rule match="(\b)ν(\b)" replace="nu" />
+   <rule match="(\b)ξ(\b)" replace="ksi" />
+   <rule match="(\b)ο(\b)" replace="omicron" />
+   <rule match="(\b)π(\b)" replace="pi" />
+   <rule match="(\b)ρ(\b)" replace="rho" />
+   <rule match="(\b)ς(\b)" replace="final sigma" />
+   <rule match="(\b)σ(\b)" replace="sigma" />
+   <rule match="(\b)τ(\b)" replace="tao" />
+   <rule match="(\b)υ(\b)" replace="youp sy lonn" />
+   <rule match="(\b)φ(\b)" replace="phi" />
+   <rule match="(\b)χ(\b)" replace="shy" />
+   
+   <!-- MB 2006-09-25: 
+   			Less/greater than -->
+   <rule match="&amp;lt;" replace="less than" />
+   <rule match="&amp;gt;" replace="greater than" />
+
+
+
+<!--CE 060428
+    Degrees, minutes and seconds.
+-->
+<!-- Tycker inte om dubbelfnutt
+   <rule match="(\d)\°(\d+)\'(\d+)\"(\b)" replace="$1 degrees $2 minutes $3 seconds $4" />
+   <rule match="(\d)\°\s*(\d+)\'(\b)" replace="$1 degrees $2 minutes $3" />
+-->
+
+
+<!--Temperature-->
+   <rule match="\°\s*C(\b)" replace="degrees Celsius $1" />
+   <rule match="\°\s*F(\b)" replace="degrees Fahrenheit $1" />
+   <rule match="\°\s*K(\b)" replace="degrees Kelvin $1" />
+
+   <rule match="\°" replace=" degrees" />
+
+
+
+<!--   CE 060428
+   Year intervals
+   1920/30 --> 1920 to 30
+   1920-24 --> 1920 to 24
+-->
+   <rule match="(\b[12]?[0-9][0-9][0-9])[\-\/](([12]?[0-9])?[0-9][0-9][\s\.\,\!\?])" replace="$1 to $2" />
+
+
+<!--
+   CE 060428
+   Read the colons.
+   Kolla med Lars om man verkligen vill det.
+-->
+   <rule match="(\d)\:(\d)" replace="$1 colon $2" />
+
+
+<!--
+   CE 060427
+   Addition to Richard's rules: millimeters and cubic miles.
+-->
+
+   <rule match="([0-9])\s*mm2(\b)" replace="$1 square millimetres$2" />
+   <rule match="([0-9])\s*mm3(\b)" replace="$1 millimetres cubed$2" />
+   <rule match="(\d) cu\.?\s*mi(\b)" replace="$1 cubic miles$2" />
+
+<!--CE 060502
+   Some units
+-->
+   <rule match="(\b|\d)dB(\b)" replace="$1 decibel $2" />
+   <rule match="(\b|\d)μPa(\b)" replace="$1 micropascal $2" />
+   <rule match="(\b|\d)µL(\b)" replace="$1 microliter $2" />
+   <rule match="\bkbytes?\b" replace="kilobytes" />
+   <rule match="\bmbytes?\b" replace="megabytes" />
+   <rule match="\bgbytes?\b" replace="gigabytes" />
+   <rule match="\btbytes?\b" replace="terabytes" />
+   <rule match="\bcu\.in\.?\b" replace="cubic inches" />
+   <rule match="\bozs\.\b" replace="oz" />
+
+
+
+<!--
+   CE 060427
+   1.2 a-z --> 1 point 2 pause a-z
+   1.2.3 --> 1 point 2 point 3
+   §1.2.3 a-z --> paragraph 1 point 2 point 3 paus a-z
+-->
+
+  <rule match="(^[\s\§]*)(\d\d?)\.(\d\d?)\.(\d\d?)(\s+[A-Za-z]|[\s\.]*$)" replace="$1 $2 point $3 point $4 \. $5" />
+  <rule match="(^[\s\§]*)(\d\d?)\.(\d\d?)(\s+[A-Za-z]|[\s\.]*$)" replace="$1 $2 point $3 \. $4" />
+  <rule match="(^[\s\§]*)(\d\d?)\.(\d\d?\.?)" replace="$1 $2 point $3" />
+
+
+
+<!--
+   CE 060428
+   and/or --> and slash or
+-->
+   <rule match="and\s*/\s*or" replace="and slash or" />
+
+
+<!--CE 060502
+    Some acronyms
+-->
+   <rule match="DTBook" replace="D T Book" />
+     <rule match="(\b)YHWH(\b)" replace="Y H W H" />
+
+   <rule match="(\b)ABC(\b)" replace="$1 A B C$2" />
+   <rule match="(\b)ABCs(\b)" replace="$1 A B cease$2" />
+
+   <rule match="(\b)ISBN(\b)" replace="$1I S B N:$2" />
+
+
+
+
+
+<!-- ============================================================================================ -->
+
+
+
+<!-- ^1233/1987 -> 1233-1987  ok -->
+   <rule match="([^0-9][0-9]{4})([:,/; ]*)([0-9]{4}[^0-9])" replace="$1-$3" />
+
+
+
+<!-- (1954 - 1921) --> 1954 - 1921  -->
+   <rule match="(\([0-9]{4}) ?- ?([0-9]{4}\))" replace="$1 to $2" />
+
+
+<!-- No. 1 --> number 1  ok -->
+   <rule match="\b[Nn]o\.\s*([0-9])" replace="number $1" />
+
+	<rule match="Haüy" replace="are wee" />
+	
+
+<!-- Biblical names -->
+
+   <rule match="Rom\.\b" replace="Romans" />
+
+   <rule match="\bCor\.\b" replace="Corinthians" />
+
+   <rule match="\bGen\.\b" replace="Genesis" />
+
+   <rule match="\bKin\.\b" replace="Kings" />
+
+   <rule match="\bIsa\.\b" replace="Isaia" />
+
+   <rule match="\bJer\.\b" replace="Jeremiah" />
+
+   <rule match="\bJob\.\b" replace="Jobe" />
+
+   <rule match="\bPsa\.\b" replace="Psalms" />
+
+   <rule match="\bEsd\.\b" replace="Esdras" />
+
+   <rule match="\bMat\.\b" replace="Matthew" />
+
+   <rule match="\bMar\.\b" replace="Mark" />
+
+   <rule match="\bLuk\.\b" replace="Luke" />
+
+   <rule match="\bGal\.\b" replace="Galatians" />
+
+   <rule match="\bEph\.\b" replace="Ephesians" />
+
+   <rule match="\bPhi\.\b" replace="Philippians" />
+
+   <rule match="\bCol\.\b" replace="Colosseans" />
+
+   <rule match="\bThe\.\b" replace="Thessalonians" />
+
+   <rule match="\bTim\.\b" replace="Timothy" />
+
+   <rule match="\bHeb\.\b" replace="Hebrews" />
+
+   <rule match="\bJam\.\b" replace="James" />
+
+   <rule match="\bPet\.\b" replace="Peter" />
+
+
+<!-- Abbreviations -->
+   <rule match="\bSt\.{0,1}\s" replace="Saint" />
+
+   <rule match="\b[Cc]h\." replace="chapter " />
+
+   <rule match="\b[Nn]r\." replace="number" />
+
+   <rule match="\bArt(s{0,1})\.([A-Z0-9\s])" replace="article$1 $2" />
+
+   <rule match="\bArt\s(s{0,1})\.([A-Z0-9\s])" replace="articles$1 $2" />
+
+   <rule match="\bday/s\b" replace="day stroke days" />
+
+
+
+<!-- åäö  -->
+   <!--<rule match="å" replace = "a" />-->
+   <!--<rule match="ä" replace = "e" />-->
+   <!--<rule match="ö" replace = "o" />-->
+   
+   <rule match="ø" replace = "ö" />
+   <rule match="æ" replace = "ä" />
+   
+   <!--<rule match="Ö" replace="O" />-->
+   <!--<rule match="Ä" replace="A" />-->
+   <!--<rule match="Å" replace="A" />-->
+   
+   <rule match="Ø" replace="Ö" />
+   <rule match="Æ" replace="Ä" />
+
+   <rule match="(\b)Sj([a-zA-Z]+\b)" replace="$1Sh$2" />
+
+   <rule match="(\b)Bj([a-zA-Z]+\b)" replace="$1By$2" />
+
+<!-- Units  ok -->
+
+   <rule match="([0-9])\s*km2\b" replace="$1 square kilometres" />
+
+   <rule match="([0-9])\s*km3\b" replace="$1 cubic kilometres" />
+
+   <rule match="([0-9])\s*m2\b" replace="$1 square metres" />
+
+   <rule match="([0-9])\s*cm2\b" replace="$1 square centimetres" />
+
+   <rule match="([0-9])\s*m3\b" replace="$1 metres cubed" />
+
+   <rule match="([0-9])\s*cm3\b" replace="$1 centimetres cubed" />
+
+
+<!-- Special symbols  ok -->
+   
+   <rule match="\*" replace="asterisk" />
+	
+   <rule match="#" replace=" number sign " />
+	
+   <rule match="(\d)\s*:\s*(\d)" replace="$1 kolon $2" />
+
+	<rule match="\\" replace=" backslash " />
+
+	<rule match="&lt;" replace=" less than " />
+	<rule match="&gt;" replace=" greater than " />
+
+
+
+<!-- Roman numerals - ordinals ok -->
+
+   <rule match="\bIst\b" replace="first" />
+
+   <rule match="\bIInd\b" replace="second" />
+
+   <rule match="\bIIIrd\b" replace="third" />
+
+   <rule match="\bIVth\b" replace="fourth" />
+
+   <rule match="\bVth\b" replace="fifth" />
+
+   <rule match="\bVIth\b" replace="sixth" />
+
+   <rule match="\bVIIth\b" replace="seventh" />
+
+   <rule match="\bVIIIth\b" replace="eighth" />
+
+   <rule match="\bIXth\b" replace="ninth" />
+
+   <rule match="\bXth\b" replace="tenth" />
+
+   <rule match="\bXIth\b" replace="eleventh" />
+
+   <rule match="\bXIIth\b" replace="twelfth" />
+
+<!--   <rule match="\bNice\b" replace="niece" /> -->
+
+
+<!-- Roman numbers with context  ok -->
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (I|i)\b" replace="$1 one" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (II|ii)\b" replace="$1 two" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (III|iii)\b" replace="$1 three" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (IV|iv)\b" replace="$1 four" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (V|v)\b" replace="$1 five" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (VI|vi)\b" replace="$1 six" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (VII|vii)\b" replace="$1 seven" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (VIII|viii)\b" replace="$1 eight" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (IX|ix)\b" replace="$1 nine" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XI|xi)\b" replace="$1 eleven" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XII|xii)\b" replace="$1 twelve" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XIII|xiii)\b" replace="$1 thirteen" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XIV|xiv)\b" replace="$1 fourteen" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XV|xv)\b" replace="$1 fifteen" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XVI|xvi)\b" replace="$1 sixteen" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XVII|xvii)\b" replace="$1 seventeen" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XVIII|xviii)\b" replace="$1 eighteen" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XIX|xix)\b" replace="$1 nineteen" />
+
+   <rule match="([Pp]art|[Pp]aper|[Ss]ection|[Ch]apter|[Nn]umber) (XX|xx)\b" replace="$1 twenty" />
+
+
+<!-- ok -->
+   <rule match="([0-9])\sin\s([a-zåäöA-ZÅÄÖ])" replace="$1 inn $2" />
+
+   <rule match="\bselfhood\b" replace="self hood" />
+
+   <rule match="\bSelfhood\b" replace="self hood" />
+
+   <rule match="\bdéjà\svu\b" replace="day jar view" />
+
+   <rule match="\bdéjà\svécu\b" replace="day jar veck you" />
+
+
+
+
+
+</ruleSet>
+

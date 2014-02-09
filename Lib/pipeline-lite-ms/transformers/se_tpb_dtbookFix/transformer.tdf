@@ -1,0 +1,120 @@
+<transformer version="1.1">
+	<name>DTBook Fix</name>
+	<description>desc...</description>
+	<classname>se_tpb_dtbookFix.DTBookFix</classname>
+	<license>LGPL</license>
+	<author>Joel Håkansson</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/se_tpb_dtbookfix.html"/>	
+	
+	<parameters>
+
+		<parameter required="true" direction="in" type="application/xml">
+			<name>input</name>
+			<description>Input DTBook file</description>
+			<example>file:///path/to/file.xml</example>
+		</parameter>
+
+		<parameter required="true" direction="out" type="application/xml">
+			<name>output</name>
+			<description>Output DTBook file</description>
+			<example>file:///path/to/outFile.xml</example>
+		</parameter>
+		
+		<parameter required="false" type="enum">
+			<name>runCategories</name>
+			<description>Which categories to run. Underscore separated. Order is significant.</description>
+			<example>TIDY</example>
+			<enum>
+				<value>TIDY</value> <!-- run only Tidy category -->
+				<value>REPAIR</value> <!-- run only Repair category -->
+				<value>REPAIR_TIDY</value> <!-- run both Tidy and Repair categories in sequence as they appear -->
+				<value>NARRATOR</value> <!-- run Tidy, Repair and Narrator categories in sequence as they appear -->
+				<value>NOTHING</value> <!-- Run nothing -->				
+			</enum>
+			<default>REPAIR_TIDY</default>
+		</parameter>
+		
+		
+		<parameter required="false" type="enum">
+			<name>forceRun</name>
+			<description>Run all selected categories even if input is not in the expected state (valid, invalid, etc)</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>false</default>
+		</parameter>
+								
+		<parameter required="false" type="enum">
+			<name>simplifyHeadingLayout</name>
+			<description>Optional in Tidy category. Simplify heading layout by moving headings upward where possible</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>false</default>
+		</parameter>
+		
+		<parameter required="false" type="enum">
+			<name>externalizeWhitespace</name>
+			<description>Optional in Tidy category. Move leading and trailing whitespace outside of em, strong, sub, sup, noteref and pagenum elements</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>false</default>
+		</parameter>
+		
+		<parameter required="false" type="enum">
+			<name>fixCharset</name>
+			<description>Optional in Repair category. Run character set detection and transcoding</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>false</default>
+		</parameter>
+		
+		<parameter type="string" required="false">
+			<name>factory</name>
+			<description>Javax XSLT Factory</description>
+			<example>com.icl.saxon.TransformerFactoryImpl</example>
+			<default>net.sf.saxon.TransformerFactoryImpl</default>
+		</parameter>
+		
+		<parameter type="string" required="false">
+			<name>documentLanguage</name>
+			<description>Set the document language (as defined by IETF RFC 3066). Leave blank to use default value</description>
+			<example>en</example>
+			<default></default>
+		</parameter>
+        
+        <parameter required="false" type="enum">
+            <name>renameJpeg</name>
+            <description>Whether to rename .jpeg images into .jpg</description>
+            <example>true</example>
+            <enum>
+                <value>true</value>
+                <value>false</value>
+            </enum>
+            <default>true</default>
+        </parameter>
+        
+        <parameter required="false" type="enum">
+            <name>renameIllegalFilenames</name>
+            <description>Whether to rename files with illegal characters in the filename (recommended when creating a DTB)</description>
+            <example>true</example>
+            <enum>
+                <value>true</value>
+                <value>false</value>
+            </enum>
+            <default>false</default>
+        </parameter>
+	</parameters>
+
+</transformer>

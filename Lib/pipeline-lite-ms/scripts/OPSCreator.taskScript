@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<taskScript version="2.0" name="OPSCreator">
+	<nicename>EPUB Creator</nicename>
+	<description>Create an EPUB (OPS 2.0) fileset from DTBook or XHTML input.</description>
+   	<documentation uri="../../../doc/scripts/OPSCreator.html"/>
+    <comment/>
+			
+	<parameter name="input" value="" required="true">
+		<nicename>Input file(s)</nicename>
+		<description>Select the input content document(s) (DTBook or XHTML)</description>
+		<datatype>
+			<files mime="application/anonymous" type="input"/>
+		</datatype>
+	</parameter>
+	
+	<parameter name="output" value="" required="true">
+		<nicename>Output</nicename>
+		<description>Select the output .epub file</description>
+		<datatype>
+			<file mime="application/epub+zip" type="output"/>
+		</datatype>
+	</parameter>		
+
+	<parameter name="forceXhtml" value="true" required="false">
+		<nicename>Force XHTML-based EPUB</nicename>
+		<description>Whether to always create an XHTML-based EPUB, even if the input is DTBook 2005-2</description>
+		<datatype>
+			<boolean/>
+		</datatype>
+	</parameter>
+	
+	<parameter name="customNCXConfig" value="" required="false">
+		<nicename>NCX configuration</nicename>
+		<description>Select a custom NCX configuration file</description>
+		<datatype>
+			<file mime="application/xml" type="input"/>
+		</datatype>
+	</parameter>
+
+	<!-- optional manual metadata -->
+	<parameter name="dctitle" value="" required="false">
+		<nicename>dc:title</nicename>
+		<description>Set the Dublin Core Title value (OPS required)</description>
+		<datatype>
+			<string/>
+		</datatype>
+	</parameter>			
+
+	<parameter name="dcidentifier" value="" required="false">
+		<nicename>dc:identifier</nicename>
+		<description>Set the Dublin Core Identifier value (OPS required)</description>
+		<datatype>
+			<string/>
+		</datatype>
+	</parameter>			
+
+	<parameter name="dclanguage" value="" required="false">
+		<nicename>dc:language</nicename>
+		<description>Set the Dublin Core Language value (OPS required)</description>
+		<datatype>
+			<string/>
+		</datatype>
+	</parameter>
+
+	<parameter name="dccreator" value="" required="false">
+		<nicename>dc:creator</nicename>
+		<description>Set the Dublin Core Creator value</description>
+		<datatype>
+			<string/>
+		</datatype>
+	</parameter>			
+
+	<parameter name="dcpublisher" value="" required="false">
+		<nicename>dc:publisher</nicename>
+		<description>Set the Dublin Core Publisher value</description>
+		<datatype>
+			<string/>
+		</datatype>
+	</parameter>
+
+	<parameter name="dcdate" value="" required="false">
+		<nicename>dc:date</nicename>
+		<description>Set the Dublin Core Date value - YYYY(-MM-DD)</description>
+		<datatype>
+			<string/>
+		</datatype>
+	</parameter>			
+
+
+	
+	<!-- end optional manual metadata -->		
+			
+	<task name="int_daisy_opsCreator" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${input}</value>
+		</parameter>
+					
+		<parameter>
+			<name>output</name>
+			<value>$parent{output}/pipeline__temp/1/</value>
+		</parameter>						
+
+		<parameter>
+			<name>ncxConfig</name>
+			<value>${customNCXConfig}</value>
+		</parameter>
+		
+		<parameter>
+			<name>forceXhtml</name>
+			<value>${forceXhtml}</value>
+		</parameter>		
+				
+		<parameter>
+			<name>dc:title</name>
+			<value>${dctitle}</value>
+		</parameter>
+
+		<parameter>
+			<name>dc:creator</name>
+			<value>${dccreator}</value>
+		</parameter>
+				
+		<parameter>
+			<name>dc:publisher</name>
+			<value>${dcpublisher}</value>
+		</parameter>
+
+		<parameter>
+			<name>dc:date</name>
+			<value>${dcdate}</value>
+		</parameter>
+
+		<parameter>
+			<name>dc:identifier</name>
+			<value>${dcidentifier}</value>
+		</parameter>
+
+		<parameter>
+			<name>dc:language</name>
+			<value>${dclanguage}</value>
+		</parameter>
+		
+	</task>		
+			
+	<task name="int_daisy_unicodeNormalizer" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>$parent{output}/pipeline__temp/1/package.opf</value>
+		</parameter>
+					
+		<parameter>
+			<name>output</name>
+			<value>$parent{output}/pipeline__temp/2/</value>
+		</parameter>						
+	</task>
+	
+	<task name="int_daisy_prettyPrinter" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>$parent{output}/pipeline__temp/2/package.opf</value>
+		</parameter>
+
+		<parameter>
+			<name>linebreak</name>
+			<value>UNIX</value>
+		</parameter>					
+										
+		<parameter>
+			<name>output</name>
+			<value>$parent{output}/pipeline__temp/2/</value>
+		</parameter>						
+	</task>
+
+	<task name="int_daisy_ocfCreator" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>$parent{output}/pipeline__temp/2/package.opf</value>
+		</parameter>
+					
+		<parameter>
+			<name>output</name>
+			<value>${output}</value>
+		</parameter>						
+	</task>
+
+	<task name="int_daisy_validator" interactive="false">
+		<parameter>
+			<name>input</name>
+			<value>${output}</value>
+		</parameter>
+		
+		<parameter>
+			<name>abortThreshold</name>
+			<value>NONE</value>
+		</parameter>						
+	</task>
+
+	<task name="pipeline_system_deleter" interactive="false">
+		<parameter>
+			<name>delete</name>
+			<value>$parent{output}/pipeline__temp/</value>
+		</parameter>					
+	</task>
+						
+</taskScript>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<elementInfo>
+
+    <abbrElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="abbr" expandAttribute="title"/>
+
+	<acronymElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="acronym" expandAttribute="title">
+		
+	</acronymElement>
+	
+	<initialismElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="acronym" expandAttribute="title">
+		
+	</initialismElement>
+
+	<sentenceElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="p">
+		<attribute name="class" value="sent"/>
+	</sentenceElement>
+	
+	<wordElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="span">
+		<attribute name="class" value="w"/>
+	</wordElement>
+
+	<defaultPaths>
+		<path name="/html/body"/>
+	</defaultPaths>
+
+	<nonSentenceBreaking>
+		<element name="a"/>
+		<element name="abbr"/>
+		<element name="acronym"/>
+		<element name="b"/>
+		<element name="br"/>
+		<element name="em"/>
+		<element name="img"/>
+		<element name="kbd"/>
+		<element name="q"/>
+		<element name="span"/>
+		<element name="strong"/>
+		<element name="sub"/>
+		<element name="sup"/>
+	</nonSentenceBreaking>
+	
+	<sentenceSkip>
+		<element name="address"/>
+		<element name="code"/>
+		<element name="head"/>
+	</sentenceSkip>
+	
+	<wordSkip>
+		<element name="abbr"/>
+		<element name="acronym"/>
+	</wordSkip>
+	
+	<mayContainText>
+		<element name="a"/>
+		<element name="abbr"/>
+		<element name="acronym"/>
+		<element name="b"/>
+		<element name="div"/>
+		<element name="em"/>
+		<element name="h1"/>
+		<element name="h2"/>
+		<element name="h3"/>
+		<element name="h4"/>
+		<element name="h5"/>
+		<element name="h6"/>
+		<element name="li"/>
+		<element name="p"/>
+		<element name="q"/>
+		<element name="span"/>
+		<element name="strong"/>
+		<element name="sub"/>
+		<element name="sup"/>
+	</mayContainText>
+
+</elementInfo>

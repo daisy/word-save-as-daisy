@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE smil
+  PUBLIC "-//NISO//DTD dtbsmil 2005-2//EN" "http://www.daisy.org/z3986/2005/dtbsmil-2005-2.dtd">
+<smil xmlns="http://www.w3.org/2001/SMIL20/">
+	  <head>
+		    <meta content="AUTO-UID-4814644028218017414" name="dtb:uid"/>
+		    <meta content="TPB Narrator" name="dtb:generator"/>
+		    <meta content="0:03:50.233" name="dtb:totalElapsedTime"/>
+		
+	  </head>
+	  <body>
+		    <seq dur="0:00:17.582" fill="remove" id="mseq">
+		       <par id="tcp67">
+            <text id="text67"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb69"/>
+            <audio clipBegin="0:00:00" clipEnd="0:00:04.814" src="speechgen0006.mp3"/>
+         </par>
+         <par id="tcp68">
+            <text id="text68"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb70"/>
+            <audio clipBegin="0:00:04.814" clipEnd="0:00:09.915" src="speechgen0006.mp3"/>
+         </par>
+         <par id="tcp69">
+            <text id="text69"
+                  src="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2.xml#dtb71"/>
+            <audio clipBegin="0:00:09.915" clipEnd="0:00:17.582" src="speechgen0006.mp3"/>
+         </par>
+      </seq>
+	  </body>
+</smil>

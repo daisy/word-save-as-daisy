@@ -1,0 +1,26 @@
+<transformer version="1.1">
+	<name>OCF Creator</name>
+	<description>Create an OEBPS Container (OCF 1.0) containing one or several publications.</description>
+	<classname>int_daisy_ocfCreator.OcfCreator</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/int_daisy_ocfCreator.html"/>	
+	
+	<parameters>
+		
+		<parameter required="true" direction="in" type="application/anonymous">
+			<name>input</name>
+			<description>List of publications to include; manifests (such as OPF) or standalone files.</description>
+			<example>D:/path/to/inputFile.opf, D:/path/to/inputFile.pdf</example>
+		</parameter>
+		
+		<parameter required="true" direction="out" type="application/epub+zip">
+			<name>output</name>			
+			<description>The output OCF .epub file</description>
+			<example>D:/path/to/output.epub</example>
+		</parameter>
+																				
+	</parameters>	
+
+</transformer>

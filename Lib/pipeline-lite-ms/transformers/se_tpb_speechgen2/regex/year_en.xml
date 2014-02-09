@@ -1,0 +1,131 @@
+<!--CE 060503 Removed "(s)?" at end of match. Replaced "twenty hundred" with "two thousand". -->
+<year before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$" match="(\d\d)(\d\d)" min="1000" max="2499">
+		<group number="1">
+			<value number="10" text="one thousand"/>
+			<value number="11" text="eleven hundred"/>
+			<value number="12" text="twelve hundred"/>
+			<value number="13" text="thirteen hundred"/>
+			<value number="14" text="fourteen hundred"/>
+			<value number="15" text="fifteen hundred"/>
+			<value number="16" text="sixteen hundred"/>
+			<value number="17" text="seventeen hundred"/>
+			<value number="18" text="eighteen hundred"/>
+			<value number="19" text="nineteen hundred"/>
+			<value number="20" text="two thousand"/>
+			<value number="21" text="two thousand one hundred"/>
+			<value number="22" text="two thousand two hundred"/>
+			<value number="23" text="two thousand three hundred"/>
+			<value number="24" text="two thousand four hundred"/>
+		</group>
+		<group number="2">
+			<value number="00" text=""/>
+			<value number="01" text=" one"/>
+			<value number="02" text=" two"/>
+			<value number="03" text=" three"/>
+			<value number="04" text=" four"/>
+			<value number="05" text=" five"/>
+			<value number="06" text=" six"/>
+			<value number="07" text=" seven"/>
+			<value number="08" text=" eight"/>
+			<value number="09" text=" nine"/>
+			
+			<value number="10" text=" ten"/>
+			<value number="11" text=" eleven"/>
+			<value number="12" text=" twelve"/>
+			<value number="13" text=" thirteen"/>
+			<value number="14" text=" fourteen"/>
+			<value number="15" text=" fifteen"/>
+			<value number="16" text=" sixteen"/>
+			<value number="17" text=" seventeen"/>
+			<value number="18" text=" eighteen"/>
+			<value number="19" text=" nineteen"/>
+			
+			<value number="20" text=" twenty"/>
+			<value number="21" text=" twenty one"/>
+			<value number="22" text=" twenty two"/>
+			<value number="23" text=" twenty three"/>
+			<value number="24" text=" twenty four"/>
+			<value number="25" text=" twenty five"/>
+			<value number="26" text=" twenty six"/>
+			<value number="27" text=" twenty seven"/>
+			<value number="28" text=" twenty eight"/>
+			<value number="29" text=" twenty nine"/>
+			
+			<value number="30" text=" thirty"/>
+			<value number="31" text=" thirty one"/>
+			<value number="32" text=" thirty two"/>
+			<value number="33" text=" thirty three"/>
+			<value number="34" text=" thirty four"/>
+			<value number="35" text=" thirty five"/>
+			<value number="36" text=" thirty six"/>
+			<value number="37" text=" thirty seven"/>
+			<value number="38" text=" thirty eight"/>
+			<value number="39" text=" thirty nine"/>
+			
+			<value number="40" text=" forty"/>
+			<value number="41" text=" forty one"/>
+			<value number="42" text=" forty two"/>
+			<value number="43" text=" forty three"/>
+			<value number="44" text=" forty four"/>
+			<value number="45" text=" forty five"/>
+			<value number="46" text=" forty six"/>
+			<value number="47" text=" forty seven"/>
+			<value number="48" text=" forty eight"/>
+			<value number="49" text=" forty nine"/>
+			
+			<value number="50" text=" fifty"/>
+			<value number="51" text=" fifty one"/>
+			<value number="52" text=" fifty two"/>
+			<value number="53" text=" fifty three"/>
+			<value number="54" text=" fifty four"/>
+			<value number="55" text=" fifty five"/>
+			<value number="56" text=" fifty six"/>
+			<value number="57" text=" fifty seven"/>
+			<value number="58" text=" fifty eight"/>
+			<value number="59" text=" fifty nine"/>
+			
+			<value number="60" text=" sixty"/>
+			<value number="61" text=" sixty one"/>
+			<value number="62" text=" sixty two"/>
+			<value number="63" text=" sixty three"/>
+			<value number="64" text=" sixty four"/>
+			<value number="65" text=" sixty five"/>
+			<value number="66" text=" sixty six"/>
+			<value number="67" text=" sixty seven"/>
+			<value number="68" text=" sixty eight"/>
+			<value number="69" text=" sixty nine"/>
+			
+			<value number="70" text=" seventy"/>
+			<value number="71" text=" seventy one"/>
+			<value number="72" text=" seventy two"/>
+			<value number="73" text=" seventy three"/>
+			<value number="74" text=" seventy four"/>
+			<value number="75" text=" seventy five"/>
+			<value number="76" text=" seventy six"/>
+			<value number="77" text=" seventy seven"/>
+			<value number="78" text=" seventy eight"/>
+			<value number="79" text=" seventy nine"/>
+			
+			<value number="80" text=" eighty"/>
+			<value number="81" text=" eighty one"/>
+			<value number="82" text=" eighty two"/>
+			<value number="83" text=" eighty three"/>
+			<value number="84" text=" eighty four"/>
+			<value number="85" text=" eighty five"/>
+			<value number="86" text=" eighty six"/>
+			<value number="87" text=" eighty seven"/>
+			<value number="88" text=" eighty eight"/>
+			<value number="89" text=" eighty nine"/>
+			
+			<value number="90" text=" ninety"/>
+			<value number="91" text=" ninety one"/>
+			<value number="92" text=" ninety two"/>
+			<value number="93" text=" ninety three"/>
+			<value number="94" text=" ninety four"/>
+			<value number="95" text=" ninety five"/>
+			<value number="96" text=" ninety six"/>
+			<value number="97" text=" ninety seven"/>
+			<value number="98" text=" ninety eight"/>
+			<value number="99" text=" ninety nine"/>
+		</group>
+	</year>

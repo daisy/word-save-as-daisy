@@ -1,0 +1,39 @@
+REGEDIT4
+
+[HKEY_CLASSES_ROOT\CLSID\{000209F0-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Office.Interop.Word.GlobalClass"
+"Assembly"="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{000209FF-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Office.Interop.Word.ApplicationClass"
+"Assembly"="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{00020906-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Office.Interop.Word.DocumentClass"
+"Assembly"="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{000209F5-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Office.Interop.Word.FontClass"
+"Assembly"="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{000209F4-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Office.Interop.Word.ParagraphFormatClass"
+"Assembly"="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{000209F2-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Office.Interop.Word.OLEControlClass"
+"Assembly"="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\CLSID\{000209F1-0000-0000-C000-000000000046}\InprocServer32]
+"Class"="Microsoft.Office.Interop.Word.LetterContentClass"
+"Assembly"="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
+"RuntimeVersion"="v1.0.3705"
+
+[HKEY_CLASSES_ROOT\TypeLib\{00020905-0000-0000-C000-000000000046}\8.2]
+"PrimaryInteropAssemblyName"="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"

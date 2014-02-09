@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ncx:ncx-include xmlns:ncx="http://www.daisy.org/pipeline/ncxconfig#">
+	<!-- Default configuration for OPS NCX. Schema: see ncx-config.rng -->
+	<ncx:navMap>			 
+		<!-- Qualified names of elements to include in navMap, the definitions may include attributes -->
+		<!-- xhtml -->
+		<h1 xmlns="http://www.w3.org/1999/xhtml" />
+		<h2 xmlns="http://www.w3.org/1999/xhtml" />
+		<h3 xmlns="http://www.w3.org/1999/xhtml" />
+		<h4 xmlns="http://www.w3.org/1999/xhtml" />
+		<h5 xmlns="http://www.w3.org/1999/xhtml" />
+		<h6 xmlns="http://www.w3.org/1999/xhtml" />
+		<!-- dtbook -->
+		<h1 xmlns="http://www.daisy.org/z3986/2005/dtbook/" />
+		<h2 xmlns="http://www.daisy.org/z3986/2005/dtbook/" />
+		<h3 xmlns="http://www.daisy.org/z3986/2005/dtbook/" />
+		<h4 xmlns="http://www.daisy.org/z3986/2005/dtbook/" />
+		<h5 xmlns="http://www.daisy.org/z3986/2005/dtbook/" />
+		<h6 xmlns="http://www.daisy.org/z3986/2005/dtbook/" />
+		<hd xmlns="http://www.daisy.org/z3986/2005/dtbook/" />
+	</ncx:navMap>
+	
+	<ncx:navLists>
+		<!-- Qualified names of elements to include in navLists, the definitions may include attributes -->
+		<!--
+		Optionally use an xpath statement to define an explicit label
+		<note xmlns="http://www.daisy.org/z3986/2005/dtbook/" ncx:label="/*[1]|/text()" />		
+		-->
+		<pagenum xmlns="http://www.daisy.org/z3986/2005/dtbook/" />
+		<noteref xmlns="http://www.daisy.org/z3986/2005/dtbook/" /> 
+		
+		<!-- We support Daisy 2.02 style page numbers.  
+		Note: we cannot have a another XHTML span-based navList with another type than page, if that
+		is wanted, need to create an alternative config xml file. -->
+		<span xmlns="http://www.w3.org/1999/xhtml" class="page-normal" />
+		<span xmlns="http://www.w3.org/1999/xhtml" class="page-special" />
+		<span xmlns="http://www.w3.org/1999/xhtml" class="page-front" />
+		
+	</ncx:navLists>
+	
+	<ncx:navListLabels>
+		<!-- define labels for lists in varying languages -->
+		<pagenum xmlns="http://www.daisy.org/z3986/2005/dtbook/">
+		  <ncx:label xml:lang="en" ncx:text="Pages" />
+		  <ncx:label xml:lang="sv" ncx:text="Sidor" />
+		</pagenum>		
+		<noteref xmlns="http://www.daisy.org/z3986/2005/dtbook/">
+		  <ncx:label xml:lang="en" ncx:text="Note References"/>
+		  <ncx:label xml:lang="sv" ncx:text="Notreferenser"/>
+		</noteref>
+		
+		<span xmlns="http://www.w3.org/1999/xhtml" class="page-normal">
+		  <ncx:label xml:lang="en" ncx:text="Pages" />
+		  <ncx:label xml:lang="sv" ncx:text="Sidor" />		
+		</span>
+
+		<span xmlns="http://www.w3.org/1999/xhtml" class="page-front">
+		  <ncx:label xml:lang="en" ncx:text="Pages" />
+		  <ncx:label xml:lang="sv" ncx:text="Sidor" />		
+		</span>
+		
+		<span xmlns="http://www.w3.org/1999/xhtml" class="page-special">
+		  <ncx:label xml:lang="en" ncx:text="Pages" />
+		  <ncx:label xml:lang="sv" ncx:text="Sidor" />		
+		</span>		
+	</ncx:navListLabels>
+	
+</ncx:ncx-include>
