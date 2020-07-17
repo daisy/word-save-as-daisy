@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Fragment>
-		<!--<WixVariable Id="WixUIBannerBmp" Value="Images\msibanner.jpg" />
-		<WixVariable Id="WixUIDialogBmp" Value="Images\msiwelcome.jpg" />-->
-
+		
 		<UI Id="MyUI">
 			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
 			<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
@@ -31,9 +29,8 @@
 			<Publish Dialog="MyExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
 			<Publish Dialog="MyExitDialog" Control="Finish" Order="1" Event="DoAction" Value="ShowReadme">SHOW_README = 1 and NOT Installed</Publish>
 
-			<!-- Changed WelcomeDlg next button to navigate to InstallDirDlg-->
+			<!-- Changed WelcomeDlg next button to navigate to InstallDirDlg -->
 			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
-
 
 			<Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="MyWelcomeDlg">1</Publish>
 			<Publish Dialog="LicenseAgreementDlg" Control="Next" Event="NewDialog" Value="MyInstallScopeDlg">LicenseAccepted = "1"</Publish>

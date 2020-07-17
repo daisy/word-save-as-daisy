@@ -81,7 +81,7 @@ namespace DaisyInstaller
             if (keepInstall) {
                 // start DaisyAddinForWordSetup.exe
                 
-                string daisySetupPath = Path.Combine(Path.GetTempPath(), "DaisyAddinForWordSetup.exe");
+                string daisySetupPath = Path.Combine(Path.GetTempPath(), "DaisyAddinForWordSetup.msi");
                 File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup);
 
                 Process.Start(daisySetupPath);

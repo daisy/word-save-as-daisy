@@ -21,13 +21,13 @@ namespace Word2007Addin.IntegrationTests
 			base.TearDown();
 		}
 
-		[TestFixtureTearDown]
+		[OneTimeTearDown]
 		public override void FixtureTearDown()
 		{
 			base.FixtureTearDown();
 		}
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public override void FixtureSetUp()
 		{
 			base.FixtureSetUp();

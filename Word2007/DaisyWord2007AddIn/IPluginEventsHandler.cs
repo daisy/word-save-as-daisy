@@ -11,7 +11,7 @@ namespace DaisyWord2007AddIn
 		void OnStop(string message, string title);
 	}
 
-	class PluginEventsQuiteHandler : IPluginEventsHandler
+	public class PluginEventsQuiteHandler : IPluginEventsHandler
 	{
 		public void OnStop(string message)
 		{
@@ -34,7 +34,7 @@ namespace DaisyWord2007AddIn
 		}
 	}
 
-	class PluginEventsUIHandler : IPluginEventsHandler
+	public class PluginEventsUIHandler : IPluginEventsHandler
 	{
 		public void OnStop(string message)
 		{

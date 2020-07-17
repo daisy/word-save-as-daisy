@@ -92,7 +92,14 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             Hashtable translationParams = parametersBuilder.BuildTranslationParameters();
             ConvertToDaisy(parameters, translationParams, outputFilePath, outputPipeline, new SingleConverter(converter));
         }
-
+        /// <summary>
+        /// Funcion that launch the conversion of a "parameters.inputFile" to daisy
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="translateParams"></param>
+        /// <param name="outputFilePath"></param>
+        /// <param name="outputPipeline"></param>
+        /// <param name="singleConverter"></param>
         public void ConvertToDaisy(OoxToDaisyParameters parameters, Hashtable translateParams, string outputFilePath, string outputPipeline, SingleConverter singleConverter)
         {
             if (parameters.MasterSubFlag == "No" || parameters.MasterSubFlag == "NoMasterSub")

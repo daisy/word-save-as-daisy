@@ -11,10 +11,8 @@ using System.IO.Packaging;
 using System.Reflection;
 using Sonata.DaisyConverter.DaisyConverterLib;
 
-namespace Sonata.DaisyConverter.CommandLineTool
-{
-    class MultipleOOXML
-    {
+namespace Sonata.DaisyConverter.CommandLineTool {
+    class MultipleOOXML {
         private Report report;
         const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
         PackageRelationship relationship = null;
@@ -42,17 +40,14 @@ namespace Sonata.DaisyConverter.CommandLineTool
         Hashtable listMathMl;
 
         /*Property which returns Fidility loss*/
-        public ArrayList FidilityLoss
-        {
-            get
-            {
+        public ArrayList FidilityLoss {
+            get {
                 return fidilityLossMsg;
             }
         }
 
         /*Constructor*/
-        public MultipleOOXML(Report report)
-        {
+        public MultipleOOXML(Report report) {
             this.report = report;
             AddMathmlDtds();
             myLabel.Add("translation.oox2Daisy.commentReference", " Comment Reference is not translated");
@@ -69,8 +64,7 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /*Core Function to Copy Math Ml DTDS to destination folder*/
-        public void AddMathmlDtds()
-        {
+        public void AddMathmlDtds() {
             MathList8879 = new ArrayList();
             MathList9573 = new ArrayList();
             MathListmathml = new ArrayList();
@@ -102,39 +96,30 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /*Property which return Count for sub documents*/
-        public int FileCount
-        {
-            get
-            {
+        public int FileCount {
+            get {
                 return subCount;
             }
         }
 
         /*Property which returns List of Sub documents*/
-        public ArrayList DocListOwn
-        {
-            get
-            {
+        public ArrayList DocListOwn {
+            get {
                 return subList;
             }
         }
 
         /*Fucntion returns Validation errors*/
-        public string ValidationError
-        {
-            get
-            {
+        public string ValidationError {
+            get {
                 return error_Exception;
             }
         }
 
         /*Core Function to validate the input document*/
-        private bool ValidateFile(string input)
-        {
-            try
-            {
-                if (this.ooxValidator == null)
-                {
+        private bool ValidateFile(string input) {
+            try {
+                if (this.ooxValidator == null) {
                     this.report.AddComment("Instanciating validator...");
                     this.ooxValidator = new OoxValidator(this.report);
                 }
@@ -142,16 +127,12 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 this.report.AddComment("**********************");
                 this.report.AddLog("", "Input file (" + input + ") is valid", Report.INFO_LEVEL);
                 return true;
-            }
-            catch (OoxValidatorException e)
-            {
+            } catch (OoxValidatorException e) {
                 this.report.AddComment("**********************");
                 this.report.AddLog("", "Input file (" + input + ") is invalid", Report.WARNING_LEVEL);
                 this.report.AddLog("", e.Message + "(" + e.StackTrace + ")", Report.DEBUG_LEVEL);
                 return false;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 this.report.AddLog("", "An unexpected exception occured when trying to validate " + input, Report.ERROR_LEVEL);
                 this.report.AddLog("input", e.Message + "(" + e.StackTrace + ")", Report.DEBUG_LEVEL);
                 return false;
@@ -160,82 +141,62 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function to Add  all the Messages to an Array */
-        private void FeedbackMessageInterceptor(object sender, EventArgs e)
-        {
+        private void FeedbackMessageInterceptor(object sender, EventArgs e) {
             string message = ((DaisyEventArgs)e).Message;
             string messageValue = null;
             if (message.Contains("Cover Pages"))
                 message = message.Replace("Cover Pages", "Cover Page");
 
-            if (message.Contains("|"))
-            {
+            if (message.Contains("|")) {
                 string[] messageKey = message.Split('|');
                 int index = messageKey[0].IndexOf('%');
                 // parameters substitution
-                if (index > 0)
-                {
+                if (index > 0) {
                     string[] param = messageKey[0].Substring(index + 1).Split(new char[] { '%' });
-                    foreach (DictionaryEntry myEntry in myLabel)
-                    {
+                    foreach (DictionaryEntry myEntry in myLabel) {
                         if (myEntry.Key.ToString().Equals(messageKey[0].Substring(0, index)))
                             messageValue = myEntry.Value.ToString();
                     }
 
-                    if (messageValue != null)
-                    {
-                        for (int i = 0; i < param.Length; i++)
-                        {
+                    if (messageValue != null) {
+                        for (int i = 0; i < param.Length; i++) {
                             messageValue = messageValue.Replace("%" + (i + 1), param[i]);
                         }
                     }
-                }
-                else
-                {
-                    foreach (DictionaryEntry myEntry in myLabel)
-                    {
+                } else {
+                    foreach (DictionaryEntry myEntry in myLabel) {
                         if (myEntry.Key.ToString().Equals(messageKey[0]))
                             messageValue = myEntry.Value.ToString();
                     }
 
                 }
 
-                if (messageValue != null && !fidilityLossMsg.Contains(messageKey[1] + messageValue + " for " + Path.GetFileName(docName)))
-                {
+                if (messageValue != null && !fidilityLossMsg.Contains(messageKey[1] + messageValue + " for " + Path.GetFileName(docName))) {
                     fidilityLossMsg.Add(messageKey[1] + messageValue + " for " + Path.GetFileName(docName));
                 }
-            }
-            else
-            {
+            } else {
                 int index = message.IndexOf('%');
                 // parameters substitution
-                if (index > 0)
-                {
+                if (index > 0) {
                     string[] param = message.Substring(index + 1).Split(new char[] { '%' });
-                    foreach (DictionaryEntry myEntry in myLabel)
-                    {
+                    foreach (DictionaryEntry myEntry in myLabel) {
                         if (myEntry.Key.ToString().Equals(message.Substring(0, index)))
                             messageValue = myEntry.Value.ToString();
                     }
 
-                    if (messageValue != null)
-                    {
-                        for (int i = 0; i < param.Length; i++)
-                        {
+                    if (messageValue != null) {
+                        for (int i = 0; i < param.Length; i++) {
                             messageValue = messageValue.Replace("%" + (i + 1), param[i]);
                         }
                     }
-                }
-                else
-                {
-                    foreach (DictionaryEntry myEntry in myLabel)
-                    {
+                } else {
+                    foreach (DictionaryEntry myEntry in myLabel) {
                         if (myEntry.Key.ToString().Equals(message))
                             messageValue = myEntry.Value.ToString();
                     }
                 }
 
-                if (messageValue != null && !fidilityLossMsg.Contains(messageValue + " for " + Path.GetFileName(docName)))
-                {
+                if (messageValue != null && !fidilityLossMsg.Contains(messageValue + " for " + Path.GetFileName(docName))) {
                     fidilityLossMsg.Add(messageValue + " for " + Path.GetFileName(docName));
                 }
             }
@@ -245,10 +206,8 @@ namespace Sonata.DaisyConverter.CommandLineTool
         #region Own Multiple OOXML
 
         /* Core Function to translate all Sub documents */
-        public void MultipleOwnDocCore(String inputFile, String outputfilepath)
-        {
-            try
-            {
+        public void MultipleOwnDocCore(String inputFile, String outputfilepath) {
+            try {
                 subList = new ArrayList();
                 langMergeDoc = new ArrayList();
                 notTranslatedDoc = new ArrayList();
@@ -259,8 +218,7 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 packDoc = Package.Open(inputFile, FileMode.Open, FileAccess.ReadWrite);
 
                 //Searching for Document.xml
-                foreach (PackageRelationship searchRelation in packDoc.GetRelationshipsByType(wordRelationshipType))
-                {
+                foreach (PackageRelationship searchRelation in packDoc.GetRelationshipsByType(wordRelationshipType)) {
                     relationship = searchRelation;
                     break;
                 }
@@ -268,78 +226,57 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
                 PackagePart mainPartxml = packDoc.GetPart(partUri);
 
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships())
-                {
+                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships()) {
                     relationship = searchRelation;
-                    if (relationship.RelationshipType == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument")
-                    {
-                        if (relationship.TargetMode.ToString() == "External")
-                        {
+                    if (relationship.RelationshipType == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument") {
+                        if (relationship.TargetMode.ToString() == "External") {
                             String fileName = relationship.TargetUri.ToString();
 
                             //Checking whether sub document is of type Docx or Doc 
-                            if (Path.GetExtension(fileName) == ".docx" || Path.GetExtension(fileName) == ".doc")
-                            {
+                            if (Path.GetExtension(fileName) == ".docx" || Path.GetExtension(fileName) == ".doc") {
                                 subCount++;
 
                                 //Making a list of all Sub documents in the current Document
-                                if (fileName.Contains("file") && fileName.Contains("/Local Settings/Temp/"))
-                                {
+                                if (fileName.Contains("file") && fileName.Contains("/Local Settings/Temp/")) {
                                     fileName = fileName.Replace("file:///", "");
                                     int indx = fileName.LastIndexOf("/Local Settings/Temp/");
                                     fileName = fileName.Substring(indx + 21);
                                     fileName = Path.GetDirectoryName(inputFile) + "//" + fileName;
-                                    if (File.Exists(fileName))
-                                    {
+                                    if (File.Exists(fileName)) {
                                         subList.Add(fileName + "|" + relationship.Id.ToString());
                                     }
-                                }
-                                else if (fileName.Contains("file"))
-                                {
+                                } else if (fileName.Contains("file")) {
                                     fileName = fileName.Replace("file:///", "");
-                                    if (File.Exists(fileName))
-                                    {
+                                    if (File.Exists(fileName)) {
                                         subList.Add(fileName + "|" + relationship.Id.ToString());
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                     fileName = Path.GetDirectoryName(inputFile) + "\\" + Path.GetFileName(fileName);
                                     if (fileName.Contains("%20"))
                                         fileName = fileName.Replace("%20", " ");
-                                    if (File.Exists(fileName))
-                                    {
+                                    if (File.Exists(fileName)) {
                                         subList.Add(fileName + "|" + relationship.Id.ToString());
                                     }
                                 }
                             }
                             //If sub document is of type other than Docx and Doc format
-                            else
-                            {
-                                if (fileName.Contains("file") && fileName.Contains("/Local Settings/Temp/"))
-                                {
+                            else {
+                                if (fileName.Contains("file") && fileName.Contains("/Local Settings/Temp/")) {
                                     fileName = fileName.Replace("file:///", "");
                                     int indx = fileName.LastIndexOf("/Local Settings/Temp/");
                                     fileName = fileName.Substring(indx + 21);
                                     fileName = Path.GetDirectoryName(inputFile) + "//" + fileName;
-                                    if (File.Exists(fileName))
-                                    {
+                                    if (File.Exists(fileName)) {
                                         notTranslatedDoc.Add(fileName);
                                     }
-                                }
-                                else if (fileName.Contains("file"))
-                                {
+                                } else if (fileName.Contains("file")) {
                                     fileName = fileName.Replace("file:///", "");
-                                    if (File.Exists(fileName))
-                                    {
+                                    if (File.Exists(fileName)) {
                                         notTranslatedDoc.Add(fileName);
                                     }
-                                }
-                                else
-                                {
+                                } else {
                                     fileName = Path.GetDirectoryName(inputFile) + "\\" + Path.GetFileName(fileName);
-                                    if (File.Exists(fileName))
-                                    {
+                                    if (File.Exists(fileName)) {
                                         notTranslatedDoc.Add(fileName);
                                     }
                                 }
@@ -348,18 +285,14 @@ namespace Sonata.DaisyConverter.CommandLineTool
                     }
                 }
                 packDoc.Close();
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 //MessageBox.Show(this.resourceManager.GetString("TranslationFailed") + "\n" + this.resourceManager.GetString("WellDaisyFormat") + "\n" + " \"" + Path.GetFileName(tempInputFile) + "\"\n" + validationErrorMsg + "\n" + "Problem is:" + "\n" + e.Message + "\n", "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
         }
 
         /* Function to translate the current document along with sub documents */
-        public void MultipleOwnDoc(String outputfilepath, ArrayList subList, Hashtable table)
-        {
-            try
-            {
+        public void MultipleOwnDoc(String outputfilepath, ArrayList subList, Hashtable table) {
+            try {
                 error_MasterSub = "";
                 mergeXmlDoc = new XmlDocument();
                 mergeDocLanguage = new ArrayList();
@@ -369,39 +302,32 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 converter.SkipedPostProcessors = this.skipedPostProcessors;
                 converter.DirectTransform = transformDirection == Direction.DocxToXml;
 
-                for (int i = 0; i < subList.Count; i++)
-                {
+                for (int i = 0; i < subList.Count; i++) {
                     string[] splt = subList[i].ToString().Split('|');
                     docName = splt[0];
                     converter.RemoveMessageListeners();
                     converter.AddFeedbackMessageListener(new AbstractConverter.MessageListener(FeedbackMessageInterceptor));
-                    converter.Transform(splt[0], null, null, null, true,"");
+                    converter.Transform(splt[0], null, null, null, true, "");
                 }
 
 
-                for (int i = 0; i < subList.Count; i++)
-                {
+                for (int i = 0; i < subList.Count; i++) {
                     string[] splt = subList[i].ToString().Split('|');
                     String outputFile = Path.GetDirectoryName(outputfilepath) + "\\" + Path.GetFileNameWithoutExtension(splt[0]) + ".xml";
                     String ridOutputFile = splt[1];
-                    converter.Transform(splt[0], outputFile, table, listMathMl, true,"");
-                    if (i == 0)
-                    {
+                    converter.Transform(splt[0], outputFile, table, listMathMl, true, "");
+                    if (i == 0) {
                         ReplaceData(outputFile);
                         mergeXmlDoc.Load(outputFile);
 
-                        if (File.Exists(outputFile))
-                        {
+                        if (File.Exists(outputFile)) {
                             File.Delete(outputFile);
                         }
-                    }
-                    else
-                    {
+                    } else {
                         ReplaceData(outputFile);
                         MergeXml(outputFile, mergeXmlDoc, ridOutputFile, splt[0]);
 
-                        if (File.Exists(outputFile))
-                        {
+                        if (File.Exists(outputFile)) {
                             File.Delete(outputFile);
                         }
                     }
@@ -416,24 +342,19 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 CopyMATHToDestinationfolder(Path.GetDirectoryName(outputfilepath));
                 ValidateOutputFile(outputfilepath);
                 ReplaceData(outputfilepath, false);
-                if (File.Exists(Path.GetDirectoryName(outputfilepath) + "\\dtbook-2005-3.dtd"))
-                {
+                if (File.Exists(Path.GetDirectoryName(outputfilepath) + "\\dtbook-2005-3.dtd")) {
                     File.Delete(Path.GetDirectoryName(outputfilepath) + "\\dtbook-2005-3.dtd");
                 }
                 DeleteMath(Path.GetDirectoryName(outputfilepath));
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 //  error_Exception = manager.GetString("TranslationFailed") + "\n" + manager.GetString("WellDaisyFormat") + "\n" + " \"" + Path.GetFileName(tempInputFile) + "\"\n" + error_MasterSub + "\n" + "Problem is:" + "\n" + e.Message + "\n";
 
             }
         }
 
         /*Function to translate all Bunch of documents  selected by the user*/
-        public void MultipleBatchDoc(String outputfilepath, ArrayList subList, Hashtable table)
-        {
-            try
-            {
+        public void MultipleBatchDoc(String outputfilepath, ArrayList subList, Hashtable table) {
+            try {
                 error_MasterSub = "";
                 mergeXmlDoc = new XmlDocument();
                 mergeDocLanguage = new ArrayList();
@@ -442,42 +363,34 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 converter.SkipedPostProcessors = this.skipedPostProcessors;
                 converter.DirectTransform = transformDirection == Direction.DocxToXml;
 
-                for (int i = 0; i < subList.Count; i++)
-                {
+                for (int i = 0; i < subList.Count; i++) {
                     string[] splt = subList[i].ToString().Split('|');
                     docName = splt[0];
                     converter.RemoveMessageListeners();
                     converter.AddFeedbackMessageListener(new AbstractConverter.MessageListener(FeedbackMessageInterceptor));
-                    converter.Transform(splt[0], null, null, null, true,"");
+                    converter.Transform(splt[0], null, null, null, true, "");
                 }
 
 
-                for (int i = 0; i < subList.Count; i++)
-                {
+                for (int i = 0; i < subList.Count; i++) {
                     bool validated = false;
                     validated = ValidateFile(subList[i].ToString());
-                    if (validated)
-                    {
+                    if (validated) {
                         String outputFile = Path.GetDirectoryName(outputfilepath) + "\\" + Path.GetFileNameWithoutExtension(subList[i].ToString()) + ".xml";
-                        converter.Transform(subList[i].ToString(), outputFile, table, null, true,"");
-                        if (i == 0)
-                        {
+                        converter.Transform(subList[i].ToString(), outputFile, table, null, true, "");
+                        if (i == 0) {
                             ReplaceData(outputFile);
                             mergeXmlDoc.Load(outputFile);
 
-                            if (File.Exists(outputFile))
-                            {
+                            if (File.Exists(outputFile)) {
                                 File.Delete(outputFile);
                             }
 
-                        }
-                        else
-                        {
+                        } else {
                             ReplaceData(outputFile);
                             MergeXml(outputFile, mergeXmlDoc, subList[i].ToString());
 
-                            if (File.Exists(outputFile))
-                            {
+                            if (File.Exists(outputFile)) {
                                 File.Delete(outputFile);
                             }
                         }
@@ -494,15 +407,12 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 CopyMATHToDestinationfolder(Path.GetDirectoryName(outputfilepath));
                 ValidateOutputFile(outputfilepath);
                 ReplaceData(outputfilepath, false);
-                if (File.Exists(Path.GetDirectoryName(outputfilepath) + "\\dtbook-2005-3.dtd"))
-                {
+                if (File.Exists(Path.GetDirectoryName(outputfilepath) + "\\dtbook-2005-3.dtd")) {
                     File.Delete(Path.GetDirectoryName(outputfilepath) + "\\dtbook-2005-3.dtd");
                 }
                 DeleteMath(Path.GetDirectoryName(outputfilepath));
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 error_Exception = "Translation failed." + "\n" + "Validation error found while translating the following documents" + "\n" + " \"" + Path.GetFileName(subList[0].ToString()) + "\"" + "\n" + "Validation error:" + "\n" + e.Message + "\n";
             }
 
@@ -515,11 +425,9 @@ namespace Sonata.DaisyConverter.CommandLineTool
         #region MultipleOOXML Supproting functions
 
         /* Function checking for all the documents skipped during the Translation*/
-        public String DocumentSkipped()
-        {
+        public String DocumentSkipped() {
             String message = "";
-            if (notTranslatedDoc.Count != 0)
-            {
+            if (notTranslatedDoc.Count != 0) {
                 for (int i = 0; i < notTranslatedDoc.Count; i++)
                     message = message + Convert.ToString(i + 1) + ". " + notTranslatedDoc[i].ToString() + "\n";
 
@@ -529,19 +437,16 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /*Function to validate the input document*/
-        public void ValidateOutputFile(String outFile)
-        {
+        public void ValidateOutputFile(String outFile) {
             isValid = true;
             XmlTextReader xml = new XmlTextReader(outFile);
             XmlValidatingReader xsd = new XmlValidatingReader(xml);
 
-            try
-            {
+            try {
                 xsd.ValidationType = ValidationType.DTD;
                 xsd.ValidationEventHandler += new ValidationEventHandler(MyValidationEventHandler);
 
-                while (xsd.Read())
-                {
+                while (xsd.Read()) {
                     errorText = xsd.ReadString();
                     if (errorText.Length > 100)
                         errorText = errorText.Substring(0, 100);
@@ -550,10 +455,8 @@ namespace Sonata.DaisyConverter.CommandLineTool
 
                 Stream stream = null;
                 Assembly asm = Assembly.GetExecutingAssembly();
-                foreach (string name in asm.GetManifestResourceNames())
-                {
-                    if (name.EndsWith("Shematron.xsl"))
-                    {
+                foreach (string name in asm.GetManifestResourceNames()) {
+                    if (name.EndsWith("Shematron.xsl")) {
                         stream = asm.GetManifestResourceStream(name);
                         break;
                     }
@@ -572,42 +475,33 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 rdr.Close();
 
                 StreamReader reader = new StreamReader(Path.GetDirectoryName(outFile) + "\\report.txt");
-                if (!reader.EndOfStream)
-                {
+                if (!reader.EndOfStream) {
                     error += reader.ReadToEnd();
                     isValid = false;
                 }
                 reader.Close();
 
-                if (File.Exists(Path.GetDirectoryName(outFile) + "\\report.txt"))
-                {
+                if (File.Exists(Path.GetDirectoryName(outFile) + "\\report.txt")) {
                     File.Delete(Path.GetDirectoryName(outFile) + "\\report.txt");
                 }
 
                 // Check whether the document is valid or invalid.
-                if (isValid == false)
-                {
+                if (isValid == false) {
                     if (error_MasterSub != "")
                         error_Exception = "Translation failed." + "\n" + "Validation error found while translating the following documents" + "\n" + " \"" + error_MasterSub + "\n" + error;
                     else
                         error_Exception = "Translated document is invalid." + "\n\n" + error;
-                }
-                else
-                {
+                } else {
                     if (error_MasterSub != "")
                         error_Exception = "Translation failed." + "\n\n" + "Validation error found while translating the following documents" + "\n" + " \"" + error_MasterSub + "\n" + error;
                 }
 
-            }
-            catch (UnauthorizedAccessException a)
-            {
+            } catch (UnauthorizedAccessException a) {
                 xsd.Close();
                 //dont have access permission
                 String error = a.Message;
                 report.AddLog("", "Validation Error of translated DAISY File: \n" + error, Report.ERROR_LEVEL);
-            }
-            catch (Exception a)
-            {
+            } catch (Exception a) {
                 xsd.Close();
                 //and other things that could go wrong
                 String error = a.Message;
@@ -616,8 +510,7 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function to Capture all the Validity Errors*/
-        public void MyValidationEventHandler(object sender, ValidationEventArgs args)
-        {
+        public void MyValidationEventHandler(object sender, ValidationEventArgs args) {
             isValid = false;
             error += " Line Number : " + args.Exception.LineNumber + " and " +
              " Line Position : " + args.Exception.LinePosition + Environment.NewLine +
@@ -625,8 +518,7 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /*Function to delete MathMl DTDs*/
-        public void DeleteMath(String fileName)
-        {
+        public void DeleteMath(String fileName) {
             DeleteFile(fileName + "\\mathml2.DTD");
             DeleteFile(fileName + "\\mathml2-qname-1.mod");
             Directory.Delete(fileName + "\\iso8879", true);
@@ -636,40 +528,34 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /*Function to delete MathMl DTDs*/
-        public void DeleteFile(String file)
-        {
-            if (File.Exists(file))
-            {
+        public void DeleteFile(String file) {
+            if (File.Exists(file)) {
                 File.Delete(file);
             }
         }
 
         /*Function to copy MATHML DTD to destination */
-        public void CopyMATHToDestinationfolder(String outputFile)
-        {
+        public void CopyMATHToDestinationfolder(String outputFile) {
             string fileName = "";
             fileName = outputFile + "\\mathml2-qname-1.mod";
             CopyingAssemblyFile(fileName, "mathml2-qname-1.mod");
             fileName = outputFile + "\\mathml2.DTD";
             CopyingAssemblyFile(fileName, "mathml2.DTD");
 
-            for (int i = 0; i < MathList8879.Count; i++)
-            {
+            for (int i = 0; i < MathList8879.Count; i++) {
                 Directory.CreateDirectory(outputFile + "\\iso8879");
                 fileName = outputFile + "\\iso8879\\" + MathList8879[i].ToString();
                 CopyingAssemblyFile(fileName, MathList8879[i].ToString());
 
             }
 
-            for (int i = 0; i < MathList9573.Count; i++)
-            {
+            for (int i = 0; i < MathList9573.Count; i++) {
                 Directory.CreateDirectory(outputFile + "\\iso9573-13");
                 fileName = outputFile + "\\iso9573-13\\" + MathList9573[i].ToString();
                 CopyingAssemblyFile(fileName, MathList9573[i].ToString());
             }
 
-            for (int i = 0; i < MathListmathml.Count; i++)
-            {
+            for (int i = 0; i < MathListmathml.Count; i++) {
                 Directory.CreateDirectory(outputFile + "\\mathml");
                 fileName = outputFile + "\\mathml\\" + MathListmathml[i].ToString();
                 CopyingAssemblyFile(fileName, MathListmathml[i].ToString());
@@ -678,15 +564,12 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function which copies the Files to the destination folder*/
-        public void CopyingAssemblyFile(String fileName, String indFilename)
-        {
+        public void CopyingAssemblyFile(String fileName, String indFilename) {
             Assembly asm = Assembly.GetExecutingAssembly();
             Stream stream = null;
 
-            foreach (string name in asm.GetManifestResourceNames())
-            {
-                if (name.EndsWith(indFilename))
-                {
+            foreach (string name in asm.GetManifestResourceNames()) {
+                if (name.EndsWith(indFilename)) {
                     stream = asm.GetManifestResourceStream(name);
                     break;
                 }
@@ -702,35 +585,28 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function which merge subdocument.xml to the master.xml*/
-        public void MergeXml(string outputFile, XmlDocument mergeDoc, String rId, String inputFile)
-        {
-            try
-            {
+        public void MergeXml(string outputFile, XmlDocument mergeDoc, String rId, String inputFile) {
+            try {
                 XmlNode tempNode = null;
                 XmlDocument tempDoc = new XmlDocument();
                 tempDoc.Load(outputFile);
 
                 tempDoc = SetFootnote(tempDoc, "subDoc" + subDocFootNum);
 
-                for (int i = 0; i < tempDoc.SelectSingleNode("//head").ChildNodes.Count; i++)
-                {
+                for (int i = 0; i < tempDoc.SelectSingleNode("//head").ChildNodes.Count; i++) {
                     tempNode = tempDoc.SelectSingleNode("//head").ChildNodes[i];
 
-                    if (tempNode.Attributes[0].Value == "dc:Language")
-                    {
-                        if (!mergeDocLanguage.Contains(tempNode.Attributes[1].Value))
-                        {
+                    if (tempNode.Attributes[0].Value == "dc:Language") {
+                        if (!mergeDocLanguage.Contains(tempNode.Attributes[1].Value)) {
                             mergeDocLanguage.Add(tempNode.Attributes[1].Value);
                         }
                     }
                 }
 
-                for (int i = 0; i < tempDoc.SelectSingleNode("//bodymatter").ChildNodes.Count; i++)
-                {
+                for (int i = 0; i < tempDoc.SelectSingleNode("//bodymatter").ChildNodes.Count; i++) {
                     tempNode = tempDoc.SelectSingleNode("//bodymatter").ChildNodes[i];
 
-                    if (tempNode != null)
-                    {
+                    if (tempNode != null) {
                         XmlNode addBodyNode = mergeDoc.ImportNode(tempNode, true);
                         if (addBodyNode != null)
                             mergeDoc.SelectSingleNode("//subdoc[@rId='" + rId + "']").ParentNode.InsertBefore(addBodyNode, mergeDoc.SelectSingleNode("//subdoc[@rId='" + rId + "']"));
@@ -738,10 +614,8 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 }
 
                 tempNode = tempDoc.SelectSingleNode("//frontmatter/level1[@class='print_toc']");
-                if (tempNode != null)
-                {
-                    if (!lostElements.Contains("TOC is not translated" + " for " + Path.GetFileName(inputFile)))
-                    {
+                if (tempNode != null) {
+                    if (!lostElements.Contains("TOC is not translated" + " for " + Path.GetFileName(inputFile))) {
                         lostElements.Add("TOC is not translated" + " for " + Path.GetFileName(inputFile));
                     }
 
@@ -751,14 +625,11 @@ namespace Sonata.DaisyConverter.CommandLineTool
 
                 XmlNode node = tempDoc.SelectSingleNode("//rearmatter");
 
-                if (node != null)
-                {
-                    for (int i = 0; i < tempDoc.SelectSingleNode("//rearmatter").ChildNodes.Count; i++)
-                    {
+                if (node != null) {
+                    for (int i = 0; i < tempDoc.SelectSingleNode("//rearmatter").ChildNodes.Count; i++) {
                         tempNode = tempDoc.SelectSingleNode("//rearmatter").ChildNodes[i];
 
-                        if (tempNode != null)
-                        {
+                        if (tempNode != null) {
                             XmlNode addRearNode = mergeDoc.ImportNode(tempNode, true);
                             if (addRearNode != null)
                                 mergeDoc.LastChild.LastChild.LastChild.AppendChild(addRearNode);
@@ -766,24 +637,19 @@ namespace Sonata.DaisyConverter.CommandLineTool
                     }
                 }
                 subDocFootNum++;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 error_MasterSub = error_MasterSub + "\n" + " \"" + inputFile + "\"";
                 error_MasterSub = error_MasterSub + "\n" + "Validation error:" + "\n" + e.Message + "\n";
             }
         }
 
         /* Function which copies the DTD to the destination folder*/
-        public void CopyDTDToDestinationfolder(String outputFile)
-        {
+        public void CopyDTDToDestinationfolder(String outputFile) {
             Assembly asm = Assembly.GetExecutingAssembly();
             Stream stream = null;
             string fileName = outputFile + "\\dtbook-2005-3.dtd";
-            foreach (string name in asm.GetManifestResourceNames())
-            {
-                if (name.EndsWith("dtbook-2005-3.dtd"))
-                {
+            foreach (string name in asm.GetManifestResourceNames()) {
+                if (name.EndsWith("dtbook-2005-3.dtd")) {
                     stream = asm.GetManifestResourceStream(name);
                     break;
                 }
@@ -801,21 +667,17 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function which creates language info of all sub documents in master.xml*/
-        public void SetLanguage(XmlDocument mergeXmlDoc)
-        {
+        public void SetLanguage(XmlDocument mergeXmlDoc) {
             XmlNodeList languageList = mergeXmlDoc.SelectNodes("//meta[@name='dc:Language']");
 
-            for (int i = 0; i < languageList.Count; i++)
-            {
-                if (mergeDocLanguage.Contains(languageList[i].Attributes[1].Value))
-                {
+            for (int i = 0; i < languageList.Count; i++) {
+                if (mergeDocLanguage.Contains(languageList[i].Attributes[1].Value)) {
                     int indx = mergeDocLanguage.IndexOf(languageList[i].Attributes[1].Value);
                     mergeDocLanguage.RemoveAt(indx);
                 }
             }
 
-            for (int i = 0; i < mergeDocLanguage.Count; i++)
-            {
+            for (int i = 0; i < mergeDocLanguage.Count; i++) {
                 XmlElement tempLang = mergeXmlDoc.CreateElement("meta");
                 tempLang.SetAttribute("name", "dc:Language");
                 tempLang.SetAttribute("content", mergeDocLanguage[i].ToString());
@@ -824,50 +686,40 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function which removes subdoc elements from the master.xml*/
-        public void RemoveSubDoc(XmlDocument mergeXmlDoc)
-        {
+        public void RemoveSubDoc(XmlDocument mergeXmlDoc) {
             XmlNodeList subDocList = mergeXmlDoc.SelectNodes("//subdoc");
 
-            if (subDocList != null)
-            {
-                for (int i = 0; i < subDocList.Count; i++)
-                {
+            if (subDocList != null) {
+                for (int i = 0; i < subDocList.Count; i++) {
                     subDocList.Item(i).ParentNode.RemoveChild(subDocList.Item(i));
                 }
             }
         }
 
         /* Function which merges subdocument.xml and master.xml*/
-        public void MergeXml(string outputFile, XmlDocument mergeDoc, String inputFile)
-        {
-            try
-            {
+        public void MergeXml(string outputFile, XmlDocument mergeDoc, String inputFile) {
+            try {
                 XmlNode tempNode = null;
                 XmlDocument tempDoc = new XmlDocument();
                 tempDoc.Load(outputFile);
 
                 tempDoc = SetFootnote(tempDoc, "subDoc" + subDocFootNum);
 
-                for (int i = 0; i < tempDoc.SelectSingleNode("//head").ChildNodes.Count; i++)
-                {
+                for (int i = 0; i < tempDoc.SelectSingleNode("//head").ChildNodes.Count; i++) {
                     tempNode = tempDoc.SelectSingleNode("//head").ChildNodes[i];
 
-                    if (tempNode.Attributes[0].Value == "dc:Language")
-                    {
-                        if (!mergeDocLanguage.Contains(tempNode.Attributes[1].Value))
-                        {
+                    if (tempNode.Attributes[0].Value == "dc:Language") {
+                        if (!mergeDocLanguage.Contains(tempNode.Attributes[1].Value)) {
                             mergeDocLanguage.Add(tempNode.Attributes[1].Value);
                         }
                     }
                 }
 
 
-                for (int i = 0; i < tempDoc.SelectSingleNode("//bodymatter").ChildNodes.Count; i++)
-                {
+                for (int i = 0; i < tempDoc.SelectSingleNode("//bodymatter").ChildNodes.Count; i++) {
                     tempNode = tempDoc.SelectSingleNode("//bodymatter").ChildNodes[i];
 
-                    if (tempNode != null)
-                    {
+                    if (tempNode != null) {
                         XmlNode addBodyNode = mergeDoc.ImportNode(tempNode, true);
                         if (addBodyNode != null)
                             mergeDoc.LastChild.LastChild.FirstChild.NextSibling.AppendChild(addBodyNode);
@@ -875,10 +727,8 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 }
 
                 tempNode = tempDoc.SelectSingleNode("//frontmatter/level1[@class='print_toc']");
-                if (tempNode != null)
-                {
-                    if (!lostElements.Contains("TOC is not translated" + " for " + Path.GetFileName(inputFile)))
-                    {
+                if (tempNode != null) {
+                    if (!lostElements.Contains("TOC is not translated" + " for " + Path.GetFileName(inputFile))) {
                         lostElements.Add("TOC is not translated" + " for " + Path.GetFileName(inputFile));
                     }
 
@@ -887,14 +737,11 @@ namespace Sonata.DaisyConverter.CommandLineTool
 
                 XmlNode node = tempDoc.SelectSingleNode("//rearmatter");
 
-                if (node != null)
-                {
-                    for (int i = 0; i < tempDoc.SelectSingleNode("//rearmatter").ChildNodes.Count; i++)
-                    {
+                if (node != null) {
+                    for (int i = 0; i < tempDoc.SelectSingleNode("//rearmatter").ChildNodes.Count; i++) {
                         tempNode = tempDoc.SelectSingleNode("//rearmatter").ChildNodes[i];
 
-                        if (tempNode != null)
-                        {
+                        if (tempNode != null) {
                             XmlNode addRearNode = mergeDoc.ImportNode(tempNode, true);
                             if (addRearNode != null)
                                 mergeDoc.LastChild.LastChild.LastChild.AppendChild(addRearNode);
@@ -902,28 +749,22 @@ namespace Sonata.DaisyConverter.CommandLineTool
                     }
                 }
                 subDocFootNum++;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 error_MasterSub = error_MasterSub + "\n" + " \"" + inputFile + "\"";
             }
         }
 
         /* Function which deletes data and appends data of the xml*/
-        public void ReplaceData(String fileName)
-        {
+        public void ReplaceData(String fileName) {
             StreamReader reader = new StreamReader(fileName);
             string data = reader.ReadToEnd();
             reader.Close();
 
             StreamWriter writer = new StreamWriter(fileName);
-            if (!data.Contains("</mml:math>"))
-            {
+            if (!data.Contains("</mml:math>")) {
                 data = data.Replace("<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?><!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd' >", "<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?>");
                 data = data.Replace("<dtbook xmlns=\"http://www.daisy.org/z3986/2005/dtbook/\" version=\"2005-3\"", "<dtbook version=\"" + "2005-3\" xmlns:mml=\"http://www.w3.org/1998/Math/MathML\"");
-            }
-            else
-            {
+            } else {
                 data = data.Replace("<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?><!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'[<!ENTITY % MATHML.prefixed \"INCLUDE\" ><!ENTITY % MATHML.prefix \"mml\"><!ENTITY % Schema.prefix \"sch\"><!ENTITY % XLINK.prefix \"xlp\"><!ENTITY % MATHML.Common.attrib \"xlink:href    CDATA       #IMPLIED xlink:type     CDATA       #IMPLIED   class          CDATA       #IMPLIED  style          CDATA       #IMPLIED  id             ID          #IMPLIED  xref           IDREF       #IMPLIED  other          CDATA       #IMPLIED   xmlns:dtbook   CDATA       #FIXED 'http://www.daisy.org/z3986/2005/dtbook/' dtbook:smilref CDATA       #IMPLIED\"><!ENTITY % mathML2 SYSTEM 'mathml2.dtd'>%mathML2;<!ENTITY % externalFlow \"| mml:math\"><!ENTITY % externalNamespaces \"xmlns:mml CDATA #FIXED 'http://www.w3.org/1998/Math/MathML'\">]>", "<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?>");
                 cutData = data.Substring(95, 1091);
                 data = data.Remove(95, 1091);
@@ -934,36 +775,26 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function which merges subdocument.xml and master.xml*/
-        public void ReplaceData(String fileName, bool value)
-        {
+        public void ReplaceData(String fileName, bool value) {
             StreamReader reader = new StreamReader(fileName);
             string data = reader.ReadToEnd();
             reader.Close();
 
             StreamWriter writer = new StreamWriter(fileName);
-            if (value)
-            {
-                if (!data.Contains("</mml:math>"))
-                {
+            if (value) {
+                if (!data.Contains("</mml:math>")) {
                     data = data.Replace("<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?>", "<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?><!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'>");
                     data = data.Replace("<dtbook version=\"" + "2005-3\" xmlns:mml=\"http://www.w3.org/1998/Math/MathML\" xml:lang=", "<dtbook version=\"" + "2005-3\" xml:lang=");
-                }
-                else
-                {
+                } else {
                     tempData = cutData.Replace("<!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'", "<!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'");
                     tempData = tempData.Replace("<!ENTITY % mathML2 PUBLIC \"-//W3C//DTD MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/mathml2.dtd\">", "<!ENTITY % mathML2 SYSTEM 'mathml2.dtd'>");
                     data = data.Replace("<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?>", "<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?>" + tempData);
                 }
-            }
-            else
-            {
-                if (!data.Contains("</mml:math>"))
-                {
+            } else {
+                if (!data.Contains("</mml:math>")) {
                     data = data.Replace("<!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'>", "<!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'>");
                     data = data.Replace("<dtbook version=\"" + "2005-3\"", "<dtbook xmlns=\"http://www.daisy.org/z3986/2005/dtbook/\" version=\"2005-3\"");
-                }
-                else
-                {
+                } else {
                     data = data.Replace(tempData, cutData);
                     data = data.Replace("<dtbook version=\"" + "2005-3\"", "<dtbook xmlns=\"http://www.daisy.org/z3986/2005/dtbook/\" version=\"2005-3\"");
                 }
@@ -973,24 +804,19 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function which creates unique ID to page numbers*/
-        public void SetPageNum(XmlDocument mergeXmlDoc)
-        {
+        public void SetPageNum(XmlDocument mergeXmlDoc) {
             XmlNodeList pageList = mergeXmlDoc.SelectNodes("//pagenum");
-            for (int i = 1; i <= pageList.Count; i++)
-            {
+            for (int i = 1; i <= pageList.Count; i++) {
                 mergeXmlDoc.SelectNodes("//pagenum").Item(i - 1).Attributes[1].InnerText = "page" + i.ToString();
             }
         }
 
         /* Function which creates unique ID to Images*/
-        public void SetImage(XmlDocument mergeXmlDoc)
-        {
+        public void SetImage(XmlDocument mergeXmlDoc) {
             XmlNodeList imageList = mergeXmlDoc.SelectNodes("//img");
             int j = 0;
-            for (int i = 1; i <= imageList.Count; i++)
-            {
-                if (mergeXmlDoc.SelectNodes("//img").Item(i - 1).Attributes[0].InnerText.StartsWith("rId"))
-                {
+            for (int i = 1; i <= imageList.Count; i++) {
+                if (mergeXmlDoc.SelectNodes("//img").Item(i - 1).Attributes[0].InnerText.StartsWith("rId")) {
                     mergeXmlDoc.SelectNodes("//img").Item(i - 1).Attributes[0].InnerText = "rId" + j.ToString();
                     j++;
                 }
@@ -999,14 +825,11 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function which creates unique ID to the Image Captions */
-        public void SetCaption_Image(XmlDocument mergeXmlDoc)
-        {
+        public void SetCaption_Image(XmlDocument mergeXmlDoc) {
             XmlNodeList captionList = mergeXmlDoc.SelectNodes("//caption");
-            for (int i = 1; i <= captionList.Count; i++)
-            {
+            for (int i = 1; i <= captionList.Count; i++) {
                 XmlNode prevNode = mergeXmlDoc.SelectNodes("//caption").Item(i - 1).PreviousSibling;
-                if (prevNode != null)
-                {
+                if (prevNode != null) {
                     String rId = prevNode.Attributes[0].InnerText;
                     mergeXmlDoc.SelectNodes("//caption").Item(i - 1).Attributes[0].InnerText = rId;
                 }
@@ -1014,22 +837,17 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         /* Function which creates unique ID to the Footnotes */
-        public XmlDocument SetFootnote(XmlDocument mergeXmlDoc, String SubDocFootnum)
-        {
+        public XmlDocument SetFootnote(XmlDocument mergeXmlDoc, String SubDocFootnum) {
             int footnoteCount = 1, endnoteCount = 1;
             XmlNodeList noteList = mergeXmlDoc.SelectNodes("//note");
-            if (noteList != null)
-            {
+            if (noteList != null) {
 
-                for (int i = 1; i <= noteList.Count; i++)
-                {
-                    if (mergeXmlDoc.SelectNodes("//note").Item(i - 1).Attributes[1].InnerText == "Footnote")
-                    {
+                for (int i = 1; i <= noteList.Count; i++) {
+                    if (mergeXmlDoc.SelectNodes("//note").Item(i - 1).Attributes[1].InnerText == "Footnote") {
                         mergeXmlDoc.SelectNodes("//note").Item(i - 1).Attributes[0].InnerText = SubDocFootnum + "footnote-" + footnoteCount.ToString();
                         footnoteCount++;
                     }
-                    if (mergeXmlDoc.SelectNodes("//note").Item(i - 1).Attributes[1].InnerText == "Endnote")
-                    {
+                    if (mergeXmlDoc.SelectNodes("//note").Item(i - 1).Attributes[1].InnerText == "Endnote") {
                         mergeXmlDoc.SelectNodes("//note").Item(i - 1).Attributes[0].InnerText = SubDocFootnum + "endnote-" + endnoteCount.ToString();
                         endnoteCount++;
                     }
@@ -1039,18 +857,14 @@ namespace Sonata.DaisyConverter.CommandLineTool
             footnoteCount = 1;
             endnoteCount = 1;
             noteList = mergeXmlDoc.SelectNodes("//noteref");
-            if (noteList != null)
-            {
+            if (noteList != null) {
 
-                for (int i = 1; i <= noteList.Count; i++)
-                {
-                    if (mergeXmlDoc.SelectNodes("//noteref").Item(i - 1).Attributes[1].InnerText == "Footnote")
-                    {
+                for (int i = 1; i <= noteList.Count; i++) {
+                    if (mergeXmlDoc.SelectNodes("//noteref").Item(i - 1).Attributes[1].InnerText == "Footnote") {
                         mergeXmlDoc.SelectNodes("//noteref").Item(i - 1).Attributes[0].InnerText = "#" + SubDocFootnum + "footnote-" + footnoteCount.ToString();
                         footnoteCount++;
                     }
-                    if (mergeXmlDoc.SelectNodes("//noteref").Item(i - 1).Attributes[1].InnerText == "Endnote")
-                    {
+                    if (mergeXmlDoc.SelectNodes("//noteref").Item(i - 1).Attributes[1].InnerText == "Endnote") {
                         mergeXmlDoc.SelectNodes("//noteref").Item(i - 1).Attributes[0].InnerText = "#" + SubDocFootnum + "endnote-" + endnoteCount.ToString();
                         endnoteCount++;
                     }

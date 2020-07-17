@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <!--  IMPORTANT NOTE:
+			  When creating a new release, 
+				- set the value of Product/@Id to a new GUID (without curly brackets, letters all upper-case)
+				- increase Product/@Version (Note that MSI only checks the first three groups, i.e. 2.5.4802)
+				- set the WixVariable 'VersionNumber' to the new version number
+				- set the value of Package/@Id to a new GUID
+				- leave Product/@UpgradeCode the same
+							
+			  Note that GUID values should be all upper-case and without brackets 
+		-->
+    
     <?define UpgradeCode="81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
     <Product Id="5D3C9F72-EE54-41C6-A7D1-438EC28CBE6E" Name="Daisy Translator Addin version 2.5.5.1" Language="1033" Version="2.5.5.1" Manufacturer="Sonata Software Limited" UpgradeCode="$(var.UpgradeCode)">
         <Package Id="F2F0EBB8-A1C8-4e43-A5A1-8DAAB2C9069F" Compressed="yes" InstallPrivileges="elevated" InstallerVersion="200" />
@@ -12,16 +23,7 @@
             <UpgradeVersion Minimum="0.0.0.0" Maximum="2.5.5.1" Property="OLDAPPFOUND" IncludeMinimum="yes" IncludeMaximum="yes" />
             <UpgradeVersion Property="NEWAPPFOUND" IncludeMinimum="no" Minimum="2.5.5.1" OnlyDetect="yes" />
         </Upgrade>
-        <!--  IMPORTANT NOTE:
-			  When creating a new release, 
-				- set the value of Product/@Id to a new GUID (without curly brackets, letters all upper-case)
-				- increase Product/@Version (Note that MSI only checks the first three groups, i.e. 2.5.4802)
-				- set the WixVariable 'VersionNumber' to the new version number
-				- set the value of Package/@Id to a new GUID
-				- leave Product/@UpgradeCode the same
-							
-			  Note that GUID values should be all upper-case and without brackets 
-		-->
+        
         <!--wix variables-->
         <WixVariable Id="VersionNumber" Value="2.6.0.0" />
         <WixVariable Id="VersionInfo" Value="Version !(wix.VersionNumber)" />
@@ -699,7 +701,7 @@
                                                 <File Id="SimpleCommandLineTTS.application_230" Name="SimpleCommandLineTTS.application" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\SimpleCommandLineTTS\SimpleCommandLineTTS.application" />
                                                 <File Id="SimpleCommandLineTTS.exe_231" Name="SimpleCommandLineTTS.exe" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\SimpleCommandLineTTS\SimpleCommandLineTTS.exe" />
                                                 <File Id="SimpleCommandLineTTS.exe.manifest_232" Name="SimpleCommandLineTTS.exe.manifest" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\SimpleCommandLineTTS\SimpleCommandLineTTS.exe.manifest" />
-                                                <File Id="SimpleCommandLineTTS.pdb_233" Name="SimpleCommandLineTTS.pdb" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\SimpleCommandLineTTS\SimpleCommandLineTTS.pdb" />
+                                                <!--<File Id="SimpleCommandLineTTS.pdb_233" Name="SimpleCommandLineTTS.pdb" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\SimpleCommandLineTTS\SimpleCommandLineTTS.pdb" />-->
                                             </Component>
                                         </Directory>
                                         <Directory Id="INSTALLDIR046" Name="win">
@@ -1349,6 +1351,6 @@
             <RemoveExistingProducts Before="InstallInitialize" />
         </InstallExecuteSequence>
         <UI />
-        <Binary Id="DaisyAddinCustomActions" SourceFile="..\DaisyAddin.CustomActions\bin\Debug\DaisyAddin.CustomActions.CA.dll" />
+      <Binary Id="DaisyAddinCustomActions" SourceFile="$(var.DaisyAddin.CustomActions.TargetDir)\DaisyAddin.CustomActions.CA.dll" />
     </Product>
 </Wix>

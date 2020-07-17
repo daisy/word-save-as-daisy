@@ -40,7 +40,7 @@ namespace Word2007Addin.IntegrationTests
 		}
 
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public virtual void FixtureSetUp()
 		{
 			try
@@ -59,7 +59,7 @@ namespace Word2007Addin.IntegrationTests
 			}
 		}
 
-		[TestFixtureTearDown]
+		[OneTimeTearDown]
 		public virtual void FixtureTearDown()
 		{
 			if (Directory.Exists("output"))
