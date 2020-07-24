@@ -347,7 +347,7 @@
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             REGISTRY SETTINGS
     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-                        <Component Id="RegistryEntriesWord2016" DiskId="1">
+                        <Component Id="RegistryEntriesWord2016" DiskId="1" Guid="E8D27A92-BF7E-4613-AC88-46D9DDB4CFFE">
                             <Condition><![CDATA[LATESTWORDVERSION>"13.0"]]></Condition>
                             <RegistryKey Id="RegKeyAddinMachineWord2016" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyWord2016AddIn.AddIn" Action="createAndRemoveOnUninstall">
                                 <RegistryValue Id="RegLoadBehaviorAddinMachineWord2016" Type="integer" Name="LoadBehavior" Value="3" />
@@ -1432,13 +1432,13 @@
         <!--Built in UI-->
         <CustomAction Id="ShowReadme" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
         <!--Get latest word version-->
-        <CustomAction BinaryKey="DaisyAddinCustomActions" DllEntry="DetectLatestMsWordVersion" Execute="immediate" Id="GetLatestMsWordVersion" />
+        <CustomAction BinaryKey="DaisyAddinCustomActions" DllEntry="DetectLatestMsWordVersion" Execute="immediate" Id="DetectLatestMsWordVersion" />
         <InstallExecuteSequence>
             <!-- Prevent downgrading -->
             <Custom Action="NewerVersionDetected" After="FindRelatedProducts">NEWAPPFOUND</Custom>
             <Custom Action="SetARPREADME" After="InstallValidate">
             </Custom>
-            <Custom Action="GetLatestMsWordVersion" Before="LaunchConditions">NOT Installed</Custom>
+            <Custom Action="DetectLatestMsWordVersion" Before="LaunchConditions">NOT Installed</Custom>
             <RemoveExistingProducts Before="InstallInitialize" />
         </InstallExecuteSequence>
         <UI />
