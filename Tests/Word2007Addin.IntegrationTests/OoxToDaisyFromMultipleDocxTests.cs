@@ -7,6 +7,7 @@ using Extensibility;
 using NUnit.Framework;
 using Microsoft.Office.Interop.Word;
 using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using System.Reflection;
 
 namespace Word2007Addin.IntegrationTests
 {
@@ -349,7 +350,9 @@ namespace Word2007Addin.IntegrationTests
 			ArrayList inputFiles = new ArrayList();
 			foreach (var inputFile in inputDirectory.GetFiles())
 			{
-				inputFiles.Add(inputFile.FullName);
+                if (!inputFile.Name.StartsWith("~")) {
+					inputFiles.Add(inputFile.FullName);
+				}
 			}
 			return inputFiles;
 		}

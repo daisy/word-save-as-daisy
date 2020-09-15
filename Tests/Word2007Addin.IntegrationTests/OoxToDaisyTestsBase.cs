@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using NUnit.Framework;
 using Microsoft.Office.Interop.Word;
+using System.Reflection;
 
 namespace Word2007Addin.IntegrationTests
 {
@@ -43,6 +44,21 @@ namespace Word2007Addin.IntegrationTests
 		[OneTimeSetUp]
 		public virtual void FixtureSetUp()
 		{
+			// VS 2019 - Change working directory as the default one is now in a temp directory of APPDATA
+			// Relocating the working directory to the project directory from the assembly location 
+			// (location is alledgedly <project_folder>/bin/<configuration>/file.dll 
+			// see the output path within the build tab of the project properties)
+			string location = Assembly.GetExecutingAssembly().Location;
+			Directory.SetCurrentDirectory(
+				Directory.GetParent(
+					Directory.GetParent(
+						Directory.GetParent(
+							Assembly.GetExecutingAssembly().Location
+						).FullName
+					).FullName
+				).FullName
+			);
+
 			try
 			{
 				if (Directory.Exists("output"))

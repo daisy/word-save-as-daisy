@@ -139,7 +139,7 @@ namespace DaisyWord2007AddIn {
             templateName = (currentDoc.get_AttachedTemplate() as MSword.Template).Name;
             CheckforAttchments();
             showValidateTabBool = false;
-            daisyRibbon.InvalidateControl("toggleValidate");
+            if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
 
         }
         //Envent handling deactivation of word document
@@ -174,10 +174,10 @@ namespace DaisyWord2007AddIn {
             }
             if (objArray.Count == AddInHelper.DaisyStylesCount) {
                 showViewTabBool = true;
-                daisyRibbon.InvalidateControl("Button7");
+                if (daisyRibbon != null) daisyRibbon.InvalidateControl("Button7");
             } else {
                 showViewTabBool = false;
-                daisyRibbon.InvalidateControl("Button7");
+                if (daisyRibbon != null) daisyRibbon.InvalidateControl("Button7");
             }
         }
 
@@ -465,7 +465,7 @@ namespace DaisyWord2007AddIn {
                 }
 
                 showViewTabBool = true;
-                daisyRibbon.InvalidateControl("Button7");
+                if (daisyRibbon != null) daisyRibbon.InvalidateControl("Button7");
 
             } catch (Exception ex) {
                 string stre = ex.Message;
@@ -503,7 +503,7 @@ namespace DaisyWord2007AddIn {
                                                          System.Windows.Forms.MessageBoxButtons.OK,
                                                          System.Windows.Forms.MessageBoxIcon.Stop);
                     showValidateTabBool = false;
-                    daisyRibbon.InvalidateControl("toggleValidate");
+                    if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
                 }
                 //if saved
                 else if (doc.Saved) {
@@ -515,7 +515,7 @@ namespace DaisyWord2007AddIn {
                                                              System.Windows.Forms.MessageBoxButtons.OK,
                                                              System.Windows.Forms.MessageBoxIcon.Stop);
                         showValidateTabBool = false;
-                        daisyRibbon.InvalidateControl("toggleValidate");
+                        if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
                         return;
                     }
                     //if docx format
@@ -609,7 +609,7 @@ namespace DaisyWord2007AddIn {
                                                     System.Windows.Forms.MessageBoxIcon.Information);
                                     //Enabling Validate tab
                                     showValidateTabBool = false;
-                                    daisyRibbon.InvalidateControl("toggleValidate");
+                                    if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
                                 }
                             }
                             //Progress bar canceled
@@ -617,7 +617,7 @@ namespace DaisyWord2007AddIn {
                                 MessageBox.Show("Validation stopped", "Quit validation", System.Windows.Forms.MessageBoxButtons.OK,
                                                 System.Windows.Forms.MessageBoxIcon.Stop);
                                 showValidateTabBool = false;
-                                daisyRibbon.InvalidateControl("toggleValidate");
+                                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
                             }
 
                         }
@@ -638,7 +638,7 @@ namespace DaisyWord2007AddIn {
             try {
                 DeleteBookMark();
                 showValidateTabBool = false;
-                daisyRibbon.InvalidateControl("toggleValidate");
+                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
                 this.applicationObject.ActiveDocument.Save();
             } catch {
 
