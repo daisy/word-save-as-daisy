@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!-- <!DOCTYPE catalog PUBLIC "-//OASIS//DTD XML Catalogs V1.1//EN" "http://www.oasis-open.org/committees/entity/release/1.1/catalog.dtd"> -->
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="public">
+  
+  <!--
+  	MB 2006-09-13: Just use one 2005 config file
+  <group> <!- - zed 2005-1 - -> 
+    <public publicId="-//NISO//DTD dtbook 2005-1//EN" uri="type/dtbook-2005-1.xml" />
+    <system systemId="http://www.daisy.org/z3986/2005/dtbook-2005-1.dtd" uri="type/dtbook-2005-1.xml" />
+    
+    <system systemId="http://www.daisy.org/z3986/2005/dtbook/" uri="type/dtbook-2005-1.xml" />
+  </group>
+  -->
+  
+  <group> <!-- zed 2005-1 --> 
+    <public publicId="-//NISO//DTD dtbook 2005-1//EN" uri="type/dtbook-2005.xml" />
+    <system systemId="http://www.daisy.org/z3986/2005/dtbook-2005-1.dtd" uri="type/dtbook-2005.xml" />
+    
+    <system systemId="http://www.daisy.org/z3986/2005/dtbook/" uri="type/dtbook-2005.xml" />
+  </group>
+  
+  <group> <!-- zed 2005-2 --> 
+    <public publicId="-//NISO//DTD dtbook 2005-2//EN" uri="type/dtbook-2005.xml" />
+    <system systemId="http://www.daisy.org/z3986/2005/dtbook-2005-2.dtd" uri="type/dtbook-2005.xml" />
+    
+    <system systemId="http://www.daisy.org/z3986/2005/dtbook/" uri="type/dtbook-2005.xml" />
+  </group>
+  
+  <group> <!-- zed 2005-3 --> 
+    <public publicId="-//NISO//DTD dtbook 2005-3//EN" uri="type/dtbook-2005.xml" />
+    <system systemId="http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd" uri="type/dtbook-2005.xml" />
+    
+    <system systemId="http://www.daisy.org/z3986/2005/dtbook/" uri="type/dtbook-2005.xml" />
+  </group>
+  
+  <group> <!-- xhtml --> 
+    <public publicId="-//W3C//DTD XHTML 1.0 Strict//EN" uri="type/xhtml-1.0.xml" />
+    <system systemId="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" uri="type/xhtml-1.0.xml" />
+    
+    <system systemId="http://www.w3.org/1999/xhtml" uri="type/xhtml-1.0.xml" />
+  </group>
+  
+</catalog>

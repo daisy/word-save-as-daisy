@@ -67,6 +67,30 @@
 				<param name="sapiVoiceSelection" value="Language=409"/>
 			</tts>
 		</lang>
+		<lang lang="en_AU">
+			<tts>
+                <param name="class" value="se_tpb_speechgen2.external.win.DefaultSapiTTS"/>
+				<param name="xslt" value="${transformer_dir}/xslt/transform.xsl"/>
+				<param name="characterSubstitutionTables" value="${transformer_dir}/charsubst/character-translation-table.xml"/>
+				<param name="sapiVoiceSelection" value="Language=c09"/>
+			</tts>
+		</lang>
+		<lang lang="en_GB">
+			<tts>
+				<param name="class" value="se_tpb_speechgen2.external.win.DefaultSapiTTS"/>
+				<param name="xslt" value="${transformer_dir}/xslt/transform.xsl"/>
+				<param name="characterSubstitutionTables" value="${transformer_dir}/charsubst/character-translation-table.xml"/>
+				<param name="sapiVoiceSelection" value="Language=809"/>
+			</tts>
+		</lang>
+		<lang lang="ar_EG">
+			<tts>
+                <param name="class" value="se_tpb_speechgen2.external.win.DefaultSapiTTS"/>
+				<param name="xslt" value="${transformer_dir}/xslt/transform.xsl"/>
+				<param name="characterSubstitutionTables" value="${transformer_dir}/charsubst/character-translation-table.xml"/>
+				<param name="sapiVoiceSelection" value="Language=C01"/>
+			</tts>
+		</lang>
 		<lang lang="da">
 			<tts>
                 <param name="class" value="se_tpb_speechgen2.external.win.DefaultSapiTTS"/>
@@ -456,7 +480,7 @@
 				<!-- If the voice is unknown, the default system voice will be used -->
 				<param name="voice" value="Alex"/>
 			</tts>
-		</lang>
+   		</lang>
 	</os>
 	
 </ttsbuilder>

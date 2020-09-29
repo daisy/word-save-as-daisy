@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleSet xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+	<prefix>annon</prefix>
+	<namespace>http://www.daisy.org/ns/pipeline/annon</namespace>
+	<attributeBefore>before</attributeBefore>
+	<attributeAfter>after</attributeAfter>
+	<addAttributes>true</addAttributes>
+
+	<rule match="xhtml:table">
+		<lang lang="sv">
+			<before>Tabell:</before>
+			<after>Slut på tabell.</after>
+		</lang>
+		<lang lang="en">
+			<before>Table:</before>
+			<after>End of table.</after>
+		</lang>
+		<lang lang="ja">
+			<before>表　開始:</before>
+			<after>表　終了</after>
+		</lang>
+	</rule>
+
+</ruleSet>

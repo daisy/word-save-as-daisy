@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xsl:stylesheet [
+  <!ELEMENT xsl:if ANY>
+  <!ELEMENT xsl:with-param ANY>
+  <!ELEMENT xsl:when ANY>
+  <!ATTLIST xsl:if
+  	 id ID #IMPLIED
+  >
+  <!ATTLIST xsl:when
+  	 id ID #IMPLIED
+  >
+  <!ATTLIST xsl:with-param
+  	 id ID #IMPLIED
+  >
+]>
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+<xsl:output method = "xml" encoding="utf-8"/>
+
+<xsl:template match="text()" priority="2">  
+	<xsl:if test="lang('sv')" id="ifBefore">
+   		<xsl:call-template name="insertBefore">
+   			<xsl:with-param name="id" select="generate-id(current())"/>
+   			<xsl:with-param name="lang" id="ifBeforeLang">sv</xsl:with-param>
+   		</xsl:call-template>
+   	</xsl:if>
+ 
+  	<xsl:copy-of select="."/>
+  
+   	<xsl:if test="lang('sv')" id="ifAfter">
+   		<xsl:call-template name="insertAfter">
+   			<xsl:with-param name="id" select="generate-id(current())"/>
+   			<xsl:with-param name="lang" id="ifAfterLang">sv</xsl:with-param>
+   		</xsl:call-template>
+   	</xsl:if>  
+</xsl:template>
+ 
+<xsl:template name="insertBefore">
+	<xsl:param name="id"/>
+	<xsl:param name="lang"/>  
+	<xsl:choose>
+		<xsl:when test="count(ancestor::node())=0"/>
+		<xsl:otherwise>
+			<xsl:for-each select="parent::node()">
+     				<xsl:call-template name="insertBefore">
+      					<xsl:with-param name="id" select="$id"/>
+      					<xsl:with-param name="lang" select="$lang"/>
+     				</xsl:call-template>
+    			</xsl:for-each>
+    			<xsl:choose>
+     				<xsl:when id="testBefore" test="parent::XXX[generate-id( (descendant::text())[not(normalize-space(.)) = ''][1] )=$id]">     
+	     				<xsl:choose>
+						<xsl:when id="testBeforeLang" test="$lang='sv'">Tabell</xsl:when>
+						<xsl:otherwise>ERROR: x<xsl:value-of select="$lang"/>x</xsl:otherwise>
+	     				</xsl:choose>     
+     				</xsl:when>
+    			</xsl:choose>
+   		</xsl:otherwise>
+  	</xsl:choose>
+</xsl:template>
+ 
+ 
+<xsl:template name="insertAfter">
+	<xsl:param name="id"/>
+	<xsl:param name="lang"/> 
+  	<xsl:choose>
+   		<xsl:when test="count(ancestor::node())=0"/>
+   		<xsl:otherwise>    
+    			<xsl:choose>
+    				<xsl:when id="testAfter" test="parent::XXX[generate-id( (descendant::text())[not(normalize-space(.)) = ''][last()] )=$id]">     
+	     				<xsl:choose>
+						<xsl:when id="testAfterLang" test="$lang='sv'">Tabell</xsl:when>
+						<xsl:otherwise>ERROR: x<xsl:value-of select="$lang"/>x</xsl:otherwise>
+	     				</xsl:choose>     
+     				</xsl:when>
+    			</xsl:choose>
+    			<xsl:for-each select="parent::node()">
+     				<xsl:call-template name="insertAfter">
+      					<xsl:with-param name="id" select="$id"/>
+      					<xsl:with-param name="lang" select="$lang"/>
+     				</xsl:call-template>
+    			</xsl:for-each>
+   		</xsl:otherwise>
+  	</xsl:choose>
+</xsl:template>
+ 
+<xsl:template match="@*|node()" priority="1">
+	<xsl:copy>
+		<xsl:apply-templates select="@*|node()"/>
+	</xsl:copy>
+</xsl:template>
+ 
+</xsl:stylesheet>

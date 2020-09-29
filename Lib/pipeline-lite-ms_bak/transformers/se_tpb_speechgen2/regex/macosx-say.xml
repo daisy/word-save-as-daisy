@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleSet>
+    <!-- Escape punctuation and space only input to prevent sox crashes  -->
+	<!-- Added Pf category characters explicitly since Pattern ignores the Pf category -->
+	<!-- (see bug http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4829857) -->
+	<rule match="^[\p{IsZs}\p{IsP}\u00BB\u2019\u201D\u203A]+$" replace=" " />
+</ruleSet>
+

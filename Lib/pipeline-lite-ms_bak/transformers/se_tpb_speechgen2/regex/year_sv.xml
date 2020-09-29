@@ -1,0 +1,130 @@
+<year before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$" match="(\d\d)(\d\d)(-\p{L}*)?" min="1000" max="2499">
+		<group number="1">
+			<value number="10" text="ett tusen"/>
+			<value number="11" text="elvahundra"/>
+			<value number="12" text="tolvhundra"/>
+			<value number="13" text="trettonhundra"/>
+			<value number="14" text="fjortonhundra"/>
+			<value number="15" text="femtonhundra"/>
+			<value number="16" text="sextonhundra"/>
+			<value number="17" text="sjuttonhundra"/>
+			<value number="18" text="artonhundra"/>
+			<value number="19" text="nittonhundra"/>
+			<value number="20" text="tjugohundra"/>
+			<value number="21" text="tjugoetthundra"/>
+			<value number="22" text="tjugotvåhundra"/>
+			<value number="23" text="tjugotrehundra"/>
+			<value number="24" text="tjugofyrahundra"/>
+		</group>
+		<group number="2">
+			<value number="00" text=""/>
+			<value number="01" text="ett"/>
+			<value number="02" text="två"/>
+			<value number="03" text="tre"/>
+			<value number="04" text="fyra"/>
+			<value number="05" text="fem"/>
+			<value number="06" text="sex"/>
+			<value number="07" text="sju"/>
+			<value number="08" text="åtta"/>
+			<value number="09" text="nio"/>
+			
+			<value number="10" text="tio"/>
+			<value number="11" text="elva"/>
+			<value number="12" text="tolv"/>
+			<value number="13" text="tretton"/>
+			<value number="14" text="fjorton"/>
+			<value number="15" text="femton"/>
+			<value number="16" text="sexton"/>
+			<value number="17" text="sjutton"/>
+			<value number="18" text="arton"/>
+			<value number="19" text="nitton"/>
+			
+			<value number="20" text="tjugo"/>
+			<value number="21" text="tjugoett"/>
+			<value number="22" text="tjugotvå"/>
+			<value number="23" text="tjugotre"/>
+			<value number="24" text="tjugofyra"/>
+			<value number="25" text="tjugofem"/>
+			<value number="26" text="tjugosex"/>
+			<value number="27" text="tjugosju"/>
+			<value number="28" text="tjugoåtta"/>
+			<value number="29" text="tjugonio"/>
+			
+			<value number="30" text="trettio"/>
+			<value number="31" text="trettioett"/>
+			<value number="32" text="trettiotvå"/>
+			<value number="33" text="trettiotre"/>
+			<value number="34" text="trettiofyra"/>
+			<value number="35" text="trettiofem"/>
+			<value number="36" text="trettiosex"/>
+			<value number="37" text="trettiosju"/>
+			<value number="38" text="trettioåtta"/>
+			<value number="39" text="trettionio"/>
+			
+			<value number="40" text="fyrtio"/>
+			<value number="41" text="fyrtioett"/>
+			<value number="42" text="fyrtiotvå"/>
+			<value number="43" text="fyrtiotre"/>
+			<value number="44" text="fyrtiofyra"/>
+			<value number="45" text="fyrtiofem"/>
+			<value number="46" text="fyrtiosex"/>
+			<value number="47" text="fyrtiosju"/>
+			<value number="48" text="fyrtioåtta"/>
+			<value number="49" text="fyrtionio"/>
+			
+			<value number="50" text="femtio"/>
+			<value number="51" text="femtioett"/>
+			<value number="52" text="femtiotvå"/>
+			<value number="53" text="femtiotre"/>
+			<value number="54" text="femtiofyra"/>
+			<value number="55" text="femtiofem"/>
+			<value number="56" text="femtiosex"/>
+			<value number="57" text="femtiosju"/>
+			<value number="58" text="femtioåtta"/>
+			<value number="59" text="femtionio"/>
+			
+			<value number="60" text="sextio"/>
+			<value number="61" text="sextioett"/>
+			<value number="62" text="sextiotvå"/>
+			<value number="63" text="sextiotre"/>
+			<value number="64" text="sextiofyra"/>
+			<value number="65" text="sextiofem"/>
+			<value number="66" text="sextiosex"/>
+			<value number="67" text="sextiosju"/>
+			<value number="68" text="sextioåtta"/>
+			<value number="69" text="sextionio"/>
+			
+			<value number="70" text="sjuttio"/>
+			<value number="71" text="sjuttioett"/>
+			<value number="72" text="sjuttiotvå"/>
+			<value number="73" text="sjuttiotre"/>
+			<value number="74" text="sjuttiofyra"/>
+			<value number="75" text="sjuttiofem"/>
+			<value number="76" text="sjuttiosex"/>
+			<value number="77" text="sjuttiosju"/>
+			<value number="78" text="sjuttioåtta"/>
+			<value number="79" text="sjuttionio"/>
+			
+			<value number="80" text="åttio"/>
+			<value number="81" text="åttioett"/>
+			<value number="82" text="åttiotvå"/>
+			<value number="83" text="åttiotre"/>
+			<value number="84" text="åttiofyra"/>
+			<value number="85" text="åttiofem"/>
+			<value number="86" text="åttiosex"/>
+			<value number="87" text="åttiosju"/>
+			<value number="88" text="åttioåtta"/>
+			<value number="89" text="åttionio"/>
+			
+			<value number="90" text="nittio"/>
+			<value number="91" text="nittioett"/>
+			<value number="92" text="nittiotvå"/>
+			<value number="93" text="nittiotre"/>
+			<value number="94" text="nittiofyra"/>
+			<value number="95" text="nittiofem"/>
+			<value number="96" text="nittiosex"/>
+			<value number="97" text="nittiosju"/>
+			<value number="98" text="nittioåtta"/>
+			<value number="99" text="nittionio"/>
+		</group>
+	</year>

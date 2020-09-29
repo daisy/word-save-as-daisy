@@ -36,6 +36,14 @@
 			<default></default>
 		</parameter>
 		
+		
+		<parameter required="false" direction="in" type="string">
+			<name>catalogFile</name>
+			<description>Alternative path to file where to point out xml-file with announcements. The file must be located in the transformer folder!</description>
+			<example>c:/temp/type.xml</example>
+			<default></default>
+		</parameter>
+		
 	</parameters>	
 
 </transformer>

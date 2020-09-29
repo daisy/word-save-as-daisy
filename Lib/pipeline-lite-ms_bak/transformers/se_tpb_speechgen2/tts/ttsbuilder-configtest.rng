@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RelaxNG/Schematron test for the TTS Builder Configuration -->
+<grammar
+	ns=""
+	xmlns="http://relaxng.org/ns/structure/1.0"
+	xmlns:sch="http://www.ascc.net/xml/schematron"
+	xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" 
+>
+	
+	<start>
+		<ref name="root"/>
+	</start>
+	
+	
+	<define name="root">
+		<element name="ttsbuilder">
+			<oneOrMore>
+				<ref name="os"/>
+			</oneOrMore>  
+		</element>
+	</define>
+	
+	
+	<define name="os">
+		<element name="os">
+			<ref name="os-properties"/>
+			<ref name="languages"/>
+		</element>
+	</define>
+	
+	
+	<define name="os-properties">
+		<zeroOrMore>
+			<element name="property">
+				<attribute name="name">
+					<text/>
+				</attribute>
+				<attribute name="match">
+					<text/>
+				</attribute>
+			</element>			
+		</zeroOrMore>
+	</define>
+	
+	
+	<define name="languages">
+		<zeroOrMore>
+			<element name="lang">
+				<attribute name="lang">
+					<text/>
+				</attribute>
+				<ref name="tts"/>
+			</element>
+		</zeroOrMore>
+	</define>
+	
+	
+	<define name="tts">
+		<element name="tts">
+			<optional>
+				<attribute name="default">
+					<choice>
+						<value type="string">true</value>
+					</choice>
+				</attribute>
+			</optional>	
+			
+			<optional>
+				<attribute name="instances">
+					<text/>
+				</attribute>
+			</optional>
+			
+			<ref name="tts-parameters"/>
+		</element>
+	</define>
+	
+	
+	<define name="tts-parameters">
+		<oneOrMore>
+			<element name="param">
+				<attribute name="name">
+					<text/>
+				</attribute>
+				<attribute name="value">
+					<text/>
+				</attribute>
+			</element>
+			<empty/>
+		</oneOrMore>
+	</define>
+
+	
+	<sch:pattern name="A language only occurs once per OS">
+		<sch:rule context="/ttsbuilder/os/lang">
+			<sch:assert test="count(../lang[@lang=current()/@lang]) = 1">A language is only allowed once per OS, duplicate found for.</sch:assert>
+		</sch:rule>
+	</sch:pattern>	
+
+	
+	<sch:pattern name="The length of the lang attribute must not be empty">
+		<sch:rule context="/ttsbuilder/os/lang">
+			<sch:assert test="string-length(./@lang) &gt; 0">Length of lang attribute value must not be empty</sch:assert>
+		</sch:rule>
+	</sch:pattern>
+	
+	
+	<!-- "Unknown system function: lower-case" why?
+	<sch:pattern name="The lang attribute is lower-case">
+		<sch:rule context="/ttsbuilder/os/lang">
+			<sch:assert test="(lower-case(current()/@lang)=current()/@lang)">The lang attribute must be lower-case</sch:assert>
+		</sch:rule>
+	</sch:pattern>
+	-->
+	
+	
+	<sch:pattern name="No more than 1 default TTS defined for each OS">
+		<sch:rule context="/ttsbuilder/os">
+			<sch:assert test="count(lang/tts[@default='true']) &lt;= 1">One default TTS may be defined for each operating system, no more.</sch:assert>
+		</sch:rule>
+	</sch:pattern>
+
+	
+	<sch:pattern name="Class name provided">
+		<sch:rule context="/ttsbuilder/os/lang/tts">
+			<sch:assert test="count(param[@name='class']) = 1">Parameter with name="class", supposed to be the Java class name, not provided</sch:assert>
+		</sch:rule>
+	</sch:pattern>
+	
+			
+	<sch:pattern name="No duplicate parameters, except for 'command'">
+		<sch:rule context="/ttsbuilder/os/lang/tts/param">
+			<sch:assert test="(count(../param[@name=current()/@name]) = 1) or (./@name='command')">Duplicate parameters not allowed in the same tts scope.</sch:assert>
+		</sch:rule>
+	</sch:pattern>
+	
+	
+	<sch:pattern name="'Instances' is a number">
+		<sch:rule context="/ttsbuilder/os/lang/tts">
+			<sch:assert test="string-length(translate(./@instances, '1234567890', '')) = 0">The instances parameter must contain a non-negative integer</sch:assert>
+		</sch:rule>
+	</sch:pattern>
+	
+
+</grammar>

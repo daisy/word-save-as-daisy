@@ -95,9 +95,7 @@
 	</xsl:template>
 	
 	<xsl:template match="img">
-		<xsl:text>, </xsl:text>
-		<xsl:value-of select="@alt"/>
-		<xsl:text>, </xsl:text>
+		<xsl:value-of select="if (empty(parent::*)) then (@alt) else concat(', ',@alt,', ')"/>
 	</xsl:template>
 	
 	<xsl:template match="w[@class='num-with-space']">

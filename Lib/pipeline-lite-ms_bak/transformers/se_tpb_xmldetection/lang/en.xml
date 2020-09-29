@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language xml:lang="en">
+	<initialism before=".*[\s(]|^" after="([\-,\.\s:;?!)].*)|$" suffix="s|:s">
+	    <key>
+			<name>ACP</name>
+			<expansion>African, Caribbean and Pacific Countries</expansion>
+		</key>
+		<key>
+			<name>AFSJ</name>
+			<expansion>Area of Freedom, Security and Justice</expansion>
+		</key>
+		<key>
+			<name>AKP</name>
+			<expansion>Justice and Development Party (of Turkey)</expansion>
+		</key>
+		<key>
+			<name>BBC</name>
+			<expansion priority="1" id="bbcTV">British Broadcasting Corporation</expansion>
+			<expansion priority="2" id="bbcBicycle">British Bicycle Company</expansion>
+		</key>
+		<key>
+			<name>CAP</name>
+			<expansion>Common Agricultural Policy</expansion>
+		</key>
+		<key>
+			<name>CCP</name>
+			<expansion>Common Commercial Policy</expansion>
+		</key>
+		<key>
+			<name>CCT</name>
+			<expansion>Common Customs Tariff</expansion>
+		</key>
+		<key>
+			<name>CEEC</name>
+			<expansion>Central and Eastern European Country</expansion>
+		</key>
+		<key>
+			<name>CEPOL</name>
+			<expansion>European Police College</expansion>
+		</key>
+		<key>
+			<name>CET</name>
+			<expansion>Common External Tariff</expansion>
+		</key>
+		<key>
+			<name>CFP</name>
+			<expansion>Common Fisheries Policy</expansion>
+		</key>
+		<key>
+			<name>CFSP</name>
+			<expansion>Common Foreign and Security Policy</expansion>
+		</key>
+		<key>
+			<name>CIS</name>
+			<expansion>Customs Information System</expansion>
+		</key>
+		<key>
+			<name>CMEA</name>
+			<expansion>Council of Mutual Economic Assistance</expansion>
+		</key>
+		<key>
+			<name>COPS</name>
+			<expansion>Political and Security Committee</expansion>
+		</key>
+		<key>
+			<name>CoR</name>
+			<expansion>Committee of the Regions</expansion>
+		</key>
+		<key>
+			<name>COREPER</name>
+			<expansion>Committee of Permanent Representatives</expansion>
+		</key>
+		<key>
+			<name>CSCE</name>
+			<expansion>Conference on Security and Cooperation in Europe</expansion>
+		</key>
+		<key>
+			<name>CSF</name>
+			<expansion>Community Support Framework</expansion>
+		</key>
+		<key>
+			<name>DG</name>
+			<expansion>Directorate General</expansion>
+		</key>
+		<key>
+			<name>EAGGF</name>
+			<expansion>European Agricultural Guidance and Guarantee Fund</expansion>
+		</key>
+		<key>
+			<name>EBRD</name>
+			<expansion>European Bank for Reconstruction and Development</expansion>
+		</key>
+		<key>
+			<name>EC</name>
+			<expansion>European Community</expansion>
+		</key>
+		<key>
+			<name>ECB</name>
+			<expansion>European Central Bank</expansion>
+		</key>
+		<key>
+			<name>ECOFIN</name>
+			<expansion>Council of Economic and Finance Ministers</expansion>
+		</key>
+		<key>
+			<name>ECSC</name>
+			<expansion>European Coal and Steel Community</expansion>
+		</key>
+		<key>
+			<name>EDC</name>
+			<expansion>European Defence Community</expansion>
+		</key>
+		<key>
+			<name>EDF</name>
+			<expansion>European Development Fund</expansion>
+		</key>
+		<key>
+			<name>EEA</name>
+			<expansion>European Economic Area</expansion>
+		</key>
+		<key>
+			<name>EEB</name>
+			<expansion>European Environmental Bureau</expansion>
+		</key>
+		<key>
+			<name>EEC</name>
+			<expansion>European Economic Community</expansion>
+		</key>
+		<key>
+			<name>EFTA</name>
+			<expansion>European Free Trade Association</expansion>
+		</key>
+		<key>
+			<name>EIB</name>
+			<expansion>European Investment Bank</expansion>
+		</key>
+		<key>
+			<name>EMS</name>
+			<expansion>European Monetary System</expansion>
+		</key>
+		<key>
+			<name>EMU</name>
+			<expansion>European Monetary Union</expansion>
+		</key>
+		<key>
+			<name>EP</name>
+			<expansion>European Parliament</expansion>
+		</key>
+		<key>
+			<name>EPC</name>
+			<expansion>European Political Cooperation</expansion>
+		</key>
+		<key>
+			<name>ERDF</name>
+			<expansion>European Regional Development Fund</expansion>
+		</key>
+		<key>
+			<name>ERM</name>
+			<expansion>Exchange Rate Mechanism</expansion>
+		</key>
+		<key>
+			<name>ERRF</name>
+			<expansion>European Rapid Reaction Force</expansion>
+		</key>
+		<key>
+			<name>ESC</name>
+			<expansion>Economic and Social Committee</expansion>
+		</key>
+		<key>
+			<name>ESCB</name>
+			<expansion>European System of Central Banks</expansion>
+		</key>
+		<key>
+			<name>ESDI</name>
+			<expansion>European Security Defence Identity</expansion>
+		</key>
+		<key>
+			<name>ESF</name>
+			<expansion>European Social Fund</expansion>
+		</key>
+		<key>
+			<name>ESDP</name>
+			<expansion>European Security and Defence Policy</expansion>
+		</key>
+		<key>
+			<name>EU</name>
+			<expansion>European Union</expansion>
+		</key>
+		<key>
+			<name>EUMC</name>
+			<expansion>European Union Military Committee</expansion>
+		</key>
+		<key>
+			<name>Euratom</name>
+			<expansion>European Atomic Energy Community</expansion>
+		</key>
+		<key>
+			<name>EUR-OP</name>
+			<expansion>Office for Official Publications of the European Communities</expansion>
+		</key>
+		<key>
+			<name>FDI</name>
+			<expansion>foreign direct investment</expansion>
+		</key>
+		<key>
+			<name>FRY</name>
+			<expansion>Former Republic of Yugoslavia</expansion>
+		</key>
+		<key>
+			<name>FTA</name>
+			<expansion>Free Trade Area</expansion>
+		</key>
+		<key>
+			<name>G7</name>
+			<expansion>Group of Seven</expansion>
+		</key>
+		<key>
+			<name>G8</name>
+			<expansion>Group of Eight</expansion>
+		</key>
+		<key>
+			<name>GATT</name>
+			<expansion>General Agreement on Tariffs and Trade</expansion>
+		</key>
+		<key>
+			<name>GDP</name>
+			<expansion>gross domestic product</expansion>
+		</key>
+		<key>
+			<name>GDR</name>
+			<expansion>German Democratic Republic</expansion>
+		</key>
+		<key>
+			<name>GNI</name>
+			<expansion>gross national income</expansion>
+		</key>
+		<key>
+			<name>GNP</name>
+			<expansion>gross national product</expansion>
+		</key>
+		<key>
+			<name>GSP</name>
+			<expansion>Generalized System of Preferences</expansion>
+		</key>
+		<key>
+			<name>IGC</name>
+			<expansion>Intergovernmental Conference</expansion>
+		</key>
+		<key>
+			<name>IMF</name>
+			<expansion>International Monetary Fund</expansion>
+		</key>
+		<key>
+			<name>IMP</name>
+			<expansion>Integrated Mediterranean Programme</expansion>
+		</key>
+		<key>
+			<name>IPR</name>
+			<expansion>intellectual property rights</expansion>
+		</key>
+		<key>
+			<name>ISPA</name>
+			<expansion>Instrument for Structural Policies for Pre-Accession</expansion>
+		</key>
+		<key>
+			<name>JHA</name>
+			<expansion>Justice and Home Affairs</expansion>
+		</key>
+		<key>
+			<name>LI</name>
+			<expansion>liberal intergovernmentalism</expansion>
+		</key>
+		<key>
+			<name>MEP</name>
+			<expansion>Member of the European Parliament</expansion>
+		</key>
+		<key>
+			<name>MFN</name>
+			<expansion>most favoured nation</expansion>
+		</key>
+		<key>
+			<name>MLG</name>
+			<expansion>multi-level governance</expansion>
+		</key>
+		<key>
+			<name>NATO</name>
+			<expansion>North Atlantic Treaty Organization</expansion>
+		</key>
+		<key>
+			<name>NCB</name>
+			<expansion>National Central Bank</expansion>
+		</key>
+		<key>
+			<name>NGO</name>
+			<expansion>non-governmental organization</expansion>
+		</key>
+		<key>
+			<name>NPAA</name>
+			<expansion>National Programme for the Adoption of the Acquis</expansion>
+		</key>
+		<key>
+			<name>NTB</name>
+			<expansion>non-tariff barrier (to trade)</expansion>
+		</key>
+		<key>
+			<name>ODA</name>
+			<expansion>official development assistance</expansion>
+		</key>
+		<key>
+			<name>OECD</name>
+			<expansion>Organisation for Economic Co-operation and Development</expansion>
+		</key>
+		<key>
+			<name>OJ</name>
+			<expansion>Official Journal of the European Communities</expansion>
+		</key>
+		<key>
+			<name>OLAF</name>
+			<expansion>European Anti-Fraud Office</expansion>
+		</key>
+		<key>
+			<name>OMC</name>
+			<expansion>open method of coordination</expansion>
+		</key>
+		<key>
+			<name>OSCE</name>
+			<expansion>Organisation for Security and Co-operation in Europe</expansion>
+		</key>
+		<key>
+			<name>PDB</name>
+			<expansion>Preliminary Draft Budget</expansion>
+		</key>
+		<key>
+			<name>PES</name>
+			<expansion>Party of European Socialists</expansion>
+		</key>
+		<key>
+			<name>PHARE</name>
+			<expansion>Programme of Community Aid for Central and Eastern European Countries</expansion>
+		</key>
+		<key>
+			<name>PTA</name>
+			<expansion>preferential trade arrangement</expansion>
+		</key>
+		<key>
+			<name>QMV</name>
+			<expansion>qualified majority voting</expansion>
+		</key>
+		<key>
+			<name>R &amp; TD</name>
+			<expansion>Research and Technological Development</expansion>
+		</key>
+		<key>
+			<name>RNIB</name>
+			<expansion>Royal National Institute of the Blind</expansion>
+		</key>
+		<key>
+			<name>RTA</name>
+			<expansion>regional trade arrangement</expansion>
+		</key>
+		<key>
+			<name>SAPARD</name>
+			<expansion>Standard Accession Programme</expansion>
+		</key>
+		<key>
+			<name>SCA</name>
+			<expansion>Special Committee on Agriculture</expansion>
+		</key>
+		<key>
+			<name>SEA</name>
+			<expansion>Single European Act</expansion>
+		</key>
+		<key>
+			<name>SEM</name>
+			<expansion>Single European Market</expansion>
+		</key>
+		<key>
+			<name>SGP</name>
+			<expansion>Stability and Growth Pact</expansion>
+		</key>
+		<key>
+			<name>SIS</name>
+			<expansion>Schengen Information System</expansion>
+		</key>
+		<key>
+			<name>SME</name>
+			<expansion>small and medium-sized enterprise</expansion>
+		</key>
+		<key>
+			<name>TACIS</name>
+			<expansion>Programme for Technical Assistance to the Independent States of the Former Soviet Union and Mongolia</expansion>
+		</key>
+		<key>
+			<name>TEC</name>
+			<expansion>Treaty Establishing the European Community</expansion>
+		</key>
+		<key>
+			<name>TEU</name>
+			<expansion>Treaty on European Union</expansion>
+		</key>
+		<key>
+			<name>TPB</name>
+			<expansion id="tpbLibrary">The Swedish Library of Talking Books and Braille</expansion>
+		</key>
+		<key>
+			<name>UK</name>
+			<expansion>United Kingdom</expansion>
+		</key>
+		<key>
+			<name>UN</name>
+			<expansion>United Nations</expansion>
+		</key>
+		<key>
+			<name>USA</name>
+			<expansion>United States of America</expansion>
+		</key>
+		<key>
+			<name>VAT</name>
+			<expansion>value added tax</expansion>
+		</key>
+		<key>
+			<name>WEU</name>
+			<expansion>Western European Union</expansion>
+		</key>
+		<key>
+			<name>WTO</name>
+			<expansion>World Trade Organization</expansion>
+		</key>
+	</initialism>
+	<acronym before=".*[\s(]|^" after="([\-,\.\s:;?!)].*)|$" suffix="s|:s">				
+		<key>
+			<name>DAISY</name>
+			<expansion id="daisyBook">Digital Accessible Information System</expansion>
+		</key>		
+	</acronym>
+	<abbreviation before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$">
+		<key>
+			<name>e.g.</name>
+			<name>eg.</name>
+			<expansion>for example</expansion>
+		</key>
+		<key>
+			<name>ASAP</name>
+			<expansion>As Soon As Possible</expansion>
+		</key>
+		<key>
+			<name>AKA</name>
+			<expansion>Also Known As</expansion>
+		</key>
+		<key>
+			<name>A.K.A.</name>
+			<expansion>Also Known As</expansion>
+		</key>
+		<key>
+			<name>AI</name>
+			<expansion>Artificial Intelligence</expansion>
+		</key>
+		<key>
+			<name mayEndSentence="no">vs.</name>
+			<expansion>versus</expansion>
+		</key>
+	</abbreviation>
+	<fix before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$">
+		<item key="\d+-\p{L}+" value="num-word"/>
+		<item key="\d+(?: \d{3})+" value="num-with-space"/>
+	</fix>	
+</language>

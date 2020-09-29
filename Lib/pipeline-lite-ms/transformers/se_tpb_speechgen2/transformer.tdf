@@ -126,7 +126,7 @@
 			<description>Add milliseconds of silence padding at the end of each audio file.
 			This silence is not pointed out by smil.</description>
 			<example>1000</example>
-			<default>500</default>
+			<default>1000</default>
 		</parameter>
 		
 	</parameters>

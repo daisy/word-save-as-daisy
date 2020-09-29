@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE package PUBLIC "+//ISBN 0-9673008-1-9//DTD OEB 1.2 Package//EN" "http://openebook.org/dtds/oeb-1.2/oebpkg12.dtd">
+<package xmlns="http://openebook.org/namespaces/oeb-package/1.0/" unique-identifier="uid">
+	<metadata>
+	
+		<dc-metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:oebpackage="http://openebook.org/namespaces/oeb-package/1.0/">
+			<dc:Format>ANSI/NISO Z39.86-2005</dc:Format>
+		</dc-metadata>
+	
+		<x-metadata>
+			<meta name="dtb:multimediaType" content="audioFullText"/>
+			<meta name="dtb:narrator" content="DAISY Pipeline Narrator"/>
+		</x-metadata>
+	
+	</metadata>
+	
+	<manifest>
+	</manifest>
+	
+	<spine>
+	</spine>
+
+</package>

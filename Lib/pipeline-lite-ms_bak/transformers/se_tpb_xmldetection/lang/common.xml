@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<language>
+
+	<initialism before=".*[\s(]|^" after="([\-,\.\s:;?!)].*)|$" suffix="s|:s">
+		<key>
+			<name>CSS</name>
+			<expansion>Cascading Style Sheets</expansion>
+		</key>
+		<key>
+			<name>HTML</name>
+			<expansion>Hyper Text Markup Language</expansion>
+		</key>	
+		<key>
+			<name>IBM</name>
+			<expansion>Intelligent Business Machines</expansion>
+		</key>
+		<key>
+			<name>XML</name>
+			<expansion>Extensible Markup Language</expansion>
+		</key>		
+	</initialism>
+	
+	<acronym before=".*[\s(]|^" after="([\-,\.\s:;?!)].*)|$" suffix="s|:s">
+	</acronym>
+	
+	<abbreviation before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$">
+	</abbreviation>
+
+	<fix before=".*[\s(]|^" after="([,\.\s:;?!)].*)|$">
+	</fix>
+
+</language>

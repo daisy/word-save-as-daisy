@@ -1,0 +1,94 @@
+<?xml version="1.0" ?>
+<!DOCTYPE xsl:stylesheet [
+  <!ELEMENT xsl:stylesheet ANY>
+  <!ELEMENT xsl:template ANY>
+  <!ELEMENT xsl:output ANY>
+  <!ELEMENT xsl:param ANY>
+  <!ELEMENT xsl:choose ANY>
+  <!ELEMENT xsl:when ANY>
+
+  <!ATTLIST xsl:template
+  	 id ID #IMPLIED
+  >
+  <!ATTLIST xsl:when
+  	 id ID #IMPLIED
+  >
+  
+]>
+<xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	
+	<xsl:output method="xml" version="1.0" encoding="utf-8"/>
+
+	<xsl:param name="prefix">annon</xsl:param>
+	<xsl:param name="overrideLang"></xsl:param>
+	
+	<xsl:template id="templateRule" match="dtb:prodnote">
+		<xsl:choose>
+			<xsl:when test="normalize-space($overrideLang)!=''">
+				<xsl:choose>
+					<xsl:when id="whenOverride" test="$overrideLang='en'">
+						<xsl:call-template name="annon">
+							<xsl:with-param name="before">Production note</xsl:with-param>
+							<xsl:with-param name="after">End of production note</xsl:with-param>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="annon">					
+						</xsl:call-template>
+					</xsl:otherwise>		
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:choose>
+					<xsl:when id="whenLang" test="lang('en')">
+						<xsl:call-template name="annon">
+							<xsl:with-param name="before">Production note</xsl:with-param>
+							<xsl:with-param name="after">End of production note</xsl:with-param>
+						</xsl:call-template>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:call-template name="annon">					
+						</xsl:call-template>
+					</xsl:otherwise>		
+				</xsl:choose>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<!-- DO NOT MODIFY ANYTHING BELOW THIS LINE -->
+	
+	<xsl:template name="annon">
+		<xsl:param name="before"/>
+		<xsl:param name="after"/>
+		
+	  	<xsl:copy>
+	  		<xsl:if test="$before">
+				<xsl:attribute name="{$prefix}:{$attrib_before}" namespace="{$ns}">
+					<xsl:value-of select="$before"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:if test="$after">
+				<xsl:attribute name="{$prefix}:{$attrib_after}" namespace="{$ns}">
+					<xsl:value-of select="$after"/>
+				</xsl:attribute>
+			</xsl:if>
+			<xsl:copy-of select="@*"/>
+			<xsl:apply-templates select="child::node()"/>
+	  	</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="@*|node()">
+  		<xsl:copy>
+    		<xsl:apply-templates select="@*|node()"/>
+  		</xsl:copy>
+	</xsl:template>
+
+	<xsl:template match="/*">
+		<xsl:copy>
+			<xsl:copy-of select="@*"/>
+			<xsl:namespace name="{$prefix}" select="$ns"/>
+			<xsl:apply-templates/>
+		</xsl:copy>
+	</xsl:template>
+
+</xsl:stylesheet>

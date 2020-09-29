@@ -1,0 +1,180 @@
+DAISY Pipeline Software User Agreement
+======================================
+October 2006
+
+Copyright © 2006, The DAISY Consortium
+All Rights Reserved. Use is subject to license terms.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License (LGPL) as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+A copy of the Lesser General Public License may be found at
+http://www.gnu.org/licenses/lgpl.html
+
+
+Applicable Licenses
+___________________
+
+DAISY Pipeline is built upon a number of other open source technologies
+and products. Third party Java software binary archives that are bundled
+with the DAISY Pipeline application are listed below:
+	
+	batik-css.jar
+	CSS parser conforming to the SAC API.
+	Apache Software License, Version 2
+	http://www.apache.org/licenses/
+	
+	batik-util.jar
+	Apache Software License, Version 2
+	http://www.apache.org/licenses/
+	
+	chardet.jar
+	Java port of Mozilla's Automatic Charset Detection
+	1.0 Mozilla Public License
+	http://www.mozilla.org/MPL/MPL-1.0.html
+	
+    com4j.jar and com4j.dll
+    Interop between Java and Microsoft COM
+    The MIT License
+    http://www.opensource.org/licenses/mit-license.php
+    
+	commons-cli-1.0.jar
+	Command Line Parser
+	Apache Software License, Version 2
+	http://www.apache.org/licenses/
+    
+	commons-pool-1.4.jar
+	Object Pooling Library
+	Apache Software License, Version 2
+	http://www.apache.org/licenses/
+	
+	icu4j-3_8.jar
+	Unicode and Internationalization support
+	X License/ICU License
+	http://source.icu-project.org/repos/icu/icu/trunk/license.html
+	
+	icu4j-charsets-3_8.jar
+	Unicode and Internationalization support
+	X License/ICU License
+	http://source.icu-project.org/repos/icu/icu/trunk/license.html
+	
+	jaudiotagger.jar
+	Audio tag editing library
+	GNU Lesser General Public License
+	http://www.gnu.org/licenses/lgpl.html
+	
+	jl1.0.jar
+	mp3 decoding (http://www.javazoom.net/javalayer/javalayer.html). 
+	GNU Lesser General Public License
+	http://www.gnu.org/licenses/lgpl.html
+	
+	log4j-1.2.15.jar
+	Logging library
+	Apache Software License, Version 2
+	http://www.apache.org/licenses/
+	
+	onvdl.jar
+	oXygen XML NVDL implementation based on Jing
+	X License/oNVDL License
+	http://www.oxygenxml.com/eula_onvdl.html
+	
+	sac.jar
+	Simple API for CSS
+	W3C Software License
+	http://www.w3.org/Consortium/Legal/2002/copyright-software-20021231
+	
+	saxon.jar
+	XSLT Processor
+	1.0 Mozilla Public License
+	http://www.mozilla.org/MPL/MPL-1.0.html
+	
+	saxon8.jar
+	XML/XSLT Mapping to Java
+	1.0 Mozilla Public License
+	http://www.mozilla.org/MPL/MPL-1.0.html
+	
+	saxon8-dom.jar
+	Saxon-DOM support
+	1.0 Mozilla Public License
+	http://www.mozilla.org/MPL/MPL-1.0.html	
+	
+	serializer.jar
+	Xalan serializer
+	Apache Software License, Version 2
+	http://www.apache.org/licenses/
+
+	stax-api-1.0.1.jar
+	Streaming API for XML
+	X License/Codehaus
+	http://stax.codehaus.org/
+
+	tagsoup-1.2.jar
+	SAX-compliant parser in Java/HTML found in the wild
+	http://home.ccil.org/~cowan/XML/tagsoup/
+	Licensed under both the GNU GPL version 2.0 and 
+	The Academic Free License
+	http://www.opensource.org/licenses/afl-3.0.php
+
+	tritonus_remaining-0.3.6.jar
+	Open source Java Sound
+	GNU Lessel General Public License
+	http://www.gnu.org/licenses/lgpl.html
+	
+	tritonus_share-0.3.6.jar
+	Open source Java Sound
+	GNU Lessel General Public License
+	http://www.gnu.org/licenses/lgpl.html
+
+	wstx-lgpl-3.2.4.jar
+	Woodstox XML processor
+	http://woodstox.codehaus.org/
+	High-performance validating namespace-aware StAX-compliant (JSR-173) Open Source XML-processor
+	GNU Lesser General Public License
+	http://www.gnu.org/licenses/lgpl.html
+
+	xalan.jar
+	XSLT processor
+	Apache Software License, Version 2
+	http://www.apache.org/licenses/
+
+	xercesImpl.jar
+	Java Parser for SAX and DOM
+	http://xerces.apache.org/xerces-j/api.html
+	The Apache Software License, Version 1.1
+	http://www.apache.org/licenses/LICENSE
+	
+	ZedVal.jar
+	Conformance validator for Z39.86 Digital Talking Books
+	GNU Lesser General Public License
+	http://www.gnu.org/licenses/lgpl.html
+	
+	Eclipse Rich Client Platform	
+	Eclipse Public License
+	http://www.eclipse.org/org/documents/epl-v10.php
+
+----------------
+	
+DAISY (i) effectively disclaims on behalf of all Contributors 
+all warranties and conditions, express and implied, including warranties or conditions 
+of title and non-infringement, and implied warranties or conditions of merchantability 
+and fitness for a particular purpose; (ii)  effectively excludes on behalf of all 
+Contributors all liability for damages, including direct, indirect, special, incidental 
+and consequential damages, such as lost profits; (iii) states that any provisions which 
+differ from this Agreement are offered by that Contributor alone and not by any other 
+party; and (iv)  states that Source Code for the Covered Code is available from such 
+Contributor, and informs licensees how to obtain it in a reasonable manner on or 
+through a medium customarily used for software exchange.
+
+IT IS YOUR OBLIGATION TO READ AND ACCEPT ALL SUCH TERMS AND CONDITIONS PRIOR TO USE 
+OF THIS CONTENT. 

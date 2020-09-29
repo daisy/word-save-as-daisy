@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<fscConfig>
+
+	<!-- Elements supposed to be in the ncx navList. hd is only a valid heading as a child of level. -->
+	<navListHeading>
+		<item>h1</item>
+		<item>h2</item>
+		<item>h3</item>
+		<item>h4</item>
+		<item>h5</item>
+		<item>h6</item>
+		<item>hd</item>
+	</navListHeading>
+	
+	<!-- Elements supposed to be linked together with their refs. -->
+	<forceLink>
+		<item>note</item>
+		<item>annotation</item>
+	</forceLink>
+	
+	<customNavList>
+		<item>sidebar</item>
+		<item>note</item>
+	</customNavList>
+
+	<!-- Escapable elements -->
+	<escapable>
+		<item>annotation</item>
+		<item>blockquote</item>
+		<item>code</item>
+		<item>list</item>
+		<item>note</item>
+		<item>poem</item>
+		<item>prodnote</item>
+		<item>sidebar</item>
+		<item>table</item>
+		<item>tr</item>
+		<item>math</item>
+	</escapable>	
+	
+	<!-- skippable elements -->
+	<skippable>
+		<item>annoref</item>
+		<item>annotation</item>
+		<item>linenum</item>
+		<item>note</item>
+		<item>noteref</item>
+		<item>pagenum</item>
+		<item>prodnote</item>
+		<item>sidebar</item>
+	</skippable>
+	
+	<!-- elements changing the ncx level -->
+	<levels>
+		<item>level1</item>
+		<item>level2</item>
+		<item>level3</item>
+		<item>level4</item>
+		<item>level5</item>
+		<item>level6</item>
+		<item>level</item>
+	</levels>
+</fscConfig>

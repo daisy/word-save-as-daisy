@@ -28,7 +28,7 @@
 				<xsl:text>空的标题</xsl:text>
 			</xsl:when>
 			<xsl:when test="lang('de')">
-				<xsl:text>Leere Überschrift</xsl:text>
+				<xsl:text>Ohne Überschrift</xsl:text>
 			</xsl:when>
 			<xsl:when test="lang('es')">
 				<xsl:text>Título vacío</xsl:text>

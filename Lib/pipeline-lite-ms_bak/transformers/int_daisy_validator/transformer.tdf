@@ -1,0 +1,135 @@
+<transformer version="1.1">
+	<name>Validator</name>
+	<description>Validate filesets and XML documents of various types</description>
+	<classname>int_daisy_validator.ValidatorDriver</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/int_daisy_validator.html"/>
+	
+	<parameters>
+
+		<parameter required="true" direction="in" type="application/anonymous">
+			<name>input</name>
+			<description>Path to input file or fileset manifest to be validated</description>
+			<example>C:/myDocuments/myDocument.opf</example>
+		</parameter>
+
+		<parameter required="false" type="enum">
+			<name>requireInputType</name>
+			<description>A string describing one input type that is required, else an error will be generated. (These are from FilesetType.getNiceName)</description>
+			<example>Dtbook</example>
+			<enum>
+				<value>off</value> 
+				<value>Dtbook document</value>
+				<value>XHTML document</value>
+				<value>DAISY 2.02 DTB</value>
+				<value>Z3986 DTB</value>		
+			</enum>
+			<default>off</default>
+		</parameter>
+
+		<parameter required="false" type="enum">
+			<name>generateContextInfo</name>
+			<description>Whether to attempt to generate contextual info for validation errors (nearest preceeding heading, etc). Does not work on all document types!</description>
+			<example>true</example>
+			<enum>
+				<value>true</value> 
+				<value>false</value>
+			</enum>
+			<default>false</default>
+		</parameter>
+
+		<parameter required="false" type="string">
+			<name>schemas</name>
+			<description>
+				Comma separated list of schema identifiers to validate the input document against. 
+				Identifiers may be expressed as filepaths, public or system IDs.
+				RelaxNG, W3C Schema, Schematron and Compound are allowed types of schemas.
+				Schemas that occur inline in the validated document do not need to be namedropped here.
+			</description>
+			<example>D:/example.sch, http://www.example.com/example.rng, -//TPB//RNG dtbook 2005-1 Narrator//EN</example>
+			<default/>
+		</parameter>
+		
+		<parameter required="false" type="string">
+			<name>delegates</name>
+			<description>
+				Comma separated list of delegates (implementations of org.daisy.util.fileset.validation.ValidatorDelegate)
+			</description>
+			<example>org.daisy.util.fileset.validation.delegate.impl.XMLEncodingDelegate</example>
+			<default/>
+		</parameter>
+
+		<parameter required="false" type="string">
+			<name>forceImplementation</name>
+			<description>
+				A fully qualified name of an implementation of a org.daisy.util.fileset.validation.Validator. 
+				Use this parameter to force the validator to use the named implementation (overriding default assignment)
+			</description>
+			<example>org.daisy.util.fileset.validation.myValidatorImpl</example>
+			<default/>
+		</parameter>
+
+		<parameter required="false" type="enum">
+			<name>abortThreshold</name>
+			<description>Validation error severity level - when to perform a Transformer abort</description>
+			<example>WARNING</example>
+			<enum>
+				<value>NONE</value> <!-- dont abort on any kind of validation message -->
+				<value>WARNING</value>
+				<value>ERROR</value>
+				<value>SEVERE</value>
+			</enum>
+			<default>ERROR</default>
+		</parameter>
+
+		<parameter required="false" type="enum">
+			<name>abortOnException</name>
+			<description>Whether to perform a Transformer abort when a caught exception occurs</description>
+			<example>false</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>
+		
+		<!-- 
+			2007-03-07 Martin Blomberg: 
+			adding two parameters for enabling xml output.			
+		-->
+		<parameter required="false" direction="out" type="application/xml">
+			<name>xmlReport</name>
+			<description>Path to xml output</description>
+			<example>/home/user/reports/myreport.xml</example>
+			<default/>
+		</parameter>
+		
+		<parameter required="false" type="string">
+			<name>xmlStylesheet</name>
+			<description>
+				The value of the xml-stylesheet processing instruction in the 
+				generated xml output. If absent, no xml-stylesheet will be inserted
+				in the output. Only looked at if xmlReport is not null.
+			</description>
+			<example>validator.xsl</example>
+			<default/>
+		</parameter>
+		
+		<parameter required="false" type="string">
+			<name>time-tolerance</name>
+			<description>
+				The time tolerance threshold for validators that
+				do time-based tests. Any error below this should
+				not generate an error.
+			</description>
+			<example>50</example>
+			<default>500</default>
+		</parameter>
+		
+		
+				 
+	</parameters>
+
+</transformer>

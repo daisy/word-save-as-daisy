@@ -1,0 +1,68 @@
+<transformer version="1.1">
+	<name>Fileset Renamer</name>
+	<description>Rename select members of a fileset using customizable token-based name patterns.</description>
+	<classname>int_daisy_filesetRenamer.FilesetRenamer</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>https://lists.sourceforge.net/lists/listinfo/daisymfc-support</support>
+	<documentation uri="../../doc/transformers/int_daisy_filesetRenamer.html"/>
+		
+	<parameters>
+	
+		<parameter required="true" direction="in" type="application/xml">
+			<name>input</name>
+			<description>Input fileset manifest file (NCC, OPF, etc)</description>
+			<example>D:/path/to/inputFile.xml</example>
+		</parameter>
+		
+		<parameter required="true" direction="out" type="application/x-filesystemDirectory">
+			<name>output</name>			
+			<description>The output directory</description>
+			<example>D:/path/to/outputDir/</example>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="string">
+			<name>renamingPattern</name>
+		    <description>
+		    	The type of renaming to apply, described as a series of plus-separated tokens.
+		    	The token list (described further in documentation) includes: 
+		    	'uid', 'rnd(n)', 'fixed(string)', 'label', 'seq', 'copy' (see doc.html)
+		    </description>
+		    <example>uid+rnd(2)</example>
+		    <default>seq+label</default>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="string">
+			<name>exclude</name>
+			<description>
+				A comma separated list of File types to exclude from the renaming process.
+				Recognized values include 'None', 'AudioFile', 'ImageFile', 'XmlFile', 'Xhtml10File', 'SmilFile', 'Z3986DtbookFile', 'CssFile'				
+			</description>
+			<example>ImageFile, CssFile</example>
+			<default>XmlFile, ImageFile, CssFile</default>
+		</parameter>
+		
+		<parameter required="false" direction="in" type="enum">
+			<name>filesystemSafe</name>
+			<description>
+				Whether output names should only include filesystem (and DAISY DTB) safe characters: A-Z, a-z, 0-9, hyphen, underscore.
+			</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>			
+
+		<parameter required="false" direction="in" type="string">
+			<name>maxFilenameLength</name>
+			<description>
+				The maximum number of characters in the output filename, excluding extension. Default is 60.
+			</description>
+			<example>24</example>
+			<default>60</default>	
+		</parameter>															
+	</parameters>	
+
+</transformer>

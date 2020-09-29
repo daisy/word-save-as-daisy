@@ -1,0 +1,49 @@
+<transformer version="1.1">
+	<name>Mixed Content Normalizer</name>
+	<description>Normalize mixed content models by inserting elements wrapping text, option to add sync point markers to output.</description>
+	<classname>int_daisy_mixedContentNormalizer.MixedContentNormalizer</classname>
+	<license>LGPL</license>
+	<author>Markus Gylling</author>
+	<support>http://daisymfc.sourceforge.net</support>	
+	<documentation uri="../../doc/transformers/int_daisy_mixedContentNormalizer.html"/>
+	
+	<parameters>	
+	    <parameter required="true" direction="in" type="application/xml">
+			<name>input</name>
+			<description>Path to the input XML document</description>
+			<example>D:/path/to/input.xml</example>
+		</parameter>
+				
+		<parameter required="true" direction="out" type="application/xml">
+			<name>output</name>
+			<description>Path to the output XML document</description>
+			<example>D:/path/to/output.xml</example>
+		</parameter>	
+
+		<parameter required="false" direction="in" type="enum">
+			<name>addSyncPoints</name>
+			<description>
+				Whether to add sync points (typically @smil:sync) attribute markers to output tree nodes
+			</description>
+			<example>true</example>
+			<enum>
+				<value>true</value>
+				<value>false</value>
+			</enum>
+			<default>true</default>
+		</parameter>
+
+		<parameter required="false" direction="in" type="enum">
+			<name>implementation</name>
+			<description>
+				Name of implementation to use (at time of writing there is only one).
+			</description>
+			<example>dom</example>
+			<enum>
+				<value>dom</value>
+			</enum>
+			<default>dom</default>
+		</parameter>
+							
+	</parameters>	
+</transformer>

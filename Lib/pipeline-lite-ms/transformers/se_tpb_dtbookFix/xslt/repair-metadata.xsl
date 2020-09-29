@@ -150,6 +150,11 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
+
+	<!--remove non-DTBook dtb:* metadata-->
+	<xsl:template match="dtb:meta[matches(@name, '^\s*dtb:multimediaContent\s*$','si')]"/>
+	<xsl:template match="dtb:meta[matches(@name, '^\s*dtb:multimediaType\s*$','si')]"/>
+	<xsl:template match="dtb:meta[matches(@name, '^\s*dtb:totalTime\s*$','si')]"/>
 	
 	<xsl:template match="dtb:head">
 		<xsl:copy>

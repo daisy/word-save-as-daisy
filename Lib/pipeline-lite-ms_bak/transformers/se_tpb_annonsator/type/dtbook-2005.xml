@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ruleSet xmlns:dtb="http://www.daisy.org/z3986/2005/dtbook/" xmlns:m="http://www.w3.org/1998/Math/MathML">
+
+	<prefix>annon</prefix>
+	<namespace>http://www.daisy.org/ns/pipeline/annon</namespace>
+	<attributeBefore>before</attributeBefore>
+	<attributeAfter>after</attributeAfter>
+	<addAttributes>true</addAttributes>
+	
+	<!-- rules for announcements of authors -->
+	<rule match="dtb:docauthor[1]">
+		<lang lang="en">
+			<before>By</before>
+		</lang>
+		<lang lang="fr">
+			<before>Par</before>
+		</lang>
+		<lang lang="ja">
+			<before>著者</before>
+		</lang>
+		<lang lang="no">
+			<before>Av</before>
+		</lang>
+		<lang lang="sv">
+			<before>Av</before>
+		</lang>
+	</rule>
+	
+	<rule match="dtb:docauthor[position()=last() and last()!=1]">
+		<lang lang="en">
+			<before>and</before>
+		</lang>
+		<lang lang="fi">
+			<before>ja</before>
+		</lang>
+		<lang lang="fr">
+			<before>et</before>
+		</lang>
+		<lang lang="ja">
+			<before>と</before>
+		</lang>
+		<lang lang="no">
+			<before>og</before>
+		</lang>
+		<lang lang="sv">
+			<before>och</before>
+		</lang>
+	</rule>
+
+	<!-- performed in speech generator
+	<rule match="dtb:pagenum[@page='front']">
+		<lang lang="sv">
+			<before>Sidan (romerska siffror)</before>
+		</lang>
+		<lang lang="en">
+			<before>Page (Roman Numeral)</before>
+		</lang>
+	</rule>
+	-->
+	
+	<!-- performed in speech generator
+	<rule match="dtb:pagenum[@page='normal']">
+		<lang lang="sv">
+			<before>Sidan</before>
+		</lang>
+		<lang lang="en">
+			<before>Page</before>
+		</lang>
+	</rule>
+	-->
+
+	<!-- performed in speech generator	
+	<rule match="dtb:noteref">
+		<lang lang="sv">
+			<before>Notreferens.</before>
+		</lang>
+		<lang lang="en">
+			<before>Note reference.</before>
+		</lang>
+	</rule>
+	-->
+	
+	<rule match="dtb:note">
+		<lang lang="en">
+			<before>Note.</before>
+			<after>End of note.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Viite.</before>
+			<after>Viitteen loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Note.</before>
+		</lang>
+		<lang lang="ja">
+			<before>注記　開始</before>
+			<after>注記　終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Note.</before>
+			<after>Slutt på noten.</after>
+		</lang>
+		<lang lang="sv">
+			<before>Not.</before>
+			<after>Slut på noten.</after>
+		</lang>
+	</rule>
+	
+	<rule match="dtb:prodnote">
+		<lang lang="en">
+			<before>Production note.</before>
+			<after>End of production note.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Toimittajan huomautus.</before>
+			<after>Huomautuksen loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Note de Production.</before>
+			<after>Fin de la note de production.</after>
+		</lang>
+		<lang lang="ja">
+			<before>製作者ノート　開始</before>
+			<after>製作者ノート　終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Produksjonsnote.</before>
+			<after>Slutt produksjonsnote.</after>
+		</lang>
+		<lang lang="sv">
+			<before>Kommentar.</before>
+			<after>Slut kommentar.</after>
+		</lang>
+	</rule>
+
+	<rule match="dtb:imggroup/dtb:prodnote">
+		<lang lang="en">
+			<before>Image description.</before>
+			<after>End of image description.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Kuvaselostus.</before>
+			<after>Kuvaselostuksen loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Description d'image.</before>
+			<after>Fin de la description d'image.</after>
+		</lang>
+		<lang lang="ja">
+			<before>画像の説明　開始</before>
+			<after>画像の説明　終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Bildebeskrivelse.</before>
+			<after>Bildebeskrivelse slutt.</after>
+		</lang>
+		<lang lang="sv">
+			<before>Bildbeskrivning.</before>
+			<after>Slut bildbeskrivning.</after>
+		</lang>
+	</rule>
+	
+	<rule match="dtb:imggroup/dtb:caption">
+		<lang lang="en">
+			<before>Caption.</before>
+			<after>End of caption.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Kuvateksti.</before>
+			<after>Kuvatekstin loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Légende.</before>
+			<after>Fin de la légende.</after>
+		</lang>
+		<lang lang="ja">
+			<before>キャプション開始</before>
+			<after>キャプション終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Bildetekst.</before>
+			<after>Bildetekst slutt.</after>
+		</lang>
+		<lang lang="sv">
+			<before>Bildtext.</before>
+			<after>Slut bildtext.</after>
+		</lang>
+	</rule>
+
+	<rule match="dtb:sidebar">
+		<lang lang="en">
+			<before>Side bar.</before>
+			<after>End of side bar.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Marginaaliteksti.</before>
+			<after>Marginaalitekstin loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Encadré.</before>
+			<after>Fin de l'encadré.</after>
+		</lang>
+		<lang lang="ja">
+			<before>サイドバー開始</before>
+			<after>サイドバー終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Margtekst.</before>
+			<after>Margtekst slutt.</after>
+		</lang>
+		<lang lang="sv">
+			<before>Parallell text.</before>
+			<after>Slut parallell text.</after>
+		</lang>
+	</rule>
+
+	<rule match="dtb:poem">
+		<lang lang="en">
+			<before>A poem follows.</before>
+			<after>End of poem.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Runo.</before>
+			<after>Runon loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Un poème suit.</before>
+			<after>Fin du poème.</after>
+		</lang>
+		<lang lang="ja">
+			<before>詩　開始</before>
+			<after>詩　終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Dikt.</before>
+			<after>Dikt slutt.</after>
+		</lang>
+		<lang lang="sv">
+			<before>En dikt följer.</before>
+			<after>Slut på dikten.</after>
+		</lang>
+	</rule>
+
+	<rule match="dtb:blockquote">
+		<lang lang="en">
+			<before>Quote:</before>
+			<after>End of quote.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Lainaus:</before>
+			<after>Lainauksen loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Une citation suit:</before>
+			<after>Fin de la citation.</after>
+		</lang>
+		<lang lang="ja">
+			<before>引用　開始:</before>
+			<after>引用　終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Sitat:</before>
+			<after>Sitat slutt.</after>
+		</lang>
+		<lang lang="sv">
+			<before>Citat:</before>
+			<after>Slut citat.</after>
+		</lang>
+	</rule>
+
+	
+	<rule match="dtb:table">
+		<lang lang="en">
+			<before>Table.</before>
+			<after>End of table.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Taulukko.</before>
+			<after>Taulukon loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Tableau.</before>
+			<after>Fin du tableau.</after>
+		</lang>
+		<lang lang="ja">
+			<before>表　開始</before>
+			<after>表　終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Tabell.</before>
+			<after>Tabell slutt.</after>
+		</lang>
+		<lang lang="sv">
+			<before>Tabell.</before>
+			<after>Slut tabell.</after>
+		</lang>
+	</rule>
+
+	<rule match="dtb:code">
+		<lang lang="en">
+			<before>Code.</before>
+			<after>End of code.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Koodi.</before>
+			<after>Koodin loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Code.</before>
+			<after>Fin du code.</after>
+		</lang>
+		<lang lang="ja">
+			<before>コード開始</before>
+			<after>コード終了</after>
+		</lang>
+		<lang lang="no">
+			<before>Kode.</before>
+			<after>Kode slutt.</after>
+		</lang>
+		<lang lang="sv">
+			<before>Kod.</before>
+			<after>Slut kod.</after>
+		</lang>
+	</rule>
+
+	<rule match="dtb:kbd">
+		<lang lang="en">
+			<before>Keyborad instruction.</before>
+		</lang>
+		<lang lang="fi">
+			<before>Näppäimistöohje.</before>
+		</lang>
+		<lang lang="fr">
+			<before>Instructions clavier.</before>
+		</lang>
+		<lang lang="ja">
+			<before>キーボード操作説明</before>
+		</lang>
+		<lang lang="no">
+			<before>Tastaturinstruksjon.</before>
+		</lang>
+		<lang lang="sv">
+			<before>Tangentbordsinstruktion.</before>
+		</lang>
+	</rule>
+
+	<rule match="*[starts-with(@xml:lang,'mi') and ancestor::*/@xml:lang='en']">
+		<lang lang="mi">
+			<before>Maori text.</before>
+		</lang>
+	</rule>
+
+	<rule match="*[starts-with(@xml:lang,'mi') and ancestor::*/@xml:lang='sv']">
+		<lang lang="mi">
+			<before>Maorisk text.</before>
+		</lang>
+	</rule>
+	
+	<rule match="m:math">
+		<lang lang="en">
+			<before>Matemathical expression:</before>
+			<after>End of matemathical expression.</after>
+		</lang>
+		<lang lang="fi">
+			<before>Matemaattinen kaava:</before>
+			<after>Matemaattisen kaavan loppu.</after>
+		</lang>
+		<lang lang="fr">
+			<before>Formule mathématique:</before>
+			<after>Fin de la formule.</after>
+		</lang>
+		<lang lang="ja">
+			<before>数式　開始:</before>
+			<after>数式　終了。</after>
+		</lang>
+		<lang lang="sv">
+			<before>Matematisk formel:</before>
+			<after>Slut på matematisk formel.</after>
+		</lang>
+	</rule>
+	
+	<copy attributes="true" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+		<xsl:template match="dtb:li">
+			<xsl:copy>
+				<xsl:if test="parent::dtb:list/@type='ol'">				
+					<xsl:attribute name="{$prefix}:{$attrib_before}" namespace="{$ns}">
+						<xsl:if test="parent::dtb:list[@enum='i' or @enum='I']">
+							<xsl:choose>
+								<xsl:when test="lang('en')">
+									<xsl:text>Roman numeral, </xsl:text>
+								</xsl:when>
+								<xsl:when test="lang('fi')">
+									<xsl:text>Roomalainen numero, </xsl:text>
+								</xsl:when>
+								<xsl:when test="lang('fr')">
+									<xsl:text>Chiffre romain, </xsl:text>
+								</xsl:when>
+								<xsl:when test="lang('ja')">
+									<xsl:text>ローマ数字, </xsl:text>
+								</xsl:when>
+								<xsl:when test="lang('no')">
+									<xsl:text>Romertall, </xsl:text>
+								</xsl:when>
+								<xsl:when test="lang('sv')">
+									<xsl:text>Romersk siffra, </xsl:text>
+								</xsl:when>
+							</xsl:choose>
+						</xsl:if>
+						<xsl:variable name="start">
+							<xsl:choose>
+								<xsl:when test="parent::dtb:list/@start">
+									<xsl:value-of select="parent::dtb:list/@start"/>
+								</xsl:when>
+								<xsl:otherwise>1</xsl:otherwise>
+							</xsl:choose>
+						</xsl:variable>
+						<xsl:choose>
+							<xsl:when test="parent::dtb:list[@enum='a' or @enum='A']">
+								<xsl:value-of select="codepoints-to-string(xs:integer(string-to-codepoints('A') - 1 + count(preceding-sibling::dtb:li) + round($start)))"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="count(preceding-sibling::dtb:li) + round($start)"/>
+							</xsl:otherwise>
+						</xsl:choose>
+						<xsl:text>. </xsl:text>
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:copy-of select="@*"/>
+				<xsl:apply-templates/>
+			</xsl:copy>
+		</xsl:template>
+	</copy>
+
+</ruleSet>
