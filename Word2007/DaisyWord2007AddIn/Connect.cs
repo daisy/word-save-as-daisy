@@ -718,9 +718,9 @@ namespace DaisyWord2007AddIn {
         /*Function which Translates docx file to Daisy format */
         public void SaveAsDaisy(IRibbonControl control) {
             IPluginEventsHandler eventsHandler = new PluginEventsUIHandler();
-            PreparetionResult preparetionResult = PrepareForSaveAsDaisy(eventsHandler, applicationObject.ActiveDocument, control.Id);
+            PreparetionResult preparetionResult = PrepareForSaveAsDaisy(eventsHandler, applicationObject.ActiveDocument, control.Tag);
             if (preparetionResult.IsSuccess) {
-                OoxToDaisyUI(preparetionResult, control.Id);
+                OoxToDaisyUI(preparetionResult, control.Tag);
             }
             applicationObject.ActiveDocument.Save();
         }
@@ -1218,10 +1218,10 @@ namespace DaisyWord2007AddIn {
             Application.DoEvents();
 
             MultipleSub mulsubDoc;
-            if (AddInHelper.IsSingleDaisyFromMultipleButton(control.Id)) {
-                mulsubDoc = new MultipleSub(this.addinLib.ResManager, this.applicationObject.Version, control.Id);
+            if (AddInHelper.IsSingleDaisyFromMultipleButton(control.Tag)) {
+                mulsubDoc = new MultipleSub(this.addinLib.ResManager, this.applicationObject.Version, control.Tag);
             } else {
-                mulsubDoc = new MultipleSub(this.addinLib.ResManager, this.applicationObject.Version, control.Id, pipe.ScriptsInfo[control.Id].FullName, "");
+                mulsubDoc = new MultipleSub(this.addinLib.ResManager, this.applicationObject.Version, control.Tag, pipe.ScriptsInfo[control.Tag].FullName, "");
             }
             int subDocFlag = mulsubDoc.DoTranslate();
 
@@ -1260,9 +1260,9 @@ namespace DaisyWord2007AddIn {
             MathMLMultiple(subList);
             inz.Close();
 
-            bool result = this.addinLib.OoxToDaisySub(outputFilePath, subList, individual_docs, mulsubDoc.HTable, control.Id,
+            bool result = this.addinLib.OoxToDaisySub(outputFilePath, subList, individual_docs, mulsubDoc.HTable, control.Tag,
                                                       multipleMathMl, output_Pipeline);
-            if (!AddInHelper.IsSingleDaisyFromMultipleButton(control.Id) && result) {
+            if (!AddInHelper.IsSingleDaisyFromMultipleButton(control.Tag) && result) {
                 try {
                     mulsubDoc.getParser.ExecuteScript(outputFilePath);
                 } catch (Exception e) {
@@ -1332,7 +1332,7 @@ namespace DaisyWord2007AddIn {
                     PipelineMenuItem = new ToolStripMenuItem();
                     PipelineMenuItem.Text = k.Key;
                     PipelineMenuItem.AccessibleName = k.Key;
-                    String quote = "<button id=\"" + PipelineMenuItem.Text + "\" label=\"" + "&amp;" + PipelineMenuItem.Text + "\" onAction=\"" + "SaveAsDaisy" + "\"/>";
+                    String quote = "<button id=\"" + k.Key.Replace(" ","_") + "\" tag=\"" + PipelineMenuItem.Text + "\" label=\"" + "&amp;" + PipelineMenuItem.Text + "\" onAction=\"" + "SaveAsDaisy" + "\"/>";
                     MyStringBuilder.Append(quote);
                 }
                 MyStringBuilder.Append(@"</menu>");
@@ -1341,7 +1341,7 @@ namespace DaisyWord2007AddIn {
                     PipelineMenuItem = new ToolStripMenuItem();
                     PipelineMenuItem.Text = k.Key;
                     PipelineMenuItem.AccessibleName = k.Key;
-                    String quote = "<button id=\"" + PipelineMenuItem.Text + "\" label=\"" + "&amp;" + PipelineMenuItem.Text + "\" onAction=\"" + "Mutiple" + "\"/>";
+                    String quote = "<button id=\"" + k.Key.Replace(" ", "_") + "\" tag=\"" + PipelineMenuItem.Text + "\" label=\"" + "&amp;" + PipelineMenuItem.Text + "\" onAction=\"" + "Mutiple" + "\"/>";
                     MyStringBuilder.Append(quote);
                 }
                 MyStringBuilder.Append(@"</menu>");

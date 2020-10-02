@@ -334,10 +334,15 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>IF NOT EXIST "$(TargetDir)pipeline-lite-ms"  xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"
+    <PostBuildEvent>IF EXIST "$(TargetDir)pipeline-lite-ms" rd /S /Q "$(TargetDir)pipeline-lite-ms"
+xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"
+
 REM IF NOT EXIST "$(TargetDir)DaisyWord2007Shim.dll" xcopy "$(SolutionDir)Word2007\DaisyWord2007Shim\$(ConfigurationName)\DaisyWord2007Shim.dll"  "$(TargetDir)"
 REM regsvr32 /s "$(TargetDir)DaisyWord2007Shim.dll"
-IF NOT EXIST "$(TargetDir)ManagedAggregator.dll" xcopy "$(SolutionDir)Word2007\DaisyWord2007Shim\$(ConfigurationName)\ManagedAggregator.dll"  "$(TargetDir)"
+
+IF EXIST "$(TargetDir)ManagedAggregator.dll" del "$(TargetDir)ManagedAggregator.dll"
+xcopy "$(SolutionDir)Word2007\DaisyWord2007Shim\$(ConfigurationName)\ManagedAggregator.dll"  "$(TargetDir)"
+
 xcopy /E /Y "$(SolutionDir)Converter\bin\$(ConfigurationName)\resources"  "$(TargetDir)resources\"
 
 </PostBuildEvent>
