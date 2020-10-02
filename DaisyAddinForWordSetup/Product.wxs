@@ -424,11 +424,10 @@
                             <File Id="XPofficeInteropAssembly" Name="office.dll" Source="$(var.SolutionDir)Lib\wordxp\office.dll" DiskId="1" KeyPath="yes" />
                             <RegistryValue Root="HKCR" Key="TypeLib\{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}\2.2" Name="PrimaryInteropAssemblyName" Value="Office, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Type="string" Action="write" />
                         </Component>
-
-                        <!--Assembly=".net" removed from previous File (if not, the dll is not copied by wix but it is still searched by the vsto)-->
-                        <!--<Component Id="extensibility.dll" Guid="8BF0BBF9-245C-47DF-9F8E-A940C06D5F50">
+                        <Component Id="extensibility.dll" Guid="8BF0BBF9-245C-47DF-9F8E-A940C06D5F50">
                             <File Id="extensibility.dll" Name="extensibility.dll" Source="$(var.SolutionDir)Lib\extensibility.dll" KeyPath="yes"  />
-                        </Component>-->
+                            <!--Assembly=".net" removed from previous File (if not, the dll is not copied by wix but it is still searched by the vsto)-->
+                        </Component>
                         <Component Id="Stdole.dll" Guid="EEC64143-8004-4EEB-935B-DA03E6E82CF3">
                             <File Id="Stdole.dll" Name="stdole.dll" Source="$(var.SolutionDir)Lib\stdole.dll" KeyPath="yes" DiskId="1" Checksum="yes" />
                             <RegistryValue Root="HKCR" Key="CLSID\{0BE35203-8F91-11CE-9DE3-00AA004BB851}\InprocServer32" Name="Class" Value="stdole.StdFontClass" Type="string" Action="write" />
@@ -1572,7 +1571,7 @@
             <ComponentRef Id="DaisyTranslatorWordXPAddin.dll" />
             <ComponentRef Id="DaisyTranslatorWordXPShim.dll" />
 
-            <!--<ComponentRef Id="extensibility.dll" />-->
+            <ComponentRef Id="extensibility.dll" />
             <ComponentRef Id="Stdole.dll" />
 
             <ComponentRef Id="RegistryEntriesWord2007" />

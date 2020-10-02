@@ -48,7 +48,7 @@ namespace DaisyInstaller
             //    lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Office\11.0\Word\InstallRoot");
             //if (lKey == null)
             //    lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Office\10.0\Word\InstallRoot");
-
+            bool sameArchitecture = true;
             RegistryKey lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Office");
             RegistryKey wordRoot = null;
             float lastVersion = 0.0f;
@@ -66,13 +66,32 @@ namespace DaisyInstaller
                     }
                 }
             }
-
+            // Check for 32bits install on x64 system
+            if(wordRoot == null) {
+                sameArchitecture = false;
+                lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Office");
+                lastVersion = 0.0f;
+                foreach (string subKey in lKey.GetSubKeyNames()) {
+                    // Check if the key name is a version number
+                    Regex versionNumber = new Regex("[0-9]+\\.[0-9]+");
+                    Match result = versionNumber.Match(subKey);
+                    if (result.Success) {
+                        // if it is a superior versionCheck if it has a word subkey
+                        float version = float.Parse(result.Value, CultureInfo.InvariantCulture.NumberFormat);
+                        if (lastVersion < version) {
+                            lastVersion = version;
+                            RegistryKey wordKey = lKey.OpenSubKey(subKey + @"\Word\InstallRoot");
+                            if (wordKey != null) wordRoot = wordKey;
+                        }
+                    }
+                }
+            }
             string warning = "";
             bool keepInstall = true;
             if (wordRoot == null) {
                 warning = "Microsoft Word was not found in your system registry.\r\nDo you want to continue anyway ?";
             } else if (lastVersion < minimalVersionSupport || lastVersion > maximalVersionSupport) {
-                warning = "This addin supports Microsoft Word from Office XP, up to Office 2010.\r\nA newer version of word has beend found on your system but may not load this addin correctly.\r\nDo you want to continue anyway ?";
+                warning = "This addin officially supports Microsoft Word from Office XP, up to Office 2010.\r\nA newer version of word has beend found on your system but may not load this addin correctly.\r\nDo you want to continue anyway ?";
             }
 
             if(warning.Length > 0) {

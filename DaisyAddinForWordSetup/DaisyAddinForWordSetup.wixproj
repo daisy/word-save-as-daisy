@@ -143,22 +143,6 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\Word2007\DaisyWord2007Shim\DaisyWord2007Shim.vcxproj">
-      <Name>DaisyWord2007Shim</Name>
-      <Project>{a5a68ef3-d782-4f02-96b1-0814e26c4032}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\Word2016\DaisyWord2016AddIn\DaisyWord2016AddIn.csproj">
-      <Name>DaisyWord2016AddIn</Name>
-      <Project>{6a6d0857-53cf-4ae3-a9b1-f9146e47cec5}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\WordXP\DaisyTranslatorWordXPAddin\DaisyTranslatorWordXPAddin.csproj">
       <Name>DaisyTranslatorWordXPAddin</Name>
       <Project>{5042fd6c-3583-46fb-8a76-1f0c489030c4}</Project>
