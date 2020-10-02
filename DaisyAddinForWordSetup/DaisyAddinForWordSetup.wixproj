@@ -178,21 +178,20 @@
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>
-    <PreBuildEvent />
-  </PropertyGroup>
-  <PropertyGroup>
     <PostBuildEvent>REM "$(MSBuildBinPath)\msbuild.exe"  $(ProjectDir)scripts\GenerateBootstrapper.msbuild /property:OutDir="$(ProjectDir)Bin\$(ConfigurationName)"%3bBootstrapersPath="$(SolutionDir)Bootstrappers\$(ConfigurationName)"  
 REM echo ..\..\scripts\postBuild.bat $(TargetDir)\ $(TargetFileName) $(ConfigurationName)
 REM START /B /WAIT ..\..\scripts\postBuild.bat $(TargetDir) $(TargetFileName) $(ConfigurationName)
 IF NOT EXIST "$(SolutionDir)DaisyInstaller\Resources" mkdir "$(SolutionDir)DaisyInstaller\Resources"
 COPY "$(TargetDir)$(TargetName).msi" "$(SolutionDir)DaisyInstaller\Resources\DaisyAddinForWordSetup" /Y</PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent />
+  </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.
-	Other similar extension points exist, see Wix.targets.
+	Other similar extension points exist, see Wix.targets. 
 	<Target Name="BeforeBuild">
 	</Target>
 	<Target Name="AfterBuild">
-	</Target>
-	-->
+	</Target>-->
 </Project>

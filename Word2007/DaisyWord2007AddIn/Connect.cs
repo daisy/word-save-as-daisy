@@ -75,7 +75,7 @@ namespace DaisyWord2007AddIn {
     /// </summary>
     /// <seealso class='IDTExtensibility2' />
     [GuidAttribute("18CBC6A8-BCB5-45ED-8FF3-655599E1F872"), ProgId("DaisyWord2007AddIn.Connect")]
-    public class Connect : Object, Extensibility.IDTExtensibility2, IRibbonExtensibility {
+    public class Connect : Object, IDTExtensibility2, IRibbonExtensibility {
 
         const string coreRelationshipType = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties";
         const string appRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties";
