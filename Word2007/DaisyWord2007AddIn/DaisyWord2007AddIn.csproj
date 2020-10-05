@@ -287,21 +287,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="DaisyTranslatorPhaseTwo.snk" />
-    <None Include="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Help.chm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Save As Daisy Getting Started.docx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Save-as-instruction-manual.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="template2007.dotx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -334,17 +319,19 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
-    <PostBuildEvent>IF EXIST "$(TargetDir)pipeline-lite-ms" rd /S /Q "$(TargetDir)pipeline-lite-ms"
-xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"
-
-REM IF NOT EXIST "$(TargetDir)DaisyWord2007Shim.dll" xcopy "$(SolutionDir)Word2007\DaisyWord2007Shim\$(ConfigurationName)\DaisyWord2007Shim.dll"  "$(TargetDir)"
-REM regsvr32 /s "$(TargetDir)DaisyWord2007Shim.dll"
-
-IF EXIST "$(TargetDir)ManagedAggregator.dll" del "$(TargetDir)ManagedAggregator.dll"
-xcopy "$(SolutionDir)Word2007\DaisyWord2007Shim\$(ConfigurationName)\ManagedAggregator.dll"  "$(TargetDir)"
-
+    <PostBuildEvent>REM - Copy resources needed for debugging
+REM --- XSLTs for word to dtbook conversion
+IF EXIST "$(TargetDir)resources" rd /S /Q "$(TargetDir)resources"
 xcopy /E /Y "$(SolutionDir)Converter\bin\$(ConfigurationName)\resources"  "$(TargetDir)resources\"
-
+REM --- pipeline for dtbook to daisy
+IF EXIST "$(TargetDir)pipeline-lite-ms" rd /S /Q "$(TargetDir)pipeline-lite-ms"
+xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"
+REM --- Common resources from Lib folder
+xcopy /Y  "$(SolutionDir)Lib\template2007.dotx"  "$(TargetDir)"
+xcopy /Y  "$(SolutionDir)Lib\Help.chm"  "$(TargetDir)"
+xcopy /Y  "$(SolutionDir)Lib\Save As Daisy Getting Started.docx"  "$(TargetDir)"
+xcopy /Y  "$(SolutionDir)Lib\Save-as-instruction-manual.zip"  "$(TargetDir)"
+xcopy /Y  "$(SolutionDir)Lib\Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx"  "$(TargetDir)"
 </PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>
