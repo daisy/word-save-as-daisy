@@ -486,25 +486,25 @@
                             <File Id="Save_As_Daisy_Getting_Started.docx" Name="Save As Daisy Getting Started.docx" Source="..\Lib\Save As Daisy Getting Started.docx" />
                         </Component>
                         <Directory Id="pipeline_lite_ms" Name="pipeline-lite-ms">
-                            <Component Id="pipeline_lite_ms_files" Guid="6343eff2-4570-417d-bdad-ee4eda384ea0">
+                            <Component Id="pipeline_lite_ms_files" Guid="ee6c5c24-9dbf-4c75-a7c2-525d9944f905">
                                 <File Id="pipeline_lite_ms_pipeline_lite.exe" Name="pipeline-lite.exe" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\pipeline-lite.exe" />
                                 <File Id="pipeline_lite_ms_pipeline.properties" Name="pipeline.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\pipeline.properties" />
                                 <File Id="pipeline_lite_ms_pipeline.user.properties" Name="pipeline.user.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\pipeline.user.properties" />
                             </Component>
                             <Directory Id="pipeline_lite_ms_ext" Name="ext">
-                                <Component Id="pipeline_lite_ms_ext_files" Guid="5e2f5036-a937-4459-b7de-0ccdbfe9d829">
+                                <Component Id="pipeline_lite_ms_ext_files" Guid="14769406-e3e6-4f71-b2ee-923d930d64c6">
                                     <File Id="pipeline_lite_ms_ext_lame.exe" Name="lame.exe" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\ext\lame.exe" />
                                 </Component>
                             </Directory><!--ext-->
                             <Directory Id="pipeline_lite_ms_jre" Name="jre">
-                                <Component Id="pipeline_lite_ms_jre_files" Guid="51b0ffbe-7c93-433c-b242-2f01a872ebc6">
+                                <Component Id="pipeline_lite_ms_jre_files" Guid="f2058650-0432-4ab9-8189-34c5e74d4cf5">
                                     <File Id="pipeline_lite_ms_jre_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\ASSEMBLY_EXCEPTION" />
                                     <File Id="pipeline_lite_ms_jre_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\LICENSE" />
                                     <File Id="pipeline_lite_ms_jre_release" Name="release" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\release" />
                                     <File Id="pipeline_lite_ms_jre_THIRD_PARTY_README" Name="THIRD_PARTY_README" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\THIRD_PARTY_README" />
                                 </Component>
                                 <Directory Id="pipeline_lite_ms_jre_bin" Name="bin">
-                                    <Component Id="pipeline_lite_ms_jre_bin_files" Guid="1d1cc85f-3159-4edb-b427-f44bf9ccaa09">
+                                    <Component Id="pipeline_lite_ms_jre_bin_files" Guid="0f7e05ad-2e90-4beb-af24-57598c9a6605">
                                         <File Id="pipeline_lite_ms_jre_bin_awt.dll" Name="awt.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\bin\awt.dll" />
                                         <File Id="pipeline_lite_ms_jre_bin_dt_shmem.dll" Name="dt_shmem.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\bin\dt_shmem.dll" />
                                         <File Id="pipeline_lite_ms_jre_bin_dt_socket.dll" Name="dt_socket.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\bin\dt_socket.dll" />
@@ -561,14 +561,14 @@
                                         <File Id="pipeline_lite_ms_jre_bin_zip.dll" Name="zip.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\bin\zip.dll" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_jre_bin_server" Name="server">
-                                        <Component Id="pipeline_lite_ms_jre_bin_server_files" Guid="9c5abf80-80b5-4373-90e9-ebba8de5090f">
+                                        <Component Id="pipeline_lite_ms_jre_bin_server_files" Guid="21c63a37-fe94-4992-94c8-d8ebfc2fe8b9">
                                             <File Id="pipeline_lite_ms_jre_bin_server_jvm.dll" Name="jvm.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\bin\server\jvm.dll" />
                                             <File Id="pipeline_lite_ms_jre_bin_server_Xusage.txt" Name="Xusage.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\bin\server\Xusage.txt" />
                                         </Component>
                                     </Directory><!--server-->
                                 </Directory><!--bin-->
                                 <Directory Id="pipeline_lite_ms_jre_lib" Name="lib">
-                                    <Component Id="pipeline_lite_ms_jre_lib_files" Guid="7dd5ad9d-96f0-4ecd-9d16-7946ac1c2e0b">
+                                    <Component Id="pipeline_lite_ms_jre_lib_files" Guid="a7b1abcf-bcde-4c4c-b396-08dde56926fb">
                                         <File Id="pipeline_lite_ms_jre_lib_accessibility.properties" Name="accessibility.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\accessibility.properties" />
                                         <File Id="pipeline_lite_ms_jre_lib_calendars.properties" Name="calendars.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\calendars.properties" />
                                         <File Id="pipeline_lite_ms_jre_lib_charsets.jar" Name="charsets.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\charsets.jar" />
@@ -596,14 +596,14 @@
                                         <File Id="pipeline_lite_ms_jre_lib_tzmappings" Name="tzmappings" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\tzmappings" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_jre_lib_amd64" Name="amd64">
-                                        <Component Id="pipeline_lite_ms_jre_lib_amd64_files" Guid="e4d9b4be-c2ca-4ff3-857a-1739b426b442">
+                                        <Component Id="pipeline_lite_ms_jre_lib_amd64_files" Guid="06560206-378a-4aca-8194-eb13ee13ac1c">
                                             <File Id="pipeline_lite_ms_jre_lib_amd64_jvm.cfg" Name="jvm.cfg" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\amd64\jvm.cfg" />
                                         </Component>
                                     </Directory><!--amd64-->
                                     <Directory Id="pipeline_lite_ms_jre_lib_applet" Name="applet">
                                     </Directory><!--applet-->
                                     <Directory Id="pipeline_lite_ms_jre_lib_cmm" Name="cmm">
-                                        <Component Id="pipeline_lite_ms_jre_lib_cmm_files" Guid="d8cc2705-d38b-416a-9b9c-2d3830d21c9e">
+                                        <Component Id="pipeline_lite_ms_jre_lib_cmm_files" Guid="2f5029d1-cdc6-42f4-bb76-d19807847348">
                                             <File Id="pipeline_lite_ms_jre_lib_cmm_CIEXYZ.pf" Name="CIEXYZ.pf" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\cmm\CIEXYZ.pf" />
                                             <File Id="pipeline_lite_ms_jre_lib_cmm_GRAY.pf" Name="GRAY.pf" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\cmm\GRAY.pf" />
                                             <File Id="pipeline_lite_ms_jre_lib_cmm_LINEAR_RGB.pf" Name="LINEAR_RGB.pf" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\cmm\LINEAR_RGB.pf" />
@@ -612,7 +612,7 @@
                                         </Component>
                                     </Directory><!--cmm-->
                                     <Directory Id="pipeline_lite_ms_jre_lib_ext" Name="ext">
-                                        <Component Id="pipeline_lite_ms_jre_lib_ext_files" Guid="178ceb6f-b3d2-4afe-ba89-4d23b0ffe65b">
+                                        <Component Id="pipeline_lite_ms_jre_lib_ext_files" Guid="1952ad5d-5f3e-4a76-9c5e-6b8a607cac23">
                                             <File Id="pipeline_lite_ms_jre_lib_ext_access_bridge_64.jar" Name="access-bridge-64.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\ext\access-bridge-64.jar" />
                                             <File Id="pipeline_lite_ms_jre_lib_ext_cldrdata.jar" Name="cldrdata.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\ext\cldrdata.jar" />
                                             <File Id="pipeline_lite_ms_jre_lib_ext_dnsns.jar" Name="dnsns.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\ext\dnsns.jar" />
@@ -629,7 +629,7 @@
                                     </Directory><!--ext-->
                                     <Directory Id="pipeline_lite_ms_jre_lib_images" Name="images">
                                         <Directory Id="pipeline_lite_ms_jre_lib_images_cursors" Name="cursors">
-                                            <Component Id="pipeline_lite_ms_jre_lib_images_cursors_files" Guid="781c907d-028f-4fff-92d4-0b33ae960afa">
+                                            <Component Id="pipeline_lite_ms_jre_lib_images_cursors_files" Guid="bd1c1de4-afb3-4d2b-b7a2-1b4ea1c599d6">
                                                 <File Id="pipeline_lite_ms_jre_lib_images_cursors_cursors.properties" Name="cursors.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\images\cursors\cursors.properties" />
                                                 <File Id="pipeline_lite_ms_jre_lib_images_cursors_invalid32x32.gif" Name="invalid32x32.gif" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\images\cursors\invalid32x32.gif" />
                                                 <File Id="pipeline_lite_ms_jre_lib_images_cursors_win32_CopyDrop32x32.gif" Name="win32_CopyDrop32x32.gif" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\images\cursors\win32_CopyDrop32x32.gif" />
@@ -642,13 +642,13 @@
                                         </Directory><!--cursors-->
                                     </Directory><!--images-->
                                     <Directory Id="pipeline_lite_ms_jre_lib_jfr" Name="jfr">
-                                        <Component Id="pipeline_lite_ms_jre_lib_jfr_files" Guid="11f28e52-0e4b-4a66-b79b-7039a0640515">
+                                        <Component Id="pipeline_lite_ms_jre_lib_jfr_files" Guid="9387b78e-e7e1-4abe-b0cf-5b992511f47c">
                                             <File Id="pipeline_lite_ms_jre_lib_jfr_default.jfc" Name="default.jfc" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\jfr\default.jfc" />
                                             <File Id="pipeline_lite_ms_jre_lib_jfr_profile.jfc" Name="profile.jfc" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\jfr\profile.jfc" />
                                         </Component>
                                     </Directory><!--jfr-->
                                     <Directory Id="pipeline_lite_ms_jre_lib_management" Name="management">
-                                        <Component Id="pipeline_lite_ms_jre_lib_management_files" Guid="5c0975fe-6f87-4869-9a01-8edbbf3dba94">
+                                        <Component Id="pipeline_lite_ms_jre_lib_management_files" Guid="3bac25a0-eeb9-472a-888f-986f318b4221">
                                             <File Id="pipeline_lite_ms_jre_lib_management_jmxremote.access" Name="jmxremote.access" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\management\jmxremote.access" />
                                             <File Id="pipeline_lite_ms_jre_lib_management_jmxremote.password.template" Name="jmxremote.password.template" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\management\jmxremote.password.template" />
                                             <File Id="pipeline_lite_ms_jre_lib_management_management.properties" Name="management.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\management\management.properties" />
@@ -656,7 +656,7 @@
                                         </Component>
                                     </Directory><!--management-->
                                     <Directory Id="pipeline_lite_ms_jre_lib_security" Name="security">
-                                        <Component Id="pipeline_lite_ms_jre_lib_security_files" Guid="2669e93a-dd72-49d0-bab9-538edcac97dc">
+                                        <Component Id="pipeline_lite_ms_jre_lib_security_files" Guid="581b0d2a-55ca-4fd5-a715-292c6af645db">
                                             <File Id="pipeline_lite_ms_jre_lib_security_blacklisted.certs" Name="blacklisted.certs" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\security\blacklisted.certs" />
                                             <File Id="pipeline_lite_ms_jre_lib_security_cacerts" Name="cacerts" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\security\cacerts" />
                                             <File Id="pipeline_lite_ms_jre_lib_security_java.policy" Name="java.policy" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\security\java.policy" />
@@ -664,13 +664,13 @@
                                         </Component>
                                         <Directory Id="pipeline_lite_ms_jre_lib_security_policy" Name="policy">
                                             <Directory Id="pipeline_lite_ms_jre_lib_security_policy_limited" Name="limited">
-                                                <Component Id="pipeline_lite_ms_jre_lib_security_policy_limited_files" Guid="e85221e5-f92e-4845-8970-aef353e93d84">
+                                                <Component Id="pipeline_lite_ms_jre_lib_security_policy_limited_files" Guid="96c0b898-90cb-4ad1-8b7a-3f656358370d">
                                                     <File Id="pipeline_lite_ms_jre_lib_security_policy_limited_local_policy.jar" Name="local_policy.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\security\policy\limited\local_policy.jar" />
                                                     <File Id="pipeline_lite_ms_jre_lib_security_policy_limited_US_export_policy.jar" Name="US_export_policy.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\security\policy\limited\US_export_policy.jar" />
                                                 </Component>
                                             </Directory><!--limited-->
                                             <Directory Id="pipeline_lite_ms_jre_lib_security_policy_unlimited" Name="unlimited">
-                                                <Component Id="pipeline_lite_ms_jre_lib_security_policy_unlimited_files" Guid="db49baf3-8aee-493c-b08f-d08f44d824b6">
+                                                <Component Id="pipeline_lite_ms_jre_lib_security_policy_unlimited_files" Guid="1ec4c6fa-3b64-4dc4-9e0d-292c2b75870c">
                                                     <File Id="pipeline_lite_ms_jre_lib_security_policy_unlimited_local_policy.jar" Name="local_policy.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\security\policy\unlimited\local_policy.jar" />
                                                     <File Id="pipeline_lite_ms_jre_lib_security_policy_unlimited_US_export_policy.jar" Name="US_export_policy.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\jre\lib\security\policy\unlimited\US_export_policy.jar" />
                                                 </Component>
@@ -680,7 +680,7 @@
                                 </Directory><!--lib-->
                             </Directory><!--jre-->
                             <Directory Id="pipeline_lite_ms_lib" Name="lib">
-                                <Component Id="pipeline_lite_ms_lib_files" Guid="9699f3b4-a12e-4868-a32f-2f5b2e1bb501">
+                                <Component Id="pipeline_lite_ms_lib_files" Guid="be699947-0224-47de-a715-d0863a2f792f">
                                     <File Id="pipeline_lite_ms_lib_batik_css.jar" Name="batik-css.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\batik-css.jar" />
                                     <File Id="pipeline_lite_ms_lib_batik_util.jar" Name="batik-util.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\batik-util.jar" />
                                     <File Id="pipeline_lite_ms_lib_chardet.jar" Name="chardet.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\chardet.jar" />
@@ -692,10 +692,10 @@
                                     <File Id="pipeline_lite_ms_lib_log4j_1.2.15.jar" Name="log4j-1.2.15.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\log4j-1.2.15.jar" />
                                     <File Id="pipeline_lite_ms_lib_org.daisy.pipeline.lite_20200921.jar" Name="org.daisy.pipeline.lite_20200921.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.daisy.pipeline.lite_20200921.jar" />
                                     <File Id="pipeline_lite_ms_lib_org.daisy.pipeline.scripts.ui_20200921.jar" Name="org.daisy.pipeline.scripts.ui_20200921.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.daisy.pipeline.scripts.ui_20200921.jar" />
-                                    <File Id="pipeline_lite_ms_lib_org.daisy.pipeline_20200924.jar" Name="org.daisy.pipeline_20200924.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.daisy.pipeline_20200924.jar" />
+                                    <File Id="pipeline_lite_ms_lib_org.daisy.pipeline_20201005.jar" Name="org.daisy.pipeline_20201005.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.daisy.pipeline_20201005.jar" />
                                     <File Id="pipeline_lite_ms_lib_org.daisy.util.jface_20200921.jar" Name="org.daisy.util.jface_20200921.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.daisy.util.jface_20200921.jar" />
                                     <File Id="pipeline_lite_ms_lib_org.daisy.util.swt_20200921.jar" Name="org.daisy.util.swt_20200921.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.daisy.util.swt_20200921.jar" />
-                                    <File Id="pipeline_lite_ms_lib_org.daisy.util_20200924.jar" Name="org.daisy.util_20200924.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.daisy.util_20200924.jar" />
+                                    <File Id="pipeline_lite_ms_lib_org.daisy.util_20201005.jar" Name="org.daisy.util_20201005.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.daisy.util_20201005.jar" />
                                     <File Id="pipeline_lite_ms_lib_org.eclipse.core.commands_3.9.700.v20191217_1850.jar" Name="org.eclipse.core.commands_3.9.700.v20191217-1850.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.eclipse.core.commands_3.9.700.v20191217-1850.jar" />
                                     <File Id="pipeline_lite_ms_lib_org.eclipse.equinox.common_3.11.0.v20200206_0817.jar" Name="org.eclipse.equinox.common_3.11.0.v20200206-0817.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.eclipse.equinox.common_3.11.0.v20200206-0817.jar" />
                                     <File Id="pipeline_lite_ms_lib_org.eclipse.jface_3.19.0.v20200218_1607.jar" Name="org.eclipse.jface_3.19.0.v20200218-1607.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\lib\org.eclipse.jface_3.19.0.v20200218-1607.jar" />
@@ -718,80 +718,80 @@
                                 </Component>
                             </Directory><!--lib-->
                             <Directory Id="pipeline_lite_ms_licenses" Name="licenses">
-                                <Component Id="pipeline_lite_ms_licenses_files" Guid="e9fca906-f59c-49e4-b264-a80c6b047c70">
+                                <Component Id="pipeline_lite_ms_licenses_files" Guid="202e910b-e76d-4d7b-97f7-c499bc7568ae">
                                     <File Id="pipeline_lite_ms_licenses_UserAgreement.txt" Name="UserAgreement.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\UserAgreement.txt" />
                                 </Component>
                                 <Directory Id="pipeline_lite_ms_licenses_AcademicFreeLicense" Name="AcademicFreeLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_AcademicFreeLicense_files" Guid="f7148bcf-490e-49fa-91c6-e9088878815b">
+                                    <Component Id="pipeline_lite_ms_licenses_AcademicFreeLicense_files" Guid="696f8597-af73-40e3-ac90-ec6e3bb05f49">
                                         <File Id="pipeline_lite_ms_licenses_AcademicFreeLicense_AcademicFreeLicense.txt" Name="AcademicFreeLicense.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\AcademicFreeLicense\AcademicFreeLicense.txt" />
                                     </Component>
                                 </Directory><!--AcademicFreeLicense-->
                                 <Directory Id="pipeline_lite_ms_licenses_ApacheLicense" Name="ApacheLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_ApacheLicense_files" Guid="826ca0a8-8e80-4a24-b27f-c1befdc61fbd">
+                                    <Component Id="pipeline_lite_ms_licenses_ApacheLicense_files" Guid="05de5362-c890-465e-a00a-97b875c48691">
                                         <File Id="pipeline_lite_ms_licenses_ApacheLicense_ApacheLicense.txt" Name="ApacheLicense.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\ApacheLicense\ApacheLicense.txt" />
                                     </Component>
                                 </Directory><!--ApacheLicense-->
                                 <Directory Id="pipeline_lite_ms_licenses_CeCILL_BLicense" Name="CeCILL-BLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_CeCILL_BLicense_files" Guid="626d7a45-aff2-4ec0-85ec-50714c3bda4b">
+                                    <Component Id="pipeline_lite_ms_licenses_CeCILL_BLicense_files" Guid="7fdd23aa-479c-4ece-9de2-9c745f89baef">
                                         <File Id="pipeline_lite_ms_licenses_CeCILL_BLicense_CeCILL_B.txt" Name="CeCILL-B.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\CeCILL-BLicense\CeCILL-B.txt" />
                                     </Component>
                                 </Directory><!--CeCILL-BLicense-->
                                 <Directory Id="pipeline_lite_ms_licenses_GeneralPublicLicense" Name="GeneralPublicLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_GeneralPublicLicense_files" Guid="63575984-8133-4eea-a6e0-1b72382f623c">
+                                    <Component Id="pipeline_lite_ms_licenses_GeneralPublicLicense_files" Guid="0ba9f4f1-dda2-4d11-9ab3-6507d4c56ef1">
                                         <File Id="pipeline_lite_ms_licenses_GeneralPublicLicense_GeneralPublicLicense.txt" Name="GeneralPublicLicense.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\GeneralPublicLicense\GeneralPublicLicense.txt" />
                                     </Component>
                                 </Directory><!--GeneralPublicLicense-->
                                 <Directory Id="pipeline_lite_ms_licenses_JingCopyingConditions" Name="JingCopyingConditions">
-                                    <Component Id="pipeline_lite_ms_licenses_JingCopyingConditions_files" Guid="615d2dbe-fc5b-4db5-b472-0458e84cd972">
+                                    <Component Id="pipeline_lite_ms_licenses_JingCopyingConditions_files" Guid="9262799f-7319-409b-b8fc-920494222058">
                                         <File Id="pipeline_lite_ms_licenses_JingCopyingConditions_JingCopyingConditions.html" Name="JingCopyingConditions.html" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\JingCopyingConditions\JingCopyingConditions.html" />
                                         <File Id="pipeline_lite_ms_licenses_JingCopyingConditions_JingCopyingConditions.txt" Name="JingCopyingConditions.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\JingCopyingConditions\JingCopyingConditions.txt" />
                                     </Component>
                                 </Directory><!--JingCopyingConditions-->
                                 <Directory Id="pipeline_lite_ms_licenses_LGPL" Name="LGPL">
-                                    <Component Id="pipeline_lite_ms_licenses_LGPL_files" Guid="90a89647-de1d-4b17-a937-b23ebfb22336">
+                                    <Component Id="pipeline_lite_ms_licenses_LGPL_files" Guid="8ba2996a-b61b-417e-9095-42d855209d02">
                                         <File Id="pipeline_lite_ms_licenses_LGPL_lgpl.txt" Name="lgpl.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\LGPL\lgpl.txt" />
                                     </Component>
                                 </Directory><!--LGPL-->
                                 <Directory Id="pipeline_lite_ms_licenses_MITLicense" Name="MITLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_MITLicense_files" Guid="df14f1b6-de98-43a1-93ae-fc4a5e0cd6da">
+                                    <Component Id="pipeline_lite_ms_licenses_MITLicense_files" Guid="e685484c-8292-4aac-9e0b-1cbd3b70c7c8">
                                         <File Id="pipeline_lite_ms_licenses_MITLicense_MITLicense.txt" Name="MITLicense.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\MITLicense\MITLicense.txt" />
                                     </Component>
                                 </Directory><!--MITLicense-->
                                 <Directory Id="pipeline_lite_ms_licenses_MozillaPublicLicense" Name="MozillaPublicLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_MozillaPublicLicense_files" Guid="2ae384e5-4527-47a1-ae29-7dbb407ca1c7">
+                                    <Component Id="pipeline_lite_ms_licenses_MozillaPublicLicense_files" Guid="6c2c404e-cec5-4a0b-ba9e-721a310e7b00">
                                         <File Id="pipeline_lite_ms_licenses_MozillaPublicLicense_MozillaPublicLicense.html" Name="MozillaPublicLicense.html" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\MozillaPublicLicense\MozillaPublicLicense.html" />
                                         <File Id="pipeline_lite_ms_licenses_MozillaPublicLicense_MozillaPublicLicense.txt" Name="MozillaPublicLicense.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\MozillaPublicLicense\MozillaPublicLicense.txt" />
                                     </Component>
                                 </Directory><!--MozillaPublicLicense-->
                                 <Directory Id="pipeline_lite_ms_licenses_PythonLicense" Name="PythonLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_PythonLicense_files" Guid="b7952f43-e137-4af9-972f-d5ffd5e82a77">
+                                    <Component Id="pipeline_lite_ms_licenses_PythonLicense_files" Guid="38765201-9fd3-4c30-8810-2f4d1e75e025">
                                         <File Id="pipeline_lite_ms_licenses_PythonLicense_PythonSoftwareFoundationLicense.txt" Name="PythonSoftwareFoundationLicense.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\PythonLicense\PythonSoftwareFoundationLicense.txt" />
                                     </Component>
                                 </Directory><!--PythonLicense-->
                                 <Directory Id="pipeline_lite_ms_licenses_StreamingAPIForXMLStax" Name="StreamingAPIForXMLStax">
-                                    <Component Id="pipeline_lite_ms_licenses_StreamingAPIForXMLStax_files" Guid="db83dfbd-9db3-4bda-af53-a6d28518d302">
+                                    <Component Id="pipeline_lite_ms_licenses_StreamingAPIForXMLStax_files" Guid="c45aa069-7b34-432e-bde3-e7bbe3c86d46">
                                         <File Id="pipeline_lite_ms_licenses_StreamingAPIForXMLStax_BEAStreamingAPIforXMLStax.txt" Name="BEAStreamingAPIforXMLStax.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\StreamingAPIForXMLStax\BEAStreamingAPIforXMLStax.txt" />
                                     </Component>
                                 </Directory><!--StreamingAPIForXMLStax-->
                                 <Directory Id="pipeline_lite_ms_licenses_W3CSoftwareLicense" Name="W3CSoftwareLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_W3CSoftwareLicense_files" Guid="c509d265-9758-4bd7-b316-992e9966402c">
+                                    <Component Id="pipeline_lite_ms_licenses_W3CSoftwareLicense_files" Guid="08416eba-b88d-4568-b56b-2f7a215ce168">
                                         <File Id="pipeline_lite_ms_licenses_W3CSoftwareLicense_W3CSoftwareLicense.html" Name="W3CSoftwareLicense.html" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\W3CSoftwareLicense\W3CSoftwareLicense.html" />
                                     </Component>
                                 </Directory><!--W3CSoftwareLicense-->
                                 <Directory Id="pipeline_lite_ms_licenses_XLicense" Name="XLicense">
-                                    <Component Id="pipeline_lite_ms_licenses_XLicense_files" Guid="4e4aef72-6328-4c2e-b56f-b31070f2f81c">
+                                    <Component Id="pipeline_lite_ms_licenses_XLicense_files" Guid="abaf90e8-8efc-4cde-8643-c839fbd820ac">
                                         <File Id="pipeline_lite_ms_licenses_XLicense_XLicense.txt" Name="XLicense.txt" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\licenses\XLicense\XLicense.txt" />
                                     </Component>
                                 </Directory><!--XLicense-->
                             </Directory><!--licenses-->
                             <Directory Id="pipeline_lite_ms_scripts" Name="scripts">
-                                <Component Id="pipeline_lite_ms_scripts_files" Guid="4e694638-5510-4d3b-979b-330eb8011aef">
+                                <Component Id="pipeline_lite_ms_scripts_files" Guid="ce7833a2-d333-4cee-b9f2-4668256017cf">
                                     <File Id="pipeline_lite_ms_scripts_DAISY_Pipeline_TTS_Narrator.taskScript" Name="DAISY Pipeline TTS Narrator.taskScript" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\scripts\DAISY Pipeline TTS Narrator.taskScript" />
                                 </Component>
                             </Directory><!--scripts-->
                             <Directory Id="pipeline_lite_ms_transformers" Name="transformers">
                                 <Directory Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer" Name="int_daisy_filesetRenamer">
-                                    <Component Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_files" Guid="6f6e9c7b-db60-44a1-9b1a-aa3620101b46">
+                                    <Component Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_files" Guid="f5bfa3c6-7ffc-48d3-af1b-699fd5411aa0">
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_FilesetRenamer_UriModderFilter.class" Name="FilesetRenamer$UriModderFilter.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\FilesetRenamer$UriModderFilter.class" />
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_FilesetRenamer.class" Name="FilesetRenamer.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\FilesetRenamer.class" />
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_FilesetRenamingException.class" Name="FilesetRenamingException.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\FilesetRenamingException.class" />
@@ -801,7 +801,7 @@
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_transformer.tdf" Name="transformer.tdf" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\transformer.tdf" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_segment" Name="segment">
-                                        <Component Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_segment_files" Guid="3fba690d-a981-426f-a975-78545cc37cc4">
+                                        <Component Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_segment_files" Guid="d22b5d2a-0075-4357-8477-4f5f94eea404">
                                             <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_segment_EchoSegment.class" Name="EchoSegment.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\segment\EchoSegment.class" />
                                             <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_segment_ExtensionSegment.class" Name="ExtensionSegment.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\segment\ExtensionSegment.class" />
                                             <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_segment_FilesetUIDSegment.class" Name="FilesetUIDSegment.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\segment\FilesetUIDSegment.class" />
@@ -814,14 +814,14 @@
                                         </Component>
                                     </Directory><!--segment-->
                                     <Directory Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_strategies" Name="strategies">
-                                        <Component Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_strategies_files" Guid="d4c536af-7920-4ae3-98a6-51dc48c4c77f">
+                                        <Component Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_strategies_files" Guid="c6fa6d74-4c36-4326-94ab-b8149c01b5be">
                                             <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_strategies_DefaultStrategy.class" Name="DefaultStrategy.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\strategies\DefaultStrategy.class" />
                                             <File Id="pipeline_lite_ms_transformers_int_daisy_filesetRenamer_strategies_RenamingStrategy.class" Name="RenamingStrategy.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_filesetRenamer\strategies\RenamingStrategy.class" />
                                         </Component>
                                     </Directory><!--strategies-->
                                 </Directory><!--int_daisy_filesetRenamer-->
                                 <Directory Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator" Name="int_daisy_mathAltCreator">
-                                    <Component Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_files" Guid="4a9615b3-ba8c-42a1-87d2-35f497662247">
+                                    <Component Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_files" Guid="f4dc07df-166e-4dbe-b731-863dce0e9a70">
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_IMathAltCreator.class" Name="IMathAltCreator.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mathAltCreator\IMathAltCreator.class" />
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_MathAltCreator.class" Name="MathAltCreator.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mathAltCreator\MathAltCreator.class" />
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_MathAltCreatorFactory.class" Name="MathAltCreatorFactory.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mathAltCreator\MathAltCreatorFactory.class" />
@@ -832,7 +832,7 @@
                                     <Directory Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_com" Name="com">
                                         <Directory Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_com_dessci" Name="dessci">
                                             <Directory Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_com_dessci_mathflow" Name="mathflow">
-                                                <Component Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_com_dessci_mathflow_files" Guid="8771e2ea-9d21-4065-800b-1368352d6ee4">
+                                                <Component Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_com_dessci_mathflow_files" Guid="7b80c869-1cb6-4ce6-b07b-18f831abd799">
                                                     <File Id="pipeline_lite_ms_transformers_int_daisy_mathAltCreator_com_dessci_mathflow_MathFlowAltCreator.class" Name="MathFlowAltCreator.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mathAltCreator\com\dessci\mathflow\MathFlowAltCreator.class" />
                                                 </Component>
                                             </Directory><!--mathflow-->
@@ -840,7 +840,7 @@
                                     </Directory><!--com-->
                                 </Directory><!--int_daisy_mathAltCreator-->
                                 <Directory Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer" Name="int_daisy_mixedContentNormalizer">
-                                    <Component Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_files" Guid="d1dc7008-6d03-4a22-9525-2d4cf7d95408">
+                                    <Component Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_files" Guid="562315ee-7fef-4cd2-9342-7181153ea792">
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_AbstractNormalizer.class" Name="AbstractNormalizer.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mixedContentNormalizer\AbstractNormalizer.class" />
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_AbstractSyncPointLocator.class" Name="AbstractSyncPointLocator.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mixedContentNormalizer\AbstractSyncPointLocator.class" />
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_config.xml" Name="config.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mixedContentNormalizer\config.xml" />
@@ -853,7 +853,7 @@
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_transformer.tdf" Name="transformer.tdf" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mixedContentNormalizer\transformer.tdf" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_dom" Name="dom">
-                                        <Component Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_dom_files" Guid="1dc37698-2475-468f-9d5f-02d300de9c57">
+                                        <Component Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_dom_files" Guid="eb8d9415-859b-4de9-abda-98b4850170db">
                                             <File Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_dom_DOMConfig_TextNodeType.class" Name="DOMConfig$TextNodeType.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mixedContentNormalizer\dom\DOMConfig$TextNodeType.class" />
                                             <File Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_dom_DOMConfig.class" Name="DOMConfig.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mixedContentNormalizer\dom\DOMConfig.class" />
                                             <File Id="pipeline_lite_ms_transformers_int_daisy_mixedContentNormalizer_dom_DOMConfigLoader.class" Name="DOMConfigLoader.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_mixedContentNormalizer\dom\DOMConfigLoader.class" />
@@ -867,7 +867,7 @@
                                     </Directory><!--dom-->
                                 </Directory><!--int_daisy_mixedContentNormalizer-->
                                 <Directory Id="pipeline_lite_ms_transformers_int_daisy_validator" Name="int_daisy_validator">
-                                    <Component Id="pipeline_lite_ms_transformers_int_daisy_validator_files" Guid="7e291425-cdd5-483b-bdea-b348039dc629">
+                                    <Component Id="pipeline_lite_ms_transformers_int_daisy_validator_files" Guid="8893ca4a-bb17-4ef1-aefd-ff61ee10002e">
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_validator_messages.properties" Name="messages.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_validator\messages.properties" />
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_validator_messages_hi.properties" Name="messages_hi.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_validator\messages_hi.properties" />
                                         <File Id="pipeline_lite_ms_transformers_int_daisy_validator_messages_ja.properties" Name="messages_ja.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\int_daisy_validator\messages_ja.properties" />
@@ -881,7 +881,7 @@
                                     </Component>
                                 </Directory><!--int_daisy_validator-->
                                 <Directory Id="pipeline_lite_ms_transformers_pipeline_system_deleter" Name="pipeline_system_deleter">
-                                    <Component Id="pipeline_lite_ms_transformers_pipeline_system_deleter_files" Guid="782b6810-c499-445e-b941-201e4be9d188">
+                                    <Component Id="pipeline_lite_ms_transformers_pipeline_system_deleter_files" Guid="c26f3472-11ab-44bd-97a0-4a8b7841e097">
                                         <File Id="pipeline_lite_ms_transformers_pipeline_system_deleter_Deleter.class" Name="Deleter.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\pipeline_system_deleter\Deleter.class" />
                                         <File Id="pipeline_lite_ms_transformers_pipeline_system_deleter_messages.properties" Name="messages.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\pipeline_system_deleter\messages.properties" />
                                         <File Id="pipeline_lite_ms_transformers_pipeline_system_deleter_messages_hi.properties" Name="messages_hi.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\pipeline_system_deleter\messages_hi.properties" />
@@ -890,7 +890,7 @@
                                     </Component>
                                 </Directory><!--pipeline_system_deleter-->
                                 <Directory Id="pipeline_lite_ms_transformers_se_tpb_annonsator" Name="se_tpb_annonsator">
-                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_annonsator_files" Guid="e5880c7a-005b-4e16-b65a-643c2d40abe2">
+                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_annonsator_files" Guid="eac2bf08-c904-406e-8dae-79017306a781">
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_annonsator_Annonsator.class" Name="Annonsator.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_annonsator\Annonsator.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_annonsator_AnnonsatorXSLTBuilder.class" Name="AnnonsatorXSLTBuilder.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_annonsator\AnnonsatorXSLTBuilder.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_annonsator_attributes.template" Name="attributes.template" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_annonsator\attributes.template" />
@@ -904,7 +904,7 @@
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_annonsator_type_newspaper.xml" Name="type_newspaper.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_annonsator\type_newspaper.xml" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_annonsator_type" Name="type">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_annonsator_type_files" Guid="37acfcf7-a41f-4267-862c-87d3f6d87437">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_annonsator_type_files" Guid="c658af74-f43c-4c25-9943-e7f0952b2843">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_annonsator_type_dtbook_2005.xml" Name="dtbook-2005.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_annonsator\type\dtbook-2005.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_annonsator_type_dtbook_2005_newpaper.xml" Name="dtbook-2005_newpaper.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_annonsator\type\dtbook-2005_newpaper.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_annonsator_type_xhtml_1.0.xml" Name="xhtml-1.0.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_annonsator\type\xhtml-1.0.xml" />
@@ -912,7 +912,7 @@
                                     </Directory><!--type-->
                                 </Directory><!--se_tpb_annonsator-->
                                 <Directory Id="pipeline_lite_ms_transformers_se_tpb_dtbAudioEncoder" Name="se_tpb_dtbAudioEncoder">
-                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_dtbAudioEncoder_files" Guid="076cfca0-2f44-4a86-a603-eda6d44b65b3">
+                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_dtbAudioEncoder_files" Guid="9193cf68-5e74-4722-9d57-c3a44bb2a059">
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_dtbAudioEncoder_DtbAudioEncoder.class" Name="DtbAudioEncoder.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbAudioEncoder\DtbAudioEncoder.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_dtbAudioEncoder_EncodingException.class" Name="EncodingException.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbAudioEncoder\EncodingException.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_dtbAudioEncoder_LameEncoder.class" Name="LameEncoder.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbAudioEncoder\LameEncoder.class" />
@@ -925,7 +925,7 @@
                                     </Component>
                                 </Directory><!--se_tpb_dtbAudioEncoder-->
                                 <Directory Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix" Name="se_tpb_dtbookFix">
-                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_files" Guid="c301e89f-2d3a-45f5-b787-db164e857e0e">
+                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_files" Guid="7c42c284-18a8-46ca-a000-016c27d8c202">
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_Category_Name.class" Name="Category$Name.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbookFix\Category$Name.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_Category.class" Name="Category.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbookFix\Category.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_CharsetExecutor.class" Name="CharsetExecutor.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbookFix\CharsetExecutor.class" />
@@ -952,7 +952,7 @@
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_XSLTExecutor.class" Name="XSLTExecutor.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbookFix\XSLTExecutor.class" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_xslt" Name="xslt">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_xslt_files" Guid="584bcbd3-bc2c-48b4-ab64-681138734633">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_xslt_files" Guid="fc994a78-0a27-4c02-8690-ed3e8cd994ea">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_xslt_dummy_headings_tools.xsl" Name="dummy-headings-tools.xsl" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbookFix\xslt\dummy-headings-tools.xsl" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_xslt_iterative_processor.xsl" Name="iterative-processor.xsl" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbookFix\xslt\iterative-processor.xsl" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_dtbookFix_xslt_level_tools.xsl" Name="level-tools.xsl" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_dtbookFix\xslt\level-tools.xsl" />
@@ -991,7 +991,7 @@
                                     </Directory><!--xslt-->
                                 </Directory><!--se_tpb_dtbookFix-->
                                 <Directory Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator" Name="se_tpb_filesetcreator">
-                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_files" Guid="d8219965-47f1-4e64-8987-420d94db323e">
+                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_files" Guid="066f81ec-8ea9-4884-8ea0-c76337fbe655">
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_FileSetCreator_1.class" Name="FileSetCreator$1.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\FileSetCreator$1.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_FileSetCreator_2.class" Name="FileSetCreator$2.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\FileSetCreator$2.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_FileSetCreator_3.class" Name="FileSetCreator$3.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\FileSetCreator$3.class" />
@@ -1008,18 +1008,18 @@
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_transformer.tdf" Name="transformer.tdf" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\transformer.tdf" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_config" Name="config">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_config_files" Guid="91a50fb0-37e7-49bd-b6c6-f8e085e77678">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_config_files" Guid="a2d64338-8203-4410-ba37-9593ff2d19e6">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_config_fileSetCreatorConfig.xml" Name="fileSetCreatorConfig.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\config\fileSetCreatorConfig.xml" />
                                         </Component>
                                     </Directory><!--config-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_resource" Name="resource">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_resource_files" Guid="2bbd24cd-27f9-48d7-a0da-c99e835a0737">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_resource_files" Guid="79809b58-9a6c-436d-8000-21e92c62328b">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_resource_tpbnarrator.res" Name="tpbnarrator.res" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\resource\tpbnarrator.res" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_resource_tpbnarrator_res.mp3" Name="tpbnarrator_res.mp3" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\resource\tpbnarrator_res.mp3" />
                                         </Component>
                                     </Directory><!--resource-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_templates" Name="templates">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_templates_files" Guid="eeced272-b1cc-449b-bca8-b12224765093">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_templates_files" Guid="e39f11a8-4392-4fd9-bbf6-bd01ae7d3bea">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_templates_ncx.template.xml" Name="ncx.template.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\templates\ncx.template.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_templates_opf.template.xml" Name="opf.template.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\templates\opf.template.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_filesetcreator_templates_smil.template.xml" Name="smil.template.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_filesetcreator\templates\smil.template.xml" />
@@ -1027,7 +1027,7 @@
                                     </Directory><!--templates-->
                                 </Directory><!--se_tpb_filesetcreator-->
                                 <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2" Name="se_tpb_speechgen2">
-                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_files" Guid="8a9ed7a5-96c9-4a8f-9ae0-27568437f206">
+                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_files" Guid="59779449-8581-4fec-a21c-0aa6e3a061d1">
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_messages.properties" Name="messages.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\messages.properties" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_messages_hi.properties" Name="messages_hi.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\messages_hi.properties" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_messages_ja.properties" Name="messages_ja.properties" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\messages_ja.properties" />
@@ -1038,7 +1038,7 @@
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_transformer.tdf" Name="transformer.tdf" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\transformer.tdf" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_audio" Name="audio">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_audio_files" Guid="e0c650ab-09a1-497d-85b6-eff8355d808b">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_audio_files" Guid="1a9a81a3-0c93-401c-a192-c129e4d73c83">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_audio_AudioConcat.class" Name="AudioConcat.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\audio\AudioConcat.class" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_audio_AudioConcatQueue_FileBunch.class" Name="AudioConcatQueue$FileBunch.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\audio\AudioConcatQueue$FileBunch.class" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_audio_AudioConcatQueue.class" Name="AudioConcatQueue.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\audio\AudioConcatQueue.class" />
@@ -1051,13 +1051,13 @@
                                         </Component>
                                     </Directory><!--audio-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_charsubst" Name="charsubst">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_charsubst_files" Guid="5bf6b0cc-7af7-43dc-846b-cb13d9a29648">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_charsubst_files" Guid="eb7da09d-7284-4fcb-8b89-863b762e9810">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_charsubst_ATTNaturalVoicesGerman.xml" Name="ATTNaturalVoicesGerman.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\charsubst\ATTNaturalVoicesGerman.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_charsubst_character_translation_table.xml" Name="character-translation-table.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\charsubst\character-translation-table.xml" />
                                         </Component>
                                     </Directory><!--charsubst-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_conf" Name="conf">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_conf_files" Guid="09efb259-3d20-4ddf-ac42-71cfa600925a">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_conf_files" Guid="16d803bf-15d1-42c1-8914-df1591fb6b0b">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_conf_loquendo.xml" Name="loquendo.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\conf\loquendo.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_conf_sgConfig_sv.xml" Name="sgConfig-sv.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\conf\sgConfig-sv.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_conf_sgConfig.xml" Name="sgConfig.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\conf\sgConfig.xml" />
@@ -1065,24 +1065,24 @@
                                     </Directory><!--conf-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external" Name="external">
                                         <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_dummy" Name="dummy">
-                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_dummy_files" Guid="1f455d32-7251-4978-bee6-1dfe520c7307">
+                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_dummy_files" Guid="60d0cd43-9b0d-4bec-bf8a-12d00d4efd9c">
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_dummy_DummyTTS.class" Name="DummyTTS.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\dummy\DummyTTS.class" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_dummy_hello.wav" Name="hello.wav" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\dummy\hello.wav" />
                                             </Component>
                                         </Directory><!--dummy-->
                                         <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_linux" Name="linux">
-                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_linux_files" Guid="994bc15f-3764-4903-b8eb-65ba8d4db072">
+                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_linux_files" Guid="7b014644-5b47-43d3-b691-c1d48869555d">
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_linux_ATTNaturalVoicesTTS.class" Name="ATTNaturalVoicesTTS.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\linux\ATTNaturalVoicesTTS.class" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_linux_ESpeakTTS.class" Name="ESpeakTTS.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\linux\ESpeakTTS.class" />
                                             </Component>
                                         </Directory><!--linux-->
                                         <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_MacOS" Name="MacOS">
-                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_MacOS_files" Guid="8c8d059f-8bc5-46f8-a0de-3afbf37c344e">
+                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_MacOS_files" Guid="bb21ab54-b9fd-40f5-8ba3-f5b2c57af98d">
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_MacOS_MacSayTTS.class" Name="MacSayTTS.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\MacOS\MacSayTTS.class" />
                                             </Component>
                                         </Directory><!--MacOS-->
                                         <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_SimpleCommandLineTTS" Name="SimpleCommandLineTTS">
-                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_SimpleCommandLineTTS_files" Guid="56569bee-0288-4d46-b3f2-1bc5d6b042c7">
+                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_SimpleCommandLineTTS_files" Guid="c89960ec-c266-4014-b56d-8e8d76f3787a">
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_SimpleCommandLineTTS_doc.xml" Name="doc.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\SimpleCommandLineTTS\doc.xml" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_SimpleCommandLineTTS_Interop.SpeechLib.dll" Name="Interop.SpeechLib.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\SimpleCommandLineTTS\Interop.SpeechLib.dll" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_SimpleCommandLineTTS_Program.cs" Name="Program.cs" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\SimpleCommandLineTTS\Program.cs" />
@@ -1093,11 +1093,11 @@
                                             </Component>
                                         </Directory><!--SimpleCommandLineTTS-->
                                         <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win" Name="win">
-                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_files" Guid="08985c54-9fa6-4f40-a65a-97ffbc1fe265">
+                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_files" Guid="2b8ffb2c-d5fe-4d8e-a377-70edd661c2fb">
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_DefaultSapiTTS.class" Name="DefaultSapiTTS.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\win\DefaultSapiTTS.class" />
                                             </Component>
                                             <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5" Name="sapi5">
-                                                <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_files" Guid="4c278af4-995c-457d-979f-5f53253b2c2a">
+                                                <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_files" Guid="4a0a7353-0988-46e7-a5b9-6267035901ec">
                                                     <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_ClassFactory.class" Name="ClassFactory.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\win\sapi5\ClassFactory.class" />
                                                     <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_DISPIDSPRG.class" Name="DISPIDSPRG.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\win\sapi5\DISPIDSPRG.class" />
                                                     <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_DISPIDSPTSI.class" Name="DISPIDSPTSI.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\win\sapi5\DISPIDSPTSI.class" />
@@ -1281,7 +1281,7 @@
                                                     <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_SPWORDTYPE.class" Name="SPWORDTYPE.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\win\sapi5\SPWORDTYPE.class" />
                                                 </Component>
                                                 <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_events" Name="events">
-                                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_events_files" Guid="4e85a69f-db9c-4659-8a0c-87bb4089d78d">
+                                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_events_files" Guid="c577643e-de90-4b29-88f6-8692ac0c8ad3">
                                                         <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_events__ISpeechRecoContextEvents.class" Name="_ISpeechRecoContextEvents.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\win\sapi5\events\_ISpeechRecoContextEvents.class" />
                                                         <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_external_win_sapi5_events__ISpeechVoiceEvents.class" Name="_ISpeechVoiceEvents.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\external\win\sapi5\events\_ISpeechVoiceEvents.class" />
                                                     </Component>
@@ -1290,14 +1290,15 @@
                                         </Directory><!--win-->
                                     </Directory><!--external-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_lib" Name="lib">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_lib_files" Guid="192123d0-f111-4dc6-9e83-82d82a0ac8b7">
-                                            <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_lib_com4j.dll" Name="com4j.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\lib\com4j.dll" />
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_lib_files" Guid="af3995c7-238f-4901-9644-a9f129d0e386">
+                                            <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_lib_com4j_amd64.dll" Name="com4j-amd64.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\lib\com4j-amd64.dll" />
+                                            <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_lib_com4j_x86.dll" Name="com4j-x86.dll" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\lib\com4j-x86.dll" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_lib_com4j.jar" Name="com4j.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\lib\com4j.jar" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_lib_tlbimp.jar" Name="tlbimp.jar" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\lib\tlbimp.jar" />
                                         </Component>
                                     </Directory><!--lib-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_regex" Name="regex">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_regex_files" Guid="e70bf817-8e05-4a26-9e11-3ecfaa5b502a">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_regex_files" Guid="232ff207-fb5e-40b8-a05b-82aabb8e280a">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_regex_loquendo_general.xml" Name="loquendo-general.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\regex\loquendo-general.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_regex_macosx_say.xml" Name="macosx-say.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\regex\macosx-say.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_regex_year_en.xml" Name="year_en.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\regex\year_en.xml" />
@@ -1305,7 +1306,7 @@
                                         </Component>
                                     </Directory><!--regex-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts" Name="tts">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_files" Guid="9fcf759d-3bef-43f6-a1e8-7a9d8627869a">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_files" Guid="b77b3d95-9f8d-4f5b-8a8a-466c4244c4b2">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_TTS.class" Name="TTS.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\TTS.class" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_TTSAnnouncement.class" Name="TTSAnnouncement.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\TTSAnnouncement.class" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_ttsbuilder_configtest.rng" Name="ttsbuilder-configtest.rng" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\ttsbuilder-configtest.rng" />
@@ -1320,7 +1321,7 @@
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_XMLParameter.class" Name="XMLParameter.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\XMLParameter.class" />
                                         </Component>
                                         <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_adapters" Name="adapters">
-                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_adapters_files" Guid="fe2a5022-c390-4751-af41-06810726bfdc">
+                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_adapters_files" Guid="073ecc6b-90d6-4819-a2e6-1040ff8615b6">
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_adapters_AbstractTTSAdapter.class" Name="AbstractTTSAdapter.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\adapters\AbstractTTSAdapter.class" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_adapters_FilibusterTTS.class" Name="FilibusterTTS.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\adapters\FilibusterTTS.class" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_adapters_LocalStreamTTS.class" Name="LocalStreamTTS.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\adapters\LocalStreamTTS.class" />
@@ -1328,7 +1329,7 @@
                                             </Component>
                                         </Directory><!--adapters-->
                                         <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_concurrent" Name="concurrent">
-                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_concurrent_files" Guid="455b6340-2293-4ec0-a78f-e12fc6e9064d">
+                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_concurrent_files" Guid="98195e98-eb83-4f92-8998-ec3b3c9e064c">
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_concurrent_TTSAdapter.class" Name="TTSAdapter.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\concurrent\TTSAdapter.class" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_concurrent_TTSGroup.class" Name="TTSGroup.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\concurrent\TTSGroup.class" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_concurrent_TTSGroupFacade.class" Name="TTSGroupFacade.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\concurrent\TTSGroupFacade.class" />
@@ -1336,7 +1337,7 @@
                                             </Component>
                                         </Directory><!--concurrent-->
                                         <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_util" Name="util">
-                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_util_files" Guid="cf0c4367-a48d-4af4-bbdd-f13c7a1aeba6">
+                                            <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_util_files" Guid="875175f3-b65f-400e-bdc3-25edef322555">
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_util_PatternReplace.class" Name="PatternReplace.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\util\PatternReplace.class" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_util_RegexReplace.class" Name="RegexReplace.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\util\RegexReplace.class" />
                                                 <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_tts_util_RomanNumeral.class" Name="RomanNumeral.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\tts\util\RomanNumeral.class" />
@@ -1346,7 +1347,7 @@
                                         </Directory><!--util-->
                                     </Directory><!--tts-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_xslt" Name="xslt">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_xslt_files" Guid="7fff2987-8293-45a6-8278-e23d7dde7b9b">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_xslt_files" Guid="084bf5c9-5cd5-469f-b8bd-d2128854abd7">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_xslt_filibuster.xsl" Name="filibuster.xsl" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\xslt\filibuster.xsl" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_xslt_loquendo_en.xsl" Name="loquendo-en.xsl" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\xslt\loquendo-en.xsl" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_speechgen2_xslt_transform.xsl" Name="transform.xsl" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_speechgen2\xslt\transform.xsl" />
@@ -1354,7 +1355,7 @@
                                     </Directory><!--xslt-->
                                 </Directory><!--se_tpb_speechgen2-->
                                 <Directory Id="pipeline_lite_ms_transformers_se_tpb_xmldetection" Name="se_tpb_xmldetection">
-                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_files" Guid="30ad3343-b99f-48a4-8826-28d12b4ee06d">
+                                    <Component Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_files" Guid="1c6197c3-2c89-44ba-bf3d-6c83b55a9e70">
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_Abbr.class" Name="Abbr.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\Abbr.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_BreakFinder.class" Name="BreakFinder.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\BreakFinder.class" />
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_BreakSettings.class" Name="BreakSettings.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\BreakSettings.class" />
@@ -1383,7 +1384,7 @@
                                         <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_XMLWordDetector.class" Name="XMLWordDetector.class" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\XMLWordDetector.class" />
                                     </Component>
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_lang" Name="lang">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_lang_files" Guid="5b564434-f160-430e-8a2a-cfff80b78ecf">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_lang_files" Guid="aebc5d01-f953-4a7f-89af-2dde9d4d9f0f">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_lang_common.xml" Name="common.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\lang\common.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_lang_en.xml" Name="en.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\lang\en.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_lang_fr.xml" Name="fr.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\lang\fr.xml" />
@@ -1391,7 +1392,7 @@
                                         </Component>
                                     </Directory><!--lang-->
                                     <Directory Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_type" Name="type">
-                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_type_files" Guid="151a09de-7895-4f72-9eab-ca9804ab7876">
+                                        <Component Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_type_files" Guid="ea9fdf72-25c4-49be-98bd-f908cb717e5b">
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_type_dtbook_2005.xml" Name="dtbook-2005.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\type\dtbook-2005.xml" />
                                             <File Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_type_xhtml10.xml" Name="xhtml10.xml" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\transformers\se_tpb_xmldetection\type\xhtml10.xml" />
                                         </Component>
