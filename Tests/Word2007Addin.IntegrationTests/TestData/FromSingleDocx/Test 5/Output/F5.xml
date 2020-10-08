@@ -18,7 +18,7 @@
 <p xml:lang="ru-RU"><strong>Convenient communication</strong>: most of specialists working in our company are English-speaking, time difference between Belarus and West Europe is only 1 or 2 hours </p>
 <p></p>
 <p></p>
-</level2><level2><h2 xml:lang="ru-RU">  Our contribution to software development society
+<p /></level2><level2><h2 xml:lang="ru-RU">  Our contribution to software development society
 </h2><p xml:lang="ru-RU">We, as any software company, actively use public resources – Wikipedia, free software, forums, etc. And we want to contribute back to software development society. Our current contribution is:</p>
 <p xml:lang="ru-RU">We provide free product for application monitoring <a href="http://www.gersis-software.com/en/product/application-monitoring-framework/" external="true">GS Monitoring Framework</a> </p>
 <p xml:lang="ru-RU">We share our latest technological and organizational findings and ideas in our <a href="http://www.gersis-software.com/en/blog/" external="true">corporate blog</a></p>
@@ -26,4 +26,4 @@
 <p></p>
 <p></p>
 <p></p>
-</level2></level1></bodymatter></book></dtbook>
+<p /></level2><p /></level1></bodymatter><rearmatter><level1><p /></level1></rearmatter></book></dtbook>

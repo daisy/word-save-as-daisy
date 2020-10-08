@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet href="dtbookbasic.css" type="text/css"?>
+<dtbook version="2005-3" xmlns:mml="http://www.w3.org/1998/Math/MathML" xml:lang="en-US" ><head><meta name="dtb:uid" content="2-3" /><meta name="dt:version" content="2.1.1.0" /><meta name="dc:Title" content="m 2-3" /><meta name="dc:Creator" content="Balandin Vyacheslav" /><meta name="dc:Date" content="2010-10-07" /><meta name="dc:Publisher" content="Pruchkovskaya" /><meta name="dc:Subject" content="m" /><meta name="dc:Identifier" content="2-3" /><meta name="dc:Language" content="en-US" /><meta name="dc:Language" content="ru-RU" /></head><book showin="blp"><frontmatter><doctitle>m 2-3</doctitle><docauthor>Balandin Vyacheslav</docauthor></frontmatter><bodymatter id="bodymatter_0001"><level1><h1>  Document name
+</h1><p xml:lang="ru-RU">Change history:</p>
+<table border="1"><tbody><tr><td ><p xml:lang="ru-RU">Date</p>
+</td><td ><p xml:lang="ru-RU">Author</p>
+</td><td ><p xml:lang="ru-RU">Change / State</p>
+</td></tr><tr><td ><p xml:lang="ru-RU">2009-01-01</p>
+</td><td ><p xml:lang="ru-RU">Last_name N.</p>
+</td><td ><p></p>
+</td></tr><tr><td ><p></p>
+</td><td ><p></p>
+</td><td ><p></p>
+</td></tr></tbody></table><p></p>
+<p></p>
+</level1><level1>en-US1. Section 1
+</h1><level2>en-US1.1. Subsection 1.1
+</h2><p></p>
+<p>Table</p>
+<table border="1"><tbody><tr><td ><p></p>
+</td><td ><p></p>
+</td><td ><p></p>
+</td></tr><tr><td ><p></p>
+</td><td ><p></p>
+</td><td ><p></p>
+</td></tr><tr><td ><p></p>
+</td><td ><p></p>
+</td><td ><p></p>
+</td></tr></tbody></table><p></p>
+<p></p>
+</level2></level1><level1>en-US2. Section 2
+</h1><p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+</level1></bodymatter></book></dtbook>

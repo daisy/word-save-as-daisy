@@ -12,8 +12,8 @@
 </td><td ><p></p>
 </td></tr></tbody></table><p></p>
 <p></p>
-</level1><level1>en-US1. Section 1
-</h1><level2>en-US1.1. Subsection 1.1
+<p /></level1><level1><h1 xml:lang="ru-RU">1. Section 1
+</h1><level2><h2 xml:lang="ru-RU">1.1. Subsection 1.1
 </h2><p></p>
 <p>Table</p>
 <table border="1"><tbody><tr><td ><p></p>
@@ -27,10 +27,10 @@
 </td><td ><p></p>
 </td></tr></tbody></table><p></p>
 <p></p>
-</level2></level1><level1>en-US2. Section 2
+<p /></level2><p /></level1><level1><h1 xml:lang="ru-RU">2. Section 2
 </h1><p></p>
 <p></p>
 <p></p>
 <p></p>
 <p></p>
-</level1></bodymatter></book></dtbook>
+<p /></level1></bodymatter><rearmatter><level1><p /></level1></rearmatter></book></dtbook>

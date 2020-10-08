@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet href="dtbookbasic.css" type="text/css"?><!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd' >
-<dtbook xmlns="http://www.daisy.org/z3986/2005/dtbook/" version="2005-3" xml:lang="en-US" ><head><meta name="dtb:uid" content="1" /><meta name="dt:version" content="2.1.1.0" /><meta name="dc:Title" content="Help" /><meta name="dc:Creator" content="Balandin Vyacheslav" /><meta name="dc:Date" content="2010-10-07" /><meta name="dc:Publisher" content="Pruchkovskaya" /><meta name="dc:Identifier" content="1" /><meta name="dc:Language" content="en-US" /><meta name="dc:Language" content="en-GB" /></head><book showin="blp"><frontmatter><doctitle>Help</doctitle><docauthor>Balandin Vyacheslav</docauthor></frontmatter><bodymatter id="bodymatter_0001"><level1><table border="1"><thead><tr><th><p><strong>Date</strong></p>
+<dtbook xmlns="http://www.daisy.org/z3986/2005/dtbook/" version="2005-3" xml:lang="en-US" ><head><meta name="dtb:uid" content="1" /><meta name="dt:version" content="2.1.1.0" /><meta name="dc:Title" content="Help" /><meta name="dc:Creator" content="Balandin Vyacheslav" /><meta name="dc:Date" content="2010-10-07" /><meta name="dc:Publisher" content="Pruchkovskaya" /><meta name="dc:Identifier" content="1" /><meta name="dc:Language" content="en-US" /><meta name="dc:Language" content="en-GB" /></head><book showin="blp"><frontmatter><doctitle>Help</doctitle><docauthor>Balandin Vyacheslav</docauthor><level1><p /></level1></frontmatter><bodymatter id="bodymatter_0001"><level1><table border="1"><thead><tr><th><p><strong>Date</strong></p>
 </th><th><p><strong>Author</strong></p>
 </th><th><p><strong>State / changes</strong></p>
 </th></tr></thead><tbody><tr><td ><p>23/09/2010</p>
@@ -16,7 +16,7 @@
 </td></tr></tbody></table><p></p>
 <p></p>
 <p xml:lang="en-GB">In an underdeveloped country, don't drink the water; in a developed country, don't breathe the air.</p>
-</level1><level1><h1>  Help the world go green
+<p /></level1><level1><h1>  Help the world go green
 </h1><table border="1"><tbody /></table><p>Unfortunately, people tend to learn by their own mistakes. And now, when the ozone layer is considerably damaged, the ocean level has risen and earthquakes are shaking the planet, we start doubting, may be it is <em>our</em> fault. But these signs are still not enough for us, we keep on ruining our environment. We build unreliable drilling rigs, we erect nuclear power plants, cut down rainforests and grow genetically modified crops.</p>
 <p></p>
 <p>But sometimes we do look ahead. And when we do it, we get terrified and we try to do something to smooth over the consequences of our dangerous experiments. Are these short glimpses enough to save our planet from ourselves? You know whom it depends on. More and more people understand that. And they undertake first modest steps to improve the situation.</p>
@@ -33,4 +33,4 @@
 <p xml:lang="en-GB">P.S. Every time I see an adult on a bicycle, I no longer despair for the future of the human race.  H.G. Wells</p>
 <p></p>
 <p></p>
-</level1></bodymatter></book></dtbook>
+<p /></level1></bodymatter><rearmatter><level1><p /></level1></rearmatter></book></dtbook>

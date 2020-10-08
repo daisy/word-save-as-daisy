@@ -15,7 +15,7 @@
 <p>Taking into account the manufacturers preventive maintenance directives, available manpower resources, tools, spare parts and utilities, distance of asset locations, in competition with mostly always unscheduled urgent repair requests, than it becomes clear that a constraint-based long term maintenance planning tool is needed, taking these requirements into account.</p>
 <p></p>
 <p></p>
-</level2><level2><h2>  What we can offer
+<p /></level2><level2><h2>  What we can offer
 </h2><p>We have experience in developing custom maintenance planning systems for large-scale asset owners (over <strong>200.000</strong> assets). </p>
 <p></p>
 <p>We know how to read asset data from ERP systems and interact with plant maintenance systems like SAP PM, process preventive maintenance requirements along with available resources and tools, take into account the competing requirement of sudden repairs, and create long term constraint-based work schedules, with work order inputs to the ERP system. </p>
@@ -103,13 +103,13 @@
 <p></p>
 <p>Managing user permissions and roles, support of information and operations access control.</p>
 <p>For example: </p>
-<list type="ul"><li><p>★  employees of the certain company have access only to their company’s indicator values and reports, head of the holding has no restrictions to access reports;</p>
-</li><li><p>★  administrator has access to the administrative tools but has not permission to access reports.</p>
+<list type="ul"><li><p>employees of the certain company have access only to their company’s indicator values and reports, head of the holding has no restrictions to access reports;</p>
+</li><li><p>administrator has access to the administrative tools but has not permission to access reports.</p>
 </li></list><p></p>
 <p>Flexible environment for reporting process: </p>
-<list type="ul"><li><p xml:lang="ru-RU">★  maintaining holding structure;</p>
-</li><li><p>★  support of multi currencies, because holding is represented in several countries; </p>
-</li><li><p>★  report of holding is in the currency of holding, indicators of affiliates are recalculated to the holding currency  according currency exchange rates.</p>
+<list type="ul"><li><p xml:lang="ru-RU">maintaining holding structure;</p>
+</li><li><p>support of multi currencies, because holding is represented in several countries; </p>
+</li><li><p>report of holding is in the currency of holding, indicators of affiliates are recalculated to the holding currency  according currency exchange rates.</p>
 </li></list><p></p>
 <p>Intellectual control was applied to minimize the chance of error in the input of primary information. Changes to the reports after due date are restricted without permission of top management. </p>
 <p></p>
@@ -118,15 +118,15 @@
 <p>Reports are available for the level of holding, region, company with detail of branches and detail on the indicators. </p>
 <p></p>
 <p>Developed with respect to future extensions architecture allows:</p>
-<list type="ul"><li><p>★  flexible change of all parameters, such as currency of holding, via graphical user interface, without any changes to the source code; </p>
-</li><li><p>★  fast and easy adding of new groups of indicators and appropriate reports for them. The Customer has already expressed his preliminary intention for the following steps to expand range of indicators and reports;</p>
-</li><li><p>★  good performance for large amounts of information (yearly report contains data from 50 affiliates).</p>
+<list type="ul"><li><p>flexible change of all parameters, such as currency of holding, via graphical user interface, without any changes to the source code; </p>
+</li><li><p>fast and easy adding of new groups of indicators and appropriate reports for them. The Customer has already expressed his preliminary intention for the following steps to expand range of indicators and reports;</p>
+</li><li><p>good performance for large amounts of information (yearly report contains data from 50 affiliates).</p>
 </li></list><p></p>
 <p><strong>Technical details</strong><br /><strong /><br />DBMS: <strong>MySQL</strong><br />Programming language: <strong>Java</strong><br />Application server: <strong>Tomcat Application Server 6.0.2.0</strong><br /></p>
 <p xml:lang="ru-RU">Technologies used:</p>
-<list type="ul"><li><p><strong>★  J2EE</strong> – component model application,</p>
-</li><li><p><strong>★  Hibernate</strong> – access to the data base,</p>
-</li><li><p><strong>★  JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
+<list type="ul"><li><p><strong>J2EE</strong> – component model application,</p>
+</li><li><p><strong>Hibernate</strong> – access to the data base,</p>
+</li><li><p><strong>JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
 </li></list><p><strong>Project organization</strong></p>
 <p>Fixed price contract. Scope of work was about 200 man-hours. Development term was 1 month. Specialists of GERSIS SOFTWARE performed a full range of services: requirements analyzes, architecture development, development of functionality, testing, installation on customer’s server and user training.</p>
 <p></p>
@@ -166,4 +166,4 @@
 <p></p>
 <p></p>
 <p></p>
-</level2></level1></bodymatter></book></dtbook>
+<p /></level2><p /></level1></bodymatter><rearmatter><level1><p /></level1></rearmatter></book></dtbook>
