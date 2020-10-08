@@ -98,8 +98,7 @@ namespace DaisyInstaller
                 keepInstall = MessageBox.Show(warning, "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
             }
             if (keepInstall) {
-                // start DaisyAddinForWordSetup.exe
-                
+                // start DaisyAddinForWordSetup.msi
                 string daisySetupPath = Path.Combine(Path.GetTempPath(), "DaisyAddinForWordSetup.msi");
                 File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup);
 
