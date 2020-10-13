@@ -130,14 +130,17 @@ namespace DaisyWord2007AddIn {
             this.applicationObject.DocumentChange += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentChangeEventHandler(applicationObject_DocumentChange);
             this.applicationObject.DocumentBeforeClose += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeCloseEventHandler(applicationObject_DocumentBeforeClose);
             this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);
+            
         }
         /// <summary>
         /// Function to do changes in Look and Feel of UI
         /// </summary>
         void applicationObject_DocumentChange() {
-            MSword.Document currentDoc = this.applicationObject.ActiveDocument;
-            templateName = (currentDoc.get_AttachedTemplate() as MSword.Template).Name;
-            CheckforAttchments();
+            if(this.applicationObject.Documents.Count > 0) {
+                MSword.Document currentDoc = this.applicationObject.ActiveDocument;
+                templateName = (currentDoc.get_AttachedTemplate() as MSword.Template).Name;
+                CheckforAttchments(currentDoc);
+            }
             showValidateTabBool = false;
             if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
 
@@ -151,17 +154,17 @@ namespace DaisyWord2007AddIn {
         /// </summary>
         /// <param name="Doc">Current Document</param>
         void applicationObject_DocumentOpen(Microsoft.Office.Interop.Word.Document Doc) {
-            MSword.Document doc = this.applicationObject.ActiveDocument;
-            templateName = (doc.get_AttachedTemplate() as MSword.Template).Name;
-            CheckforAttchments();
+            //MSword.Document doc = this.applicationObject.ActiveDocument;
+            templateName = (Doc.get_AttachedTemplate() as MSword.Template).Name;
+            CheckforAttchments(Doc);
         }
 
 
         /// <summary>
         /// Function to check whether the Daisy Styles are new or not
         /// </summary>
-        public void CheckforAttchments() {
-            MSword.Document doc = this.applicationObject.ActiveDocument;
+        public void CheckforAttchments(MSword.Document doc) {
+            //MSword.Document doc = this.applicationObject.ActiveDocument;
             string templateName = (doc.get_AttachedTemplate() as MSword.Template).Name;
             Dictionary<int, string> objArray = new Dictionary<int, string>();
 

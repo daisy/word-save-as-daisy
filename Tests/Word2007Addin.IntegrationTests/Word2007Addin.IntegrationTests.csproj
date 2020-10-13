@@ -54,7 +54,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x64\Debug\</OutputPath>
+    <OutputPath>bin\Debug_x64\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -267,14 +267,8 @@
     <Content Include="TestData\FromMultipleDocx\Test 1\output\Doc 1-2.xml">
     </Content>
     <Content Include="TestData\FromMultipleDocx\Test 1\output\dtbookbasic.css" />
-    <Content Include="TestData\FromMultipleDocx\Test 1\output\F 2.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestData\FromMultipleDocx\Test 2\output\Doc 2-3.xml" />
     <Content Include="TestData\FromMultipleDocx\Test 2\output\dtbookbasic.css" />
-    <Content Include="TestData\FromMultipleDocx\Test 2\output\F 2.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestData\FromMultipleDocx\Test 3\output\Doc 3-4.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

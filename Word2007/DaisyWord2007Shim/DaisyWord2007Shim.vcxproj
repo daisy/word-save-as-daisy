@@ -223,11 +223,11 @@ REM "$(FrameworkSDKDir)bin\signtool.exe" sign /d "OpenXML/ODF Translator for Off
     </Link>
     <PostBuildEvent>
       <Message>Performing post-build tasks</Message>
-      <Command>regsvr32 /s "$(TargetPath)"
-copy "$(SolutionDir)Word2007\DaisyWord2007AddIn\bin\Debug\DaisyWord2007AddIn.dll" "$(TargetDir)"
-copy "$(SolutionDir)Common\ManagedAggregator\bin\Debug\ManagedAggregator.dll" "$(TargetDir)"
+      <Command>REM regsvr32 /s "$(TargetPath)"
+REM copy "$(SolutionDir)Word2007\DaisyWord2007AddIn\bin\Debug\DaisyWord2007AddIn.dll" "$(TargetDir)"
+REM copy "$(SolutionDir)Common\ManagedAggregator\bin\Debug\ManagedAggregator.dll" "$(TargetDir)"
 
-powershell "$(SolutionDir)signing\signing.ps1" -dll "$(TargetPath)"
+REM powershell "$(SolutionDir)signing\signing.ps1" -dll "$(TargetPath)"
 
 REM echo "$(FrameworkSDKDir)bin\signtool.exe" sign /d "OpenXML/ODF Translator for Office" /du "http://odf-converter.sourceforge.net" /t "http://timestamp.verisign.com/scripts/timstamp.dll" /f %25CERTFILE%25 /p %25CERTPASS%25 /v "$(TargetPath)"
 REM "$(FrameworkSDKDir)bin\signtool.exe" sign /d "OpenXML/ODF Translator for Office" /du "http://odf-converter.sourceforge.net" /t "http://timestamp.verisign.com/scripts/timstamp.dll" /f %25CERTFILE%25 /p %25CERTPASS%25 /v "$(TargetPath)"

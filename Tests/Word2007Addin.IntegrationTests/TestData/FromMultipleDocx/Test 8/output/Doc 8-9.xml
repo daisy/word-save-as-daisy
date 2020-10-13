@@ -77,6 +77,7 @@
         <p xml:lang="en-GB">   <br /></p>
         <p>
         </p>
+        <p />
       </level1>
       <level1>
         <h1>  aures – a peerless tool for an International Holding management
@@ -104,16 +105,16 @@
         <p>AuReS allows to:</p>
         <list type="ul">
           <li>
-            <p xml:lang="en-GB">★  create and implement a development strategy for each company of the holding;</p>
+            <p xml:lang="en-GB">create and implement a development strategy for each company of the holding;</p>
           </li>
           <li>
-            <p xml:lang="en-GB">★  coordinate the strategies at company level with the general holding’s development strategy;</p>
+            <p xml:lang="en-GB">coordinate the strategies at company level with the general holding’s development strategy;</p>
           </li>
           <li>
-            <p>★  track the strategy execution;</p>
+            <p>track the strategy execution;</p>
           </li>
           <li>
-            <p xml:lang="en-GB">★  use the aggregated data for analysis and holding’s motivation policy formation.</p>
+            <p xml:lang="en-GB">use the aggregated data for analysis and holding’s motivation policy formation.</p>
           </li>
         </list>
         <p />
@@ -130,6 +131,7 @@
           <p />
           <p>Each plan is subject to endorsement which undergoes several stages: registration of remarks, correction and approval. The list of the reviewers can be edited by the administrator. </p>
           <p />
+          <p />
         </level2>
         <level2>
           <h2>  System usability
@@ -145,22 +147,32 @@
           <list type="ul">
             <li>
               <p>
-                <strong>★  J2EE</strong> – component model application,</p>
+                <strong>J2EE</strong> – component model application,</p>
             </li>
             <li>
               <p xml:lang="en-GB">
-                <strong>★  Hibernate</strong> – access to the data base,</p>
+                <strong>Hibernate</strong> – access to the data base,</p>
             </li>
             <li>
               <p xml:lang="en-GB">
-                <strong>★  JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
+                <strong>JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
             </li>
           </list>
           <p />
           <p />
           <p />
+          <p />
         </level2>
+        <p />
       </level1>
     </bodymatter>
+    <rearmatter>
+      <level1>
+        <p />
+      </level1>
+      <level1>
+        <p />
+      </level1>
+    </rearmatter>
   </book>
 </dtbook>
