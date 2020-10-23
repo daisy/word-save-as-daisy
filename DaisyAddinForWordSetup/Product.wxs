@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
     <?define UpgradeCode="81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
+    <?if $(var.Platform) = x64 ?>
+        <?define Win64 = "yes" ?>
+        <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
+    <?else ?>
+        <?define Win64 = "no" ?>
+        <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
+    <?endif ?>
+    
     <Product Id="F03D4B74-51EE-4D8F-BCD8-5BDCA1D6CD79" Name="Daisy Translator Addin version 2.5.5.1" Language="1033" Version="2.5.5.1" Manufacturer="Sonata Software Limited" UpgradeCode="$(var.UpgradeCode)">
         <Package Id="F2F0EBB8-A1C8-4e43-A5A1-8DAAB2C9069F" Compressed="yes" InstallPrivileges="elevated" InstallerVersion="200" />
         <Media Id="1" Cabinet="Daisy.cab" EmbedCab="yes" />
@@ -64,22 +72,22 @@
         </Condition>
         <!-- Shared libraries -->
         <ComponentGroup Id="SharedLibraries" Directory="INSTALLDIR">
-            <Component Id="Addin.dll" Guid="777F4AF8-C91D-42AE-BD57-46B330314DF6">
+            <Component Id="Addin.dll" Guid="777F4AF8-C91D-42AE-BD57-46B330314DF6" Win64="$(var.Win64)">
                 <File Name="$(var.Addin.TargetFileName)" Source="$(var.Addin.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
-            <Component Id="Converter.dll" Guid="ED1B909C-BB20-41F3-A56D-BA76C93859C7">
+            <Component Id="Converter.dll" Guid="ED1B909C-BB20-41F3-A56D-BA76C93859C7" Win64="$(var.Win64)">
                 <File Name="$(var.Converter.TargetFileName)" Source="$(var.Converter.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
-            <Component Id="DaisyAddinLib.dll" Guid="8E8F0D07-E9DF-4426-920E-3047069249A5">
+            <Component Id="DaisyAddinLib.dll" Guid="8E8F0D07-E9DF-4426-920E-3047069249A5" Win64="$(var.Win64)">
                 <File Name="$(var.DaisyAddinLib.TargetFileName)" Source="$(var.DaisyAddinLib.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
-            <Component Id="DaisyConverterLib.dll" Guid="6A2E273F-22B9-4016-8A1F-B0A03B4DCB1B">
+            <Component Id="DaisyConverterLib.dll" Guid="6A2E273F-22B9-4016-8A1F-B0A03B4DCB1B" Win64="$(var.Win64)">
                 <File Name="$(var.DaisyConverterLib.TargetFileName)" Source="$(var.DaisyConverterLib.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
-            <Component Id="ManagedAggregator.dll" Guid="D34D8E01-C291-4B5E-B1A0-49FD97A9D9AC">
+            <Component Id="ManagedAggregator.dll" Guid="D34D8E01-C291-4B5E-B1A0-49FD97A9D9AC" Win64="$(var.Win64)">
                 <File Id="ManagedAggregator.dll" Name="$(var.ManagedAggregator.TargetFileName)" Source="$(var.ManagedAggregator.TargetPath)" DiskId="1" KeyPath="yes" />
             </Component>
-            <Component Id="CustomActionAddin.dll" Guid="6A0369E5-E406-4D35-9D0B-AC6B5E7BF4AE">
+            <Component Id="CustomActionAddin.dll" Guid="6A0369E5-E406-4D35-9D0B-AC6B5E7BF4AE" Win64="$(var.Win64)">
                 <File Name="$(var.CustomActionAddin.TargetFileName)" Source="$(var.CustomActionAddin.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
             <Component Id="WindowsBase.dll" Guid="BF88F0CE-FBAB-4323-83B2-3D91C42DBF10">
@@ -89,18 +97,18 @@
         <!-- resources for foreign languages (seems to be generated with newer version of msbuild/visual studio, at least on my vs2019) 
             Those resources are searched while loading the vsto file -->
         <ComponentGroup Id="JapanResources" Directory="JapanResourcesFolder">
-            <Component Id="jp.DaisyAddinLib.resources.dll">
+            <Component Id="jp.DaisyAddinLib.resources.dll" Win64="$(var.Win64)">
                 <File Id="jp.DaisyAddinLib.resources.dll.file" Name="DaisyAddinLib.resources.dll" Source="$(var.DaisyAddinLib.TargetDir)ja-JP\DaisyAddinLib.resources.dll" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
-            <Component Id="jp.DaisyWord2007AddIn.resources.dll">
+            <Component Id="jp.DaisyWord2007AddIn.resources.dll" Win64="$(var.Win64)">
                 <File Id="jp.DaisyWord2007AddIn.resources.dll.file" Name="DaisyWord2007AddIn.resources.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)ja-JP\DaisyWord2007AddIn.resources.dll" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
         </ComponentGroup>
         <ComponentGroup Id="RussianResources" Directory="RussianResourcesFolder">
-            <Component Id="ru.DaisyAddinLib.resources.dll">
+            <Component Id="ru.DaisyAddinLib.resources.dll" Win64="$(var.Win64)">
                 <File Id="ru.DaisyAddinLib.resources.dll.file" Name="DaisyAddinLib.resources.dll" Source="$(var.DaisyAddinLib.TargetDir)ru-RU\DaisyAddinLib.resources.dll" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
-            <Component Id="ru.DaisyWord2007AddIn.resources.dll">
+            <Component Id="ru.DaisyWord2007AddIn.resources.dll" Win64="$(var.Win64)">
                 <File Id="ru.DaisyWord2007AddIn.resources.dll.file" Name="DaisyWord2007AddIn.resources.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)ru-RU\DaisyWord2007AddIn.resources.dll" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
         </ComponentGroup>
@@ -123,7 +131,7 @@
                 </Directory>
             </Directory>
             <!-- In the Program Files folder -->
-            <Directory Id="ProgramFilesFolder">
+            <Directory Id="$(var.PlatformProgramFilesFolder)">
                 <!-- Program Files/Sonata -->
                 <Directory Id="INSTALLDIRX" Name="Sonata">
                     <!-- Program Files/Sonata/DAISY Translator -->
@@ -188,7 +196,7 @@
                             <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
                             <File Id="OFFICE.DLL" Name="OFFICE.DLL" Source="$(var.SolutionDir)Lib\Word2007\OFFICE.DLL" DiskId="1" KeyPath="yes" />
                         </Component>
-                        <Component Id="DaisyWord2007AddIn.dll" Guid="685BF2E1-273F-4817-90E8-B715B4BE10B4">
+                        <Component Id="DaisyWord2007AddIn.dll" Guid="685BF2E1-273F-4817-90E8-B715B4BE10B4" Win64="$(var.Win64)">
                             <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
                             <!--<File Id="DaisyWord2007AddIn.dll" Name="$(var.DaisyWord2007AddIn.TargetFileName)" Source="$(var.DaisyWord2007AddIn.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />-->
                             <!-- Generated wix data with Harvest tool (heat.exe)-->
