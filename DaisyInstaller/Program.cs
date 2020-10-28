@@ -48,7 +48,18 @@ namespace DaisyInstaller
             //    lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Office\11.0\Word\InstallRoot");
             //if (lKey == null)
             //    lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Office\10.0\Word\InstallRoot");
-            bool sameArchitecture = true;
+
+#if X64INSTALLER
+            bool installerIsForOffice32Bits = false;
+#else
+            bool installerIsForOffice32Bits = true;
+#endif
+
+            // If we want to check for Windows Arch, but we assume that windows is x64 as Microsoft is pushing to remove Windows x86 release.
+            int bits = IntPtr.Size * 8; // 32 or 64, depending on executing arch
+
+
+            bool officeIs64bits = true; 
             RegistryKey lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Office");
             RegistryKey wordRoot = null;
             float lastVersion = 0.0f;
@@ -68,7 +79,7 @@ namespace DaisyInstaller
             }
             // Check for 32bits install on x64 system
             if(wordRoot == null) {
-                sameArchitecture = false;
+                officeIs64bits = false;
                 lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\WOW6432Node\Microsoft\Office");
                 lastVersion = 0.0f;
                 foreach (string subKey in lKey.GetSubKeyNames()) {
@@ -87,16 +98,26 @@ namespace DaisyInstaller
                 }
             }
             string warning = "";
+            string error = "";
             bool keepInstall = true;
             if (wordRoot == null) {
-                warning = "Microsoft Word was not found in your system registry.\r\nDo you want to continue anyway ?";
+                warning = "Microsoft Word was not found in your system registry.\r\nDo you want to continue anyway and install the addin for Office " + (installerIsForOffice32Bits ? "32Bits" : "64Bits") + "?" ;
+                warning += "\r\n\r\nPlease check your office \"bit\" version to ensure you have the correct installer (link is in your clipboard):\r\n https://support.microsoft.com/en-us/office/about-office-what-version-of-office-am-i-using-932788b8-a3ce-44bf-bb09-e334518b8b19";
+                Clipboard.SetText("https://support.microsoft.com/en-us/office/about-office-what-version-of-office-am-i-using-932788b8-a3ce-44bf-bb09-e334518b8b19");
+            } else if (!(installerIsForOffice32Bits ^ officeIs64bits)) {
+                error = "This installer is for Office " + (installerIsForOffice32Bits ? "32Bits" : "64Bits") + " while Office " + (officeIs64bits ? "64Bits" : "32Bits") + " was found on your system.\r\nPlease download the installer for Office " + (officeIs64bits ? "64Bits" : "32Bits") + ".";
             } else if (lastVersion < minimalVersionSupport || lastVersion > maximalVersionSupport) {
                 warning = "This addin officially supports Microsoft Word from Office XP, up to Office 2010.\r\nA newer version of word has beend found on your system but may not load this addin correctly.\r\nDo you want to continue anyway ?";
             }
 
-            if(warning.Length > 0) {
+            if(error.Length > 0) {
+                MessageBox.Show(error, "Wrong installer", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                keepInstall = false;
+            } else if (warning.Length > 0) {
                 keepInstall = MessageBox.Show(warning, "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes;
             }
+
+            // Launch the install process
             if (keepInstall) {
                 // start DaisyAddinForWordSetup.msi
                 string daisySetupPath = Path.Combine(Path.GetTempPath(), "DaisyAddinForWordSetup.msi");

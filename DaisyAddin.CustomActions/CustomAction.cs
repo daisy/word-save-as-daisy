@@ -76,14 +76,17 @@ namespace DaisyAddin.CustomActions
 				String.Empty;
 
 
-			//string latestMSWordVersion = GetLatestMsWordVersion();
-			session["LATESTWORDVERSION"] = lastWordVersionStr;
+
+
+			// FIXME Due to possible "Windows Apps" installation of word that does not provide an installation registry key, 
+			// we use the office 2007 version number as default targeted version to install components for.
+			session["LATESTWORDVERSION"] = lastWordVersionStr == String.Empty ? "13.0" : lastWordVersionStr;
 			
 
             if (lastWordVersionStr != string.Empty)
-				session.Log($"Latest MS Word version ({lastWordVersionStr}) was detected");
+				session.Log($"MS Word version ({lastWordVersionStr}) was detected");
 			else
-				session.Log("Can not detect MS Word");
+				session.Log("Can not detect MS Word, using version 13.0 / 2007 as default target.");
 
 			return ActionResult.Success;
 		}
