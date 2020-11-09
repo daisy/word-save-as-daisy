@@ -11,6 +11,7 @@ namespace DaisyAddin.CustomActions
 {
 	public class CustomActions
 	{
+		
 		[CustomAction]
 		public static ActionResult DetectLatestMsWordVersion(Session session)
 		{
@@ -20,6 +21,7 @@ namespace DaisyAddin.CustomActions
 			RegistryKey lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Office");
 			float lastOfficeVersion = 0.0f;
 			float lastWordVersion = 0.0f;
+			bool isSameArch = true;
 			if (lKey != null) {
 				foreach (string subKey in lKey.GetSubKeyNames()) {
 					// Check if the key name is a version number
@@ -49,6 +51,8 @@ namespace DaisyAddin.CustomActions
 			float lastOffice32BitVersion = 0.0f;
 			float lastWord32bitVersion = 0.0f;
 			if (lKey != null) {
+				isSameArch = false;
+
 				foreach (string subKey in lKey.GetSubKeyNames()) {
 					// Check if the key name is a version number
 					Regex versionNumber = new Regex("[0-9]+\\.[0-9]+");
@@ -77,13 +81,16 @@ namespace DaisyAddin.CustomActions
 
 
 
+			bool is64system = IntPtr.Size * 8 == 64 ? true : false;
 
 			// FIXME Due to possible "Windows Apps" installation of word that does not provide an installation registry key, 
 			// we use the office 2007 version number as default targeted version to install components for.
 			session["LATESTWORDVERSION"] = lastWordVersionStr == String.Empty ? "13.0" : lastWordVersionStr;
-			
+			// Defaults to 32 bits on detection
+			session["LATESTWORDIS64"] = is64system && (lastWordVersionStr != String.Empty) && isSameArch  ? "yes" : "no";
 
-            if (lastWordVersionStr != string.Empty)
+
+			if (lastWordVersionStr != string.Empty)
 				session.Log($"MS Word version ({lastWordVersionStr}) was detected");
 			else
 				session.Log("Can not detect MS Word, using version 13.0 / 2007 as default target.");

@@ -29,8 +29,8 @@ namespace DaisyInstaller
          * Office 2019/17.0 (Word 2019, etc.)
          */
 
-        public static float minimalVersionSupport = 10.0f;
-        public static float maximalVersionSupport = 14.0f;
+        public static float minimalVersionSupport = 12.0f;
+        public static float maximalVersionSupport = 16.0f;
 
         /// <summary>
         /// The main entry point for the application.
@@ -50,7 +50,7 @@ namespace DaisyInstaller
             //    lKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Office\10.0\Word\InstallRoot");
 
 #if X64INSTALLER
-            bool installerIsForOffice32Bits = false;
+            bool installerIsForOffice32Bits = true;
 #else
             bool installerIsForOffice32Bits = true;
 #endif
@@ -107,7 +107,7 @@ namespace DaisyInstaller
             } else if (!(installerIsForOffice32Bits ^ officeIs64bits)) {
                 error = "This installer is for Office " + (installerIsForOffice32Bits ? "32Bits" : "64Bits") + " while Office " + (officeIs64bits ? "64Bits" : "32Bits") + " was found on your system.\r\nPlease download the installer for Office " + (officeIs64bits ? "64Bits" : "32Bits") + ".";
             } else if (lastVersion < minimalVersionSupport || lastVersion > maximalVersionSupport) {
-                warning = "This addin officially supports Microsoft Word from Office XP, up to Office 2010.\r\nA newer version of word has beend found on your system but may not load this addin correctly.\r\nDo you want to continue anyway ?";
+                warning = "This addin officially supports Microsoft Word from Office 2007, up to Office 2016.\r\nA newer version of word has beend found on your system but may not load this addin correctly.\r\nDo you want to continue anyway ?";
             }
 
             if(error.Length > 0) {

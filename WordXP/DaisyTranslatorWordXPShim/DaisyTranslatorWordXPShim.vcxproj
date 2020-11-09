@@ -271,7 +271,7 @@ powershell "$(SolutionDir)signing\signing.ps1" -dll "$(TargetPath)"
     </Link>
     <PostBuildEvent>
       <Message>Performing post-build tasks</Message>
-      <Command>regsvr32 /s /c "$(TargetPath)"
+      <Command>REM regsvr32 /s /c "$(TargetPath)"
 rem copy "D:\VSS\Daisy Translator  Iteration2\WordXP\DaisyTranslatorWordXPAddin\bin\Debug\DaisyTranslatorWordXPAddin.dll" "$(TargetDir)"
 rem copy "$(SolutionDir)ManagedAggregator\bin\Release\ManagedAggregator.dll" "$(TargetDir)"
 </Command>
@@ -320,9 +320,9 @@ rem copy "$(SolutionDir)ManagedAggregator\bin\Release\ManagedAggregator.dll" "$(
     </Link>
     <PostBuildEvent>
       <Message>Performing post-build tasks</Message>
-      <Command>regsvr32 /s /c "$(TargetPath)"
-rem copy "D:\VSS\Daisy Translator  Iteration2\WordXP\DaisyTranslatorWordXPAddin\bin\Debug\DaisyTranslatorWordXPAddin.dll" "$(TargetDir)"
-rem copy "$(SolutionDir)ManagedAggregator\bin\Release\ManagedAggregator.dll" "$(TargetDir)"
+      <Command>REM regsvr32 /s /c "$(TargetPath)"
+REM copy "D:\VSS\Daisy Translator  Iteration2\WordXP\DaisyTranslatorWordXPAddin\bin\Debug\DaisyTranslatorWordXPAddin.dll" "$(TargetDir)"
+REM copy "$(SolutionDir)ManagedAggregator\bin\Release\ManagedAggregator.dll" "$(TargetDir)"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
