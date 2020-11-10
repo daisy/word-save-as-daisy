@@ -122,9 +122,11 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             // invoke the script
             string PipelineFilePath = Path.Combine(Directory.GetParent(m_ScriptFilePath).Parent.FullName, "pipeline-lite.exe");
             Process PipelineProcess = new Process();
-            PipelineProcess.StartInfo.CreateNoWindow = false;
+            bool displayOutputWindow = false;
+            PipelineProcess.StartInfo.CreateNoWindow = !displayOutputWindow;
+            PipelineProcess.StartInfo.UseShellExecute = displayOutputWindow;
             PipelineProcess.StartInfo.ErrorDialog = true;
-            PipelineProcess.StartInfo.UseShellExecute = true;
+            
 
             PipelineProcess.StartInfo.FileName = PipelineFilePath;
             PipelineProcess.StartInfo.Arguments = (isQuite ? "--quit " : string.Empty) + "--execute --script \"" + m_ScriptFilePath + "\" --params " + str2;

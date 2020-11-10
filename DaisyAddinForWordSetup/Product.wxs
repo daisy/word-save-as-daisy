@@ -458,6 +458,9 @@
                             <File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="..\Lib\Accessibility_demofile.docx" />
                             <File Id="Save_As_Daisy_Getting_Started.docx" Name="Save As Daisy Getting Started.docx" Source="..\Lib\Save As Daisy Getting Started.docx" />
                         </Component>
+                        <!-- Note : when the pipeline will be extracted from the packages, 
+                            leave this directory and the jre one : ideally, the package will predeploy the x86 or x64 jre to be used by the pipeline lite
+                        -->
                         <Directory Id="pipeline_lite_ms" Name="pipeline-lite-ms">
                             <Component Id="pipeline_lite_ms_files" Guid="52b1623a-ba28-4755-aaa7-d65c0db39c33">
                                 <File Id="pipeline_lite_ms_pipeline_lite.exe" Name="pipeline-lite.exe" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\pipeline-lite.exe" />
@@ -790,7 +793,7 @@
                             <!--licenses-->
                             <Directory Id="pipeline_lite_ms_scripts" Name="scripts">
                                 <Component Id="pipeline_lite_ms_scripts_files" Guid="99282830-ce2d-4c9f-834a-fb89b710eab5">
-                                    <File Id="pipeline_lite_ms_scripts_DAISY_Pipeline_TTS_Narrator.taskScript" Name="DAISY Pipeline TTS Narrator.taskScript" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\scripts\DAISY Pipeline TTS Narrator.taskScript" />
+                                    <File Id="pipeline_lite_ms_scripts_default.taskScript" Name="default.taskScript" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\scripts\default.taskScript" />
                                 </Component>
                             </Directory>
                             <!--scripts-->
