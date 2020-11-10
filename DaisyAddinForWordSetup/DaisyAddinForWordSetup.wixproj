@@ -162,11 +162,9 @@
   <PropertyGroup>
     <PreBuildEvent />
   </PropertyGroup>
-  
-  
   <PropertyGroup>
     <PostBuildEvent>IF NOT EXIST "$(SolutionDir)DaisyInstaller\Resources" mkdir "$(SolutionDir)DaisyInstaller\Resources"
-COPY "$(TargetDir)$(TargetName).msi" "$(SolutionDir)DaisyInstaller\Resources\DaisyAddinForWordSetup" /Y</PostBuildEvent>
+COPY "$(TargetDir)$(TargetName).msi" "$(SolutionDir)DaisyInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)" /Y</PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

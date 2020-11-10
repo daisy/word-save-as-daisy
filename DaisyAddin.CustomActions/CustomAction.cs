@@ -87,7 +87,7 @@ namespace DaisyAddin.CustomActions
 			// we use the office 2007 version number as default targeted version to install components for.
 			session["LATESTWORDVERSION"] = lastWordVersionStr == String.Empty ? "13.0" : lastWordVersionStr;
 			// Defaults to 32 bits on detection
-			session["LATESTWORDIS64"] = is64system && (lastWordVersionStr != String.Empty) && isSameArch  ? "yes" : "no";
+			session["LATESTWORDISX64"] = is64system && (lastWordVersionStr != String.Empty) && isSameArch  ? "yes" : "no";
 
 
 			if (lastWordVersionStr != string.Empty)

@@ -63,9 +63,19 @@ namespace DaisyInstaller.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        public static byte[] DaisyAddinForWordSetup {
+        public static byte[] DaisyAddinForWordSetup_x64 {
             get {
-                object obj = ResourceManager.GetObject("DaisyAddinForWordSetup", resourceCulture);
+                object obj = ResourceManager.GetObject("DaisyAddinForWordSetup_x64", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Byte[].
+        /// </summary>
+        public static byte[] DaisyAddinForWordSetup_x86 {
+            get {
+                object obj = ResourceManager.GetObject("DaisyAddinForWordSetup_x86", resourceCulture);
                 return ((byte[])(obj));
             }
         }
