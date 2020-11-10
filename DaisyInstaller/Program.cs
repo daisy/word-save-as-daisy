@@ -105,7 +105,7 @@ namespace DaisyInstaller
             //    error = "This installer is for Office " + (installerIsForOffice32Bits ? "32Bits" : "64Bits") + " while Office " + (officeIs64bits ? "64Bits" : "32Bits") + " was found on your system.\r\nPlease download the installer for Office " + (officeIs64bits ? "64Bits" : "32Bits") + ".";
             //} 
             else if (lastVersion < minimalVersionSupport || lastVersion > maximalVersionSupport) {
-                warning = "This addin officially supports Microsoft Word from Office 2003, up to Office 2016.\r\nA newer version of word has beend found on your system but may not load this addin correctly.\r\nDo you want to continue anyway ?";
+                warning = "This addin officially supports Microsoft Word from Office 2003, up to Office 2016.\r\nA newer version of word has been found on your system but may not load this addin correctly.\r\nDo you want to continue anyway ?";
             }
 
             if(error.Length > 0) {
