@@ -5,7 +5,7 @@ using System.IO.Packaging;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
+namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 {
 	/// <summary>
 	/// Implementation of convertation.
@@ -351,7 +351,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
 
 		private void DeleteTemporaryImages()
 		{
-			string[] files = Directory.GetFiles(AddInHelper.AppDataSonataDirectory);
+			string[] files = Directory.GetFiles(AddInHelper.AppDataSaveAsDAISYDirectory);
 			foreach (string file in files)
 			{
 				if (file.Contains(".jpg") || file.Contains(".JPG") || file.Contains(".PNG") || file.Contains(".png"))

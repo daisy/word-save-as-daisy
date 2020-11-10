@@ -1,4 +1,4 @@
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     partial class PathBrowserControl
     {

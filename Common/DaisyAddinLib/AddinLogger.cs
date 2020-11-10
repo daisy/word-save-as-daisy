@@ -4,7 +4,7 @@ using log4net.Appender;
 using log4net.Config;
 using log4net.Layout;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	public class AddinLogger
 	{
@@ -28,7 +28,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 			RollingFileAppender appender = new RollingFileAppender
 			                               	{
 			                               		AppendToFile = true,
-			                               		File = AddInHelper.AppDataSonataDirectory + @"logs\addin.log",
+			                               		File = AddInHelper.AppDataSaveAsDAISYDirectory + @"logs\addin.log",
 			                               		ImmediateFlush = true,
 			                               		Name = "AddinFileAppender",
 			                               		RollingStyle = RollingFileAppender.RollingMode.Size,

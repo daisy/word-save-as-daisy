@@ -36,9 +36,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DaisyTranslatorLibrary")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sonata Software Limited")]
-[assembly: AssemblyProduct("Sonata.DaisyConverter.DaisyConverterLib.Properties")]
-[assembly: AssemblyCopyright("Copyright © Sonata Software Limited 2008")]
+[assembly: AssemblyCompany("The DAISY Consortium")]
+[assembly: AssemblyProduct("Daisy.DaisyConverter.DaisyConverterLib.Properties")]
+[assembly: AssemblyCopyright("Copyright © The DAISY Consortium 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

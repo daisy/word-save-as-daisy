@@ -17,7 +17,7 @@ using System.Drawing.Imaging;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public partial class DAISY_Settings : Form
     {
@@ -33,7 +33,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 
         private void Daisysettingsfrm_Load(object sender, EventArgs e)
         {
-            xmlfile_path = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata");
+            xmlfile_path = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY");
 
             if (!File.Exists(xmlfile_path + "\\DAISY_settingsVer21.xml"))
             {

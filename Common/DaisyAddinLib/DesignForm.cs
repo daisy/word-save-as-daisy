@@ -35,9 +35,9 @@ using System.Reflection;
 using System.Collections;
 using System.IO.Packaging;
 using System.Windows.Forms;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	public partial class DesignForm : Form
 	{
@@ -198,7 +198,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		{
 			string fileName = Path.GetFileNameWithoutExtension(mInputPath);
 			string otpfileName = fileName + ".xml";
-			tBx_Browse.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata\";
+			tBx_Browse.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\";
 			if (tBx_Title.Text.TrimEnd() == "")
 			{
 				MessageBox.Show(resManager.GetString("Title"), resManager.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -665,7 +665,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 
 		private void btn_Cancel_Click(object sender, EventArgs e)
 		{
-			string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata\");
+			string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\");
 			foreach (string file in files)
 			{
 				if (file.Contains(".PNG") || file.Contains(".png"))

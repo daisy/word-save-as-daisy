@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("DaisyTranslatorWord2003Addin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sonata Software Limited")]
+[assembly: AssemblyCompany("The DAISY Consortium")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Copyright © Sonata Software Limited 2008")]
+[assembly: AssemblyCopyright("Copyright © The DAISY Consortium 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -26,7 +26,7 @@ using System.Runtime.CompilerServices;
 // You can specify all the value or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
 
-[assembly: AssemblyVersion("2.5.5.1")]
+[assembly: AssemblyVersion("2.6.0.0")]
 
 //
 // In order to sign your assembly you must specify a key to use. Refer to the 
@@ -49,4 +49,4 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyDelaySign(false)]
 [assembly: AssemblyKeyFile("")]
 [assembly: AssemblyKeyName("")]
-[assembly: AssemblyFileVersionAttribute("2.5.5.1")]
+[assembly: AssemblyFileVersionAttribute("2.6.0.0")]

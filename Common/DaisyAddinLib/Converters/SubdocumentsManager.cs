@@ -3,7 +3,7 @@ using System.Collections;
 using System.IO;
 using System.IO.Packaging;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
+namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 {
 	/// <summary>
 	/// Provides methos for working with MS Word subdocuments.

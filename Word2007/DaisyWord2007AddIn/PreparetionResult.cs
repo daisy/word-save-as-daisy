@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 
 namespace DaisyWord2007AddIn
 {

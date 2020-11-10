@@ -15,8 +15,8 @@ using System.Xml.XPath;
 using System.Xml.Xsl;
 using System.Windows.Forms;
 using System.IO.Packaging;
-using Sonata.DaisyConverter.DaisyConverterLib;
-namespace Sonata.DaisyConverter.DaisyConverterLib
+using Daisy.DaisyConverter.DaisyConverterLib;
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	public partial class ProgressValidation : Form
 	{

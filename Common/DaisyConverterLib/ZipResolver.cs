@@ -34,7 +34,7 @@ using System.Text;
 using System.Xml;
 using System.IO.Packaging;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	/// <summary>
 	/// An XmlUrlResolver for zip packaged files. 

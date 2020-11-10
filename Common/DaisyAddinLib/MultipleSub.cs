@@ -13,7 +13,7 @@ using System.IO.Packaging;
 using System.Drawing.Imaging;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public partial class MultipleSub : Form
     {
@@ -296,7 +296,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 					}
 
 
-					tBx_output.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata";
+					tBx_output.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY";
                     for (int i = 0; i < lBx_SubDocs.Items.Count; i++)
                     {
                         listDocuments.Add(lBx_SubDocs.Items[i].ToString());
@@ -352,7 +352,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         /*Function to Close UI*/
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
-            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata\");
+            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\");
             foreach (string file in files)
             {
                 if (file.Contains(".PNG") || file.Contains(".png"))

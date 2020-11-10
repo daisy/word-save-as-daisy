@@ -28,7 +28,7 @@
 
 
 using Microsoft.Office.Interop.Word;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
 
 namespace DaisyWord2007AddIn {
     using System;
@@ -44,7 +44,7 @@ namespace DaisyWord2007AddIn {
     using Microsoft.Office.Core;
     using System.Runtime.InteropServices;
     using MSword = Microsoft.Office.Interop.Word;
-    using Sonata.DaisyConverter.DaisyConverterLib;
+    using Daisy.DaisyConverter.DaisyConverterLib;
     using System.Xml.XPath;
     using System.Xml.Xsl;
     using System.Drawing;
@@ -106,7 +106,7 @@ namespace DaisyWord2007AddIn {
         ///	Place your initialization code within this method.
         /// </summary>
         public Connect() {
-            this.addinLib = new Sonata.DaisyConverter.Word.Addin();
+            this.addinLib = new Daisy.DaisyConverter.Word.Addin();
         }
 
         /// <summary>
@@ -535,7 +535,7 @@ namespace DaisyWord2007AddIn {
                     object routeDocument = Type.Missing;
                     //object Encoding = Microsoft.Office.Core.MsoEncoding.msoEncodingUSASCII;
                     //Getting validation xml from executing assembly
-                    path_For_Xml = AddInHelper.AppDataSonataDirectory;
+                    path_For_Xml = AddInHelper.AppDataSaveAsDAISYDirectory;
 
                     validation_xml = new XmlDocument();
                     //chcking for validation xml
@@ -1371,7 +1371,7 @@ namespace DaisyWord2007AddIn {
                     image.Save(ms, ImageFormat.Png);
                     Ret = ms.ToArray();
                     String fileName = doc.Name.Replace(" ", "_");
-                    string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
+                    string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
                     FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
                     fs.Write(Ret, 0, Ret.Length);
                     fs.Flush();
@@ -1405,7 +1405,7 @@ namespace DaisyWord2007AddIn {
                         image.Save(ms, ImageFormat.Png);
                         Ret = ms.ToArray();
                         String fileName = newName.ToString().Replace(" ", "_");
-                        string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
+                        string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
                         FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
                         fs.Write(Ret, 0, Ret.Length);
                         fs.Flush();
@@ -1441,7 +1441,7 @@ namespace DaisyWord2007AddIn {
                             image.Save(ms, ImageFormat.Png);
                             Ret = ms.ToArray();
                             String fileName = doc.Name.Replace(" ", "_");
-                            string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
+                            string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
                             FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
                             fs.Write(Ret, 0, Ret.Length);
                             fs.Flush();
@@ -1484,7 +1484,7 @@ namespace DaisyWord2007AddIn {
                                 image.Save(ms, ImageFormat.Png);
                                 Ret = ms.ToArray();
                                 String fileName = newName.ToString().Replace(" ", "_");
-                                string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
+                                string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
                                 FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
                                 fs.Write(Ret, 0, Ret.Length);
                                 fs.Flush();

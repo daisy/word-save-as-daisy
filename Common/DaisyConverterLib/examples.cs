@@ -682,32 +682,32 @@ namespace org.daisy.samples {
         */
         /// <summary>
         /// - In the input document name (inputName), replace all spaces by underscore
-        /// - If the output is set to the %APPDATA%/Sonata folder and if a png image ending by the "id" parameter exists in it, copy it to the "output_pipeline" folder
-        /// - If the output is not the temporary folder and if a png image ending by the "id" parameter exists in %APPDATA%/Sonata, move the image to the output folder
+        /// - If the output is set to the %APPDATA%/SaveAsDAISY folder and if a png image ending by the "id" parameter exists in it, copy it to the "output_pipeline" folder
+        /// - If the output is not the temporary folder and if a png image ending by the "id" parameter exists in %APPDATA%/SaveAsDAISY, move the image to the output folder
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public string CheckShapeId(String id) {
             int flag = 0;
             inputName = inputName.Replace(" ", "_");
-            if (string.Equals(outputFilename, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata\\")) {
+            if (string.Equals(outputFilename, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY\\")) {
                 flag = 1;
                 img_Flag = 1;
                 string outputPath = output_Pipeline + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
-                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png")) {
-                    File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", output_Pipeline + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", true);
+                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png")) {
+                    File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", output_Pipeline + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", true);
                 }
             }
             if (!string.Equals(Path.GetTempPath(), outputFilename + "\\") && flag == 0) {
                 img_Flag = 1;
                 string outputPath = outputFilename + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
-                String tt = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
+                String tt = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
                 if (File.Exists(tt)) {
-                    string from = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
+                    string from = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
                     string to = outputFilename + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
                     if (from != to) {
-                        File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", outputFilename + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", true);
-                        File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png");
+                        File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", outputFilename + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", true);
+                        File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png");
                     }
                 }
             }

@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <?define UpgradeCode="81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
+    <!--  IMPORTANT NOTE:
+              When creating a new release, 
+                - update the AddinVersion variable
+                - set the value of Product/@Id to a new GUID (without curly brackets, letters all upper-case)
+                - set the value of Package/@Id to a new GUID
+              Note that GUID values should be all upper-case and without brackets 
+        -->
+    
+    <!-- Preprocessor variables, update following your addin assemblies version -->
+    <?define AddinVersion = "2.6.0.0" ?>
+    
+    <!-- DO NOT touch this code -->
+    <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
+    
+    <!-- Variable to build either x64 or x86 package with th-->
     <?if $(var.Platform) = x64 ?>
         <?define Win64 = "yes" ?>
         <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
@@ -9,7 +23,11 @@
         <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
     <?endif ?>
     
-    <Product Id="401E53B0-8B40-40B2-922E-00C7F7F288CE" Name="Daisy Translator Addin version 2.6.0" Language="1033" Version="2.6.0.0" Manufacturer="Sonata Software Limited" UpgradeCode="$(var.UpgradeCode)">
+    <Product Id="401E53B0-8B40-40B2-922E-00C7F7F288CE" 
+            Name="Daisy Translator Addin version $(var.AddinVersion)" 
+            Language="1033" Version="$(var.AddinVersion)" 
+            Manufacturer="DAISY Consortium" 
+            UpgradeCode="$(var.UpgradeCode)">
         <Package Id="7428EC37-2901-4F34-8765-AC9988A0B877" Compressed="yes" InstallPrivileges="elevated" InstallerVersion="200" />
         <Media Id="1" Cabinet="Daisy.cab" EmbedCab="yes" />
         <!-- remove previous versions of previous Word add-in -->
@@ -17,26 +35,16 @@
             <UpgradeVersion Property="OLDAPPFOUND_WORD" OnlyDetect="no" IncludeMinimum="yes" Minimum="0.0.0" IncludeMaximum="no" Maximum="2.0.10" />
         </Upgrade>
         <Upgrade Id="$(var.UpgradeCode)">
-            <UpgradeVersion Minimum="0.0.0.0" Maximum="2.6.0.0" Property="OLDAPPFOUND" IncludeMinimum="yes" IncludeMaximum="yes" />
-            <UpgradeVersion Property="NEWAPPFOUND" IncludeMinimum="no" Minimum="2.6.0.0" OnlyDetect="yes" />
+            <UpgradeVersion Property="OLDAPPFOUND" Minimum="0.0.0.0" Maximum="$(var.AddinVersion)" IncludeMinimum="yes" IncludeMaximum="yes" />
+            <UpgradeVersion Property="NEWAPPFOUND" Minimum="$(var.AddinVersion)" IncludeMinimum="no" OnlyDetect="yes" />
         </Upgrade>
 
-
-        <!--  IMPORTANT NOTE:
-              When creating a new release, 
-                - set the value of Product/@Id to a new GUID (without curly brackets, letters all upper-case)
-                - increase Product/@Version (Note that MSI only checks the first three groups, i.e. 2.5.4802)
-                - set the WixVariable 'VersionNumber' to the new version number
-                - set the value of Package/@Id to a new GUID
-                - leave Product/@UpgradeCode the same
-              Note that GUID values should be all upper-case and without brackets 
-        -->
 
         <!-- Custom actions dll, from the DaisyAddin.CustomActions project -->
         <Binary Id="DaisyAddinCustomActions" SourceFile="$(var.DaisyAddin.CustomActions.TargetDir)\DaisyAddin.CustomActions.CA.dll" />
 
         <!--wix variables-->
-        <WixVariable Id="VersionNumber" Value="2.6.0.0" />
+        <WixVariable Id="VersionNumber" Value="$(var.AddinVersion)" />
         <WixVariable Id="VersionInfo" Value="Version !(wix.VersionNumber)" />
         <!--Properties section-->
         <Icon Id="icon.ico" SourceFile="../Lib/speaker.ico" />
@@ -44,29 +52,17 @@
         <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
         <CustomAction Id="SetARPREADME" Property="ARPREADME" Value="[#Readme]" />
         <Property Id="ARPCOMMENTS" Value="2.1.1.0" />
-        <Property Id="ARPCONTACT" Value="Sonata Software Ltd" />
-        <Property Id="ARPURLINFOABOUT" Value="http://www.sonata-software.com" />
+        <Property Id="ARPCONTACT" Value="DAISY Consortium" />
+        <Property Id="ARPURLINFOABOUT" Value="https://daisy.org/" />
         <Property Id="ARPHELPLINK" Value="https://github.com/daisy/word-save-as-daisy" />
         <Property Id="WixShellExecTarget" Value="[#Save_As_Daisy_Getting_Started.docx]" />
         <Property Id="SHOW_README" Value="1" />
-        <!-- Property set by DetectLatestMsWordVersion in the DaisyAddin.CustomAction project -->
-        <Property Id="LATESTWORDVERSION">"0"</Property>
-        <!-- I don't see where those properties are used and what for.
-        Also, the "Install root" of word versions are not in the following registry keys
-        but in the HKLM\SOFTWARE\Microsoft\Office\<version>\Wor\InstallRoot key-->
-        <!--
-        <Property Id="WORD2010INSTALLROOT" Secure="yes">
-            <RegistrySearch Id="RegSearch_Word2010InstallRoot" Type="raw" Key="Word.Application\Curver" Name="[Default]" Root="HKCR" />
-        </Property>
-        <Property Id="WORD2007INSTALLROOT" Secure="yes">
-            <RegistrySearch Id="RegSearch_Word2007InstallRoot" Type="raw" Key="Word.Application\Curver" Name="[Default]" Root="HKCR" />
-        </Property>
-        <Property Id="WORD2003INSTALLROOT" Secure="yes">
-            <RegistrySearch Id="RegSearch_Word2003InstallRoot" Type="raw" Key="Word.Application\Curver" Name="[Default]" Root="HKCR" />
-        </Property>
-        <Property Id="WORDXPINSTALLROOT" Secure="yes">
-            <RegistrySearch Id="RegSearch_WordXpInstallRoot" Type="raw" Key="Word.Application\Curver" Name="[Default]" Root="HKCR" />
-        </Property>-->
+        <!-- Property set by DetectLatestMsWordVersion in the DaisyAddin.CustomAction project 
+            Default assumes office 2007 (13.0) 32bits -->
+        <Property Id="LATESTWORDVERSION">"13.0"</Property>
+        <Property Id="LATESTWORDISX64">"no"</Property>
+        
+
         <Condition Message="Please install Windows XP Service Pack 3">
             <![CDATA[Installed OR (VersionNT > 501) OR (VersionNT = 501 AND ServicePackLevel >= 3)]]>
         </Condition>
@@ -117,14 +113,14 @@
         <Directory Id="TARGETDIR" Name="SourceDir">
             <!-- Application data folder where are stored the default settings and prepopulated validation xml -->
             <Directory Id="AppDataFolder" Name="AppDataFolder">
-                <Directory Id="MyAppFolder" Name="Sonata">
+                <Directory Id="MyAppFolder" Name="SaveAsDAISY">
                     <Component Id="MyComponent" Guid="cc509cb7-c1a1-46cf-8c62-7cbb0017783c">
                         <RemoveFolder Id="RemoveAppRootDirectory" On="uninstall" />
                         <!-- Daisy settings -->
                         <File Id="DAISY_settingsVer21.xml" Name="DAISY_settingsVer21.xml" Source="$(var.SolutionDir)Lib\DAISY_settingsVer21.xml" />
                         <!-- Validation xml -->
                         <File Id="prepopulated_validationVer21.xml" Name="prepopulated_validationVer21.xml" Source="$(var.SolutionDir)Lib\prepopulated_validationVer21.xml" />
-                        <RegistryKey Root="HKCU" Key="Software\Sonata\DAISY Translator" Action="createAndRemoveOnUninstall">
+                        <RegistryKey Root="HKCU" Key="Software\DAISY\Save-as-DAISY Word Addin" Action="createAndRemoveOnUninstall">
                             <RegistryValue Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes" />
                         </RegistryKey>
                     </Component>
@@ -132,12 +128,12 @@
             </Directory>
             <!-- In the Program Files folder -->
             <Directory Id="$(var.PlatformProgramFilesFolder)">
-                <!-- Program Files/Sonata -->
-                <Directory Id="INSTALLDIRX" Name="Sonata">
-                    <!-- Program Files/Sonata/DAISY Translator -->
-                    <Directory Id="INSTALLDIR" Name="DAISY Translator">
+                <!-- Program Files/Daisy -->
+                <Directory Id="INSTALLDIRX" Name="DAISY Consortium">
+                    <!-- Program Files/Daisy/DAISY Translator -->
+                    <Directory Id="INSTALLDIR" Name="Save-as-DAISY Word Addin">
                         <Directory Id="ProgramMenuFolder">
-                            <Directory Id="DAISYTranslator" Name="DAISY Translator">
+                            <Directory Id="SaveAsDAISYShortcuts" Name="Save-as-DAISY Word Addin">
                                 <Component Id="ApplicationShortcut" Guid="26FA1CA4-6C3E-4383-936B-19D84B3ED531">
                                     <Shortcut Id="ApplicationStartMenuShortcut1" Name="Daisy Translator Instruction Manual" Description="Daisy Translator Instruction Manual" Target="[INSTALLDIR]Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx" WorkingDirectory="INSTALLDIR" />
                                     <Shortcut Id="ApplicationStartMenuShortcut2" Name="Accessibility Demofile" Description="Accessibility Demofile" Target="[INSTALLDIR]Accessibility_demofile.docx" WorkingDirectory="INSTALLDIR" />
@@ -156,28 +152,6 @@
                         <Component Id="Help.ico" Guid="63445A1D-55DA-4A13-9869-197355B04DD8">
                             <File Id="Help.ico" Name="Help.ico" Source="$(var.SolutionDir)Lib\Help.ico" DiskId="1" KeyPath="yes" />
                         </Component>
-
-                        <!--Components for newer version of office (based on office 2016 for now) 
-                            Test for office 2010 could be required -->
-                        <!--<Component Id="DaisyWord2016AddIn.dll" Guid="f19c6f32-0036-4523-b515-0032e4c3fa9c">
-                            <Condition><![CDATA[LATESTWORDVERSION>"13.0"]]></Condition>
-                            <File Id="DaisyWord2016AddIn.dll" Name="$(var.DaisyWord2016AddIn.TargetFileName)" Source="$(var.DaisyWord2016AddIn.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
-                        </Component>
-                        -->
-                        <!-- Guid="f19c6f32-0036-4523-b515-0032e4c3fa9c"-->
-                        <!--
-                        <Component Id="DaisyWord2016AddIn.dll.manifest">
-                            <Condition><![CDATA[LATESTWORDVERSION>"13.0"]]></Condition>
-                            <File Id="DaisyWord2016AddIn.dll.manifest" Name="$(var.DaisyWord2016AddIn.TargetFileName).manifest" Source="$(var.DaisyWord2016AddIn.TargetPath).manifest" DiskId="1" KeyPath="yes" Checksum="yes" />
-                        </Component>
-                        <Component Id="DaisyWord2016AddIn.vsto">
-                            <Condition><![CDATA[LATESTWORDVERSION>"13.0"]]></Condition>
-                            <File Id="DaisyWord2016AddIn.vsto" Name="DaisyWord2016AddIn.vsto" Source="$(var.DaisyWord2016AddIn.TargetDir)DaisyWord2016AddIn.vsto" DiskId="1" KeyPath="yes" Checksum="yes" />
-                        </Component>
-                        <Component Id="Microsoft.Office.Tools.Common.v4.0.Utilities.dll">
-                            <Condition><![CDATA[LATESTWORDVERSION>"13.0"]]></Condition>
-                            <File Id="Microsoft.Office.Tools.Common.v4.0.Utilities.dll" Name="Microsoft.Office.Tools.Common.v4.0.Utilities.dll" Source="$(var.DaisyWord2016AddIn.TargetDir)Microsoft.Office.Tools.Common.v4.0.Utilities.dll" DiskId="1" KeyPath="yes" Checksum="yes" />
-                        </Component>-->
 
                         <!--Components for Office2007 and superior -->
                         <Component Id="Microsoft.Vbe.Interop.dll" Guid="F4957043-2698-480F-9968-3AA4F37ACA7E">
@@ -221,71 +195,71 @@
                             <File Id="filC07D76E8B09FC9245B2A2BB802967CFF" KeyPath="yes" Source="$(var.DaisyWord2007AddIn.TargetPath)" />
                             <ProgId Id="Record" />
                             <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\2.6.0.0" Name="Class" Value="DaisyWord2007AddIn.Connect" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\$(var.AddinVersion)" Name="Class" Value="DaisyWord2007AddIn.Connect" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="Class" Value="DaisyWord2007AddIn.Connect" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32\2.6.0.0" Name="Class" Value="DaisyWord2007AddIn.frmValidate2007" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32\$(var.AddinVersion)" Name="Class" Value="DaisyWord2007AddIn.frmValidate2007" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32" Name="Class" Value="DaisyWord2007AddIn.frmValidate2007" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{6149CD49-8C24-30C4-B626-2876C4BE6549}\InprocServer32" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32\2.6.0.0" Name="Class" Value="DaisyWord2007AddIn.PluginEventsQuiteHandler" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32\$(var.AddinVersion)" Name="Class" Value="DaisyWord2007AddIn.PluginEventsQuiteHandler" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32" Name="Class" Value="DaisyWord2007AddIn.PluginEventsQuiteHandler" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{7EDE94D2-322D-3FF2-8B9C-AE09718EA4F7}\InprocServer32" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32\2.6.0.0" Name="Class" Value="DaisyWord2007AddIn.PluginEventsUIHandler" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32\$(var.AddinVersion)" Name="Class" Value="DaisyWord2007AddIn.PluginEventsUIHandler" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32" Name="Class" Value="DaisyWord2007AddIn.PluginEventsUIHandler" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{90C48BA0-2BEA-3B0F-B3DC-C17201083FEB}\InprocServer32" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32\2.6.0.0" Name="Class" Value="DaisyWord2007AddIn.PreparetionResult" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32\$(var.AddinVersion)" Name="Class" Value="DaisyWord2007AddIn.PreparetionResult" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32" Name="Class" Value="DaisyWord2007AddIn.PreparetionResult" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{B926E322-6796-3A75-A946-A7C22F31858E}\InprocServer32" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32\2.6.0.0" Name="Class" Value="DaisyWord2007AddIn.progressBar+CancelledException" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32\$(var.AddinVersion)" Name="Class" Value="DaisyWord2007AddIn.progressBar+CancelledException" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32" Name="Class" Value="DaisyWord2007AddIn.progressBar+CancelledException" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="CLSID\{BE71168D-4CAF-3F41-9ABF-9DD61F7C455E}\InprocServer32" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\2.6.0.0" Name="Class" Value="Extensibility.ext_ConnectMode" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\2.6.0.0" Name="Class" Value="Extensibility.ext_DisconnectMode" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\2.6.0.0" Name="Class" Value="DaisyWord2007AddIn.OLECLOSE" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\2.6.0.0" Name="Assembly" Value="DaisyWord2007AddIn, Version=2.6.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\2.6.0.0" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\2.6.0.0" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="Class" Value="Extensibility.ext_ConnectMode" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="Class" Value="Extensibility.ext_DisconnectMode" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\$(var.AddinVersion)" Name="Class" Value="DaisyWord2007AddIn.OLECLOSE" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+                            <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                         </Component>
                         <!-- Removed shim : failing to load on office 2016, also the shim seems not necessary :
                             The Addin COM DLL just needs to be registered in the COM interop and the following registy key need to be set
@@ -452,15 +426,6 @@
                         <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             REGISTRY SETTINGS
     ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-                        <!--<Component Id="RegistryEntriesWord2016" DiskId="1" Guid="E8D27A92-BF7E-4613-AC88-46D9DDB4CFFE">
-                            <Condition><![CDATA[LATESTWORDVERSION>"13.0"]]></Condition>
-                            <RegistryKey Id="RegKeyAddinMachineWord2016" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyWord2016AddIn.AddIn" Action="createAndRemoveOnUninstall">
-                                <RegistryValue Id="RegLoadBehaviorAddinMachineWord2016" Type="integer" Name="LoadBehavior" Value="3" />
-                                <RegistryValue Id="RegFriendlyNameAddinMachineWord2016" Type="string" Name="FriendlyName" Value="DAISY Addin" />
-                                <RegistryValue Id="RegVersionAddinMachineWord2016" Type="string" Name="Description" Value="DAISY Addin" />
-                                <RegistryValue Id="RegManifestAddinMachineWord2016" Type="string" Name="Manifest" Value="[INSTALLDIR]DaisyWord2016AddIn.vsto|vstolocal" />
-                            </RegistryKey>
-                        </Component>-->
                         <Component Id="RegistryEntriesWord2007" Guid="4971F640-3107-439D-94F4-A22FC704BBB1" DiskId="1">
                             <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
                             <RegistryKey Id="RegKeyAddinMachineWord2007" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyWord2007AddIn.Connect" Action="createAndRemoveOnUninstall">
@@ -477,14 +442,14 @@
                                 <RegistryValue Id="RegVersionAddinMachineWord2003" Type="string" Name="Description" Value="DAISY Addin Word 2003" />
                             </RegistryKey>
                         </Component>
-                        <Component Id="RegistryEntriesWordXP" Guid="45652578-C3AF-4f39-803A-01EFC611B225" DiskId="1">
+                        <!--<Component Id="RegistryEntriesWordXP" Guid="45652578-C3AF-4f39-803A-01EFC611B225" DiskId="1">
                             <Condition><![CDATA[LATESTWORDVERSION="10.0"]]></Condition>
                             <RegistryKey Id="RegKeyAddinMachineWordXP" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyTranslatorWordXPAddin.Connect" Action="createAndRemoveOnUninstall">
                                 <RegistryValue Id="RegLoadBehaviorAddinMachineWordXP" Type="integer" Name="LoadBehavior" Value="3" KeyPath="yes" />
                                 <RegistryValue Id="RegFriendlyNameAddinMachineWordXP" Type="string" Name="FriendlyName" Value="DAISY Addin Word XP" />
                                 <RegistryValue Id="RegVersionAddinMachineWordXP" Type="string" Name="Description" Value="DAISY Addin Word XP" />
                             </RegistryKey>
-                        </Component>
+                        </Component>-->
                         <Component Id="log4net.dll" Guid="944F8F0B-3F51-4BC8-8DF3-EF3C44DC0FBE">
                             <File Id="log4net.dll" Name="log4net.dll" Source="..\Lib\log4net.dll" />
                         </Component>
@@ -1617,8 +1582,10 @@
         </Directory>
         <!--Feature list-->
         <Feature Id="ProductFeature" Title="WixProject1" Level="1">
+
             <ComponentGroupRef Id="JapanResources"/>
             <ComponentGroupRef Id="RussianResources"/>
+            
             <ComponentGroupRef Id="SharedLibraries"/>
             <ComponentRef Id="Addin.dll" />
             <ComponentRef Id="Converter.dll" />
@@ -1641,7 +1608,9 @@
             <ComponentRef Id="InteropOfficeXP" />
             <ComponentRef Id="InteropOfficeXPdll" />
             <ComponentRef Id="DaisyTranslatorWordXPAddin.dll" />
-            <ComponentRef Id="DaisyTranslatorWordXPShim.dll" />-->
+            <ComponentRef Id="DaisyTranslatorWordXPShim.dll" />
+            <ComponentRef Id="RegistryEntriesWordXP" />
+            -->
             
             
             <ComponentRef Id="Microsoft.Vbe.Interop.dll" />
@@ -1661,25 +1630,20 @@
             
 
             <ComponentRef Id="DaisyWord2007AddIn.dll" />
-            
             <!--<ComponentRef Id="DaisyWord2007Shim.dll" />-->
-            
+            <ComponentRef Id="RegistryEntriesWord2007" />
 
             <ComponentRef Id="extensibility.dll" />
             <ComponentRef Id="Stdole.dll" />
-
-            <ComponentRef Id="RegistryEntriesWord2007" />
-            
-            
             <ComponentRef Id="Microsoft.Office.Interop.Word.dll" />
             <ComponentRef Id="OFFICE.DLL" />
             <ComponentRef Id="CustomActionAddin.dll" />
-            <ComponentRef Id="RegistryEntriesWordXP" />
+            <ComponentRef Id="log4net.dll" />
+            
             <ComponentRef Id="MyComponent" />
             <ComponentRef Id="ApplicationShortcut" />
             <ComponentRef Id="Readme" />
             
-            <ComponentRef Id="log4net.dll" />
             <ComponentRef Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5_gk2_i.jpg" />
             <ComponentRef Id="Manual.docx" />
 
@@ -1754,85 +1718,9 @@
             <ComponentRef Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_lang_files" />
             <ComponentRef Id="pipeline_lite_ms_transformers_se_tpb_xmldetection_type_files" />
             
-            <!-- java 8 bundled JRE for the pipeline--><!--
-            <ComponentRef Id="jre_files" />
-            <ComponentRef Id="jre_bin_files" />
-            <ComponentRef Id="jre_bin_server_files" />
-            <ComponentRef Id="jre_lib_files" />
-            <ComponentRef Id="jre_lib_amd64_files" />
-            <ComponentRef Id="jre_lib_cmm_files" />
-            <ComponentRef Id="jre_lib_ext_files" />
-            <ComponentRef Id="jre_lib_images_cursors_files" />
-            <ComponentRef Id="jre_lib_jfr_files" />
-            <ComponentRef Id="jre_lib_management_files" />
-            <ComponentRef Id="jre_lib_security_files" />
-            <ComponentRef Id="jre_lib_security_policy_limited_files" />
-            <ComponentRef Id="jre_lib_security_policy_unlimited_files" />
-
-            --><!--component ref for Pipeline things--><!--
-            <ComponentRef Id="pipelinelitems_001" />
-            <ComponentRef Id="ext_002" />
-            <ComponentRef Id="lib_003" />
-            <ComponentRef Id="licenses_004" />
-            <ComponentRef Id="AcademicFreeLicense_005" />
-            <ComponentRef Id="ApacheLicense_006" />
-            <ComponentRef Id="CeCILLBLicense_007" />
-            <ComponentRef Id="GeneralPublicLicense_008" />
-            <ComponentRef Id="JingCopyingConditions_009" />
-            <ComponentRef Id="LGPL_010" />
-            <ComponentRef Id="MITLicense_011" />
-            <ComponentRef Id="MozillaPublicLicense_012" />
-            <ComponentRef Id="PythonLicense_013" />
-            <ComponentRef Id="StreamingAPIForXMLStax_014" />
-            <ComponentRef Id="W3CSoftwareLicense_015" />
-            <ComponentRef Id="XLicense_016" />
-            <ComponentRef Id="scripts_017" />
-            <ComponentRef Id="int_daisy_filesetRenamer_018" />
-            <ComponentRef Id="segment_019" />
-            <ComponentRef Id="strategies_020" />
-            <ComponentRef Id="int_daisy_mathAltCreator_021" />
-            <ComponentRef Id="mathflow_022" />
-            <ComponentRef Id="int_daisy_mixedContentNormalizer_023" />
-            <ComponentRef Id="dom_024" />
-            <ComponentRef Id="int_daisy_validator_025" />
-            <ComponentRef Id="pipeline_system_deleter_026" />
-            <ComponentRef Id="se_tpb_annonsator_027" />
-            <ComponentRef Id="type_028" />
-            <ComponentRef Id="se_tpb_dtbAudioEncoder_029" />
-            <ComponentRef Id="se_tpb_dtbookFix_030" />
-            <ComponentRef Id="xslt_031" />
-            <ComponentRef Id="se_tpb_filesetcreator_032" />
-            <ComponentRef Id="config_033" />
-            <ComponentRef Id="resource_034" />
-            <ComponentRef Id="templates_035" />
-            <ComponentRef Id="se_tpb_speechgen2_036" />
-            <ComponentRef Id="audio_037" />
-            <ComponentRef Id="charsubst_038" />
-            <ComponentRef Id="conf_039" />
-            <ComponentRef Id="linux_040" />
-            <ComponentRef Id="MacOS_041" />
-            <ComponentRef Id="SimpleCommandLineTTS_042" />
-            <ComponentRef Id="win_043" />
-            <ComponentRef Id="sapi5_044" />
-            <ComponentRef Id="events_045" />
-            <ComponentRef Id="lib_046" />
-            <ComponentRef Id="regex_047" />
-            <ComponentRef Id="tts_048" />
-            <ComponentRef Id="adapters_049" />
-            <ComponentRef Id="concurrent_050" />
-            <ComponentRef Id="util_051" />
-            <ComponentRef Id="xslt_052" />
-            <ComponentRef Id="se_tpb_xmldetection_053" />
-            <ComponentRef Id="lang_054" />
-            <ComponentRef Id="type_055" />
-            <ComponentRef Id="int_daisy_ocfCreator" />
-            <ComponentRef Id="int_daisy_opsCreator" />
-            <ComponentRef Id="int_daisy_prettyPrinter" />
-            <ComponentRef Id="int_daisy_unicodeNotrmalizer" />
-            <ComponentRef Id="speechgen2_external_dummy" />
-            <ComponentRef Id="se_tpb_zed2daisy202" />-->
             
         </Feature>
+        
 
         <!--Built in UI-->
         <!--<UI>

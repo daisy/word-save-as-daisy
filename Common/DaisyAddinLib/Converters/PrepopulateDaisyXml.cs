@@ -1,10 +1,10 @@
 ﻿using System.IO;
 using System.Xml;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	/// <summary>
-	/// Provides access to prepopulated_daisy xml file from AppData\..\Sonata directory.
+	/// Provides access to prepopulated_daisy xml file from AppData\..\SaveAsDAISY directory.
 	/// </summary>
 	public class PrepopulateDaisyXml
 	{
@@ -13,7 +13,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		/// </summary>
 		private string PathForXml
 		{
-			get { return AddInHelper.AppDataSonataDirectory + "\\prepopulated_daisy.xml"; }
+			get { return AddInHelper.AppDataSaveAsDAISYDirectory + "\\prepopulated_daisy.xml"; }
 		}
 
 		/// <summary>
@@ -60,8 +60,8 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 			elmtDaisy.AppendChild(elmtPublisher);
 			elmtPublisher.InnerText = Publisher;
 
-			if (!Directory.Exists(AddInHelper.AppDataSonataDirectory))
-				Directory.CreateDirectory(AddInHelper.AppDataSonataDirectory);
+			if (!Directory.Exists(AddInHelper.AppDataSaveAsDAISYDirectory))
+				Directory.CreateDirectory(AddInHelper.AppDataSaveAsDAISYDirectory);
 			
 			docuemnt.Save(PathForXml);
 		}

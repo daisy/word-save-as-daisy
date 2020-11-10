@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Xml;
-using Sonata.DaisyConverter.DaisyConverterLib.PageStylesValidation;
+using Daisy.DaisyConverter.DaisyConverterLib.PageStylesValidation;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	/// <summary>
 	/// Provides functionality for checking sequence of Frontmatter (DAISY), Bodymatter (DAISY) and Rearmatter (DAISY) styles in word document

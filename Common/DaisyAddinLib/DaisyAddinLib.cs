@@ -32,11 +32,11 @@ using System.IO;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Collections;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
 using stdole;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	/// <summary>
     /// Base class MS Office add-in implementations.
@@ -143,7 +143,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             if (translateFlag == 1)
             {
 				SingleConverter singleConverter = new SingleConverterUI(converter, myForm.getParser);
-            	ConvertToDaisy(parameters, myForm.HTable, AddInHelper.AppDataSonataDirectory, myForm.PipeOutput,singleConverter);
+            	ConvertToDaisy(parameters, myForm.HTable, AddInHelper.AppDataSaveAsDAISYDirectory, myForm.PipeOutput,singleConverter);
             }
         }
 

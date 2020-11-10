@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Sonata.DaisyConverter.DaisyConverterLib.Properties {
+namespace Daisy.DaisyConverter.DaisyConverterLib.Properties {
     using System;
     
     

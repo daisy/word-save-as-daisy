@@ -38,7 +38,7 @@ using System.Xml.Schema;
 using System.Windows.Forms;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     /// <summary>
     /// Core conversion methods 

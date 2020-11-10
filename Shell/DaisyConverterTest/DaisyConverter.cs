@@ -36,12 +36,12 @@ using System.Threading;
 using System.Xml.Schema;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 using System.Xml;
 using System.Resources;
 using System.IO.Packaging;
 
-namespace Sonata.DaisyConverter.CommandLineTool {
+namespace Daisy.DaisyConverter.CommandLineTool {
     enum ControlType : int {
         CTRL_C_EVENT = 0,
         CTRL_BREAK_EVENT = 1,
@@ -115,7 +115,7 @@ namespace Sonata.DaisyConverter.CommandLineTool {
             switch (transformDirection) {
                 case Direction.DocxToXml:
                     if (wordInstance == null) {
-                        wordInstance = new Sonata.DaisyConverter.Word.Converter();
+                        wordInstance = new Daisy.DaisyConverter.Word.Converter();
                     }
                     return wordInstance;
                 default:

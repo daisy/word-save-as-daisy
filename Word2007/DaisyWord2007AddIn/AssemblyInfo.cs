@@ -9,9 +9,9 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyTitle("DaisyWord2007Addin")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sonata Software Limited")]
+[assembly: AssemblyCompany("The DAISY Consortium")]
 [assembly: AssemblyProduct("")]
-[assembly: AssemblyCopyright("Copyright © Sonata Software Limited 2008")]
+[assembly: AssemblyCopyright("Copyright © The DAISY Consortium 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

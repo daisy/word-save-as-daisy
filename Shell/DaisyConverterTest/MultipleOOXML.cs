@@ -9,9 +9,9 @@ using System.Xml.Xsl;
 using System.Collections;
 using System.IO.Packaging;
 using System.Reflection;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 
-namespace Sonata.DaisyConverter.CommandLineTool {
+namespace Daisy.DaisyConverter.CommandLineTool {
     class MultipleOOXML {
         private Report report;
         const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";

@@ -7,7 +7,7 @@ using System.IO;
 using System.Diagnostics;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public class ScriptParser
     {

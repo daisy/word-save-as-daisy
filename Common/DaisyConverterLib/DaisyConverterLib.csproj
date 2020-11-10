@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>Sonata.DaisyConverter.DaisyConverterLib</RootNamespace>
+    <RootNamespace>Daisy.DaisyConverter.DaisyConverterLib</RootNamespace>
     <AssemblyName>DaisyConverterLib</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>

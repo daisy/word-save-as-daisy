@@ -115,14 +115,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Addin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Addin\bin\Debug\Addin.dll</HintPath>
-    </Reference>
-    <Reference Include="Converter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Converter\bin\Debug\Converter.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -147,9 +139,17 @@
     <EmbeddedResource Include="resources\oox2daisy\dtbook-2005-3.dtd" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Addin\Addin.csproj">
+      <Project>{5fbf8430-af2f-4e5e-ba37-7a70310ba709}</Project>
+      <Name>Addin</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
       <Project>{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}</Project>
       <Name>DaisyConverterLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Converter\Converter.csproj">
+      <Project>{b7552412-f668-429f-a90d-c63764148051}</Project>
+      <Name>Converter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

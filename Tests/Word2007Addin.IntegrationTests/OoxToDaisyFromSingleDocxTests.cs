@@ -3,7 +3,7 @@ using System.IO;
 using DaisyWord2007AddIn;
 using Extensibility;
 using Microsoft.Office.Interop.Word;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
 using NUnit.Framework;
 
 namespace Word2007Addin.IntegrationTests

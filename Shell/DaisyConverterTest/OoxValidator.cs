@@ -33,9 +33,9 @@ using System.Xml.Schema;
 using System.Reflection;
 using System.Collections;
 using System.IO.Packaging;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 
-namespace Sonata.DaisyConverter.CommandLineTool {
+namespace Daisy.DaisyConverter.CommandLineTool {
     /// <summary>Exception thrown when the file is not valid</summary>
     public class OoxValidatorException : Exception {
         public OoxValidatorException(String msg) : base(msg) { }

@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     class DaisyTranslationSettings
     {
@@ -43,7 +43,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         public DaisyTranslationSettings()
         {
             //String xmlfile_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            String xmlfile_path = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata");
+            String xmlfile_path = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY");
             XmlDocument translationxml = new XmlDocument();
             if (!File.Exists(xmlfile_path + SettingsFileName))
             {

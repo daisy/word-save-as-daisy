@@ -38,7 +38,7 @@ using System.Resources;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public partial class InfoBox : Form
     {

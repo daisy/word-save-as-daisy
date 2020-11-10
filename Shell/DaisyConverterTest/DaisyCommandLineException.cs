@@ -29,7 +29,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Sonata.DaisyConverter.CommandLineTool {
+namespace Daisy.DaisyConverter.CommandLineTool {
 
     /// <summary>Thrown whenever an error occurs during the build.</summary>
     [Serializable]

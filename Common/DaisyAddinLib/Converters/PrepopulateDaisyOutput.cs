@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	/// <summary>
 	/// Provides access to prepopulated_daisy_output.xml from AppData\..\Sonanta directory.
@@ -13,7 +13,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		/// </summary>
 		private static string XmlFilePath
 		{
-			get { return AddInHelper.AppDataSonataDirectory + "\\prepopulated_daisy_output.xml"; }
+			get { return AddInHelper.AppDataSaveAsDAISYDirectory + "\\prepopulated_daisy_output.xml"; }
 		}
 
 		/// <summary>
@@ -61,8 +61,8 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		{
 			var document = new XmlDocument();
 
-			if (!Directory.Exists(AddInHelper.AppDataSonataDirectory))
-				Directory.CreateDirectory(AddInHelper.AppDataSonataDirectory);
+			if (!Directory.Exists(AddInHelper.AppDataSaveAsDAISYDirectory))
+				Directory.CreateDirectory(AddInHelper.AppDataSaveAsDAISYDirectory);
 
 			if (!File.Exists(XmlFilePath))
 			{

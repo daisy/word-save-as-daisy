@@ -6,7 +6,7 @@ using DaisyWord2007AddIn;
 using Extensibility;
 using NUnit.Framework;
 using Microsoft.Office.Interop.Word;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
 using System.Reflection;
 
 namespace Word2007Addin.IntegrationTests

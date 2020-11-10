@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	public class AddInHelper
 	{
@@ -64,9 +64,9 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		/// <summary>
 		/// Gets path to Sanata directory in AppData.
 		/// </summary>
-		public static string AppDataSonataDirectory
+		public static string AppDataSaveAsDAISYDirectory
 		{
-			get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata"; }
+			get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY"; }
 		}
 
 		

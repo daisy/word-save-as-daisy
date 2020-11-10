@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Text;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 
     ///<summary>
