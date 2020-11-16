@@ -132,106 +132,50 @@ namespace DaisyInstaller
                  */
 
 
-                // start DaisyAddinForWordSetup.msi
                 string tempPath = Path.GetTempPath();
+                // Default install location
+                string[] installTree = new string[] { "DAISY Consortium", "Save-as-DAISY Word Addin" };
+                string installRoot = !officeIs64bits && archPtrBitSize == 64 ?
+                    Environment.GetEnvironmentVariable("ProgramFiles(x86)") :
+                    Environment.GetEnvironmentVariable("ProgramFiles");
+                             
+
+                // Ask the user to validate the install location or let him change it
+                InstallPathSelector installFolderSelect = new InstallPathSelector(installRoot, installTree);
+                string installLocation = "";
+                if (installFolderSelect.ShowDialog() == DialogResult.OK) {
+                    installLocation = installFolderSelect.getInstallDir();
+
+                } else return; // cancel install
+
+                // unzip pipeline in the location before addin installation
+                string pipelineZipPath = Path.Combine(tempPath, "pipeline-lite.zip");
+                File.WriteAllBytes(pipelineZipPath, Properties.Resources.pipeline_lite_ms);
+                PipelineInstaller pipelineUnzipping = new PipelineInstaller(pipelineZipPath, installLocation);
+                pipelineUnzipping.Show();
+
+                // Unpackahe the msi needed for install
                 string daisySetupPath = Path.Combine(tempPath, "DaisyAddinForWordSetup.msi");
 #if UNIFIED
-                if(officeIs64bits)
+                if (officeIs64bits){
                     File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
-                else File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
+                } else {
+                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
+                }
 #elif X64INSTALLER
                 File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
 #else
                 File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
 #endif
 
-                Process install = Process.Start(daisySetupPath);
+
+                Process install = Process.Start("msiexec","/i \""+ daisySetupPath+"\" INSTALLDIR=\""+ installLocation + "\"");
+                
+                // TODO : pipeline clean up if install is cancelled
 
             } else return;
             
         }
     }
     
-    /* for future use with pipeline zip extracted from msi packages
-     * (required as i am using .net 4 framework that i know is included by default with windows 10 
-     * but does not directly "expose" the system API for zip handling in .net, and i don't want to use another third party lib)
-    // ZipArchive from https://www.codeproject.com/Articles/209731/Csharp-use-Zip-archives-without-external-libraries
-    class ZipArchive : IDisposable {
-        private object external;
-        private ZipArchive() { }
-        public enum CompressionMethodEnum { Stored, Deflated };
-        public enum DeflateOptionEnum { Normal, Maximum, Fast, SuperFast };
-        //...
-        public static ZipArchive OpenOnFile(string path, FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read, FileShare share = FileShare.Read, bool streaming = false) {
-            var type = typeof(System.IO.Packaging.Package).Assembly.GetType("MS.Internal.IO.Zip.ZipArchive");
-            var meth = type.GetMethod("OpenOnFile", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            return new ZipArchive { external = meth.Invoke(null, new object[] { path, mode, access, share, streaming }) };
-        }
-        public static ZipArchive OpenOnStream(Stream stream, FileMode mode = FileMode.OpenOrCreate, FileAccess access = FileAccess.ReadWrite, bool streaming = false) {
-            var type = typeof(System.IO.Packaging.Package).Assembly.GetType("MS.Internal.IO.Zip.ZipArchive");
-            var meth = type.GetMethod("OpenOnStream", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-            return new ZipArchive { external = meth.Invoke(null, new object[] { stream, mode, access, streaming }) };
-        }
-        public ZipFileInfo AddFile(string path, CompressionMethodEnum compmeth = CompressionMethodEnum.Deflated, DeflateOptionEnum option = DeflateOptionEnum.Normal) {
-            var type = external.GetType();
-            var meth = type.GetMethod("AddFile", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            var comp = type.Assembly.GetType("MS.Internal.IO.Zip.CompressionMethodEnum").GetField(compmeth.ToString()).GetValue(null);
-            var opti = type.Assembly.GetType("MS.Internal.IO.Zip.DeflateOptionEnum").GetField(option.ToString()).GetValue(null);
-            return new ZipFileInfo { external = meth.Invoke(external, new object[] { path, comp, opti }) };
-        }
-        public void DeleteFile(string name) {
-            var meth = external.GetType().GetMethod("DeleteFile", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            meth.Invoke(external, new object[] { name });
-        }
-        public void Dispose() {
-            ((IDisposable)external).Dispose();
-        }
-        public ZipFileInfo GetFile(string name) {
-            var meth = external.GetType().GetMethod("GetFile", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            return new ZipFileInfo { external = meth.Invoke(external, new object[] { name }) };
-        }
-
-        public IEnumerable<ZipFileInfo> Files {
-            get {
-                var meth = external.GetType().GetMethod("GetFiles", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                var coll = meth.Invoke(external, null) as System.Collections.IEnumerable; //ZipFileInfoCollection
-                foreach (var p in coll) yield return new ZipFileInfo { external = p };
-            }
-        }
-        public IEnumerable<string> FileNames {
-            get { return Files.Select(p => p.Name).OrderBy(p => p); }
-        }
-
-        public struct ZipFileInfo {
-            internal object external;
-            private object GetProperty(string name) {
-                return external.GetType().GetProperty(name, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).GetValue(external, null);
-            }
-            public override string ToString() {
-                return Name;// base.ToString();
-            }
-            public string Name {
-                get { return (string)GetProperty("Name"); }
-            }
-            public DateTime LastModFileDateTime {
-                get { return (DateTime)GetProperty("LastModFileDateTime"); }
-            }
-            public bool FolderFlag {
-                get { return (bool)GetProperty("FolderFlag"); }
-            }
-            public bool VolumeLabelFlag {
-                get { return (bool)GetProperty("VolumeLabelFlag"); }
-            }
-            public object CompressionMethod {
-                get { return GetProperty("CompressionMethod"); }
-            }
-            public object DeflateOption {
-                get { return GetProperty("DeflateOption"); }
-            }
-            public Stream GetStream(FileMode mode = FileMode.Open, FileAccess access = FileAccess.Read) {
-                var meth = external.GetType().GetMethod("GetStream", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                return (Stream)meth.Invoke(external, new object[] { mode, access });
-            }
-        }
-    }*/
 }

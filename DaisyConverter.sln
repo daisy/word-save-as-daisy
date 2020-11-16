@@ -149,8 +149,8 @@ Global
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Debug|x86.ActiveCfg = Debug|Win32
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release|x64.ActiveCfg = Release|x64
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release|x86.ActiveCfg = Release|Win32
-		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Debug|x64.ActiveCfg = Debug|x86
-		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Debug|x64.Build.0 = Debug|x86
+		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Debug|x64.ActiveCfg = Debug|x64
+		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Debug|x64.Build.0 = Debug|x64
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Debug|x86.ActiveCfg = Debug|x86
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Debug|x86.Build.0 = Debug|x86
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release|x64.ActiveCfg = Release|x64
@@ -202,7 +202,7 @@ Global
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2} = {4AF3E01B-91B1-4AE4-9316-11289EFA7B5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {8119EA58-6294-4AAF-B5CC-0C335A9409AB}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 EndGlobal

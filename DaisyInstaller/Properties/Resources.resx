@@ -124,4 +124,7 @@
   <data name="DaisyAddinForWordSetup_x86" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\DaisyAddinForWordSetup_x86;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="pipeline_lite_ms" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pipeline-lite-ms.zip;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
 </root>
