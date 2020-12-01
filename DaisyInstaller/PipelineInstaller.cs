@@ -23,7 +23,7 @@ namespace DaisyInstaller {
         }
 
         
-        private void PipelineInstaller_Load(object sender, EventArgs e) {
+        private void PipelineInstaller_Shown(object sender, EventArgs e) {
             installProgress.Minimum = 0;
             installProgress.Value = 0;
             using (var archive = ZipArchive.OpenOnFile(zipPath)) {
@@ -31,6 +31,8 @@ namespace DaisyInstaller {
                 int i = 0;
                 foreach (var zippedFile in archive.Files) {
                     string path = System.IO.Path.Combine(unzippingPath, zippedFile.Name);
+                    this.Unzipping.Text = "Unzipping " + path;
+                    this.Unzipping.Refresh();
                     if (zippedFile.FolderFlag) {
                         Directory.CreateDirectory(path);
                     } else {
@@ -38,11 +40,15 @@ namespace DaisyInstaller {
                         if (!Directory.Exists(dir)) {
                             Directory.CreateDirectory(dir);
                         }
-                        zippedFile.GetStream().CopyTo(File.OpenWrite(path));
+                        FileStream unzipped = File.OpenWrite(path);
+                        zippedFile.GetStream().CopyTo(unzipped);
+                        unzipped.Close();
+                        
                     }
                     installProgress.Value = ++i;
                 }
             }
+            this.Close();
         }
 
 

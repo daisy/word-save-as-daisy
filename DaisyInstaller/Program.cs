@@ -124,38 +124,33 @@ namespace DaisyInstaller
                  * if we want to reduce the installer size, i need to split the package in 3 : 
                  * - the x86 msi package with x86 jre to deploy in pipeline-lite
                  * - the x64 msi package with x64 jre to deploy in pipeline-lite
-                 * - the pipeline zip file (without jre embedded but with JRE 64 or 32 bits search)
-                 * The install directory need to be set by the user at the bootstraper stage (so in this project)
-                 * and passed along to the "TARGETDIR" MSI property
-                 * that could be done using the commande line 'msiexec /i x86_or_x84_msi TARGETDIR="C:\user_select_path"'
-                 * Then we could finish by unzipping the pipeline in the selected directory
+                 * - the pipeline cab file (without jre embedded but with JRE 64 or 32 bits search) referenced by both MSI as external cab
                  */
 
 
                 string tempPath = Path.GetTempPath();
+
+                // TOBEREMOVED - replaced by CAB referenced in the MSI
                 // Default install location
-                string[] installTree = new string[] { "DAISY Consortium", "Save-as-DAISY Word Addin" };
-                string installRoot = !officeIs64bits && archPtrBitSize == 64 ?
-                    Environment.GetEnvironmentVariable("ProgramFiles(x86)") :
-                    Environment.GetEnvironmentVariable("ProgramFiles");
-                             
-
+                // string[] installTree = new string[] { "DAISY Consortium", "Save-as-DAISY Word Addin" };
+                //string installRoot = !officeIs64bits && archPtrBitSize == 64 ?
+                //    Environment.GetEnvironmentVariable("ProgramFiles(x86)") :
+                //    Environment.GetEnvironmentVariable("ProgramFiles");
                 // Ask the user to validate the install location or let him change it
-                InstallPathSelector installFolderSelect = new InstallPathSelector(installRoot, installTree);
-                string installLocation = "";
-                if (installFolderSelect.ShowDialog() == DialogResult.OK) {
-                    installLocation = installFolderSelect.getInstallDir();
-
-                } else return; // cancel install
-
+                // InstallPathSelector installFolderSelect = new InstallPathSelector(installRoot, installTree);
+                //string installLocation = "";
+                //if (installFolderSelect.ShowDialog() == DialogResult.OK) {
+                //    installLocation = installFolderSelect.getInstallDir();
                 // unzip pipeline in the location before addin installation
-                string pipelineZipPath = Path.Combine(tempPath, "pipeline-lite.zip");
-                File.WriteAllBytes(pipelineZipPath, Properties.Resources.pipeline_lite_ms);
-                PipelineInstaller pipelineUnzipping = new PipelineInstaller(pipelineZipPath, installLocation);
-                pipelineUnzipping.Show();
+                //string pipelineZipPath = Path.Combine(tempPath, "pipeline-lite.zip");
+                //File.WriteAllBytes(pipelineZipPath, Properties.Resources.pipeline_lite_ms);
+                //PipelineInstaller pipelineUnzipping = new PipelineInstaller(pipelineZipPath, installLocation);
+                //pipelineUnzipping.Show();
+                //} else return; // cancel install
 
-                // Unpackahe the msi needed for install
+                // unpackage the msi needed for install
                 string daisySetupPath = Path.Combine(tempPath, "DaisyAddinForWordSetup.msi");
+                string pipelineCabPath = Path.Combine(tempPath, "pipeline.cab");
 #if UNIFIED
                 if (officeIs64bits){
                     File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
@@ -167,11 +162,13 @@ namespace DaisyInstaller
 #else
                 File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
 #endif
-
-
-                Process install = Process.Start("msiexec","/i \""+ daisySetupPath+"\" INSTALLDIR=\""+ installLocation + "\"");
                 
-                // TODO : pipeline clean up if install is cancelled
+                // unpackage the pipeline cab used by the msi files
+                File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
+
+                // launch the msi
+                Process.Start(daisySetupPath);
+                // Process install = Process.Start("msiexec", "/i \"" + daisySetupPath + "\" INSTALLDIR=\"" + installLocation + "\"");
 
             } else return;
             
@@ -179,3 +176,6 @@ namespace DaisyInstaller
     }
     
 }
+
+
+

@@ -83,9 +83,9 @@ namespace DaisyInstaller.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        internal static byte[] pipeline_lite_ms {
+        internal static byte[] pipeline_cab {
             get {
-                object obj = ResourceManager.GetObject("pipeline_lite_ms", resourceCulture);
+                object obj = ResourceManager.GetObject("pipeline_cab", resourceCulture);
                 return ((byte[])(obj));
             }
         }
