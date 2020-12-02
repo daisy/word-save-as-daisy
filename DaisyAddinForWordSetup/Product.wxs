@@ -14,7 +14,7 @@
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
     
-    <!-- Variable to build either x64 or x86 package with th-->
+    <!-- Variable to build either x64 or x86 package with the same wix project -->
     <?if $(var.Platform) = x64 ?>
         <?define Win64 = "yes" ?>
         <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
@@ -59,8 +59,8 @@
         <Property Id="WixShellExecTarget" Value="[#Save_As_Daisy_Getting_Started.docx]" />
         <Property Id="SHOW_README" Value="1" />
         <!-- Property set by DetectLatestMsWordVersion in the DaisyAddin.CustomAction project 
-            Default assumes office 2007 (13.0) 32bits -->
-        <Property Id="LATESTWORDVERSION">"13.0"</Property>
+            Default assumes office 2007 (12.0) 32bits -->
+        <Property Id="LATESTWORDVERSION">"12.0"</Property>
         <Property Id="LATESTWORDISX64">"no"</Property>
         
 
@@ -80,9 +80,6 @@
             </Component>
             <Component Id="DaisyConverterLib.dll" Guid="6A2E273F-22B9-4016-8A1F-B0A03B4DCB1B" Win64="$(var.Win64)">
                 <File Name="$(var.DaisyConverterLib.TargetFileName)" Source="$(var.DaisyConverterLib.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
-            </Component>
-            <Component Id="ManagedAggregator.dll" Guid="D34D8E01-C291-4B5E-B1A0-49FD97A9D9AC" Win64="$(var.Win64)">
-                <File Id="ManagedAggregator.dll" Name="$(var.ManagedAggregator.TargetFileName)" Source="$(var.ManagedAggregator.TargetPath)" DiskId="1" KeyPath="yes" />
             </Component>
             <Component Id="CustomActionAddin.dll" Guid="6A0369E5-E406-4D35-9D0B-AC6B5E7BF4AE" Win64="$(var.Win64)">
                 <File Name="$(var.CustomActionAddin.TargetFileName)" Source="$(var.CustomActionAddin.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
@@ -130,7 +127,7 @@
             <!-- In the Program Files folder -->
             <Directory Id="$(var.PlatformProgramFilesFolder)">
                 <!-- Program Files/Daisy -->
-                <Directory Id="INSTALLDIRX" Name="DAISY Consortium">
+                <Directory Id="INSTALLDIRX" Name="DAISY">
                     <!-- Program Files/Daisy/DAISY Translator -->
                     <Directory Id="INSTALLDIR" Name="Save-as-DAISY Word Addin">
                         <Directory Id="ProgramMenuFolder">
@@ -156,24 +153,23 @@
 
                         <!--Components for Office2007 and superior -->
                         <Component Id="Microsoft.Vbe.Interop.dll" Guid="F4957043-2698-480F-9968-3AA4F37ACA7E">
-                            <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
+                            <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
                             <File Id="Microsoft.Vbe.Interop.dll" Name="Microsoft.Vbe.Interop.dll" Source="$(var.SolutionDir)Lib\Word2007\Microsoft.Vbe.Interop.dll" DiskId="1" KeyPath="yes" />
                         </Component>
                         <Component Id="Microsoft.Office.Interop.Word.dll" Guid="55416793-B4F2-4194-BCB3-A52C2199D882">
-                            <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
+                            <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
                             <File Id="Microsoft.Office.Interop.Word.dll" Name="Microsoft.Office.Interop.Word.dll" Source="$(var.SolutionDir)Lib\Word2007\Microsoft.Office.Interop.Word.dll" DiskId="1" KeyPath="yes" />
                         </Component>
                         <Component Id="template2007.dotx" Guid="E108FE8D-B29D-4D30-A93C-524F6F745A58">
-                            <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
+                            <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
                             <File Id="template2007.dotx" Name="template2007.dotx" Source="$(var.SolutionDir)Lib\template2007.dotx" DiskId="1" KeyPath="yes" />
                         </Component>
                         <Component Id="OFFICE.DLL" Guid="8381F602-8610-4E93-B819-C26C271CCCE9">
-                            <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
+                            <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
                             <File Id="OFFICE.DLL" Name="OFFICE.DLL" Source="$(var.SolutionDir)Lib\Word2007\OFFICE.DLL" DiskId="1" KeyPath="yes" />
                         </Component>
                         <Component Id="DaisyWord2007AddIn.dll" Guid="685BF2E1-273F-4817-90E8-B715B4BE10B4" Win64="$(var.Win64)">
-                            <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
-                            <!--<File Id="DaisyWord2007AddIn.dll" Name="$(var.DaisyWord2007AddIn.TargetFileName)" Source="$(var.DaisyWord2007AddIn.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />-->
+                            <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
                             <!-- Generated wix data with Harvest tool (heat.exe)-->
                             <Class Id="{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}" Context="InprocServer32" Description="DaisyWord2007AddIn.Connect" ThreadingModel="both" ForeignServer="mscoree.dll">
                                 <ProgId Id="DaisyWord2007AddIn.Connect" Description="DaisyWord2007AddIn.Connect" />
@@ -262,22 +258,8 @@
                             <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
                             <RegistryValue Root="HKCR" Key="Record\{BBEED77A-BE86-3112-AE79-BC9FC99043D5}\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filC07D76E8B09FC9245B2A2BB802967CFF]" Type="string" Action="write" />
                         </Component>
-                        <!-- Removed shim : failing to load on office 2016, also the shim seems not necessary :
-                            The Addin COM DLL just needs to be registered in the COM interop and the following registy key need to be set
-                                HCKU/SOFTWARE/MICROSOFT/OFFICE/WORD/ADDINS/DaisyWord2007Addin.Connect
-                                  - CommandLineSafe = 0
-                                  - Description = ""
-                                  - FriendlyName = ""
-                                  - LoadBehavior = 3
-                                  -->
-                        <!--<Component Id="DaisyWord2007Shim.dll" Guid="FECF99E7-ED27-484E-B147-F6EA7973F263">
-                            <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
-                            <File Name="DaisyWord2007Shim.dll" Source="..\Word2007\DaisyWord2007Shim\Debug\DaisyWord2007Shim.dll" DiskId="1" KeyPath="yes" Checksum="yes">
-                                <Class Id="18CBC6A8-BCB5-45ED-8FF3-655599E1F872" Context="InprocServer32" Description="DaisyWord2007AddIn.Connect" ThreadingModel="apartment">
-                                    <ProgId Id="DaisyWord2007AddIn.Connect" Description="Connect Class" />
-                                </Class>
-                            </File>
-                        </Component>-->
+                        
+                        
                         <!--Components for Office2003-->
                         <Component Id="DaisyWord2003AddIn.dll" Guid="282C3DC1-23A1-4A99-A351-0BE570E97104">
                             <Condition><![CDATA[LATESTWORDVERSION="11.0"]]></Condition>
@@ -304,112 +286,16 @@
                             <File Id="Word2003OfficeInteropAssembly" Name="OFFICE.DLL" Source="$(var.SolutionDir)Lib\Word2003\OFFICE.DLL" DiskId="1" KeyPath="yes" />
                         </Component>
                         <Component Id="DaisyWord2003Template" Guid="B948125A-6D0B-46dd-BDC8-0110737C193B">
-                            <Condition><![CDATA[LATESTWORDVERSION="11.0" OR LATESTWORDVERSION="10.0"]]></Condition>
+                            <Condition><![CDATA[LATESTWORDVERSION="11.0"]]></Condition>
                             <File Id="Word2003Template" Name="template2003.dot" Source="$(var.SolutionDir)Lib\template2003.dot" DiskId="1" KeyPath="yes" />
                         </Component>
-                        <!--Components for OfficeXP-->
-                        <!--<Component Id="DaisyTranslatorWordXPAddin.dll" Guid="8F1C6316-7438-44a5-85B6-46956B03023D">
-                            <Condition><![CDATA[LATESTWORDVERSION="10.0"]]></Condition>
-                            <File Name="$(var.DaisyTranslatorWordXPAddin.TargetFileName)" Source="$(var.DaisyTranslatorWordXPAddin.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
+                        <Component Id="ManagedAggregator.dll" Guid="D34D8E01-C291-4B5E-B1A0-49FD97A9D9AC" Win64="$(var.Win64)">
+                            <Condition><![CDATA[LATESTWORDVERSION="11.0"]]></Condition>
+                            <File Id="ManagedAggregator.dll" Name="$(var.ManagedAggregator.TargetFileName)" Source="$(var.ManagedAggregator.TargetPath)" DiskId="1" KeyPath="yes" />
                         </Component>
-                        <Component Id="DaisyTranslatorWordXPShim.dll" Guid="7A1765B4-4922-4a9e-AC76-6694F2179B8C">
-                            <Condition><![CDATA[LATESTWORDVERSION="10.0"]]></Condition>
-                            <File Name="DaisyTranslatorWordXPShim.dll" Source="..\WordXP\DaisyTranslatorWordXPShim\Release\DaisyTranslatorWordXPShim.dll" DiskId="1" KeyPath="yes" Checksum="yes">
-                                <Class Id="C16065A7-4A10-490E-8D8A-5C807FF31434" Context="InprocServer32" Description="DaisyTranslatorWordXPAddin.Connect" ThreadingModel="apartment">
-                                    <ProgId Id="DaisyTranslatorWordXPAddin.Connect" Description="Connect Class" />
-                                </Class>
-                            </File>
-                        </Component>
-                        <Component Id="InteropXP" Guid="1A401262-A7CD-4f75-9EBC-E0AD83B85A40">
-                            <Condition><![CDATA[LATESTWORDVERSION="10.0"]]></Condition>
-                            <File Id="WordXPInteropAssembly" Name="Microsoft.Office.Interop.Word.dll" Source="$(var.SolutionDir)Lib\wordxp\Microsoft.Office.Interop.Word.dll" DiskId="1" KeyPath="yes" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F0-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Office.Interop.Word.GlobalClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F0-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F0-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209FF-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Office.Interop.Word.ApplicationClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209FF-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209FF-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{00020906-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Office.Interop.Word.DocumentClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{00020906-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{00020906-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F5-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Office.Interop.Word.FontClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F5-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F5-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F4-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Office.Interop.Word.ParagraphFormatClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F4-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F4-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F2-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Office.Interop.Word.OLEControlClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F2-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F2-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F1-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Office.Interop.Word.LetterContentClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F1-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{000209F1-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="TypeLib\{00020905-0000-0000-C000-000000000046}\8.2" Name="PrimaryInteropAssemblyName" Value="Microsoft.Office.Interop.Word, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                        </Component>
-                        <Component Id="InteropOfficeXP" Guid="0F8831AA-6CA2-4252-B9E0-60449528E3BB">
-                            <Condition><![CDATA[LATESTWORDVERSION="10.0"]]></Condition>
-                            <File Id="XPVBEInteropAssembly" Name="Microsoft.Vbe.Interop.dll" Source="$(var.SolutionDir)Lib\wordxp\Microsoft.Vbe.Interop.dll" DiskId="1" KeyPath="yes" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E185-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.WindowsClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E185-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E185-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E187-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.LinkedWindowsClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E187-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E187-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E119-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.ReferencesEventsClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E119-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E119-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E132-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.CommandBarEventsClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E132-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E132-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{32CDF9E0-1602-11CE-BFDC-08002B2B8CDA}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.ProjectTemplateClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{32CDF9E0-1602-11CE-BFDC-08002B2B8CDA}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{32CDF9E0-1602-11CE-BFDC-08002B2B8CDA}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E169-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.VBProjectClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E169-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E169-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E101-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.VBProjectsClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E101-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E101-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D6-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.ComponentsClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D6-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D6-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D7-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.VBComponentsClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D7-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D7-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D8-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.ComponentClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D8-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3D8-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3DA-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.VBComponentClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3DA-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{BE39F3DA-1B13-11D0-887F-00A0C90F2744}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E18B-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.PropertiesClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E18B-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E18B-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{DA936B63-AC8B-11D1-B6E5-00A0C90F2744}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.AddinsClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{DA936B63-AC8B-11D1-B6E5-00A0C90F2744}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{DA936B63-AC8B-11D1-B6E5-00A0C90F2744}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E170-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.CodeModuleClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E170-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E170-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E174-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.CodePanesClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E174-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E174-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E178-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.CodePaneClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E178-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E178-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E17C-0000-0000-C000-000000000046}\InprocServer32" Name="Class" Value="Microsoft.Vbe.Interop.ReferencesClass" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E17C-0000-0000-C000-000000000046}\InprocServer32" Name="Assembly" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="CLSID\{0002E17C-0000-0000-C000-000000000046}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
-                            <RegistryValue Root="HKCR" Key="TypeLib\{0002E157-0000-0000-C000-000000000046}\5.3" Name="PrimaryInteropAssemblyName" Value="Microsoft.Vbe.Interop, Version=10.0.4504.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" Action="write" />
-                        </Component>
-                        <Component Id="InteropOfficeXPdll" Guid="58D950EB-F50C-4b0f-8B11-5F4A3559C76A">
-                            <Condition><![CDATA[LATESTWORDVERSION="10.0"]]></Condition>
-                            <File Id="XPofficeInteropAssembly" Name="office.dll" Source="$(var.SolutionDir)Lib\wordxp\office.dll" DiskId="1" KeyPath="yes" />
-                            <RegistryValue Root="HKCR" Key="TypeLib\{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}\2.2" Name="PrimaryInteropAssemblyName" Value="Office, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Type="string" Action="write" />
-                        </Component>-->
+                        
                         <Component Id="extensibility.dll" Guid="8BF0BBF9-245C-47DF-9F8E-A940C06D5F50">
                             <File Id="extensibility.dll" Name="extensibility.dll" Source="$(var.SolutionDir)Lib\extensibility.dll" KeyPath="yes"  />
-                            <!--Assembly=".net" removed from previous File (if not, the dll is not copied by wix but it is still searched by the vsto)-->
                         </Component>
                         <Component Id="Stdole.dll" Guid="EEC64143-8004-4EEB-935B-DA03E6E82CF3">
                             <File Id="Stdole.dll" Name="stdole.dll" Source="$(var.SolutionDir)Lib\stdole.dll" KeyPath="yes" DiskId="1" Checksum="yes" />
@@ -424,11 +310,11 @@
                         <Component Id="Readme" Guid="F4BBBA14-F1F0-473f-9F17-5294C35798B4">
                             <File Id="Readme" Name="Readme.html" Source="$(var.SolutionDir)DaisyTranslatorWordAddin\Readme.htm" DiskId="1" KeyPath="yes" />
                         </Component>
-                        <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             REGISTRY SETTINGS
-    ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
                         <Component Id="RegistryEntriesWord2007" Guid="4971F640-3107-439D-94F4-A22FC704BBB1" DiskId="1">
-                            <Condition><![CDATA[LATESTWORDVERSION>="13.0"]]></Condition>
+                            <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
                             <RegistryKey Id="RegKeyAddinMachineWord2007" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyWord2007AddIn.Connect" Action="createAndRemoveOnUninstall">
                                 <RegistryValue Id="RegLoadBehaviorAddinMachineWord2007" Type="integer" Name="LoadBehavior" Value="3" />
                                 <RegistryValue Id="RegFriendlyNameAddinMachineWord2007" Type="string" Name="FriendlyName" Value="DAISY Addin" />
@@ -443,14 +329,7 @@
                                 <RegistryValue Id="RegVersionAddinMachineWord2003" Type="string" Name="Description" Value="DAISY Addin Word 2003" />
                             </RegistryKey>
                         </Component>
-                        <!--<Component Id="RegistryEntriesWordXP" Guid="45652578-C3AF-4f39-803A-01EFC611B225" DiskId="1">
-                            <Condition><![CDATA[LATESTWORDVERSION="10.0"]]></Condition>
-                            <RegistryKey Id="RegKeyAddinMachineWordXP" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyTranslatorWordXPAddin.Connect" Action="createAndRemoveOnUninstall">
-                                <RegistryValue Id="RegLoadBehaviorAddinMachineWordXP" Type="integer" Name="LoadBehavior" Value="3" KeyPath="yes" />
-                                <RegistryValue Id="RegFriendlyNameAddinMachineWordXP" Type="string" Name="FriendlyName" Value="DAISY Addin Word XP" />
-                                <RegistryValue Id="RegVersionAddinMachineWordXP" Type="string" Name="Description" Value="DAISY Addin Word XP" />
-                            </RegistryKey>
-                        </Component>-->
+                        
                         <Component Id="log4net.dll" Guid="944F8F0B-3F51-4BC8-8DF3-EF3C44DC0FBE">
                             <File Id="log4net.dll" Name="log4net.dll" Source="..\Lib\log4net.dll" />
                         </Component>
@@ -460,10 +339,13 @@
                             <File Id="Save_As_Daisy_Getting_Started.docx" Name="Save As Daisy Getting Started.docx" Source="..\Lib\Save As Daisy Getting Started.docx" />
                             
                         </Component>
-                        
-                        <!--pipeline distribution, stored in an external cab that is build by the msi.
-                            (should work for both msi files)
-                        -->
+
+<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            PIPELINE LITE DISTRIBUTION
+                  stored in an external cab that is build by the msi.
+              both x86 and x64 msi can then use the same cab for install
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+                        <!--pipeline-lite-ms-->
                         <Directory Id="pipeline_lite_ms" Name="pipeline-lite-ms">
                             <Component Id="pipeline_lite_ms_files" Guid="52b1623a-ba28-4755-aaa7-d65c0db39c33">
                                 <File DiskId="2" Id="pipeline_lite_ms_pipeline_lite.exe" Name="pipeline-lite.exe" Source="$(var.SolutionDir)Lib\pipeline-lite-ms\pipeline-lite.exe" />
@@ -1598,30 +1480,14 @@
             <ComponentRef Id="DaisyAddinLib.dll" />
             <ComponentRef Id="DaisyConverterLib.dll" />
             <ComponentRef Id="WindowsBase.dll" />
-            <ComponentRef Id="ManagedAggregator.dll" />
             
             
-
-            <!-- Office 2016 project component -->
-            <!--<ComponentRef Id="Microsoft.Office.Tools.Common.v4.0.Utilities.dll" />
-            <ComponentRef Id="DaisyWord2016AddIn.dll" />
-            <ComponentRef Id="DaisyWord2016AddIn.dll.manifest" />
-            <ComponentRef Id="DaisyWord2016AddIn.vsto" />
-            <ComponentRef Id="RegistryEntriesWord2016" />
-            -->
-            <!-- Office XP support removal  -->
-            <!--<ComponentRef Id="InteropXP" />
-            <ComponentRef Id="InteropOfficeXP" />
-            <ComponentRef Id="InteropOfficeXPdll" />
-            <ComponentRef Id="DaisyTranslatorWordXPAddin.dll" />
-            <ComponentRef Id="DaisyTranslatorWordXPShim.dll" />
-            <ComponentRef Id="RegistryEntriesWordXP" />
-            -->
             
             
             <ComponentRef Id="Microsoft.Vbe.Interop.dll" />
 
             <!-- Office 2003-->
+            <ComponentRef Id="ManagedAggregator.dll" />
             <ComponentRef Id="Interop2003" />
             <ComponentRef Id="Interop2003Vbe" />
             <ComponentRef Id="Interop2003Office" />
@@ -1636,7 +1502,6 @@
             
 
             <ComponentRef Id="DaisyWord2007AddIn.dll" />
-            <!--<ComponentRef Id="DaisyWord2007Shim.dll" />-->
             <ComponentRef Id="RegistryEntriesWord2007" />
 
             <ComponentRef Id="extensibility.dll" />

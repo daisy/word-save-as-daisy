@@ -165,7 +165,7 @@
   <PropertyGroup>
     <PostBuildEvent>IF NOT EXIST "$(SolutionDir)DaisyInstaller\Resources" mkdir "$(SolutionDir)DaisyInstaller\Resources"
 IF EXIST "$(SolutionDir)DaisyInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)" DEL "$(SolutionDir)DaisyInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)"
-IF EXIST "$(SolutionDir)DaisyInstaller\Resources\pipeline_cab" DEL"$(SolutionDir)DaisyInstaller\Resources\pipeline_cab"
+IF EXIST "$(SolutionDir)DaisyInstaller\Resources\pipeline_cab" DEL "$(SolutionDir)DaisyInstaller\Resources\pipeline_cab"
 COPY "$(TargetDir)$(TargetName).msi" "$(SolutionDir)DaisyInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)" /Y
 COPY "$(TargetDir)pipeline.cab" "$(SolutionDir)DaisyInstaller\Resources\pipeline_cab" /Y</PostBuildEvent>
   </PropertyGroup>
