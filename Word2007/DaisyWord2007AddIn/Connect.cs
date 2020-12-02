@@ -107,7 +107,13 @@ namespace DaisyWord2007AddIn {
         ///	Place your initialization code within this method.
         /// </summary>
         public Connect() {
-            this.addinLib = new Daisy.DaisyConverter.Word.Addin();
+            try {
+                this.addinLib = new Daisy.DaisyConverter.Word.Addin();
+            } catch (Exception e) {
+                MessageBox.Show(e.Message);
+                //throw;
+            }
+            
         }
 
         /// <summary>
@@ -125,13 +131,17 @@ namespace DaisyWord2007AddIn {
         /// </param>
         /// <seealso class='IDTExtensibility2' />
         public void OnConnection(object application, Extensibility.ext_ConnectMode connectMode, object addInInst, ref System.Array custom) {
-            this.applicationObject = (MSword.Application)application;
-            this.applicationObject.DocumentBeforeSave += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeSaveEventHandler(applicationObject_DocumentBeforeSave);
-            this.applicationObject.DocumentOpen += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentOpenEventHandler(applicationObject_DocumentOpen);
-            this.applicationObject.DocumentChange += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentChangeEventHandler(applicationObject_DocumentChange);
-            this.applicationObject.DocumentBeforeClose += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeCloseEventHandler(applicationObject_DocumentBeforeClose);
-            this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);
-            
+            try {
+                this.applicationObject = (MSword.Application)application;
+                this.applicationObject.DocumentBeforeSave += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeSaveEventHandler(applicationObject_DocumentBeforeSave);
+                this.applicationObject.DocumentOpen += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentOpenEventHandler(applicationObject_DocumentOpen);
+                this.applicationObject.DocumentChange += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentChangeEventHandler(applicationObject_DocumentChange);
+                this.applicationObject.DocumentBeforeClose += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeCloseEventHandler(applicationObject_DocumentBeforeClose);
+                this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);
+            } catch (Exception e) {
+                MessageBox.Show(e.Message);
+                //throw;
+            }
         }
         /// <summary>
         /// Function to do changes in Look and Feel of UI
@@ -280,7 +290,7 @@ namespace DaisyWord2007AddIn {
         /// </param>
         /// <seealso class='IDTExtensibility2' />
         public void OnStartupComplete(ref System.Array custom) {
-
+            //MessageBox.Show("Starting addin");
         }
 
         /// <summary>
@@ -505,7 +515,8 @@ namespace DaisyWord2007AddIn {
                     // using sendkeys to access the pane, as it is not exposed through any API i tested
                     // i tried launching it via command bars and the taskpanes interfaces but it was not exposed through those
                     if (officeVersion >= 16.0) SendKeys.SendWait("%ra1"); // open the checker using the ribbon button added in 2016
-                    else SendKeys.SendWait("%fxxa"); // open the checker through the File > info > Check for issues > check accessibility button
+                    else if (officeVersion == 15.0) SendKeys.SendWait("%fxxa"); // open the checker through the File > info > Check for issues > check accessibility button
+                    else SendKeys.SendWait("%fxta"); // open the checker through the File > info > Check for issues > check accessibility button
                 }
                 if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
             } else try {
