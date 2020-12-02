@@ -58,6 +58,7 @@ namespace DaisyWord2007AddIn {
     using ConnectIEnumETC = System.Runtime.InteropServices.ComTypes.IEnumFORMATETC;
     using COMException = System.Runtime.InteropServices.COMException;
     using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
+    using System.Globalization;
 
 
     #region Read me for Add-in installation and setup information.
@@ -494,7 +495,20 @@ namespace DaisyWord2007AddIn {
 
         /*Function validate input docx file against DAISY rule*/
         public void Validate(IRibbonControl control, bool flip) {
-            try {
+
+            float officeVersion = float.Parse(this.applicationObject.Version, CultureInfo.InvariantCulture.NumberFormat);
+            if (officeVersion >= 14.0) {
+                //MessageBox.Show("For office 2010 and superior, the word validation is being replaced for the Microsoft Accessibility Checker.\r\n" +
+                //"You may find it in the 'File' > 'Info' > 'Check for issues' menu, or under the Review tab of the ribbon for Office 2016 and newer.\r\n" +
+                //"Do you want to open it now ?", "Deprecated functionnality", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                if(this.applicationObject.Documents.Count > 0) {
+                    // using sendkeys to access the pane, as it is not exposed through any API i tested
+                    // i tried launching it via command bars and the taskpanes interfaces but it was not exposed through those
+                    if (officeVersion >= 16.0) SendKeys.SendWait("%ra1"); // open the checker using the ribbon button added in 2016
+                    else SendKeys.SendWait("%fxxa"); // open the checker through the File > info > Check for issues > check accessibility button
+                }
+                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
+            } else try {
                 docValidation = new ArrayList();
                 int ind;
                 MSword.Document doc = this.applicationObject.ActiveDocument;
@@ -632,8 +646,9 @@ namespace DaisyWord2007AddIn {
                 }
             } catch (Exception ex) {
                 AddinLogger.Error(ex);
-                MessageBox.Show(ex.Message, "Errror", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Validation error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         /*Function which deletes bookmarks on close of validateform */

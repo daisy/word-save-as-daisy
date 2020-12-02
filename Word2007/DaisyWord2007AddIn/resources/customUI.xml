@@ -29,7 +29,7 @@
 					<button id="Button6" label="Mana&amp;ge Acronym" size="large" onAction="ManageAcronym" getImage="GetImage4"/>
 				</group >
 				<group id="SampleGroup4" label="Validate">
-					<toggleButton id="toggleValidate" label="&amp;Validate" size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="GetImage9"/>
+					<toggleButton id="toggleValidate" label="&amp;Accessibility check" screentip="&amp;Run the accessibility checker on the current document. For Word 2007, a custom word validation process is applied. " description="&amp;Run the accessiblity checker on the current document. For Word 2007, a custom word validation process is applied. " size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="GetImage9"/>
 				</group>
 				<group id="SampleGroup5" label ="DAISY Styles">
 					<button id="Button7" label="&amp;Import" size="large" onAction="Update_Styles" getEnabled="getEnabled" getImage="GetImage10"/>
