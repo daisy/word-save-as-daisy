@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Windows.Forms;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
+namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 {
 	/// <summary>
 	/// Implements convertation with UI messages/dialogs.

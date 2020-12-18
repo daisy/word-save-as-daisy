@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib.PageStylesValidation
+namespace Daisy.DaisyConverter.DaisyConverterLib.PageStylesValidation
 {
 	public class PageStylesValidator
 	{

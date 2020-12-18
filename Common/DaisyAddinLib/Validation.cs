@@ -12,7 +12,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public partial class Validation : Form
     {

@@ -1,3 +1,1497 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<?mso-application progid="Word.Document"?>
-<pkg:package xmlns:pkg="http://schemas.microsoft.com/office/2006/xmlPackage"><pkg:part pkg:name="/_rels/.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml" pkg:padding="512"><pkg:xmlData><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships></pkg:xmlData></pkg:part><pkg:part pkg:name="/word/_rels/document.xml.rels" pkg:contentType="application/vnd.openxmlformats-package.relationships+xml" pkg:padding="256"><pkg:xmlData><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings" Target="webSettings.xml"/><Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings" Target="settings.xml"/><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/><Relationship Id="rId5" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme" Target="theme/theme1.xml"/><Relationship Id="rId4" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable" Target="fontTable.xml"/></Relationships></pkg:xmlData></pkg:part><pkg:part pkg:name="/word/document.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"><pkg:xmlData><w:document xmlns:ve="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"><w:body><w:p w:rsidR="00031064" w:rsidRDefault="00031064"/><w:sectPr w:rsidR="00031064" w:rsidSect="00031064"><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="850" w:bottom="1134" w:left="1701" w:header="720" w:footer="720" w:gutter="0"/><w:cols w:space="720"/><w:docGrid w:linePitch="360"/></w:sectPr></w:body></w:document></pkg:xmlData></pkg:part><pkg:part pkg:name="/word/theme/theme1.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.theme+xml"><pkg:xmlData><a:theme name="Тема Office" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"><a:themeElements><a:clrScheme name="Стандартная"><a:dk1><a:sysClr val="windowText" lastClr="000000"/></a:dk1><a:lt1><a:sysClr val="window" lastClr="FFFFFF"/></a:lt1><a:dk2><a:srgbClr val="1F497D"/></a:dk2><a:lt2><a:srgbClr val="EEECE1"/></a:lt2><a:accent1><a:srgbClr val="4F81BD"/></a:accent1><a:accent2><a:srgbClr val="C0504D"/></a:accent2><a:accent3><a:srgbClr val="9BBB59"/></a:accent3><a:accent4><a:srgbClr val="8064A2"/></a:accent4><a:accent5><a:srgbClr val="4BACC6"/></a:accent5><a:accent6><a:srgbClr val="F79646"/></a:accent6><a:hlink><a:srgbClr val="0000FF"/></a:hlink><a:folHlink><a:srgbClr val="800080"/></a:folHlink></a:clrScheme><a:fontScheme name="Стандартная"><a:majorFont><a:latin typeface="Cambria"/><a:ea typeface=""/><a:cs typeface=""/><a:font script="Jpan" typeface="ＭＳ ゴシック"/><a:font script="Hang" typeface="맑은 고딕"/><a:font script="Hans" typeface="宋体"/><a:font script="Hant" typeface="新細明體"/><a:font script="Arab" typeface="Times New Roman"/><a:font script="Hebr" typeface="Times New Roman"/><a:font script="Thai" typeface="Angsana New"/><a:font script="Ethi" typeface="Nyala"/><a:font script="Beng" typeface="Vrinda"/><a:font script="Gujr" typeface="Shruti"/><a:font script="Khmr" typeface="MoolBoran"/><a:font script="Knda" typeface="Tunga"/><a:font script="Guru" typeface="Raavi"/><a:font script="Cans" typeface="Euphemia"/><a:font script="Cher" typeface="Plantagenet Cherokee"/><a:font script="Yiii" typeface="Microsoft Yi Baiti"/><a:font script="Tibt" typeface="Microsoft Himalaya"/><a:font script="Thaa" typeface="MV Boli"/><a:font script="Deva" typeface="Mangal"/><a:font script="Telu" typeface="Gautami"/><a:font script="Taml" typeface="Latha"/><a:font script="Syrc" typeface="Estrangelo Edessa"/><a:font script="Orya" typeface="Kalinga"/><a:font script="Mlym" typeface="Kartika"/><a:font script="Laoo" typeface="DokChampa"/><a:font script="Sinh" typeface="Iskoola Pota"/><a:font script="Mong" typeface="Mongolian Baiti"/><a:font script="Viet" typeface="Times New Roman"/><a:font script="Uigh" typeface="Microsoft Uighur"/></a:majorFont><a:minorFont><a:latin typeface="Calibri"/><a:ea typeface=""/><a:cs typeface=""/><a:font script="Jpan" typeface="ＭＳ 明朝"/><a:font script="Hang" typeface="맑은 고딕"/><a:font script="Hans" typeface="宋体"/><a:font script="Hant" typeface="新細明體"/><a:font script="Arab" typeface="Arial"/><a:font script="Hebr" typeface="Arial"/><a:font script="Thai" typeface="Cordia New"/><a:font script="Ethi" typeface="Nyala"/><a:font script="Beng" typeface="Vrinda"/><a:font script="Gujr" typeface="Shruti"/><a:font script="Khmr" typeface="DaunPenh"/><a:font script="Knda" typeface="Tunga"/><a:font script="Guru" typeface="Raavi"/><a:font script="Cans" typeface="Euphemia"/><a:font script="Cher" typeface="Plantagenet Cherokee"/><a:font script="Yiii" typeface="Microsoft Yi Baiti"/><a:font script="Tibt" typeface="Microsoft Himalaya"/><a:font script="Thaa" typeface="MV Boli"/><a:font script="Deva" typeface="Mangal"/><a:font script="Telu" typeface="Gautami"/><a:font script="Taml" typeface="Latha"/><a:font script="Syrc" typeface="Estrangelo Edessa"/><a:font script="Orya" typeface="Kalinga"/><a:font script="Mlym" typeface="Kartika"/><a:font script="Laoo" typeface="DokChampa"/><a:font script="Sinh" typeface="Iskoola Pota"/><a:font script="Mong" typeface="Mongolian Baiti"/><a:font script="Viet" typeface="Arial"/><a:font script="Uigh" typeface="Microsoft Uighur"/></a:minorFont></a:fontScheme><a:fmtScheme name="Стандартная"><a:fillStyleLst><a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:gradFill rotWithShape="1"><a:gsLst><a:gs pos="0"><a:schemeClr val="phClr"><a:tint val="50000"/><a:satMod val="300000"/></a:schemeClr></a:gs><a:gs pos="35000"><a:schemeClr val="phClr"><a:tint val="37000"/><a:satMod val="300000"/></a:schemeClr></a:gs><a:gs pos="100000"><a:schemeClr val="phClr"><a:tint val="15000"/><a:satMod val="350000"/></a:schemeClr></a:gs></a:gsLst><a:lin ang="16200000" scaled="1"/></a:gradFill><a:gradFill rotWithShape="1"><a:gsLst><a:gs pos="0"><a:schemeClr val="phClr"><a:shade val="51000"/><a:satMod val="130000"/></a:schemeClr></a:gs><a:gs pos="80000"><a:schemeClr val="phClr"><a:shade val="93000"/><a:satMod val="130000"/></a:schemeClr></a:gs><a:gs pos="100000"><a:schemeClr val="phClr"><a:shade val="94000"/><a:satMod val="135000"/></a:schemeClr></a:gs></a:gsLst><a:lin ang="16200000" scaled="0"/></a:gradFill></a:fillStyleLst><a:lnStyleLst><a:ln w="9525" cap="flat" cmpd="sng" algn="ctr"><a:solidFill><a:schemeClr val="phClr"><a:shade val="95000"/><a:satMod val="105000"/></a:schemeClr></a:solidFill><a:prstDash val="solid"/></a:ln><a:ln w="25400" cap="flat" cmpd="sng" algn="ctr"><a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:prstDash val="solid"/></a:ln><a:ln w="38100" cap="flat" cmpd="sng" algn="ctr"><a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:prstDash val="solid"/></a:ln></a:lnStyleLst><a:effectStyleLst><a:effectStyle><a:effectLst><a:outerShdw blurRad="40000" dist="20000" dir="5400000" rotWithShape="0"><a:srgbClr val="000000"><a:alpha val="38000"/></a:srgbClr></a:outerShdw></a:effectLst></a:effectStyle><a:effectStyle><a:effectLst><a:outerShdw blurRad="40000" dist="23000" dir="5400000" rotWithShape="0"><a:srgbClr val="000000"><a:alpha val="35000"/></a:srgbClr></a:outerShdw></a:effectLst></a:effectStyle><a:effectStyle><a:effectLst><a:outerShdw blurRad="40000" dist="23000" dir="5400000" rotWithShape="0"><a:srgbClr val="000000"><a:alpha val="35000"/></a:srgbClr></a:outerShdw></a:effectLst><a:scene3d><a:camera prst="orthographicFront"><a:rot lat="0" lon="0" rev="0"/></a:camera><a:lightRig rig="threePt" dir="t"><a:rot lat="0" lon="0" rev="1200000"/></a:lightRig></a:scene3d><a:sp3d><a:bevelT w="63500" h="25400"/></a:sp3d></a:effectStyle></a:effectStyleLst><a:bgFillStyleLst><a:solidFill><a:schemeClr val="phClr"/></a:solidFill><a:gradFill rotWithShape="1"><a:gsLst><a:gs pos="0"><a:schemeClr val="phClr"><a:tint val="40000"/><a:satMod val="350000"/></a:schemeClr></a:gs><a:gs pos="40000"><a:schemeClr val="phClr"><a:tint val="45000"/><a:shade val="99000"/><a:satMod val="350000"/></a:schemeClr></a:gs><a:gs pos="100000"><a:schemeClr val="phClr"><a:shade val="20000"/><a:satMod val="255000"/></a:schemeClr></a:gs></a:gsLst><a:path path="circle"><a:fillToRect l="50000" t="-80000" r="50000" b="180000"/></a:path></a:gradFill><a:gradFill rotWithShape="1"><a:gsLst><a:gs pos="0"><a:schemeClr val="phClr"><a:tint val="80000"/><a:satMod val="300000"/></a:schemeClr></a:gs><a:gs pos="100000"><a:schemeClr val="phClr"><a:shade val="30000"/><a:satMod val="200000"/></a:schemeClr></a:gs></a:gsLst><a:path path="circle"><a:fillToRect l="50000" t="50000" r="50000" b="50000"/></a:path></a:gradFill></a:bgFillStyleLst></a:fmtScheme></a:themeElements><a:objectDefaults/><a:extraClrSchemeLst/></a:theme></pkg:xmlData></pkg:part><pkg:part pkg:name="/word/settings.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml"><pkg:xmlData><w:settings xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w10="urn:schemas-microsoft-com:office:word" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main" xmlns:sl="http://schemas.openxmlformats.org/schemaLibrary/2006/main"><w:zoom w:percent="110"/><w:defaultTabStop w:val="708"/><w:characterSpacingControl w:val="doNotCompress"/><w:compat/><w:rsids><w:rsidRoot w:val="00872980"/><w:rsid w:val="00031064"/><w:rsid w:val="00056CAA"/><w:rsid w:val="00210F0D"/><w:rsid w:val="00381A75"/><w:rsid w:val="00597EA0"/><w:rsid w:val="005F7F0D"/><w:rsid w:val="00641109"/><w:rsid w:val="00872980"/><w:rsid w:val="00947E02"/><w:rsid w:val="009F5DFD"/><w:rsid w:val="00AA496C"/><w:rsid w:val="00F146E0"/><w:rsid w:val="00F7166F"/></w:rsids><m:mathPr><m:mathFont m:val="Cambria Math"/><m:brkBin m:val="before"/><m:brkBinSub m:val="--"/><m:smallFrac m:val="off"/><m:dispDef/><m:lMargin m:val="0"/><m:rMargin m:val="0"/><m:defJc m:val="centerGroup"/><m:wrapIndent m:val="1440"/><m:intLim m:val="subSup"/><m:naryLim m:val="undOvr"/></m:mathPr><w:themeFontLang w:val="ru-RU"/><w:clrSchemeMapping w:bg1="light1" w:t1="dark1" w:bg2="light2" w:t2="dark2" w:accent1="accent1" w:accent2="accent2" w:accent3="accent3" w:accent4="accent4" w:accent5="accent5" w:accent6="accent6" w:hyperlink="hyperlink" w:followedHyperlink="followedHyperlink"/><w:shapeDefaults><o:shapedefaults v:ext="edit" spidmax="2050"/><o:shapelayout v:ext="edit"><o:idmap v:ext="edit" data="1"/></o:shapelayout></w:shapeDefaults><w:decimalSymbol w:val=","/><w:listSeparator w:val=";"/></w:settings></pkg:xmlData></pkg:part><pkg:part pkg:name="/word/fontTable.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml"><pkg:xmlData><w:fonts xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:font w:name="Calibri"><w:panose1 w:val="020F0502020204030204"/><w:charset w:val="CC"/><w:family w:val="swiss"/><w:pitch w:val="variable"/><w:sig w:usb0="A00002EF" w:usb1="4000207B" w:usb2="00000000" w:usb3="00000000" w:csb0="0000009F" w:csb1="00000000"/></w:font><w:font w:name="Times New Roman"><w:panose1 w:val="02020603050405020304"/><w:charset w:val="CC"/><w:family w:val="roman"/><w:pitch w:val="variable"/><w:sig w:usb0="20002A87" w:usb1="80000000" w:usb2="00000008" w:usb3="00000000" w:csb0="000001FF" w:csb1="00000000"/></w:font><w:font w:name="Cambria"><w:panose1 w:val="02040503050406030204"/><w:charset w:val="CC"/><w:family w:val="roman"/><w:pitch w:val="variable"/><w:sig w:usb0="A00002EF" w:usb1="4000004B" w:usb2="00000000" w:usb3="00000000" w:csb0="0000009F" w:csb1="00000000"/></w:font></w:fonts></pkg:xmlData></pkg:part><pkg:part pkg:name="/word/webSettings.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.webSettings+xml"><pkg:xmlData><w:webSettings xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:optimizeForBrowser/></w:webSettings></pkg:xmlData></pkg:part><pkg:part pkg:name="/docProps/app.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.extended-properties+xml" pkg:padding="256"><pkg:xmlData><Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"><Template>Normal.dotm</Template><TotalTime>0</TotalTime><Pages>1</Pages><Words>0</Words><Characters>0</Characters><Application>Microsoft Office Word</Application><DocSecurity>0</DocSecurity><Lines>1</Lines><Paragraphs>1</Paragraphs><ScaleCrop>false</ScaleCrop><Company/><LinksUpToDate>false</LinksUpToDate><CharactersWithSpaces>0</CharactersWithSpaces><SharedDoc>false</SharedDoc><HyperlinksChanged>false</HyperlinksChanged><AppVersion>12.0000</AppVersion></Properties></pkg:xmlData></pkg:part><pkg:part pkg:name="/docProps/core.xml" pkg:contentType="application/vnd.openxmlformats-package.core-properties+xml" pkg:padding="256"><pkg:xmlData><cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><dc:title/><dc:subject/><dc:creator>pruchkovskaya_t</dc:creator><cp:keywords/><dc:description/><cp:lastModifiedBy>pruchkovskaya_t</cp:lastModifiedBy><cp:revision>2</cp:revision><dcterms:created xsi:type="dcterms:W3CDTF">2010-10-06T08:53:00Z</dcterms:created><dcterms:modified xsi:type="dcterms:W3CDTF">2010-10-06T08:53:00Z</dcterms:modified></cp:coreProperties></pkg:xmlData></pkg:part><pkg:part pkg:name="/word/styles.xml" pkg:contentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"><pkg:xmlData><w:styles xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:asciiTheme="minorHAnsi" w:eastAsiaTheme="minorHAnsi" w:hAnsiTheme="minorHAnsi" w:cstheme="minorBidi"/><w:sz w:val="22"/><w:szCs w:val="22"/><w:lang w:val="ru-RU" w:eastAsia="en-US" w:bidi="ar-SA"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="200" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults><w:latentStyles w:defLockedState="0" w:defUIPriority="99" w:defSemiHidden="1" w:defUnhideWhenUsed="1" w:defQFormat="0" w:count="267"><w:lsdException w:name="Normal" w:semiHidden="0" w:uiPriority="0" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="heading 1" w:semiHidden="0" w:uiPriority="9" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="heading 2" w:uiPriority="9" w:qFormat="1"/><w:lsdException w:name="heading 3" w:uiPriority="9" w:qFormat="1"/><w:lsdException w:name="heading 4" w:uiPriority="9" w:qFormat="1"/><w:lsdException w:name="heading 5" w:uiPriority="9" w:qFormat="1"/><w:lsdException w:name="heading 6" w:uiPriority="9" w:qFormat="1"/><w:lsdException w:name="heading 7" w:uiPriority="9" w:qFormat="1"/><w:lsdException w:name="heading 8" w:uiPriority="9" w:qFormat="1"/><w:lsdException w:name="heading 9" w:uiPriority="9" w:qFormat="1"/><w:lsdException w:name="toc 1" w:uiPriority="39"/><w:lsdException w:name="toc 2" w:uiPriority="39"/><w:lsdException w:name="toc 3" w:uiPriority="39"/><w:lsdException w:name="toc 4" w:uiPriority="39"/><w:lsdException w:name="toc 5" w:uiPriority="39"/><w:lsdException w:name="toc 6" w:uiPriority="39"/><w:lsdException w:name="toc 7" w:uiPriority="39"/><w:lsdException w:name="toc 8" w:uiPriority="39"/><w:lsdException w:name="toc 9" w:uiPriority="39"/><w:lsdException w:name="caption" w:uiPriority="35" w:qFormat="1"/><w:lsdException w:name="Title" w:semiHidden="0" w:uiPriority="10" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Default Paragraph Font" w:uiPriority="1"/><w:lsdException w:name="Subtitle" w:semiHidden="0" w:uiPriority="11" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Strong" w:semiHidden="0" w:uiPriority="22" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Emphasis" w:semiHidden="0" w:uiPriority="20" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Table Grid" w:semiHidden="0" w:uiPriority="59" w:unhideWhenUsed="0"/><w:lsdException w:name="Placeholder Text" w:unhideWhenUsed="0"/><w:lsdException w:name="No Spacing" w:semiHidden="0" w:uiPriority="1" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Light Shading" w:semiHidden="0" w:uiPriority="60" w:unhideWhenUsed="0"/><w:lsdException w:name="Light List" w:semiHidden="0" w:uiPriority="61" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Grid" w:semiHidden="0" w:uiPriority="62" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 1" w:semiHidden="0" w:uiPriority="63" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 2" w:semiHidden="0" w:uiPriority="64" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 1" w:semiHidden="0" w:uiPriority="65" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 2" w:semiHidden="0" w:uiPriority="66" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 1" w:semiHidden="0" w:uiPriority="67" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 2" w:semiHidden="0" w:uiPriority="68" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 3" w:semiHidden="0" w:uiPriority="69" w:unhideWhenUsed="0"/><w:lsdException w:name="Dark List" w:semiHidden="0" w:uiPriority="70" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Shading" w:semiHidden="0" w:uiPriority="71" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful List" w:semiHidden="0" w:uiPriority="72" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Grid" w:semiHidden="0" w:uiPriority="73" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Shading Accent 1" w:semiHidden="0" w:uiPriority="60" w:unhideWhenUsed="0"/><w:lsdException w:name="Light List Accent 1" w:semiHidden="0" w:uiPriority="61" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Grid Accent 1" w:semiHidden="0" w:uiPriority="62" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 1 Accent 1" w:semiHidden="0" w:uiPriority="63" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 2 Accent 1" w:semiHidden="0" w:uiPriority="64" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 1 Accent 1" w:semiHidden="0" w:uiPriority="65" w:unhideWhenUsed="0"/><w:lsdException w:name="Revision" w:unhideWhenUsed="0"/><w:lsdException w:name="List Paragraph" w:semiHidden="0" w:uiPriority="34" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Quote" w:semiHidden="0" w:uiPriority="29" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Intense Quote" w:semiHidden="0" w:uiPriority="30" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Medium List 2 Accent 1" w:semiHidden="0" w:uiPriority="66" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 1 Accent 1" w:semiHidden="0" w:uiPriority="67" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 2 Accent 1" w:semiHidden="0" w:uiPriority="68" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 3 Accent 1" w:semiHidden="0" w:uiPriority="69" w:unhideWhenUsed="0"/><w:lsdException w:name="Dark List Accent 1" w:semiHidden="0" w:uiPriority="70" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Shading Accent 1" w:semiHidden="0" w:uiPriority="71" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful List Accent 1" w:semiHidden="0" w:uiPriority="72" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Grid Accent 1" w:semiHidden="0" w:uiPriority="73" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Shading Accent 2" w:semiHidden="0" w:uiPriority="60" w:unhideWhenUsed="0"/><w:lsdException w:name="Light List Accent 2" w:semiHidden="0" w:uiPriority="61" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Grid Accent 2" w:semiHidden="0" w:uiPriority="62" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 1 Accent 2" w:semiHidden="0" w:uiPriority="63" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 2 Accent 2" w:semiHidden="0" w:uiPriority="64" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 1 Accent 2" w:semiHidden="0" w:uiPriority="65" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 2 Accent 2" w:semiHidden="0" w:uiPriority="66" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 1 Accent 2" w:semiHidden="0" w:uiPriority="67" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 2 Accent 2" w:semiHidden="0" w:uiPriority="68" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 3 Accent 2" w:semiHidden="0" w:uiPriority="69" w:unhideWhenUsed="0"/><w:lsdException w:name="Dark List Accent 2" w:semiHidden="0" w:uiPriority="70" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Shading Accent 2" w:semiHidden="0" w:uiPriority="71" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful List Accent 2" w:semiHidden="0" w:uiPriority="72" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Grid Accent 2" w:semiHidden="0" w:uiPriority="73" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Shading Accent 3" w:semiHidden="0" w:uiPriority="60" w:unhideWhenUsed="0"/><w:lsdException w:name="Light List Accent 3" w:semiHidden="0" w:uiPriority="61" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Grid Accent 3" w:semiHidden="0" w:uiPriority="62" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 1 Accent 3" w:semiHidden="0" w:uiPriority="63" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 2 Accent 3" w:semiHidden="0" w:uiPriority="64" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 1 Accent 3" w:semiHidden="0" w:uiPriority="65" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 2 Accent 3" w:semiHidden="0" w:uiPriority="66" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 1 Accent 3" w:semiHidden="0" w:uiPriority="67" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 2 Accent 3" w:semiHidden="0" w:uiPriority="68" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 3 Accent 3" w:semiHidden="0" w:uiPriority="69" w:unhideWhenUsed="0"/><w:lsdException w:name="Dark List Accent 3" w:semiHidden="0" w:uiPriority="70" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Shading Accent 3" w:semiHidden="0" w:uiPriority="71" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful List Accent 3" w:semiHidden="0" w:uiPriority="72" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Grid Accent 3" w:semiHidden="0" w:uiPriority="73" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Shading Accent 4" w:semiHidden="0" w:uiPriority="60" w:unhideWhenUsed="0"/><w:lsdException w:name="Light List Accent 4" w:semiHidden="0" w:uiPriority="61" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Grid Accent 4" w:semiHidden="0" w:uiPriority="62" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 1 Accent 4" w:semiHidden="0" w:uiPriority="63" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 2 Accent 4" w:semiHidden="0" w:uiPriority="64" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 1 Accent 4" w:semiHidden="0" w:uiPriority="65" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 2 Accent 4" w:semiHidden="0" w:uiPriority="66" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 1 Accent 4" w:semiHidden="0" w:uiPriority="67" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 2 Accent 4" w:semiHidden="0" w:uiPriority="68" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 3 Accent 4" w:semiHidden="0" w:uiPriority="69" w:unhideWhenUsed="0"/><w:lsdException w:name="Dark List Accent 4" w:semiHidden="0" w:uiPriority="70" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Shading Accent 4" w:semiHidden="0" w:uiPriority="71" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful List Accent 4" w:semiHidden="0" w:uiPriority="72" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Grid Accent 4" w:semiHidden="0" w:uiPriority="73" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Shading Accent 5" w:semiHidden="0" w:uiPriority="60" w:unhideWhenUsed="0"/><w:lsdException w:name="Light List Accent 5" w:semiHidden="0" w:uiPriority="61" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Grid Accent 5" w:semiHidden="0" w:uiPriority="62" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 1 Accent 5" w:semiHidden="0" w:uiPriority="63" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 2 Accent 5" w:semiHidden="0" w:uiPriority="64" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 1 Accent 5" w:semiHidden="0" w:uiPriority="65" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 2 Accent 5" w:semiHidden="0" w:uiPriority="66" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 1 Accent 5" w:semiHidden="0" w:uiPriority="67" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 2 Accent 5" w:semiHidden="0" w:uiPriority="68" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 3 Accent 5" w:semiHidden="0" w:uiPriority="69" w:unhideWhenUsed="0"/><w:lsdException w:name="Dark List Accent 5" w:semiHidden="0" w:uiPriority="70" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Shading Accent 5" w:semiHidden="0" w:uiPriority="71" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful List Accent 5" w:semiHidden="0" w:uiPriority="72" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Grid Accent 5" w:semiHidden="0" w:uiPriority="73" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Shading Accent 6" w:semiHidden="0" w:uiPriority="60" w:unhideWhenUsed="0"/><w:lsdException w:name="Light List Accent 6" w:semiHidden="0" w:uiPriority="61" w:unhideWhenUsed="0"/><w:lsdException w:name="Light Grid Accent 6" w:semiHidden="0" w:uiPriority="62" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 1 Accent 6" w:semiHidden="0" w:uiPriority="63" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Shading 2 Accent 6" w:semiHidden="0" w:uiPriority="64" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 1 Accent 6" w:semiHidden="0" w:uiPriority="65" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium List 2 Accent 6" w:semiHidden="0" w:uiPriority="66" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 1 Accent 6" w:semiHidden="0" w:uiPriority="67" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 2 Accent 6" w:semiHidden="0" w:uiPriority="68" w:unhideWhenUsed="0"/><w:lsdException w:name="Medium Grid 3 Accent 6" w:semiHidden="0" w:uiPriority="69" w:unhideWhenUsed="0"/><w:lsdException w:name="Dark List Accent 6" w:semiHidden="0" w:uiPriority="70" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Shading Accent 6" w:semiHidden="0" w:uiPriority="71" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful List Accent 6" w:semiHidden="0" w:uiPriority="72" w:unhideWhenUsed="0"/><w:lsdException w:name="Colorful Grid Accent 6" w:semiHidden="0" w:uiPriority="73" w:unhideWhenUsed="0"/><w:lsdException w:name="Subtle Emphasis" w:semiHidden="0" w:uiPriority="19" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Intense Emphasis" w:semiHidden="0" w:uiPriority="21" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Subtle Reference" w:semiHidden="0" w:uiPriority="31" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Intense Reference" w:semiHidden="0" w:uiPriority="32" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Book Title" w:semiHidden="0" w:uiPriority="33" w:unhideWhenUsed="0" w:qFormat="1"/><w:lsdException w:name="Bibliography" w:uiPriority="37"/><w:lsdException w:name="TOC Heading" w:uiPriority="39" w:qFormat="1"/></w:latentStyles><w:style w:type="paragraph" w:default="1" w:styleId="a"><w:name w:val="Normal"/><w:qFormat/><w:rsid w:val="00031064"/></w:style><w:style w:type="character" w:default="1" w:styleId="a0"><w:name w:val="Default Paragraph Font"/><w:uiPriority w:val="1"/><w:semiHidden/><w:unhideWhenUsed/></w:style><w:style w:type="table" w:default="1" w:styleId="a1"><w:name w:val="Normal Table"/><w:uiPriority w:val="99"/><w:semiHidden/><w:unhideWhenUsed/><w:qFormat/><w:tblPr><w:tblInd w:w="0" w:type="dxa"/><w:tblCellMar><w:top w:w="0" w:type="dxa"/><w:left w:w="108" w:type="dxa"/><w:bottom w:w="0" w:type="dxa"/><w:right w:w="108" w:type="dxa"/></w:tblCellMar></w:tblPr></w:style><w:style w:type="numbering" w:default="1" w:styleId="a2"><w:name w:val="No List"/><w:uiPriority w:val="99"/><w:semiHidden/><w:unhideWhenUsed/></w:style></w:styles></pkg:xmlData></pkg:part></pkg:package>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet href="dtbookbasic.css" type="text/css"?><!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'>
+<dtbook xmlns="http://www.daisy.org/z3986/2005/dtbook/" version="2005-3" xml:lang="en-US">
+  <head>
+    <meta name="dtb:uid" content="2-3" />
+    <meta name="dt:version" content="2.1.1.0" />
+    <meta name="dc:Title" content="m 2-3" />
+    <meta name="dc:Creator" content="Balandin Vyacheslav" />
+    <meta name="dc:Date" content="2010-10-07" />
+    <meta name="dc:Publisher" content="Pruchkovskaya" />
+    <meta name="dc:Subject" content="m" />
+    <meta name="dc:Identifier" content="2-3" />
+    <meta name="dc:Language" content="en-US" />
+    <meta name="dc:Language" content="ru-RU" />
+    <meta name="dc:Language" content="en-GB" />
+  </head>
+  <book showin="blp">
+    <frontmatter>
+      <doctitle>m 2-3</doctitle>
+      <docauthor>Balandin Vyacheslav</docauthor>
+    </frontmatter>
+    <bodymatter id="bodymatter_0001">
+      <level1>
+        <h1>  Document name
+</h1>
+        <p xml:lang="ru-RU">Change history:</p>
+        <table border="1">
+          <tbody>
+            <tr>
+              <td>
+                <p xml:lang="ru-RU">Date</p>
+              </td>
+              <td>
+                <p xml:lang="ru-RU">Author</p>
+              </td>
+              <td>
+                <p xml:lang="ru-RU">Change / State</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p xml:lang="ru-RU">2009-01-01</p>
+              </td>
+              <td>
+                <p xml:lang="ru-RU">Last_name N.</p>
+              </td>
+              <td>
+                <p>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>
+                </p>
+              </td>
+              <td>
+                <p>
+                </p>
+              </td>
+              <td>
+                <p>
+                </p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+        </p>
+        <p>
+        </p>
+        <p />
+      </level1>
+      <level1>
+        <h1 xml:lang="ru-RU">1. Section 1
+</h1>
+        <level2>
+          <h2 xml:lang="ru-RU">1.1. Subsection 1.1
+</h2>
+          <p>
+          </p>
+          <p>Table</p>
+          <table border="1">
+            <tbody>
+              <tr>
+                <td>
+                  <p>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                  </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                  </p>
+                </td>
+                <td>
+                  <p>
+                  </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p>
+          </p>
+          <p>
+          </p>
+          <p />
+        </level2>
+        <p />
+      </level1>
+      <level1>
+        <h1 xml:lang="ru-RU">2. Section 2
+</h1>
+        <p>
+        </p>
+        <p>
+        </p>
+        <p>
+        </p>
+        <p>
+        </p>
+        <p>
+        </p>
+        <p />
+      </level1>
+      <level1>
+        <h1>  Basic testing of Content Cue
+</h1>
+        <p xml:lang="ru-RU">Change history:</p>
+        <table border="1">
+          <tbody>
+            <tr>
+              <td>
+                <p>2010-08-04</p>
+              </td>
+              <td>
+                <p>Pruchkovskaya T.</p>
+              </td>
+              <td>
+                <p>Created</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p />
+      </level1>
+      <level1>
+        <h1>1. Scope
+</h1>
+        <p>The testing has been made for Product Content Cue. Some bugs were reported to developers. Here there is summary of work.</p>
+        <p />
+      </level1>
+      <level1>
+        <h1>2. List of Testing Scenario
+</h1>
+        <p>List of description Testing Scenario</p>
+        <level2>
+          <h2>2.1. Testing functionality of each tab
+</h2>
+          <level3>
+            <h3>2.1.1. Setting Tab
+</h3>
+            <p />
+            <table border="1">
+              <col align="center" />
+              <tbody>
+                <tr>
+                  <td>
+                    <p>1</p>
+                  </td>
+                  <td>
+                    <p>Select or type the source of the documents                                     </p>
+                  </td>
+                  <td>
+                    <p>There are a lot of files and folders different types in definite directory</p>
+                  </td>
+                  <td>
+                    <p>Necessary to show path to document and choose button keep or (and) include</p>
+                  </td>
+                  <td>
+                    <p>User should be able to define if files from nested folder also should de available to be added into metadata file and to define if keeping folders hierarchy required. The application should first ask the user if they would like to do this. If the information is invalid, must be message about error</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>2</p>
+                  </td>
+                  <td>
+                    <p>The number of files found in the source and size of all files</p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>The Gui should highlight to the user the number of files found in the source and size of all size. If the document source is empty or does not contain any files to be uploaded, must be message - warning.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>3</p>
+                  </td>
+                  <td>
+                    <p>Select existing metadata file </p>
+                  </td>
+                  <td>
+                    <p>User have metadata file</p>
+                  </td>
+                  <td>
+                    <p>To select existing metadata file.</p>
+                  </td>
+                  <td>
+                    <p>User should be able to select existing metadata file after that the data on Metadata tab should be reloaded. If metadata file XML is invalid or file specified does not exist - message about error. If metadata XML file is not defined - message "warning".</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>4</p>
+                  </td>
+                  <td>
+                    <p>The log level (xml format)</p>
+                  </td>
+                  <td>
+                    <p>The button with levels - low, medium, high</p>
+                  </td>
+                  <td>
+                    <p>Choose level and press  a button</p>
+                  </td>
+                  <td>
+                    <p>User should to choose level</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>5</p>
+                  </td>
+                  <td>
+                    <p>Logon settings</p>
+                  </td>
+                  <td>
+                    <p>Not logged in</p>
+                  </td>
+                  <td>
+                    <p>To log in</p>
+                  </td>
+                  <td>
+                    <p>Should be a message - logged in as domain_name/user_name. If not specified the Content Cue tools assumes the current logged on user</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>6</p>
+                  </td>
+                  <td>
+                    <p>Sharepoint Destination Url, Document library and folder</p>
+                  </td>
+                  <td>
+                    <p>User had some library and folders</p>
+                  </td>
+                  <td>
+                    <p>To enter the Destination site URL and Document Library</p>
+                  </td>
+                  <td>
+                    <p>User should not enable to type the name of the library manually and be able to type the name of destination folder manually too. If the information is invalid, must be message about error</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>7</p>
+                  </td>
+                  <td>
+                    <p>Save changes into settings file</p>
+                  </td>
+                  <td>
+                    <p>User entered changes.</p>
+                  </td>
+                  <td>
+                    <p>The new settings file is being saved first time. The user tries to close the application. The user tries to launch upload. The user tries to open another settings file.</p>
+                  </td>
+                  <td>
+                    <p>The application should reminder the user to save changes (and provide with "Save file" dialog box if required)</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>8</p>
+                  </td>
+                  <td>
+                    <p>Open existing settings file</p>
+                  </td>
+                  <td>
+                    <p>User had existing settings file.</p>
+                  </td>
+                  <td>
+                    <p>Open existing settings file</p>
+                  </td>
+                  <td>
+                    <p>The application should validate the settings file format and show the error message in case the file format is not valid.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p />
+          </level3>
+          <level3>
+            <h3>2.1.2. Metadata Tab
+</h3>
+            <p />
+            <table border="1">
+              <col align="center" />
+              <tbody>
+                <tr>
+                  <td>
+                    <p>1</p>
+                  </td>
+                  <td>
+                    <p>The Mapping grid</p>
+                  </td>
+                  <td>
+                    <p>User had information in the mapping grid.</p>
+                  </td>
+                  <td>
+                    <p>To verify a mechanism to apply missing metadata.</p>
+                  </td>
+                  <td>
+                    <p>The Mapping grid should display documents from the source and provide a mechanism to apply missing metadata.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>2</p>
+                  </td>
+                  <td>
+                    <p>Impossible to apply metadata </p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>Where is not possible to apply metadata this files should be marked and moved to an "UploadFailed" folder as described in Functional requirements above.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>3</p>
+                  </td>
+                  <td>
+                    <p>No "MetadataMapping.xml"</p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>In the case that there is NO "MetadataMapping.xml" the default is existing properties such as DocumentTitle and Author.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>4</p>
+                  </td>
+                  <td>
+                    <p>Upload of manage file</p>
+                  </td>
+                  <td>
+                    <p>User had a manage file</p>
+                  </td>
+                  <td>
+                    <p>Select files to be added into metadata from selected source folder. Remove files from metadata.</p>
+                  </td>
+                  <td>
+                    <p>Manage files to be uploaded</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>5</p>
+                  </td>
+                  <td>
+                    <p>Manage mapped fields</p>
+                  </td>
+                  <td>
+                    <p>User had information in the mapping grid.</p>
+                  </td>
+                  <td>
+                    <p>To add a new mapping field. To remove the existing mapping field. To select the mapping field name from the pre-populated list.</p>
+                  </td>
+                  <td>
+                    <p>This function should be to work.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>6</p>
+                  </td>
+                  <td>
+                    <p>Import data from CSV file</p>
+                  </td>
+                  <td>
+                    <p>The application should validate the CSV file format.</p>
+                  </td>
+                  <td>
+                    <p>To press "import" in the main menu.</p>
+                  </td>
+                  <td>
+                    <p>This function should be to work. Show the error message in case the file format is not valid.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>7</p>
+                  </td>
+                  <td>
+                    <p>Clear metadata</p>
+                  </td>
+                  <td>
+                    <p>User had information in the mapping grid.</p>
+                  </td>
+                  <td>
+                    <p>To press "clear" in the main menu.</p>
+                  </td>
+                  <td>
+                    <p>The mapping grid should be empty.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>8</p>
+                  </td>
+                  <td>
+                    <p>Save metadata file</p>
+                  </td>
+                  <td>
+                    <p>User had metadata file.</p>
+                  </td>
+                  <td>
+                    <p>The new metadata file is being saved first time. The user tries to launch upload. The user tries to close the application. The user tries to launch upload. The user tries to open another settings file.</p>
+                  </td>
+                  <td>
+                    <p>The application should reminder the user to save changes (and provide with "Save file" dialog box if required)</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>9</p>
+                  </td>
+                  <td>
+                    <p>Metadata - unavailable status</p>
+                  </td>
+                  <td>
+                    <p>The Metadata consists of a field which is absent or is unavailable status</p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>If the Metadata consists of a field which is absent or is unavailable status in the designated document library - Read only field, invalid column should be highlighted red.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>10</p>
+                  </td>
+                  <td>
+                    <p>Document is absent </p>
+                  </td>
+                  <td>
+                    <p>Document is absent in the defined source folder</p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>Should be shown corresponding icon in the status column.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>11</p>
+                  </td>
+                  <td>
+                    <p>Document size &gt; 50MB</p>
+                  </td>
+                  <td>
+                    <p>Document size is greater than max allowed (50 MB)</p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>Should be shown corresponding icon in the status column.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>12</p>
+                  </td>
+                  <td>
+                    <p>Mandatory field is empty </p>
+                  </td>
+                  <td>
+                    <p>Mandatory field is empty </p>
+                  </td>
+                  <td>
+                    <p>-</p>
+                  </td>
+                  <td>
+                    <p>Should be shown corresponding icon in the status column, the empty cell should be highlighted red.</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    <p>13</p>
+                  </td>
+                  <td>
+                    <p>Upload documents</p>
+                  </td>
+                  <td>
+                    <p>User had a documents where the minimum metadata requirements</p>
+                  </td>
+                  <td>
+                    <p>To upload </p>
+                  </td>
+                  <td>
+                    <p>The screen should allow the user to upload documents where the minimum metadata requirements have been met. (ie: All mandatory fields are provided).</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p />
+          </level3>
+          <level3>
+            <h3>2.1.3. Log Tab
+</h3>
+            <p />
+            <table border="1">
+              <col align="center" />
+              <tbody>
+                <tr>
+                  <td>
+                    <p>1</p>
+                  </td>
+                  <td>
+                    <p>View application log file</p>
+                  </td>
+                  <td>
+                    <p>User had completed application</p>
+                  </td>
+                  <td>
+                    <p>User launches the application</p>
+                  </td>
+                  <td>
+                    <p>The application creates a new log file for every work session. The log file name should have the following format: Date_And_Time_Of_Application_Launching. The information within log file should be grouped by upload attempts. The log file should include the following information depending on defined logging level (low, medium, high).</p>
+                  </td>
+                  <td>
+                    <p>Functions </p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <p />
+          </level3>
+          <p />
+        </level2>
+        <level2>
+          <h2>2.2. Testing of Main menu
+</h2>
+          <p />
+          <table border="1">
+            <col align="center" />
+            <tbody>
+              <tr>
+                <td>
+                  <p>1</p>
+                </td>
+                <td>
+                  <p>[File]</p>
+                </td>
+                <td>
+                  <p>[New], [Open], [Save], [Save as], [Launch Upload], [Exit]</p>
+                </td>
+                <td>
+                  <p>All function should to perform</p>
+                </td>
+                <td>
+                  <p>Creates new setting file. Shows "Open file" dialog where user can select required settings file. Saves changes in currently open settings file. Launches upload process. Close the application.</p>
+                </td>
+                <td>
+                  <p>Functions </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>2</p>
+                </td>
+                <td>
+                  <p>[Metadata]</p>
+                </td>
+                <td>
+                  <p>[Import], [Add field], [Remove field], [Remove file], [Clear]</p>
+                </td>
+                <td>
+                  <p>All function should to perform</p>
+                </td>
+                <td>
+                  <p>Imports metadata from CSV file. Adds new mapping field column. Removes selected row with uploading file name. Clear metadata mapping.</p>
+                </td>
+                <td>
+                  <p>Functions </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>3</p>
+                </td>
+                <td>
+                  <p>[Help]</p>
+                </td>
+                <td>
+                  <p>[View help], [About ContentCue]</p>
+                </td>
+                <td>
+                  <p>All function should to perform</p>
+                </td>
+                <td>
+                  <p>Shows help system window (link to html.file). </p>
+                </td>
+                <td>
+                  <p>Functions </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>4</p>
+                </td>
+                <td>
+                  <p>Tabs Section</p>
+                </td>
+                <td>
+                  <p>[Settings], [Metadata], [Log]</p>
+                </td>
+                <td>
+                  <p>All function should to perform</p>
+                </td>
+                <td>
+                  <p>All function should to perform</p>
+                </td>
+                <td>
+                  <p>Functions </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>5</p>
+                </td>
+                <td>
+                  <p>Buttons Section</p>
+                </td>
+                <td>
+                  <p>[Save settings], [Upload]</p>
+                </td>
+                <td>
+                  <p>All function should to perform</p>
+                </td>
+                <td>
+                  <p>The "Save settings] button allows the user to save current configuration settings. The "Upload" button allows the user to upload to the destination.</p>
+                </td>
+                <td>
+                  <p>Functions </p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>6</p>
+                </td>
+                <td>
+                  <p>Status Bar</p>
+                </td>
+                <td>
+                  <p>-</p>
+                </td>
+                <td>
+                  <p>-</p>
+                </td>
+                <td>
+                  <p>The status bar should display full path to currently open settings file.</p>
+                </td>
+                <td>
+                  <p>Functions </p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p />
+        </level2>
+        <level2>
+          <h2>2.3. Verifying Function scenarios requirement according to specification
+</h2>
+          <p />
+          <table border="1">
+            <col align="center" />
+            <tbody>
+              <tr>
+                <td>
+                  <p>1. The tool will allow the user to select the source of the documents from a file share via the GUI.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>2. The tool will allow the user to map the file share source to a SharePoint document library via the GUI.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>3. The tool will allow the user to create a mapping XML file via the GUI on available metadata fields within a grid view (Schema Mapping Tab).</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>4. The tool should pick up existing document property mappings of the documents such as Title and Keywords where possible.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>5. The mapping should show which fields can be mapped and which fields can’t be mapped.<br />a. Ex: The document title field and document author should be populated.<br />b. Ex: The CSV file can be created beforehand in excel to populate the column names (By means of import functionality).</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>6. The tool will allow the user to save the current settings in XML format.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>7. The tool will allow the user to open a previous setting file and populate the settings.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>8. The tool should show progress for each upload.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>9. The tool should have configurable logging enabled – Low, Medium, High<br />a. Low = Writes to the log number of successful uploads and number of unsuccessful uploads with the names of the files.<br />b. Medium = Writes to the log number of successful uploads and number of unsuccessful uploads with the name of the files and the size of each file uploaded and if any schema errors are detected.                                                                                                     c. High = Writes to the log number of successful uploads and number of unsuccessful uploads with the name of the file and the size of each file uploaded and if any schema errors are detected and the error and which document failed with the schema error.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>10. The log file should be written to a folder in XML format.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>11. The tool will allow the user to upload multiple documents in batches via the GUI.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>12. The tool should continue uploading content when there are multiple upload errors and should write an error log on failed uploads.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>13. The tool should provide a view of the documents in the source folder and have the ability to select only a few documents for upload.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>14. The tool should allow the user to move the upload failure documents to a folder titled “Filed Upload”<br />a. Optionally the tool should move these files automatically to this folder or provide a mechanism to easily move the failed documents.</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>15. The tool should have the following structure when deployed: ~:\ indicates a drive such as C:\<br />a. ~:\ContentCue.exe (Main executable)<br />b. ~:\ContentCue.Config (Configuration file)<br />c. ~:\Configuration \(All supporting files for the programme)<br />d. ~\Logs\(All Log files)<br />e. ~\FailedUpload\ Upload_Date_And_Time\(All failed Conforms upload  files)<br />f. ~\Help\ (All help  files)</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p />
+        </level2>
+        <level2>
+          <h2>2.4. Verifying Non Function requirement according to specification
+</h2>
+          <p />
+          <table border="1">
+            <col align="center" />
+            <tbody>
+              <tr>
+                <td>
+                  <p>• The tool must work on x64 (64bit) platforms</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>• The tool should work with SharePoint 2007 and SharePoint 2010* including SharePoint Foundation</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>• The tool should not require any pre-requisite software other than .Net Framework 3.5 to be present for the tool to function</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>• The tool should upload all document (electronic) formats including images</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>• The tool should warn when a single document size exceeds 50MB in size and reject uploading and provide the user with a warning</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <p>• The current .csv Metadata mapping should be converted to XML format</p>
+                </td>
+                <td>
+                  <p>Conforms</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <p />
+        </level2>
+        <p />
+      </level1>
+      <level1>
+        <h1>3. Stress Tests
+</h1>
+        <p />
+        <table border="1">
+          <col align="center" />
+          <tbody>
+            <tr>
+              <td>
+                <p>Prepare library of 300 files for loading. They should be different types (user common types as .doc, .pdf, .jpg and so on. Prepare 10 files of different types with size greater than 50 MB.</p>
+              </td>
+              <td>
+                <p>The action of system conforms to specification</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p />
+      </level1>
+      <level1>
+        <h1>4. Smoke/Acceptance Test
+</h1>
+        <p />
+        <table border="1">
+          <col align="right" />
+          <tbody>
+            <tr>
+              <td>
+                <p>1</p>
+              </td>
+              <td>
+                <p>Select or type the source of the documents                                     </p>
+              </td>
+              <td>
+                <p>There are a lot of files and folders different types in definite directory</p>
+              </td>
+              <td>
+                <p>Necessary to show path to document and choose button keep or (and) include</p>
+              </td>
+              <td>
+                <p>User should be able to define if files from nested folder also should de available to be added into metadata file and to define if keeping folders hierarchy required. The application should first ask the user if they would like to do this. If the information is invalid, must be message about error</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>2</p>
+              </td>
+              <td>
+                <p>Logon settings</p>
+              </td>
+              <td>
+                <p>Not logged in</p>
+              </td>
+              <td>
+                <p>To log in</p>
+              </td>
+              <td>
+                <p>Should be a message - logged in as domain_name/user_name. If not specified the ContentCue tools assumes the current logged on user</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>3</p>
+              </td>
+              <td>
+                <p>SharePoint Destination Url, Document library and folder</p>
+              </td>
+              <td>
+                <p>User had some library and folders</p>
+              </td>
+              <td>
+                <p>To enter the Destination site URL and Document Library</p>
+              </td>
+              <td>
+                <p>User should not enable to type the name of the library manually and be able to type the name of destination folder manually too. If the information is invalid, must be message about error</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>4</p>
+              </td>
+              <td>
+                <p>Save changes into settings file</p>
+              </td>
+              <td>
+                <p>User entered changes.</p>
+              </td>
+              <td>
+                <p>The new settings file is being saved first time. The user tries to close the application. The user tries to launch upload. The user tries to open another settings file.</p>
+              </td>
+              <td>
+                <p>The application should reminder the user to save changes (and provide with "Save file" dialog box if required)</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>5</p>
+              </td>
+              <td>
+                <p>Open existing settings file</p>
+              </td>
+              <td>
+                <p>User had existing settings file.</p>
+              </td>
+              <td>
+                <p>Open existing settings file</p>
+              </td>
+              <td>
+                <p>The application should validate the settings file format and show the error message in case the file format is not valid.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>6</p>
+              </td>
+              <td>
+                <p>The Mapping grid</p>
+              </td>
+              <td>
+                <p>User had information in the mapping grid.</p>
+              </td>
+              <td>
+                <p>To verify a mechanism to apply missing metadata.</p>
+              </td>
+              <td>
+                <p>The Mapping grid should display documents from the source and provide a mechanism to apply missing metadata.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>7</p>
+              </td>
+              <td>
+                <p>Impossible to apply metadata </p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>Where is not possible to apply metadata this files should be marked and moved to an "UploadFailed" folder as described in Functional requirements above.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>8</p>
+              </td>
+              <td>
+                <p>No "MetadataMapping.xml"</p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>In the case that there is NO "MetadataMapping.xml" the default is existing properties such as DocumentTitle and Author.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>9</p>
+              </td>
+              <td>
+                <p>Manage mapped fields</p>
+              </td>
+              <td>
+                <p>User had information in the mapping grid.</p>
+              </td>
+              <td>
+                <p>To add a new mapping field. To remove the existing mapping field. To select the mapping field name from the pre-populated list.</p>
+              </td>
+              <td>
+                <p>This function should be to work.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>10</p>
+              </td>
+              <td>
+                <p>Clear metadata</p>
+              </td>
+              <td>
+                <p>User had information in the mapping grid.</p>
+              </td>
+              <td>
+                <p>To press "clear" in the main menu.</p>
+              </td>
+              <td>
+                <p>The mapping grid should be empty.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>11</p>
+              </td>
+              <td>
+                <p>Save metadata file</p>
+              </td>
+              <td>
+                <p>User had metadata file.</p>
+              </td>
+              <td>
+                <p>The new metadata file is being saved first time. The user tries to launch upload. The user tries to close the application. The user tries to launch upload. The user tries to open another settings file.</p>
+              </td>
+              <td>
+                <p>The application should reminder the user to save changes (and provide with "Save file" dialog box if required)</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>12</p>
+              </td>
+              <td>
+                <p>Save metadata file</p>
+              </td>
+              <td>
+                <p>User had metadata file.</p>
+              </td>
+              <td>
+                <p>The new metadata file is being saved first time. The user tries to launch upload. The user tries to close the application. The user tries to launch upload. The user tries to open another settings file.</p>
+              </td>
+              <td>
+                <p>The application should reminder the user to save changes (and provide with "Save file" dialog box if required)</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>13</p>
+              </td>
+              <td>
+                <p>Document is absent </p>
+              </td>
+              <td>
+                <p>Document is absent in the defined source folder</p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>Should be shown corresponding icon in the status column.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>14</p>
+              </td>
+              <td>
+                <p>Document size &gt; 50MB</p>
+              </td>
+              <td>
+                <p>Document size is greater than max allowed (50 MB)</p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>Should be shown corresponding icon in the status column.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>15</p>
+              </td>
+              <td>
+                <p>Mandatory field is empty </p>
+              </td>
+              <td>
+                <p>Mandatory field is empty </p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>Should be shown corresponding icon in the status column, the empty cell should be highlighted red.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>16</p>
+              </td>
+              <td>
+                <p>Upload documents</p>
+              </td>
+              <td>
+                <p>User had a documents where the minimum metadata requirements</p>
+              </td>
+              <td>
+                <p>To upload </p>
+              </td>
+              <td>
+                <p>The screen should allow the user to upload documents where the minimum metadata requirements have been met. (ie: All mandatory fields are provided).</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>17</p>
+              </td>
+              <td>
+                <p>View application log file</p>
+              </td>
+              <td>
+                <p>User had completed application</p>
+              </td>
+              <td>
+                <p>User launches the application</p>
+              </td>
+              <td>
+                <p>The application creates a new log file for every work session. The log file name should have the following format: Date_And_Time_Of_Application_Launching. The information within log file should be grouped by upload attempts. The log file should include the following information depending on defined logging level (low, medium, high).</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>18</p>
+              </td>
+              <td>
+                <p>[File]</p>
+              </td>
+              <td>
+                <p>[New], [Open], [Save], [Save as], [Launch Upload], [Exit]</p>
+              </td>
+              <td>
+                <p>All function should to perform</p>
+              </td>
+              <td>
+                <p>Creates new setting file. Shows "Open file" dialog where user can select required settings file. Saves changes in currently open settings file. Launches upload process. Close the application.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>19</p>
+              </td>
+              <td>
+                <p>[Metadata]</p>
+              </td>
+              <td>
+                <p>[Import], [Add field], [Remove field], [Remove file], [Clear]</p>
+              </td>
+              <td>
+                <p>All function should to perform</p>
+              </td>
+              <td>
+                <p>Imports metadata from CSV file. Adds new mapping field column. Removes selected row with uploading file name. Clear metadata mapping.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>20</p>
+              </td>
+              <td>
+                <p>[Help]</p>
+              </td>
+              <td>
+                <p>[View help], [About ContentCue]</p>
+              </td>
+              <td>
+                <p>All function should to perform</p>
+              </td>
+              <td>
+                <p>Shows help system window (link to html.file).</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>21</p>
+              </td>
+              <td>
+                <p>Tabs Section</p>
+              </td>
+              <td>
+                <p>[Settings], [Metadata], [Log]</p>
+              </td>
+              <td>
+                <p>All function should to perform</p>
+              </td>
+              <td>
+                <p>All function should to perform</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>22</p>
+              </td>
+              <td>
+                <p>Buttons Section</p>
+              </td>
+              <td>
+                <p>[Save settings], [Upload]</p>
+              </td>
+              <td>
+                <p>All function should to perform</p>
+              </td>
+              <td>
+                <p>The "Save settings] button allows the user to save current configuration settings. The "Upload" button allows the user to upload to the destination.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <p>23</p>
+              </td>
+              <td>
+                <p>Status Bar</p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>-</p>
+              </td>
+              <td>
+                <p>The status bar should display full path to currently open settings file.</p>
+              </td>
+              <td>
+                <p> Should  conform to specification</p>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <p />
+        <p />
+        <p />
+      </level1>
+      <level1>
+        <h1>5. Conclusion
+</h1>
+        <p />
+        <p xml:lang="en-GB">Consequently of testing a system was detected next mistakes: 1) the view of Main menu and Metadata are not correct; 2) the button ‘Save settings’ is not correct; 3) not message about hierarchy of folder; 4) not ‘warning’ in the Mapping grid when loaded files with size greater than 50 MB. All mistakes were removed. </p>
+        <p>The Product Content Cue is ready for construction QA-analysis.</p>
+        <p />
+        <p />
+        <p />
+        <p />
+      </level1>
+    </bodymatter>
+    <rearmatter>
+      <level1>
+        <p />
+      </level1>
+      <level1>
+        <p />
+      </level1>
+    </rearmatter>
+  </book>
+</dtbook>

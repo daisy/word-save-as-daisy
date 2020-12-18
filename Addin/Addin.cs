@@ -28,15 +28,15 @@
 
 using System;
 using System.Reflection;
-using Sonata.DaisyConverter.DaisyConverterLib;
-using Sonata.DaisyConverter.Word;
+using Daisy.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.Word;
 
-namespace Sonata.DaisyConverter.Word
+namespace Daisy.DaisyConverter.Word
 {
     public class Addin : DaisyAddinLib
     {
         public Addin()
-            : base(new Sonata.DaisyConverter.Word.Converter())
+            : base(new Daisy.DaisyConverter.Word.Converter())
         {
             this.OverrideResourceManager = new System.Resources.ResourceManager("Addin.resources.Labels", Assembly.GetExecutingAssembly());
         }

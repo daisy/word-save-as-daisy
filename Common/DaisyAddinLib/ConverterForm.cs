@@ -38,10 +38,10 @@ using System.Collections;
 using System.Windows.Forms;
 using System.ComponentModel;
 using System.Collections.Generic;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 using System.Reflection;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 
     public partial class ConverterForm : Form
@@ -325,7 +325,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
                 {
                     this.exception = e;
                     DialogResult = DialogResult.Abort;
-                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata\");
+                    string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\");
                     foreach (string file in files)
                     {
                         if (file.Contains(".jpg") || file.Contains(".JPG") || file.Contains(".PNG") || file.Contains(".png"))

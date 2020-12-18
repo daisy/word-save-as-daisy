@@ -35,9 +35,9 @@ using System.Reflection;
 using System.Collections;
 using System.IO.Packaging;
 using System.Windows.Forms;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	public partial class DesignForm : Form
 	{
@@ -55,6 +55,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		private string mInputPath;
 		private string mProjectDirectory;
 		private ScriptParser mParser;
+		private bool useAScript = false;
 		String strBrtextBox = "";
 		TableLayoutPanel oTableLayoutPannel = new TableLayoutPanel();
 
@@ -88,42 +89,28 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		public string OutputFilepath { get { return outputFilePath; } }
 
 		public string PipeOutput { get { return strBrtextBox; } }
+
 		/// <summary>
 		/// Constuctor which initializes all components of the Form
 		/// </summary>
-		/// <param name="inputFile">Input file to be Translated</param>
-		/// <param name="tempInputFile">Duplicate file for Input file</param>
-		/// <param name="resManager">Resource Manager</param>
-		/// <param name="officeVersion">Version for Office</param>
-		public DesignForm(OoxToDaisyParameters parameters, ResourceManager manager)
-		{
-			InitializeComponent();
-			btnID = parameters.ControlName;
-			inputFileName = parameters.InputFile;
-			tempInput = parameters.TempInputFile;
-			this.resManager = manager;
-			this.officeVersion = parameters.Version;
-			this.masterSubFlag = parameters.MasterSubFlag;
-		}
-
-		public DesignForm(OoxToDaisyParameters parameters, string projectDirectory, string scriptPath, ResourceManager manager)
-		{
-			InitializeComponent();
-			btnID = parameters.ControlName;
-			mInputPath = parameters.InputFile;
-			this.officeVersion = parameters.Version;
-			mProjectDirectory = projectDirectory;
-			tempInput = parameters.TempInputFile;
-			this.resManager = manager;
-			this.masterSubFlag = parameters.MasterSubFlag;
-			mParser = new ScriptParser(scriptPath);
-			FileInfo f = new FileInfo(scriptPath);
-			this.Text = f.Name.Replace(f.Extension, "");
-		}
-
-		public DesignForm(string scriptPath, string inputPath, string projectDirectory, string version, string control, string tempInputFile, ResourceManager manager, String masterSubFlag)
-		{
-			InitializeComponent();
+		/// <param name="scriptPath"></param>
+		/// <param name="inputPath"></param>
+		/// <param name="projectDirectory"></param>
+		/// <param name="version"></param>
+		/// <param name="control"></param>
+		/// <param name="tempInputFile"></param>
+		/// <param name="manager"></param>
+		/// <param name="masterSubFlag"></param>
+		public DesignForm(
+				string scriptPath,
+				string inputPath,
+				string projectDirectory,
+				string version,
+				string control,
+				string tempInputFile,
+				ResourceManager manager,
+				String masterSubFlag) {
+			
 			btnID = control;
 			mInputPath = inputPath;
 			this.officeVersion = version;
@@ -133,8 +120,58 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 			this.masterSubFlag = masterSubFlag;
 
 			mParser = new ScriptParser(scriptPath);
+			useAScript = true;
 			FileInfo f = new FileInfo(scriptPath);
-			this.Text = f.Name.Replace(f.Extension, "");
+			if (!AddInHelper.buttonIsSingleWordToXMLConversion(btnID))
+				this.Text = f.Name.Replace(f.Extension, "");
+
+			InitializeComponent();
+		}
+
+		/// <summary>
+		/// Default form for converting a word file to DTbook XML
+		/// </summary>
+		/// <param name="parameters"></param>
+		/// <param name="manager"></param>
+		public DesignForm(OoxToDaisyParameters parameters, ResourceManager manager) {
+			
+			btnID = parameters.ControlName;
+			inputFileName = parameters.InputFile;
+			tempInput = parameters.TempInputFile;
+			this.resManager = manager;
+			this.officeVersion = parameters.Version;
+			this.masterSubFlag = parameters.MasterSubFlag;
+
+			InitializeComponent();
+		}
+
+		/// <summary>
+		/// Form for converting a word to dtbook XML and apply a pipeline script afterward 
+		/// (post process or conversion to another format)
+		/// </summary>
+		/// <param name="parameters"></param>
+		/// <param name="projectDirectory"></param>
+		/// <param name="scriptPath"></param>
+		/// <param name="manager"></param>
+		public DesignForm(OoxToDaisyParameters parameters, string projectDirectory, string scriptPath, ResourceManager manager) {
+			
+			btnID = parameters.ControlName;
+			inputFileName = parameters.InputFile;
+			tempInput = parameters.TempInputFile;
+			this.resManager = manager;
+			this.officeVersion = parameters.Version;
+			this.masterSubFlag = parameters.MasterSubFlag;
+
+			mInputPath = parameters.InputFile;
+			mProjectDirectory = projectDirectory;
+			if (scriptPath != null && scriptPath.Length > 0) {
+				mParser = new ScriptParser(scriptPath);
+				useAScript = true;
+				FileInfo f = new FileInfo(scriptPath);
+				if (!AddInHelper.buttonIsSingleWordToXMLConversion(btnID))
+					this.Text = f.Name.Replace(f.Extension, "");
+			}
+			InitializeComponent();
 		}
 
 		/// <summary>
@@ -170,21 +207,21 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 
 		private bool IsTranslateToSingleDaisy
 		{
-			get { return AddInHelper.IsSingleDaisyButton(btnID) || !AddInHelper.IsPipelineExists(); }
+			get { return AddInHelper.buttonIsSingleWordToXMLConversion(btnID) || !AddInHelper.PipelineIsInstalled(); }
 		}
 
 		public void Translate()
 		{
-			bool isValidInputs = IsTranslateToSingleDaisy
+			bool isValidInputs = IsTranslateToSingleDaisy && !useAScript
 							? ValidateForSingleDaisyTranslate()
 							: ValidateForFullDaisyTranslate();
 
 			if (isValidInputs)
 			{
-				if (IsTranslateToSingleDaisy)
+				if (IsTranslateToSingleDaisy && !useAScript)
 					outputFilePath = tBx_Browse.Text;
 
-				UpdatePopulateOutputXml(IsTranslateToSingleDaisy ? outputFilePath : strBrtextBox);
+				UpdatePopulateOutputXml(IsTranslateToSingleDaisy && !useAScript ? outputFilePath : strBrtextBox);
 
 				myHt = BuildTranslationParameters();
 
@@ -198,7 +235,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		{
 			string fileName = Path.GetFileNameWithoutExtension(mInputPath);
 			string otpfileName = fileName + ".xml";
-			tBx_Browse.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata\";
+			tBx_Browse.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\";
 			if (tBx_Title.Text.TrimEnd() == "")
 			{
 				MessageBox.Show(resManager.GetString("Title"), resManager.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -486,7 +523,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 			tBx_Title.Text = xml.Title;
 			tBx_Publisher.Text = xml.Publisher;
 
-			if (IsTranslateToSingleDaisy)
+			if (IsTranslateToSingleDaisy && !useAScript)
 			{
 				PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
 
@@ -610,7 +647,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 			tBx_Publisher.Text = "";
 			tBx_Uid.Text = "";
 			int counter = 0;
-			if (AddInHelper.IsPipelineExists() && !AddInHelper.IsSingleDaisyButton(btnID))
+			if (AddInHelper.PipelineIsInstalled() && useAScript)
 			{
 				mLayoutPanel.Controls[0].Controls[0].Controls[1].Text = "";
 				foreach (Control c in oTableLayoutPannel.Controls)
@@ -665,7 +702,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 
 		private void btn_Cancel_Click(object sender, EventArgs e)
 		{
-			string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata\");
+			string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\");
 			foreach (string file in files)
 			{
 				if (file.Contains(".PNG") || file.Contains(".png"))

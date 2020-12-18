@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public class Pipeline
     {

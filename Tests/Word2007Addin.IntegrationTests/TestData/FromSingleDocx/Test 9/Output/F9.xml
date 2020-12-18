@@ -11,10 +11,10 @@
 <p>It was created for efficient analysis and opportune adjustment of the holding’s strategy portfolio.</p>
 <p></p>
 <p>AuReS allows to:</p>
-<list type="ul"><li><p xml:lang="en-GB">★  create and implement a development strategy for each company of the holding;</p>
-</li><li><p xml:lang="en-GB">★  coordinate the strategies at company level with the general holding’s development strategy;</p>
-</li><li><p>★  track the strategy execution;</p>
-</li><li><p xml:lang="en-GB">★  use the aggregated data for analysis and holding’s motivation policy formation.</p>
+<list type="ul"><li><p xml:lang="en-GB">create and implement a development strategy for each company of the holding;</p>
+</li><li><p xml:lang="en-GB">coordinate the strategies at company level with the general holding’s development strategy;</p>
+</li><li><p>track the strategy execution;</p>
+</li><li><p xml:lang="en-GB">use the aggregated data for analysis and holding’s motivation policy formation.</p>
 </li></list><p></p>
 <p>AuReS enabled the Customer to gather the latest data on every business unit and take necessary measures according to the changing conditions. Prompt access to precise information ensures timely risk prediction and avoidance. The system adoption resulted in considerable cost savings and optimization of holding management for the Customer.</p>
 <p></p>
@@ -27,7 +27,7 @@
 <p></p>
 <p>Each plan is subject to endorsement which undergoes several stages: registration of remarks, correction and approval. The list of the reviewers can be edited by the administrator. </p>
 <p></p>
-</level2><level2><h2>  System usability
+<p /></level2><level2><h2>  System usability
 </h2><p>Working with the system brings only positive feelings due to the attractive user interface, its thought-out logic and intuitive navigation. Data dynamics is reflected in graphic form: charts and diagrams. Pop-up windows with hints and explanations contribute to system digestibility and high performance. </p>
 <p></p>
 <p>AuReS is provided with a comprehensive support service including hot line, FAQ section, glossary, methodological assistance and operating help sections. So the user will never feel helpless. Numerous optional features are supported: text formatting, numerical value scaling, currency rate, etc. The system supports multicurrency calculation that is of great convenience for the international holding company. </p>
@@ -36,10 +36,10 @@
 <p></p>
 <p xml:lang="en-GB">Technical details<br /><strong /><br />DBMS: <strong>MySQL</strong><br />Programming language: <strong>Java</strong><br />Application server: <strong>Tomcat Application Server 6.0.2.0</strong><br /></p>
 <p>Technologies used:</p>
-<list type="ul"><li><p><strong>★  J2EE</strong> – component model application,</p>
-</li><li><p xml:lang="en-GB"><strong>★  Hibernate</strong> – access to the data base,</p>
-</li><li><p xml:lang="en-GB"><strong>★  JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
+<list type="ul"><li><p><strong>J2EE</strong> – component model application,</p>
+</li><li><p xml:lang="en-GB"><strong>Hibernate</strong> – access to the data base,</p>
+</li><li><p xml:lang="en-GB"><strong>JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
 </li></list><p></p>
 <p></p>
 <p></p>
-</level2></level1></bodymatter></book></dtbook>
+<p /></level2><p /></level1></bodymatter><rearmatter><level1><p /></level1></rearmatter></book></dtbook>

@@ -5,7 +5,7 @@ using System.IO.Packaging;
 using System.Reflection;
 using System.Windows.Forms;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
+namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 {
 	/// <summary>
 	/// Implementation of convertation.
@@ -144,12 +144,12 @@ namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
 					{
 						OnLostElements(string.Empty, outputfilepath, progress.LostElements);
 						flag = 1;
-						if (!AddInHelper.IsSingleDaisyFromMultipleButton(control))
+						if (!(AddInHelper.IsSingleDaisyFromMultipleButton(control) && ScriptToExecute == null))
 							continueDTBookGeneration = IsContinueDTBookGenerationOnLostElements();
 					}
 					else
 					{
-						if (AddInHelper.IsSingleDaisyFromMultipleButton(control))
+						if (AddInHelper.IsSingleDaisyFromMultipleButton(control) && ScriptToExecute == null)
 						{
 							OnSuccess();
 						}
@@ -199,7 +199,10 @@ namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
 					{
 						OnLostElements(string.Empty, outputfilepath + "\\1.xml", progress.LostElements);
 
-						if (AddInHelper.IsPipelineExists() && AddInHelper.IsSingleDaisyButton(control) && IsContinueDTBookGenerationOnLostElements())
+						if (AddInHelper.PipelineIsInstalled() && 
+								AddInHelper.buttonIsSingleWordToXMLConversion(control) && 
+								ScriptToExecute != null && 
+								IsContinueDTBookGenerationOnLostElements())
 						{
 							try
 							{
@@ -220,7 +223,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
 						}
 						else
 						{
-							if (AddInHelper.IsSingleDaisyTranslate(control))
+							if (AddInHelper.IsSingleDaisyTranslate(control) && ScriptToExecute == null)
 							{
 								OnSuccess();
 							}
@@ -259,21 +262,15 @@ namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
 						return ConvertResult.ValidationError(form.ValidationError);
 					}
 
-					if (form.HasLostElements)
-					{
+					if (form.HasLostElements) {
 						OnLostElements(inputFile, outputFile, form.LostElements);
 
-						if (!AddInHelper.IsSingleDaisyTranslate(control) && IsContinueDTBookGenerationOnLostElements())
-						{
+						if (!(AddInHelper.IsSingleDaisyTranslate(control) && this.ScriptToExecute == null) && IsContinueDTBookGenerationOnLostElements()) {
 							ExecuteScript(outputFile);
 						}
-					}
-					else if (AddInHelper.IsSingleDaisyTranslate(control))
-					{
+					} else if (AddInHelper.IsSingleDaisyTranslate(control) && this.ScriptToExecute == null) {
 						OnSuccess();
-					}
-					else
-					{
+					} else {
 						ExecuteScript(outputFile);
 					}
 				}
@@ -351,7 +348,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
 
 		private void DeleteTemporaryImages()
 		{
-			string[] files = Directory.GetFiles(AddInHelper.AppDataSonataDirectory);
+			string[] files = Directory.GetFiles(AddInHelper.AppDataSaveAsDAISYDirectory);
 			foreach (string file in files)
 			{
 				if (file.Contains(".jpg") || file.Contains(".JPG") || file.Contains(".PNG") || file.Contains(".png"))

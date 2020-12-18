@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
+namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 {
 	/// <summary>
 	/// Translation parameters builder.

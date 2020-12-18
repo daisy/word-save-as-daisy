@@ -4,9 +4,9 @@
 <table border="1"><tbody><tr><td ><p>2010-08-04</p>
 </td><td ><p>Pruchkovskaya T.</p>
 </td><td ><p>Created</p>
-</td></tr></tbody></table></level1><level1><h1>1. Scope
+</td></tr></tbody></table><p /></level1><level1><h1>1. Scope
 </h1><p>The testing has been made for Product Content Cue. Some bugs were reported to developers. Here there is summary of work.</p>
-</level1><level1><h1>2. List of Testing Scenario
+<p /></level1><level1><h1>2. List of Testing Scenario
 </h1><p>List of description Testing Scenario</p>
 <level2><h2>2.1. Testing functionality of each tab
 </h2><level3><h3>2.1.1. Setting Tab
@@ -59,7 +59,7 @@
 </td><td ><p>Open existing settings file</p>
 </td><td ><p>The application should validate the settings file format and show the error message in case the file format is not valid.</p>
 </td><td ><p>Functions </p>
-</td></tr></tbody></table></level3><level3><h3>2.1.2. Metadata Tab
+</td></tr></tbody></table><p /></level3><level3><h3>2.1.2. Metadata Tab
 </h3><p></p>
 <table border="1"><col align="center" /><tbody><tr><td ><p>1</p>
 </td><td ><p>The Mapping grid</p>
@@ -139,7 +139,7 @@
 </td><td ><p>To upload </p>
 </td><td ><p>The screen should allow the user to upload documents where the minimum metadata requirements have been met. (ie: All mandatory fields are provided).</p>
 </td><td ><p>Functions </p>
-</td></tr></tbody></table></level3><level3><h3>2.1.3. Log Tab
+</td></tr></tbody></table><p /></level3><level3><h3>2.1.3. Log Tab
 </h3><p></p>
 <table border="1"><col align="center" /><tbody><tr><td ><p>1</p>
 </td><td ><p>View application log file</p>
@@ -147,7 +147,7 @@
 </td><td ><p>User launches the application</p>
 </td><td ><p>The application creates a new log file for every work session. The log file name should have the following format: Date_And_Time_Of_Application_Launching. The information within log file should be grouped by upload attempts. The log file should include the following information depending on defined logging level (low, medium, high).</p>
 </td><td ><p>Functions </p>
-</td></tr></tbody></table></level3></level2><level2><h2>2.2. Testing of Main menu
+</td></tr></tbody></table><p /></level3><p /></level2><level2><h2>2.2. Testing of Main menu
 </h2><p></p>
 <table border="1"><col align="center" /><tbody><tr><td ><p>1</p>
 </td><td ><p>[File]</p>
@@ -185,7 +185,7 @@
 </td><td ><p>-</p>
 </td><td ><p>The status bar should display full path to currently open settings file.</p>
 </td><td ><p>Functions </p>
-</td></tr></tbody></table></level2><level2><h2>2.3. Verifying Function scenarios requirement according to specification
+</td></tr></tbody></table><p /></level2><level2><h2>2.3. Verifying Function scenarios requirement according to specification
 </h2><p></p>
 <table border="1"><col align="center" /><tbody><tr><td ><p>1. The tool will allow the user to select the source of the documents from a file share via the GUI.</p>
 </td><td ><p>Conforms</p>
@@ -217,7 +217,7 @@
 </td><td ><p>Conforms</p>
 </td></tr><tr><td ><p>15. The tool should have the following structure when deployed: ~:\ indicates a drive such as C:\<br />a. ~:\ContentCue.exe (Main executable)<br />b. ~:\ContentCue.Config (Configuration file)<br />c. ~:\Configuration \(All supporting files for the programme)<br />d. ~\Logs\(All Log files)<br />e. ~\FailedUpload\ Upload_Date_And_Time\(All failed Conforms upload  files)<br />f. ~\Help\ (All help  files)</p>
 </td><td ><p>Conforms</p>
-</td></tr></tbody></table></level2><level2><h2>2.4. Verifying Non Function requirement according to specification
+</td></tr></tbody></table><p /></level2><level2><h2>2.4. Verifying Non Function requirement according to specification
 </h2><p></p>
 <table border="1"><col align="center" /><tbody><tr><td ><p>• The tool must work on x64 (64bit) platforms</p>
 </td><td ><p>Conforms</p>
@@ -231,11 +231,11 @@
 </td><td ><p>Conforms</p>
 </td></tr><tr><td ><p>• The current .csv Metadata mapping should be converted to XML format</p>
 </td><td ><p>Conforms</p>
-</td></tr></tbody></table></level2></level1><level1><h1>3. Stress Tests
+</td></tr></tbody></table><p /></level2><p /></level1><level1><h1>3. Stress Tests
 </h1><p></p>
 <table border="1"><col align="center" /><tbody><tr><td ><p>Prepare library of 300 files for loading. They should be different types (user common types as .doc, .pdf, .jpg and so on. Prepare 10 files of different types with size greater than 50 MB.</p>
 </td><td ><p>The action of system conforms to specification</p>
-</td></tr></tbody></table></level1><level1><h1>4. Smoke/Acceptance Test
+</td></tr></tbody></table><p /></level1><level1><h1>4. Smoke/Acceptance Test
 </h1><p></p>
 <table border="1"><col align="right" /><tbody><tr><td ><p>1</p>
 </td><td ><p>Select or type the source of the documents                                     </p>
@@ -377,11 +377,11 @@
 </td><td ><p> Should  conform to specification</p>
 </td></tr></tbody></table><p></p>
 <p></p>
-</level1><level1><h1>5. Conclusion
+<p /></level1><level1><h1>5. Conclusion
 </h1><p></p>
 <p xml:lang="en-GB">Consequently of testing a system was detected next mistakes: 1) the view of Main menu and Metadata are not correct; 2) the button ‘Save settings’ is not correct; 3) not message about hierarchy of folder; 4) not ‘warning’ in the Mapping grid when loaded files with size greater than 50 MB. All mistakes were removed. </p>
 <p>The Product Content Cue is ready for construction QA-analysis.</p>
 <p></p>
 <p></p>
 <p></p>
-</level1></bodymatter></book></dtbook>
+<p /></level1></bodymatter><rearmatter><level1><p /></level1></rearmatter></book></dtbook>

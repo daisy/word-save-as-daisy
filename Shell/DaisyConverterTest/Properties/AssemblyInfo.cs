@@ -37,9 +37,9 @@ using System.Resources;
 [assembly: AssemblyTitle("Daisy Translator Command Line Tool")]
 [assembly: AssemblyDescription("Converts files from the command line.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sonata Software Limited")]
-[assembly: AssemblyProduct("Sonata.DaisyConverter.CommandLineTool.Properties")]
-[assembly: AssemblyCopyright("Copyright © Sonata Software Limited 2008")]
+[assembly: AssemblyCompany("The DAISY Consortium")]
+[assembly: AssemblyProduct("Daisy.DaisyConverter.CommandLineTool.Properties")]
+[assembly: AssemblyCopyright("Copyright © The DAISY Consortium 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,5 +1,5 @@
 ﻿using System.Collections;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 
 namespace DaisyWord2007AddIn
 {
@@ -15,12 +15,14 @@ namespace DaisyWord2007AddIn
 			//MultipleOwnMathMl = new Hashtable();
 		}
 
-		public static PreparetionResult Failed()
+		public static PreparetionResult Failed(string error)
 		{
-			return new PreparetionResult() { IsSuccess = false };
+			return new PreparetionResult() { IsSuccess = false, LastError = error };
 		}
 
 		public bool IsSuccess { get; set; }
+
+		public string LastError { get; set; }
 		public string DocxFilePath { get; set; }
 		public string DocFilePath { get; set; }
 		public Initialize InitializeWindow { get; set; }

@@ -32,8 +32,9 @@ using System.Collections;
 using System.Text;
 using System.Reflection;
 using System.Xml;
+using System.Windows.Forms;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	/// <summary>
 	/// An XmlUrlResolver for embedded resources.
@@ -113,6 +114,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
                 {
                     location = this.resourceLocation;
                 }
+
                 string resource = location + absoluteUri.OriginalString.Remove(0, ASSEMBLY_URI_SCHEME.Length + ASSEMBLY_URI_HOST.Length + 4).Replace("/", ".");
                 Stream stream = this.appAssembly.GetManifestResourceStream(this.appNamespace + resource);
                 if (stream != null)
@@ -123,15 +125,14 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
                 else
                 {
                     stream = this.defaultAssembly.GetManifestResourceStream(this.defaultNamespace+resource);
-                    if (stream != null)
-                    {
+                    if (stream != null) {
                         return stream;
-                    }
+                    } else throw new Exception("Internal error : could not find file " + resource + " - " + this.appNamespace + resource + " - " + this.defaultNamespace + resource);
                 }
             }
-          
-			// use default behaviour instead
-			return base.GetEntity(absoluteUri, role, ofObjectToReturn);
+
+            // use default behaviour instead
+            return base.GetEntity(absoluteUri, role, ofObjectToReturn);
 		}
 	
 		/*Function to get Data Stream of a file*/

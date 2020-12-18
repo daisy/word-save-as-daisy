@@ -33,19 +33,16 @@ using System.Xml.Schema;
 using System.Reflection;
 using System.Collections;
 using System.IO.Packaging;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 
-namespace Sonata.DaisyConverter.CommandLineTool
-{
+namespace Daisy.DaisyConverter.CommandLineTool {
     /// <summary>Exception thrown when the file is not valid</summary>
-    public class OoxValidatorException : Exception
-    {
+    public class OoxValidatorException : Exception {
         public OoxValidatorException(String msg) : base(msg) { }
     }
 
     /// <summary>Check the validity of a docx file. Throw an OoxValidatorException if errors occurs</summary>
-    public class OoxValidator
-    {
+    public class OoxValidator {
 
         // namespaces 
         private static string OOX_DOC_REL_NS = "http://schemas.openxmlformats.org/officeDocument/2006/relationships";
@@ -66,8 +63,7 @@ namespace Sonata.DaisyConverter.CommandLineTool
         /// <summary>
         /// Initialize the validator
         /// </summary>
-        public OoxValidator(Report report)
-        {
+        public OoxValidator(Report report) {
             this.settings = new XmlReaderSettings();
             this.report = report;
         }
@@ -77,28 +73,21 @@ namespace Sonata.DaisyConverter.CommandLineTool
         /// Check the validity of an Office Open XML file.
         /// </summary>
         /// <param name="fileName">The path of the docx file.</param>
-        public void validate(String fileName)
-        {
+        public void validate(String fileName) {
 
             // 0. The file must exist and be a valid Package
 
-            try
-            {
+            try {
                 reader = Package.Open(fileName);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 throw new OoxValidatorException("Problem opening the docx file : " + e.Message);
             }
 
             // 1. _rels/.rels must be present and valid
             Stream relationShips = null;
-            try
-            {
+            try {
                 relationShips = GetEntry(reader, OOX_RELATIONSHIP_FILE);
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 throw new OoxValidatorException("The docx package must have a \"/_rels/.rels\" file");
             }
             this.validateXml(relationShips);
@@ -107,35 +96,27 @@ namespace Sonata.DaisyConverter.CommandLineTool
             relationShips = GetEntry(reader, OOX_RELATIONSHIP_FILE);
             XmlReader r = XmlReader.Create(relationShips);
             String docTarget = null;
-            while (r.Read() && docTarget == null)
-            {
-                if (r.NodeType == XmlNodeType.Element && r.GetAttribute("Type") == OOX_DOCUMENT_RELATIONSHIP_TYPE)
-                {
+            while (r.Read() && docTarget == null) {
+                if (r.NodeType == XmlNodeType.Element && r.GetAttribute("Type") == OOX_DOCUMENT_RELATIONSHIP_TYPE) {
                     docTarget = r.GetAttribute("Target");
                 }
             }
-            if (docTarget == null)
-            {
+            if (docTarget == null) {
                 throw new OoxValidatorException(" document.xml relation not found in \"/_rels/.rels\"");
             }
 
             // 3. For each item in _rels/.rels
             relationShips = GetEntry(reader, OOX_RELATIONSHIP_FILE);
             r = XmlReader.Create(relationShips);
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element && r.LocalName == "Relationship")
-                {
+            while (r.Read()) {
+                if (r.NodeType == XmlNodeType.Element && r.LocalName == "Relationship") {
                     String target = r.GetAttribute("Target");
 
                     // 3.1. The target item must exist in the package
                     Stream item = null;
-                    try
-                    {
+                    try {
                         item = GetEntry(reader, target);
-                    }
-                    catch (Exception)
-                    {
+                    } catch (Exception) {
                         throw new OoxValidatorException("The file \"" + target + "\" is described in the \"/_rels/.rels\" file but does not exist in the package.");
                     }
 
@@ -144,8 +125,7 @@ namespace Sonata.DaisyConverter.CommandLineTool
 
 
                     //// 3.3. If it's an xml file, it has to be valid
-                    if (ct.EndsWith("+xml"))
-                    {
+                    if (ct.EndsWith("+xml")) {
                         this.validateXml(item);
                     }
                 }
@@ -156,17 +136,13 @@ namespace Sonata.DaisyConverter.CommandLineTool
             String partDir = docTarget.Substring(0, docTarget.LastIndexOf("/"));
             String partRelPath = partDir + "/_rels/" + docTarget.Substring(docTarget.LastIndexOf("/") + 1) + ".rels";
             bool partRelExists = true;
-            try
-            {
+            try {
                 partRel = GetEntry(reader, partRelPath);
-            }
-            catch (Exception)
-            {
+            } catch (Exception) {
                 partRelExists = false;
             }
 
-            if (partRelExists)
-            {
+            if (partRelExists) {
                 this.validateXml(partRel);
 
                 // 4. For each item in /word/_rels/document.xml.rels
@@ -174,57 +150,39 @@ namespace Sonata.DaisyConverter.CommandLineTool
                 r = XmlReader.Create(partRel);
                 target = null;
 
-                while (r.Read())
-                {
-                    if (r.NodeType == XmlNodeType.Element && r.LocalName == "Relationship")
-                    {
+                while (r.Read()) {
+                    if (r.NodeType == XmlNodeType.Element && r.LocalName == "Relationship") {
 
-                        if (r.GetAttribute("Type") == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml")
-                        {
+                        if (r.GetAttribute("Type") == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml") {
                             //target = r.GetAttribute("Target").Replace("../", "");
-                        }
-                        else if (r.GetAttribute("Type") == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink")
-                        {
+                        } else if (r.GetAttribute("Type") == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink") {
                             //target = r.GetAttribute("Target").Replace("../", "");
-                        }
-                        else if (r.GetAttribute("Type") == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" && r.GetAttribute("TargetMode") == "External")
-                        {
+                        } else if (r.GetAttribute("Type") == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image" && r.GetAttribute("TargetMode") == "External") {
                             //target = r.GetAttribute("Target").Replace("../", "");
-                        }
-                        else if (r.GetAttribute("Type") == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument" && r.GetAttribute("TargetMode") == "External")
-                        {
+                        } else if (r.GetAttribute("Type") == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument" && r.GetAttribute("TargetMode") == "External") {
                             //target = r.GetAttribute("Target").Replace("../", "");
-                        }
-                        else
-                        {
+                        } else {
                             target = partDir + "/" + r.GetAttribute("Target");
                         }
 
                         // Is the target item exist in the package ?
                         Stream item = null;
                         bool fileExists = true;
-                        try
-                        {
-                            if (target != null)
-                            {
+                        try {
+                            if (target != null) {
                                 item = GetEntry(reader, target);
-                            }
-                            else
+                            } else
                                 fileExists = false;
-                        }
-                        catch (Exception)
-                        {
+                        } catch (Exception) {
                             fileExists = false;
                         }
 
-                        if (fileExists)
-                        {
+                        if (fileExists) {
                             // 4.1. A content type can be found in [Content_Types].xml file
                             String ct = this.FindContentType(reader, "/" + target);
 
                             // 4.2. If it's an xml file, it has to be valid
-                            if (ct.EndsWith("+xml"))
-                            {
+                            if (ct.EndsWith("+xml")) {
                                 this.validateXml(item);
                             }
                         }
@@ -242,10 +200,8 @@ namespace Sonata.DaisyConverter.CommandLineTool
             r = XmlReader.Create(doc);
 
             ArrayList ids = new ArrayList();
-            while (r.Read())
-            {
-                if (r.NodeType == XmlNodeType.Element && r.GetAttribute("id", OOX_DOC_REL_NS) != null)
-                {
+            while (r.Read()) {
+                if (r.NodeType == XmlNodeType.Element && r.GetAttribute("id", OOX_DOC_REL_NS) != null) {
                     if (!ids.Contains(r.GetAttribute("id", OOX_DOC_REL_NS)))
                         ids.Add(r.GetAttribute("id", OOX_DOC_REL_NS));
                 }
@@ -253,26 +209,20 @@ namespace Sonata.DaisyConverter.CommandLineTool
 
             // check if each id exists in the partRel file
 
-            if (ids.Count != 0)
-            {
-                if (!partRelExists)
-                {
+            if (ids.Count != 0) {
+                if (!partRelExists) {
                     throw new OoxValidatorException("Referenced id exist but no part relationship file found");
                 }
                 relationShips = GetEntry(reader, partRelPath);
                 r = XmlReader.Create(relationShips);
-                while (r.Read())
-                {
-                    if (r.NodeType == XmlNodeType.Element && r.LocalName == "Relationship")
-                    {
-                        if (ids.Contains(r.GetAttribute("Id")))
-                        {
+                while (r.Read()) {
+                    if (r.NodeType == XmlNodeType.Element && r.LocalName == "Relationship") {
+                        if (ids.Contains(r.GetAttribute("Id"))) {
                             ids.Remove(r.GetAttribute("Id"));
                         }
                     }
                 }
-                if (ids.Count != 0)
-                {
+                if (ids.Count != 0) {
                     throw new OoxValidatorException("One or more relationship id have not been found in the partRelationship file : " + ids[0]);
                 }
             }
@@ -280,53 +230,42 @@ namespace Sonata.DaisyConverter.CommandLineTool
         }
 
         // validate xml stream
-        private void validateXml(Stream xmlStream)
-        {
+        private void validateXml(Stream xmlStream) {
             XmlReader r = XmlReader.Create(xmlStream, this.settings);
             while (r.Read()) ;
         }
 
         // find the content type of a part in the package
-        private String FindContentType(Package reader, String target)
-        {
+        private String FindContentType(Package reader, String target) {
             String extension = null;
             String contentType = null;
-            if (target.IndexOf(".") != -1)
-            {
+            if (target.IndexOf(".") != -1) {
                 extension = target.Substring(target.IndexOf(".") + 1);
             }
 
-            foreach (PackagePart searchRelation in reader.GetParts())
-            {
+            foreach (PackagePart searchRelation in reader.GetParts()) {
                 relationshipPart = searchRelation;
                 if (target == relationshipPart.Uri.ToString())
                     contentType = relationshipPart.ContentType.ToString();
 
             }
 
-            if (contentType == null)
-            {
+            if (contentType == null) {
                 throw new OoxValidatorException("Content type not found for " + target);
             }
             return contentType;
         }
 
-        public void ValidationHandler(object sender, ValidationEventArgs args)
-        {
+        public void ValidationHandler(object sender, ValidationEventArgs args) {
             throw new OoxValidatorException("XML Schema Validation error : " + args.Message);
         }
 
-        public Stream GetEntry(Package pack, String name)
-        {
-
-            foreach (PackagePart searchRelation in pack.GetParts())
-            {
+        public Stream GetEntry(Package pack, String name) {
+            foreach (PackagePart searchRelation in pack.GetParts()) {
                 String com = "/" + name;
                 relationshipPart = searchRelation;
-
                 if (com == relationshipPart.Uri.ToString())
                     str = relationshipPart.GetStream();
-
             }
             return str;
 

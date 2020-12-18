@@ -26,34 +26,34 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+using System;
+using System.IO;
+using System.Xml;
+using System.Collections;
+using Extensibility;
+using System.IO.Packaging;
+using System.Windows.Forms;
+using System.Collections.Generic;
+using Microsoft.Office.Core;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using MSword = Microsoft.Office.Interop.Word;
+using Sonata.DaisyConverter.DaisyConverterLib;
+using System.Drawing;
+using System.Drawing.Imaging;
+
+using Microsoft.Win32;
+using System.Text;
+using Word = Microsoft.Office.Interop.Word.InlineShape;
+using IConnectDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
+using ConnectFORMATETC = System.Runtime.InteropServices.ComTypes.FORMATETC;
+using ConnectSTGMEDIUM = System.Runtime.InteropServices.ComTypes.STGMEDIUM;
+using ConnectIEnumETC = System.Runtime.InteropServices.ComTypes.IEnumFORMATETC;
+using COMException = System.Runtime.InteropServices.COMException;
+using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
+
 namespace DaisyTranslatorWordXPAddin
 {
-    using System;
-    using System.IO;
-    using System.Xml;
-    using System.Collections;
-    using Extensibility;
-    using System.IO.Packaging;
-    using System.Windows.Forms;
-    using System.Collections.Generic;
-    using Microsoft.Office.Core;
-    using System.Reflection;
-    using System.Runtime.InteropServices;
-    using MSword = Microsoft.Office.Interop.Word;
-    using Sonata.DaisyConverter.DaisyConverterLib;
-    using System.Drawing;
-    using System.Drawing.Imaging;
-
-    using Microsoft.Win32;
-    using System.Text;
-    using Word = Microsoft.Office.Interop.Word.InlineShape;
-    using IConnectDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
-    using ConnectFORMATETC = System.Runtime.InteropServices.ComTypes.FORMATETC;
-    using ConnectSTGMEDIUM = System.Runtime.InteropServices.ComTypes.STGMEDIUM;
-    using ConnectIEnumETC = System.Runtime.InteropServices.ComTypes.IEnumFORMATETC;
-    using COMException = System.Runtime.InteropServices.COMException;
-    using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
-
     #region Read me for Add-in installation and setup information.
     // When run, the Add-in wizard prepared the registry for the Add-in.
     // At a later time, if the Add-in becomes unavailable for reasons such as:

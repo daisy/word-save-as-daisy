@@ -39,11 +39,13 @@
             </tr>
           </tbody>
         </table>
+        <p />
       </level1>
       <level1>
         <h1>1. Scope
 </h1>
         <p>The testing has been made for Product Content Cue. Some bugs were reported to developers. Here there is summary of work.</p>
+        <p />
       </level1>
       <level1>
         <h1>2. List of Testing Scenario
@@ -222,6 +224,7 @@
                 </tr>
               </tbody>
             </table>
+            <p />
           </level3>
           <level3>
             <h3>2.1.2. Metadata Tab
@@ -493,6 +496,7 @@
                 </tr>
               </tbody>
             </table>
+            <p />
           </level3>
           <level3>
             <h3>2.1.3. Log Tab
@@ -524,7 +528,9 @@
                 </tr>
               </tbody>
             </table>
+            <p />
           </level3>
+          <p />
         </level2>
         <level2>
           <h2>2.2. Testing of Main menu
@@ -656,6 +662,7 @@
               </tr>
             </tbody>
           </table>
+          <p />
         </level2>
         <level2>
           <h2>2.3. Verifying Function scenarios requirement according to specification
@@ -787,6 +794,7 @@
               </tr>
             </tbody>
           </table>
+          <p />
         </level2>
         <level2>
           <h2>2.4. Verifying Non Function requirement according to specification
@@ -846,7 +854,9 @@
               </tr>
             </tbody>
           </table>
+          <p />
         </level2>
+        <p />
       </level1>
       <level1>
         <h1>3. Stress Tests
@@ -866,6 +876,7 @@
             </tr>
           </tbody>
         </table>
+        <p />
       </level1>
       <level1>
         <h1>4. Smoke/Acceptance Test
@@ -1341,6 +1352,7 @@
         </p>
         <p>
         </p>
+        <p />
       </level1>
       <level1>
         <h1>5. Conclusion
@@ -1355,6 +1367,7 @@
         </p>
         <p>
         </p>
+        <p />
       </level1>
       <level1>
         <p xml:lang="en-US">
@@ -1459,7 +1472,8 @@
                   </li>
                   <li>
                     <p xml:lang="ru-RU">
-                      <a href="http://en.wikipedia.org/wiki/Blood#Constituents_of_human_blood" external="true">2 Constituents of human blood</a>★   </p>
+                      <a href="http://en.wikipedia.org/wiki/Blood#Constituents_of_human_blood" external="true">2 Constituents of human blood</a>
+                    </p>
                     <list type="ul">
                       <li>
                         <p>
@@ -1485,7 +1499,8 @@
                   </li>
                   <li>
                     <p xml:lang="ru-RU">
-                      <a href="http://en.wikipedia.org/wiki/Blood#Physiology" external="true">3 Physiology</a>★   </p>
+                      <a href="http://en.wikipedia.org/wiki/Blood#Physiology" external="true">3 Physiology</a>
+                    </p>
                     <list type="ul">
                       <li>
                         <p>
@@ -1536,7 +1551,8 @@
                   </li>
                   <li>
                     <p xml:lang="ru-RU">
-                      <a href="http://en.wikipedia.org/wiki/Blood#Color" external="true">4 Color</a>★   </p>
+                      <a href="http://en.wikipedia.org/wiki/Blood#Color" external="true">4 Color</a>
+                    </p>
                     <list type="ul">
                       <li>
                         <p>
@@ -1552,7 +1568,8 @@
                   </li>
                   <li>
                     <p xml:lang="ru-RU">
-                      <a href="http://en.wikipedia.org/wiki/Blood#Pathology" external="true">5 Pathology</a>★   </p>
+                      <a href="http://en.wikipedia.org/wiki/Blood#Pathology" external="true">5 Pathology</a>
+                    </p>
                     <list type="ul">
                       <li>
                         <p>
@@ -1573,7 +1590,8 @@
                   </li>
                   <li>
                     <p xml:lang="ru-RU">
-                      <a href="http://en.wikipedia.org/wiki/Blood#Medical_treatments" external="true">6 Medical treatments</a>★   </p>
+                      <a href="http://en.wikipedia.org/wiki/Blood#Medical_treatments" external="true">6 Medical treatments</a>
+                    </p>
                     <list type="ul">
                       <li>
                         <p>
@@ -1594,7 +1612,8 @@
                   </li>
                   <li>
                     <p xml:lang="ru-RU">
-                      <a href="http://en.wikipedia.org/wiki/Blood#History" external="true">7 History</a>★   </p>
+                      <a href="http://en.wikipedia.org/wiki/Blood#History" external="true">7 History</a>
+                    </p>
                     <list type="ul">
                       <li>
                         <p>
@@ -1610,7 +1629,8 @@
                   </li>
                   <li>
                     <p xml:lang="ru-RU">
-                      <a href="http://en.wikipedia.org/wiki/Blood#Cultural_and_religious_beliefs" external="true">8 Cultural and religious beliefs</a>★   </p>
+                      <a href="http://en.wikipedia.org/wiki/Blood#Cultural_and_religious_beliefs" external="true">8 Cultural and religious beliefs</a>
+                    </p>
                     <list type="ul">
                       <li>
                         <p>
@@ -1661,7 +1681,8 @@
                   </li>
                   <li>
                     <p xml:lang="ru-RU">
-                      <a href="http://en.wikipedia.org/wiki/Blood#Applications" external="true">9 Applications</a>★   </p>
+                      <a href="http://en.wikipedia.org/wiki/Blood#Applications" external="true">9 Applications</a>
+                    </p>
                     <list type="ul">
                       <li>
                         <p>
@@ -1732,33 +1753,33 @@
         <p xml:lang="en-US">Blood performs many important functions within the body including:</p>
         <list type="ul">
           <li>
-            <p xml:lang="en-US">★  Supply of <a href="http://en.wikipedia.org/wiki/Oxygen" external="true">oxygen</a> to tissues (bound to <a href="http://en.wikipedia.org/wiki/Hemoglobin" external="true">hemoglobin</a>, which is carried in red cells)</p>
+            <p xml:lang="en-US">Supply of <a href="http://en.wikipedia.org/wiki/Oxygen" external="true">oxygen</a> to tissues (bound to <a href="http://en.wikipedia.org/wiki/Hemoglobin" external="true">hemoglobin</a>, which is carried in red cells)</p>
           </li>
           <li>
-            <p xml:lang="en-US">★  Supply of nutrients such as <a href="http://en.wikipedia.org/wiki/Glucose" external="true">glucose</a>, <a href="http://en.wikipedia.org/wiki/Amino_acids" external="true">amino acids</a>, and <a href="http://en.wikipedia.org/wiki/Fatty_acids" external="true">fatty acids</a> (dissolved in the blood or bound to <a href="http://en.wikipedia.org/wiki/Blood_proteins" external="true">plasma proteins</a> (e.g., <a href="http://en.wikipedia.org/wiki/Blood_lipid" external="true">blood lipids</a>)</p>
+            <p xml:lang="en-US">Supply of nutrients such as <a href="http://en.wikipedia.org/wiki/Glucose" external="true">glucose</a>, <a href="http://en.wikipedia.org/wiki/Amino_acids" external="true">amino acids</a>, and <a href="http://en.wikipedia.org/wiki/Fatty_acids" external="true">fatty acids</a> (dissolved in the blood or bound to <a href="http://en.wikipedia.org/wiki/Blood_proteins" external="true">plasma proteins</a> (e.g., <a href="http://en.wikipedia.org/wiki/Blood_lipid" external="true">blood lipids</a>)</p>
           </li>
           <li>
-            <p xml:lang="en-US">★  Removal of waste such as <a href="http://en.wikipedia.org/wiki/Carbon_dioxide" external="true">carbon dioxide</a>, <a href="http://en.wikipedia.org/wiki/Urea" external="true">urea</a>, and <a href="http://en.wikipedia.org/wiki/Lactic_acid" external="true">lactic acid</a></p>
+            <p xml:lang="en-US">Removal of waste such as <a href="http://en.wikipedia.org/wiki/Carbon_dioxide" external="true">carbon dioxide</a>, <a href="http://en.wikipedia.org/wiki/Urea" external="true">urea</a>, and <a href="http://en.wikipedia.org/wiki/Lactic_acid" external="true">lactic acid</a></p>
           </li>
           <li>
-            <p xml:lang="en-US">★  Immunological functions, including circulation of <a href="http://en.wikipedia.org/wiki/White_blood_cells" external="true">white blood cells</a>, and detection of foreign material by <a href="http://en.wikipedia.org/wiki/Antibodies" external="true">antibodies</a></p>
+            <p xml:lang="en-US">Immunological functions, including circulation of <a href="http://en.wikipedia.org/wiki/White_blood_cells" external="true">white blood cells</a>, and detection of foreign material by <a href="http://en.wikipedia.org/wiki/Antibodies" external="true">antibodies</a></p>
           </li>
           <li>
             <p xml:lang="en-US">
-              <a href="http://en.wikipedia.org/wiki/Coagulation" external="true">Coagulation</a>★  , which is one part of the body's self-repair mechanism (the act of blood clotting when one gets cut to stop the bleeding.)</p>
+              <a href="http://en.wikipedia.org/wiki/Coagulation" external="true">Coagulation</a>, which is one part of the body's self-repair mechanism (the act of blood clotting when one gets cut to stop the bleeding.)</p>
           </li>
           <li>
-            <p xml:lang="en-US">★  Messenger functions, including the transport of <a href="http://en.wikipedia.org/wiki/Hormones" external="true">hormones</a> and the signaling of <a href="http://en.wikipedia.org/wiki/Tissue_(biology)" external="true">tissue</a> damage</p>
+            <p xml:lang="en-US">Messenger functions, including the transport of <a href="http://en.wikipedia.org/wiki/Hormones" external="true">hormones</a> and the signaling of <a href="http://en.wikipedia.org/wiki/Tissue_(biology)" external="true">tissue</a> damage</p>
           </li>
           <li>
-            <p xml:lang="ru-RU">★  Regulation of body <a href="http://en.wikipedia.org/wiki/PH" external="true">pH</a></p>
+            <p xml:lang="ru-RU">Regulation of body <a href="http://en.wikipedia.org/wiki/PH" external="true">pH</a></p>
           </li>
           <li>
-            <p xml:lang="ru-RU">★  Regulation of core <a href="http://en.wikipedia.org/wiki/Body_temperature" external="true">body temperature</a></p>
+            <p xml:lang="ru-RU">Regulation of core <a href="http://en.wikipedia.org/wiki/Body_temperature" external="true">body temperature</a></p>
           </li>
           <li>
             <p xml:lang="ru-RU">
-              <a href="http://en.wikipedia.org/wiki/Hydraulics" external="true">Hydraulic</a>★   functions</p>
+              <a href="http://en.wikipedia.org/wiki/Hydraulics" external="true">Hydraulic</a> functions</p>
           </li>
         </list>
         <p xml:lang="ru-RU">
@@ -1804,7 +1825,7 @@
         <list type="ul">
           <li>
             <p xml:lang="en-US">
-              <strong>★  4.7 to 6.1 million (male), 4.2 to 5.4 million (female) </strong>
+              <strong>4.7 to 6.1 million (male), 4.2 to 5.4 million (female) </strong>
               <a href="http://en.wikipedia.org/wiki/Erythrocyte" external="true">
                 <strong>erythrocytes</strong>
               </a>
@@ -1815,7 +1836,7 @@
           </li>
           <li>
             <p xml:lang="en-US">
-              <strong>★  4,000–11,000 </strong>
+              <strong>4,000–11,000 </strong>
               <a href="http://en.wikipedia.org/wiki/Leukocyte" external="true">
                 <strong>leukocytes</strong>
               </a>
@@ -1826,7 +1847,7 @@
           </li>
           <li>
             <p xml:lang="en-US">
-              <strong>★  200,000–500,000 thrombocytes:</strong>
+              <strong>200,000–500,000 thrombocytes:</strong>
               <a href="http://en.wikipedia.org/wiki/Blood#cite_note-Ganong_WF-6" external="true">
                 <sup>[7]</sup>
               </a>
@@ -1935,21 +1956,21 @@
             </p>
           </li>
           <li>
-            <p xml:lang="en-US">★  Blood-clotting factors (to facilitate <a href="http://en.wikipedia.org/wiki/Coagulation" external="true">coagulation</a>)</p>
+            <p xml:lang="en-US">Blood-clotting factors (to facilitate <a href="http://en.wikipedia.org/wiki/Coagulation" external="true">coagulation</a>)</p>
           </li>
           <li>
             <p xml:lang="ru-RU">
-              <a href="http://en.wikipedia.org/wiki/Immunoglobulins" external="true">Immunoglobulins</a>★   (antibodies)</p>
+              <a href="http://en.wikipedia.org/wiki/Immunoglobulins" external="true">Immunoglobulins</a> (antibodies)</p>
           </li>
           <li>
             <p xml:lang="ru-RU">
-              <a href="http://en.wikipedia.org/wiki/Lipoprotein" external="true">lipoprotein</a>★   particles</p>
+              <a href="http://en.wikipedia.org/wiki/Lipoprotein" external="true">lipoprotein</a> particles</p>
           </li>
           <li>
-            <p xml:lang="ru-RU">★  Various other <a href="http://en.wikipedia.org/wiki/Protein" external="true">proteins</a></p>
+            <p xml:lang="ru-RU">Various other <a href="http://en.wikipedia.org/wiki/Protein" external="true">proteins</a></p>
           </li>
           <li>
-            <p xml:lang="en-US">★  Various <a href="http://en.wikipedia.org/wiki/Electrolyte" external="true">electrolytes</a> (mainly <a href="http://en.wikipedia.org/wiki/Sodium" external="true">sodium</a> and <a href="http://en.wikipedia.org/wiki/Chloride" external="true">chloride</a>)</p>
+            <p xml:lang="en-US">Various <a href="http://en.wikipedia.org/wiki/Electrolyte" external="true">electrolytes</a> (mainly <a href="http://en.wikipedia.org/wiki/Sodium" external="true">sodium</a> and <a href="http://en.wikipedia.org/wiki/Chloride" external="true">chloride</a>)</p>
           </li>
         </list>
         <p xml:lang="en-US">The term <strong>serum</strong> refers to plasma from which the clotting proteins have been removed. Most of the proteins remaining are albumin and <a href="http://en.wikipedia.org/wiki/Antibody" external="true">immunoglobulins</a>.</p>
@@ -1978,13 +1999,13 @@
         <p xml:lang="en-US">Human blood is typical of that of mammals, although the precise details concerning cell numbers, size, <a href="http://en.wikipedia.org/wiki/Protein_structure" external="true">protein structure</a>, and so on, vary somewhat between species. In non-mammalian vertebrates, however, there are some key differences:<a href="http://en.wikipedia.org/wiki/Blood#cite_note-VB-10" external="true"><sup>[11]</sup></a></p>
         <list type="ul">
           <li>
-            <p xml:lang="en-US">★  Red blood cells of non-mammalian vertebrates are flattened and ovoid in form, and retain their cell nuclei</p>
+            <p xml:lang="en-US">Red blood cells of non-mammalian vertebrates are flattened and ovoid in form, and retain their cell nuclei</p>
           </li>
           <li>
-            <p xml:lang="en-US">★  There is considerable variation in the types and proportions of white blood cells; for example, acidophils are generally more common than in humans</p>
+            <p xml:lang="en-US">There is considerable variation in the types and proportions of white blood cells; for example, acidophils are generally more common than in humans</p>
           </li>
           <li>
-            <p xml:lang="en-US">★  Platelets are unique to mammals; in other vertebrates, small, nucleated, spindle cells are responsible for blood clotting instead</p>
+            <p xml:lang="en-US">Platelets are unique to mammals; in other vertebrates, small, nucleated, spindle cells are responsible for blood clotting instead</p>
           </li>
         </list>
         <p xml:lang="ru-RU">
@@ -2177,33 +2198,33 @@
         </p>
         <list type="ul">
           <li>
-            <p xml:lang="ru-RU">★  Disorders of volume </p>
+            <p xml:lang="ru-RU">Disorders of volume </p>
             <list type="ul">
               <li>
                 <p xml:lang="en-US">
-                  <a href="http://en.wikipedia.org/wiki/Injury" external="true">Injury</a>▶   can cause blood loss through <a href="http://en.wikipedia.org/wiki/Bleeding" external="true">bleeding</a>.<a href="http://en.wikipedia.org/wiki/Blood#cite_note-25" external="true"><sup>[26]</sup></a> A healthy adult can lose almost 20% of blood volume (1 L) before the first symptom, restlessness, begins, and 40% of volume (2 L) before <a href="http://en.wikipedia.org/wiki/Shock_(circulatory)" external="true">shock</a> sets in. <a href="http://en.wikipedia.org/wiki/Thrombocyte" external="true">Thrombocytes</a> are important for blood <a href="http://en.wikipedia.org/wiki/Coagulation" external="true">coagulation</a> and the formation of blood clots, which can stop bleeding. Trauma to the internal organs or bones can cause <a href="http://en.wikipedia.org/wiki/Internal_bleeding" external="true">internal bleeding</a>, which can sometimes be severe.</p>
+                  <a href="http://en.wikipedia.org/wiki/Injury" external="true">Injury</a> can cause blood loss through <a href="http://en.wikipedia.org/wiki/Bleeding" external="true">bleeding</a>.<a href="http://en.wikipedia.org/wiki/Blood#cite_note-25" external="true"><sup>[26]</sup></a> A healthy adult can lose almost 20% of blood volume (1 L) before the first symptom, restlessness, begins, and 40% of volume (2 L) before <a href="http://en.wikipedia.org/wiki/Shock_(circulatory)" external="true">shock</a> sets in. <a href="http://en.wikipedia.org/wiki/Thrombocyte" external="true">Thrombocytes</a> are important for blood <a href="http://en.wikipedia.org/wiki/Coagulation" external="true">coagulation</a> and the formation of blood clots, which can stop bleeding. Trauma to the internal organs or bones can cause <a href="http://en.wikipedia.org/wiki/Internal_bleeding" external="true">internal bleeding</a>, which can sometimes be severe.</p>
               </li>
               <li>
                 <p xml:lang="en-US">
-                  <a href="http://en.wikipedia.org/wiki/Dehydration" external="true">Dehydration</a>▶   can reduce the blood volume by reducing the water content of the blood. This would rarely result in <a href="http://en.wikipedia.org/wiki/Shock_(circulatory)" external="true">shock</a> (apart from the very severe cases) but may result in <a href="http://en.wikipedia.org/wiki/Orthostatic_hypotension" external="true">orthostatic hypotension</a> and <a href="http://en.wikipedia.org/wiki/Fainting" external="true">fainting</a>.</p>
+                  <a href="http://en.wikipedia.org/wiki/Dehydration" external="true">Dehydration</a> can reduce the blood volume by reducing the water content of the blood. This would rarely result in <a href="http://en.wikipedia.org/wiki/Shock_(circulatory)" external="true">shock</a> (apart from the very severe cases) but may result in <a href="http://en.wikipedia.org/wiki/Orthostatic_hypotension" external="true">orthostatic hypotension</a> and <a href="http://en.wikipedia.org/wiki/Fainting" external="true">fainting</a>.</p>
               </li>
             </list>
           </li>
           <li>
-            <p xml:lang="ru-RU">★  Disorders of circulation </p>
+            <p xml:lang="ru-RU">Disorders of circulation </p>
             <list type="ul">
               <li>
-                <p xml:lang="en-US">▶  Shock is the ineffective <a href="http://en.wikipedia.org/wiki/Perfusion" external="true">perfusion</a> of tissues, and can be caused by a variety of conditions including blood loss, <a href="http://en.wikipedia.org/wiki/Infection" external="true">infection</a>, poor <a href="http://en.wikipedia.org/wiki/Cardiac_output" external="true">cardiac output</a>.</p>
+                <p xml:lang="en-US">Shock is the ineffective <a href="http://en.wikipedia.org/wiki/Perfusion" external="true">perfusion</a> of tissues, and can be caused by a variety of conditions including blood loss, <a href="http://en.wikipedia.org/wiki/Infection" external="true">infection</a>, poor <a href="http://en.wikipedia.org/wiki/Cardiac_output" external="true">cardiac output</a>.</p>
               </li>
               <li>
                 <p xml:lang="en-US">
-                  <a href="http://en.wikipedia.org/wiki/Atherosclerosis" external="true">Atherosclerosis</a>▶   reduces the flow of blood through arteries, because atheroma lines arteries and narrows them. Atheroma tends to increase with age, and its progression can be compounded by many causes including smoking, <a href="http://en.wikipedia.org/wiki/Hypertension" external="true">high blood pressure</a>, excess circulating lipids (<a href="http://en.wikipedia.org/wiki/Hyperlipidemia" external="true">hyperlipidemia</a>), and <a href="http://en.wikipedia.org/wiki/Diabetes_mellitus" external="true">diabetes mellitus</a>.</p>
+                  <a href="http://en.wikipedia.org/wiki/Atherosclerosis" external="true">Atherosclerosis</a> reduces the flow of blood through arteries, because atheroma lines arteries and narrows them. Atheroma tends to increase with age, and its progression can be compounded by many causes including smoking, <a href="http://en.wikipedia.org/wiki/Hypertension" external="true">high blood pressure</a>, excess circulating lipids (<a href="http://en.wikipedia.org/wiki/Hyperlipidemia" external="true">hyperlipidemia</a>), and <a href="http://en.wikipedia.org/wiki/Diabetes_mellitus" external="true">diabetes mellitus</a>.</p>
               </li>
               <li>
-                <p xml:lang="en-US">▶  Coagulation can form a <a href="http://en.wikipedia.org/wiki/Thrombosis" external="true">thrombosis</a>, which can obstruct vessels.</p>
+                <p xml:lang="en-US">Coagulation can form a <a href="http://en.wikipedia.org/wiki/Thrombosis" external="true">thrombosis</a>, which can obstruct vessels.</p>
               </li>
               <li>
-                <p xml:lang="en-US">▶  Problems with blood composition, the pumping action of the heart, or narrowing of blood vessels can have many consequences including hypoxia (lack of oxygen) of the tissues supplied. The term <em>ischemia</em> refers to tissue that is inadequately perfused with blood, and <em>infarction</em> refers to tissue death (<a href="http://en.wikipedia.org/wiki/Necrosis" external="true">necrosis</a>), which can occur when the blood supply has been blocked (or is very inadequate).</p>
+                <p xml:lang="en-US">Problems with blood composition, the pumping action of the heart, or narrowing of blood vessels can have many consequences including hypoxia (lack of oxygen) of the tissues supplied. The term <em>ischemia</em> refers to tissue that is inadequately perfused with blood, and <em>infarction</em> refers to tissue death (<a href="http://en.wikipedia.org/wiki/Necrosis" external="true">necrosis</a>), which can occur when the blood supply has been blocked (or is very inadequate).</p>
               </li>
             </list>
           </li>
@@ -2223,10 +2244,10 @@
         </p>
         <list type="ul">
           <li>
-            <p xml:lang="ru-RU">★  Anemia </p>
+            <p xml:lang="ru-RU">Anemia </p>
             <list type="ul">
               <li>
-                <p xml:lang="en-US">▶  Insufficient red cell mass (<a href="http://en.wikipedia.org/wiki/Anemia" external="true">anemia</a>) can be the result of bleeding, blood disorders like <a href="http://en.wikipedia.org/wiki/Thalassemia" external="true">thalassemia</a>, or <a href="http://en.wikipedia.org/wiki/Illnesses_related_to_poor_nutrition" external="true">nutritional deficiencies</a>; and may require <a href="http://en.wikipedia.org/wiki/Blood_transfusion" external="true">blood transfusion</a>. Several countries have <a href="http://en.wikipedia.org/wiki/Blood_bank" external="true">blood banks</a> to fill the demand for transfusable blood. A person receiving a blood transfusion must have a <a href="http://en.wikipedia.org/wiki/Blood_type" external="true">blood type</a> compatible with that of the donor.</p>
+                <p xml:lang="en-US">Insufficient red cell mass (<a href="http://en.wikipedia.org/wiki/Anemia" external="true">anemia</a>) can be the result of bleeding, blood disorders like <a href="http://en.wikipedia.org/wiki/Thalassemia" external="true">thalassemia</a>, or <a href="http://en.wikipedia.org/wiki/Illnesses_related_to_poor_nutrition" external="true">nutritional deficiencies</a>; and may require <a href="http://en.wikipedia.org/wiki/Blood_transfusion" external="true">blood transfusion</a>. Several countries have <a href="http://en.wikipedia.org/wiki/Blood_bank" external="true">blood banks</a> to fill the demand for transfusable blood. A person receiving a blood transfusion must have a <a href="http://en.wikipedia.org/wiki/Blood_type" external="true">blood type</a> compatible with that of the donor.</p>
               </li>
               <li>
                 <p>
@@ -2236,44 +2257,44 @@
             </list>
           </li>
           <li>
-            <p xml:lang="ru-RU">★  Disorders of cell proliferation </p>
+            <p xml:lang="ru-RU">Disorders of cell proliferation </p>
             <list type="ul">
               <li>
                 <p xml:lang="en-US">
-                  <a href="http://en.wikipedia.org/wiki/Leukemia" external="true">Leukemia</a>▶   is a group of <a href="http://en.wikipedia.org/wiki/Cancer_(medicine)" external="true">cancers</a> of the blood-forming tissues.</p>
+                  <a href="http://en.wikipedia.org/wiki/Leukemia" external="true">Leukemia</a> is a group of <a href="http://en.wikipedia.org/wiki/Cancer_(medicine)" external="true">cancers</a> of the blood-forming tissues.</p>
               </li>
               <li>
-                <p xml:lang="en-US">▶  Non-cancerous overproduction of red cells (<a href="http://en.wikipedia.org/wiki/Polycythemia_vera" external="true">polycythemia vera</a>) or platelets (<a href="http://en.wikipedia.org/wiki/Essential_thrombocytosis" external="true">essential thrombocytosis</a>) may be <a href="http://en.wikipedia.org/wiki/Premalignant_condition" external="true">premalignant</a>.</p>
+                <p xml:lang="en-US">Non-cancerous overproduction of red cells (<a href="http://en.wikipedia.org/wiki/Polycythemia_vera" external="true">polycythemia vera</a>) or platelets (<a href="http://en.wikipedia.org/wiki/Essential_thrombocytosis" external="true">essential thrombocytosis</a>) may be <a href="http://en.wikipedia.org/wiki/Premalignant_condition" external="true">premalignant</a>.</p>
               </li>
               <li>
                 <p xml:lang="en-US">
-                  <a href="http://en.wikipedia.org/wiki/Myelodysplastic_syndrome" external="true">Myelodysplastic syndromes</a>▶   involve ineffective production of one or more cell lines.</p>
+                  <a href="http://en.wikipedia.org/wiki/Myelodysplastic_syndrome" external="true">Myelodysplastic syndromes</a> involve ineffective production of one or more cell lines.</p>
               </li>
             </list>
           </li>
           <li>
-            <p xml:lang="ru-RU">★  Disorders of coagulation </p>
+            <p xml:lang="ru-RU">Disorders of coagulation </p>
             <list type="ul">
               <li>
                 <p xml:lang="en-US">
-                  <a href="http://en.wikipedia.org/wiki/Hemophilia" external="true">Hemophilia</a>▶   is a <a href="http://en.wikipedia.org/wiki/Genetic_disorder" external="true">genetic illness</a> that causes dysfunction in one of the blood's <a href="http://en.wikipedia.org/wiki/Coagulation" external="true">clotting mechanisms</a>. This can allow otherwise inconsequential wounds to be life-threatening, but more commonly results in <a href="http://en.wikipedia.org/wiki/Hemarthrosis" external="true">hemarthrosis</a>, or bleeding into joint spaces, which can be crippling.</p>
+                  <a href="http://en.wikipedia.org/wiki/Hemophilia" external="true">Hemophilia</a> is a <a href="http://en.wikipedia.org/wiki/Genetic_disorder" external="true">genetic illness</a> that causes dysfunction in one of the blood's <a href="http://en.wikipedia.org/wiki/Coagulation" external="true">clotting mechanisms</a>. This can allow otherwise inconsequential wounds to be life-threatening, but more commonly results in <a href="http://en.wikipedia.org/wiki/Hemarthrosis" external="true">hemarthrosis</a>, or bleeding into joint spaces, which can be crippling.</p>
               </li>
               <li>
-                <p xml:lang="en-US">▶  Ineffective or insufficient platelets can also result in <a href="http://en.wikipedia.org/wiki/Coagulopathy" external="true">coagulopathy</a> (bleeding disorders).</p>
+                <p xml:lang="en-US">Ineffective or insufficient platelets can also result in <a href="http://en.wikipedia.org/wiki/Coagulopathy" external="true">coagulopathy</a> (bleeding disorders).</p>
               </li>
               <li>
-                <p xml:lang="en-US">▶  Hypercoagulable state (<a href="http://en.wikipedia.org/wiki/Thrombophilia" external="true">thrombophilia</a>) results from defects in regulation of platelet or clotting factor function, and can cause thrombosis.</p>
+                <p xml:lang="en-US">Hypercoagulable state (<a href="http://en.wikipedia.org/wiki/Thrombophilia" external="true">thrombophilia</a>) results from defects in regulation of platelet or clotting factor function, and can cause thrombosis.</p>
               </li>
             </list>
           </li>
           <li>
-            <p xml:lang="ru-RU">★  Infectious disorders of blood </p>
+            <p xml:lang="ru-RU">Infectious disorders of blood </p>
             <list type="ul">
               <li>
-                <p xml:lang="en-US">▶  Blood is an important vector of infection. <a href="http://en.wikipedia.org/wiki/HIV" external="true">HIV</a>, the <a href="http://en.wikipedia.org/wiki/Virus" external="true">virus</a>, which causes <a href="http://en.wikipedia.org/wiki/AIDS" external="true">AIDS</a>, is transmitted through contact with blood, semen or other body secretions of an infected person. <a href="http://en.wikipedia.org/wiki/Hepatitis_B" external="true">Hepatitis B</a> and <a href="http://en.wikipedia.org/wiki/Hepatitis_C" external="true">C</a> are transmitted primarily through blood contact. Owing to <a href="http://en.wikipedia.org/wiki/Blood-borne_infection" external="true">blood-borne infections</a>, bloodstained objects are treated as a <a href="http://en.wikipedia.org/wiki/Biological_hazard" external="true">biohazard</a>.</p>
+                <p xml:lang="en-US">Blood is an important vector of infection. <a href="http://en.wikipedia.org/wiki/HIV" external="true">HIV</a>, the <a href="http://en.wikipedia.org/wiki/Virus" external="true">virus</a>, which causes <a href="http://en.wikipedia.org/wiki/AIDS" external="true">AIDS</a>, is transmitted through contact with blood, semen or other body secretions of an infected person. <a href="http://en.wikipedia.org/wiki/Hepatitis_B" external="true">Hepatitis B</a> and <a href="http://en.wikipedia.org/wiki/Hepatitis_C" external="true">C</a> are transmitted primarily through blood contact. Owing to <a href="http://en.wikipedia.org/wiki/Blood-borne_infection" external="true">blood-borne infections</a>, bloodstained objects are treated as a <a href="http://en.wikipedia.org/wiki/Biological_hazard" external="true">biohazard</a>.</p>
               </li>
               <li>
-                <p xml:lang="en-US">▶  Bacterial infection of the blood is <a href="http://en.wikipedia.org/wiki/Bacteremia" external="true">bacteremia</a> or <a href="http://en.wikipedia.org/wiki/Sepsis" external="true">sepsis</a>. Viral Infection is viremia. <a href="http://en.wikipedia.org/wiki/Malaria" external="true">Malaria</a> and <a href="http://en.wikipedia.org/wiki/Trypanosomiasis" external="true">trypanosomiasis</a> are blood-borne parasitic infections.</p>
+                <p xml:lang="en-US">Bacterial infection of the blood is <a href="http://en.wikipedia.org/wiki/Bacteremia" external="true">bacteremia</a> or <a href="http://en.wikipedia.org/wiki/Sepsis" external="true">sepsis</a>. Viral Infection is viremia. <a href="http://en.wikipedia.org/wiki/Malaria" external="true">Malaria</a> and <a href="http://en.wikipedia.org/wiki/Trypanosomiasis" external="true">trypanosomiasis</a> are blood-borne parasitic infections.</p>
               </li>
             </list>
           </li>
@@ -2510,7 +2531,16 @@
         <p xml:lang="en-US">The term, <em>blood</em>, is used in <a href="http://en.wikipedia.org/wiki/Genealogy" external="true">genealogical circles</a> to refer to one's <a href="http://en.wikipedia.org/wiki/Ancestor" external="true">ancestry</a>, <a href="http://en.wikipedia.org/wiki/Human_evolution" external="true">origins</a>, and <a href="http://en.wikipedia.org/wiki/Ethnic_group" external="true">ethnic background</a>, as in the word, <a href="http://en.wikipedia.org/wiki/Heredity" external="true"><em>bloodline</em></a>. Other terms where blood is used in a family history sense are <a href="http://en.wikipedia.org/wiki/Nobility#.22Blue.22_blood" external="true"><em>blue-blood</em></a>, <a href="http://en.wikipedia.org/wiki/Royal_descent" external="true"><em>royal blood</em></a>, <a href="http://en.wikipedia.org/wiki/Mixed-blood" external="true"><em>mixed-blood</em></a> and <a href="http://en.wikipedia.org/wiki/Kinship_terminology" external="true"><em>blood relative</em></a>.</p>
         <p xml:lang="en-US">
           <a href="http://en.wikipedia.org/wiki/Oct-1-en-3-one" external="true">Oct-1-en-3-one</a> ("Smel</p>
+        <p />
       </level1>
     </bodymatter>
+    <rearmatter>
+      <level1>
+        <p />
+      </level1>
+      <level1>
+        <p />
+      </level1>
+    </rearmatter>
   </book>
 </dtbook>

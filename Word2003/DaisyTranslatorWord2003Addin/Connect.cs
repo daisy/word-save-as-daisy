@@ -40,7 +40,7 @@ namespace DaisyTranslatorWord2003Addin
 	using Microsoft.Office.Core;
 	using System.Runtime.InteropServices;
 	using MSword = Microsoft.Office.Interop.Word;
-	using Sonata.DaisyConverter.DaisyConverterLib;
+	using Daisy.DaisyConverter.DaisyConverterLib;
 	using System.Drawing;
 	using System.Drawing.Imaging;
 
@@ -136,7 +136,7 @@ namespace DaisyTranslatorWord2003Addin
 		/// </summary>
 		public Connect()
 		{
-			this.addinLib = new Sonata.DaisyConverter.Word.Addin();
+			this.addinLib = new Daisy.DaisyConverter.Word.Addin();
 		}
 
 		/// <summary>
@@ -901,12 +901,12 @@ namespace DaisyTranslatorWord2003Addin
 					elmtDaisy.AppendChild(elmtPublisher);
 
 					elmtPublisher.InnerText = DocPropPublish();
-					if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata"))
-						docTemp.Save(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata\\prepopulated_daisy.xml");
+					if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY"))
+						docTemp.Save(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY\\prepopulated_daisy.xml");
 					else
 					{
-						Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata");
-						docTemp.Save(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata\\prepopulated_daisy.xml");
+						Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY");
+						docTemp.Save(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY\\prepopulated_daisy.xml");
 					}
 					string docxFile = doc.FullName;
 					MasterSubDecision(docFile);
@@ -982,13 +982,13 @@ namespace DaisyTranslatorWord2003Addin
 					parameters.MasterSubFlag = masterSubFlag;
 					if (control.Tag == "DaisySingle" || control.Tag == "Button1")
 					{
-						this.addinLib.OoxToDaisyUI(parameters);
+						this.addinLib.StartSingleWordConversion(parameters);
 					}
 					else
 					{
 						parameters.ScriptPath = pipe.ScriptsInfo[control.Caption].FullName;
 						parameters.Directory = string.Empty;
-						this.addinLib.OoxToDaisyDTBookUI(parameters);
+						this.addinLib.StartSingleWordConversion(parameters);
 					}
 				}
 				catch (Exception e)
@@ -1010,7 +1010,7 @@ namespace DaisyTranslatorWord2003Addin
 				parameters.InlineIds = inlineId;
 				parameters.MasterSubFlag = masterSubFlag;
 
-				this.addinLib.OoxToDaisyUI(parameters);
+				this.addinLib.StartSingleWordConversion(parameters);
 			}
 		}
 
@@ -1563,7 +1563,7 @@ namespace DaisyTranslatorWord2003Addin
 				DeleteBookMark();
 
 				//Getting validation xml from executing assembly
-				path_For_Xml = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata";
+				path_For_Xml = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY";
 
 				validation_xml = new XmlDocument();
 				//chcking for validation xml
@@ -1728,7 +1728,7 @@ namespace DaisyTranslatorWord2003Addin
 					image.Save(ms, ImageFormat.Png);
 					Ret = ms.ToArray();
 					String fileName = doc.Name.Replace(" ", "_");
-					string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
+					string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
 					FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
 					fs.Write(Ret, 0, Ret.Length);
 					fs.Flush();
@@ -1767,7 +1767,7 @@ namespace DaisyTranslatorWord2003Addin
 						image.Save(ms, ImageFormat.Png);
 						Ret = ms.ToArray();
 						String fileName = newName.ToString().Replace(" ", "_");
-						string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
+						string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
 						FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
 						fs.Write(Ret, 0, Ret.Length);
 						fs.Flush();
@@ -1806,7 +1806,7 @@ namespace DaisyTranslatorWord2003Addin
 							image.Save(ms, ImageFormat.Png);
 							Ret = ms.ToArray();
 							String fileName = doc.Name.Replace(" ", "_");
-							string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
+							string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
 							FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
 							fs.Write(Ret, 0, Ret.Length);
 							fs.Flush();
@@ -1855,7 +1855,7 @@ namespace DaisyTranslatorWord2003Addin
 								image.Save(ms, ImageFormat.Png);
 								Ret = ms.ToArray();
 								String fileName = newName.ToString().Replace(" ", "_");
-								string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "Sonata" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
+								string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
 								FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
 								fs.Write(Ret, 0, Ret.Length);
 								fs.Flush();

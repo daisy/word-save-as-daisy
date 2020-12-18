@@ -6,7 +6,8 @@ using DaisyWord2007AddIn;
 using Extensibility;
 using NUnit.Framework;
 using Microsoft.Office.Interop.Word;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
+using System.Reflection;
 
 namespace Word2007Addin.IntegrationTests
 {
@@ -21,13 +22,13 @@ namespace Word2007Addin.IntegrationTests
 			base.TearDown();
 		}
 
-		[TestFixtureTearDown]
+		[OneTimeTearDown]
 		public override void FixtureTearDown()
 		{
 			base.FixtureTearDown();
 		}
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public override void FixtureSetUp()
 		{
 			base.FixtureSetUp();
@@ -45,8 +46,8 @@ namespace Word2007Addin.IntegrationTests
 			string outputFilePath = new FileInfo(@"output\1\Doc 1-2.xml").FullName;
 
 			//NOTE: because translation contain validation errors output file will not created. And so we will check transitional output
-			string transitionalOuput = new FileInfo(@"output\1\F 2.xml").FullName;
-			string originalOutputPath = new FileInfo(@"TestData\FromMultipleDocx\Test 1\Output\F 2.xml").FullName;
+			//string transitionalOuput = new FileInfo(@"output\1\F 2.xml").FullName;
+			string originalOutputPath = new FileInfo(@"TestData\FromMultipleDocx\Test 1\Output\Doc 1-2.xml").FullName;
 
 
 			TranslationParametersBuilder preporator = new TranslationParametersBuilder();
@@ -62,9 +63,10 @@ namespace Word2007Addin.IntegrationTests
 			//Act
 			SaveAsMultipleDaisy(inputFiles, outputFilePath, preporator);
 
+
 			//Assert
 			string originalPluginResult = ReadFile(originalOutputPath);
-			string currentResult = ReadFile(transitionalOuput);
+			string currentResult = ReadFile(outputFilePath);
 
 			Assert.AreEqual(originalPluginResult, currentResult, "From Multiple Docx Test1 failed.");
 		}
@@ -76,11 +78,11 @@ namespace Word2007Addin.IntegrationTests
 			DirectoryInfo inputDirectory = new DirectoryInfo(@"TestData\FromMultipleDocx\Test 2\input");
 			ArrayList inputFiles = GetInputFilesList(inputDirectory);
 
-			string outputFilePath = new FileInfo(@"output\2\Doc.xml").FullName;
+			string outputFilePath = new FileInfo(@"output\2\Doc 2-3.xml").FullName;
 
 			//NOTE: because translation contain validation errors output file will not created. And so we will check transitional output
-			string transitionalOuput = new FileInfo(@"output\2\F 2.xml").FullName;
-			string originalOutputPath = new FileInfo(@"TestData\FromMultipleDocx\Test 2\Output\F 2.xml").FullName;
+			//string transitionalOuput = new FileInfo(@"output\2\F 2.xml").FullName;
+			string originalOutputPath = new FileInfo(@"TestData\FromMultipleDocx\Test 2\Output\Doc 2-3.xml").FullName;
 
 			TranslationParametersBuilder preporator = new TranslationParametersBuilder();
 			preporator
@@ -97,7 +99,7 @@ namespace Word2007Addin.IntegrationTests
 
 			//Assert
 			string originalPluginResult =ReadFile(originalOutputPath);
-			string currentResult = ReadFile(transitionalOuput);
+			string currentResult = ReadFile(outputFilePath);
 
 			Assert.AreEqual(originalPluginResult, currentResult, "From Multiple Docx Test2 failed.");
 		}
@@ -349,7 +351,9 @@ namespace Word2007Addin.IntegrationTests
 			ArrayList inputFiles = new ArrayList();
 			foreach (var inputFile in inputDirectory.GetFiles())
 			{
-				inputFiles.Add(inputFile.FullName);
+                if (!inputFile.Name.StartsWith("~")) {
+					inputFiles.Add(inputFile.FullName);
+				}
 			}
 			return inputFiles;
 		}

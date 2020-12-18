@@ -2,7 +2,7 @@
 
 :: configure project here
 set PROJECT_NAME=DAISY Translator for Microsoft Word
-set PROJECT_URL=http://openxml-daisy.sourceforge.net
+set PROJECT_URL=https://github.com/daisy/word-save-as-daisy
 
 :: configure certificate here
 :: CERT_FILE must contain the full path to the certificate, 
@@ -14,7 +14,7 @@ set CERT_PASSWORD=sonata123
 set TIMESTAMP_SERVER=http://timestamp.verisign.com/scripts/timstamp.dll
 
 :: path to signtool.exe
-set SIGNTOOL=C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\signtool.exe
+set SIGNTOOL=C:\Program Files (x86)\Windows Kits\10\bin\10.0.18362.0\x86\signtool.exe
 
 IF NOT EXIST "%SIGNTOOL%" goto :error
 

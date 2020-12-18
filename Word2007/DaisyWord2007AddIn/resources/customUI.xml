@@ -13,9 +13,9 @@
 			<tab id="CustomTab" label="Accessibility">
 				<group id="SampleGroup" label="Save As DAISY">
 					<menu id="DaisyMnu" label="S&amp;aveAsDAISY" size="large" getImage="GetImage" >
-						<button id="DaisyTabSingle" label="DAISY XML (from &amp;Single docx)" onAction="SaveAsDaisy" enabled="true" getImage="GetImageSingleXML" keytip="s" screentip="DAISY XML only (dtbook dtd)"/>
+						<button id="DaisyTabSingle" tag="DaisyTabSingle" label="DAISY XML (from &amp;Single docx)" onAction="SaveAsDaisy" enabled="true" getImage="GetImageSingleXML" keytip="s" screentip="DAISY XML only (dtbook dtd)"/>
 						<dynamicMenu id="DaisyTabDTBookSingle" label="Full D&amp;AISY (from single docx)" getContent="GetDTbook" getImage="GetImage" />
-						<button id="DaisyTabMultiple" label="DAISY XML (from &amp;Multiple docx)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
+						<button id="DaisyTabMultiple" tag="DaisyTabMultiple" label="DAISY XML (from &amp;Multiple docx)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
 						<dynamicMenu id="DaisyTabDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx)" getContent="GetDTbook" getImage="GetImage7" />
 					</menu>
 				</group >
@@ -29,7 +29,7 @@
 					<button id="Button6" label="Mana&amp;ge Acronym" size="large" onAction="ManageAcronym" getImage="GetImage4"/>
 				</group >
 				<group id="SampleGroup4" label="Validate">
-					<toggleButton id="toggleValidate" label="&amp;Validate" size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="GetImage9"/>
+					<toggleButton id="toggleValidate" label="&amp;Accessibility check" screentip="&amp;Run the accessibility checker on the current document. For Word 2007, a custom word validation process is applied. " description="&amp;Run the accessiblity checker on the current document. For Word 2007, a custom word validation process is applied. " size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="GetImage9"/>
 				</group>
 				<group id="SampleGroup5" label ="DAISY Styles">
 					<button id="Button7" label="&amp;Import" size="large" onAction="Update_Styles" getEnabled="getEnabled" getImage="GetImage10"/>

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	public class AddInHelper
 	{
@@ -17,7 +17,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		/// </summary>
 		/// <param name="buttonName"></param>
 		/// <returns></returns>
-		public static bool IsSingleDaisyButton(string buttonName)
+		public static bool buttonIsSingleWordToXMLConversion(string buttonName)
 		{
 			return buttonName == "DaisySingle" || buttonName == "DaisyTabSingle" || 
 			       buttonName == "Daisy" ||  buttonName == "Button1";
@@ -31,7 +31,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		/// <returns></returns>
 		public static bool IsSingleDaisyTranslate(string buttonName)
 		{
-			return IsSingleDaisyButton(buttonName) || !IsPipelineExists();
+			return buttonIsSingleWordToXMLConversion(buttonName) || !PipelineIsInstalled();
 		}
 
 		/// <summary>
@@ -47,7 +47,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		/// <summary>
 		/// Gets path to pipeline root directory.
 		/// </summary>
-		public static string PathForPipeline
+		public static string PipelinePath
 		{
 			get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\pipeline-lite-ms"; }
 		}
@@ -56,17 +56,17 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 		/// Indicates if pipeline exists.
 		/// </summary>
 		/// <returns></returns>
-		public static bool IsPipelineExists()
+		public static bool PipelineIsInstalled()
 		{
-			return Directory.Exists(PathForPipeline);
+			return Directory.Exists(PipelinePath);
 		}
 
 		/// <summary>
-		/// Gets path to Sanata directory in AppData.
+		/// Gets path to the addin directory in AppData.
 		/// </summary>
-		public static string AppDataSonataDirectory
+		public static string AppDataSaveAsDAISYDirectory
 		{
-			get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Sonata"; }
+			get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY"; }
 		}
 
 		

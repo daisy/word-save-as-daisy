@@ -29,7 +29,11 @@
 			<enum>
 				<value>32</value>
 				<value>48</value>
+				<value>56</value>
 				<value>64</value>
+				<value>80</value>
+				<value>96</value>
+				<value>112</value>
 				<value>128</value>
 			</enum>
 			<default>32</default>

@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	public partial class PathBrowserControl : BaseUserControl
 	{

@@ -71,6 +71,7 @@
           </p>
           <p>
           </p>
+          <p />
         </level2>
         <level2>
           <h2>  What we can offer
@@ -238,10 +239,10 @@
           <p>For example: </p>
           <list type="ul">
             <li>
-              <p>★  employees of the certain company have access only to their company’s indicator values and reports, head of the holding has no restrictions to access reports;</p>
+              <p>employees of the certain company have access only to their company’s indicator values and reports, head of the holding has no restrictions to access reports;</p>
             </li>
             <li>
-              <p>★  administrator has access to the administrative tools but has not permission to access reports.</p>
+              <p>administrator has access to the administrative tools but has not permission to access reports.</p>
             </li>
           </list>
           <p>
@@ -249,13 +250,13 @@
           <p>Flexible environment for reporting process: </p>
           <list type="ul">
             <li>
-              <p xml:lang="ru-RU">★  maintaining holding structure;</p>
+              <p xml:lang="ru-RU">maintaining holding structure;</p>
             </li>
             <li>
-              <p>★  support of multi currencies, because holding is represented in several countries; </p>
+              <p>support of multi currencies, because holding is represented in several countries; </p>
             </li>
             <li>
-              <p>★  report of holding is in the currency of holding, indicators of affiliates are recalculated to the holding currency  according currency exchange rates.</p>
+              <p>report of holding is in the currency of holding, indicators of affiliates are recalculated to the holding currency  according currency exchange rates.</p>
             </li>
           </list>
           <p>
@@ -272,13 +273,13 @@
           <p>Developed with respect to future extensions architecture allows:</p>
           <list type="ul">
             <li>
-              <p>★  flexible change of all parameters, such as currency of holding, via graphical user interface, without any changes to the source code; </p>
+              <p>flexible change of all parameters, such as currency of holding, via graphical user interface, without any changes to the source code; </p>
             </li>
             <li>
-              <p>★  fast and easy adding of new groups of indicators and appropriate reports for them. The Customer has already expressed his preliminary intention for the following steps to expand range of indicators and reports;</p>
+              <p>fast and easy adding of new groups of indicators and appropriate reports for them. The Customer has already expressed his preliminary intention for the following steps to expand range of indicators and reports;</p>
             </li>
             <li>
-              <p>★  good performance for large amounts of information (yearly report contains data from 50 affiliates).</p>
+              <p>good performance for large amounts of information (yearly report contains data from 50 affiliates).</p>
             </li>
           </list>
           <p>
@@ -292,15 +293,15 @@
           <list type="ul">
             <li>
               <p>
-                <strong>★  J2EE</strong> – component model application,</p>
+                <strong>J2EE</strong> – component model application,</p>
             </li>
             <li>
               <p>
-                <strong>★  Hibernate</strong> – access to the data base,</p>
+                <strong>Hibernate</strong> – access to the data base,</p>
             </li>
             <li>
               <p>
-                <strong>★  JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
+                <strong>JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
             </li>
           </list>
           <p>
@@ -441,7 +442,9 @@
           </p>
           <p>
           </p>
+          <p />
         </level2>
+        <p />
       </level1>
       <level1>
         <h1>  aures – a peerless tool for an International Holding management
@@ -469,16 +472,16 @@
         <p>AuReS allows to:</p>
         <list type="ul">
           <li>
-            <p xml:lang="en-GB">★  create and implement a development strategy for each company of the holding;</p>
+            <p xml:lang="en-GB">create and implement a development strategy for each company of the holding;</p>
           </li>
           <li>
-            <p xml:lang="en-GB">★  coordinate the strategies at company level with the general holding’s development strategy;</p>
+            <p xml:lang="en-GB">coordinate the strategies at company level with the general holding’s development strategy;</p>
           </li>
           <li>
-            <p>★  track the strategy execution;</p>
+            <p>track the strategy execution;</p>
           </li>
           <li>
-            <p xml:lang="en-GB">★  use the aggregated data for analysis and holding’s motivation policy formation.</p>
+            <p xml:lang="en-GB">use the aggregated data for analysis and holding’s motivation policy formation.</p>
           </li>
         </list>
         <p />
@@ -495,6 +498,7 @@
           <p />
           <p>Each plan is subject to endorsement which undergoes several stages: registration of remarks, correction and approval. The list of the reviewers can be edited by the administrator. </p>
           <p />
+          <p />
         </level2>
         <level2>
           <h2>  System usability
@@ -510,22 +514,32 @@
           <list type="ul">
             <li>
               <p>
-                <strong>★  J2EE</strong> – component model application,</p>
+                <strong>J2EE</strong> – component model application,</p>
             </li>
             <li>
               <p xml:lang="en-GB">
-                <strong>★  Hibernate</strong> – access to the data base,</p>
+                <strong>Hibernate</strong> – access to the data base,</p>
             </li>
             <li>
               <p xml:lang="en-GB">
-                <strong>★  JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
+                <strong>JSP, Struts 2, Tiles, JavaScript</strong> – implementation of user interface.</p>
             </li>
           </list>
           <p />
           <p />
           <p />
+          <p />
         </level2>
+        <p />
       </level1>
     </bodymatter>
+    <rearmatter>
+      <level1>
+        <p />
+      </level1>
+      <level1>
+        <p />
+      </level1>
+    </rearmatter>
   </book>
 </dtbook>

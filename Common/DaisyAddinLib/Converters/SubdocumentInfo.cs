@@ -1,4 +1,4 @@
-﻿namespace Sonata.DaisyConverter.DaisyConverterLib.Converters
+﻿namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 {
 	public class SubdocumentInfo
 	{

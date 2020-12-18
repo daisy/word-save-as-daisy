@@ -38,7 +38,7 @@ Defines a one per document element scope outside of which the sync point locator
 -->
 
 	<namespace uri="http://www.daisy.org/z3986/2005/dtbook/" xmlns:dtbook="http://www.daisy.org/z3986/2005/dtbook/">
-		<ignore asWhitespace=".">
+		<ignore>
 			<dtbook:abbr />
 			<dtbook:acronym />
 			<dtbook:em />
@@ -69,7 +69,7 @@ Defines a one per document element scope outside of which the sync point locator
 	</namespace>
 
 	<namespace uri="http://www.w3.org/1999/xhtml" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-		<ignore asWhitespace="."> 
+		<ignore> 
 			<xhtml:em />
 			<xhtml:strong />
 			<xhtml:b />

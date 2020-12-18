@@ -15,8 +15,8 @@ using System.Xml.XPath;
 using System.Xml.Xsl;
 using System.Windows.Forms;
 using System.IO.Packaging;
-using Sonata.DaisyConverter.DaisyConverterLib;
-namespace Sonata.DaisyConverter.DaisyConverterLib
+using Daisy.DaisyConverter.DaisyConverterLib;
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	public partial class ProgressValidation : Form
 	{
@@ -358,11 +358,14 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 			{
 				for (int i = 0; i < nodeDocXml.ChildNodes.Count; i++)
 				{
+					// For each child matching the current current rule "ElementName"
 					if ("w:" + nodeValidXml.ChildNodes[0].InnerText == nodeDocXml.ChildNodes[i].Name)
 					{
-						tempNode = nodeDocXml.ChildNodes[i];
-						if (nodeValidXml.SelectSingleNode("//NextRule") != null)
+						tempNode = nodeDocXml.ChildNodes[i]; // store for return value
+						if (nodeValidXml.SelectSingleNode("//NextRule") != null) // if the current has a "NextRule" element
 						{
+							// Select the "NextRule" node
+							// This test does not make any sense, as the "next rule" result in a text node and not a rule node
 							if (NextNodePresent(nodeValidXml.SelectSingleNode("//NextRule"), tempNode))
 								break;
 						}
@@ -371,7 +374,13 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 			}
 			return tempNode;
 		}
-
+		/// <summary>
+		/// Test if the document node contains a node matching the first child value of the validation rule node
+		/// (allegedly 
+		/// </summary>
+		/// <param name="nodeValidXml"></param>
+		/// <param name="nodeDocXml"></param>
+		/// <returns></returns>
 		public bool NextNodePresent(XmlNode nodeValidXml, XmlNode nodeDocXml)
 		{
 			if (nodeDocXml.SelectSingleNode("//" + nodeValidXml.ChildNodes[0].InnerText) != null)

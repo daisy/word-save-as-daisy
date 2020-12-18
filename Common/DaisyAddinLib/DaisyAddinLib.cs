@@ -32,11 +32,11 @@ using System.IO;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Collections;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
 using stdole;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	/// <summary>
     /// Base class MS Office add-in implementations.
@@ -93,52 +93,100 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             ConvertToDaisy(parameters, translationParams, outputFilePath, outputPipeline, new SingleConverter(converter));
         }
 
+        /// <summary>
+        /// Funcion that launch the conversion of a "parameters.inputFile" to daisy
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="translateParams"></param>
+        /// <param name="outputFilePath"></param>
+        /// <param name="outputPipeline"></param>
+        /// <param name="singleConverter"></param>
         public void ConvertToDaisy(OoxToDaisyParameters parameters, Hashtable translateParams, string outputFilePath, string outputPipeline, SingleConverter singleConverter)
         {
             if (parameters.MasterSubFlag == "No" || parameters.MasterSubFlag == "NoMasterSub")
             {
-                if (AddInHelper.IsSingleDaisyButton(parameters.ControlName))
-                {
-                    outputFilePath = outputFilePath + parameters.GetInputFileNameWithoutExtension + ".xml";
-                }
-                else
-                {
-                    //pipeline-lite needs .xml-file english name for Full Daisy Translating
-                    outputFilePath = Path.Combine(outputFilePath, "SingleNarrator" + ".xml");
-                }
-                singleConverter.OoxToDaisy(parameters.InputFile, outputFilePath, parameters.ListMathMl, translateParams,
-                                           parameters.ControlName, outputPipeline);
+                outputFilePath = AddInHelper.buttonIsSingleWordToXMLConversion(parameters.ControlName) ?
+                        outputFilePath + parameters.GetInputFileNameWithoutExtension + ".xml" :
+                        Path.Combine(outputFilePath, "convertedDocument" + ".xml");
+                
+                singleConverter.OoxToDaisy(
+                        parameters.InputFile, 
+                        outputFilePath, 
+                        parameters.ListMathMl, 
+                        translateParams,
+                        parameters.ControlName, 
+                        outputPipeline);
             }
             else if (parameters.MasterSubFlag == "Yes")
             {
-                singleConverter.OoxToDaisyOwn(parameters.TempInputFile, parameters.TempInputA, parameters.InputFile, outputFilePath, translateParams, parameters.ControlName, parameters.ListMathMl, outputPipeline);
+                singleConverter.OoxToDaisyOwn(
+                    parameters.TempInputFile,
+                    parameters.TempInputA, 
+                    parameters.InputFile, 
+                    outputFilePath, 
+                    translateParams, 
+                    parameters.ControlName, 
+                    parameters.ListMathMl,
+                    outputPipeline);
             }
         }
 
         /// <summary>
-        /// Function which shows UI to take input from User
+        /// Star the conversion of a single word file to selected fornat (
+        /// - Function which shows UI to take input from user
         /// </summary>
-        public void OoxToDaisyUI(OoxToDaisyParameters parameters)
-        {
-            myForm = new DesignForm(parameters, this.resourceManager);
+        public void StartSingleWordConversion(OoxToDaisyParameters parameters) {
+            if (parameters.ScriptPath != null && parameters.ScriptPath.Length > 0) {
+                myForm = new DesignForm(
+                       parameters.ScriptPath,
+                       parameters.InputFile,
+                       parameters.Directory,
+                       parameters.Version,
+                       parameters.ControlName,
+                       parameters.TempInputFile,
+                       this.resourceManager,
+                       parameters.MasterSubFlag);
+            } else {
+                myForm = new DesignForm(parameters, this.resourceManager);
+            }
+
             int translateFlag = myForm.DoTranslate();
-            if (translateFlag == 1)
-            {
-                ConvertToDaisy(parameters, myForm.HTable, myForm.OutputFilepath, myForm.PipeOutput, new SingleConverterUI(converter));
+            if (translateFlag == 1) {
+                SingleConverter singleConverter = new SingleConverterUI(
+                        converter,
+                        parameters.ScriptPath != null && parameters.ScriptPath.Length > 0 ? 
+                            myForm.getParser : 
+                            null);
+                ConvertToDaisy(
+                        parameters,
+                        myForm.HTable,
+                        parameters.ScriptPath.Length > 0 ?
+                            AddInHelper.AppDataSaveAsDAISYDirectory :
+                            myForm.OutputFilepath,
+                        myForm.PipeOutput,
+                        singleConverter);
             }
         }
 
-		public void OoxToDaisyDTBookUI(OoxToDaisyParameters parameters)
+		/*public void StartSingleWordConversion(OoxToDaisyParameters parameters)
         {
-            myForm = new DesignForm(parameters.ScriptPath, parameters.InputFile, parameters.Directory, parameters.Version, parameters.ControlName, parameters.TempInputFile, this.resourceManager, parameters.MasterSubFlag);
+            myForm = new DesignForm(
+                parameters.ScriptPath, 
+                parameters.InputFile, 
+                parameters.Directory, 
+                parameters.Version, 
+                parameters.ControlName, 
+                parameters.TempInputFile, 
+                this.resourceManager, 
+                parameters.MasterSubFlag);
             int translateFlag = myForm.DoTranslate();
             
             if (translateFlag == 1)
             {
-				SingleConverter singleConverter = new SingleConverterUI(converter, myForm.getParser);
-            	ConvertToDaisy(parameters, myForm.HTable, AddInHelper.AppDataSonataDirectory, myForm.PipeOutput,singleConverter);
+                SingleConverter singleConverter = new SingleConverterUI(converter, myForm.getParser);
+                ConvertToDaisy(parameters, myForm.HTable, AddInHelper.AppDataSaveAsDAISYDirectory, myForm.PipeOutput,singleConverter);
             }
-        }
+        }*/
 
 
 		public void OoxToDaisyDTBookWithoutUI(OoxToDaisyParameters parameters, TranslationParametersBuilder parametersBuilder, string outputFilePath, string outputPipeline, ScriptParser parser)

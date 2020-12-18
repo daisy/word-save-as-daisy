@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props')" />
+  <Import Project="..\..\packages\NUnit.3.12.0\build\NUnit.props" Condition="Exists('..\..\packages\NUnit.3.12.0\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -10,10 +12,16 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Word2007Addin.IntegrationTests</RootNamespace>
     <AssemblyName>Word2007Addin.IntegrationTests</AssemblyName>
-    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkSubset>
-    </TargetFrameworkSubset>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -23,6 +31,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,6 +40,8 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DebugWord2003|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -39,13 +50,46 @@
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug_x64\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugWord2003|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\DebugWord2003\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\extensibility.dll</HintPath>
     </Reference>
-    <Reference Include="Gallio, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eb9cfa67ee6ab36e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\word2007\Microsoft.Office.Interop.Word.dll</HintPath>
@@ -54,7 +98,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\word2007\Microsoft.Vbe.Interop.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
+    <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="OFFICE, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Lib\word2007\OFFICE.DLL</HintPath>
@@ -80,6 +127,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="TestData\FromMultipleDocx\Test 10\input\F1.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -196,6 +244,10 @@
       <Project>{599773FF-1E86-4AC2-8B24-34BBAC707370}</Project>
       <Name>DaisyAddinLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
+      <Project>{8cb777eb-36ed-45d8-84ff-bdd64ad5026e}</Project>
+      <Name>DaisyConverterLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Word2007\DaisyWord2007AddIn\DaisyWord2007AddIn.csproj">
       <Project>{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}</Project>
       <Name>DaisyWord2007AddIn</Name>
@@ -215,14 +267,8 @@
     <Content Include="TestData\FromMultipleDocx\Test 1\output\Doc 1-2.xml">
     </Content>
     <Content Include="TestData\FromMultipleDocx\Test 1\output\dtbookbasic.css" />
-    <Content Include="TestData\FromMultipleDocx\Test 1\output\F 2.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestData\FromMultipleDocx\Test 2\output\Doc 2-3.xml" />
     <Content Include="TestData\FromMultipleDocx\Test 2\output\dtbookbasic.css" />
-    <Content Include="TestData\FromMultipleDocx\Test 2\output\F 2.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="TestData\FromMultipleDocx\Test 3\output\Doc 3-4.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -390,6 +436,18 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>IF NOT EXIST "$(TargetDir)pipeline-lite-ms"  xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup>
+    <PreBuildEvent>IF NOT EXIST "$(TargetDir)pipeline-lite-ms"  xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"
+IF NOT EXIST "$(TargetDir)resources"  xcopy /E  "$(SolutionDir)Converter\resources"  "$(TargetDir)resources\"</PreBuildEvent>
+  </PropertyGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\NUnit.3.12.0\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit.3.12.0\build\NUnit.props'))" />
+    <Error Condition="!Exists('..\..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\NUnit3TestAdapter.3.16.1\build\net35\NUnit3TestAdapter.props'))" />
+  </Target>
 </Project>

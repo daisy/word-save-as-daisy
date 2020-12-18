@@ -1,4 +1,4 @@
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     partial class About
     {
@@ -56,7 +56,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             resources.ApplyResources(this.bttnOk, "bttnOk");
             this.bttnOk.Name = "bttnOk";
             this.bttnOk.UseVisualStyleBackColor = true;
-            this.bttnOk.Click += new System.EventHandler(this.bttnOk_Click);
+            this.bttnOk.Click += new System.EventHandler(this.BttnOk_Click);
             // 
             // Updatesbutton
             // 

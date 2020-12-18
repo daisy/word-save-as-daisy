@@ -13,7 +13,7 @@ using System.IO.Packaging;
 using System.Drawing.Imaging;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public partial class MultipleSub : Form
     {
@@ -28,7 +28,8 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         int masterSubFlag = 0;
         string fileOutputPath, versionInfo = "";
         private string mInputPath;
-        private ScriptParser mParser;
+        private ScriptParser mParser = null;
+        private bool useAScript = false;
         string btnID = "";
         String input = "", uId = "";
         private string mProjectDirectory;
@@ -60,6 +61,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             this.versionInfo = versionInfo;
             btnID = control;
             mParser = new ScriptParser(scriptPath);
+            useAScript = true;
             FileInfo f = new FileInfo(scriptPath);
             this.Text = f.Name.Replace(f.Extension, "");
         }
@@ -117,7 +119,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         {
         	CleanOutputDirDlg cleanUpDialog;
 
-            if (btnID == "DaisyMultiple" || btnID == "DaisyTabMultiple" || btnID == "Button2")
+            if ((btnID == "DaisyMultiple" || btnID == "DaisyTabMultiple" || btnID == "Button2") && !useAScript)
             {
                 if (lBx_SubDocs.Items.Count == 0)
                 {
@@ -296,7 +298,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
 					}
 
 
-					tBx_output.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata";
+					tBx_output.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY";
                     for (int i = 0; i < lBx_SubDocs.Items.Count; i++)
                     {
                         listDocuments.Add(lBx_SubDocs.Items[i].ToString());
@@ -352,7 +354,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         /*Function to Close UI*/
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
-            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\Sonata\");
+            string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\");
             foreach (string file in files)
             {
                 if (file.Contains(".PNG") || file.Contains(".png"))
@@ -504,7 +506,8 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             btn_Populate.Enabled = false;
             subCount = 0;
             int counter = 0;
-            if (btnID != "DaisyMultiple" && btnID != "DaisyTabMultiple" && btnID != "Button2")
+            if ((btnID != "DaisyMultiple" && btnID != "DaisyTabMultiple" && btnID != "Button2") || useAScript )
+            //if (useAScript) 
             {
                 mLayoutPanel.Controls[0].Controls[0].Controls[1].Text = "";
                 foreach (Control c in oTableLayoutPannel.Controls)
@@ -557,9 +560,9 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         {
             tBx_Uid.Text = GenerateId().ToString();
             uId = tBx_Uid.Text;
-            if (btnID == "DaisyMultiple" || btnID == "Button2" || btnID == "DaisyTabMultiple")
+            if ((btnID == "DaisyMultiple" || btnID == "Button2" || btnID == "DaisyTabMultiple") && !useAScript)
+            //if (!useAScript) 
             {
-
                 mLayoutPanel.Visible = false;
                 oLayoutPanel.Visible = false;
                 grpBox_Properties.Location = mLayoutPanel.Location;

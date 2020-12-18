@@ -2,9 +2,9 @@ using System;
 using System.IO;
 using DaisyWord2007AddIn;
 using Extensibility;
-using NUnit.Framework;
 using Microsoft.Office.Interop.Word;
-using Sonata.DaisyConverter.DaisyConverterLib.Converters;
+using Daisy.DaisyConverter.DaisyConverterLib.Converters;
+using NUnit.Framework;
 
 namespace Word2007Addin.IntegrationTests
 {
@@ -19,13 +19,13 @@ namespace Word2007Addin.IntegrationTests
 			base.TearDown();
 		}
 
-		[TestFixtureTearDown]
+		[OneTimeTearDown]
 		public override void FixtureTearDown()
 		{
 			base.FixtureTearDown();
 		}
 
-		[TestFixtureSetUp]
+		[OneTimeSetUp]
 		public override void FixtureSetUp()
 		{
 			base.FixtureSetUp();

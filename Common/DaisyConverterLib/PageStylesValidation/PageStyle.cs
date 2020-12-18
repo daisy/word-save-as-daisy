@@ -1,4 +1,4 @@
-﻿namespace Sonata.DaisyConverter.DaisyConverterLib.PageStylesValidation
+﻿namespace Daisy.DaisyConverter.DaisyConverterLib.PageStylesValidation
 {
 	public enum PageStyle
 	{

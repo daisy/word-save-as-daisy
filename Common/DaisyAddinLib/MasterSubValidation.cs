@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public partial class MasterSubValidation : Form
     {

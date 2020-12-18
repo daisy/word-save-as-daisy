@@ -38,7 +38,7 @@ using System.Xml.Schema;
 using System.Windows.Forms;
 
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     /// <summary>
     /// Core conversion methods 
@@ -213,6 +213,15 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             Transform(inputFile, null, table, null, true, "");
         }
 
+        /// <summary>
+        /// Important function to be documented
+        /// </summary>
+        /// <param name="inputFile"></param>
+        /// <param name="outputFile"></param>
+        /// <param name="table"></param>
+        /// <param name="listMathMl"></param>
+        /// <param name="modeValue"></param>
+        /// <param name="output_Pipeline"></param>
         public void Transform(string inputFile, string outputFile, Hashtable table, Hashtable listMathMl, bool modeValue, string output_Pipeline)
         {
             fidilityLoss = new ArrayList();
@@ -264,7 +273,21 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             }
         }
 
-
+        /// <summary>
+        /// This function does the following action on the "filename" file : 
+        /// - replace the system local dtbook-2005-3.dtd by the public one
+        /// - add the correct namespace to the dtbook declaration
+        ///
+        /// Notes : 
+        /// - if the value parameter is set to false, the function is only doing a read and rewrite the file on itself
+        /// - If no closing mml:math tag is found, the code removes 
+        ///   - chars 203 to 1120, 
+        ///   - an empty line before the dtbook tag 
+        ///   - every occurences of the mml namespace declaration
+        /// </summary>
+        /// <param name="fileDTD">dtd file to be removed from disk</param>
+        /// <param name="fileName">path of the file to be updated</param>
+        /// <param name="value">boolean flag - if true, tha actions are applied on the updated file</param>
         public void DeleteDTD(String fileDTD, String fileName, bool value)
         {
 
@@ -318,6 +341,16 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
             }
         }
 
+        /// <summary>
+        /// Imporant function to be documented !
+        /// </summary>
+        /// <param name="inputName"></param>
+        /// <param name="inputFile"></param>
+        /// <param name="outputFile"></param>
+        /// <param name="actualoutputfile"></param>
+        /// <param name="listMathMl"></param>
+        /// <param name="table"></param>
+        /// <param name="output_Pipeline"></param>
         private void _Transform(String inputName, string inputFile, string outputFile, string actualoutputfile, Hashtable listMathMl, Hashtable table, string output_Pipeline)
         {
             // this throws an exception in the the following cases:

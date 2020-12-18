@@ -33,7 +33,7 @@ using System.Text;
 using System.Reflection;
 using System.Xml;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 	/// <summary>
 	/// An XmlUrlResolver for embedded resources.

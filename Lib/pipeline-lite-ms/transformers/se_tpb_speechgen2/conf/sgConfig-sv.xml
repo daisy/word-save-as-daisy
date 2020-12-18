@@ -27,12 +27,80 @@
 		<item>level/hd</item>
 	</mergeAudio>
 	
+	<!-- shorter breaks wanted after headings -->
+    <!-- 
+          __        ___    ____  _   _ ___ _   _  ____ _ 
+          \ \      / / \  |  _ \| \ | |_ _| \ | |/ ___| |
+           \ \ /\ / / _ \ | |_) |  \| || ||  \| | |  _| |
+            \ V  V / ___ \|  _ <| |\  || || |\  | |_| |_|
+             \_/\_/_/   \_\_| \_\_| \_|___|_| \_|\____(_)
+             
+             The silence times will be truncated to the sample rate used.
+             The values below are adjusted to work with current sample rate of 22050Hz.
+             It turns out that as long as you use silence times at even 20ms, no truncation error
+             occurs.
+             
+             Example for 22050 Hz sampling frequency:
+             
+             Time resolution: 1/22050 -> samples/second = 22050, since we are using milliseconds as our
+             time base, use that instead for simplicity and clarity:
+              22.05 samples/millisecond. However we can only generate silence times of whole samples!
+              So if we request 1 ms silence it will in reality be truncated to 22 samples and the
+              resulting silence time will be 22*1/22050 seconds or 22*1/22.05 = 0.99773 ms
+              
+              The time error is thus: 1 - 0.99773 = 0.00227 ms
+              
+              This error can look insignificant but for a book with thousands of syncpoints,
+              or even tens of thousands it will be very significant:
+              
+              Example 0.00227ms * 10000 = 22.7ms
+              
+              This may still not look so catastrophic but 1 ms is the "nice" error case for a sampling frequency of 22050Hz.
+              Using the simplest worst case scenario instead, 19ms:
+              
+              22.05 samples/millisecond * 19 milliseconds = 418.95 samples
+              
+              this will resulting in truncating away almost the whole time for one sample, resulting in a silence time of:
+              
+              22/22.05*19 milliseconds = 18.957 ms, which gives a time error of 19 - 18.957 = 0.043ms
+              
+              As before, for a book with 10000 syncpoints, the resulting total error will be:
+              
+              0.043ms * 10000 = 430ms, and now we are in the seconds error region! Really bad!!
+              
+              To avoid this, change the way the code makes blatantly assumptions about what silence times
+              it gets in a discrete world, or as a temporary measure, make the silence times adding up to
+              exactly even number of samples for the sampling frequency used.
+              
+              For the sampling frequency used here, 22050, that would be even 20ms intervals since:
+              
+              Samples per millisecond: 1000/22050 = 22.050
+              
+              and we don't want a reminder for the resulting number of samples -> the reminder, 0.050, should be zero.
+              
+              -> since 0.050*20 = 1 it follows that any silence time, given in milliseconds, evenly divisible with 20 will do!
+
+                                    _                _                                          
+                                   / \   ___    __ _| |_      ____ _ _   _ ___                  
+                                  / _ \ / __|  / _` | \ \ /\ / / _` | | | / __|                 
+                                 / ___ \\__ \ | (_| | |\ V  V / (_| | |_| \__ \_                
+                                /_/   \_\___/  \__,_|_| \_/\_/ \__,_|\__, |___( )               
+                                 _   _            ____  _______     _|___/_   |/                
+                                | |_| |__   ___  |  _ \| ____\ \   / /_ _| |                    
+                                | __| '_ \ / _ \ | | | |  _|  \ \ / / | || |                    
+                                | |_| | | |  __/ | |_| | |___  \ V /  | || |___                 
+                                 \__|_| |_|\___| |____/|_____|  \_/  |___|_____|        _ _     
+                                (_)___  (_)_ __   | |_| |__   ___    __| | ___| |_ __ _(_) |___ 
+                                | / __| | | '_ \  | __| '_ \ / _ \  / _` |/ _ \ __/ _` | | / __|
+                                | \__ \ | | | | | | |_| | | |  __/ | (_| |  __/ || (_| | | \__ \
+                                |_|___/ |_|_| |_|  \__|_| |_|\___|  \__,_|\___|\__\__,_|_|_|___/
+                                                                                                    
+     -->
 	<silence>
-		<afterLast>2000</afterLast>
-		<afterFirst>800</afterFirst>
-		<beforeAnnouncement>300</beforeAnnouncement>
-		<afterAnnouncement>300</afterAnnouncement>
-		<afterRegularPhrase>700</afterRegularPhrase>
+		<afterLast>1000</afterLast> <!-- 22050 sample rate, 1000 evenly divisible with 20, see above! -->
+		<afterFirst>200</afterFirst> <!-- 22050 sample rate, 200 evenly divisible with 20, see above! -->
+		<beforeAnnouncement>80</beforeAnnouncement> <!-- 22050 sample rate, 80 evenly divisible with 20, see above! -->
+		<afterAnnouncement>80</afterAnnouncement> <!-- 22050 sample rate, 80 evenly divisible with 20, see above! -->
+		<afterRegularPhrase>180</afterRegularPhrase> <!-- 22050 sample rate, 180 evenly divisible with 20, see above! -->
 	</silence>
-	
 </sgConfig>

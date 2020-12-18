@@ -29,7 +29,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
 
     /// <summary>Thrown whenever an error occurs during the build.</summary>

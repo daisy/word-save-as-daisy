@@ -83,12 +83,7 @@ with the DAISY Pipeline application are listed below:
 	Logging library
 	Apache Software License, Version 2
 	http://www.apache.org/licenses/
-	
-	onvdl.jar
-	oXygen XML NVDL implementation based on Jing
-	X License/oNVDL License
-	http://www.oxygenxml.com/eula_onvdl.html
-	
+
 	sac.jar
 	Simple API for CSS
 	W3C Software License

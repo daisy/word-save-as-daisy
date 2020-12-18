@@ -12,14 +12,18 @@
 		
 	</initialismElement>
 
-	<sentenceElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="p">
+	<sentenceElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="span">
 		<attribute name="class" value="sent"/>
 	</sentenceElement>
 	
 	<wordElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="span">
 		<attribute name="class" value="w"/>
 	</wordElement>
-
+	
+	<fixElement namespace="http://www.w3.org/1999/xhtml" prefix="" name="span" expandAttribute="class">
+		<attribute name="class" value="w"/>
+	</fixElement>
+	
 	<defaultPaths>
 		<path name="/html/body"/>
 	</defaultPaths>

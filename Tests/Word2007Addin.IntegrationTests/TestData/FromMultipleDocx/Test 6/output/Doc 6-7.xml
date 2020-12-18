@@ -31,10 +31,10 @@
         <p>The results of European and International researches confirm the high attraction of Belarus for software development outsourcing:</p>
         <list type="ul">
           <li>
-            <p>★  In 2008 Gartner Inc. choose 50 countries that were considered to be attractive for outsourcing.  According to this investigation Belarus is among the <strong>13</strong> rapidly growing countries and has all chance to be within the leading group.  </p>
+            <p>In 2008 Gartner Inc. choose 50 countries that were considered to be attractive for outsourcing.  According to this investigation Belarus is among the <strong>13</strong> rapidly growing countries and has all chance to be within the leading group.  </p>
           </li>
           <li>
-            <p>★  The results of the investigation of Central and Eastern European Outsourcing Association (CEEOA) indicate that Belarus is among the <strong>5</strong> leading countries on software development outsourcing market in the Central and Eastern Europe.</p>
+            <p>The results of the investigation of Central and Eastern European Outsourcing Association (CEEOA) indicate that Belarus is among the <strong>5</strong> leading countries on software development outsourcing market in the Central and Eastern Europe.</p>
           </li>
         </list>
         <p>
@@ -42,6 +42,7 @@
         <p>Belarus successfully uses its unique set of advantages for software development. Let’s have a look at some of them:</p>
         <p>
         </p>
+        <p />
       </level1>
       <level1>
         <h1>  High level of education 
@@ -50,6 +51,7 @@
         <p>Besides, every year about 3500 IT specialists graduate from the universities of Belarus and about 1000 of these specialists start their careers in software development. Very good level of Belarus students is highlighted by the fact that for several years Belarusian students occupy high places on international student contests on programming and mathematics.</p>
         <p>
         </p>
+        <p />
       </level1>
       <level1>
         <h1>  Geographical proximity
@@ -58,6 +60,7 @@
         <p>Time difference between Belarus and European countries is insignificant that is convenient for business negotiations and project implementation: for example time difference between Belarus and Great Britain is 2 hours, between Belarus and other European countries such as Germany, Austria, Sweden Denmark, France and etc. – 1 hour.</p>
         <p>
         </p>
+        <p />
       </level1>
       <level1>
         <h1>  Cultural community
@@ -69,6 +72,7 @@
         </p>
         <p>
         </p>
+        <p />
       </level1>
       <level1>
         <h1>  Blog Article Structure for authors
@@ -119,6 +123,7 @@
             </tr>
           </tbody>
         </table>
+        <p />
         <p />
         <p />
       </level1>
@@ -188,7 +193,16 @@
         <p />
         <p />
         <p />
+        <p />
       </level1>
     </bodymatter>
+    <rearmatter>
+      <level1>
+        <p />
+      </level1>
+      <level1>
+        <p />
+      </level1>
+    </rearmatter>
   </book>
 </dtbook>

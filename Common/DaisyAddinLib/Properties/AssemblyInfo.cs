@@ -36,9 +36,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("DaisyTranslator Add-in Library")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Sonata Software Limited")]
+[assembly: AssemblyCompany("The DAISY Consortium")]
 [assembly: AssemblyProduct("DaisyWordAddinLib")]
-[assembly: AssemblyCopyright("Copyright © Sonata Software Limited 2008")]
+[assembly: AssemblyCopyright("Copyright © The DAISY Consortium 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -59,5 +59,5 @@ using System.Runtime.InteropServices;
 //
 // Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de révision et de build par défaut 
 // en utilisant '*', comme indiqué ci-dessous :
-[assembly: AssemblyVersion("2.5.5.1")]
-[assembly: AssemblyFileVersionAttribute("2.5.5.1")]
+[assembly: AssemblyVersion("2.6.1.0")]
+[assembly: AssemblyFileVersion("2.6.1.0")]

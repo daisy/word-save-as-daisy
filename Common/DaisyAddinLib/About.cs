@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     public partial class About : Form
     {
@@ -25,7 +25,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         public About()
         {
             InitializeComponent();
-            _currentVersion = getCurrentversion();
+            _currentVersion = GetCurrentversion();
             this.versionNumLabel.Text = _currentVersion;
         }
 
@@ -51,7 +51,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
                 response.Close();
                 readStream.Close();
 
-                _currentVersion = getCurrentversion();
+                _currentVersion = GetCurrentversion();
 
                 int Installedversion = Convert.ToInt16(_currentVersion.Replace(".", ""));
                 int Availableversion = Convert.ToInt16(NewVersion.Replace(".", ""));
@@ -79,10 +79,12 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         /// Function which gives the Current Version of the Daisy Translator
         /// </summary>
         /// <returns></returns>
-        public string getCurrentversion()
+        public string GetCurrentversion()
         {
-            Assembly obj = Assembly.LoadFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Converter.dll");
-            _currentVersion = obj.GetName().Version.ToString();
+            //string temp = Assembly.GetExecutingAssembly().Location;
+            //Assembly obj = Assembly.LoadFile(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Converter.dll");
+            //_currentVersion = obj.GetName().Version.ToString();
+            _currentVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             return _currentVersion;
         }
 
@@ -91,7 +93,7 @@ namespace Sonata.DaisyConverter.DaisyConverterLib
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void bttnOk_Click(object sender, EventArgs e)
+        private void BttnOk_Click(object sender, EventArgs e)
         {
             this.Close();
         }

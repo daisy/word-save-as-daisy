@@ -7,8 +7,8 @@
 		<tabs>
 			<tab id="CustomTab" label="Accessibility">
 				<group id="SampleGroup" label="Save As Daisy">
-					<button id="Button1" label="Single Document" size="large" onAction="SaveAsDaisy" getImage="GetImage" keytip="Y"/>
-					<button id="Button2"  label="&amp;Multiple Document" size="large" onAction="Mutiple" getImage="GetImage7"/>
+					<button id="Button1" tag="Button1" label="Single Document" size="large" onAction="SaveAsDaisy" getImage="GetImage" keytip="Y"/>
+					<button id="Button2" tag="Button2" label="&amp;Multiple Document" size="large" onAction="Mutiple" getImage="GetImage7"/>
 				</group >
 				<group id="SampleGroup2" label="Abbreviations">
 					<button id="Button3"  label="Mark As A&amp;bbreviation" size="large" onAction="MarkAsAbbreviationUI" getImage="GetImage1"/>

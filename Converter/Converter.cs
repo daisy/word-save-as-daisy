@@ -29,9 +29,9 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Sonata.DaisyConverter.DaisyConverterLib;
+using Daisy.DaisyConverter.DaisyConverterLib;
 
-namespace Sonata.DaisyConverter.Word
+namespace Daisy.DaisyConverter.Word
 {
     public class Converter : AbstractConverter
     {

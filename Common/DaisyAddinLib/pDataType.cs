@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Xml;
 
-namespace Sonata.DaisyConverter.DaisyConverterLib
+namespace Daisy.DaisyConverter.DaisyConverterLib
 {
     class PathDataType
     {
