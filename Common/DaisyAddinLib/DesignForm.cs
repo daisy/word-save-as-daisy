@@ -36,6 +36,7 @@ using System.Collections;
 using System.IO.Packaging;
 using System.Windows.Forms;
 using Daisy.DaisyConverter.DaisyConverterLib.Converters;
+using System.Diagnostics;
 
 namespace Daisy.DaisyConverter.DaisyConverterLib
 {
@@ -122,10 +123,14 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 			mParser = new ScriptParser(scriptPath);
 			useAScript = true;
 			FileInfo f = new FileInfo(scriptPath);
-			if (!AddInHelper.buttonIsSingleWordToXMLConversion(btnID))
-				this.Text = f.Name.Replace(f.Extension, "");
+			
 
 			InitializeComponent();
+
+			if (!AddInHelper.buttonIsSingleWordToXMLConversion(btnID)) {
+				//this.Text = f.Name.Replace(f.Extension, "");
+				this.Text = mParser.NiceName;
+			}
 		}
 
 		/// <summary>
@@ -545,9 +550,9 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 				panel1.Visible = false;
 				oLayoutPanel.Visible = false;
 				mLayoutPanel.Location = new Point(panel1.Location.X, panel1.Location.Y);
-				grpBox_Properties.Location = new Point(mLayoutPanel.Location.X, mLayoutPanel.Location.Y + 46);
+				grpBox_Properties.Location = new Point(mLayoutPanel.Location.X, mLayoutPanel.Location.Y + 30);
 
-				this.Height = this.Height - panel1.Height - oLayoutPanel.Height - btn_HideDetail.Height - 130;
+				this.Height = this.Height - panel1.Height - oLayoutPanel.Height - btn_HideDetail.Height - 130 ;
 				int tabIndex = 0;
 				int w = 0;
 				int h = 0;
@@ -634,12 +639,19 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 				tBx_Browse.Text = path;
 		}
 
-		/// <summary>
-		/// Function to reset all the fields in the UI
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void btn_Reset_Click(object sender, EventArgs e)
+        private void AccessibilityCheckerLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
+			Process.Start("https://support.microsoft.com/en-us/office/improve-accessibility-with-the-accessibility-checker-a16f6de0-2f39-4a2b-8bd8-5ad801426c7f#bkmk_use");
+		}
+
+       
+
+
+        /// <summary>
+        /// Function to reset all the fields in the UI
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btn_Reset_Click(object sender, EventArgs e)
 		{
 			tBx_Browse.Text = "";
 			tBx_Title.Text = "";

@@ -322,7 +322,11 @@ namespace DaisyWord2007AddIn {
         string IRibbonExtensibility.GetCustomUI(string RibbonID) {
             path_For_Pipeline = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\pipeline-lite-ms";
             if (Directory.Exists(path_For_Pipeline)) {
-                return GetResource("customUI.xml");
+                // Removing the validator button for office 2010 and later
+                // For office 2007, the old validation step remains necessary
+                if (this.applicationObject.Version == "12.0") {
+                    return GetResource("customUI2007.xml");
+                } else return GetResource("customUI.xml");
             } else {
                 return GetResource("customUIOld.xml");
             }

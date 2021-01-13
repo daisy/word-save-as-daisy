@@ -15,6 +15,27 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         private string m_ScriptFilePath;
         private List<ScriptParameter> m_ParameterList;
 
+        private string m_NiceName = "";
+
+        /// <summary>
+        /// List of parameters available in script
+        /// </summary>
+        public List<ScriptParameter> ParameterList {
+            get { return m_ParameterList; }
+        }
+
+        public string NiceName { 
+            get {
+                if (m_NiceName == "") {
+                    // I assume the taskscript to start by a nicename tag
+                    XmlNode taskscript = m_ScriptDocument.GetElementsByTagName("taskScript")[0];
+                    m_NiceName = taskscript.FirstChild.InnerText;
+                }
+                return m_NiceName;
+            }
+        }
+
+
         public ScriptParser(string ScriptPath)
         {
             m_ParameterList = new List<ScriptParameter>();
@@ -30,6 +51,9 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             //populate parameters list
             PopulateParameterList();
         }
+
+
+
         /// <summary>
         /// <summary
         ///  populate parameter list
@@ -50,14 +74,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         }
 
 
-        /// <summary>
-        /// summary
-        /// List of parameters available in script
-        /// </summary>
-        public List<ScriptParameter> ParameterList
-        {
-            get { return m_ParameterList; }
-        }
+        
 
         /// <summary>
         /// Executes script normal.

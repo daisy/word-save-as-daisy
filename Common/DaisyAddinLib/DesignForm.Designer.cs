@@ -43,6 +43,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             this.btn_Browse = new System.Windows.Forms.Button();
             this.label_Folder = new System.Windows.Forms.Label();
             this.grpBox_Properties = new System.Windows.Forms.GroupBox();
+            this.AccessibilityCheckerLink = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.label_Title = new System.Windows.Forms.Label();
@@ -148,10 +149,20 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             // 
             resources.ApplyResources(this.grpBox_Properties, "grpBox_Properties");
             this.grpBox_Properties.BackColor = System.Drawing.SystemColors.Control;
+            this.grpBox_Properties.Controls.Add(this.AccessibilityCheckerLink);
             this.grpBox_Properties.Controls.Add(this.tableLayoutPanel2);
             this.grpBox_Properties.ForeColor = System.Drawing.SystemColors.ControlText;
             this.grpBox_Properties.Name = "grpBox_Properties";
             this.grpBox_Properties.TabStop = false;
+            // 
+            // AccessibilityCheckerLink
+            // 
+            resources.ApplyResources(this.AccessibilityCheckerLink, "AccessibilityCheckerLink");
+            this.AccessibilityCheckerLink.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
+            this.AccessibilityCheckerLink.Name = "AccessibilityCheckerLink";
+            this.AccessibilityCheckerLink.TabStop = true;
+            this.AccessibilityCheckerLink.UseCompatibleTextRendering = true;
+            this.AccessibilityCheckerLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AccessibilityCheckerLink_LinkClicked);
             // 
             // tableLayoutPanel2
             // 
@@ -275,6 +286,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.grpBox_Properties.ResumeLayout(false);
+            this.grpBox_Properties.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -312,6 +324,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         private System.Windows.Forms.Button btn_Reset;
         private System.Windows.Forms.Button btn_Cancel;
         private System.Windows.Forms.Button btn_OK;
+        private System.Windows.Forms.LinkLabel AccessibilityCheckerLink;
         //private System.Windows.Forms.TextBox tBx_Publisher;
 
 
