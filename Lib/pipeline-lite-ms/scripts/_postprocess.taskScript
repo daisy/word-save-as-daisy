@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <taskScript version="2.0" name="dtbook2daisy3">
-	<nicename>DTbook XML post processing script</nicename>
+	<nicename>DTbook XML post processing</nicename>
 	<description>Apply cleanups and optional treatments on DTBook XML</description>
 	<documentation uri=""/>
 		

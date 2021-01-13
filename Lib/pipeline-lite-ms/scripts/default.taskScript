@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <taskScript version="2.0" name="dtbook2daisy3">
-	<nicename>DAISY Pipeline TTS Narrator</nicename>
+	<nicename>Conversion to DAISY Book</nicename>
 	<description>Converts a DTBook 2005 file to a complete DAISY/NISO 2005 DTB</description>
 	<documentation uri=""/>
 		

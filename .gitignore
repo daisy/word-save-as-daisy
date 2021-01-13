@@ -7,14 +7,17 @@
 *.sln.docstates
 .vs
 packages/
-# Build results
 
+# Build results
 [Dd]ebug/
 [Rr]elease/
 x64/
 build/
 [Bb]in/
 [Oo]bj/
+
+# force backing up the jre distributed with the pipeline lite (includes a bin folder)
+!Lib/pipeline-lite-ms/jre/*
 
 # Enable "build/" folder in the NuGet Packages folder since NuGet packages use it for MSBuild targets
 !packages/*/build/
