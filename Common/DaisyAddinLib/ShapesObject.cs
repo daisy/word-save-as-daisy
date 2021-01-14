@@ -54,12 +54,11 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         private static extern int FormatMessage(int dwFlags, string lpSource, int dwMessageId, int dwLanguageId,
                                                StringBuilder lpBuffer, int nSize, string[] Arguments);
 
-        public static string GetLastErrorMessage() {
+        public static string GetLastErrorMessage(int ErrorCode) {
             StringBuilder strLastErrorMessage = new StringBuilder(255);
-            int ret2 = Marshal.GetLastWin32Error();
             const int dwFlags = 4096;
-            FormatMessage(dwFlags, null, ret2, 0, strLastErrorMessage, strLastErrorMessage.Capacity, null);
-            return "Error code " + ret2.ToString() + " : " + strLastErrorMessage.ToString();
+            FormatMessage(dwFlags, null, ErrorCode, 0, strLastErrorMessage, strLastErrorMessage.Capacity, null);
+            return "Error code " + ErrorCode.ToString() + " : " + strLastErrorMessage.ToString();
         }
     }
 
@@ -104,17 +103,31 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                         }
                         else
                         {
-                            throw new ClipboardDataException("Error extracting CF_ENHMETAFILE from clipboard.\r\n- System message: \""+User32.GetLastErrorMessage() + "\""); 
+                            int errorCode = Marshal.GetLastWin32Error();
+                            string message = "Could not extract CF_ENHMETAFILE from clipboard.";
+                            if (errorCode != 0) {
+                                message += "\r\n - System message: \"" + User32.GetLastErrorMessage(errorCode) + "\"";
+                            } else {
+                                message += "\r\n(the shape may not be represented as a metafile in the document)";
+                            }
+                            throw new ClipboardDataException(message); 
                         }
                     }
                     else
                     {
-                        throw new ClipboardDataException("CF_ENHMETAFILE is not available in clipboard.\r\n- System message: \"" + User32.GetLastErrorMessage() + "\"");
+                        int errorCode = Marshal.GetLastWin32Error();
+                        string message = "CF_ENHMETAFILE format is not available for the clipboard current data";
+                        if (errorCode != 0) {
+                            message += "\r\n - System message: \"" + User32.GetLastErrorMessage(errorCode) + "\"";
+                        } else {
+                            message += "\r\n(the shape may not be convertable to a metafile in the document)";
+                        }
+                        throw new ClipboardDataException(message);
                     }
                 }
                 else
                 {
-                    throw new ClipboardAccessException("Error opening clipboard.\r\n- System message: \"" + User32.GetLastErrorMessage() + "\"");
+                    throw new ClipboardAccessException("Error opening clipboard.\r\n- System message: \"" + User32.GetLastErrorMessage(Marshal.GetLastWin32Error()) + "\"");
                 }
             }
             catch (System.Exception e) // ensures finally is executed before propagation

@@ -9,7 +9,7 @@
         -->
     
     <!-- Preprocessor variables, update following your addin assemblies version -->
-    <?define AddinVersion = "2.6.1.0" ?>
+    <?define AddinVersion = "2.6.1.1" ?>
     
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
@@ -24,13 +24,13 @@
     <?endif ?>
     
     <!--Change this ID for update -->
-    <Product Id="C9DAC66C-A876-42FB-B155-BC59017FBD73" 
+    <Product Id="26602D91-C52C-47D9-8078-6936C35E30A4" 
             Name="Daisy Translator Addin version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
         <!--Change this ID for update -->
-        <Package Id="D938E2E6-4781-41CC-83BA-C3D752801C8F" Compressed="yes" InstallPrivileges="elevated" InstallerVersion="200" />
+        <Package Id="A171FEEE-41C2-42EE-BC88-E7CD3CAE2816" Compressed="yes" InstallPrivileges="elevated" InstallerVersion="200" />
         <Media Id="1" Cabinet="Daisy.cab" EmbedCab="yes" />
         <Media Id="2" Cabinet="pipeline.cab" EmbedCab="no" CompressionLevel="high"/>
         <!-- remove previous versions of previous Word add-in -->
