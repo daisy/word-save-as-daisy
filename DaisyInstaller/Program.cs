@@ -36,7 +36,7 @@ namespace DaisyInstaller
          */
 
         public static float minimalVersionSupport = 11.0f;
-        public static float maximalVersionSupport = 16.0f;
+        public static float maximalVersionSupport = 17.0f;
 
         /// <summary>
         /// The main entry point for the application.
@@ -130,24 +130,6 @@ namespace DaisyInstaller
 
                 string tempPath = Path.GetTempPath();
 
-                // TOBEREMOVED - replaced by CAB referenced in the MSI
-                // Default install location
-                // string[] installTree = new string[] { "DAISY Consortium", "Save-as-DAISY Word Addin" };
-                //string installRoot = !officeIs64bits && archPtrBitSize == 64 ?
-                //    Environment.GetEnvironmentVariable("ProgramFiles(x86)") :
-                //    Environment.GetEnvironmentVariable("ProgramFiles");
-                // Ask the user to validate the install location or let him change it
-                // InstallPathSelector installFolderSelect = new InstallPathSelector(installRoot, installTree);
-                //string installLocation = "";
-                //if (installFolderSelect.ShowDialog() == DialogResult.OK) {
-                //    installLocation = installFolderSelect.getInstallDir();
-                // unzip pipeline in the location before addin installation
-                //string pipelineZipPath = Path.Combine(tempPath, "pipeline-lite.zip");
-                //File.WriteAllBytes(pipelineZipPath, Properties.Resources.pipeline_lite_ms);
-                //PipelineInstaller pipelineUnzipping = new PipelineInstaller(pipelineZipPath, installLocation);
-                //pipelineUnzipping.Show();
-                //} else return; // cancel install
-
                 // unpackage the msi needed for install
                 string daisySetupPath = Path.Combine(tempPath, "DaisyAddinForWordSetup.msi");
                 string pipelineCabPath = Path.Combine(tempPath, "pipeline.cab");
@@ -168,7 +150,6 @@ namespace DaisyInstaller
 
                 // launch the msi
                 Process.Start(daisySetupPath);
-                // Process install = Process.Start("msiexec", "/i \"" + daisySetupPath + "\" INSTALLDIR=\"" + installLocation + "\"");
 
             } else return;
             

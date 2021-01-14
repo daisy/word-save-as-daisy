@@ -20,7 +20,7 @@ public:
     DECLARE_PROTECT_FINAL_CONSTRUCT()
 
     BEGIN_COM_MAP(CConnectProxy)
-        COM_INTERFACE_ENTRY(IDTExtensibility2)
+        COM_INTERFACE_ENTRY(_IDTExtensibility2)
         COM_INTERFACE_ENTRY(IComAggregator)
         COM_INTERFACE_ENTRY_AGGREGATE_BLIND(m_pUnknownInner)
     END_COM_MAP()
@@ -47,7 +47,7 @@ public:
     STDMETHOD(SetInnerPointer)(IUnknown* pUnkInner);
 
 private:
-    IDTExtensibility2 *m_pConnect;
+    IDTExtensibility2 m_pConnect;
     CCLRLoader *m_pCLRLoader;
     IUnknown *m_pUnknownInner;
 };

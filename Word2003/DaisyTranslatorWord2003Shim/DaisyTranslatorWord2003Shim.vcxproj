@@ -98,6 +98,7 @@
     <IntDir>Debug\</IntDir>
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>true</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -112,6 +113,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugWord2003|Win32'">
     <OutDir>$(Configuration)\</OutDir>
@@ -164,10 +166,10 @@
     </Link>
     <PostBuildEvent>
       <Message>Performing post-build tasks</Message>
-      <Command>regsvr32 /s "$(TargetPath)"
-copy "$(SolutionDir)Word2003\DaisyTranslatorWord2003Addin\bin\Debug\DaisyTranslatorWord2003Addin.dll" "$(TargetDir)"
-copy "$(SolutionDir)ManagedAggregator\bin\Debug\ManagedAggregator.dll" "$(TargetDir)"
-powershell "$(SolutionDir)signing\signing.ps1" -dll "$(TargetPath)"
+      <Command>REM regsvr32 /s "$(TargetPath)"
+REM copy "$(SolutionDir)Word2003\DaisyTranslatorWord2003Addin\bin\Debug\DaisyTranslatorWord2003Addin.dll" "$(TargetDir)"
+REM copy "$(SolutionDir)ManagedAggregator\bin\Debug\ManagedAggregator.dll" "$(TargetDir)"
+REM powershell "$(SolutionDir)signing\signing.ps1" -dll "$(TargetPath)"
 ::"$(FrameworkSDKDir)bin\signtool.exe" sign /d "OpenXML/ODF Translator for Office" /du "http://odf-converter.sourceforge.net" /t "http://timestamp.verisign.com/scripts/timstamp.dll" /f %25CERTFILE%25 /p %25CERTPASS%25 /v "$(TargetPath)"
 </Command>
     </PostBuildEvent>
@@ -263,9 +265,9 @@ powershell "$(SolutionDir)signing\signing.ps1" -dll "$(TargetPath)"
     </Link>
     <PostBuildEvent>
       <Message>Performing post-build tasks</Message>
-      <Command>regsvr32 /s "$(TargetPath)"
-copy "$(SolutionDir)Word2003\DaisyTranslatorWord2003Addin\bin\Release\DaisyTranslatorWord2003Addin.dll" "$(TargetDir)"
-copy "$(SolutionDir)ManagedAggregator\bin\Release\ManagedAggregator.dll" "$(TargetDir)"
+      <Command>REM regsvr32 /s "$(TargetPath)"
+REM copy "$(SolutionDir)Word2003\DaisyTranslatorWord2003Addin\bin\Release\DaisyTranslatorWord2003Addin.dll" "$(TargetDir)"
+REM copy "$(SolutionDir)ManagedAggregator\bin\Release\ManagedAggregator.dll" "$(TargetDir)"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
