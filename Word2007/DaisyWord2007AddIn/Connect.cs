@@ -879,16 +879,30 @@ namespace DaisyWord2007AddIn {
             result.MasterSubFlag = MasterSubDecision(docFile, eventsHandler);
             result.InitializeWindow.Show();
             Application.DoEvents();
-            saveasshapes();
-            SaveasImages();
-            this.applicationObject.ActiveDocument.Save();
+            try {
+                saveasshapes();
+            } catch (Exception e) {
+                eventsHandler.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
+                    "\r\n- " + e.Message + 
+                    "\r\n" + e.StackTrace);
+            }
+            try {
+                SaveasImages();
+            } catch (Exception e) {
+                eventsHandler.OnError("An error occured while preprocessing images and may prevent the rest of the conversion to success:" +
+                    "\r\n- " + e.Message +
+                    "\r\n" + e.StackTrace);
+            }
 
+            
+            this.applicationObject.ActiveDocument.Save();
             if (result.MasterSubFlag == "Yes") {
                 result.IsSuccess = OoxToDaisyOwn(result, controlId, eventsHandler);
             } else {
                 MTGetEquationAddin(eventsHandler);
                 result.InitializeWindow.Close();
             }
+
             result.IsSuccess = true;
             return result;
         }
@@ -1244,8 +1258,17 @@ namespace DaisyWord2007AddIn {
             mergeDoclanguage = new ArrayList();
             String individual_docs = "individual";
             String resultOpenSub = CheckFileOPen(subList);
-            saveasshapes(subList, "No");
-            SaveasImages(subList, "No");
+            try {
+                saveasshapes(subList, "No");
+            } catch (Exception e) {
+                //MessageBox.Show("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:\r\n" + e.Message);
+            }
+            try {
+                SaveasImages(subList, "No");
+            } catch (Exception e) {
+                // MessageBox.Show("An error occured while preprocessing images and may prevent the rest of the conversion to success:\r\n" + e.Message);
+            }
+
             if (resultOpenSub == "notopen") {
                 String resultSub = SubdocumentsManager.CheckingSubDocs(subList);
                 if (resultSub == "simple") {
@@ -1296,8 +1319,18 @@ namespace DaisyWord2007AddIn {
             mergeDoclanguage = new ArrayList();
             String individual_docs = "individual";
             String resultOpenSub = CheckFileOPen(subList);
-            saveasshapes(subList, "No");
-            SaveasImages(subList, "No");
+            try {
+                saveasshapes(subList, "No");
+            } catch (Exception e) {
+                eventsHandler.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:\r\n" + e.Message);
+            }
+            try {
+                SaveasImages(subList, "No");
+            } catch (Exception e) {
+                eventsHandler.OnError("An error occured while preprocessing images and may prevent the rest of the conversion to success:\r\n" + e.Message);
+            }
+
+
 
             if (resultOpenSub != "notopen") {
                 inz.Close();
@@ -1418,28 +1451,48 @@ namespace DaisyWord2007AddIn {
         public void saveasshapes() {
             MSword.Document doc = this.applicationObject.ActiveDocument;
             System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
+            List<string> warnings = new List<string>();
+            String fileName = doc.Name.Replace(" ", "_");
             foreach (MSword.Shape item in doc.Shapes) {
-                if (!item.Name.Contains("Text Box")) {
+                if (!item.Name.Contains("Text Box")) { 
                     object missing = Type.Missing;
                     item.Select(ref missing);
-                    this.applicationObject.Selection.CopyAsPicture();
-                    Metafile metaFile = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                    System.Drawing.Image image = metaFile;
-                    byte[] Ret;
-                    MemoryStream ms = new MemoryStream();
-                    image.Save(ms, ImageFormat.Png);
-                    Ret = ms.ToArray();
-                    String fileName = doc.Name.Replace(" ", "_");
+                    
                     string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
-                    FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                    fs.Write(Ret, 0, Ret.Length);
-                    fs.Flush();
-                    fs.Dispose();
-                    Clipboard.Clear();
-                }
+                    this.applicationObject.Selection.CopyAsPicture();
+                    try {
+                        // Note : using Clipboard.GetImage() set Word to display a clipboard data save request on closing
+                        // So we rely on the user32 clipboard methods that does not seem to be intercepted by Office
+                        System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                        byte[] Ret;
+                        MemoryStream ms = new MemoryStream();
+                        image.Save(ms, ImageFormat.Png);
+                        Ret = ms.ToArray();
+                        FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                        fs.Write(Ret, 0, Ret.Length);
+                        fs.Flush();
+                        fs.Dispose();
+                    } catch (ClipboardDataException cde) {
+                        warnings.Add("- Shape " + item.ID + ": " + cde.Message);
+                    } catch (Exception e) {
+                        throw e;
+                    } finally {
+                        Clipboard.Clear();
+                    }
 
+                }
             }
+
             this.applicationObject.ActiveDocument.Save();
+
+            if (warnings.Count > 0) {
+                string warningMessage = "Some shapes could not be exported from the document:";
+                foreach (string warning in warnings) {
+                    warningMessage += "\r\n" + warning;
+                }
+                throw new Exception(warningMessage);
+            }
+            
         }
 
         public void saveasshapes(ArrayList subList, String saveFlag) {
@@ -1450,38 +1503,58 @@ namespace DaisyWord2007AddIn {
             object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
             object originalFormat = Microsoft.Office.Interop.Word.WdOriginalFormat.wdOriginalDocumentFormat;
             System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
+            List<string> warnings = new List<string>();
             for (int i = 0; i < subList.Count; i++) {
                 object newName = subList[i];
+                String fileName = newName.ToString().Replace(" ", "_");
                 MSword.Document newDoc = this.applicationObject.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
                 foreach (MSword.Shape item in newDoc.Shapes) {
                     if (!item.Name.Contains("Text Box")) {
                         item.Select(ref missing);
-                        this.applicationObject.Selection.CopyAsPicture();
-                        Metafile metaFile = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                        System.Drawing.Image image = metaFile;
-                        byte[] Ret;
-                        MemoryStream ms = new MemoryStream();
-                        image.Save(ms, ImageFormat.Png);
-                        Ret = ms.ToArray();
-                        String fileName = newName.ToString().Replace(" ", "_");
                         string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
-                        FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                        fs.Write(Ret, 0, Ret.Length);
-                        fs.Flush();
-                        fs.Dispose();
-                        Clipboard.Clear();
+                        this.applicationObject.Selection.CopyAsPicture();
+                        try {
+                            System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                            byte[] Ret;
+                            MemoryStream ms = new MemoryStream();
+                            image.Save(ms, ImageFormat.Png);
+                            Ret = ms.ToArray();
+                            FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                            fs.Write(Ret, 0, Ret.Length);
+                            fs.Flush();
+                            fs.Dispose();
+                        } catch (ClipboardDataException cde) {
+                            warnings.Add("- Shape " + item.ID.ToString() + ": " + cde.Message);
+                        } catch (Exception e) {
+                            throw e;
+                        } finally {
+                            Clipboard.Clear();
+                            
+                        }
                     }
-
                 }
+                
                 newDoc.Close(ref saveChanges, ref originalFormat, ref missing);
             }
+            if (warnings.Count > 0) {
+                string warningMessage = "Some shapes could not be exported from the documents:";
+                foreach (string warning in warnings) {
+                    warningMessage += "\r\n" + warning;
+                }
+                throw new Exception(warningMessage);
+            }
         }
-
+        /// <summary>
+        /// Save the inline shapes 
+        /// (Not e : not of type Embedded OLE or Pictures, so it is probably targeting inlined vectorial drawings)
+        /// </summary>
         public void SaveasImages() {
             MSword.Document doc = this.applicationObject.ActiveDocument;
+
             object missing = Type.Missing;
             System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
-
+            List<string> warnings = new List<string>();
+            String fileName = doc.Name.Replace(" ", "_");
             MSword.Range rng;
             foreach (MSword.Range tmprng in doc.StoryRanges) {
                 rng = tmprng;
@@ -1490,28 +1563,42 @@ namespace DaisyWord2007AddIn {
                         if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
                             object range = item.Range;
                             string str = "Shapes_" + GenerateId().ToString();
+                            string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
+
                             item.Range.Bookmarks.Add(str, ref range);
                             item.Range.CopyAsPicture();
-
-                            Metafile metaFile = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                            System.Drawing.Image image = metaFile;
-                            byte[] Ret;
-                            MemoryStream ms = new MemoryStream();
-                            image.Save(ms, ImageFormat.Png);
-                            Ret = ms.ToArray();
-                            String fileName = doc.Name.Replace(" ", "_");
-                            string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
-                            FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                            fs.Write(Ret, 0, Ret.Length);
-                            fs.Flush();
-                            fs.Dispose();
-                            Clipboard.Clear();
+                            try {
+                                System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                                byte[] Ret;
+                                MemoryStream ms = new MemoryStream();
+                                image.Save(ms, ImageFormat.Png);
+                                Ret = ms.ToArray();
+                                FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                                fs.Write(Ret, 0, Ret.Length);
+                                fs.Flush();
+                                fs.Dispose();
+                            } catch (ClipboardDataException cde) {
+                                warnings.Add("- Image with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message) ; 
+                            } catch (Exception e) {
+                                throw e;
+                            } finally {
+                                Clipboard.Clear();
+                            }
                         }
                     }
                     rng = rng.NextStoryRange;
                 }
             }
+            
             this.applicationObject.ActiveDocument.Save();
+
+            if (warnings.Count > 0) {
+                string warningMessage = "Some images could not be exported from the document:";
+                foreach (string warning in warnings) {
+                    warningMessage += "\r\n" + warning;
+                }
+                throw new Exception(warningMessage);
+            }
         }
 
         public void SaveasImages(ArrayList subList, String saveFlag) {
@@ -1522,40 +1609,59 @@ namespace DaisyWord2007AddIn {
             object missing = Type.Missing;
             object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
             object originalFormat = Microsoft.Office.Interop.Word.WdOriginalFormat.wdOriginalDocumentFormat;
+            List<string> warnings = new List<string>();
             for (int i = 0; i < subList.Count; i++) {
                 object newName = subList[i].ToString();
                 MSword.Document newDoc = this.applicationObject.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
                 MSword.Range rng;
+                String fileName = newName.ToString().Replace(" ", "_");
                 foreach (MSword.Range tmprng in newDoc.StoryRanges) {
                     rng = tmprng;
                     while (rng != null) {
                         foreach (MSword.InlineShape item in rng.InlineShapes) {
                             if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
-                                object range = item.Range;
                                 string str = "Shapes_" + GenerateId().ToString();
+                                string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
+
+                                object range = item.Range;
+                                
                                 item.Range.Bookmarks.Add(str, ref range);
                                 item.Range.CopyAsPicture();
 
-                                Metafile metaFile = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                                System.Drawing.Image image = metaFile;
-                                byte[] Ret;
-                                MemoryStream ms = new MemoryStream();
-                                image.Save(ms, ImageFormat.Png);
-                                Ret = ms.ToArray();
-                                String fileName = newName.ToString().Replace(" ", "_");
-                                string pathShape = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
-                                FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                                fs.Write(Ret, 0, Ret.Length);
-                                fs.Flush();
-                                fs.Dispose();
-                                Clipboard.Clear();
+                                try {
+                                    System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                                    byte[] Ret;
+                                    MemoryStream ms = new MemoryStream();
+                                    image.Save(ms, ImageFormat.Png);
+                                    Ret = ms.ToArray();
+                                    FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                                    fs.Write(Ret, 0, Ret.Length);
+                                    fs.Flush();
+                                    fs.Dispose();
+                                } catch (ClipboardDataException cde) {
+                                    warnings.Add("- Image with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
+                                } catch (Exception e) {
+                                    throw e;
+                                } finally {
+                                    Clipboard.Clear();
+                                    
+                                }
                             }
                         }
                         rng = rng.NextStoryRange;
                     }
                 }
+                
                 newDoc.Save();
                 newDoc.Close(ref saveChanges, ref originalFormat, ref missing);
+            }
+
+            if (warnings.Count > 0) {
+                string warningMessage = "Some images could not be exported from the documents:";
+                foreach (string warning in warnings) {
+                    warningMessage += "\r\n" + warning;
+                }
+                throw new Exception(warningMessage);
             }
         }
 
@@ -2349,9 +2455,19 @@ namespace DaisyWord2007AddIn {
                 eventsHandler.OnError("Some Problem in Sub documents");
                 return false;
             }
+            try {
+                saveasshapes(subdocuments.GetSubdocumentsNames(), "Yes");
+            } catch (Exception e) {
+                eventsHandler.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:\r\n" + e.Message);
+            }
 
-            saveasshapes(subdocuments.GetSubdocumentsNames(), "Yes");
-            SaveasImages(subdocuments.GetSubdocumentsNames(), "Yes");
+            try {
+                SaveasImages(subdocuments.GetSubdocumentsNames(), "Yes");
+            } catch (Exception e) {
+                eventsHandler.OnError("An error occured while preprocessing images and may prevent the rest of the conversion to success:\r\n" + e.Message);
+            }
+
+
             MathMLMultiple(subList);
             this.applicationObject.ActiveDocument.Save();
             preparetionResult.InitializeWindow.Close();

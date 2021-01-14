@@ -34,19 +34,54 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 
     public class User32
     {
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool OpenClipboard(IntPtr hWndNewOwner);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool IsClipboardFormatAvailable(uint format);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr GetClipboardData(uint uFormat);
 
-        [DllImport("user32.dll")]
+        [DllImport("user32.dll", SetLastError = true)]
         public static extern bool CloseClipboard();
+        
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern bool EmptyClipboard();
+
+
+        [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
+        private static extern int FormatMessage(int dwFlags, string lpSource, int dwMessageId, int dwLanguageId,
+                                               StringBuilder lpBuffer, int nSize, string[] Arguments);
+
+        public static string GetLastErrorMessage() {
+            StringBuilder strLastErrorMessage = new StringBuilder(255);
+            int ret2 = Marshal.GetLastWin32Error();
+            const int dwFlags = 4096;
+            FormatMessage(dwFlags, null, ret2, 0, strLastErrorMessage, strLastErrorMessage.Capacity, null);
+            return "Error code " + ret2.ToString() + " : " + strLastErrorMessage.ToString();
+        }
     }
 
+    public class ClipboardDataException : Exception {
+
+        public ClipboardDataException(string message) : base(message) { }
+
+
+    }
+
+    public class ClipboardAccessException : Exception {
+
+        public ClipboardAccessException(string message) : base(message) { }
+
+
+    }
+
+    /// <summary>
+    /// System clipboard method to use instead of the "Clipboard" csharp tool
+    /// (In our test, the Clipboard calls are intercepted by Office
+    /// and Word display a "save clipboard data" request on close
+    /// </summary>
     public abstract class ClipboardEx
     {
         public static System.Drawing.Imaging.Metafile GetEMF(IntPtr hWnd)
@@ -65,31 +100,31 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                         if (!ptr.Equals(IntPtr.Zero))
                         {
                             /* Return the Metafile. */
-
                             return new Metafile(ptr, true);
                         }
                         else
                         {
-                            throw new System.Exception("Error extracting CF_ENHMETAFILE from clipboard.");
+                            throw new ClipboardDataException("Error extracting CF_ENHMETAFILE from clipboard.\r\n- System message: \""+User32.GetLastErrorMessage() + "\""); 
                         }
                     }
                     else
                     {
-                        throw new System.Exception("CF_ENHMETAFILE is not available in clipboard.");
+                        throw new ClipboardDataException("CF_ENHMETAFILE is not available in clipboard.\r\n- System message: \"" + User32.GetLastErrorMessage() + "\"");
                     }
                 }
                 else
                 {
-                    throw new System.Exception("Error opening clipboard.");
+                    throw new ClipboardAccessException("Error opening clipboard.\r\n- System message: \"" + User32.GetLastErrorMessage() + "\"");
                 }
             }
-            catch (System.Exception e)
+            catch (System.Exception e) // ensures finally is executed before propagation
             {
                 throw e;
             }
             finally
             {
                 /* Important to close the Clipboard. */
+                //User32.EmptyClipboard();
                 User32.CloseClipboard();
             }
         }
