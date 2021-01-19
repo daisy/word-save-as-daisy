@@ -130,8 +130,8 @@
             </Directory>
             <!-- In the Program Files folder -->
             <Directory Id="$(var.PlatformProgramFilesFolder)">
-                <!-- Program Files/Daisy -->
-                <Directory Id="INSTALLDIRX" Name="DAISY">
+                <!-- Program Files/Daisy Consortium-->
+                <Directory Id="INSTALLDIRX" Name="DAISY Consortium">
                     <!-- Program Files/Daisy/DAISY Translator -->
                     <Directory Id="INSTALLDIR" Name="Save-as-DAISY Word Addin">
                         <Directory Id="ProgramMenuFolder">
