@@ -15,8 +15,8 @@
 					<menu id="DaisyMnu" label="S&amp;aveAsDAISY" size="large" getImage="GetImage" >
 						<button id="DaisyTabSingle" tag="DaisyTabSingle" label="DAISY XML (from &amp;Single docx)" onAction="SaveAsDaisy" enabled="true" getImage="GetImageSingleXML" keytip="s" screentip="DAISY XML only (dtbook dtd)"/>
 						<dynamicMenu id="DaisyTabDTBookSingle" label="Full D&amp;AISY (from single docx)" getContent="GetDTbook" getImage="GetImage" />
-						<button id="DaisyTabMultiple" tag="DaisyTabMultiple" label="DAISY XML (from &amp;Multiple docx)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
-						<dynamicMenu id="DaisyTabDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx)" getContent="GetDTbook" getImage="GetImage7" />
+						<button id="DaisyTabMultiple" tag="DaisyTabMultiple" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
+						<dynamicMenu id="DaisyTabDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="GetImage7" />
 					</menu>
 				</group >
 
