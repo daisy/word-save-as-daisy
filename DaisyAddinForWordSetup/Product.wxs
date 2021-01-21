@@ -137,9 +137,10 @@
                         <Directory Id="ProgramMenuFolder">
                             <Directory Id="SaveAsDAISYShortcuts" Name="Save-as-DAISY Word Addin">
                                 <Component Id="ApplicationShortcut" Guid="26FA1CA4-6C3E-4383-936B-19D84B3ED531">
-                                    <Shortcut Id="ApplicationStartMenuShortcut1" Name="Daisy Translator Instruction Manual" Description="Daisy Translator Instruction Manual" Target="[INSTALLDIR]Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx" WorkingDirectory="INSTALLDIR" />
+                                    <Shortcut Id="ApplicationStartMenuShortcut1" Name="Daisy Translator Instruction Manual" Description="Daisy Translator Instruction Manual" Target="[INSTALLDIR]SaveAsDAISY_Instruction_Manual_Jan_2021.docx" WorkingDirectory="INSTALLDIR" />
                                     <Shortcut Id="ApplicationStartMenuShortcut2" Name="Accessibility Demofile" Description="Accessibility Demofile" Target="[INSTALLDIR]Accessibility_demofile.docx" WorkingDirectory="INSTALLDIR" />
                                     <Shortcut Id="ApplicationStartMenuShortcut3" Name="Save As Daisy Getting Started" Description="Save As Daisy Getting Started" Target="[INSTALLDIR]Save As Daisy Getting Started.docx" WorkingDirectory="INSTALLDIR" />
+                                    <Shortcut Id="ApplicationStartMenuShortcut4" Name="Authoring guidelines" Description="Authoring guidelines" Target="[INSTALLDIR]Authoring_Guidelines_For_using_SaveAsDAISY.docx" WorkingDirectory="INSTALLDIR" />
                                     <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
                                     <RegistryValue Root="HKCU" Key="Software\Microsoft\DAISY Translator" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                                 </Component>
@@ -339,10 +340,10 @@
                             <File Id="log4net.dll" Name="log4net.dll" Source="..\Lib\log4net.dll" />
                         </Component>
                         <Component Id="Manual.docx" Guid="D0EEE0DF-BA91-4317-A63A-1D93C11B43ED">
-                            <File Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx" Name="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx" Source="..\Lib\Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx" />
+                            <File Id="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Name="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Source="..\Lib\SaveAsDAISY_Instruction_Manual_Jan_2021.docx" />
                             <File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="..\Lib\Accessibility_demofile.docx" />
                             <File Id="Save_As_Daisy_Getting_Started.docx" Name="Save As Daisy Getting Started.docx" Source="..\Lib\Save As Daisy Getting Started.docx" />
-                            
+                            <File Id="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Name="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Source="..\Lib\Authoring_Guidelines_For_using_SaveAsDAISY.docx" />
                         </Component>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1344,7 +1345,7 @@
                        <!--pipeline-lite-ms-->
                         <!--End of pipeline directory-->
                         
-                        <Directory Id="Save_as_instruction_manual" Name="Save-as-instruction-manual">
+                        <!--<Directory Id="Save_as_instruction_manual" Name="Save-as-instruction-manual">
                             <Component Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5_gk2_i.jpg" DiskId="1" Guid="3C000085-B6B2-42FD-9795-BB74B2A5E5CC">
                                 <File Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5_gk2_i.jpg" Name="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2-i.jpg" Source="..\Lib\Save-as-instruction-manual\Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2-i.jpg" />
                                 <File Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5_gk2_i.png" Name="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2-i.png" Source="..\Lib\Save-as-instruction-manual\Daisy_Translator_Instruction_Manual_01_March_2011_v2_5-gk2-i.png" />
@@ -1468,7 +1469,7 @@
                                 <File Id="tpbnarrator.res" Name="tpbnarrator.res" Source="..\Lib\Save-as-instruction-manual\tpbnarrator.res" />
                                 <File Id="tpbnarrator_res.mp3" Name="tpbnarrator_res.mp3" Source="..\Lib\Save-as-instruction-manual\tpbnarrator_res.mp3" />
                             </Component>
-                        </Directory>
+                        </Directory>-->
                     </Directory>
                 </Directory>
             </Directory>
@@ -1485,8 +1486,6 @@
             <ComponentRef Id="DaisyAddinLib.dll" />
             <ComponentRef Id="DaisyConverterLib.dll" />
             <ComponentRef Id="WindowsBase.dll" />
-            
-            
 
             <!-- Office 2003-->
             <ComponentRef Id="ManagedAggregator.dll" />
@@ -1518,7 +1517,7 @@
             <ComponentRef Id="ApplicationShortcut" />
             <ComponentRef Id="Readme" />
             
-            <ComponentRef Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5_gk2_i.jpg" />
+            <!--<ComponentRef Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5_gk2_i.jpg" />-->
             <ComponentRef Id="Manual.docx" />
 
             <!-- Pipeline files -->

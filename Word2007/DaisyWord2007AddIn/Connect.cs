@@ -729,7 +729,11 @@ namespace DaisyWord2007AddIn {
         }
 
         public void ShowWordManual(IRibbonControl control) {
-            System.Diagnostics.Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + "Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx");
+            System.Diagnostics.Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + "SaveAsDAISY_Instruction_Manual_Jan_2021.docx");
+        }
+
+        public void ShowAuthoringGuidelines(IRibbonControl control) {
+            System.Diagnostics.Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + "Authoring_Guidelines_For_using_SaveAsDAISY.docx");
         }
 
         public void ShowDtBookManual(IRibbonControl control) {
