@@ -340,9 +340,9 @@
                             <File Id="log4net.dll" Name="log4net.dll" Source="..\Lib\log4net.dll" />
                         </Component>
                         <Component Id="Documentation" Guid="D0EEE0DF-BA91-4317-A63A-1D93C11B43ED">
-                            <File Id="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Name="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Source="..\doc\SaveAsDAISY_Instruction_Manual_Jan_2021.docx" />
-                            <File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="..\doc\Accessibility_demofile.docx" />
-                            <File Id="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Name="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Source="..\doc\Authoring_Guidelines_For_using_SaveAsDAISY.docx" />
+                            <File Id="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Name="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Source="..\docs\SaveAsDAISY_Instruction_Manual_Jan_2021.docx" />
+                            <File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="..\docs\Accessibility_demofile.docx" />
+                            <File Id="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Name="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Source="..\docs\Authoring_Guidelines_For_using_SaveAsDAISY.docx" />
                         </Component>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
