@@ -339,11 +339,10 @@
                         <Component Id="log4net.dll" Guid="944F8F0B-3F51-4BC8-8DF3-EF3C44DC0FBE">
                             <File Id="log4net.dll" Name="log4net.dll" Source="..\Lib\log4net.dll" />
                         </Component>
-                        <Component Id="Manual.docx" Guid="D0EEE0DF-BA91-4317-A63A-1D93C11B43ED">
-                            <File Id="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Name="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Source="..\Lib\SaveAsDAISY_Instruction_Manual_Jan_2021.docx" />
-                            <File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="..\Lib\Accessibility_demofile.docx" />
-                            <File Id="Save_As_Daisy_Getting_Started.docx" Name="Save As Daisy Getting Started.docx" Source="..\Lib\Save As Daisy Getting Started.docx" />
-                            <File Id="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Name="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Source="..\Lib\Authoring_Guidelines_For_using_SaveAsDAISY.docx" />
+                        <Component Id="Documentation" Guid="D0EEE0DF-BA91-4317-A63A-1D93C11B43ED">
+                            <File Id="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Name="SaveAsDAISY_Instruction_Manual_Jan_2021.docx" Source="..\doc\SaveAsDAISY_Instruction_Manual_Jan_2021.docx" />
+                            <File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="..\doc\Accessibility_demofile.docx" />
+                            <File Id="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Name="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Source="..\doc\Authoring_Guidelines_For_using_SaveAsDAISY.docx" />
                         </Component>
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1518,7 +1517,7 @@
             <ComponentRef Id="Readme" />
             
             <!--<ComponentRef Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5_gk2_i.jpg" />-->
-            <ComponentRef Id="Manual.docx" />
+            <ComponentRef Id="Documentation" />
 
             <!-- Pipeline files -->
             <ComponentRef Id="pipeline_lite_ms_files" />

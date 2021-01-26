@@ -12,7 +12,7 @@ SaveAsDAISY is available for Windows only. We provide an installer for Microsoft
 # 2.6.1 beta - Minor update 1 (January 27, 2021)
 
 Minor update including
-- bugfix for daisy/word-save-as-daisy#1
+- bugfix for [#1](https://github.com/daisy/word-save-as-daisy/issues/1)
 - Removed the Accessibility Checker shortcut in the addin ribbon for office 2010 and later
 Users are advised to validated using the accessibility checker before launching a conversion in the conversion setting form, with a link to the checker documentation.
 - Updated the AdoptOpenJDK java 8 runtime provided with the embedded DAISY pipeline lite
