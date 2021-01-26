@@ -26,6 +26,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 
 		/// <summary>
 		/// Find all subdocuments.
+		/// The Errors array is filled if errors are found
 		/// </summary>
 		/// <param name="tempInputPath">Path to the copy of the word document.</param>
 		/// <param name="originalInputPath">Path to the original word document.</param>
@@ -49,24 +50,23 @@ namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 			foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships())
 			{
 				relationship = searchRelation;
-				if (!IsExternalSubdocumentRelationship(relationship)) 
-					continue;
-				
-				if (IsMsWordSubdocumentRelationship(relationship))
-					result.SubdocumentsCount++;
-
-				String fileName = GetFileName(relationship.TargetUri.ToString(), originalInputPath);
-
-				if (string.IsNullOrEmpty(fileName))
-					continue;
-
-				if (IsMsWordSubdocumentRelationship(relationship))
-				{
-					result.Subdocuments.Add(new SubdocumentInfo(fileName, relationship.Id));
-				}
-				else
-				{
-					result.NotTranslatedSubdocuments.Add(new SubdocumentInfo(fileName, relationship.Id));
+				if (IsExternalSubdocumentRelationship(relationship)) {
+					bool subDocumentFound = IsMsWordSubdocumentRelationship(relationship);
+					result.SubdocumentsCount += subDocumentFound ? 1 : 0;
+					String filePath = GetRealFilePath(relationship.TargetUri.ToString(), originalInputPath);
+					if (!string.IsNullOrEmpty(filePath)) {
+						if (subDocumentFound) {
+							result.Subdocuments.Add(new SubdocumentInfo(filePath, relationship.Id));
+						}
+						else {
+							result.NotTranslatedSubdocuments.Add(new SubdocumentInfo(filePath, relationship.Id));
+						}
+					} else {
+						result.Errors.Add(
+							"The subdocument " + originalInputPath + "\\" + relationship.TargetUri.ToString() + " was not found on your system."
+						);
+                    }
+					
 				}
 			}
 			packDoc.Close();
@@ -129,33 +129,40 @@ namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 				   || Path.GetExtension(targetUri).Equals(".doc", StringComparison.InvariantCultureIgnoreCase);
 		}
 
-		private static string GetFileName(string fileName, string inputPath)
+		/// <summary>
+		/// Return the system file path of a subdocument (without the file:// prefix), given a file path obtained from an input file 
+		/// </summary>
+		/// <param name="filePath">The file path referenced in the input (Master) file</param>
+		/// <param name="inputPath">The path of the input (Master) file</param>
+		/// <returns>The real file path if the file exists, or an empty string</returns>
+		private static string GetRealFilePath(string filePath, string inputPath)
 		{
-			if (fileName.Contains("file") && fileName.Contains(LocalSettingsTemp))
+			
+			if (filePath.Contains("file") && filePath.Contains(LocalSettingsTemp))
 			{
-				fileName = fileName.Replace("file:///", "");
-				int indx = fileName.LastIndexOf(LocalSettingsTemp);
-				fileName = fileName.Substring(indx + LocalSettingsTemp.Length);
-				fileName = Path.GetDirectoryName(inputPath) + "//" + fileName;
-				if (File.Exists(fileName))
+				filePath = filePath.Replace("file:///", "");
+				int indx = filePath.LastIndexOf(LocalSettingsTemp);
+				filePath = filePath.Substring(indx + LocalSettingsTemp.Length);
+				filePath = Path.GetDirectoryName(inputPath) + "//" + filePath;
+				if (File.Exists(filePath))
 				{
-					return fileName;
+					return filePath;
 				}
 			}
-			else if (fileName.Contains("file"))
+			else if (filePath.Contains("file"))
 			{
-				fileName = fileName.Replace("file:///", "");
-				if (File.Exists(fileName))
+				filePath = filePath.Replace("file:///", "");
+				if (File.Exists(filePath))
 				{
-					return fileName;
+					return filePath;
 				}
 			}
 			else
 			{
-				fileName = Path.GetDirectoryName(inputPath) + "\\" + Path.GetFileName(fileName);
-				if (File.Exists(fileName))
+				filePath = Path.GetDirectoryName(inputPath) + "\\" + filePath;
+				if (File.Exists(filePath))
 				{
-					return fileName;
+					return filePath;
 				}
 			}
 			return string.Empty;

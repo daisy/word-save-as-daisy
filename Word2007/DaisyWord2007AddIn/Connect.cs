@@ -904,10 +904,11 @@ namespace DaisyWord2007AddIn {
                 result.IsSuccess = OoxToDaisyOwn(result, controlId, eventsHandler);
             } else {
                 MTGetEquationAddin(eventsHandler);
-                result.InitializeWindow.Close();
+                result.IsSuccess = true;
+                
             }
+            result.InitializeWindow.Close();
 
-            result.IsSuccess = true;
             return result;
         }
 
@@ -2429,52 +2430,63 @@ namespace DaisyWord2007AddIn {
             return masterSubFlag;
         }
 
+        /// <summary>
+        /// Prepare conversion of subdocuments
+        /// </summary>
+        /// <param name="preparetionResult"></param>
+        /// <param name="cTrl"></param>
+        /// <param name="eventsHandler"></param>
+        /// <returns></returns>
         public bool OoxToDaisyOwn(PreparetionResult preparetionResult, String cTrl, IPluginEventsHandler eventsHandler) {
             SubdocumentsList subdocuments = SubdocumentsManager.FindSubdocuments(preparetionResult.DocFilePath, preparetionResult.DocxFilePath);
-            notTranslatedDoc = subdocuments.GetNotTraslatedSubdocumentsNames();
-
-            ArrayList subList = new ArrayList();
-            subList.Add(preparetionResult.DocFilePath + "|Master");
-            subList.AddRange(subdocuments.GetSubdocumentsNameWithRelationship());
-            int subCount = subdocuments.SubdocumentsCount + 1;
-
-            //Checking whether any original or Subdocumets is already Open or not
-            string resultOpenSub = CheckFileOPen(subList);
-            if (resultOpenSub != "notopen") {
-                preparetionResult.InitializeWindow.Close();
-                eventsHandler.OnError("Some Sub documents are in open state. Please close all the Sub documents before Translation:");
+            //MessageBox.Show("Check for errors when retrieving subdocuments pathes");
+            if(subdocuments.Errors.Count > 0) {
+                StringBuilder errorMessage = new StringBuilder();
+                errorMessage.Append("Errors were encoutered while retrieving sub documents:");
+                foreach (string error in subdocuments.Errors) {
+                    errorMessage.Append("\r\n- " + error);
+                }
+                eventsHandler.OnError(errorMessage.ToString());
                 return false;
             }
 
+            //MessageBox.Show("Get not translated docs");
+            notTranslatedDoc = subdocuments.GetNotTraslatedSubdocumentsNames();
+
+            //MessageBox.Show("Doc sublist");
+            ArrayList subList = new ArrayList();
+            subList.Add(preparetionResult.DocFilePath + "|Master");
+            foreach (string subdoc in subdocuments.GetSubdocumentsNameWithRelationship()) {
+                subList.Add(subdoc);
+            }
+            
+            int subCount = subdocuments.SubdocumentsCount + 1;
+            //Checking whether any original or Subdocumets is already Open or not
+            string resultOpenSub = CheckFileOPen(subList);
+            if (resultOpenSub != "notopen") {
+                eventsHandler.OnError("Some Sub documents are in open state.\r\nPlease close all the Sub documents before Translation.");
+                return false;
+            }
             //Checking whether Sub documents are Simple documents or a Master document
             string resultSub = SubdocumentsManager.CheckingSubDocs(subdocuments.GetSubdocumentsNameWithRelationship());
             if (resultSub != "simple") {
-                preparetionResult.InitializeWindow.Close();
                 eventsHandler.OnError("Some of the added documents are MasterSub documents.Please add simple documents.");
                 return false;
             }
 
-            if (subCount != subList.Count) {
-                preparetionResult.InitializeWindow.Close();
-                eventsHandler.OnError("Some Problem in Sub documents");
-                return false;
-            }
             try {
                 saveasshapes(subdocuments.GetSubdocumentsNames(), "Yes");
             } catch (Exception e) {
                 eventsHandler.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:\r\n" + e.Message);
             }
-
             try {
                 SaveasImages(subdocuments.GetSubdocumentsNames(), "Yes");
             } catch (Exception e) {
                 eventsHandler.OnError("An error occured while preprocessing images and may prevent the rest of the conversion to success:\r\n" + e.Message);
             }
 
-
             MathMLMultiple(subList);
             this.applicationObject.ActiveDocument.Save();
-            preparetionResult.InitializeWindow.Close();
             return true;
             //OoxToDaisyUI(preparetionResult, cTrl);
         }

@@ -9,11 +9,14 @@ namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 		{
 			Subdocuments = new List<SubdocumentInfo>();
 			NotTranslatedSubdocuments = new List<SubdocumentInfo>();
+			Errors = new List<string>();
 		}
 
 		public int SubdocumentsCount { get; set; }
 		public List<SubdocumentInfo> Subdocuments { get; set; }
 		public List<SubdocumentInfo> NotTranslatedSubdocuments { get; set; }
+
+		public List<string> Errors { get; set; }
 
 		public ArrayList GetSubdocumentsNames()
 		{
