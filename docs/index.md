@@ -1,5 +1,7 @@
-# Download SaveAsDAISY Word Addin
-
+---
+title: Download SaveAsDAISY Word Addin
+layout: my-default
+---
 SaveAsDAISY is available for Windows only. We provide an installer for Microsoft Office 64-bit edition and an installer that detects the installed version of Office. Choose the latter if you don't know whether your Office is the 32 or 64-bit edition.
 
 ## Latest version: 2.6.1 beta - Minor update 1 (released on January 27, 2020)
