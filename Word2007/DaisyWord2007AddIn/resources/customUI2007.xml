@@ -2,12 +2,12 @@
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="OnLoad">
 	<ribbon>
 		<officeMenu>
-			<menu id="DaisyMenu" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" itemSize="large" getImage="GetImage">
-				<button id="DaisySingle" label="DAISY XML (from &amp;Single docx)"  onAction="SaveAsDaisy"  enabled="true" getImage="GetImageSingleXML" keytip="s" getDescription="GetDescriptionSingle"/>
-				<dynamicMenu id="DaisyDTBookSingle" label="Full D&amp;AISY (from single docx)"  getContent="GetDTbook" getImage="GetImage" getDescription="GetDescriptionSingleDTBook"/>
-				<button id="DaisyMultiple" label="DAISY XML (from &amp;Multiple docx)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" getDescription="GetDescriptionMultiple"/>
-				<dynamicMenu id="DaisyDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx)" getContent="GetDTbook" getImage="GetImage7" getDescription="GetDescriptionMultipleDTBook"/>
-			</menu>
+            <menu id="DaisyMenu" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" itemSize="large" getImage="GetImage">
+                <button id="DaisySingle" tag="DaisySingle" label="DAISY XML (from &amp;Single docx)"  onAction="SaveAsDaisy"  enabled="true" getImage="GetImageSingleXML" keytip="s" getDescription="GetDescriptionSingle"/>
+                <dynamicMenu id="DaisyDTBookSingle" label="Full D&amp;AISY (from single docx)"  getContent="GetDTbook" getImage="GetImage" getDescription="GetDescriptionSingleDTBook"/>
+                <button id="DaisyMultiple" tag="DaisyTabMultiple" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" getDescription="GetDescriptionMultiple"/>
+                <dynamicMenu id="DaisyDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="GetImage7" getDescription="GetDescriptionMultipleDTBook"/>
+            </menu>
 		</officeMenu>
 		<tabs>
 			<tab id="CustomTab" label="Accessibility">
