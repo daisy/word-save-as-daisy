@@ -56,11 +56,11 @@
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
         <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
         <CustomAction Id="SetARPREADME" Property="ARPREADME" Value="[#Readme]" />
-        <Property Id="ARPCOMMENTS" Value="2.1.1.0" />
+        <Property Id="ARPCOMMENTS" Value="$(var.AddinVersion)" />
         <Property Id="ARPCONTACT" Value="DAISY Consortium" />
         <Property Id="ARPURLINFOABOUT" Value="https://daisy.org/" />
-        <Property Id="ARPHELPLINK" Value="https://github.com/daisy/word-save-as-daisy" />
-        <Property Id="WixShellExecTarget" Value="[#Save_As_Daisy_Getting_Started.docx]" />
+        <Property Id="ARPHELPLINK" Value="https://daisy.github.io/word-save-as-daisy" />
+        <Property Id="WixShellExecTarget" Value="[#Authoring_Guidelines_For_using_SaveAsDAISY.docx]" />
         <Property Id="SHOW_README" Value="1" />
         <!-- Property set by DetectLatestMsWordVersion in the DaisyAddin.CustomAction project 
             Default assumes office 2007 (12.0) 32bits -->
