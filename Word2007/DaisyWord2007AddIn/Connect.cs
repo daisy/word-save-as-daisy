@@ -771,18 +771,23 @@ namespace DaisyWord2007AddIn {
          * Function which Translates docx file to Daisy format 
          */
         public void SaveAsDaisy(IRibbonControl control) {
-            
-            IPluginEventsHandler eventsHandler = new PluginEventsUIHandler();
-            PreparetionResult preparetionResult = PrepareForSaveAsDaisy(eventsHandler, applicationObject.ActiveDocument, control.Tag);
-            if (preparetionResult.IsSuccess) {
-                OoxToDaisyParameters parameters = BuildParameters(preparetionResult, control.Tag);
-                addinLib.StartSingleWordConversion(parameters);
-                // Removing call due to single reference
-                // StartSingleWordConversion(preparetionResult, control.Tag);
-            } else if(!preparetionResult.IsCanceled) {
-                MessageBox.Show(preparetionResult.LastMessage,"Conversion stopped");
+            try {
+                IPluginEventsHandler eventsHandler = new PluginEventsUIHandler();
+                PreparetionResult preparetionResult = PrepareForSaveAsDaisy(eventsHandler, applicationObject.ActiveDocument, control.Tag);
+                if (preparetionResult.IsSuccess) {
+                    OoxToDaisyParameters parameters = BuildParameters(preparetionResult, control.Tag);
+                    addinLib.StartSingleWordConversion(parameters);
+                    // Removing call due to single reference
+                    // StartSingleWordConversion(preparetionResult, control.Tag);
+                } else if (!preparetionResult.IsCanceled) {
+                    MessageBox.Show(preparetionResult.LastMessage, "Conversion stopped");
+                } 
+                applicationObject.ActiveDocument.Save();
+            } catch (Exception e) {
+                ExceptionReport report = new ExceptionReport(e);
+                report.Show();
             }
-            applicationObject.ActiveDocument.Save();
+            
         }
 
         public OoxToDaisyParameters BuildParameters(PreparetionResult preparetionResult, string ctrlId) {
