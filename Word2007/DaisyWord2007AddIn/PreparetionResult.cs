@@ -17,12 +17,18 @@ namespace DaisyWord2007AddIn
 
 		public static PreparetionResult Failed(string error)
 		{
-			return new PreparetionResult() { IsSuccess = false, LastError = error };
+			return new PreparetionResult() { IsSuccess = false, IsCanceled = false, LastMessage = error };
+		}
+
+		public static PreparetionResult Canceled(string message) {
+			return new PreparetionResult() { IsSuccess = false, IsCanceled = true, LastMessage = message };
 		}
 
 		public bool IsSuccess { get; set; }
 
-		public string LastError { get; set; }
+		public bool IsCanceled { get; set; }
+
+		public string LastMessage { get; set; }
 		public string DocxFilePath { get; set; }
 		public string DocFilePath { get; set; }
 		public Initialize InitializeWindow { get; set; }

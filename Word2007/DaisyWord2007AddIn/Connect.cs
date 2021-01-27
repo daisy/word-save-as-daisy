@@ -59,6 +59,7 @@ namespace DaisyWord2007AddIn {
     using COMException = System.Runtime.InteropServices.COMException;
     using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
     using System.Globalization;
+    using System.Text.RegularExpressions;
 
 
     #region Read me for Add-in installation and setup information.
@@ -778,8 +779,8 @@ namespace DaisyWord2007AddIn {
                 addinLib.StartSingleWordConversion(parameters);
                 // Removing call due to single reference
                 // StartSingleWordConversion(preparetionResult, control.Tag);
-            } else {
-                MessageBox.Show(preparetionResult.LastError);
+            } else if(!preparetionResult.IsCanceled) {
+                MessageBox.Show(preparetionResult.LastMessage,"Conversion stopped");
             }
             applicationObject.ActiveDocument.Save();
         }
@@ -818,6 +819,7 @@ namespace DaisyWord2007AddIn {
             addinLib.StartSingleWordConversion(parameters);
         }/* */
 
+
         public PreparetionResult PrepareForSaveAsDaisy(IPluginEventsHandler eventsHandler, Document activeDocument, string controlId) {
             PreparetionResult result = new PreparetionResult();
             listmathML = new ArrayList();
@@ -841,6 +843,47 @@ namespace DaisyWord2007AddIn {
                 eventsHandler.OnStop(addinLib.GetString("DaisySaveDocumentin2007"));
                 return PreparetionResult.Failed("The document is not a docx file saved on your system.");
             }
+            object missing = Type.Missing;
+
+            // Adding a filename check on the current docx to prevent problematic characters in the filename
+            StringBuilder errorFileNameMessage = new StringBuilder("Your document file name contains unauthorized characters, that may be automatically replaced by underscores.\r\n");
+            // For dtbook conversion, any correct system file name will work, except for the ones with commas in it in my tests
+            // Possibly an error in the pipeline commande line parsing of arguments in the pipeline side
+            string authorizedNamePattern = @"^[^,]+$"; 
+            if (AddInHelper.buttonIsSingleWordToXMLConversion(controlId)) {
+                errorFileNameMessage.Append("Any commas (,) present in the file name should be removed, or they will be replaced by underscores automatically.");
+            } else {
+                // TODO : specific name pattern following daisy book naming convention to find
+                authorizedNamePattern = @"^[a-zA-Z0-9_\-\.]+$";
+                errorFileNameMessage.Append("Only Alphanumerical letters (a-z, A-Z, 0-9), hyphens (-), dots (.) and underscores (_) are allowed in DAISY file names." +
+                    "\r\nAny other characters (including spaces) will be replaced automaticaly by underscores.");
+            }
+            errorFileNameMessage.Append("\r\n\r\nDo you want to save this document under a new name ?" +
+                "\r\nThe document with the original name will not be deleted." +
+                "\r\n\r\n(Click Yes to save the document under a new name and use the new one, No to continue with the current document, or Cancel to abort the conversion)");
+
+
+            Regex validator = new Regex(authorizedNamePattern);
+            bool nameIsValid;
+            do {
+                bool docIsRenamed = false;
+                if (!validator.IsMatch(currentDoc.FullName)) {
+                    DialogResult userAnswer = MessageBox.Show(errorFileNameMessage.ToString(), "Unauthorized characters in the document filename", MessageBoxButtons.YesNoCancel,MessageBoxIcon.Warning);
+                    if (userAnswer == DialogResult.Yes) {
+                        Dialog dlg = this.applicationObject.Dialogs[Microsoft.Office.Interop.Word.WdWordDialog.wdDialogFileSaveAs];
+                        int saveResult = dlg.Show(ref missing);
+                        if (saveResult == -1) { // ok pressed, see https://docs.microsoft.com/fr-fr/dotnet/api/microsoft.office.interop.word.dialog.show?view=word-pia#Microsoft_Office_Interop_Word_Dialog_Show_System_Object__
+                            docIsRenamed = true;
+                        } else return PreparetionResult.Canceled("User canceled a renaming request for an invalid docx filename");
+                    } else if (userAnswer == DialogResult.Cancel) {
+                        return PreparetionResult.Canceled("User canceled a renaming request for an invalid docx filename");
+                    }
+                    // else a sanitize path in the DaisyAddinLib will replace commas by underscore.
+                    // Other illegal characters regarding the conversion to DAISY book are replaced by underscore by the pipeline itself
+                    // While image names seems to be sanitized in other process
+                }
+                nameIsValid = !docIsRenamed;
+            } while (!nameIsValid);
 
             result.InitializeWindow = new Initialize();
             object newName = Path.GetTempFileName() + Path.GetExtension((string)currentDoc.FullName);
@@ -850,7 +893,7 @@ namespace DaisyWord2007AddIn {
             object addToRecentFiles = false;
             object readOnly = false;
             object isVisible = false;
-            object missing = Type.Missing;
+            
 
             Document newDoc = this.applicationObject.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
 
