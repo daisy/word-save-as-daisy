@@ -74,7 +74,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{9564E389-A
 	ProjectSection(SolutionItems) = preProject
 		docs\Accessibility_demofile.docx = docs\Accessibility_demofile.docx
 		docs\Authoring_Guidelines_For_using_SaveAsDAISY.docx = docs\Authoring_Guidelines_For_using_SaveAsDAISY.docx
-		doc\index.md = doc\index.md
+		docs\index.md = docs\index.md
 		docs\SaveAsDAISY_Instruction_Manual_Jan_2021.docx = docs\SaveAsDAISY_Instruction_Manual_Jan_2021.docx
 	EndProjectSection
 EndProject
@@ -216,7 +216,7 @@ Global
 		{551923B5-D25C-4408-BEF4-0C367E6DBF26} = {9564E389-AB45-4574-9EAF-8357BA5EFCAF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {8119EA58-6294-4AAF-B5CC-0C335A9409AB}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 EndGlobal
