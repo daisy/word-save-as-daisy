@@ -70,6 +70,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{9564E389-AB45-4574-9EAF-8357BA5EFCAF}"
+	ProjectSection(SolutionItems) = preProject
+		docs\Accessibility_demofile.docx = docs\Accessibility_demofile.docx
+		docs\Authoring_Guidelines_For_using_SaveAsDAISY.docx = docs\Authoring_Guidelines_For_using_SaveAsDAISY.docx
+		doc\index.md = doc\index.md
+		docs\SaveAsDAISY_Instruction_Manual_Jan_2021.docx = docs\SaveAsDAISY_Instruction_Manual_Jan_2021.docx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_layouts", "_layouts", "{551923B5-D25C-4408-BEF4-0C367E6DBF26}"
+	ProjectSection(SolutionItems) = preProject
+		docs\_layouts\my-default.html = docs\_layouts\my-default.html
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -200,9 +213,10 @@ Global
 		{8BDDCAB0-E3C5-4906-83AF-124863C84531} = {4AD4C33A-090C-4026-9FD0-80AD773D5665}
 		{FCB212D1-D9E6-483A-8E9E-24DA0387620F} = {4AF3E01B-91B1-4AE4-9316-11289EFA7B5D}
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2} = {4AF3E01B-91B1-4AE4-9316-11289EFA7B5D}
+		{551923B5-D25C-4408-BEF4-0C367E6DBF26} = {9564E389-AB45-4574-9EAF-8357BA5EFCAF}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {8119EA58-6294-4AAF-B5CC-0C335A9409AB}
 		VisualSVNWorkingCopyRoot = .
+		SolutionGuid = {8119EA58-6294-4AAF-B5CC-0C335A9409AB}
 	EndGlobalSection
 EndGlobal
