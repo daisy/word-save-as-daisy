@@ -105,10 +105,10 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         {
             if (parameters.MasterSubFlag == "No" || parameters.MasterSubFlag == "NoMasterSub")
             {
-                outputFilePath = AddInHelper.buttonIsSingleWordToXMLConversion(parameters.ControlName) ?
-                        outputFilePath + parameters.GetInputFileNameWithoutExtension + ".xml" :
-                        Path.Combine(outputFilePath, "convertedDocument" + ".xml");
-                
+                //outputFilePath = AddInHelper.buttonIsSingleWordToXMLConversion(parameters.ControlName) ?
+                //        outputFilePath + parameters.GetInputFileNameWithoutExtension + ".xml" :
+                //        Path.Combine(outputFilePath, "convertedDocument" + ".xml");
+                outputFilePath = (outputFilePath + parameters.GetInputFileNameWithoutExtension + ".xml").Replace(',','_');
                 singleConverter.OoxToDaisy(
                         parameters.InputFile, 
                         outputFilePath, 
