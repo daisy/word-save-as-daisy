@@ -139,7 +139,6 @@
                                 <Component Id="ApplicationShortcut" Guid="26FA1CA4-6C3E-4383-936B-19D84B3ED531">
                                     <Shortcut Id="ApplicationStartMenuShortcut1" Name="Daisy Translator Instruction Manual" Description="Daisy Translator Instruction Manual" Target="[INSTALLDIR]SaveAsDAISY_Instruction_Manual_Jan_2021.docx" WorkingDirectory="INSTALLDIR" />
                                     <Shortcut Id="ApplicationStartMenuShortcut2" Name="Accessibility Demofile" Description="Accessibility Demofile" Target="[INSTALLDIR]Accessibility_demofile.docx" WorkingDirectory="INSTALLDIR" />
-                                    <Shortcut Id="ApplicationStartMenuShortcut3" Name="Save As Daisy Getting Started" Description="Save As Daisy Getting Started" Target="[INSTALLDIR]Save As Daisy Getting Started.docx" WorkingDirectory="INSTALLDIR" />
                                     <Shortcut Id="ApplicationStartMenuShortcut4" Name="Authoring guidelines" Description="Authoring guidelines" Target="[INSTALLDIR]Authoring_Guidelines_For_using_SaveAsDAISY.docx" WorkingDirectory="INSTALLDIR" />
                                     <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
                                     <RegistryValue Root="HKCU" Key="Software\Microsoft\DAISY Translator" Name="installed" Type="integer" Value="1" KeyPath="yes" />
