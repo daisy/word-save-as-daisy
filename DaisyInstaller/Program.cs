@@ -138,15 +138,19 @@ namespace DaisyInstaller
                     File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
                 } else {
                     File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
+                    // unpackage the pipeline cab used by the msi files
+                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
                 }
 #elif X64INSTALLER
-                File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
+                File.WriteAllBytes(daisySetupPath, Properties.Resources_Office64bits.DaisyAddinForWordSetup_x64);
+                // unpackage the pipeline cab used by the msi files
+                File.WriteAllBytes(pipelineCabPath, Properties.Resources_Office64bits.pipeline_cab);
 #else
                 File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
-#endif
                 
-                // unpackage the pipeline cab used by the msi files
-                File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
+#endif
+
+
 
                 // launch the msi
                 Process.Start(daisySetupPath);

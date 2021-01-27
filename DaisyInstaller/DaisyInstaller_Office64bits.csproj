@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}</ProjectGuid>
+    <ProjectGuid>{8C5BA4B1-5AAD-4A35-B95F-C4FD43ABFD91}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DaisyInstaller</RootNamespace>
-    <AssemblyName>DaisyInstaller</AssemblyName>
+    <AssemblyName>DaisyInstaller_Office64bits</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
@@ -49,7 +49,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;UNIFIED</DefineConstants>
+    <DefineConstants>TRACE;X64INSTALLER</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -68,7 +68,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
     <OutputPath>bin\x64\Release\</OutputPath>
-    <DefineConstants>TRACE;UNIFIED</DefineConstants>
+    <DefineConstants>TRACE;X64INSTALLER</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -86,7 +86,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE;UNIFIED</DefineConstants>
+    <DefineConstants>TRACE;X64INSTALLER</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -137,10 +137,10 @@
     <EmbeddedResource Include="PipelineInstaller.resx">
       <DependentUpon>PipelineInstaller.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\Resources.resx">
+    <EmbeddedResource Include="Properties\Resources_Office64bits.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources_Office64bits.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="app.manifest" />
@@ -148,10 +148,10 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <Compile Include="Properties\Resources.Designer.cs">
+    <Compile Include="Properties\Resources_Office64bits.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
+      <DependentUpon>Resources_Office64bits.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -160,7 +160,6 @@
     </Compile>
     <None Include="README.md" />
     <None Include="Resources\DaisyAddinForWordSetup_x64" />
-    <None Include="Resources\DaisyAddinForWordSetup_x86" />
     <None Include="Resources\pipeline_cab" />
     <None Include="SelfSignedCertificate.pfx" />
   </ItemGroup>
