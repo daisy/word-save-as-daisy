@@ -59,24 +59,24 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                 string Download = sourceURL.Replace("version.xml", NewVersion + "/" + "DAISYTranslatorAddInForWordSetup-en.exe");
                 if (Availableversion == Installedversion || Availableversion < Installedversion)
                 {
-                    MessageBox.Show("New version is not available", "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("New version is not available", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else if (Availableversion > Installedversion)
                 {
-                    DialogResult dr = MessageBox.Show("New version of DAISY Translator Add-in is available.Do you want to download it now?", "Daisy Translator-New Version", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                    DialogResult dr = MessageBox.Show("New version of SaveAsDAISY Add-in is available.Do you want to download it now?", "SaveAsDAISY-New Version", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
                     if (dr == DialogResult.OK)
                         System.Diagnostics.Process.Start(Download);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message,"Daisy Translator",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message,"SaveAsDAISY",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
             this.Close();
         }
 
         /// <summary>
-        /// Function which gives the Current Version of the Daisy Translator
+        /// Function which gives the Current Version of the SaveAsDAISY
         /// </summary>
         /// <returns></returns>
         public string GetCurrentversion()

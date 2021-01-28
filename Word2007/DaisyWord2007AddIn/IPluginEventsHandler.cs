@@ -38,18 +38,18 @@ namespace DaisyWord2007AddIn
 	{
 		public void OnStop(string message)
 		{
-			OnStop(message,"DAISY Translator");
+			OnStop(message,"SaveAsDAISY");
 		}
 
 		public bool AskForTranslatingSubdocuments()
 		{
-			DialogResult dialogResult = MessageBox.Show("Do you want to translate the current document along with sub documents?", "DAISY Translator", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+			DialogResult dialogResult = MessageBox.Show("Do you want to translate the current document along with sub documents?", "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 			return dialogResult == DialogResult.Yes;
 		}
 
 		public void OnError(string errorMessage)
 		{
-			MessageBox.Show(errorMessage, "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			MessageBox.Show(errorMessage, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		public void OnStop(string message, string title)

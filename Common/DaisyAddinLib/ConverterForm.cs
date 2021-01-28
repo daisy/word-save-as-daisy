@@ -344,7 +344,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         /// <param name="e"></param>
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show(manager.GetString("QuitConfirmation"),"DAISY Translator", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            DialogResult dr = MessageBox.Show(manager.GetString("QuitConfirmation"),"SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (dr == DialogResult.Yes)
                 cancel = true;
             else

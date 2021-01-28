@@ -453,7 +453,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 
 			if (listDel.Count > 0 || listIns.Count > 0)
 			{
-				DialogResult dr = MessageBox.Show(resManager.GetString("TrackConfirmation"), "DAISY Translator", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				DialogResult dr = MessageBox.Show(resManager.GetString("TrackConfirmation"), "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
 				if (dr == DialogResult.Yes)
 					trackChangeFlag = "Yes";
@@ -498,7 +498,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 
 			if (cnt > 0)
 			{
-				DialogResult dr = MessageBox.Show(resManager.GetString("MasterSubConfirmation"), "DAISY Translator", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				DialogResult dr = MessageBox.Show(resManager.GetString("MasterSubConfirmation"), "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
 				if (dr == DialogResult.Yes)
 					masterSubFlag = "Yes";

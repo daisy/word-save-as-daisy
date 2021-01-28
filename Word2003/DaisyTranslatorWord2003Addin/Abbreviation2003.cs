@@ -162,7 +162,7 @@ namespace DaisyTranslatorWord2003Addin
             //If call is from Abbreviation button
             if (checkAbbrAcr)
             {
-                DialogResult dr = MessageBox.Show("Do you want to unmark this abbreviation?", "Daisy Translator - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult dr = MessageBox.Show("Do you want to unmark this abbreviation?", "SaveAsDAISY - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                 if (dr == DialogResult.Yes)
                 {
@@ -195,7 +195,7 @@ namespace DaisyTranslatorWord2003Addin
             //If call is from Acronym button
             else
             {
-                DialogResult dr = MessageBox.Show("Do you want to unmark this Acronym?", "Daisy Translator - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult dr = MessageBox.Show("Do you want to unmark this Acronym?", "SaveAsDAISY - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                 if (dr == DialogResult.Yes)
                 {

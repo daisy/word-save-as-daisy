@@ -11,7 +11,7 @@
 				<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="Finish" />
 				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="Cancel" />
 				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="Back" />
-				<Control Id="LaunchCheckBox" Type="CheckBox" X="10" Y="243" Width="170" Height="17" Property="SHOW_README" Hidden="yes" CheckBoxValue="1" Text="Open the authoring guidelines">
+				<Control Id="LaunchCheckBox" Type="CheckBox" X="10" Y="243" Width="170" Height="17" Property="SHOW_README" Hidden="yes" CheckBoxValue="1" Text="Open the instruction manual">
 					<Condition Action="show">NOT Installed</Condition>
 				</Control>
 			</Dialog>

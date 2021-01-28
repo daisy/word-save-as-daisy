@@ -27,7 +27,7 @@ if($signtool -eq $null){
 $makecert = Join-Path $(Split-Path $signtool) "makecert.exe";
 $pvk2pfx = Join-Path $(Split-Path $signtool) "pvk2pfx.exe";
 
-$projectName = "DAISY Translator for Microsoft Word";
+$projectName = "SaveAsDAISY for Microsoft Word";
 $projectUrl = "https://github.com/daisy/word-save-as-daisy";
 $ScriptDir = Split-Path $script:MyInvocation.MyCommand.Path;
 

@@ -768,7 +768,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                 //dont have access permission
                 error = a.Message;
 
-                System.Windows.Forms.MessageBox.Show(error, "Daisy Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show(error, "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
             catch (Exception a)
             {
@@ -776,7 +776,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                 //and other things that could go wrong
                 error = a.Message;
 
-                System.Windows.Forms.MessageBox.Show(error, "Daisy Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                System.Windows.Forms.MessageBox.Show(error, "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
         }
 
@@ -1017,7 +1017,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            DialogResult dr = MessageBox.Show(manager.GetString("QuitConfirmation"), "DAISY Translator", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+            DialogResult dr = MessageBox.Show(manager.GetString("QuitConfirmation"), "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
             if (dr == DialogResult.Yes)
             {
                 cancel = true;

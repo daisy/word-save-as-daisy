@@ -54,9 +54,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaisyAddin.CustomActions", "DaisyAddin.CustomActions\DaisyAddin.CustomActions.csproj", "{FCB212D1-D9E6-483A-8E9E-24DA0387620F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaisyInstaller", "DaisyInstaller\DaisyInstaller.csproj", "{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{9FD72ED2-BA9C-4F70-A53C-9051F5123816} = {9FD72ED2-BA9C-4F70-A53C-9051F5123816}
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "signing", "signing", "{8CFE5DA4-C6BF-4B7A-BC2D-1047F6BE7E54}"
 	ProjectSection(SolutionItems) = preProject
@@ -245,7 +242,6 @@ Global
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|x64.ActiveCfg = Release|Any CPU
-		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|x64.Build.0 = Release|Any CPU
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|x86.ActiveCfg = Release|Any CPU
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|x86.Build.0 = Release|Any CPU
 		{8C5BA4B1-5AAD-4A35-B95F-C4FD43ABFD91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -259,7 +255,6 @@ Global
 		{8C5BA4B1-5AAD-4A35-B95F-C4FD43ABFD91}.Release|x64.ActiveCfg = Release|x64
 		{8C5BA4B1-5AAD-4A35-B95F-C4FD43ABFD91}.Release|x64.Build.0 = Release|x64
 		{8C5BA4B1-5AAD-4A35-B95F-C4FD43ABFD91}.Release|x86.ActiveCfg = Release|x64
-		{8C5BA4B1-5AAD-4A35-B95F-C4FD43ABFD91}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -286,7 +281,7 @@ Global
 		{8C5BA4B1-5AAD-4A35-B95F-C4FD43ABFD91} = {4AF3E01B-91B1-4AE4-9316-11289EFA7B5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {8119EA58-6294-4AAF-B5CC-0C335A9409AB}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 EndGlobal

@@ -157,7 +157,7 @@
     <value>Select the destination folder</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>DAISY Translator - Error Message</value>
+    <value>SaveAsDAISY - Error Message</value>
   </data>
   <data name="TrackConfirmation" xml:space="preserve">
     <value>Track changes is set for this document.Do you want to accept all changes? </value>
@@ -196,7 +196,7 @@
     <value>Full form of Acronym:</value>
   </data>
   <data name="Information" xml:space="preserve">
-    <value>DAISY Translator - Information</value>
+    <value>SaveAsDAISY - Information</value>
   </data>
   <data name="MarkAbbr" xml:space="preserve">
     <value>Mark Abbreviation</value>

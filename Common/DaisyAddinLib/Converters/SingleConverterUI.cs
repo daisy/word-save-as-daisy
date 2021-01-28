@@ -35,13 +35,13 @@ namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 
         protected override bool IsContinueDTBookGenerationOnLostElements()
         {
-            DialogResult continueDTBookGenerationResult = MessageBox.Show("Do you want to create audio file", "DAISY Translator", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult continueDTBookGenerationResult = MessageBox.Show("Do you want to create audio file", "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             return continueDTBookGenerationResult == DialogResult.Yes;
         }
 
         protected override void OnSuccess()
         {
-            MessageBox.Show(ResManager.GetString("SucessLabel"), "DAISY Translator - Success", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+            MessageBox.Show(ResManager.GetString("SucessLabel"), "SaveAsDAISY - Success", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
         }
 
         protected override void OnMasterSubValidationError(string error)
@@ -58,7 +58,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib.Converters
 
         protected override void OnUnknownError(string error)
         {
-            MessageBox.Show(error, "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(error, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         protected override void OnUnknownError(string title, string details)

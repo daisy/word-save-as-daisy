@@ -25,7 +25,7 @@
     
     <!--Change this ID for update -->
     <Product Id="F95A0A5D-3237-4C1B-8078-1D59521B6B35" 
-            Name="Daisy Translator Addin version $(var.AddinVersion)" 
+            Name="SaveAsDAISY Addin version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
@@ -60,7 +60,7 @@
         <Property Id="ARPCONTACT" Value="DAISY Consortium" />
         <Property Id="ARPURLINFOABOUT" Value="https://daisy.org/" />
         <Property Id="ARPHELPLINK" Value="https://daisy.github.io/word-save-as-daisy" />
-        <Property Id="WixShellExecTarget" Value="[#Authoring_Guidelines_For_using_SaveAsDAISY.docx]" />
+        <Property Id="WixShellExecTarget" Value="[#SaveAsDAISY_Instruction_Manual_Jan_2021.docx]" />
         <Property Id="SHOW_README" Value="1" />
         <!-- Property set by DetectLatestMsWordVersion in the DaisyAddin.CustomAction project 
             Default assumes office 2007 (12.0) 32bits -->
@@ -132,16 +132,16 @@
             <Directory Id="$(var.PlatformProgramFilesFolder)">
                 <!-- Program Files/Daisy Consortium-->
                 <Directory Id="INSTALLDIRX" Name="DAISY Consortium">
-                    <!-- Program Files/Daisy/DAISY Translator -->
+                    <!-- Program Files/Daisy/SaveAsDAISY -->
                     <Directory Id="INSTALLDIR" Name="Save-as-DAISY Word Addin">
                         <Directory Id="ProgramMenuFolder">
                             <Directory Id="SaveAsDAISYShortcuts" Name="Save-as-DAISY Word Addin">
                                 <Component Id="ApplicationShortcut" Guid="26FA1CA4-6C3E-4383-936B-19D84B3ED531">
-                                    <Shortcut Id="ApplicationStartMenuShortcut1" Name="Daisy Translator Instruction Manual" Description="Daisy Translator Instruction Manual" Target="[INSTALLDIR]SaveAsDAISY_Instruction_Manual_Jan_2021.docx" WorkingDirectory="INSTALLDIR" />
+                                    <Shortcut Id="ApplicationStartMenuShortcut1" Name="SaveAsDAISY Instruction Manual" Description="SaveAsDAISY Instruction Manual" Target="[INSTALLDIR]SaveAsDAISY_Instruction_Manual_Jan_2021.docx" WorkingDirectory="INSTALLDIR" />
                                     <Shortcut Id="ApplicationStartMenuShortcut2" Name="Accessibility Demofile" Description="Accessibility Demofile" Target="[INSTALLDIR]Accessibility_demofile.docx" WorkingDirectory="INSTALLDIR" />
                                     <Shortcut Id="ApplicationStartMenuShortcut4" Name="Authoring guidelines" Description="Authoring guidelines" Target="[INSTALLDIR]Authoring_Guidelines_For_using_SaveAsDAISY.docx" WorkingDirectory="INSTALLDIR" />
                                     <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
-                                    <RegistryValue Root="HKCU" Key="Software\Microsoft\DAISY Translator" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+                                    <RegistryValue Root="HKCU" Key="Software\Microsoft\SaveAsDAISY" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                                 </Component>
                             </Directory>
                         </Directory>
@@ -322,16 +322,16 @@
                             <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
                             <RegistryKey Id="RegKeyAddinMachineWord2007" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyWord2007AddIn.Connect" Action="createAndRemoveOnUninstall">
                                 <RegistryValue Id="RegLoadBehaviorAddinMachineWord2007" Type="integer" Name="LoadBehavior" Value="3" />
-                                <RegistryValue Id="RegFriendlyNameAddinMachineWord2007" Type="string" Name="FriendlyName" Value="DAISY Addin" />
-                                <RegistryValue Id="RegVersionAddinMachineWord2007" Type="string" Name="Description" Value="DAISY Addin" />
+                                <RegistryValue Id="RegFriendlyNameAddinMachineWord2007" Type="string" Name="FriendlyName" Value="SaveAsDAISY" />
+                                <RegistryValue Id="RegVersionAddinMachineWord2007" Type="string" Name="Description" Value="SaveAsDAISY Addin to convert word document to DTbook XML and DAISY book files" />
                             </RegistryKey>
                         </Component>
                         <Component Id="RegistryEntriesWord2003" Guid="7A4EA68B-A9E9-413f-8EFB-CF09A53958C2" DiskId="1">
                             <Condition><![CDATA[LATESTWORDVERSION="11.0"]]></Condition>
                             <RegistryKey Id="RegKeyAddinMachineWord2003" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyTranslatorWord2003Addin.Connect" Action="createAndRemoveOnUninstall">
                                 <RegistryValue Id="RegLoadBehaviorAddinMachineWord2003" Type="integer" Name="LoadBehavior" Value="3" KeyPath="yes" />
-                                <RegistryValue Id="RegFriendlyNameAddinMachineWord2003" Type="string" Name="FriendlyName" Value="DAISY Addin Word 2003" />
-                                <RegistryValue Id="RegVersionAddinMachineWord2003" Type="string" Name="Description" Value="DAISY Addin Word 2003" />
+                                <RegistryValue Id="RegFriendlyNameAddinMachineWord2003" Type="string" Name="FriendlyName" Value="SaveAsDAISY for Word 2003" />
+                                <RegistryValue Id="RegVersionAddinMachineWord2003" Type="string" Name="Description" Value="SaveAsDAISY Addin to convert word document to DTbook XML and DAISY book files" />
                             </RegistryKey>
                         </Component>
                         

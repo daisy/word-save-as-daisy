@@ -286,7 +286,7 @@ namespace Daisy.DaisyConverter.CommandLineTool {
                 }
                 packDoc.Close();
             } catch (Exception e) {
-                //MessageBox.Show(this.resourceManager.GetString("TranslationFailed") + "\n" + this.resourceManager.GetString("WellDaisyFormat") + "\n" + " \"" + Path.GetFileName(tempInputFile) + "\"\n" + validationErrorMsg + "\n" + "Problem is:" + "\n" + e.Message + "\n", "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+                //MessageBox.Show(this.resourceManager.GetString("TranslationFailed") + "\n" + this.resourceManager.GetString("WellDaisyFormat") + "\n" + " \"" + Path.GetFileName(tempInputFile) + "\"\n" + validationErrorMsg + "\n" + "Problem is:" + "\n" + e.Message + "\n", "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
             }
         }
 

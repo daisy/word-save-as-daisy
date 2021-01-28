@@ -118,13 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="$this.Text" xml:space="preserve">
-    <value>About DAISY Translator Add-in</value>
+    <value>About SaveAsDAISY Add-in</value>
   </data>
   <data name="bttnOk.Text" xml:space="preserve">
     <value>OK </value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>DAISY Translator Add-in </value>
+    <value>SaveAsDAISY Add-in </value>
   </data>
   <data name="label3.Text" xml:space="preserve">
     <value>The DAISY Consortium</value>

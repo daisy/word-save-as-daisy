@@ -123,7 +123,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             {
                 if (lBx_SubDocs.Items.Count == 0)
                 {
-                    MessageBox.Show(manager.GetString("SubdocsError"), "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(manager.GetString("SubdocsError"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btn_Browse.Focus();
                 }
                 else if (tBx_output.Text == "")
@@ -266,7 +266,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 
             	if (lBx_SubDocs.Items.Count == 0)
                 {
-                    MessageBox.Show(manager.GetString("SubdocsError"), "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(manager.GetString("SubdocsError"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btn_Browse.Focus();
                 }
                 else if (tBx_Title.Text.TrimEnd() == "")
@@ -666,7 +666,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         {
             if (tBx_Title.Text != "" || tBx_Creator.Text != "" || tBx_Publisher.Text != "" || tBx_Subject.Text != "")
             {
-                DialogResult dr = MessageBox.Show("Do you want to overwrite the document properties?", "Daisy Translator", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult dr = MessageBox.Show("Do you want to overwrite the document properties?", "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
                 if (dr == DialogResult.Yes)
                 {
                     populateProperties();
@@ -697,7 +697,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                     tBx_Publisher.Text = DocPropPublisher(fileSelected);
                 }
                 else
-                    MessageBox.Show(manager.GetString("Populateopen"), "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(manager.GetString("Populateopen"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -1,7 +1,7 @@
 @echo off
 
 :: configure project here
-set PROJECT_NAME=DAISY Translator for Microsoft Word
+set PROJECT_NAME=SaveAsDAISY for Microsoft Word
 set PROJECT_URL=https://github.com/daisy/word-save-as-daisy
 
 :: configure certificate here

@@ -17,11 +17,11 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             InitializeComponent();
 
             if (errorType == "Validation")
-                this.Text = "Daisy Translator - Validation Error";
+                this.Text = "SaveAsDAISY - Validation Error";
             else if (errorType == "Success")
-                this.Text = "DAISY Translator - Success";
+                this.Text = "SaveAsDAISY - Success";
             else
-                this.Text = "DAISY Translator";
+                this.Text = "SaveAsDAISY";
             this.richTextBox1.Text = details;
         }
 

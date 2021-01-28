@@ -34,7 +34,7 @@ using System.Resources;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("Daisy Translator Command Line Tool")]
+[assembly: AssemblyTitle("SaveAsDAISY Command Line Tool")]
 [assembly: AssemblyDescription("Converts files from the command line.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("The DAISY Consortium")]

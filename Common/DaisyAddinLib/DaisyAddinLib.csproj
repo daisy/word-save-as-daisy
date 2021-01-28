@@ -465,7 +465,7 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Sonata.DaisyConverter.DaisyConverterLib.Properties</CustomToolNamespace>
+      <CustomToolNamespace>Daisy.DaisyConverter.DaisyConverterLib.Properties</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\Images\import.gif" />
     <EmbeddedResource Include="resources\Images\subfolder.gif" />
@@ -631,6 +631,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="resources\about screen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

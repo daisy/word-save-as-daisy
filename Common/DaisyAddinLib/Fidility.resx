@@ -301,7 +301,7 @@
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>DAISY Translator - Fidelity Loss</value>
+    <value>SaveAsDAISY - Fidelity Loss</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>Fidility</value>

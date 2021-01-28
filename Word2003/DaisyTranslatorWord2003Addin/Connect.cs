@@ -428,7 +428,7 @@ namespace DaisyTranslatorWord2003Addin
 					else
 					{
 						inz.Close();
-						MessageBox.Show(addinLib.GetString("AddSimpleMasterSub"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+						MessageBox.Show(addinLib.GetString("AddSimpleMasterSub"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 					}
 				}
 				else
@@ -437,7 +437,7 @@ namespace DaisyTranslatorWord2003Addin
 					String tempArray = "";
 					for (int i = 0; i < openSubdocs.Count; i++)
 						tempArray += (i + 1) + ". " + openSubdocs[i].ToString();
-					MessageBox.Show(this.addinLib.GetString("OPenState") + "\n\n" + tempArray, "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+					MessageBox.Show(this.addinLib.GetString("OPenState") + "\n\n" + tempArray, "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 				}
 			}
 		}
@@ -671,7 +671,7 @@ namespace DaisyTranslatorWord2003Addin
 			}
 		}
 		/// <summary>
-		/// Function to show the current version of the Daisy Translator Addin
+		/// Function to show the current version of the SaveAsDAISY Addin
 		/// </summary>
 		/// <param name="control"></param>
 		private void _BtnAbout_Click(CommandBarButton Ctrl, ref Boolean CancelDefault)
@@ -750,7 +750,7 @@ namespace DaisyTranslatorWord2003Addin
 			catch (Exception ex)
 			{
 				string stre = ex.Message;
-				MessageBox.Show(ex.Message.ToString(), "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(ex.Message.ToString(), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			finally
 			{
@@ -836,7 +836,7 @@ namespace DaisyTranslatorWord2003Addin
 
 			if (!doc.Saved || doc.FullName.LastIndexOf('.') < 0)
 			{
-				System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforeExport"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+				System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforeExport"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 
 			}
 			else if (doc.Saved)
@@ -846,7 +846,7 @@ namespace DaisyTranslatorWord2003Addin
 
 				if (substr.ToLower() != ".docx")
 				{
-					System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+					System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 				}
 				else
 				{
@@ -1221,7 +1221,7 @@ namespace DaisyTranslatorWord2003Addin
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
@@ -1262,7 +1262,7 @@ namespace DaisyTranslatorWord2003Addin
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
@@ -1342,12 +1342,12 @@ namespace DaisyTranslatorWord2003Addin
 				}
 				else
 				{
-					MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
@@ -1367,12 +1367,12 @@ namespace DaisyTranslatorWord2003Addin
 				}
 				else
 				{
-					MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
@@ -1513,7 +1513,7 @@ namespace DaisyTranslatorWord2003Addin
 			//Checking whether document is saved
 			if (!doc.Saved || doc.FullName.LastIndexOf('.') < 0)
 			{
-				System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforeValidate"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+				System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforeValidate"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 				_BtnValidate.Enabled = true;
 			}
 			//if saved
@@ -1524,7 +1524,7 @@ namespace DaisyTranslatorWord2003Addin
 
 				if (substr.ToLower() != ".docx")
 				{
-					System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+					System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 					_BtnValidate.Enabled = true;
 				}
 				else
@@ -1682,7 +1682,7 @@ namespace DaisyTranslatorWord2003Addin
 			}
 			catch (Exception ex)
 			{
-				MessageBox.Show(ex.Message, "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
@@ -1886,7 +1886,7 @@ namespace DaisyTranslatorWord2003Addin
 
 				if (footnotetext.Text == null)
 				{
-					MessageBox.Show("Please select Footnote text from the document", "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+					MessageBox.Show("Please select Footnote text from the document", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 				}
 				else
 				{
@@ -2015,13 +2015,13 @@ namespace DaisyTranslatorWord2003Addin
 					}
 					else
 					{
-						MessageBox.Show("No match found in the document to map selected footnote", "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+						MessageBox.Show("No match found in the document to map selected footnote", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 					}
 				}
 			}
 			catch (Exception x)
 			{
-				MessageBox.Show(x.Message, "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(x.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 
@@ -2740,7 +2740,7 @@ namespace DaisyTranslatorWord2003Addin
 
 			if (cnt > 0)
 			{
-				DialogResult dr = MessageBox.Show("Do you want to translate the current document along with sub documents?", "DAISY Translator", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				DialogResult dr = MessageBox.Show("Do you want to translate the current document along with sub documents?", "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
 				if (dr == DialogResult.Yes)
 					masterSubFlag = "Yes";
@@ -2884,19 +2884,19 @@ namespace DaisyTranslatorWord2003Addin
 					else
 					{
 						inz.Close();
-						MessageBox.Show("Some Problem in Sub documents", "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+						MessageBox.Show("Some Problem in Sub documents", "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 					}
 				}
 				else
 				{
 					inz.Close();
-					System.Windows.Forms.MessageBox.Show("Some of the added documents are MasterSub documents.Please add simple documents.", "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+					System.Windows.Forms.MessageBox.Show("Some of the added documents are MasterSub documents.Please add simple documents.", "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 				}
 			}
 			else
 			{
 				inz.Close();
-				MessageBox.Show("Some Sub documents are in open state. Please close all the Sub documents before Translation:", "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show("Some Sub documents are in open state. Please close all the Sub documents before Translation:", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 		}
 
@@ -2910,7 +2910,7 @@ namespace DaisyTranslatorWord2003Addin
 		//    MSword.Document currentDoc = this.applicationObject.ActiveDocument;
 		//    if (!currentDoc.Saved || currentDoc.FullName.LastIndexOf('.') < 0)
 		//    {
-		//        System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforelanguage"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+		//        System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforelanguage"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 		//    }
 		//    else if (currentDoc.Saved)
 		//    {
@@ -2919,7 +2919,7 @@ namespace DaisyTranslatorWord2003Addin
 
 		//        if (substr.ToLower() != ".docx")
 		//        {
-		//            System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+		//            System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 		//        }
 		//        else
 		//        {
@@ -2929,7 +2929,7 @@ namespace DaisyTranslatorWord2003Addin
 		//                DialogResult dr = pb.ShowDialog();
 		//                if (dr == System.Windows.Forms.DialogResult.OK)
 		//                {
-		//                    MessageBox.Show("Languages Updated Successfully", "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+		//                    MessageBox.Show("Languages Updated Successfully", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 		//                }
 		//            }
 		//        }
@@ -2946,7 +2946,7 @@ namespace DaisyTranslatorWord2003Addin
 				MSword.Document currentDoc = this.applicationObject.ActiveDocument;
 				if (!currentDoc.Saved || currentDoc.FullName.LastIndexOf('.') < 0)
 				{
-					System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforelanguage"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+					System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforelanguage"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 				}
 				else if (currentDoc.Saved)
 				{
@@ -2955,7 +2955,7 @@ namespace DaisyTranslatorWord2003Addin
 
 					if (substr.ToLower() != ".docx")
 					{
-						MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
+						MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 					}
 					else
 					{
@@ -2973,14 +2973,14 @@ namespace DaisyTranslatorWord2003Addin
 						}
 						else
 						{
-							MessageBox.Show("Select a paragraph for setting the Language", "DAISY Translator", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
+							MessageBox.Show("Select a paragraph for setting the Language", "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Error);
 						}
 					}
 				}
 			}
 			catch (Exception x)
 			{
-				MessageBox.Show(x.Message, "Daisy Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+				MessageBox.Show(x.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
 			}
 		}
 

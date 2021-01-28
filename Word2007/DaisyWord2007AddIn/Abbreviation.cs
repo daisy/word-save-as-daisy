@@ -239,7 +239,7 @@ namespace DaisyWord2007AddIn {
             CustomXMLParts xmlparts = pdoc.CustomXMLParts;
 
             if (seperate) {
-                DialogResult dr = MessageBox.Show("Do you want to unmark this abbreviation?", "Daisy Translator - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult dr = MessageBox.Show("Do you want to unmark this abbreviation?", "SaveAsDAISY - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                 if (dr == DialogResult.Yes) {
                     String input = lBx_Abbreviation.SelectedItem.ToString();
@@ -270,7 +270,7 @@ namespace DaisyWord2007AddIn {
                     lBx_Abbreviation.Refresh();
                 }
             } else {
-                DialogResult dr = MessageBox.Show("Do you want to unmark this Acronym?", "Daisy Translator - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult dr = MessageBox.Show("Do you want to unmark this Acronym?", "SaveAsDAISY - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                 if (dr == DialogResult.Yes) {
                     String input = lBx_Abbreviation.SelectedItem.ToString();

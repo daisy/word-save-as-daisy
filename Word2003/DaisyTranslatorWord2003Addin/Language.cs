@@ -47,12 +47,12 @@ namespace DaisyTranslatorWord2003Addin
                 }
                 else
                 {
-                    MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "DAISY Translator", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 

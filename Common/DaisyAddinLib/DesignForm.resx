@@ -1014,7 +1014,7 @@ your document with the Word Accessibility Checker.
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>DAISY Translator</value>
+    <value>SaveAsDAISY</value>
   </data>
   <data name="&gt;&gt;toolTip1.Name" xml:space="preserve">
     <value>toolTip1</value>
