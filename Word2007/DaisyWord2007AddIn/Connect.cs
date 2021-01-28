@@ -859,7 +859,7 @@ namespace DaisyWord2007AddIn {
                 errorFileNameMessage.Append("Any commas (,) present in the file name should be removed, or they will be replaced by underscores automatically.");
             } else {
                 // TODO : specific name pattern following daisy book naming convention to find
-                authorizedNamePattern = @"^[a-zA-Z0-9_\-\.]+$";
+                authorizedNamePattern = @"^[a-zA-Z0-9_\-\.]+\.docx$";
                 errorFileNameMessage.Append("Only Alphanumerical letters (a-z, A-Z, 0-9), hyphens (-), dots (.) and underscores (_) are allowed in DAISY file names." +
                     "\r\nAny other characters (including spaces) will be replaced automaticaly by underscores.");
             }
@@ -872,7 +872,7 @@ namespace DaisyWord2007AddIn {
             bool nameIsValid;
             do {
                 bool docIsRenamed = false;
-                if (!validator.IsMatch(currentDoc.FullName)) {
+                if (!validator.IsMatch(currentDoc.Name)) { // check only name (i assume it may still lead to problem if path has commas)
                     DialogResult userAnswer = MessageBox.Show(errorFileNameMessage.ToString(), "Unauthorized characters in the document filename", MessageBoxButtons.YesNoCancel,MessageBoxIcon.Warning);
                     if (userAnswer == DialogResult.Yes) {
                         Dialog dlg = this.applicationObject.Dialogs[Microsoft.Office.Interop.Word.WdWordDialog.wdDialogFileSaveAs];
