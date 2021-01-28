@@ -127,33 +127,43 @@ namespace DaisyInstaller
                  * - the pipeline cab file (without jre embedded but with JRE 64 or 32 bits search) referenced by both MSI as external cab
                  */
 
+                try {
 
-                string tempPath = Path.GetTempPath();
+                    string tempPath = Path.GetTempPath();
 
-                // unpackage the msi needed for install
-                string daisySetupPath = Path.Combine(tempPath, "DaisyAddinForWordSetup.msi");
-                string pipelineCabPath = Path.Combine(tempPath, "pipeline.cab");
+                    // unpackage the msi needed for install
+                    string daisySetupPath = Path.Combine(tempPath, "DaisyAddinForWordSetup.msi");
+                    string pipelineCabPath = Path.Combine(tempPath, "pipeline.cab");
+                    if (File.Exists(daisySetupPath)) File.Delete(daisySetupPath);
+                    if (File.Exists(pipelineCabPath)) File.Delete(pipelineCabPath);
 #if UNIFIED
-                if (officeIs64bits){
-                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
-                } else {
-                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
-                    // unpackage the pipeline cab used by the msi files
+                    File.WriteAllBytes(daisySetupPath, officeIs64bits ? 
+                        Properties.Resources.DaisyAddinForWordSetup_x64 :
+                        Properties.Resources.DaisyAddinForWordSetup_x86);
                     File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
-                }
 #elif X64INSTALLER
-                File.WriteAllBytes(daisySetupPath, Properties.Resources_Office64bits.DaisyAddinForWordSetup_x64);
-                // unpackage the pipeline cab used by the msi files
-                File.WriteAllBytes(pipelineCabPath, Properties.Resources_Office64bits.pipeline_cab);
+                    File.WriteAllBytes(daisySetupPath, Properties.Resources_Office64bits.DaisyAddinForWordSetup_x64);
+                    File.WriteAllBytes(pipelineCabPath, Properties.Resources_Office64bits.pipeline_cab);
 #else
-                File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
+                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
+                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
                 
 #endif
 
+                    // launch the msi
+                    Process.Start(daisySetupPath);
+
+                } catch (Exception e) {
+                    MessageBox.Show(
+                        "An error occured while installing the SaveAsDAISY add-in." +
+                            "\r\n" + e.Message + "\r\n" + e.StackTrace,
+                        "Install error",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error
+                        );
+                    throw;
+                }
 
 
-                // launch the msi
-                Process.Start(daisySetupPath);
 
             } else return;
             
