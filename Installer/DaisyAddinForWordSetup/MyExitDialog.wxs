@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Fragment>
+		<UI>
+			<Dialog Id="MyExitDialog" Width="370" Height="270" Title="[ProductName] Setup" KeepModeless="yes">
+				<!--<Control Id="BannerBitmap" Type="Bitmap" X="0" Y="0" Width="370" Height="44" TabSkip="no" Text="WixUI_Bmp_Banner" />-->
+				<Control Id="Description" Type="Text" X="135" Y="80" Width="220" Height="60" Transparent="yes" NoPrefix="yes" Text="Click the Finish button to exit this Setup Wizard." />
+				<Control Id="BottomLine" Type="Line" X="0" Y="234" Width="370" Height="0" />
+				<Control Id="Bitmap" Type="Bitmap" X="0" Y="0" Width="123" Height="234" TabSkip="no" Text="WixUI_Bmp_Dialog" />
+				<Control Id="Title" Type="Text" X="135" Y="20" Width="200" Height="60" Transparent="yes" NoPrefix="yes" Text="{\WixUI_Font_Bigger}Completed the [ProductName] Setup Wizard" />
+				<Control Id="Finish" Type="PushButton" X="236" Y="243" Width="56" Height="17" Default="yes" Cancel="yes" Text="Finish" />
+				<Control Id="Cancel" Type="PushButton" X="304" Y="243" Width="56" Height="17" Disabled="yes" Text="Cancel" />
+				<Control Id="Back" Type="PushButton" X="180" Y="243" Width="56" Height="17" Disabled="yes" Text="Back" />
+				<Control Id="LaunchCheckBox" Type="CheckBox" X="10" Y="243" Width="170" Height="17" Property="SHOW_README" Hidden="yes" CheckBoxValue="1" Text="Open the instruction manual">
+					<Condition Action="show">NOT Installed</Condition>
+				</Control>
+			</Dialog>
+		</UI>
+		
+		<InstallUISequence>
+			<Show Dialog="MyExitDialog" OnExit="success" />
+		</InstallUISequence>
+
+		<AdminUISequence>
+			<Show Dialog="MyExitDialog" OnExit="success" />
+		</AdminUISequence>
+		
+	</Fragment>
+</Wix>
