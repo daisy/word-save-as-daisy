@@ -44,8 +44,8 @@
 					<button id="Button10" label="&amp;Settings" size="large" onAction="GetDaisySettings" getImage="GetImage12"/>
 				</group>
 				<group id="SampleGroup6" label="Help">
-					<button id="Button8"  label="Version &amp;Details" size="large" onAction="AboutUI" getImage="GetImage8"/>
-					<menu id="DaisyHelpMnu" label="Translator &amp;Help" size="large" getImage="GetImage" >
+					<button id="Button8"  label="&amp;Version Details" size="large" onAction="AboutUI" getImage="GetImage8"/>
+					<menu id="DaisyHelpMnu" label="&amp;Documentation" size="large" getImage="GetImage" >
 						<button id="Button9"  label="Instruction Manual" onAction="ShowWordManual" />
 						<!--<button id="Button13"  label="DAISY Manual in DTBook Format" onAction="ShowDtBookManual" />-->
                         <button id="Button13"  label="Authoring guidelines" onAction="ShowAuthoringGuidelines" />
