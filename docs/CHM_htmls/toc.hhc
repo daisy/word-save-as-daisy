@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="Auto Generated" value="Yes">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Contents">
+		<param name="Local" value="Contents.html">
+		</OBJECT> </LI>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="INTRODUCTION">
+		<param name="Local" value="INTRODUCTION.html">
+		</OBJECT> </LI>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="WHY CARE ABOUT MAKING THE WORD DOCUMENT ACCESSIBLE?">
+		<param name="Local" value="WHY-CARE-ABOUT-MAKING-THE-WORD-DOCUMENT-ACCESSIBLE.html">
+		</OBJECT> </LI>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="PREPARING ACCESSIBLE MICROSOFT WORD DOCUMENTS">
+		<param name="Local" value="PREPARING-ACCESSIBLE-MICROSOFT-WORD-DOCUMENTS.html">
+		</OBJECT> </LI>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="USING STYLES IN MICROSOFT WORD">
+			<param name="Local" value="USING-STYLES-IN-MICROSOFT-WORD.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="SaveAsDAISY specific styles">
+			<param name="Local" value="SaveAsDAISY-specific-styles.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="HEADINGS">
+			<param name="Local" value="HEADINGS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ALT TEXT OR IMAGE DESCRIPTIONS">
+			<param name="Local" value="ALT-TEXT-OR-IMAGE-DESCRIPTIONS.html">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Guidelines for writing alt text:">
+				<param name="Local" value="Guidelines-for-writing-alt-text:.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="HYPERLINKS">
+			<param name="Local" value="HYPERLINKS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TABLES">
+			<param name="Local" value="TABLES.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="BULLETED AND NUMBERED LISTS">
+			<param name="Local" value="BULLETED-AND-NUMBERED-LISTS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="FILE NAME AND PROPERTIES">
+			<param name="Local" value="FILE-NAME-AND-PROPERTIES.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="USE OF COLOR">
+			<param name="Local" value="USE-OF-COLOR.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="SPACING, ALIGNMENT AND MARGINS">
+			<param name="Local" value="SPACING,-ALIGNMENT-AND-MARGINS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Page numbering strategy for Print to Digital conversion">
+			<param name="Local" value="Page-numbering-strategy-for-Print-to-Digital-conversion.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="HEADER and FOOTER">
+			<param name="Local" value="HEADER-and-FOOTER.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ABBREVIATIONS AND ACRONYMS">
+			<param name="Local" value="ABBREVIATIONS-AND-ACRONYMS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="FOOTNOTES AND ENDNOTES">
+			<param name="Local" value="FOOTNOTES-AND-ENDNOTES.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TABLE OF CONTENTS">
+			<param name="Local" value="TABLE-OF-CONTENTS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="COLUMNS">
+			<param name="Local" value="COLUMNS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="TEXT BOXES">
+			<param name="Local" value="TEXT-BOXES.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="SIDE BARS">
+			<param name="Local" value="SIDE-BARS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="CAPTIONS">
+			<param name="Local" value="CAPTIONS.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="WATER MARK">
+			<param name="Local" value="WATER-MARK.html">
+			</OBJECT> </LI>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="SOME OTHER POINTS">
+			<param name="Local" value="SOME-OTHER-POINTS.html">
+			</OBJECT> </LI>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="THE MICROSOFT ACCESSIBILITY CHECKER">
+		<param name="Local" value="THE-MICROSOFT-ACCESSIBILITY-CHECKER.html">
+		</OBJECT> </LI>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Start Accessibility Checker">
+			<param name="Local" value="Start-Accessibility-Checker.html">
+			</OBJECT> </LI>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Understand the inspection results">
+				<param name="Local" value="Understand-the-inspection-results.html">
+				</OBJECT> </LI>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="ACCESSIBILITY CHECKER ERRORS, WARNINGS, AND TIPS">
+			<param name="Local" value="ACCESSIBILITY-CHECKER-ERRORS,-WARNINGS,-AND-TIPS.html">
+			</OBJECT> </LI>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Errors">
+				<param name="Local" value="Errors.html">
+				</OBJECT> </LI>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Warnings">
+				<param name="Local" value="Warnings.html">
+				</OBJECT> </LI>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Tips">
+				<param name="Local" value="Tips.html">
+				</OBJECT></LI>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="MANUAL TESTING FOR ACCESSIBILITY">
+			<param name="Local" value="MANUAL-TESTING-FOR-ACCESSIBILITY.html">
+			</OBJECT></LI>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Using NVDA for manual accessibility testing">
+				<param name="Local" value="Using-NVDA-for-manual-accessibility-testing.html">
+				</OBJECT></LI>
+		</UL>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Convert your document now">
+		<param name="Local" value="Convert-your-document-now.html">
+		</OBJECT></LI>
+</UL>
+</BODY></HTML>

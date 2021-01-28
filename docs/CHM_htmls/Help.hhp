@@ -1,0 +1,50 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=Help.chm
+Contents file=toc.hhc
+Default topic=Contents.html
+Display compile progress=No
+Language=0x40c Français (France)
+
+
+[FILES]
+ABBREVIATIONS-AND-ACRONYMS.html
+ACCESSIBILITY-CHECKER-ERRORS,-WARNINGS,-AND-TIPS.html
+ALT-TEXT-OR-IMAGE-DESCRIPTIONS.html
+BULLETED-AND-NUMBERED-LISTS.html
+CAPTIONS.html
+COLUMNS.html
+Contents.html
+Convert-your-document-now.html
+DOCUMENT-PREPARATION-GUIDELINES-FOR-USING-SaveAsDAISY.html
+Errors.html
+FILE-NAME-AND-PROPERTIES.html
+FOOTNOTES-AND-ENDNOTES.html
+Guidelines-for-writing-alt-text.html
+HEADINGS.html
+HYPERLINKS.html
+INTRODUCTION.html
+MANUAL-TESTING-FOR-ACCESSIBILITY.html
+Page-numbering-strategy-for-Print-to-Digital-conversion.html
+PREPARING-ACCESSIBLE-MICROSOFT-WORD-DOCUMENTS.html
+SaveAsDAISY-specific-styles.html
+SIDE-BARS.html
+SOME-OTHER-POINTS.html
+SPACING,-ALIGNMENT-AND-MARGINS.html
+Start-Accessibility-Checker.html
+TABLE-OF-CONTENTS.html
+TABLES.html
+TEXT-BOXES.html
+THE-MICROSOFT-ACCESSIBILITY-CHECKER.html
+Tips.html
+Understand-the-inspection-results.html
+USE-OF-COLOR.html
+Using-NVDA-for-manual-accessibility-testing.html
+USING-STYLES-IN-MICROSOFT-WORD.html
+Warnings.html
+WATER-MARK.html
+WHY-CARE-ABOUT-MAKING-THE-WORD-DOCUMENT-ACCESSIBLE.html
+HEADER-and-FOOTER.html
+
+[INFOTYPES]
+
