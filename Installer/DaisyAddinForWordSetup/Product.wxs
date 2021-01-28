@@ -313,7 +313,7 @@
                             <RegistryValue Root="HKCR" Key="TypeLib\{00020430-0000-0000-C000-000000000046}\2.0" Name="PrimaryInteropAssemblyName" Value="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Type="string" Action="write" />
                         </Component>
                         <Component Id="Readme" Guid="F4BBBA14-F1F0-473f-9F17-5294C35798B4">
-                            <File Id="Readme" Name="Readme.html" Source="$(var.SolutionDir)DaisyTranslatorWordAddin\Readme.htm" DiskId="1" KeyPath="yes" />
+                            <File Id="Readme" Name="Readme.html" Source="$(var.SolutionDir)Installer\DaisyTranslatorWordAddin\Readme.htm" DiskId="1" KeyPath="yes" />
                         </Component>
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             REGISTRY SETTINGS

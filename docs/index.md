@@ -6,18 +6,20 @@ SaveAsDAISY is available for Windows only. We provide an installer for Microsoft
 
 ## Latest version: 2.6.1 beta - Minor update 2 (released on January 27, 2020)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/DaisyInstaller.exe)
-- [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/DaisyInstaller_Office64bits.exe)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller.exe)
+- [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller_Office64bits.exe)
 
 # Changelog
 
-# 2.6.1 beta - Minor update 2 (January 27, 2021)
+# 2.6.1 beta - Minor update 2 (January 28, 2021)
 
 Minor update including
 - bugfix for [#2](https://github.com/daisy/word-save-as-daisy/issues/2) in test phase
 - bugfix for [#3](https://github.com/daisy/word-save-as-daisy/issues/3) in test phase
-- Documentation updated (new manual and authoring guidelines)
+- Documentation updated (new manual and authoring guidelines, including integrated help file)
 - Added a document file name check pass before launching conversion (to let the user manually rename his file if wanted)
+- Fixed an installer issue where previous version of packages could be used instead of the new ones
+- Name and logos updated in software and installers
 
 
 # 2.6.1 beta - Minor update 1 (January 14, 2021)
