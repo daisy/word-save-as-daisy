@@ -860,12 +860,19 @@ namespace DaisyWord2007AddIn {
             } else {
                 // TODO : specific name pattern following daisy book naming convention to find
                 authorizedNamePattern = @"^[a-zA-Z0-9_\-\.]+\.docx$";
-                errorFileNameMessage.Append("Only Alphanumerical letters (a-z, A-Z, 0-9), hyphens (-), dots (.) and underscores (_) are allowed in DAISY file names." +
+                errorFileNameMessage.Append(
+                    "Only Alphanumerical letters (a-z, A-Z, 0-9), hyphens (-), dots (.) " +
+                        "and underscores (_) are allowed in DAISY file names." +
                     "\r\nAny other characters (including spaces) will be replaced automaticaly by underscores.");
             }
-            errorFileNameMessage.Append("\r\n\r\nDo you want to save this document under a new name ?" +
+            errorFileNameMessage.Append(
+                "\r\n" +
+                "\r\nDo you want to save this document under a new name ?" +
                 "\r\nThe document with the original name will not be deleted." +
-                "\r\n\r\n(Click Yes to save the document under a new name and use the new one, No to continue with the current document, or Cancel to abort the conversion)");
+                "\r\n" +
+                "\r\n(Click Yes to save the document under a new name and use the new one, " +
+                    "No to continue with the current document, " +
+                    "or Cancel to abort the conversion)");
 
 
             Regex validator = new Regex(authorizedNamePattern);
