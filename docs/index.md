@@ -4,10 +4,17 @@ layout: my-default
 ---
 SaveAsDAISY is available for Windows only. We provide an installer for Microsoft Office 64-bit edition and an installer that detects the installed version of Office. Choose the latter if you don't know whether your Office is the 32 or 64-bit edition.
 
+
 ## Latest version: 2.6.1 beta - Minor update 2 (released on January 27, 2020)
 
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller.exe)
 - [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller_Office64bits.exe)
+
+## Report issues
+
+If you have an issue with the installers or with the add-in, please contact the development team by mail to [daisy-pipeline@mail.daisy.org](mailto:daisy-pipeline@mail.daisy.org).
+
+Any construcive feedback is also welcome to help us improve the add-in :)
 
 ## Feedbacks / Known issues
 
