@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-        xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-        xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
-        xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-        xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
-        xmlns:dc="http://purl.org/dc/elements/1.1/"
-        xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-        xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-        xmlns:v="urn:schemas-microsoft-com:vml" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-        xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype myObj xsl m o">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+                xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+                xmlns:dcterms="http://purl.org/dc/terms/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+                xmlns:v="urn:schemas-microsoft-com:vml"
+                xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:d="DaisyClass"
+                xmlns="http://www.daisy.org/z3986/2005/dtbook/"
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
     <!--Imports all the XSLT-->
     <!--<xsl:import href ="Common1.xsl"/>
         <xsl:import href ="Common2.xsl"/>
         <xsl:import href ="Common3.xsl"/>
         <xsl:import href ="OOML2MML.xsl"/>-->
     <!--Parameter citation-->
-    <xsl:param name="Cite_style" select="myObj:Citation()"/>
-    <xsl:output method="xml" indent="no" />
+    <xsl:param name="Cite_style" select="d:Citation($myObj)"/>
 
     <!--template for frontmatter elements-->
     <xsl:template name="FrontMatter">
@@ -45,7 +51,7 @@
             <xsl:choose>
                 <!--Taking Document Title value from core.xml-->
                 <xsl:when test="string-length($Title) = 0">
-                    <xsl:value-of select="document('docProps/core.xml')//cp:coreProperties/dc:title"/>
+                    <xsl:value-of select="$docPropsCoreXml//cp:coreProperties/dc:title"/>
                 </xsl:when>
                 <!--Taking the Title value entered by the user-->
                 <xsl:otherwise>
@@ -57,7 +63,7 @@
             <xsl:choose>
                 <!--Taking Document creator value from core.xml-->
                 <xsl:when test="string-length($Creator) = 0">
-                    <xsl:value-of select="document('docProps/core.xml')//cp:coreProperties/dc:creator"/>
+                    <xsl:value-of select="$docPropsCoreXml//cp:coreProperties/dc:creator"/>
                 </xsl:when>
                 <!--Taking the Creator value entered by the user-->
                 <xsl:otherwise>
@@ -137,11 +143,11 @@
         <xsl:param name="dpi"/>
         <xsl:param name="charStyles"/>
 
-        <xsl:if test="not(count(document('word/document.xml')//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[@w:val='EndnoteReference'])=0)">
+        <xsl:if test="not(count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[@w:val='EndnoteReference'])=0)">
             <level1>
                 <!--Checking if any elements should be translated to the rearmatter-->
                 <!--Otherwise Traversing through document.xml file and passing the Endnote id to the Note template.-->
-                <xsl:for-each select="document('word/document.xml')//w:document/w:body/w:p/w:r/w:rPr/w:rStyle">
+                <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle">
                     <xsl:message terminate="no">progress:parahandler</xsl:message>
                     <xsl:if test="@w:val='EndnoteReference'">
                         <xsl:call-template name="tmpNote">
@@ -151,8 +157,6 @@
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                             <xsl:with-param name="sZeros" select="$sZeros"/>
                             <xsl:with-param name="vernote" select="$version"/>
-                            <xsl:with-param name="MasterSub" select="$masterSub"/>
-                            <xsl:with-param name="charStyles" select="$charStyles"/>
                         </xsl:call-template>
                     </xsl:if>
                 </xsl:for-each>
@@ -196,8 +200,8 @@
         <xsl:param name="matterType" />
         <!--Variable external images-->
         <xsl:variable name="external">
-            <!--Calling c# method to check external images-->
-            <xsl:value-of select="myObj:ExternalImage()"/>
+            <!--Calling d:ExternalImage() to check external images-->
+            <xsl:value-of select="d:ExternalImage($myObj)"/>
         </xsl:variable>
         <!--Fedility loss External images-->
         <xsl:if test="$external='translation.oox2Daisy.ExternalImage'">
@@ -205,23 +209,23 @@
         </xsl:if>
 
         <xsl:variable name="var_heading">
-            <xsl:for-each select="document('word/styles.xml')//w:styles/w:style/w:name[@w:val='heading 1']">
+            <xsl:for-each select="$stylesXml//w:styles/w:style/w:name[@w:val='heading 1']">
                 <xsl:message terminate="no">progress:parahandler</xsl:message>
                 <xsl:value-of select="../@w:styleId"/>
             </xsl:for-each>
         </xsl:variable>
         <!--Looping through each hyperlink-->
-        <xsl:for-each select="document('word/document.xml')//w:document/w:body/w:p/w:hyperlink">
+        <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:hyperlink">
             <xsl:message terminate="no">progress:parahandler</xsl:message>
-            <!--Calling c# method for storing Anchor in Hyperlink-->
-            <xsl:variable name="insertName" select="myObj:AddHyperlink(@w:anchor)"/>
+            <!--Calling d:AddHyperlink() for storing Anchor in Hyperlink-->
+            <xsl:variable name="insertName" select="d:AddHyperlink($myObj,string(@w:anchor))"/>
         </xsl:for-each>
         <xsl:message terminate="no">progress:parahandler</xsl:message>
 
 
         <!--<xsl:if test="$matterType=''">-->
         <!--Checking the first paragraph of the document-->
-        <xsl:for-each select="document('word/document.xml')//w:document/w:body/w:p[1]">
+        <xsl:for-each select="$documentXml//w:document/w:body/w:p[1]">
             <xsl:message terminate="no">progress:parahandler</xsl:message>
             <!--If first paragraph is not Heading-->
             <xsl:if test="not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or $matterType='Rearmatter'">
@@ -243,22 +247,21 @@
         </xsl:for-each>
         <!--</xsl:if>-->
 
-        <xsl:if test="myObj:ResetCurrentMatterType()"/>
-        <xsl:if test="myObj:ResetIsFirstParagraph()" />
+        <xsl:if test="d:ResetCurrentMatterType($myObj)"/>
         <!--Traversing through each node of the document-->
-        <xsl:for-each select="document('word/document.xml')//w:body/node()">
+        <xsl:for-each select="$documentXml//w:body/node()">
             <xsl:message terminate="no">progress:parahandler</xsl:message>
             <xsl:if test="not($masterSub='Yes')">
                 <xsl:call-template name="SetCurrentMatterType" />
             </xsl:if>
-            <xsl:if test="myObj:GetCurrentMatterType()=$matterType">
+            <xsl:if test="d:GetCurrentMatterType($myObj)=$matterType">
                 <xsl:choose>
                     <!--Checking for Praragraph element-->
                     <xsl:when test="name()='w:p'
                                                                                                 and not(*/w:pStyle[substring(@w:val, 1, 11)='Frontmatter'])
                                                                                                 and not(*/w:pStyle[substring(@w:val, 1, 10)='Bodymatter'])
                                                                                                 and not(*/w:pStyle[substring(@w:val, 1, 10)='Rearmatter'])">
-                        <xsl:variable name="checkCoverpage" select="myObj:CheckCaverPage()"/>
+                        <xsl:variable name="checkCoverpage" select="d:CheckCaverPage($myObj)"/>
                         <xsl:call-template name="StyleContainer">
                             <xsl:with-param name="prmTrack" select="$prmTrack"/>
                             <xsl:with-param name="VERSION" select="$version"/>
@@ -273,7 +276,7 @@
                     <!--Checking for Table element-->
                     <xsl:when test="name()='w:tbl'">
                         <!--If exists then calling TableHandler-->
-                        <xsl:variable name="checkCoverpage" select="myObj:CheckCaverPage()"/>
+                        <xsl:variable name="checkCoverpage" select="d:CheckCaverPage($myObj)"/>
                         <xsl:call-template name="TableHandler">
                             <xsl:with-param name="parmVerTable" select="$version"/>
                             <xsl:with-param name="custom" select="$custom"/>
@@ -287,14 +290,13 @@
                         <xsl:call-template name="footnote">
                             <xsl:with-param name="verfoot" select="$version"/>
                             <xsl:with-param name="mastersubfoot" select="$masterSub"/>
-                            <xsl:with-param name="characStyle" select="$charStyles"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                             <xsl:with-param name="sZeros" select="$sZeros"/>
                         </xsl:call-template>
 
-                        <xsl:if test="myObj:CheckCaverPage()=1">
+                        <xsl:if test="d:CheckCaverPage($myObj)=1">
                             <level1>
                                 <p/>
                             </level1>
@@ -305,7 +307,7 @@
                         <xsl:choose>
                             <xsl:when test="w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents'">
                                 <!--Save Level before closing all levels-->
-                                <xsl:variable name="PeekLevel" select="myObj:PeekLevel()"/>
+                                <xsl:variable name="PeekLevel" select="d:PeekLevel($myObj)"/>
                                 <!--Close all levels before Table Of Contents-->
                                 <xsl:call-template name="CloseLevel">
                                     <xsl:with-param name="CurrentLevel" select="1"/>
@@ -341,21 +343,21 @@
                         <xsl:if test="substring(@w:name,1,13)='Abbreviations'">
                             <!--Storing the full form of Abbreviation in a variable-->
                             <xsl:variable name="full">
-                                <xsl:value-of select="myObj:FullAbbr(@w:name,$version)"/>
+                                <xsl:value-of select="d:FullAbbr($myObj,@w:name,$version)"/>
                             </xsl:variable>
                             <xsl:choose>
                                 <!--Checking whether all previous Abbreviations tags are closed or not before opening an new Abbreviation tag-->
-                                <xsl:when test ="not(myObj:AbbrAcrFlag()='1')">
+                                <xsl:when test ="not(d:AbbrAcrFlag($myObj)=1)">
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
-                                            <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                            <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr','&gt;')"/>
-                                            <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                            <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:when>
@@ -365,12 +367,12 @@
                                         <xsl:when test="not($full='')">
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:variable name="temp" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
-                                            <xsl:variable name="abbr" select="myObj:PushAbrAcr($temp)"/>
+                                            <xsl:variable name="abbr" select="d:PushAbrAcr($myObj,$temp)"/>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:variable name="temp" select="concat('&lt;','abbr','&gt;')"/>
-                                            <xsl:variable name="abbr" select="myObj:PushAbrAcr($temp)"/>
+                                            <xsl:variable name="abbr" select="d:PushAbrAcr($myObj,$temp)"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:otherwise>
@@ -380,22 +382,22 @@
                         <xsl:if test="substring(@w:name,1,11)='AcronymsYes'">
                             <!--Storing the full form of Abbreviation in a variable-->
                             <xsl:variable name="full">
-                                <xsl:value-of select="myObj:FullAcr(@w:name,$version)"/>
+                                <xsl:value-of select="d:FullAcr($myObj,@w:name,$version)"/>
                             </xsl:variable>
                             <xsl:choose>
                                 <!--Checking whether all previous Acronyms tags are closed or not before opening an new Acronyms tag-->
-                                <xsl:when test ="not(myObj:AbbrAcrFlag()='1')">
+                                <xsl:when test ="not(d:AbbrAcrFlag($myObj)=1)">
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                            <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                            <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
-                                            <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                            <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:when>
@@ -405,12 +407,12 @@
                                         <xsl:when test="not($full='')">
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                            <xsl:variable name="acrYes" select="myObj:PushAbrAcr($temp)"/>
+                                            <xsl:variable name="acrYes" select="d:PushAbrAcr($myObj,$temp)"/>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
-                                            <xsl:variable name="acrYes" select="myObj:PushAbrAcr($temp)"/>
+                                            <xsl:variable name="acrYes" select="d:PushAbrAcr($myObj,$temp)"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:otherwise>
@@ -420,22 +422,22 @@
                         <xsl:if test="substring(@w:name,1,10)='AcronymsNo'">
                             <!--Storing the full form of Abbreviation in a variable-->
                             <xsl:variable name="full">
-                                <xsl:value-of select="myObj:FullAcr(@w:name,$version)"/>
+                                <xsl:value-of select="d:FullAcr($myObj,@w:name,$version)"/>
                             </xsl:variable>
                             <xsl:choose>
                                 <!--Checking whether all previous Acronyms tags are closed or not before opening an new Acronyms tag-->
-                                <xsl:when test ="not(myObj:AbbrAcrFlag()='1')">
+                                <xsl:when test ="not(d:AbbrAcrFlag($myObj)=1)">
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                            <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                            <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
-                                            <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                            <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:when>
@@ -445,12 +447,12 @@
                                         <xsl:when test="not($full='')">
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                            <xsl:variable name="acrNo" select="myObj:PushAbrAcr($temp)"/>
+                                            <xsl:variable name="acrNo" select="d:PushAbrAcr($myObj,$temp)"/>
                                         </xsl:when>
                                         <xsl:otherwise>
                                             <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
-                                            <xsl:variable name="acrNo" select="myObj:PushAbrAcr($temp)"/>
+                                            <xsl:variable name="acrNo" select="d:PushAbrAcr($myObj,$temp)"/>
                                         </xsl:otherwise>
                                     </xsl:choose>
                                 </xsl:otherwise>
@@ -461,29 +463,29 @@
                     <xsl:when test="name()='w:bookmarkEnd'">
                         <xsl:variable name="seperate">
                             <xsl:variable name="id" select="@w:id"/>
-                            <xsl:variable name="tempAbbr" select="document('word/document.xml')//w:bookmarkStart[@w:id=$id]/@w:name"/>
-                            <xsl:value-of select="myObj:Book($tempAbbr)"/>
+                            <xsl:variable name="tempAbbr" select="$documentXml//w:bookmarkStart[@w:id=$id]/@w:name"/>
+                            <xsl:value-of select="d:Book($myObj,$tempAbbr)"/>
                         </xsl:variable>
                         <!--Checking whether BookMarkEnd is related to Abbreviations or not -->
                         <xsl:if test="$seperate='AbbrTrue'">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/abbr','&gt;')"/>
-                            <xsl:variable name="abrSet" select="myObj:ReSetAbbrAcrFlag()"/>
-                            <xsl:if test="myObj:CountAbrAcrpara() &gt; 0">
-                                <xsl:value-of disable-output-escaping="yes" select="myObj:PeekAbrAcrpara()"/>
+                            <xsl:variable name="abrSet" select="d:ReSetAbbrAcrFlag($myObj)"/>
+                            <xsl:if test="d:CountAbrAcrpara($myObj) &gt; 0">
+                                <xsl:value-of disable-output-escaping="yes" select="d:PeekAbrAcrpara($myObj)"/>
                             </xsl:if>
-                            <xsl:if test="myObj:CountAbrAcrhead() &gt; 0">
-                                <xsl:value-of disable-output-escaping="yes" select="myObj:PeekAbrAcrhead()"/>
+                            <xsl:if test="d:CountAbrAcrhead($myObj) &gt; 0">
+                                <xsl:value-of disable-output-escaping="yes" select="d:PeekAbrAcrhead($myObj)"/>
                             </xsl:if>
                         </xsl:if>
                         <!--Checking whether BookMarkEnd is related to Acronyms or not -->
                         <xsl:if test="$seperate='AcrTrue'">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/acronym','&gt;')"/>
-                            <xsl:variable name="abrSet" select="myObj:ReSetAbbrAcrFlag()"/>
-                            <xsl:if test="myObj:CountAbrAcrpara() &gt; 0">
-                                <xsl:value-of disable-output-escaping="yes" select="myObj:PeekAbrAcrpara()"/>
+                            <xsl:variable name="abrSet" select="d:ReSetAbbrAcrFlag($myObj)"/>
+                            <xsl:if test="d:CountAbrAcrpara($myObj) &gt; 0">
+                                <xsl:value-of disable-output-escaping="yes" select="d:PeekAbrAcrpara($myObj)"/>
                             </xsl:if>
-                            <xsl:if test="myObj:CountAbrAcrhead() &gt; 0">
-                                <xsl:value-of disable-output-escaping="yes" select="myObj:PeekAbrAcrhead()"/>
+                            <xsl:if test="d:CountAbrAcrhead($myObj) &gt; 0">
+                                <xsl:value-of disable-output-escaping="yes" select="d:PeekAbrAcrhead($myObj)"/>
                             </xsl:if>
                         </xsl:if>
                     </xsl:when>
@@ -533,7 +535,6 @@
                 <xsl:call-template name="footnote">
                     <xsl:with-param name="verfoot" select="$VERSION"/>
                     <xsl:with-param name="mastersubfoot" select="$mastersubpara"/>
-                    <xsl:with-param name="characStyle" select="$charparahandlerStyle"/>
                     <xsl:with-param name="sOperators" select="$sOperators"/>
                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -545,7 +546,6 @@
                         <xsl:call-template name="footnote">
                             <xsl:with-param name="verfoot" select="$VERSION"/>
                             <xsl:with-param name="mastersubfoot" select="$mastersubpara"/>
-                            <xsl:with-param name="characStyle" select="$charparahandlerStyle"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -557,7 +557,6 @@
                         <xsl:call-template name="footnote">
                             <xsl:with-param name="verfoot" select="$VERSION"/>
                             <xsl:with-param name="mastersubfoot" select="$mastersubpara"/>
-                            <xsl:with-param name="characStyle" select="$charparahandlerStyle"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -603,10 +602,10 @@
             </xsl:if>
         </xsl:if>
 
-        <xsl:if test="not($flag='0') and not(myObj:AbbrAcrFlag()='1')and not($flagNote='hyper')">
-            <xsl:if test="(not(myObj:GetTestRun()&gt;='1')) and (myObj:GetCodeFlag()='0')">
+        <xsl:if test="not($flag='0') and not(d:AbbrAcrFlag($myObj)=1)and not($flagNote='hyper')">
+            <xsl:if test="(not(d:GetTestRun($myObj)&gt;='1')) and (d:GetCodeFlag($myObj)='0')">
                 <!--Setting a flag for linenumber-->
-                <xsl:variable name="linenumflag" select="myObj:Setlinenumflag()"/>
+                <xsl:variable name="linenumflag" select="d:Setlinenumflag($myObj)"/>
                 <xsl:choose>
                     <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
                         <xsl:call-template name="Languages">
@@ -627,7 +626,7 @@
 
             <!--Adding Note index-->
             <xsl:if test="$flagNote='Note'">
-                <xsl:if test="myObj:NoteFlag()=1">
+                <xsl:if test="d:NoteFlag($myObj)=1">
                     <xsl:value-of select="$checkid - 1"/>
                 </xsl:if>
             </xsl:if>
@@ -641,8 +640,8 @@
                 <xsl:if test="$mastersubpara='Yes'">
                     <xsl:variable name="aquote">"</xsl:variable>
                     <xsl:variable name="temp"    select="concat('&lt;','subdoc ','rId=',$aquote,@r:id,$aquote,'&gt;','&lt;','/subdoc','&gt;')"/>
-                    <xsl:variable name="abbr" select="myObj:PushMasterSubdoc($temp)"/>
-                    <xsl:variable name="masterSubSet" select="myObj:MasterSubSetFlag()"/>
+                    <xsl:variable name="abbr" select="d:PushMasterSubdoc($myObj,$temp)"/>
+                    <xsl:variable name="masterSubSet" select="d:MasterSubSetFlag($myObj)"/>
                 </xsl:if>
             </xsl:if>
 
@@ -709,16 +708,16 @@
 
             <!--Checking for Hyperlink element-->
             <xsl:if test="name()='w:hyperlink' and not(preceding-sibling::w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])">
-                <xsl:if test="myObj:GetTestRun()&gt;='1'">
+                <xsl:if test="d:GetTestRun($myObj)&gt;='1'">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
-                    <xsl:variable name="setBookmark" select="myObj:SetBookmark()"/>
+                    <xsl:variable name="setBookmark" select="d:SetBookmark($myObj)"/>
                 </xsl:if>
                 <a>
                     <xsl:choose>
                         <!--If both id and anchor attribute is present in hyperlink-->
                         <xsl:when test="(@r:id) and (@w:anchor)">
                             <xsl:attribute name="href">
-                                <xsl:value-of select="concat(myObj:Anchor(@r:id),'#',@w:anchor)"/>
+                                <xsl:value-of select="concat(d:Anchor($myObj,@r:id),'#',@w:anchor)"/>
                             </xsl:attribute>
                             <xsl:attribute name="external">true</xsl:attribute>
                         </xsl:when>
@@ -726,13 +725,13 @@
                         <xsl:when test="@w:anchor">
                             <xsl:attribute name="href">
                                 <xsl:text>#</xsl:text>
-                                <xsl:value-of select="myObj:EscapeSpecial(@w:anchor)"/>
+                                <xsl:value-of select="d:EscapeSpecial(@w:anchor)"/>
                             </xsl:attribute>
                         </xsl:when>
                         <!--If only id for hyperlink is present-->
                         <xsl:when test="@r:id">
                             <xsl:attribute name="href">
-                                <xsl:value-of select="myObj:Anchor(@r:id)"/>
+                                <xsl:value-of select="d:Anchor($myObj,@r:id)"/>
                             </xsl:attribute>
                             <xsl:attribute name="external">true</xsl:attribute>
                         </xsl:when>
@@ -748,20 +747,20 @@
             <xsl:if test="name()='w:bookmarkStart'">
                 <!--Checking whether BookMarkStart is related to Abbreviations or not -->
                 <xsl:if test="substring(@w:name,1,13)='Abbreviations'">
-                    <xsl:variable name="full" select="myObj:FullAbbr(@w:name,$VERSION)"/>
+                    <xsl:variable name="full" select="d:FullAbbr($myObj,@w:name,$VERSION)"/>
                     <xsl:choose>
                         <!--Checking whether all previous Abbrevioations tags are closed or not before opening an new Abbreviation tag-->
-                        <xsl:when test ="not(myObj:AbbrAcrFlag()='1')">
+                        <xsl:when test ="not(d:AbbrAcrFlag($myObj)=1)">
                             <xsl:choose>
                                 <!--checking whether an Abbreviation is having Full Form or not-->
                                 <xsl:when test="not($full='')">
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                    <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr','&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                    <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:when>
@@ -771,12 +770,12 @@
                                 <xsl:when test="not($full='')">
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:variable name="temp" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="abbr" select="myObj:PushAbrAcr($temp)"/>
+                                    <xsl:variable name="abbr" select="d:PushAbrAcr($myObj,$temp)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:variable name="temp" select="concat('&lt;','abbr','&gt;')"/>
-                                    <xsl:variable name="abbr" select="myObj:PushAbrAcr($temp)"/>
+                                    <xsl:variable name="abbr" select="d:PushAbrAcr($myObj,$temp)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:otherwise>
@@ -785,22 +784,22 @@
                 <!--Checking whether BookMarkStart is related to Acronyms or not -->
                 <xsl:if test="substring(@w:name,1,11)='AcronymsYes'">
                     <xsl:variable name="full">
-                        <xsl:value-of select="myObj:FullAcr(@w:name,$VERSION)"/>
+                        <xsl:value-of select="d:FullAcr($myObj,@w:name,$VERSION)"/>
                     </xsl:variable>
                     <xsl:choose>
                         <!--Checking whether all previous Acronyms tags are closed or not before opening an new Acronym tag-->
-                        <xsl:when test ="not(myObj:AbbrAcrFlag()='1')">
+                        <xsl:when test ="not(d:AbbrAcrFlag($myObj)=1)">
                             <xsl:choose>
                                 <!--checking whether an Acronym is having Full Form or not-->
                                 <xsl:when test="not($full='')">
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                    <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                    <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:when>
@@ -810,12 +809,12 @@
                                 <xsl:when test="not($full='')">
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="acrYes" select="myObj:PushAbrAcr($temp)"/>
+                                    <xsl:variable name="acrYes" select="d:PushAbrAcr($myObj,$temp)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
-                                    <xsl:variable name="acrYes" select="myObj:PushAbrAcr($temp)"/>
+                                    <xsl:variable name="acrYes" select="d:PushAbrAcr($myObj,$temp)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:otherwise>
@@ -824,22 +823,22 @@
                 <!--Checking whether BookMarkStart is related to Acronymss or not -->
                 <xsl:if test="substring(@w:name,1,10)='AcronymsNo'">
                     <xsl:variable name="full">
-                        <xsl:value-of select="myObj:FullAcr(@w:name,$VERSION)"/>
+                        <xsl:value-of select="d:FullAcr($myObj,@w:name,$VERSION)"/>
                     </xsl:variable>
                     <xsl:choose>
                         <!--Checking whether all previous Acronyms tags are closed or not before opening an new Acronym tag-->
-                        <xsl:when test ="not(myObj:AbbrAcrFlag()='1')">
+                        <xsl:when test ="not(d:AbbrAcrFlag($myObj)=1)">
                             <xsl:choose>
                                 <!--checking whether an Acronym is having Full Form or not-->
                                 <xsl:when test="not($full='')">
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                    <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                    <xsl:variable name="abrFlag" select="d:SetAbbrAcrFlag($myObj)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:when>
@@ -849,12 +848,12 @@
                                 <xsl:when test="not($full='')">
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="acrNo" select="myObj:PushAbrAcr($temp)"/>
+                                    <xsl:variable name="acrNo" select="d:PushAbrAcr($myObj,$temp)"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
-                                    <xsl:variable name="acrNo" select="myObj:PushAbrAcr($temp)"/>
+                                    <xsl:variable name="acrNo" select="d:PushAbrAcr($myObj,$temp)"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:otherwise>
@@ -862,21 +861,21 @@
                 </xsl:if>
 
                 <!--Checking for hyperlink-->
-                <xsl:if test="myObj:GetHyperlinkName(@w:name)=1 and not(substring(@w:name,1,13)='Abbreviations') and not(substring(@w:name,1,11)='AcronymsYes') and not(substring(@w:name,1,10)='AcronymsNo')">
+                <xsl:if test="d:GetHyperlinkName($myObj,@w:name)=1 and not(substring(@w:name,1,13)='Abbreviations') and not(substring(@w:name,1,11)='AcronymsYes') and not(substring(@w:name,1,10)='AcronymsNo')">
                     <xsl:variable name="aquote">"</xsl:variable>
                     <xsl:choose>
                         <!--If hyperling in Table of content-->
                         <xsl:when test="not(contains(@w:name,'_Toc'))">
-                            <xsl:variable name="flagRun" select="myObj:TestRun()"/>
-                            <xsl:variable name="initialize" select="myObj:SetHyperLinkFlag()"/>
+                            <xsl:variable name="flagRun" select="d:TestRun($myObj)"/>
+                            <xsl:variable name="initialize" select="d:SetHyperLinkFlag($myObj)"/>
                             <xsl:if test="$initialize=1">
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=',$aquote,myObj:EscapeSpecial(@w:name),$aquote,'&gt;')"/>
-                                <xsl:variable name="storeId" select="myObj:StroreId(@w:id)"/>
+                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=',$aquote,d:EscapeSpecial(@w:name),$aquote,'&gt;')"/>
+                                <xsl:variable name="storeId" select="d:StroreId($myObj,@w:id)"/>
                             </xsl:if>
                             <xsl:if test="$initialize&gt;1">
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=',$aquote,myObj:EscapeSpecial(@w:name),$aquote,'&gt;')"/>
-                                <xsl:variable name="storeId" select="myObj:StroreId(@w:id)"/>
+                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=',$aquote,d:EscapeSpecial(@w:name),$aquote,'&gt;')"/>
+                                <xsl:variable name="storeId" select="d:StroreId($myObj,@w:id)"/>
                             </xsl:if>
                         </xsl:when>
                     </xsl:choose>
@@ -890,11 +889,11 @@
                     <xsl:variable name="id" select="@w:id"/>
                     <xsl:choose>
                         <xsl:when test="$flagNote='Note'">
-                            <xsl:value-of select="myObj:BookFootnote(@w:id)"/>
+                            <xsl:value-of select="d:BookFootnote($myObj,@w:id)"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:variable name="tempAbbr" select="document('word/document.xml')//w:bookmarkStart[@w:id=$id]/@w:name"/>
-                            <xsl:value-of select="myObj:Book($tempAbbr)"/>
+                            <xsl:variable name="tempAbbr" select="$documentXml//w:bookmarkStart[@w:id=$id]/@w:name"/>
+                            <xsl:value-of select="d:Book($myObj,$tempAbbr)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:variable>
@@ -902,34 +901,34 @@
                 <xsl:if test="$seperate='AbbrTrue'">
                     <!--checking    condition to close abbr Tag -->
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/abbr','&gt;')"/>
-                    <xsl:variable name="abrSet" select="myObj:ReSetAbbrAcrFlag()"/>
-                    <xsl:if test="myObj:CountAbrAcr() &gt; 0">
-                        <xsl:value-of disable-output-escaping="yes" select="myObj:PeekAbrAcr()"/>
+                    <xsl:variable name="abrSet" select="d:ReSetAbbrAcrFlag($myObj)"/>
+                    <xsl:if test="d:CountAbrAcr($myObj) &gt; 0">
+                        <xsl:value-of disable-output-escaping="yes" select="d:PeekAbrAcr($myObj)"/>
                     </xsl:if>
                 </xsl:if>
                 <!--Checking whether BookMarkEnd is related to Acronyms or not -->
                 <xsl:if test="$seperate='AcrTrue'">
                     <!--checking    condition to close acronym Tag -->
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/acronym','&gt;')"/>
-                    <xsl:variable name="acrSet" select="myObj:ReSetAbbrAcrFlag()"/>
-                    <xsl:if test="myObj:CountAbrAcr( )&gt; 0">
-                        <xsl:value-of disable-output-escaping="yes" select="myObj:PeekAbrAcr()"/>
+                    <xsl:variable name="acrSet" select="d:ReSetAbbrAcrFlag($myObj)"/>
+                    <xsl:if test="d:CountAbrAcr($myObj) &gt; 0">
+                        <xsl:value-of disable-output-escaping="yes" select="d:PeekAbrAcr($myObj)"/>
                     </xsl:if>
                 </xsl:if>
                 <!--Closing hyperlink if not heading-->
-                <xsl:if test="not(myObj:GetBookmark()&gt;0)">
-                    <xsl:if test="myObj:CheckId(@w:id)=1">
-                        <xsl:variable name="flagRun" select="myObj:SetTestRun()"/>
+                <xsl:if test="not(d:GetBookmark($myObj)&gt;0)">
+                    <xsl:if test="d:CheckId($myObj,@w:id)=1">
+                        <xsl:variable name="flagRun" select="d:SetTestRun($myObj)"/>
                         <xsl:if test="not(../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
                         </xsl:if>
                         <xsl:if test="../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']">
-                            <xsl:variable name="headingHyper" select="myObj:SetHyperLink()"/>
+                            <xsl:variable name="headingHyper" select="d:SetHyperLink($myObj)"/>
                         </xsl:if>
                     </xsl:if>
                 </xsl:if>
-                <xsl:if test="myObj:GetBookmark()&gt;0">
-                    <xsl:variable name="flagRun" select="myObj:SetTestRun()"/>
+                <xsl:if test="d:GetBookmark($myObj)&gt;0">
+                    <xsl:variable name="flagRun" select="d:SetTestRun($myObj)"/>
                 </xsl:if>
             </xsl:if>
 
@@ -975,10 +974,10 @@
                         <xsl:variable name="TagName">
                             <xsl:choose>
                                 <xsl:when test="./w:sdtContent/w:fldSimple/@w:instr">
-                                    <xsl:value-of select="myObj:CitationDetails(./w:sdtContent/w:fldSimple/@w:instr)"/>
+                                    <xsl:value-of select="d:CitationDetails($myObj,./w:sdtContent/w:fldSimple/@w:instr)"/>
                                 </xsl:when>
                                 <xsl:when test="./w:sdtContent/w:r/w:instrText">
-                                    <xsl:value-of select="myObj:CitationDetails(./w:sdtContent/w:r/w:instrText)"/>
+                                    <xsl:value-of select="d:CitationDetails($myObj,./w:sdtContent/w:r/w:instrText)"/>
                                 </xsl:when>
                             </xsl:choose>
                         </xsl:variable>
@@ -1059,18 +1058,18 @@
         </xsl:for-each>
 
         <!--checking    condition to close bdo Tag -->
-        <xsl:if test="myObj:SetbdoFlag()&gt;=2">
+        <xsl:if test="d:SetbdoFlag($myObj)&gt;=2">
             <!--Closing BDO tag-->
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
         </xsl:if>
 
         <!--reseting bdo flag-->
-        <xsl:variable name="bdoflag" select="myObj:reSetbdoFlag()"/>
-        <xsl:variable name="assingBookmark" select="myObj:AssingBookmark()"/>
+        <xsl:variable name="bdoflag" select="d:reSetbdoFlag($myObj)"/>
+        <xsl:variable name="assingBookmark" select="d:AssingBookmark($myObj)"/>
 
         <!--closing paragraph tag-->
-        <xsl:if test="not($flag='0') and not(myObj:AbbrAcrFlag()='1') and not($flagNote='hyper')">
-            <xsl:if test="not(myObj:GetTestRun()&gt;='1') and (myObj:GetCodeFlag()='0') and (not(myObj:Getlinenumflag()='0'))">
+        <xsl:if test="not($flag='0') and not(d:AbbrAcrFlag($myObj)=1) and not($flagNote='hyper')">
+            <xsl:if test="not(d:GetTestRun($myObj)&gt;='1') and (d:GetCodeFlag($myObj)='0') and (not(d:Getlinenumflag($myObj)=0))">
                 <xsl:choose>
                     <!--check if <p> teg was opened in "Languages" template-->
                     <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
@@ -1082,25 +1081,25 @@
                         </xsl:if>
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:if test="(myObj:ListMasterSubFlag()='1') and ($mastersubpara = 'Yes')">
-                    <xsl:variable name="curLevel" select="myObj:PeekLevel()"/>
-                    <xsl:value-of disable-output-escaping="yes" select="myObj:ClosingMasterSub($curLevel)"/>
-                    <xsl:value-of disable-output-escaping="yes" select="myObj:PeekMasterSubdoc()"/>
-                    <xsl:variable name="masterSubReSet" select="myObj:MasterSubResetFlag()"/>
-                    <xsl:value-of disable-output-escaping="yes" select="myObj:OpenMasterSub($curLevel)"/>
+                <xsl:if test="(d:ListMasterSubFlag($myObj)=1) and ($mastersubpara = 'Yes')">
+                    <xsl:variable name="curLevel" select="d:PeekLevel($myObj)"/>
+                    <xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj,$curLevel)"/>
+                    <xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
+                    <xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag($myObj)"/>
+                    <xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj,$curLevel)"/>
                 </xsl:if>
             </xsl:if>
         </xsl:if>
 
         <!--Checking for heading flag and abbr flag and closing paragraph tag-->
-        <xsl:if test="not($flag='0') and myObj:AbbrAcrFlag()='1'">
+        <xsl:if test="not($flag='0') and d:AbbrAcrFlag($myObj)=1">
             <xsl:variable name="temp" select="concat('&lt;','/p','&gt;')"/>
-            <xsl:variable name="abbrpara" select="myObj:PushAbrAcrpara($temp)"/>
+            <xsl:variable name="abbrpara" select="d:PushAbrAcrpara($myObj,$temp)"/>
         </xsl:if>
-        <xsl:variable name="initializeFlag" select="myObj:SetGetHyperLinkFlag()"/>
-        <xsl:variable name="tempList" select="myObj:ReSetListFlag()"/>
+        <xsl:variable name="initializeFlag" select="d:SetGetHyperLinkFlag($myObj)"/>
+        <xsl:variable name="tempList" select="d:ReSetListFlag($myObj)"/>
         <!--code for hard return-->
-        <xsl:text>&#13;&#10;</xsl:text>
+        <xsl:text>&#10;</xsl:text>
 
     </xsl:template>
 
@@ -1159,7 +1158,6 @@
                                 <xsl:with-param name="prmTrack" select="$prmTrack"/>
                                 <xsl:with-param name="VERSION" select="$VERSION"/>
                                 <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="mastersubstyle" select="$mastersubpara"/>
                                 <xsl:with-param name="flag" select="'0'"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="characterparaStyle" select="$charparahandlerStyle"/>
@@ -1219,7 +1217,7 @@
                     <xsl:when test="not(w:t) and (w:lastRenderedPageBreak) and (w:br/@w:type='page')">
                         <xsl:if test="not(../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')">
                             <xsl:if test="not(../preceding-sibling::node()[1]/w:pPr/w:sectPr)">
-                                <xsl:variable name="increment" select="myObj:IncrementPage()"/>
+                                <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
                                 <!--Closing paragraph tag-->
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                                 <xsl:if test="$flag='3'">
@@ -1252,7 +1250,7 @@
                                                                                                                                         or (../following-sibling::w:p[2]/w:r/w:lastRenderedPageBreak)
                                                                                                                                         or (../following-sibling::w:p[1]/w:r/w:lastRenderedPageBreak)))">
                         <!--Incrementing page numbers-->
-                        <xsl:variable name="increment" select="myObj:IncrementPage()"/>
+                        <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
                         <!--Closing paragraph tag-->
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         <xsl:if test="$flag='3'">
@@ -1274,7 +1272,7 @@
                     <xsl:when test="(w:lastRenderedPageBreak)
                                                                                                                 and not(../w:pPr/w:sectPr                                        
                                                                                                                                 or ../w:pPr/w:pStyle[substring(@w:val,1,5)='Index'])">
-                        <xsl:variable name="increment" select="myObj:IncrementPage()"/>
+                        <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
                         <!--Closing paragraph tag-->
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         <xsl:if test="$flag='3'">
@@ -1363,10 +1361,10 @@
                         <xsl:variable name="Math_DSMT4">
                             <xsl:choose>
                                 <xsl:when test="ancestor::node()[name()='w:txbxContent']">
-                                    <xsl:value-of select="myObj:GetMathML('wdTextFrameStory')"/>
+                                    <xsl:value-of select="d:GetMathML($myObj,'wdTextFrameStory')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:value-of select="myObj:GetMathML('wdMainTextStory')"/>
+                                    <xsl:value-of select="d:GetMathML($myObj,'wdMainTextStory')"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:variable>
@@ -1393,7 +1391,7 @@
                                         </xsl:attribute>
                                         <xsl:attribute name="src">
                                             <!--Calling MathImage function-->
-                                            <xsl:value-of select="myObj:MathImage($Math_rid)"/>
+                                            <xsl:value-of select="d:MathImage($myObj,$Math_rid)"/>
                                         </xsl:attribute>
                                     </img>
                                 </imggroup>
@@ -1422,7 +1420,7 @@
                                     </xsl:choose>
                                 </xsl:attribute>
                                 <xsl:attribute name="src">
-                                    <xsl:value-of select="myObj:MathImage($mathimage)"/>
+                                    <xsl:value-of select="d:MathImage($myObj,$mathimage)"/>
                                 </xsl:attribute>
                             </img>
                         </imggroup>
@@ -1441,7 +1439,7 @@
                     <xsl:when test="w:rPr/w:rStyle[@w:val ='FootnoteReference']">
                         <xsl:variable name="class" select="w:rPr/w:rStyle/@w:val"/>
                         <xsl:variable name="footnoteid" select="w:footnoteReference/@w:id"/>
-                        <xsl:variable name="addfootnoteid" select="myObj:AddFootNote($footnoteid)"/>
+                        <xsl:variable name="addfootnoteid" select="d:AddFootNote($myObj,$footnoteid)"/>
                         <xsl:call-template name="tmpProcessFootNote">
                             <xsl:with-param name="varFootnote_Id" select="$footnoteid"/>
                             <xsl:with-param name="varNote_Class" select="$class"/>
@@ -1452,7 +1450,7 @@
                     <xsl:when test="w:footnoteReference">
                         <xsl:variable name="class" select="'FootnoteReference'"/>
                         <xsl:variable name="footnoteid" select="w:footnoteReference/@w:id"/>
-                        <xsl:variable name="addfootnoteid" select="myObj:AddFootNote($footnoteid)"/>
+                        <xsl:variable name="addfootnoteid" select="d:AddFootNote($myObj,$footnoteid)"/>
                         <xsl:call-template name="tmpProcessFootNote">
                             <xsl:with-param name="varFootnote_Id" select="$footnoteid"/>
                             <xsl:with-param name="varNote_Class" select="$class"/>
@@ -1493,7 +1491,7 @@
                         <xsl:variable name="Bd">
                             <xsl:call-template name="BdoRtlLanguages"/>
                         </xsl:variable>
-                        <xsl:variable name="bdoflag" select="myObj:SetbdoFlag()"/>
+                        <xsl:variable name="bdoflag" select="d:SetbdoFlag($myObj)"/>
                         <!--opening bdo Tag-->
                         <xsl:if test="$bdoflag=1">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
@@ -1507,7 +1505,7 @@
                             <xsl:call-template name="BdoRtlLanguages"/>
                         </xsl:variable>
                         <!--Setting flag for bdo-->
-                        <xsl:variable name="bdoflag" select="myObj:SetbdoFlag()"/>
+                        <xsl:variable name="bdoflag" select="d:SetbdoFlag($myObj)"/>
                         <!--checking condition for opening p tag-->
                         <!--opening bdo Tag-->
                         <xsl:if test="$bdoflag=1">
@@ -1522,7 +1520,7 @@
                             <xsl:call-template name="BdoRtlLanguages"/>
                         </xsl:variable>
                         <!--Setting flag for bdo-->
-                        <xsl:variable name="bdoflag" select="myObj:SetbdoFlag()"/>
+                        <xsl:variable name="bdoflag" select="d:SetbdoFlag($myObj)"/>
                         <!--opening bdo Tag-->
                         <xsl:if test="$bdoflag=1">
                             <!--If flag value is 1 opening bdo element-->
@@ -1544,8 +1542,8 @@
                                                                                                                                 or (../w:r/w:pict)
                                                                                                                                 or (../w:r/w:object))))">
                     <xsl:choose>
-                        <xsl:when test="myObj:ListFlag()=0">
-                            <xsl:variable name="setFlag" select="myObj:SetListFlag()"/>
+                        <xsl:when test="d:ListFlag($myObj)=0">
+                            <xsl:variable name="setFlag" select="d:SetListFlag($myObj)"/>
                             <xsl:call-template name="CustomStyles">
                                 <xsl:with-param name="customTag" select="w:rPr/w:rStyle/@w:val"/>
                                 <xsl:with-param name="custom" select="$custom"/>
@@ -1566,11 +1564,11 @@
         </xsl:choose>
 
         <!--Initializing Hyperlink flag-->
-        <xsl:variable name="initializeFlag" select="myObj:SetGetHyperLinkFlag()"/>
+        <xsl:variable name="initializeFlag" select="d:SetGetHyperLinkFlag($myObj)"/>
         <!--Closing hyperlink tag for headings-->
-        <xsl:if test="(myObj:GetFlag()&gt;=1) and (../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])">
+        <xsl:if test="(d:GetFlag($myObj)&gt;=1) and (../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])">
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
-            <xsl:variable name="getHyper" select="myObj:GetHyperLink()"/>
+            <xsl:variable name="getHyper" select="d:GetHyperLink($myObj)"/>
         </xsl:if>
 
     </xsl:template>
@@ -1635,13 +1633,13 @@
             </xsl:when>
             <!--Checking condition for supressing Author,Title-->
             <xsl:when test="($supressAuthor='true') and ($supressTitle='true')">
-                <xsl:value-of select="myObj:GetYear()"/>
+                <xsl:value-of select="d:GetYear($myObj)"/>
             </xsl:when>
             <!--Checking condition for supressing Author,Year-->
             <xsl:when test="($supressAuthor='true') and ($supressYear='true')">
                 <xsl:text>(</xsl:text>
                 <title>
-                    <xsl:value-of select="myObj:GetTitle()"/>
+                    <xsl:value-of select="d:GetTitle($myObj)"/>
                 </title>
                 <xsl:text>)</xsl:text>
             </xsl:when>
@@ -1649,7 +1647,7 @@
             <xsl:when test="($supressTitle='true') and ($supressYear='true')">
                 <xsl:text>(</xsl:text>
                 <author>
-                    <xsl:value-of select="myObj:GetAuthor()"/>
+                    <xsl:value-of select="d:GetAuthor($myObj)"/>
                 </author>
                 <xsl:text>)</xsl:text>
             </xsl:when>
@@ -1657,20 +1655,20 @@
             <xsl:when test="$supressAuthor='true'">
                 <xsl:text>(</xsl:text>
                 <title>
-                    <xsl:value-of select="myObj:GetTitle()"/>
+                    <xsl:value-of select="d:GetTitle($myObj)"/>
                 </title>
                 <xsl:text>,</xsl:text>
-                <xsl:value-of select="myObj:GetYear()"/>
+                <xsl:value-of select="d:GetYear($myObj)"/>
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <!--Checking condition for supressing Title-->
             <xsl:when test="$supressTitle='true'">
                 <xsl:text>(</xsl:text>
                 <author>
-                    <xsl:value-of select="myObj:GetAuthor()"/>
+                    <xsl:value-of select="d:GetAuthor($myObj)"/>
                 </author>
                 <xsl:text>,</xsl:text>
-                <xsl:value-of select="myObj:GetYear()"/>
+                <xsl:value-of select="d:GetYear($myObj)"/>
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <!--Checking condition for supressing Year-->
@@ -1678,45 +1676,45 @@
                 <xsl:text>(</xsl:text>
                 <author>
                     <!--Calling GetAuthor function to get the value of Author-->
-                    <xsl:value-of select="myObj:GetAuthor()"/>
+                    <xsl:value-of select="d:GetAuthor($myObj)"/>
                 </author>
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:choose>
-                    <xsl:when test="myObj:GetAuthor()=''">
+                    <xsl:when test="d:GetAuthor($myObj)=''">
                         <xsl:value-of select="./w:sdtContent//w:t"/>
                     </xsl:when>
-                    <xsl:when test="(myObj:GetAuthor()='') and (myObj:GetYear()='') ">
+                    <xsl:when test="(d:GetAuthor($myObj)='') and (d:GetYear($myObj)='') ">
                         <title>
                             <!--Calling GetTitle function to get the value of Title-->
-                            <xsl:value-of select="myObj:GetTitle()"/>
+                            <xsl:value-of select="d:GetTitle($myObj)"/>
                         </title>
                     </xsl:when>
-                    <xsl:when test="(myObj:GetAuthor()='') and (myObj:GetTitle()='') and (myObj:GetYear()='')">
+                    <xsl:when test="(d:GetAuthor($myObj)='') and (d:GetTitle($myObj)='') and (d:GetYear($myObj)='')">
                         <xsl:value-of select="./w:sdtContent//w:t"/>
                     </xsl:when>
-                    <xsl:when test="(myObj:GetTitle()='') and (myObj:GetYear()='')">
+                    <xsl:when test="(d:GetTitle($myObj)='') and (d:GetYear($myObj)='')">
                         <author>
                             <xsl:text>(</xsl:text>
                             <!--Calling GetAuthor function to get the value of Author-->
-                            <xsl:value-of select="myObj:GetAuthor()"/>
+                            <xsl:value-of select="d:GetAuthor($myObj)"/>
                             <xsl:text>)</xsl:text>
                         </author>
                     </xsl:when>
-                    <xsl:when test="(myObj:GetAuthor()='') and (myObj:GetTitle()='')">
+                    <xsl:when test="(d:GetAuthor($myObj)='') and (d:GetTitle($myObj)='')">
                         <!--Calling GetYear function to get the value of Year-->
-                        <xsl:value-of select="myObj:GetYear()"/>
+                        <xsl:value-of select="d:GetYear($myObj)"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:text>(</xsl:text>
                         <author>
                             <!--Calling GetAuthor function to get the value of Author-->
-                            <xsl:value-of select="myObj:GetAuthor()"/>
+                            <xsl:value-of select="d:GetAuthor($myObj)"/>
                         </author>
                         <xsl:text>,</xsl:text>
                         <!--Calling GetYear function to get the value of the Year-->
-                        <xsl:value-of select="myObj:GetYear()"/>
+                        <xsl:value-of select="d:GetYear($myObj)"/>
                         <xsl:text>)</xsl:text>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -1738,34 +1736,34 @@
             <xsl:when test="$supressAuthor='true'">
                 <title>
                     <!--Calling GetTitle function to get the value of the Title-->
-                    <xsl:value-of select="myObj:GetTitle()"/>
+                    <xsl:value-of select="d:GetTitle($myObj)"/>
                 </title>
             </xsl:when>
             <xsl:when test="$supressTitle='true'">
                 <author>
                     <!--Calling GetAuthor function to get the value of the Author-->
-                    <xsl:value-of select="myObj:GetAuthor()"/>
+                    <xsl:value-of select="d:GetAuthor($myObj)"/>
                 </author>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:choose>
-                    <xsl:when test="myObj:GetAuthor()=''">
+                    <xsl:when test="d:GetAuthor($myObj)=''">
                         <xsl:value-of select="./w:sdtContent//w:t"/>
                     </xsl:when>
-                    <xsl:when test="(myObj:GetAuthor()='') and (myObj:GetTitle()='') and (myObj:GetYear()='')">
+                    <xsl:when test="(d:GetAuthor($myObj)='') and (d:GetTitle($myObj)='') and (d:GetYear($myObj)='')">
                         <xsl:value-of select="./w:sdtContent//w:t"/>
                     </xsl:when>
-                    <xsl:when test="(myObj:GetTitle()='')">
+                    <xsl:when test="(d:GetTitle($myObj)='')">
                         <author>
                             <xsl:text>(</xsl:text>
-                            <xsl:value-of select="myObj:GetAuthor()"/>
+                            <xsl:value-of select="d:GetAuthor($myObj)"/>
                             <xsl:text>)</xsl:text>
                         </author>
                     </xsl:when>
                     <xsl:otherwise>
                         <author>
                             <xsl:text>(</xsl:text>
-                            <xsl:value-of select="myObj:GetAuthor()"/>
+                            <xsl:value-of select="d:GetAuthor($myObj)"/>
                             <xsl:text>)</xsl:text>
                         </author>
                     </xsl:otherwise>
@@ -1791,7 +1789,7 @@
             <xsl:when test="($supressAuthor='true')">
                 <xsl:text>(</xsl:text>
                 <!--Calling GetYear function to get the value of the Year-->
-                <xsl:value-of select="myObj:GetYear()"/>
+                <xsl:value-of select="d:GetYear($myObj)"/>
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <!--Checking condition for supressing Author,Year-->
@@ -1803,43 +1801,43 @@
                 <author>
                     <xsl:text>(</xsl:text>
                     <!--Calling GetAuthor function to get the value of the Author-->
-                    <xsl:value-of select="myObj:GetAuthor()"/>
+                    <xsl:value-of select="d:GetAuthor($myObj)"/>
                     <xsl:text>)</xsl:text>
                 </author>
             </xsl:when>
             <!--Checking condition for supressing Author-->
             <xsl:when test="$supressAuthor='true'">
                 <!--Calling GetYear function to get the value of the Year-->
-                <xsl:value-of select="myObj:GetYear()"/>
+                <xsl:value-of select="d:GetYear($myObj)"/>
             </xsl:when>
             <!--Checking condition for supressing Year-->
             <xsl:when test="$supressYear='true'">
                 <author>
                     <xsl:text>(</xsl:text>
                     <!--Calling GetAuthor function to get the value of the Author-->
-                    <xsl:value-of select="myObj:GetAuthor()"/>
+                    <xsl:value-of select="d:GetAuthor($myObj)"/>
                     <xsl:text>)</xsl:text>
                 </author>
             </xsl:when>
             <xsl:otherwise>
                 <xsl:choose>
-                    <xsl:when test="myObj:GetAuthor()=''">
+                    <xsl:when test="d:GetAuthor($myObj)=''">
                         <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
                             <xsl:message terminate="no">progress:parahandler</xsl:message>
                             <xsl:value-of select="w:t"/>
                         </xsl:for-each>
                     </xsl:when>
-                    <xsl:when test="(myObj:GetAuthor()='') and (myObj:GetTitle()='') and (myObj:GetYear()='')">
+                    <xsl:when test="(d:GetAuthor($myObj)='') and (d:GetTitle($myObj)='') and (d:GetYear($myObj)='')">
                         <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
                             <xsl:message terminate="no">progress:parahandler</xsl:message>
                             <xsl:value-of select="w:t"/>
                         </xsl:for-each>
                     </xsl:when>
-                    <xsl:when test="(myObj:GetTitle()='') and (myObj:GetYear()='')">
+                    <xsl:when test="(d:GetTitle($myObj)='') and (d:GetYear($myObj)='')">
                         <author>
                             <xsl:text>(</xsl:text>
                             <!--Calling GetAuthor function to get the value of the Author-->
-                            <xsl:value-of select="myObj:GetAuthor()"/>
+                            <xsl:value-of select="d:GetAuthor($myObj)"/>
                             <xsl:text>)</xsl:text>
                         </author>
                     </xsl:when>
@@ -1847,11 +1845,11 @@
                         <xsl:text>(</xsl:text>
                         <author>
                             <!--Calling GetAuthor function to get the value of the Author-->
-                            <xsl:value-of select="myObj:GetAuthor()"/>
+                            <xsl:value-of select="d:GetAuthor($myObj)"/>
                         </author>
                         <xsl:text>,</xsl:text>
                         <!--Calling GetYear function to get the value of the Year-->
-                        <xsl:value-of select="myObj:GetYear()"/>
+                        <xsl:value-of select="d:GetYear($myObj)"/>
                         <xsl:text>)</xsl:text>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -1867,19 +1865,19 @@
             <xsl:choose>
                 <!--Checking for section break-->
                 <xsl:when test="w:pPr/w:sectPr">
-                    <xsl:if test="myObj:GetSectionPageStart()=1">
-                        <xsl:variable name="sectioncounter" select="myObj:SectionCounter(w:pPr/w:sectPr/w:pgNumType/@w:fmt,w:pPr/w:sectPr/w:pgNumType/@w:start)"/>
+                    <xsl:if test="d:GetSectionPageStart($myObj)=1">
+                        <xsl:variable name="sectioncounter" select="d:SectionCounter($myObj,w:pPr/w:sectPr/w:pgNumType/@w:fmt,w:pPr/w:sectPr/w:pgNumType/@w:start)"/>
                     </xsl:if>
                 </xsl:when>
                 <!--Checking for section break-->
                 <xsl:when test="name()='w:sectPr'">
-                    <xsl:if test="myObj:GetSectionPageStart()=1">
-                        <xsl:variable name="sectioncounter" select="myObj:SectionCounter(w:pgNumType/@w:fmt,w:pgNumType/@w:start)"/>
+                    <xsl:if test="d:GetSectionPageStart($myObj)=1">
+                        <xsl:variable name="sectioncounter" select="d:SectionCounter($myObj,w:pgNumType/@w:fmt,w:pgNumType/@w:start)"/>
                     </xsl:if>
                 </xsl:when>
             </xsl:choose>
         </xsl:for-each>
-        <xsl:variable name="checkingSection" select="myObj:InitalizeSectionPageStart()"/>
+        <xsl:variable name="checkingSection" select="d:InitalizeSectionPageStart($myObj)"/>
     </xsl:template>
 
     <!--Template to Implement Blocquote using Blocklist Template -->
@@ -1958,7 +1956,7 @@
             <xsl:when test="($customTag='CodeDAISY') or ($customTag='HTMLCode')">
                 <xsl:if test="count(preceding-sibling::w:r[1]/w:rPr/w:rStyle[contains(@w:val,'Code')])=0">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','code ','xml:space=',$aquote,'preserve',$aquote,'&gt;')"/>
-                    <xsl:variable name="codeFlag" select="myObj:CodeFlag()"/>
+                    <xsl:variable name="codeFlag" select="d:CodeFlag($myObj)"/>
                 </xsl:if>
                 <xsl:call-template name="CustomCharStyle">
                     <xsl:with-param name="characterStyle" select="$customcharStyle"/>
@@ -1966,7 +1964,7 @@
                 </xsl:call-template>
                 <xsl:if test="count(following-sibling::w:r[1]/w:rPr/w:rStyle[contains(@w:val,'Code')])=0">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/code','&gt;')"/>
-                    <xsl:variable name="initializeCodeFlag" select="myObj:InitializeCodeFlag()"/>
+                    <xsl:variable name="initializeCodeFlag" select="d:InitializeCodeFlag($myObj)"/>
                 </xsl:if>
             </xsl:when>
             <!--Checking for SentDAISY custom character style-->
@@ -2036,7 +2034,7 @@
                         </xsl:choose>
                     </xsl:variable>
                     <!--Opening page number tag-->
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','pagenum ','page=',$aquote,$page,$aquote,' id=',$aquote,concat('page',myObj:GeneratePageId()),$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','pagenum ','page=',$aquote,$page,$aquote,' id=',$aquote,concat('page',d:GeneratePageId($myObj)),$aquote,'&gt;')"/>
                 </xsl:if>
                 <!--Calling template for page number text-->
                 <xsl:call-template name="CustomCharStyle">
@@ -2067,7 +2065,7 @@
                             </linenum>
                         </line>
                     </xsl:when>
-                    <xsl:when test="(myObj:Getlinenumflag()='1')">
+                    <xsl:when test="(d:Getlinenumflag($myObj)=1)">
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         <line>
                             <linenum>
@@ -2082,7 +2080,7 @@
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:variable name="resetlinenumFlag" select="myObj:Resetlinenumflag()"/>
+                                <xsl:variable name="resetlinenumFlag" select="d:Resetlinenumflag($myObj)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:when>
@@ -2290,13 +2288,13 @@
         <xsl:message terminate="no">progress:parahandler</xsl:message>
         <!--variable checkilvl holds level(w:ilvl) value of the List-->
         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
-        <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(w:pPr/w:numPr/w:ilvl/@w:val)"/>
+        <xsl:variable name="checkilvl" select="d:GetCheckLvlInt($myObj,w:pPr/w:numPr/w:ilvl/@w:val)"/>
         <!--Variable checknumId holds the w:numId value which specifies the type of numbering in the list-->
         <xsl:variable name="checknumId" select="w:pPr/w:numPr/w:numId/@w:val"/>
 
-        <xsl:variable name="CheckNumId" select="myObj:CheckNumID($checknumId)"/>
+        <xsl:variable name="CheckNumId" select="d:CheckNumID($myObj,$checknumId)"/>
         <xsl:if test="$CheckNumId ='True'">
-            <xsl:variable name="resetListCounters" select="myObj:StartNewListCounter($checknumId)"/>
+            <xsl:variable name="resetListCounters" select="d:StartNewListCounter($myObj,$checknumId)"/>
         </xsl:if>
 
         <xsl:if test="string-length(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val)=0 or preceding-sibling::w:p[1]/w:pPr/w:rPr/w:vanish" >
@@ -2304,7 +2302,7 @@
                 <xsl:call-template name="recursive">
                     <xsl:with-param name="rec" select="$checkilvl"/>
                 </xsl:call-template>
-                <xsl:value-of select="myObj:Increment($checkilvl)"/>
+                <xsl:value-of select="d:Increment($myObj,$checkilvl)"/>
             </xsl:if>
         </xsl:if>
 
@@ -2314,11 +2312,11 @@
                                                                         or preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']
                                                                         or preceding-sibling::node()[1]/w:pPr/w:rPr/w:vanish">
             <xsl:variable name="val">
-                <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
+                <xsl:value-of select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
             </xsl:variable>
             <!--Checking numbering.xml for the type of List-->
             <xsl:variable    name="type">
-                <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:numFmt/@w:val"/>
+                <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:numFmt/@w:val"/>
             </xsl:variable>
             <!--Checking for Ordered List type-->
             <xsl:choose>
@@ -2329,7 +2327,7 @@
                                 </xsl:when>-->
                 <xsl:when test="$type='decimal'">
                     <xsl:variable name="aquote">"</xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;', 'list', ' type=', $aquote, 'ol', $aquote,' start=', $aquote, myObj:GetListCounter($checkilvl, $checknumId), $aquote, '&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;', 'list', ' type=', $aquote, 'ol', $aquote,' start=', $aquote, d:GetListCounter($myObj,$checkilvl, $checknumId), $aquote, '&gt;')"/>
                 </xsl:when>
                 <xsl:when test="($type='lowerLetter') or ($type='lowerRoman') or ($type='upperRoman') or ($type='upperLetter')or ($type='decimalZero')">
                     <xsl:variable name="aquote">"</xsl:variable>
@@ -2338,7 +2336,7 @@
                 <!--Checking for Unordered list and Preformatted List type-->
                 <xsl:when test="$type='bullet'">
                     <xsl:choose>
-                        <xsl:when test ="document('word/numbering.xml')//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:lvlPicBulletId">
+                        <xsl:when test ="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:lvlPicBulletId">
                             <xsl:variable name="aquote">"</xsl:variable>
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'pl',$aquote,'&gt;')"/>
                         </xsl:when>
@@ -2363,14 +2361,14 @@
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
-        <xsl:if test="myObj:ListHeadingFlag()&gt;0">
-            <xsl:value-of disable-output-escaping="yes" select="myObj:PeekListHeading()"/>
-            <xsl:variable name="resetCounterLH" select="myObj:ReSetListHeadingFlag()"/>
+        <xsl:if test="d:ListHeadingFlag($myObj)&gt;0">
+            <xsl:value-of disable-output-escaping="yes" select="d:PeekListHeading($myObj)"/>
+            <xsl:variable name="resetCounterLH" select="d:ReSetListHeadingFlag($myObj)"/>
         </xsl:if>
 
         <!--Checking the current level with the next level-->
-        <xsl:variable name="PeekLevel" select="myObj:ListPeekLevel()"/>
-        <xsl:if test="myObj:Difference($checkilvl,$PeekLevel)">
+        <xsl:variable name="PeekLevel" select="d:ListPeekLevel($myObj)"/>
+        <xsl:if test="d:Difference($checkilvl,$PeekLevel)">
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
             <xsl:call-template name="ComplexListClose">
                 <xsl:with-param name="close" select="$checkilvl"/>
@@ -2380,21 +2378,17 @@
         <!--Closing the List-->
         <xsl:call-template name="closelist">
             <xsl:with-param name="close" select="$checkilvl"/>
-            <xsl:with-param name="sOperators" select="$sOperators"/>
-            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-            <xsl:with-param name="sZeros" select="$sZeros"/>
         </xsl:call-template>
 
         <xsl:variable name="val">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
         </xsl:variable>
         <!--Checking numbering.xml for the type of List-->
         <xsl:variable    name="numFormat">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:numFmt/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:numFmt/@w:val"/>
         </xsl:variable>
         <xsl:variable    name="lvlText">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:lvlText/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:lvlText/@w:val"/>
         </xsl:variable>
 
         <xsl:call-template name="recStart">
@@ -2408,17 +2402,13 @@
             <xsl:with-param name="openlvl" select="$checkilvl"/>
             <xsl:with-param name="verlist" select="$verlist"/>
             <xsl:with-param name="custom" select="$custom"/>
-            <xsl:with-param name="sOperators" select="$sOperators"/>
-            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-            <xsl:with-param name="sZeros" select="$sZeros"/>
             <xsl:with-param name="numFmt" select="$numFormat"/>
             <xsl:with-param name="lText" select="$lvlText"/>
             <xsl:with-param name="lstcharStyle" select="$listcharStyle"/>
         </xsl:call-template>
 
         <!--Closing the current List item(li) element when there is no nested list-->
-        <xsl:variable name="LPeekLevel" select="myObj:ListPeekLevel()"/>
+        <xsl:variable name="LPeekLevel" select="d:ListPeekLevel($myObj)"/>
         <xsl:if test="($LPeekLevel = $checkilvl
                                                                                 and following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val = $checkilvl]
                                                                                 and not(following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])
@@ -2475,7 +2465,7 @@
 
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'] and not(preceding::w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])">
                 <!--Save Level before closing all levels-->
-                <xsl:variable name="PeekLevel" select="myObj:PeekLevel()"/>
+                <xsl:variable name="PeekLevel" select="d:PeekLevel($myObj)"/>
                 <!--Close all levels before Table Of Contents-->
                 <xsl:call-template name="CloseLevel">
                     <xsl:with-param name="CurrentLevel" select="1"/>
@@ -2500,14 +2490,12 @@
                 </xsl:call-template>
             </xsl:when>
 
-            <xsl:when test="((w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or (myObj:CompareHeading(w:pPr/w:pStyle/@w:val,$styleHeading)=1)) and (not(name(..)='w:tc'))">
+            <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' or @w:val/d:CompareHeading(.,$styleHeading)=1] and (not(name(..)='w:tc'))">
                 <!--calling Close level template for closing all the higher levels-->
                 <xsl:if test="(w:r/w:lastRenderedPageBreak) or (w:r/w:br/@w:type='page')">
                     <xsl:call-template name="footnote">
                         <xsl:with-param name="verfoot" select="$VERSION"/>
-                        <xsl:with-param name="custom" select="$custom"/>
                         <xsl:with-param name="mastersubfoot" select="$mastersubstyle"/>
-                        <xsl:with-param name="characStyle" select="$characterStyle"/>
                         <xsl:with-param name="sOperators" select="$sOperators"/>
                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
                         <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -2520,7 +2508,7 @@
                         <xsl:variable name="text_heading">
                             <!--variable checkilvl holds level(w:ilvl) value of the List-->
                             <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
-                            <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(w:pPr/w:numPr/w:ilvl/@w:val)"/>
+                            <xsl:variable name="checkilvl" select="d:GetCheckLvlInt($myObj,w:pPr/w:numPr/w:ilvl/@w:val)"/>
                             <!--Variable checknumId holds the w:numId value which specifies the type of numbering in the list-->
                             <xsl:variable name="checknumId" select="w:pPr/w:numPr/w:numId/@w:val"/>
                             <xsl:call-template name="HeadingsPart">
@@ -2528,20 +2516,20 @@
                                 <xsl:with-param name="checknumId" select="$checknumId"/>
                                 <xsl:with-param name="doc" select="'Document'"/>
                             </xsl:call-template>
-                            <xsl:value-of select="myObj:RetrieveHeadingPart()"/>
+                            <xsl:value-of select="d:RetrieveHeadingPart($myObj)"/>
                         </xsl:variable>
 
                         <xsl:variable name="absValue">
                             <!--variable checkilvl holds level(w:ilvl) value of the List-->
                             <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
-                            <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(w:pPr/w:numPr/w:ilvl/@w:val)"/>
+                            <xsl:variable name="checkilvl" select="d:GetCheckLvlInt($myObj,w:pPr/w:numPr/w:ilvl/@w:val)"/>
                             <!--Variable checknumId holds the w:numId value which specifies the type of numbering in the list-->
                             <xsl:variable name="checknumId" select="w:pPr/w:numPr/w:numId/@w:val"/>
-                            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
+                            <xsl:value-of select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
                         </xsl:variable>
 
                         <xsl:call-template name="CloseLevel">
-                            <xsl:with-param name="CurrentLevel" select="substring(w:pPr/w:pStyle/@w:val,string-length(w:pPr/w:pStyle/@w:val))"/>
+                            <xsl:with-param name="CurrentLevel" select="number(substring(w:pPr/w:pStyle/@w:val,string-length(w:pPr/w:pStyle/@w:val)))"/>
                         </xsl:call-template>
 
                         <!--calling AddLevel template for adding the levels-->
@@ -2564,25 +2552,25 @@
                     <xsl:otherwise>
                         <xsl:variable name="text_heading">
                             <xsl:variable name="nameHeading" select="w:pPr/w:pStyle/@w:val"/>
-                            <xsl:for-each select="document('word/styles.xml')//w:styles/w:style[@w:styleId=$nameHeading]">
+                            <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
                                 <xsl:message terminate="no">progress:parahandler</xsl:message>
                                 <xsl:choose>
                                     <xsl:when test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
-                                        <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(./w:pPr/w:outlineLvl/@w:val)"/>
+                                        <xsl:variable name="checkilvl" select="d:GetCheckLvlInt($myObj,./w:pPr/w:outlineLvl/@w:val)"/>
                                         <xsl:variable name="checknumId" select="./w:pPr/w:numPr/w:numId/@w:val"/>
                                         <xsl:call-template name="HeadingsPart">
                                             <xsl:with-param name="checkilvl" select="$checkilvl"/>
                                             <xsl:with-param name="checknumId" select="$checknumId"/>
                                             <xsl:with-param name="doc" select="'Style'"/>
                                         </xsl:call-template>
-                                        <xsl:value-of select="myObj:RetrieveHeadingPart()"/>
+                                        <xsl:value-of select="d:RetrieveHeadingPart($myObj)"/>
                                     </xsl:when>
                                     <xsl:when test="string-length(./w:pPr/w:numPr/w:numId)=0">
                                         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
-                                        <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(./w:pPr/w:outlineLvl/@w:val)"/>
-                                        <xsl:variable name="addCurrId" select="myObj:AddCurrHeadId('')"/>
-                                        <xsl:variable name="addCurrLvl" select="myObj:AddCurrHeadLevel($checkilvl,'Style','')"/>
+                                        <xsl:variable name="checkilvl" select="d:GetCheckLvlInt($myObj,./w:pPr/w:outlineLvl/@w:val)"/>
+                                        <xsl:variable name="addCurrId" select="d:AddCurrHeadId($myObj,'')"/>
+                                        <xsl:variable name="addCurrLvl" select="d:AddCurrHeadLevel($myObj,$checkilvl,'Style','')"/>
                                         <xsl:value-of select="concat('','|',$checkilvl,'!','')"/>
                                     </xsl:when>
                                 </xsl:choose>
@@ -2591,14 +2579,14 @@
 
                         <xsl:variable name="absValue">
                             <xsl:variable name="nameHeading" select="w:pPr/w:pStyle/@w:val"/>
-                            <xsl:for-each select="document('word/styles.xml')//w:styles/w:style[@w:styleId=$nameHeading]">
+                            <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
                                 <xsl:message terminate="no">progress:parahandler</xsl:message>
                                 <xsl:if test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                     <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
-                                    <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(./w:pPr/w:outlineLvl/@w:val)"/>
+                                    <xsl:variable name="checkilvl" select="d:GetCheckLvlInt($myObj,./w:pPr/w:outlineLvl/@w:val)"/>
                                     <xsl:variable name="checknumId" select="./w:pPr/w:numPr/w:numId/@w:val"/>
 
-                                    <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
+                                    <xsl:value-of select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
                                 </xsl:if>
                             </xsl:for-each>
                         </xsl:variable>
@@ -2606,7 +2594,7 @@
 
                         <xsl:variable name="ilvl">
                             <xsl:variable name="nameHeading" select="w:pPr/w:pStyle/@w:val"/>
-                            <xsl:for-each select="document('word/styles.xml')//w:styles/w:style[@w:styleId=$nameHeading]">
+                            <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
                                 <xsl:message terminate="no">progress:parahandler</xsl:message>
                                 <xsl:choose>
                                     <xsl:when test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
@@ -2620,11 +2608,11 @@
                         </xsl:variable>
 
                         <xsl:call-template name="CloseLevel">
-                            <xsl:with-param name="CurrentLevel" select="substring(w:pPr/w:pStyle/@w:val,string-length(w:pPr/w:pStyle/@w:val))"/>
+                            <xsl:with-param name="CurrentLevel" select="number(substring(w:pPr/w:pStyle/@w:val,string-length(w:pPr/w:pStyle/@w:val)))"/>
                         </xsl:call-template>
 
                         <xsl:call-template name="AddLevel">
-                            <xsl:with-param name="levelValue" select="$ilvl"/>
+                            <xsl:with-param name="levelValue" select="$ilvl[not(.='')]"/>
                             <xsl:with-param name="check" select="1"/>
                             <xsl:with-param name="verhead" select="$VERSION"/>
                             <xsl:with-param name="custom" select="$custom"/>
@@ -2673,22 +2661,22 @@
                             </xsl:call-template>
                             <xsl:text disable-output-escaping="yes">&lt;/hd&gt;</xsl:text>
                         </xsl:variable>
-                        <xsl:variable name="pushLHeading" select="myObj:PushListHeading($tempListHeading)"/>
-                        <xsl:variable name="setCounter" select="myObj:SetListHeadingFlag()"/>
+                        <xsl:variable name="pushLHeading" select="d:PushListHeading($myObj,$tempListHeading)"/>
+                        <xsl:variable name="setCounter" select="d:SetListHeadingFlag($myObj)"/>
                     </xsl:when>
 
 
                     <!--calling list template for implementing lists-->
                     <xsl:when test="(w:pPr/w:rPr/w:vanish) and (w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId)">
-                        <xsl:variable name="checkCounter" select="myObj:IsList(w:pPr/w:numPr/w:numId/@w:val)"/>
+                        <xsl:variable name="checkCounter" select="d:IsList($myObj,w:pPr/w:numPr/w:numId/@w:val)"/>
                         <xsl:choose>
                             <xsl:when test="$checkCounter='ListTrue'">
-                                <xsl:variable name="vanishCounter" select="myObj:IncrementListCounters(w:pPr/w:numPr/w:ilvl/@w:val,w:pPr/w:numPr/w:numId/@w:val)"/>
+                                <xsl:variable name="vanishCounter" select="d:IncrementListCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,w:pPr/w:numPr/w:numId/@w:val)"/>
                             </xsl:when>
                             <xsl:otherwise>
                                 <!--variable checkilvl holds level(w:ilvl) value of the List-->
                                 <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
-                                <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(w:pPr/w:numPr/w:ilvl/@w:val)"/>
+                                <xsl:variable name="checkilvl" select="d:GetCheckLvlInt($myObj,w:pPr/w:numPr/w:ilvl/@w:val)"/>
                                 <!--Variable checknumId holds the w:numId value which specifies the type of numbering in the list-->
                                 <xsl:variable name="checknumId" select="w:pPr/w:numPr/w:numId/@w:val"/>
 
@@ -2702,20 +2690,17 @@
                         </xsl:choose>
                     </xsl:when>
 
-                    <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId) and not(w:pPr/w:rPr/w:vanish)) and not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or myObj:CompareHeading(w:pPr/w:pStyle/@w:val,$styleHeading)=1">
+                    <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId) and not(w:pPr/w:rPr/w:vanish)) and not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' or @w:val/d:CompareHeading(.,$styleHeading)=1])">
                         <xsl:call-template name="List">
                             <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                            <xsl:with-param name="VERSION" select="$VERSION"/>
                             <xsl:with-param name="custom" select="$custom"/>
-                            <xsl:with-param name="imgOptionPara" select="$imgOptionStyle"/>
-                            <xsl:with-param name="dpiPara" select="$dpiStyle"/>
                             <xsl:with-param name="listcharStyle" select="$characterStyle"/>
                         </xsl:call-template>
                     </xsl:when>
 
                     <xsl:otherwise>
                         <!--calling template named ParagraphStyle-->
-                        <xsl:variable name="checkImageposition" select="myObj:GetCaptionsProdnotes()"/>
+                        <xsl:variable name="checkImageposition" select="d:GetCaptionsProdnotes($myObj)"/>
                         <xsl:if test="not((preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
                                                                                                                         or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict)
                                                                                                                         or (preceding-sibling::node()[$checkImageposition]/w:r/w:object)
@@ -2748,17 +2733,17 @@
         <xsl:param name="checkCounter"/>
         <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:variable name="val">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
         </xsl:variable>
         <xsl:variable    name="lStartOverride">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
         </xsl:variable>
         <xsl:variable    name="lStart">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
         </xsl:variable>
 
-        <xsl:variable name="addCurrId" select="myObj:AddCurrHeadId($checknumId)"/>
-        <xsl:variable name="addCurrLvl" select="myObj:AddCurrHeadLevel($checkilvl,'Vanish',$val)"/>
+        <xsl:variable name="addCurrId" select="d:AddCurrHeadId($myObj,$checknumId)"/>
+        <xsl:variable name="addCurrLvl" select="d:AddCurrHeadLevel($myObj,$checkilvl,'Vanish',$val)"/>
 
         <xsl:choose>
             <xsl:when test="$checkCounter='HeadTrue'">
@@ -2766,18 +2751,18 @@
                     <xsl:when test="string-length(substring-before($addCurrLvl,'|'))=0">
                         <xsl:choose>
                             <xsl:when test="not($lStartOverride='')">
-                                <xsl:variable name="resetListCounters" select="myObj:StartHeadingValueCtr($checknumId,$val)"/>
-                                <xsl:variable name="startItem" select="myObj:StartHeadingString($checkilvl,$lStartOverride,$checknumId,$val,'Vanish','Yes')"/>
-                                <xsl:variable name="copyCurrCounter" select="myObj:CopyToCurrCounter($checknumId)"/>
-                                <xsl:variable name="vanishCounter" select="myObj:IncrementHeadingCounters(w:pPr/w:numPr/w:ilvl/@w:val,$checknumId,$val)"/>
-                                <xsl:variable name="copyBaseCounter" select="myObj:CopyToBaseCounter($checknumId)"/>
+                                <xsl:variable name="resetListCounters" select="d:StartHeadingValueCtr($myObj,$checknumId,$val)"/>
+                                <xsl:variable name="startItem" select="d:StartHeadingString($myObj,$checkilvl,$lStartOverride,$checknumId,$val,'Vanish','Yes')"/>
+                                <xsl:variable name="copyCurrCounter" select="d:CopyToCurrCounter($myObj,$checknumId)"/>
+                                <xsl:variable name="vanishCounter" select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checknumId,$val)"/>
+                                <xsl:variable name="copyBaseCounter" select="d:CopyToBaseCounter($myObj,$checknumId)"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:variable name="resetListCounters" select="myObj:StartHeadingValueCtr($checknumId,$val)"/>
-                                <xsl:variable name="startItem" select="myObj:StartHeadingString($checkilvl,$lStart,$checknumId,$val,'Vanish','No')"/>
-                                <xsl:variable name="copyCurrCounter" select="myObj:CopyToCurrCounter($checknumId)"/>
-                                <xsl:variable name="vanishCounter" select="myObj:IncrementHeadingCounters(w:pPr/w:numPr/w:ilvl/@w:val,$checknumId,$val)"/>
-                                <xsl:variable name="copyBaseCounter" select="myObj:CopyToBaseCounter($checknumId)"/>
+                                <xsl:variable name="resetListCounters" select="d:StartHeadingValueCtr($myObj,$checknumId,$val)"/>
+                                <xsl:variable name="startItem" select="d:StartHeadingString($myObj,$checkilvl,$lStart,$checknumId,$val,'Vanish','No')"/>
+                                <xsl:variable name="copyCurrCounter" select="d:CopyToCurrCounter($myObj,$checknumId)"/>
+                                <xsl:variable name="vanishCounter" select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checknumId,$val)"/>
+                                <xsl:variable name="copyBaseCounter" select="d:CopyToBaseCounter($myObj,$checknumId)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:when>
@@ -2786,25 +2771,25 @@
             <xsl:otherwise>
                 <xsl:choose>
                     <xsl:when test="string-length(substring-before($addCurrLvl,'|'))=0">
-                        <xsl:variable name="CheckNumId" select="myObj:CheckHeadingNumID($checknumId)"/>
+                        <xsl:variable name="CheckNumId" select="d:CheckHeadingNumID($myObj,$checknumId)"/>
                         <xsl:if test="$CheckNumId ='True'">
-                            <xsl:variable name="resetListCounters" select="myObj:StartHeadingValueCtr($checknumId,$val)"/>
-                            <xsl:variable name="ListCounters" select="myObj:StartNewHeadingCounter($checknumId,$val)"/>
+                            <xsl:variable name="resetListCounters" select="d:StartHeadingValueCtr($myObj,$checknumId,$val)"/>
+                            <xsl:variable name="ListCounters" select="d:StartNewHeadingCounter($myObj,$checknumId,$val)"/>
                         </xsl:if>
                         <xsl:choose>
                             <xsl:when test="not($lStartOverride='')">
-                                <xsl:variable name="copyCurrCounter" select="myObj:CopyToCurrCounter($checknumId)"/>
-                                <xsl:variable name="ListCounters" select="myObj:StartHeadingValueCtr($checknumId,$val)"/>
-                                <xsl:variable name="startItem" select="myObj:StartHeadingString($checkilvl,$lStartOverride,$checkCounter,$val,'Vanish','Yes')"/>
-                                <xsl:variable name="vanishCounter" select="myObj:IncrementHeadingCounters(w:pPr/w:numPr/w:ilvl/@w:val,$checkCounter,$val)"/>
-                                <xsl:variable name="copyBaseCounter" select="myObj:CopyToBaseCounter($checkCounter)"/>
+                                <xsl:variable name="copyCurrCounter" select="d:CopyToCurrCounter($myObj,$checknumId)"/>
+                                <xsl:variable name="ListCounters" select="d:StartHeadingValueCtr($myObj,$checknumId,$val)"/>
+                                <xsl:variable name="startItem" select="d:StartHeadingString($myObj,$checkilvl,$lStartOverride,$checkCounter,$val,'Vanish','Yes')"/>
+                                <xsl:variable name="vanishCounter" select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checkCounter,$val)"/>
+                                <xsl:variable name="copyBaseCounter" select="d:CopyToBaseCounter($myObj,$checkCounter)"/>
                             </xsl:when>
                             <xsl:otherwise>
-                                <xsl:variable name="copyCurrCounter" select="myObj:CopyToCurrCounter($checknumId)"/>
-                                <xsl:variable name="resetListCounters" select="myObj:StartHeadingValueCtr($checknumId,$val)"/>
-                                <xsl:variable name="startItem" select="myObj:StartHeadingString($checkilvl,$lStart,$checknumId,$val,'Vanish','No')"/>
-                                <xsl:variable name="vanishCounter" select="myObj:IncrementHeadingCounters(w:pPr/w:numPr/w:ilvl/@w:val,$checkCounter,$val)"/>
-                                <xsl:variable name="copyBaseCounter" select="myObj:CopyToBaseCounter($checkCounter)"/>
+                                <xsl:variable name="copyCurrCounter" select="d:CopyToCurrCounter($myObj,$checknumId)"/>
+                                <xsl:variable name="resetListCounters" select="d:StartHeadingValueCtr($myObj,$checknumId,$val)"/>
+                                <xsl:variable name="startItem" select="d:StartHeadingString($myObj,$checkilvl,$lStart,$checknumId,$val,'Vanish','No')"/>
+                                <xsl:variable name="vanishCounter" select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checkCounter,$val)"/>
+                                <xsl:variable name="copyBaseCounter" select="d:CopyToBaseCounter($myObj,$checkCounter)"/>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:when>
@@ -2819,58 +2804,58 @@
         <xsl:param name="doc"/>
         <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:variable name="val">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
         </xsl:variable>
 
-        <xsl:variable name="CheckNumId" select="myObj:CheckHeadingNumID($checknumId)"/>
+        <xsl:variable name="CheckNumId" select="d:CheckHeadingNumID($myObj,$checknumId)"/>
         <xsl:if test="$CheckNumId ='True'">
-            <xsl:variable name="resetListCounters" select="myObj:StartNewHeadingCounter($checknumId,$val)"/>
+            <xsl:variable name="resetListCounters" select="d:StartNewHeadingCounter($myObj,$checknumId,$val)"/>
         </xsl:if>
 
         <!--Checking numbering.xml for the type of List-->
         <xsl:variable    name="numFormat">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:numFmt/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:numFmt/@w:val"/>
         </xsl:variable>
         <xsl:variable    name="lvlText">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:lvlText/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:lvlText/@w:val"/>
         </xsl:variable>
         <xsl:variable    name="lStartOverride">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
         </xsl:variable>
         <xsl:variable    name="lStart">
-            <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
+            <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
         </xsl:variable>
 
-        <xsl:variable name="addCurrId" select="myObj:AddCurrHeadId($checknumId)"/>
-        <xsl:variable name="addCurrLvl" select="myObj:AddCurrHeadLevel($checkilvl,$doc,$val)"/>
+        <xsl:variable name="addCurrId" select="d:AddCurrHeadId($myObj,$checknumId)"/>
+        <xsl:variable name="addCurrLvl" select="d:AddCurrHeadLevel($myObj,$checkilvl,$doc,$val)"/>
 
         <xsl:choose>
             <xsl:when test="string-length(substring-before($addCurrLvl,'|'))=0">
                 <xsl:choose>
                     <xsl:when test="not($lStartOverride='')">
-                        <xsl:variable name="resetListCounters" select="myObj:StartHeadingNewCtr($checknumId,$val)"/>
-                        <xsl:variable name="startItem" select="myObj:StartHeadingString($checkilvl,$lStartOverride,$checknumId,$val,$doc,'Yes')"/>
-                        <xsl:variable name="copyCurrCounter" select="myObj:CopyToCurrCounter($checknumId)"/>
+                        <xsl:variable name="resetListCounters" select="d:StartHeadingNewCtr($myObj,$checknumId,$val)"/>
+                        <xsl:variable name="startItem" select="d:StartHeadingString($myObj,$checkilvl,$lStartOverride,$checknumId,$val,$doc,'Yes')"/>
+                        <xsl:variable name="copyCurrCounter" select="d:CopyToCurrCounter($myObj,$checknumId)"/>
                     </xsl:when>
-                    <xsl:when test="$lStartOverride='' and document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride">
-                        <xsl:variable name="resetListCounters" select="myObj:StartHeadingNewCtr($checknumId,$val)"/>
-                        <xsl:variable name="startItem" select="myObj:StartHeadingString($checkilvl,'0',$checknumId,$val,$doc,'Yes')"/>
-                        <xsl:variable name="copyCurrCounter" select="myObj:CopyToCurrCounter($checknumId)"/>
+                    <xsl:when test="$lStartOverride='' and $numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride">
+                        <xsl:variable name="resetListCounters" select="d:StartHeadingNewCtr($myObj,$checknumId,$val)"/>
+                        <xsl:variable name="startItem" select="d:StartHeadingString($myObj,$checkilvl,'0',$checknumId,$val,$doc,'Yes')"/>
+                        <xsl:variable name="copyCurrCounter" select="d:CopyToCurrCounter($myObj,$checknumId)"/>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:variable name="resetListCounters" select="myObj:StartHeadingNewCtr($checknumId,$val)"/>
-                        <xsl:variable name="startItem" select="myObj:StartHeadingString($checkilvl,$lStart,$checknumId,$val,$doc,'No')"/>
-                        <xsl:variable name="copyCurrCounter" select="myObj:CopyToCurrCounter($checknumId)"/>
+                        <xsl:variable name="resetListCounters" select="d:StartHeadingNewCtr($myObj,$checknumId,$val)"/>
+                        <xsl:variable name="startItem" select="d:StartHeadingString($myObj,$checkilvl,$lStart,$checknumId,$val,$doc,'No')"/>
+                        <xsl:variable name="copyCurrCounter" select="d:CopyToCurrCounter($myObj,$checknumId)"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
         </xsl:choose>
         <xsl:choose>
             <xsl:when test="$doc='Document'">
-                <xsl:value-of select="myObj:StoreHeadingPart(concat($numFormat,'|',$lvlText))"/>
+                <xsl:value-of select="d:StoreHeadingPart($myObj,concat($numFormat,'|',$lvlText))"/>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:value-of select="myObj:StoreHeadingPart(concat($numFormat,'|',$lvlText,'!',$checknumId))"/>
+                <xsl:value-of select="d:StoreHeadingPart($myObj,concat($numFormat,'|',$lvlText,'!',$checknumId))"/>
             </xsl:otherwise>
         </xsl:choose>
 
@@ -3144,7 +3129,7 @@
 
         <xsl:variable name="aquote">"</xsl:variable>
         <xsl:message terminate="no">progress:ParagraphStyle</xsl:message>
-        <xsl:variable name="checkImageposition" select="myObj:GetCaptionsProdnotes()"/>
+        <xsl:variable name="checkImageposition" select="d:GetCaptionsProdnotes($myObj)"/>
         <xsl:choose>
             <!--Checking for Title/Subtitle paragraph style-->
             <xsl:when test="(w:pPr/w:pStyle/@w:val='Title') or (w:pPr/w:pStyle/@w:val='Subtitle')">
@@ -3172,7 +3157,7 @@
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','author ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 <xsl:if test="$flagNote='Note'">
-                    <xsl:if test="myObj:NoteFlag()=1">
+                    <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
                         </p>
@@ -3203,7 +3188,7 @@
             <!--Checking for BylineDAISY custom paragraph style-->
             <xsl:when test="(w:pPr/w:pStyle/@w:val='BylineDAISY')">
                 <xsl:if test="$flagNote='Note'">
-                    <xsl:if test="myObj:NoteFlag()=1">
+                    <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
                         </p>
@@ -3225,7 +3210,7 @@
             <!--Checking for DatelineDAISY custom paragraph style-->
             <xsl:when test="(w:pPr/w:pStyle/@w:val='DatelineDAISY')">
                 <xsl:if test="$flagNote='Note'">
-                    <xsl:if test="myObj:NoteFlag()=1">
+                    <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
                         </p>
@@ -3289,7 +3274,7 @@
             <!--Checking for PoemDAISY/Poem-TitleDAISY/Poem-HeadingDAISY/Poem-AuthorDAISY/Poem-BylineDAISY custom paragraph styles-->
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,4)='Poem']">
                 <xsl:if test="$flagNote='Note'">
-                    <xsl:if test="myObj:NoteFlag()=1">
+                    <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
                         </p>
@@ -3385,7 +3370,7 @@
             <!--Checking for AddressDAISY custom paragraph style-->
             <xsl:when test="w:pPr/w:pStyle[@w:val='AddressDAISY']">
                 <xsl:if test="$flagNote='Note'">
-                    <xsl:if test="myObj:NoteFlag()=1">
+                    <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
                         </p>
@@ -3815,34 +3800,34 @@
     </xsl:template>
 
     <xsl:template name="CheckPageStyles">
-        <xsl:for-each select="document('word/document.xml')//w:document/w:body/node()">
+        <xsl:for-each select="$documentXml//w:document/w:body/node()">
             <xsl:message terminate="no">progress:checkpagestyles</xsl:message>
             <xsl:if test="name()='w:p'">
                 <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter']">
-                    <xsl:if test="myObj:PushPageStyle(@w:val)"/>
+                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
                 </xsl:for-each>
                 <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter']">
-                    <xsl:if test="myObj:PushPageStyle(@w:val)"/>
+                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
                 </xsl:for-each>
                 <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter']">
-                    <xsl:if test="myObj:PushPageStyle(@w:val)"/>
+                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
                 </xsl:for-each>
                 <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter']">
-                    <xsl:if test="myObj:PushPageStyle(@w:val)"/>
+                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
                 </xsl:for-each>
                 <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter']">
-                    <xsl:if test="myObj:PushPageStyle(@w:val)"/>
+                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
                 </xsl:for-each>
                 <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter']">
-                    <xsl:if test="myObj:PushPageStyle(@w:val)"/>
+                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
                 </xsl:for-each>
-                <xsl:if test="myObj:IncrementCheckingParagraph()" />
+                <xsl:if test="d:IncrementCheckingParagraph($myObj)"/>
             </xsl:if>
         </xsl:for-each>
 
-        <xsl:if test="myObj:IsInvalidPageStylesSequence()='true'">
+        <xsl:if test="d:IsInvalidPageStylesSequence($myObj)='true'">
             <xsl:message terminate="yes">
-                <xsl:value-of select="myObj:GetPageStylesErrors()"/>
+                <xsl:value-of select="d:GetPageStylesErrors($myObj)"/>
             </xsl:message>
         </xsl:if>
 
@@ -3855,13 +3840,13 @@
         <xsl:if test="name()='w:p'">
             <xsl:choose>
                 <xsl:when test="(count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1 or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1)">
-                    <xsl:if test="myObj:SetCurrentMatterType('Frontmatter')"/>
+                    <xsl:if test="d:SetCurrentMatterType($myObj,'Frontmatter')"/>
                 </xsl:when>
                 <xsl:when test="(count(w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1 or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1)">
-                    <xsl:if test="myObj:SetCurrentMatterType('Bodymatter')"/>
+                    <xsl:if test="d:SetCurrentMatterType($myObj,'Bodymatter')"/>
                 </xsl:when>
                 <xsl:when test="(count(w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1) or (count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1)">
-                    <xsl:if test="myObj:SetCurrentMatterType('Rearmatter')"/>
+                    <xsl:if test="d:SetCurrentMatterType($myObj,'Rearmatter')"/>
                 </xsl:when>
                 <!--<xsl:when test="not(count(w:r/w:br[@w:type='page'])=0)">
                                         <xsl:variable name="nextNodePosition" select="(position() + 1)" />

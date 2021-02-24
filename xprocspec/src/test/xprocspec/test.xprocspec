@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<x:description xmlns:x="http://www.daisy.org/ns/xprocspec"
+               xmlns:cx="http://xmlcalabash.com/ns/extensions"
+               xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
+               xmlns:p="http://www.w3.org/ns/xproc">
+
+  <x:script>
+    <p:declare-step version="1.0" type="px:oox2Daisy" name="main">
+      <p:option name="source" required="true"/>
+      <p:option name="output-dir" required="true"/>
+      <p:option name="Title" select="''"/>
+      <p:option name="Creator" select="''"/>
+      <p:option name="Publisher" select="''"/>
+      <p:option name="UID" select="''"/>
+      <p:option name="Subject" select="''"/>
+      <p:option name="prmTRACK" select="'NoTrack'"/>
+      <p:option name="Version" select="'14'"/>
+      <p:option name="Custom" select="''"/>
+      <p:option name="MasterSub" select="'No'"/>
+      <p:option name="ImageSizeOption" select="'original'"/>
+      <p:option name="DPI" select="'96'"/>
+      <p:option name="CharacterStyles" select="''"/>
+      <p:option name="MathML" select="map{'wdTextFrameStory':[],
+                                          'wdFootnotesStory':[],
+                                          'wdMainTextStory':[]}"/>
+      <p:output port="result"/>
+      <p:xslt template-name="main" cx:serialize="true">
+        <p:input port="source">
+          <p:empty/>
+        </p:input>
+        <p:input port="stylesheet">
+          <p:document href="../../../../Common/DaisyConverterLib/resources/xslts/oox2Daisy.xsl"/>
+        </p:input>
+        <p:with-param name="OriginalInputFile" select="$source"/>
+        <p:with-param name="InputFile" select="$source"/>
+        <p:with-param name="OutputDir" select="$output-dir"/>
+        <p:with-param name="FinalOutputDir" select="$output-dir"/>
+        <p:with-param name="Title" select="$Title"/>
+        <p:with-param name="Creator" select="$Creator"/>
+        <p:with-param name="Publisher" select="$Publisher"/>
+        <p:with-param name="UID" select="$UID"/>
+        <p:with-param name="Subject" select="$Subject"/>
+        <p:with-param name="prmTRACK" select="$prmTRACK"/>
+        <p:with-param name="Version" select="$Version"/>
+        <p:with-param name="Custom" select="$Custom"/>
+        <p:with-param name="MasterSub" select="$MasterSub"/>
+        <p:with-param name="ImageSizeOption" select="$ImageSizeOption"/>
+        <p:with-param name="DPI" select="$DPI"/>
+        <p:with-param name="CharacterStyles" select="$CharacterStyles"/>
+        <p:with-param name="MathML" select="$MathML"/>
+      </p:xslt>
+      <p:group>
+        <p:variable name="output-file"
+                    select="concat($output-dir,
+                                   replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1.xml'),',','_'))"/>
+        <p:store name="store-xml">
+          <p:with-option name="href" select="$output-file"/>
+        </p:store>
+        <p:store name="store-css">
+          <p:input port="source">
+            <p:inline><css/></p:inline>
+          </p:input>
+          <p:with-option name="href" select="concat($output-dir,'dtbookbasic.css')"/>
+        </p:store>
+        <p:load cx:depends-on="store-xml">
+          <p:with-option name="href" select="$output-file"/>
+        </p:load>
+        <p:identity cx:depends-on="store-css"/>
+      </p:group>
+    </p:declare-step>
+  </x:script>
+
+  <x:scenario label="FromSingleDocx">
+    <x:call step="px:oox2Daisy"/>
+
+    <x:scenario label="Test 1">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%201/Input/F1.docx')"/>
+        <x:option name="Title" select="'Help'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'1'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/1/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/1/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%201/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%201/Output/F1.xml"/>
+      </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Test 2">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%202/Input/F%202.docx')"/>
+        <x:option name="Title" select="'Document'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'2'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/2/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/2/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%202/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%202/Output/F%202.xml"/>
+      </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Test 3">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%203/Input/F%203.docx')"/>
+        <x:option name="Title" select="'Testing'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'3'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/3/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/3/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%203/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%203/Output/F%203.xml"/>
+      </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Test 4">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%204/Input/F4.docx')"/>
+        <x:option name="Title" select="'Blood'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'4'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/4/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/4/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%204/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%204/Output/F4.xml"/>
+      </x:expect>
+    </x:scenario>
+    
+    <x:scenario label="Test 5">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%205/Input/F5.docx')"/>
+        <x:option name="Title" select="'Service'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'5'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/5/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/5/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%205/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%205/Output/F5.xml"/>
+      </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Test 6">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%206/Input/F6.docx')"/>
+        <x:option name="Title" select="'Belarus'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'6'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/6/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/6/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%206/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%206/Output/F6.xml"/>
+      </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Test 7">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%207/Input/F7.docx')"/>
+        <x:option name="Title" select="'Blog'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'7'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/7/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/7/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%207/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%207/Output/F7.xml"/>
+      </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Test 8">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%208/Input/F8.docx')"/>
+        <x:option name="Title" select="'Trial'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'8'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/8/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/8/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%208/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%208/Output/F8.xml"/>
+      </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Test 9">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%209/Input/F9.docx')"/>
+        <x:option name="Title" select="'Tool'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'9'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/9/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/9/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%209/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%209/Output/F9.xml"/>
+      </x:expect>
+    </x:scenario>
+
+    <x:scenario label="Test 10">
+      <x:call>
+        <x:option
+            name="source"
+            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%2010/Input/F10.docx')"/>
+        <x:option name="Title" select="'Problem'"/>
+        <x:option name="Creator" select="'Balandin Vyacheslav'"/>
+        <x:option name="Publisher" select="'Pruchkovskaya'"/>
+        <x:option name="UID" select="'10'"/>
+        <x:option name="output-dir" select="concat($temp-dir,'FromSingleDocx/10/Output/')"/>
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/10/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%2010/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="port" port="result"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+            type="file"
+            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%2010/Output/F10.xml"/>
+      </x:expect>
+    </x:scenario>
+
+  </x:scenario>
+</x:description>

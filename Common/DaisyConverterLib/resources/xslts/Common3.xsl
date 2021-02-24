@@ -1,26 +1,29 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
- xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
- xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
- xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
- xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
- xmlns:dc="http://purl.org/dc/elements/1.1/"
- xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
- xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
- xmlns:v="urn:schemas-microsoft-com:vml"
- xmlns:dcmitype="http://purl.org/dc/dcmitype/"
- xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"
- xmlns:o="urn:schemas-microsoft-com:office:office"
- xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype myObj o xsl dgm">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+                xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+                xmlns:dcterms="http://purl.org/dc/terms/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+                xmlns:v="urn:schemas-microsoft-com:vml"
+                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"
+                xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:d="DaisyClass"
+                xmlns="http://www.daisy.org/z3986/2005/dtbook/"
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
 	<!--<xsl:param name="sOperators"/>
 	<xsl:param name="sMinuses"/>
 	<xsl:param name="sNumbers"/>
 	<xsl:param name="sZeros"/>-->
-	<xsl:output method="xml" indent="no" />
 	<!--Storing the default language of the document from styles.xml-->
-	<xsl:variable name="doclang" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
-	<xsl:variable name="doclangbidi" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
-	<xsl:variable name="doclangeastAsia" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
+	<xsl:variable name="doclang" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
+	<xsl:variable name="doclangbidi" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
+	<xsl:variable name="doclangeastAsia" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
 	<!--Template to create NoteReference for FootNote and EndNote
   It is taking two parameters varFootnote_Id and varNote_Class. varFootnote_Id 
   will contain the Reference id of either Footnote or Endnote.-->
@@ -31,7 +34,7 @@
 		<xsl:message terminate="no">progress:footnote</xsl:message>
 		<!--Checking for matching reference Id for Fotnote and Endnote in footnote.xml
     or endnote.xml-->
-		<xsl:if test="document('word/footnotes.xml')//w:footnotes/w:footnote[@w:id=$varFootnote_Id]or document('word/endnotes.xml')//w:endnotes/w:endnote[@w:id=$varFootnote_Id]">
+		<xsl:if test="$footnotesXml//w:footnotes/w:footnote[@w:id=$varFootnote_Id]or $endnotesXml//w:endnotes/w:endnote[@w:id=$varFootnote_Id]">
 			<noteref>
 				<!--Creating the attribute idref for Noteref element and assining it a value.-->
 				<xsl:attribute name="idref">
@@ -89,7 +92,7 @@
 					<xsl:value-of select="'Endnote'"/>
 				</xsl:attribute>
 				<!--Travering each w:endnote element in endnote.xml file-->
-				<xsl:for-each select="document('word/endnotes.xml')//w:endnotes/w:endnote">
+				<xsl:for-each select="$endnotesXml//w:endnotes/w:endnote">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<!--Checks for matching Id-->
 					<xsl:if test="@w:id=$endNoteId">
@@ -110,7 +113,7 @@
 								</xsl:call-template>
 							</xsl:if>
 						</xsl:for-each>
-						<xsl:variable name="SetFlag" select="myObj:InitializeNoteFlag()"/>
+						<xsl:variable name="SetFlag" select="d:InitializeNoteFlag($myObj)"/>
 					</xsl:if>
 				</xsl:for-each>
 			</note>
@@ -128,13 +131,13 @@
 		<xsl:param name="sZeros"/>
 		<xsl:message terminate="no">progressfootnote</xsl:message>
 		<!--Inserting default footnote id in the array list-->
-		<xsl:variable name="checkid" select="myObj:FootNoteId(0)"/>
-		<!--Chaecking for the matching Id returned from footnoteId function of c#-->
+		<xsl:variable name="checkid" select="d:FootNoteId($myObj,0)"/>
+		<!--Chaecking for the matching Id returned from d:FootNoteId()-->
 		<xsl:if test="$checkid!=0">
 			<!--Traversing through each footnote element in footnotes.xml file-->
-			<xsl:for-each select="document('word/footnotes.xml')//w:footnotes/w:footnote">
+			<xsl:for-each select="$footnotesXml//w:footnotes/w:footnote">
 				<xsl:message terminate="no">progress:parahandler</xsl:message>
-				<!--Checking if Id returned from C# is equal to the footnote Id in footnotes.xml file-->
+				<!--Checking if Id returned from d:FootNoteId() is equal to the footnote Id in footnotes.xml file-->
 				<xsl:if test="@w:id=$checkid">
 					<!--Creating note element and it's attribute values-->
 					<note id="{concat('footnote-',$checkid - 1)}" class="Footnote">
@@ -169,14 +172,14 @@
 													<!--Attribute holding the name of the Image-->
 													<xsl:attribute name="src">
 														<!--Caling MathImageFootnote for copying Image to output folder-->
-														<xsl:value-of select ="myObj:MathImageFootnote($Math_id)"/>
+														<xsl:value-of select ="d:MathImageFootnote($myObj,$Math_id)"/>
 													</xsl:attribute>
 												</img>
 											</imggroup>
 										</p>
 									</xsl:when>
 									<xsl:when test="w:r/w:object/o:OLEObject[@ProgID='Equation.DSMT4']">
-										<xsl:variable name="Math_DSMT4" select="myObj:GetMathML('wdFootnotesStory')"/>
+										<xsl:variable name="Math_DSMT4" select="d:GetMathML($myObj,'wdFootnotesStory')"/>
 										<xsl:choose>
 											<xsl:when test="$Math_DSMT4=''">
 												<imggroup>
@@ -199,7 +202,7 @@
 														</xsl:attribute>
 														<xsl:attribute name="src">
 															<!--Calling MathImage function-->
-															<xsl:value-of select ="myObj:MathImageFootnote($Math_rid)"/>
+															<xsl:value-of select ="d:MathImageFootnote($myObj,$Math_rid)"/>
 														</xsl:attribute>
 													</img>
 												</imggroup>
@@ -227,13 +230,12 @@
 						</xsl:for-each>
 					</note>
 				</xsl:if>
-				<xsl:variable name="SetFlag" select="myObj:InitializeNoteFlag()"/>
+				<xsl:variable name="SetFlag" select="d:InitializeNoteFlag($myObj)"/>
 			</xsl:for-each>
-			<!--Calling the template footnote recursively until the C# function returns 0-->
+			<!--Calling the template footnote recursively until d:FootNoteId() returns 0-->
 			<xsl:call-template name="footnote">
 				<xsl:with-param name ="verfoot" select ="$verfoot"/>
 				<xsl:with-param name ="mastersubfoot" select ="$mastersubfoot"/>
-				<xsl:with-param name="characStyle" select="$characterStyle"/>
 				<xsl:with-param name="sOperators" select="$sOperators"/>
 				<xsl:with-param name="sMinuses" select="$sMinuses"/>
 				<xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -251,7 +253,7 @@
 			<!--Checking for inbuilt caption and Image-CaptionDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Caption') or ($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 				<!--Variable holds the count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="myObj:AddCaptionsProdnotes()"/>
+				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
 				<caption>
 					<!--attribute holds the value of the image id-->
 					<xsl:attribute name="imgref">
@@ -307,7 +309,7 @@
 			<!--Checking for inbuilt caption and Prodnote-OptionalDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
 				<!--Variable holds the count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="myObj:AddCaptionsProdnotes()"/>
+				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
 				<xsl:variable name="quote">"</xsl:variable>
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render= ',$quote,'optional',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
@@ -347,7 +349,7 @@
 			<!--Checking for inbuilt caption and Prodnote-RequiredDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')">
 				<!--Variable holds the count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="myObj:AddCaptionsProdnotes()"/>
+				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
 				<xsl:variable name="quote">"</xsl:variable>
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'required',$quote,' imgref=',$quote, $imageId ,$quote,'&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
@@ -385,7 +387,7 @@
 				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
-		<xsl:variable name="tmpcount" select="myObj:ResetCaptionsProdnotes()"/>
+		<xsl:sequence select="d:ResetCaptionsProdnotes($myObj)"/>
 	</xsl:template>
 
 	<!--Template for implementing Simple Images i.e, ungrouped images-->
@@ -430,32 +432,32 @@
 		<xsl:variable name="imageId">
 			<xsl:choose>
 				<xsl:when  test="w:drawing/wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed">
-					<xsl:value-of select="concat($Img_Id,myObj:GenerateImageId())"/>
+					<xsl:value-of select="concat($Img_Id,d:GenerateImageId($myObj))"/>
 				</xsl:when>
 				<xsl:when test="w:drawing/wp:anchor/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed">
-					<xsl:value-of select="concat($Img_Id,myObj:GenerateImageId())"/>
+					<xsl:value-of select="concat($Img_Id,d:GenerateImageId($myObj))"/>
 				</xsl:when>
 				<xsl:when test="w:drawing/wp:inline/wp:docPr/@id">
 					<xsl:variable name="id" select="../w:bookmarkStart[last()]/@w:name"/>
-					<xsl:value-of select="myObj:CheckShapeId($id)"/>
+					<xsl:value-of select="d:CheckShapeId($myObj,$id)"/>
 				</xsl:when>
 				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Diagram')">
-					<xsl:value-of select="myObj:CheckShapeId(concat('Shape',substring-after(../../../../@id,'s')))"/>
+					<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',substring-after(../../../../@id,'s')))"/>
 				</xsl:when>
 				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
-					<xsl:variable name="id" select="myObj:CheckShapeId(concat('Shape',../w:bookmarkStart[last()]/@w:name))"/>
+					<xsl:variable name="id" select="d:CheckShapeId($myObj,concat('Shape',../w:bookmarkStart[last()]/@w:name))"/>
 				</xsl:when>
 				<!--<xsl:when test="w:drawing/wp:anchor/wp:docPr/@id">
 					<xsl:choose>
 						<xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Chart')">
 							<xsl:variable name="id" select="concat('Shape',w:drawing/wp:anchor/wp:docPr/@id)"/>
-							<xsl:value-of select="myObj:CheckShapeId($id)"/>
+							<xsl:value-of select="d:CheckShapeId($myObj,$id)"/>
 						</xsl:when>
 						<xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Diagram')">
-							<xsl:value-of select="myObj:CheckShapeId(concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
+							<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<xsl:value-of select="myObj:CheckShapeId(concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
+							<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
 						</xsl:otherwise>
 					</xsl:choose>
 				</xsl:when>-->
@@ -510,15 +512,15 @@
 			<xsl:variable name="imageTest">
 				<xsl:choose>
 					<xsl:when test="contains($Img_Id,'rId') and ($imgOpt='resize')">
-						<xsl:value-of select ="myObj:Image($Img_Id,$imageName,'true')"/>
+						<xsl:value-of select ="d:Image($myObj,$Img_Id,$imageName)"/>
 					</xsl:when>
 					<xsl:when test="contains($Img_Id,'rId') and ($imgOpt='resample')">
-						<xsl:value-of select ="myObj:ResampleImage($Img_Id,$imageName,$dpi)"/>
+						<xsl:value-of select ="d:ResampleImage($myObj,$Img_Id,$imageName,$dpi)"/>
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:choose>
 							<xsl:when test="contains($Img_Id,'rId')">
-								<xsl:value-of select ="myObj:Image($Img_Id,$imageName,'true')"/>
+								<xsl:value-of select ="d:Image($myObj,$Img_Id,$imageName)"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:value-of select="concat($imageId,'.png')"/>
@@ -529,7 +531,7 @@
 				</xsl:choose>
 			</xsl:variable>
 			<xsl:variable name="checkImage">
-				<xsl:value-of select="myObj:CheckImage($imageTest)"/>
+				<xsl:value-of select="d:CheckImage($myObj,$imageTest)"/>
 			</xsl:variable>
 			<xsl:if test="$checkImage='1'">
 				<!--Creating Imagegroup element-->
@@ -539,7 +541,7 @@
 						<xsl:attribute name="id">
 							<xsl:value-of select="$imageId"/>
 						</xsl:attribute>
-						<!--attribute that holds the filename of the image returned for C# Image function-->
+						<!--attribute that holds the filename of the image returned for d:Image()-->
 						<xsl:choose>
 							<xsl:when test="$imgOpt='resize' and contains($Img_Id,'rId')">
 								<xsl:attribute name="src">
@@ -674,9 +676,8 @@
 			<!--Checking for Image-CaptionDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 				<!--Variable that holds count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="myObj:AddCaptionsProdnotes()"/>
+				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
 				<caption>
-					<!--attribute that holds image id returned from C# ReturnImageGroupId()-->
 					<xsl:attribute name="imgref">
 						<xsl:value-of select="$imageId"/>
 					</xsl:attribute>
@@ -732,10 +733,10 @@
 			<!--Checking for Prodnote-OptionalDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
 				<!--Variable that holds count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="myObj:AddCaptionsProdnotes()"/>
+				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
 				<xsl:variable name="quote">"</xsl:variable>
 				<!--<xsl:variable name="imageId">
-					<xsl:value-of select="myObj:ReturnImageGroupId()"/>
+					<xsl:value-of select="d:ReturnImageGroupId()"/>
 				</xsl:variable>-->
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'optional',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
@@ -775,10 +776,10 @@
 			<!--Checking for Prodnote-RequiredDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')">
 				<!--Variable that holds count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="myObj:AddCaptionsProdnotes()"/>
+				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
 				<xsl:variable name="quote">"</xsl:variable>
 				<!--<xsl:variable name="imageId">
-					<xsl:value-of select="myObj:ReturnImageGroupId()"/>
+					<xsl:value-of select="d:ReturnImageGroupId()"/>
 				</xsl:variable>-->
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'required',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
 				<!--Getting the language id by calling the PictureLanguage template-->
@@ -816,7 +817,7 @@
 				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
-		<xsl:variable name="tmpcount" select="myObj:ResetCaptionsProdnotes()"/>
+		<xsl:sequence select="d:ResetCaptionsProdnotes($myObj)"/>
 	</xsl:template>
 
 	<!--Template for Implementing grouped images-->
@@ -839,7 +840,7 @@
 
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="InsertedCaption" select="myObj:InsertCaption($caption)"/>
+			<xsl:variable name="InsertedCaption" select="d:InsertCaption($myObj,$caption)"/>
 		</xsl:if>
 		<!--Looping through each pict element and storing the caption value in the caption variable-->
 
@@ -858,14 +859,14 @@
 
 				</xsl:for-each>
 			</xsl:variable>
-			<!--Inserting the caption value in the Arraylist through insertcaption C# function-->
-			<xsl:variable name="InsertedCaption" select="myObj:InsertCaption($caption)"/>
+			<!--Inserting the caption value in the Arraylist-->
+			<xsl:variable name="InsertedCaption" select="d:InsertCaption($myObj,$caption)"/>
 		</xsl:if>
 		<xsl:variable name="Imageid">
-			<xsl:value-of select ="myObj:CheckShapeId(concat('Shape',substring-after(w:pict/v:group/@id,'s')))"/>
+			<xsl:value-of select ="d:CheckShapeId($myObj,concat('Shape',substring-after(w:pict/v:group/@id,'s')))"/>
 		</xsl:variable>
 		<xsl:variable name="checkImage">
-			<xsl:value-of select="myObj:CheckImage(concat($Imageid,'.png'))"/>
+			<xsl:value-of select="d:CheckImage($myObj,concat($Imageid,'.png'))"/>
 		</xsl:variable>
 		<xsl:if test="$checkImage='1'">
 			<!--Checking for the presence of Images-->
@@ -885,14 +886,12 @@
 					</xsl:attribute>
 				</img>
 
-				<!--Variable holds the caption value returned form C# function returncaption-->
 				<xsl:variable name="checkcaption">
-					<xsl:value-of select="myObj:ReturnCaption()"/>
+					<xsl:value-of select="d:ReturnCaption($myObj)"/>
 				</xsl:variable>
 				<!--Checking if checkcaption variables holds any value-->
 				<xsl:if test="$checkcaption!='0'">
 					<caption>
-						<!--Creating imgref attribute and assinging it the value returned by C# returnImagegroupId -->
 						<xsl:attribute name="imgref">
 							<xsl:value-of select="$Imageid"/>
 						</xsl:attribute>
@@ -940,7 +939,7 @@
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<!--Variable that holds the Image Id-->
 		<xsl:variable name="imageId">
-			<xsl:value-of select="concat(w:pict/v:shape/v:imagedata/@r:id,myObj:GenerateImageId())"/>
+			<xsl:value-of select="concat(w:pict/v:shape/v:imagedata/@r:id,d:GenerateImageId($myObj))"/>
 		</xsl:variable>
 		<!--Checking if image is bidirectionally oriented-->
 		<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
@@ -953,7 +952,7 @@
 			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote, ' xml:lang=',$quote,$imgBd,$quote,'&gt;')"/>
 		</xsl:if>
 		<xsl:variable name="checkImage">
-			<xsl:value-of select="myObj:CheckImage(myObj:Image(w:pict/v:shape/v:imagedata/@r:id,w:pict/v:shape/v:imagedata/@o:title))"/>
+			<xsl:value-of select="d:CheckImage($myObj,d:Image($myObj,w:pict/v:shape/v:imagedata/@r:id,w:pict/v:shape/v:imagedata/@o:title))"/>
 		</xsl:variable>
 		<xsl:if test="$checkImage='1'">
 			<imggroup>
@@ -972,7 +971,7 @@
 					</xsl:variable>
 					<!--Creating attribute src of img element-->
 					<xsl:attribute name="src">
-						<xsl:value-of select ="myObj:Image($rid,$image2003Name)"/>
+						<xsl:value-of select ="d:Image($myObj,$rid,$image2003Name)"/>
 					</xsl:attribute>
 					<!--Creating attribute alt for alternate text of img element-->
 					<xsl:attribute name="alt">
@@ -1068,14 +1067,14 @@
 			<xsl:variable name="quote">"</xsl:variable>
 			<xsl:if test="(contains(w:object/o:OLEObject/@ProgID,'Excel')) or (contains(w:object/o:OLEObject/@ProgID,'Word')) or (contains(w:object/o:OLEObject/@ProgID,'PowerPoint'))">
 				<xsl:variable name="href">
-					<xsl:value-of select="myObj:Object(w:object/o:OLEObject/@r:id)"/>
+					<xsl:value-of select="d:Object($myObj,w:object/o:OLEObject/@r:id)"/>
 				</xsl:variable>
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','href=',$quote,$href,$quote,' ','external=',$quote,'true',$quote,'&gt;')"/>
 			</xsl:if>
-			<xsl:variable name="ImageName" select="myObj:MathImage(w:object/v:shape/v:imagedata/@r:id)"/>
-			<xsl:variable name ="id" select="myObj:GenerateObjectId()"/>
+			<xsl:variable name="ImageName" select="d:MathImage($myObj,w:object/v:shape/v:imagedata/@r:id)"/>
+			<xsl:variable name ="id" select="d:GenerateObjectId($myObj)"/>
 			<xsl:variable name="ImageId" select="concat($ImageName,$id)"/>
-			<xsl:variable name="checkImage" select="myObj:CheckImage($ImageName)"/>
+			<xsl:variable name="checkImage" select="d:CheckImage($myObj,$ImageName)"/>
 			<xsl:if test="$checkImage='1'">
 				<imggroup>
 					<img>
@@ -1181,18 +1180,18 @@
 		<xsl:variable name="imageId">
 			<xsl:choose>
 				<xsl:when test="(w:pict/v:shape/@id) and (w:pict/v:shape/@o:spid)">
-					<xsl:value-of select="myObj:CheckShapeId(concat('Shape',substring-after(w:pict/v:shape/@o:spid,'s')))"/>
+					<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',substring-after(w:pict/v:shape/@o:spid,'s')))"/>
 				</xsl:when>
 				<xsl:when test="w:pict/v:shape/@id">
-					<xsl:value-of select="myObj:CheckShapeId(concat('Shape',substring-after(w:pict/v:shape/@id,'s')))"/>
+					<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',substring-after(w:pict/v:shape/@id,'s')))"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of select="myObj:CheckShapeId(concat('Shape',substring-after(w:pict//@id,'s')))"/>
+					<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',substring-after(w:pict//@id,'s')))"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<xsl:variable name="checkImage">
-			<xsl:value-of select="myObj:CheckImage(concat($imageId,'.png'))"/>
+			<xsl:value-of select="d:CheckImage($myObj,concat($imageId,'.png'))"/>
 		</xsl:variable>
 		<xsl:if test="$checkImage='1'">
 			<imggroup>
@@ -1297,13 +1296,13 @@
 		<xsl:param name="count"/>
 		<xsl:param name="node"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
-		<xsl:variable name="initialize" select="myObj:InitalizeCheckSectionBody()"/>
-		<xsl:variable name="reSetConPageBreak" select="myObj:ResetSetConPageBreak()"/>
+		<xsl:variable name="initialize" select="d:InitalizeCheckSectionBody($myObj)"/>
+		<xsl:variable name="reSetConPageBreak" select="d:ResetSetConPageBreak($myObj)"/>
 		<xsl:choose>
 			<!--if page number for front matter-->
 			<xsl:when test="$node='front'">
 				<!--incrementing the default page counter-->
-				<xsl:variable name="increment" select="myObj:IncrementPage()"/>
+				<xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
 				<!--Traversing through each node-->
 				<xsl:for-each select="following-sibling::node()">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
@@ -1311,7 +1310,7 @@
 						<!--Checking for paragraph section break-->
 						<xsl:when test="w:pPr/w:sectPr">
 
-							<xsl:if test="myObj:CheckSectionBody()=1">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
 									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
@@ -1354,9 +1353,9 @@
 						</xsl:when>
 						<!--Checking for Section in a document-->
 						<xsl:when test="name()='w:sectPr'">
-							<xsl:if test="myObj:CheckSectionBody()=1">
-								<xsl:variable name="setSectionFront" select="myObj:CheckSectionFront()"/>
-								<!--<xsl:variable name="frontCounter" select="myObj:IncrementPageNo()"/>-->
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
+								<xsl:variable name="setSectionFront" select="d:CheckSectionFront($myObj)"/>
+								<!--<xsl:variable name="frontCounter" select="d:IncrementPageNo()"/>-->
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
 									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
@@ -1405,7 +1404,7 @@
 			<!--if page number for body matter-->
 			<xsl:when test="$node='body'">
 				<xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:sectPr">
-					<xsl:variable name="setConPageBreak" select="myObj:SetConPageBreak()"/>
+					<xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="../following-sibling::node()">
@@ -1413,7 +1412,7 @@
 					<xsl:choose>
 						<!--Checking for paragraph section break-->
 						<xsl:when test="w:pPr/w:sectPr">
-							<xsl:if test="myObj:CheckSectionBody()=1">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
 									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
@@ -1437,7 +1436,7 @@
 									<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="$node"/>
 											<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
 										</xsl:call-template>
@@ -1446,7 +1445,7 @@
 									<xsl:otherwise>
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="$node"/>
 											<xsl:with-param name="counter" select="'0'"/>
 										</xsl:call-template>
@@ -1456,7 +1455,7 @@
 						</xsl:when>
 						<!--Checking for Section in a document-->
 						<xsl:when test="name()='w:sectPr'">
-							<xsl:if test="myObj:CheckSectionBody()=1">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
 									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
@@ -1480,7 +1479,7 @@
 									<xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="$node"/>
 											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
 										</xsl:call-template>
@@ -1489,7 +1488,7 @@
 									<xsl:otherwise>
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="$node"/>
 											<xsl:with-param name="counter" select="'0'"/>
 										</xsl:call-template>
@@ -1505,7 +1504,7 @@
 			<!--Checking for paragraph-->
 			<xsl:when test="$node='Para'">
 				<xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
-					<xsl:variable name="setConPageBreak" select="myObj:SetConPageBreak()"/>
+					<xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="following-sibling::node()">
@@ -1513,7 +1512,7 @@
 					<xsl:choose>
 						<!--Checking for paragraph section break-->
 						<xsl:when test="w:pPr/w:sectPr">
-							<xsl:if test="myObj:CheckSectionBody()=1">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
 									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
@@ -1537,7 +1536,7 @@
 									<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="$node"/>
 											<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
 										</xsl:call-template>
@@ -1546,7 +1545,7 @@
 									<xsl:otherwise>
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="$node"/>
 											<xsl:with-param name="counter" select="'0'"/>
 										</xsl:call-template>
@@ -1556,7 +1555,7 @@
 						</xsl:when>
 						<!--Checking for Section in a document-->
 						<xsl:when test="name()='w:sectPr'">
-							<xsl:if test="myObj:CheckSectionBody()=1">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
 									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
@@ -1580,7 +1579,7 @@
 									<xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="$node"/>
 											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
 										</xsl:call-template>
@@ -1589,7 +1588,7 @@
 									<xsl:otherwise>
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="$node"/>
 											<xsl:with-param name="counter" select="'0'"/>
 										</xsl:call-template>
@@ -1605,7 +1604,7 @@
 			<!--Checking for bodysection-->
 			<xsl:when test="$node='bodysection'">
 				<xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
-					<xsl:variable name="setConPageBreak" select="myObj:SetConPageBreak()"/>
+					<xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
 				</xsl:if>
 				<xsl:choose>
 					<!--Checking for paragraph section break-->
@@ -1633,7 +1632,7 @@
 							<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
 								<!--Calling template for page number text-->
 								<xsl:call-template name="PageNumber">
-									<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+									<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 									<xsl:with-param name="matter" select="$node"/>
 									<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
 								</xsl:call-template>
@@ -1642,7 +1641,7 @@
 							<xsl:otherwise>
 								<!--Calling template for page number text-->
 								<xsl:call-template name="PageNumber">
-									<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+									<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 									<xsl:with-param name="matter" select="$node"/>
 									<xsl:with-param name="counter" select="'0'"/>
 								</xsl:call-template>
@@ -1656,7 +1655,7 @@
 			<!--Checking for Table-->
 			<xsl:when test="$node='Table'">
 				<xsl:if test="../../preceding-sibling::node()[1]/w:pPr/w:sectPr">
-					<xsl:variable name="setConPageBreak" select="myObj:SetConPageBreak()"/>
+					<xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="../../following-sibling::node()">
@@ -1687,7 +1686,7 @@
 								<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
 									<!--Calling template for page number text-->
 									<xsl:call-template name="PageNumber">
-										<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+										<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 										<xsl:with-param name="matter" select="$node"/>
 										<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
 									</xsl:call-template>
@@ -1696,7 +1695,7 @@
 								<xsl:otherwise>
 									<!--Calling template for page number text-->
 									<xsl:call-template name="PageNumber">
-										<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+										<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 										<xsl:with-param name="matter" select="$node"/>
 										<xsl:with-param name="counter" select="'0'"/>
 									</xsl:call-template>
@@ -1705,7 +1704,7 @@
 						</xsl:when>
 						<!--Checking for Section in a document-->
 						<xsl:when test="name()='w:sectPr'">
-							<xsl:if test="myObj:CheckSectionBody()=1">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
 									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
@@ -1729,7 +1728,7 @@
 									<xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="'body'"/>
 											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
 										</xsl:call-template>
@@ -1738,7 +1737,7 @@
 									<xsl:otherwise>
 										<!--Calling template for page number text-->
 										<xsl:call-template name="PageNumber">
-											<xsl:with-param name="pagetype" select="myObj:GetPageFormat()"/>
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
 											<xsl:with-param name="matter" select="'body'"/>
 											<xsl:with-param name="counter" select="'0'"/>
 										</xsl:call-template>
@@ -1760,12 +1759,12 @@
 			<xsl:choose>
 				<!--Checking for page break in TOC-->
 				<xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
-					<xsl:variable name="check" select="myObj:PageForTOC()"/>
-					<xsl:variable name="increment" select="myObj:IncrementPage()"/>
+					<xsl:variable name="check" select="d:PageForTOC($myObj)"/>
+					<xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
 					<xsl:if test="not(w:r/w:t)">
 						<!--Calling template for initializing page number info-->
 						<xsl:call-template name="SectionBreak">
-							<xsl:with-param name="count" select="myObj:ReturnPageNum()"/>
+							<xsl:with-param name="count" select="d:ReturnPageNum($myObj)"/>
 							<xsl:with-param name="node" select="'front'"/>
 						</xsl:call-template>
 						<!--producer note for empty text-->
@@ -1776,12 +1775,12 @@
 					</xsl:if>
 				</xsl:when>
 				<xsl:when test="(w:sdtContent/w:p/w:r/w:br/@w:type='page') or (w:sdtContent/w:p/w:r/lastRenderedPageBreak)">
-					<xsl:variable name="check" select="myObj:PageForTOC()"/>
-					<xsl:variable name="increment" select="myObj:IncrementPage()"/>
+					<xsl:variable name="check" select="d:PageForTOC($myObj)"/>
+					<xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
 				</xsl:when>
 			</xsl:choose>
 		</xsl:for-each>
-		<xsl:variable name="countPage" select="myObj:PageForTOC() - 1"/>
+		<xsl:variable name="countPage" select="d:PageForTOC($myObj) - 1"/>
 		<xsl:call-template name="SectionBreak">
 			<xsl:with-param name="count" select="$countPage"/>
 			<xsl:with-param name="node" select="'front'"/>
@@ -1795,55 +1794,55 @@
 		<xsl:param name="counter"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
-			<xsl:when test="myObj:GetCurrentMatterType()='Frontmatter'">
-				<xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
-					<xsl:variable name="count" select="myObj:IncrementPageNo()-1"/>
+			<xsl:when test="d:GetCurrentMatterType($myObj)='Frontmatter'">
+				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
+					<xsl:variable name="count" select="d:IncrementPageNo($myObj)-1"/>
 					<xsl:choose>
 						<!--LowerRoman page number-->
 						<xsl:when test="$pagetype='lowerRoman'">
-							<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumLowerRoman($count)"/>
+							<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerRoman($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--UpperRoman page number-->
 						<xsl:when test="$pagetype='upperRoman'">
-							<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumUpperRoman($count)"/>
+							<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperRoman($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--LowerLetter page number-->
 						<xsl:when test="$pagetype='lowerLetter'">
-							<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumLowerAlphabet($count)"/>
+							<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerAlphabet($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--UpperLetter page number-->
 						<xsl:when test="$pagetype='upperLetter'">
-							<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumUpperAlphabet($count)"/>
+							<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperAlphabet($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--Page number with dash-->
 						<xsl:when test="$pagetype='numberInDash'">
-							<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+							<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 								<xsl:value-of select="concat('-',$count,'-')"/>
 							</pagenum>
 						</xsl:when>
 						<!--Normal page number-->
 						<xsl:otherwise>
 							<xsl:choose>
-								<xsl:when test="$counter='0' and myObj:GetSectionFront()=1">
-									<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+								<xsl:when test="$counter='0' and d:GetSectionFront($myObj)=1">
+									<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 										<xsl:value-of select="$count"/>
 									</pagenum>
 								</xsl:when>
-								<xsl:when test="$counter='0' and myObj:GetSectionFront()=0">
-									<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
-										<xsl:value-of select="myObj:ReturnPageNum()"/>
+								<xsl:when test="$counter='0' and d:GetSectionFront($myObj)=0">
+									<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="d:ReturnPageNum($myObj)"/>
 									</pagenum>
 								</xsl:when>
 								<xsl:otherwise>
-									<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+									<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 										<xsl:value-of select="$count"/>
 									</pagenum>
 								</xsl:otherwise>
@@ -1853,55 +1852,55 @@
 				</xsl:if>
 			</xsl:when>
       
-			<xsl:when test="myObj:GetCurrentMatterType()='Bodymatter'">
-				<xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
-					<xsl:variable name="count" select="myObj:IncrementPageNo()-1"/>
+			<xsl:when test="d:GetCurrentMatterType($myObj)='Bodymatter'">
+				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
+					<xsl:variable name="count" select="d:IncrementPageNo($myObj)-1"/>
           <xsl:choose>
             <!--LowerRoman page number-->
             <xsl:when test="$pagetype='lowerRoman'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="myObj:PageNumLowerRoman($count)"/>
+              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+                <xsl:value-of select="d:PageNumLowerRoman($count)"/>
               </pagenum>
             </xsl:when>
             <!--UpperRoman page number-->
             <xsl:when test="$pagetype='upperRoman'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="myObj:PageNumUpperRoman($count)"/>
+              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+                <xsl:value-of select="d:PageNumUpperRoman($count)"/>
               </pagenum>
             </xsl:when>
             <!--LowerLetter page number-->
             <xsl:when test="$pagetype='lowerLetter'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="myObj:PageNumLowerAlphabet($count)"/>
+              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+                <xsl:value-of select="d:PageNumLowerAlphabet($count)"/>
               </pagenum>
             </xsl:when>
             <!--UpperLetter page number-->
             <xsl:when test="$pagetype='upperLetter'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="myObj:PageNumUpperAlphabet($count)"/>
+              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+                <xsl:value-of select="d:PageNumUpperAlphabet($count)"/>
               </pagenum>
             </xsl:when>
             <!--Page number with dash-->
             <xsl:when test="$pagetype='numberInDash'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
                 <xsl:value-of select="concat('-',$count,'-')"/>
               </pagenum>
             </xsl:when>
             <!--Normal page number-->
             <xsl:otherwise>
               <xsl:choose>
-                <xsl:when test="$counter='0' and myObj:GetSectionFront()=1">
-                  <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
+                <xsl:when test="$counter='0' and d:GetSectionFront($myObj)=1">
+                  <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
                     <xsl:value-of select="$count"/>
                   </pagenum>
                 </xsl:when>
-                <xsl:when test="$counter='0' and myObj:GetSectionFront()=0">
-                  <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
-                    <xsl:value-of select="myObj:ReturnPageNum()"/>
+                <xsl:when test="$counter='0' and d:GetSectionFront($myObj)=0">
+                  <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
+                    <xsl:value-of select="d:ReturnPageNum($myObj)"/>
                   </pagenum>
                 </xsl:when>
                 <xsl:otherwise>
-                  <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
+                  <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
                     <xsl:value-of select="$count"/>
                   </pagenum>
                 </xsl:otherwise>
@@ -1911,55 +1910,55 @@
 				</xsl:if>
 			</xsl:when>
 
-			<xsl:when test="myObj:GetCurrentMatterType()='Reartmatter'">
-				<xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
-					<xsl:variable name="count" select="myObj:IncrementPageNo()-1"/>
+			<xsl:when test="d:GetCurrentMatterType($myObj)='Reartmatter'">
+				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
+					<xsl:variable name="count" select="d:IncrementPageNo($myObj)-1"/>
 					<xsl:choose>
 						<!--LowerRoman page number-->
 						<xsl:when test="$pagetype='lowerRoman'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumLowerRoman($count)"/>
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerRoman($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--UpperRoman page number-->
 						<xsl:when test="$pagetype='upperRoman'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumUpperRoman($count)"/>
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperRoman($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--LowerLetter page number-->
 						<xsl:when test="$pagetype='lowerLetter'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumLowerAlphabet($count)"/>
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerAlphabet($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--UpperLetter page number-->
 						<xsl:when test="$pagetype='upperLetter'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumUpperAlphabet($count)"/>
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperAlphabet($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--Page number with dash-->
 						<xsl:when test="$pagetype='numberInDash'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
 								<xsl:value-of select="concat('-',$count,'-')"/>
 							</pagenum>
 						</xsl:when>
 						<!--Normal page number-->
 						<xsl:otherwise>
 							<xsl:choose>
-								<xsl:when test="$counter='0' and myObj:GetSectionFront()=1">
-									<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+								<xsl:when test="$counter='0' and d:GetSectionFront($myObj)=1">
+									<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
 										<xsl:value-of select="$count"/>
 									</pagenum>
 								</xsl:when>
-								<xsl:when test="$counter='0' and myObj:GetSectionFront()=0">
-									<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-										<xsl:value-of select="myObj:ReturnPageNum()"/>
+								<xsl:when test="$counter='0' and d:GetSectionFront($myObj)=0">
+									<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="d:ReturnPageNum($myObj)"/>
 									</pagenum>
 								</xsl:when>
 								<xsl:otherwise>
-									<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+									<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
 										<xsl:value-of select="$count"/>
 									</pagenum>
 								</xsl:otherwise>
@@ -1971,47 +1970,47 @@
       
 			<!--Frontmatter page number-->
 			<xsl:when test="$matter='front'">
-				<xsl:if test="myObj:GetSectionFront()=1">
-					<xsl:variable name="count" select="myObj:IncrementPageNo()"/>
+				<xsl:if test="d:GetSectionFront($myObj)=1">
+					<xsl:variable name="count" select="d:IncrementPageNo($myObj)"/>
 				</xsl:if>
 				<xsl:choose>
 					<!--LowerRoman page number-->
 					<xsl:when test="$pagetype='lowerRoman'">
-						<xsl:variable name="pageno" select="myObj:PageNumLowerRoman($counter)"/>
-						<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+						<xsl:variable name="pageno" select="d:PageNumLowerRoman($counter)"/>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$pageno"/>
 						</pagenum>
 					</xsl:when>
 					<!--UpperRoman page number-->
 					<xsl:when test="$pagetype='upperRoman'">
-						<xsl:variable name="pageno" select="myObj:PageNumUpperRoman($counter)"/>
-						<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+						<xsl:variable name="pageno" select="d:PageNumUpperRoman($counter)"/>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$pageno"/>
 						</pagenum>
 					</xsl:when>
 					<!--LowerLetter page number-->
 					<xsl:when test="$pagetype='lowerLetter'">
-						<xsl:variable name="pageno" select="myObj:PageNumLowerAlphabet($counter)"/>
-						<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+						<xsl:variable name="pageno" select="d:PageNumLowerAlphabet($counter)"/>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$pageno"/>
 						</pagenum>
 					</xsl:when>
 					<!--UpperLetter page number-->
 					<xsl:when test="$pagetype='upperLetter'">
-						<xsl:variable name="pageno" select="myObj:PageNumUpperAlphabet($counter)"/>
-						<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+						<xsl:variable name="pageno" select="d:PageNumUpperAlphabet($counter)"/>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$pageno"/>
 						</pagenum>
 					</xsl:when>
 					<!--Page number with dash-->
 					<xsl:when test="$pagetype='numberInDash'">
-						<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="concat('-',$counter,'-')"/>
 						</pagenum>
 					</xsl:when>
 					<!--Normal page number-->
 					<xsl:otherwise>
-						<pagenum page="front" id="{concat('page',myObj:GeneratePageId())}">
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$counter"/>
 						</pagenum>
 					</xsl:otherwise>
@@ -2020,54 +2019,54 @@
       
 			<!--Bodymatter page number-->
 			<xsl:when test="($matter='body') or ($matter='bodysection') or ($matter='Para')">
-				<xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
-					<xsl:variable name="count" select="myObj:IncrementPageNo()-1"/>
+				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
+					<xsl:variable name="count" select="d:IncrementPageNo($myObj)-1"/>
 					<xsl:choose>
 						<!--LowerRoman page number-->
 						<xsl:when test="$pagetype='lowerRoman'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumLowerRoman($count)"/>
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerRoman($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--UpperRoman page number-->
 						<xsl:when test="$pagetype='upperRoman'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumUpperRoman($count)"/>
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperRoman($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--LowerLetter page number-->
 						<xsl:when test="$pagetype='lowerLetter'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumLowerAlphabet($count)"/>
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerAlphabet($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--UpperLetter page number-->
 						<xsl:when test="$pagetype='upperLetter'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-								<xsl:value-of select="myObj:PageNumUpperAlphabet($count)"/>
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperAlphabet($count)"/>
 							</pagenum>
 						</xsl:when>
 						<!--Page number with dash-->
 						<xsl:when test="$pagetype='numberInDash'">
-							<pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
 								<xsl:value-of select="concat('-',$count,'-')"/>
 							</pagenum>
 						</xsl:when>
 						<!--Normal page number-->
 						<xsl:otherwise>
 							<xsl:choose>
-								<xsl:when test="$counter='0' and myObj:GetSectionFront()=1">
-									<pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
+								<xsl:when test="$counter='0' and d:GetSectionFront($myObj)=1">
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
 										<xsl:value-of select="$count"/>
 									</pagenum>
 								</xsl:when>
-								<xsl:when test="$counter='0' and myObj:GetSectionFront()=0">
-									<pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
-										<xsl:value-of select="myObj:ReturnPageNum()"/>
+								<xsl:when test="$counter='0' and d:GetSectionFront($myObj)=0">
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="d:ReturnPageNum($myObj)"/>
 									</pagenum>
 								</xsl:when>
 								<xsl:otherwise>
-									<pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
 										<xsl:value-of select="$count"/>
 									</pagenum>
 								</xsl:otherwise>
@@ -2085,8 +2084,9 @@
 		<xsl:param name ="txt"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="quote">"</xsl:variable>
-		<xsl:variable name="count_lang">      
-      <xsl:for-each select="w:r[1]/w:rPr/w:lang">
+		<xsl:variable name="count_lang">
+			<xsl:text>0</xsl:text>
+			<xsl:for-each select="w:r[1]/w:rPr/w:lang">
 				<xsl:value-of select="count(@*)"/>
 			</xsl:for-each>
 		</xsl:variable>
@@ -2158,7 +2158,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:val)[1],$quote,'&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
@@ -2186,7 +2186,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:val)[1],$quote,'&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
@@ -2198,7 +2198,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:eastAsia)[1],$quote,'&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
@@ -2211,7 +2211,7 @@
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
 
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:bidi)[1],$quote,'&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
@@ -2227,13 +2227,13 @@
 							<xsl:when test="$Attribute='0'">
 								<xsl:choose>
 									<xsl:when test="w:r/w:rPr/w:lang/@w:val">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:val)[1],$quote,'&gt;')"/>
 									</xsl:when>
 									<xsl:when test="w:r/w:rPr/w:lang/@w:eastAsia">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:eastAsia)[1],$quote,'&gt;')"/>
 									</xsl:when>
 									<xsl:when test="w:r/w:rPr/w:lang/@w:bidi">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:bidi)[1],$quote,'&gt;')"/>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
@@ -2258,6 +2258,7 @@
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:variable name="count_lang">
+			<xsl:text>0</xsl:text>
       <!--NOTE: Use w:r instead w:r[1]-->
 			<xsl:for-each select="w:r/w:rPr/w:lang">
 				<xsl:value-of select="count(@*)"/>
@@ -2449,6 +2450,7 @@
 			<!--Checking languge for picture-->
 			<xsl:when test="$CheckLang='picture'">
 				<xsl:variable name="count_lang">
+					<xsl:text>0</xsl:text>
 					<xsl:for-each select="../following-sibling::w:p[1]/w:r[1]/w:rPr/w:lang">
 						<xsl:value-of select="count(@*)"/>
 					</xsl:for-each>
@@ -2516,6 +2518,7 @@
 			<!--Checking language for image group-->
 			<xsl:when test="$CheckLang='imagegroup'">
 				<xsl:variable name="count_lang">
+					<xsl:text>0</xsl:text>
 					<xsl:for-each select="../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:r/w:rPr/w:lang">
 						<xsl:value-of select="count(@*)"/>
 					</xsl:for-each>
@@ -2583,6 +2586,7 @@
 			<!--Checking language for table-->
 			<xsl:when test="$CheckLang='Table'">
 				<xsl:variable name="count_lang">
+					<xsl:text>0</xsl:text>
 					<xsl:for-each select="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang">
 						<xsl:value-of select="count(@*)"/>
 					</xsl:for-each>
@@ -2657,6 +2661,7 @@
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:variable name="count_lang">
+			<xsl:text>0</xsl:text>
 			<xsl:for-each select="../../w:r[1]/w:rPr/w:lang">
 				<xsl:value-of select="count(@*)"/>
 			</xsl:for-each>
@@ -2719,6 +2724,7 @@
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:variable name="count_lang">
+			<xsl:text>0</xsl:text>
 			<xsl:for-each select="../w:r[1]/w:rPr/w:lang">
 				<xsl:value-of select="count(@*)"/>
 			</xsl:for-each>

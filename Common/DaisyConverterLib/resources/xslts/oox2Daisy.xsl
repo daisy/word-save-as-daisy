@@ -1,18 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
- xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
- xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
- xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
- xmlns:dcterms="http://purl.org/dc/terms/"
- xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
- xmlns:dc="http://purl.org/dc/elements/1.1/"
- xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
- xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
- xmlns:v="urn:schemas-microsoft-com:vml"
- xmlns:dcmitype="http://purl.org/dc/dcmitype/"
- xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
- xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v  vt dcmitype myObj">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+                xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+                xmlns:dcterms="http://purl.org/dc/terms/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+                xmlns:v="urn:schemas-microsoft-com:vml"
+                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
+                xmlns:d="DaisyClass"
+                xmlns="http://www.daisy.org/z3986/2005/dtbook/"
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v  vt dcmitype d">
 	<!--Imports all the XSLT-->
 	<xsl:import href="Common.xsl"/>
   <!--Implements Table of Contents-->
@@ -25,6 +27,16 @@
 	<xsl:import href ="Common3.xsl"/>
 	<!--Implements Maths-->
 	<xsl:import href ="OOML2MML.xsl"/>
+
+	<!-- Original location of input .docx file (URI) -->
+	<xsl:param name="OriginalInputFile"/>
+	<!-- Input .docx file (URI) (may or may not be the same as OriginalDocx; this one will be read) -->
+	<xsl:param name="InputFile"/>
+	<!-- Destination folder of .xml file (URI) -->
+	<xsl:param name="OutputDir"/>
+	<!-- Final destination folder (URI) -->
+	<xsl:param name="FinalOutputDir"/>
+
 	<!--Implements Image,imagegroup,Note and Notereference-->
 	<!--Declaring Global paramaters-->
 	<xsl:param name="Title"/>
@@ -45,7 +57,16 @@
 	<xsl:param name="ImageSizeOption"/>
 	<xsl:param name="DPI"/>
 	<xsl:param name="CharacterStyles"/>
-	<xsl:output method="xml" indent="no" />
+	<xsl:param name="MathML"/>
+
+	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)"/>
+	<xsl:variable name="documentXml" select="document(concat('jar:',$InputFile,'!/word/document.xml'))"/>
+	<xsl:variable name="stylesXml" select="document(concat('jar:',$InputFile,'!/word/styles.xml'))"/>
+	<xsl:variable name="numberingXml" select="document(concat('jar:',$InputFile,'!/word/numbering.xml'))"/>
+	<xsl:variable name="footnotesXml" select="document(concat('jar:',$InputFile,'!/word/footnotes.xml'))"/>
+	<xsl:variable name="endnotesXml" select="document(concat('jar:',$InputFile,'!/word/endnotes.xml'))"/>
+	<xsl:variable name="docPropsCoreXml" select="document(concat('jar:',$InputFile,'!/docProps/core.xml'))"/>
+
 	<xsl:variable name="sOperators"
       select="concat(
 					'&#x0021;&#x0022;&#x0028;&#x0029;&#x002B;&#x002C;&#x002D;&#x002F;&#x2AFE;&#x003A;&#x003B;&#x003C;',
@@ -144,8 +165,7 @@
 		</xsl:call-template>
 	</xsl:variable>
 	<!--Extending the DTD to support MathML-->
-	<xsl:template match="/">
-		<xsl:text disable-output-escaping="yes">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</xsl:text>
+	<xsl:template name="main">
 		<xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet href="dtbookbasic.css" type="text/css"?&gt;</xsl:text>
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'</xsl:text>
 		<xsl:text disable-output-escaping="yes">[&lt;!ENTITY % MATHML.prefixed "INCLUDE" &gt;
@@ -170,27 +190,27 @@
                   'http://www.w3.org/1998/Math/MathML'" &gt;
 ] &gt;
 </xsl:text>
-		<xsl:text>&#13;&#10;</xsl:text>
+		<xsl:text>&#10;</xsl:text>
 		<!--This Xslt is Adding meta elements in Dtbook head element
     It is also calling templates Frontmatter, Bodymatter and Rearmatter-->
 		<!--Adding dtbook element-->
 		<dtbook version="2005-3"
 	  xmlns:mml="http://www.w3.org/1998/Math/MathML">
-			<xsl:variable name="doclang" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
-			<xsl:variable name="doclangbidi" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
-			<xsl:variable name="doclangeastAsia" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
+			<xsl:variable name="doclang" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
+			<xsl:variable name="doclangbidi" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
+			<xsl:variable name="doclangeastAsia" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
 			<xsl:attribute name="xml:lang">
 				<xsl:value-of select="$doclang"/>
 			</xsl:attribute>
-			<xsl:variable name="documentDate" select="document('docProps/core.xml')//cp:coreProperties/dcterms:modified"/>
-			<xsl:variable name="documentSubject" select="myObj:DocPropSubject()"/>
-			<xsl:variable name="documentDescription" select="myObj:DocPropDescription()"/>
+			<xsl:variable name="documentDate" select="$docPropsCoreXml//cp:coreProperties/dcterms:modified"/>
+			<xsl:variable name="documentSubject" select="d:DocPropSubject($myObj)"/>
+			<xsl:variable name="documentDescription" select="d:DocPropDescription($myObj)"/>
 			<!--Adding head element-->
 			<head>
 				<!--Adding head element-->
 				<xsl:variable name="Auto">
 					<!--Auto variable holds autogenerated UID value-->
-					<xsl:value-of select="concat('AUTO-UID-',myObj:GenerateId())"/>
+					<xsl:value-of select="concat('AUTO-UID-',d:GenerateId())"/>
 				</xsl:variable>
 				<!--Choose block for checking whether user has entered the UID value or not-->
 				<xsl:choose>
@@ -241,20 +261,20 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<meta name="dc:Language" content="{$doclang}"/>
-				<xsl:variable name="insertLangDefault" select="myObj:AddLanguage($doclang)"/>
-				<xsl:for-each select="document('word/document.xml')//w:body/w:p/w:r/w:rPr">
+				<xsl:variable name="insertLangDefault" select="d:AddLanguage($myObj,$doclang)"/>
+				<xsl:for-each select="$documentXml//w:body/w:p/w:r/w:rPr">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="w:lang">
 						<xsl:choose>
 							<xsl:when test="w:rFonts/@w:hint='cs'">
 								<xsl:choose>
 									<xsl:when test="w:lang/@w:bidi">
-										<xsl:if test="myObj:AddLanguage(w:lang/@w:bidi)=1">
+										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:bidi)=1">
 											<meta name="dc:Language" content="{w:lang/@w:bidi}"/>
 										</xsl:if>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:if test="myObj:AddLanguage($doclangbidi)=1">
+										<xsl:if test="d:AddLanguage($myObj,$doclangbidi)=1">
 											<meta name="dc:Language" content="{$doclangbidi}"/>
 										</xsl:if>
 									</xsl:otherwise>
@@ -263,12 +283,12 @@
 							<xsl:when test="w:rFonts/@w:hint='eastAsia'">
 								<xsl:choose>
 									<xsl:when test="w:lang/@w:eastAsia">
-										<xsl:if test="myObj:AddLanguage(w:lang/@w:eastAsia)=1">
+										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:eastAsia)=1">
 											<meta name="dc:Language" content="{w:lang/@w:eastAsia}"/>
 										</xsl:if>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:if test="myObj:AddLanguage($doclangeastAsia)=1">
+										<xsl:if test="d:AddLanguage($myObj,$doclangeastAsia)=1">
 											<meta name="dc:Language" content="{$doclangeastAsia}"/>
 										</xsl:if>
 									</xsl:otherwise>
@@ -277,22 +297,22 @@
 							<xsl:otherwise>
 								<xsl:choose>
 									<xsl:when test="w:lang/@w:val">
-										<xsl:if test="myObj:AddLanguage(w:lang/@w:val)=1">
+										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:val)=1">
 											<meta name="dc:Language" content="{w:lang/@w:val}"/>
 										</xsl:if>
 									</xsl:when>
 									<xsl:when test="w:lang/@w:eastAsia">
-										<xsl:if test="myObj:AddLanguage(w:lang/@w:eastAsia)=1">
+										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:eastAsia)=1">
 											<meta name="dc:Language" content="{w:lang/@w:eastAsia}"/>
 										</xsl:if>
 									</xsl:when>
 									<xsl:when test="w:lang/@w:bidi">
-										<xsl:if test="myObj:AddLanguage(w:lang/@w:bidi)=1">
+										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:bidi)=1">
 											<meta name="dc:Language" content="{w:lang/@w:bidi}"/>
 										</xsl:if>
 									</xsl:when>
 									<xsl:otherwise>
-										<xsl:if test="myObj:AddLanguage($doclang)=1">
+										<xsl:if test="d:AddLanguage($myObj,$doclang)=1">
 											<meta name="dc:Language" content="{$doclang}"/>
 										</xsl:if>
 									</xsl:otherwise>
@@ -314,7 +334,7 @@
 				<!-- DB: when document contains any matter style then output xml should conain the same front, body and rear matter content
 							otherwise front matter will contain only title and author attributes, all document content should be body of the output xml-->
 				<!--<xsl:choose>
-					<xsl:when test="myObj:IsAnyPageStyleApplied()='true'">
+					<xsl:when test="d:IsAnyPageStyleApplied()='true'">
 						<frontmatter>
 							<doctitle></doctitle>
 							<xsl:call-template name ="Matter">
@@ -348,7 +368,7 @@
 								<xsl:with-param name="matterType" select="'Bodymatter'" />
 							</xsl:call-template>
 						</bodymatter>
-						<xsl:if test="myObj:IsRearmatterStyleApplied()='true'">
+						<xsl:if test="d:IsRearmatterStyleApplied()='true'">
 						<rearmatter>
 							<xsl:call-template name ="Matter">
 								<xsl:with-param name="prmTrack" select ="$prmTRACK"/>
