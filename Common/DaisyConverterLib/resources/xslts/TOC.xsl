@@ -1,22 +1,32 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
- xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
- xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
- xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
- xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
- xmlns:dc="http://purl.org/dc/elements/1.1/"
- xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
- xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
- xmlns:v="urn:schemas-microsoft-com:vml" xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
-    xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype myObj xsl m o">
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+                xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+                xmlns:dcterms="http://purl.org/dc/terms/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+                xmlns:v="urn:schemas-microsoft-com:vml"
+                xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:d="DaisyClass"
+                xmlns="http://www.daisy.org/z3986/2005/dtbook/"
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
   <!--Imports all the XSLT-->
   <!--<xsl:import href ="Common1.xsl"/>
     <xsl:import href ="Common2.xsl"/>
     <xsl:import href ="Common3.xsl"/>
     <xsl:import href ="OOML2MML.xsl"/>-->
+
+    <!-- Document to load : 
+      document('word/document.xml') = $documentXml
+     -->
   <!--Parameter citation-->
-  <xsl:param name="Cite_style" select="myObj:Citation()"/>
-  <xsl:output method="xml" indent="no" />
+  <xsl:param name="Cite_style" select="d:Citation($myObj)"/>
 
   <!--template for frontmatter elements-->
   <xsl:template name="TableOfContents">
@@ -24,7 +34,7 @@
     <xsl:message terminate="no">progress:Handling table of content</xsl:message>
 
       <!--checking for Table of content Element-->
-      <xsl:for-each select="document('word/document.xml')//w:document/w:body/node()">
+      <xsl:for-each select="$documentXml//w:document/w:body/node()">
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <!--Checking for w:p element-->
         <xsl:if test="name()='w:p'">
@@ -33,7 +43,7 @@
             <!--Checking for w:hyperlink Element-->
             <xsl:if test="w:hyperlink">
               <xsl:variable name="aquote">"</xsl:variable>
-              <xsl:variable name="set_list" select="myObj:Set_Toc()"/>
+              <xsl:variable name="set_list" select="d:Set_Toc($myObj)"/>
               <xsl:if test="$set_list=1">
                 <!--Opening level1 and list Tag-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level1','&gt;')"/>
@@ -52,12 +62,12 @@
                   <xsl:variable name="club">
                     <xsl:value-of select="../../w:t"/>
                   </xsl:variable>
-                  <xsl:value-of select="myObj:SetTOCMessage($club)"/>
+                  <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                 </xsl:for-each>
                 <lic>
-                  <xsl:value-of select="myObj:GetTOCMessage()"/>
+                  <xsl:value-of select="d:GetTOCMessage($myObj)"/>
                 </lic>
-                <xsl:value-of select="myObj:NullMsg()"/>
+                <xsl:value-of select="d:NullMsg($myObj)"/>
                 <xsl:for-each select="w:hyperlink/w:r">
                   <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                   <xsl:if test="not(w:rPr/w:rStyle[@w:val='Hyperlink'])and w:t">
@@ -75,17 +85,17 @@
           </xsl:if>
         </xsl:if>
       </xsl:for-each>
-      <xsl:if test="myObj:Set_Toc()&gt;1">
+      <xsl:if test="d:Set_Toc($myObj)&gt;1">
         <!--Closing list tag-->
         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
         <!--Closing level1-->
         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level1','&gt;')"/>
       </xsl:if>
       <!-- Calling function to Reset the counter value -->
-      <xsl:variable name="setlist" select="myObj:Get_Toc()"/>
+      <xsl:variable name="setlist" select="d:Get_Toc($myObj)"/>
 
       <!--checking for Table of content-->
-      <xsl:for-each select="document('word/document.xml')//w:document/w:body/node()">
+      <xsl:for-each select="$documentXml//w:document/w:body/node()">
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <!--Checking for w:p Tag-->
         <xsl:if test="name()='w:p'">
@@ -93,7 +103,7 @@
           <xsl:if test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']">
             <xsl:if test ="not(w:hyperlink)">
               <xsl:variable name="aquote">"</xsl:variable>
-              <xsl:variable name="set_list" select="myObj:Set_Toc()"/>
+              <xsl:variable name="set_list" select="d:Set_Toc($myObj)"/>
               <xsl:if test="$set_list=1">
                 <!--opening level1 and list Tag-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level1','&gt;')"/>
@@ -110,7 +120,7 @@
                 <xsl:for-each select="w:r">
                   <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                   <xsl:if test="w:t">
-                    <xsl:variable name="setToc" select="myObj:Set_tabToc()"/>
+                    <xsl:variable name="setToc" select="d:Set_tabToc($myObj)"/>
                     <xsl:choose>
                       <xsl:when test="$setToc&gt;=2">
                         <lic>
@@ -129,7 +139,7 @@
                     </xsl:choose>
                   </xsl:if>
                 </xsl:for-each>
-                <xsl:variable name="setToc" select="myObj:Get_tabToc()"/>
+                <xsl:variable name="setToc" select="d:Get_tabToc($myObj)"/>
                 <!--Closing the li Tag-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
               </xsl:for-each>
@@ -137,17 +147,17 @@
           </xsl:if>
         </xsl:if>
       </xsl:for-each>
-      <xsl:if test="myObj:Set_Toc()&gt;1">
+      <xsl:if test="d:Set_Toc($myObj)&gt;1">
         <!--Closing list Tag-->
         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
         <!--Closing level1 Tag-->
         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level1','&gt;')"/>
       </xsl:if>
       <!--Calling function which resets the counter value for TOC-->
-      <xsl:variable name="set_li" select="myObj:Get_Toc()"/>
+      <xsl:variable name="set_li" select="d:Get_Toc($myObj)"/>
 
       <!--Checking for Table of content-->
-      <xsl:for-each select="document('word/document.xml')//w:body/w:sdt">
+      <xsl:for-each select="$documentXml//w:body/w:sdt">
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:variable name="aquote">"</xsl:variable>
         <!--Checking for Table of content-->
@@ -157,7 +167,7 @@
             <xsl:attribute name="class">
               <xsl:value-of select="'print_toc'"/>
             </xsl:attribute>
-            <xsl:variable name="occurToc" select="myObj:CheckTocOccur()"/>
+            <xsl:variable name="occurToc" select="d:CheckTocOccur($myObj)"/>
             <xsl:if test="$custom='Automatic'">
               <!--Calling countpageTOC template to check number of pages before TOC-->
               <!--<xsl:call-template name="countpageTOC"/>-->
@@ -176,12 +186,12 @@
                   <xsl:variable name="club">
                     <xsl:value-of select="../../w:t"/>
                   </xsl:variable>
-                  <xsl:value-of select="myObj:SetTOCMessage($club)"/>
+                  <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                 </xsl:for-each>
                 <lic>
-                  <xsl:value-of select="myObj:GetTOCMessage()"/>
+                  <xsl:value-of select="d:GetTOCMessage($myObj)"/>
                 </lic>
-                <xsl:value-of select="myObj:NullMsg()"/>
+                <xsl:value-of select="d:NullMsg($myObj)"/>
                 <xsl:for-each select="w:r">
                   <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                   <xsl:if test="not(w:rPr/w:rStyle[@w:val='Hyperlink']) and w:t">
@@ -207,12 +217,12 @@
                     <xsl:variable name="club">
                       <xsl:value-of select="."/>
                     </xsl:variable>
-                    <xsl:value-of select="myObj:SetTOCMessage($club)"/>
+                    <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                   </xsl:for-each>
                   <lic>
-                    <xsl:value-of select="myObj:GetTOCMessage()"/>
+                    <xsl:value-of select="d:GetTOCMessage($myObj)"/>
                   </lic>
-                  <xsl:value-of select="myObj:NullMsg()"/>
+                  <xsl:value-of select="d:NullMsg($myObj)"/>
                   <!--Closing li Tag-->
                   <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
                 </xsl:if>
