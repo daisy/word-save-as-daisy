@@ -27,8 +27,17 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         {
             get
             {
-                string tempInput = InputFile.Substring(InputFile.LastIndexOf('\\'));
-                return tempInput.Remove(tempInput.LastIndexOf('.'));
+                int lastSeparatorIndex = InputFile.LastIndexOf('\\');
+                // Special case : onedrive documents uses https based URL format with '/' as separator
+                if(lastSeparatorIndex < 0) {
+                    lastSeparatorIndex = InputFile.LastIndexOf('/');
+                }
+                if (lastSeparatorIndex < 0) { // no path separator found
+                    return InputFile.Remove(InputFile.LastIndexOf('.'));
+                } else {
+                    string tempInput = InputFile.Substring(lastSeparatorIndex);
+                    return tempInput.Remove(tempInput.LastIndexOf('.'));
+                }
             }
         }
     }

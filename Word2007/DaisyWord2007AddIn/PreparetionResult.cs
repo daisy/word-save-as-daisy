@@ -29,8 +29,8 @@ namespace DaisyWord2007AddIn
 		public bool IsCanceled { get; set; }
 
 		public string LastMessage { get; set; }
-		public string DocxFilePath { get; set; }
-		public string DocFilePath { get; set; }
+		public string OriginalFilePath { get; set; }
+		public string TempFilePath { get; set; }
 		public Initialize InitializeWindow { get; set; }
 		public string MasterSubFlag { get; set; }
 		public ArrayList ObjectShapes { get; set; }

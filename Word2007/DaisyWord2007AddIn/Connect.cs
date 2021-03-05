@@ -794,9 +794,9 @@ namespace DaisyWord2007AddIn {
             
 
             OoxToDaisyParameters parameters = new OoxToDaisyParameters();
-            parameters.InputFile = preparetionResult.DocxFilePath;
-            parameters.TempInputFile = preparetionResult.DocFilePath;
-            parameters.TempInputA = preparetionResult.DocFilePath;
+            parameters.InputFile = preparetionResult.OriginalFilePath;
+            parameters.TempInputFile = preparetionResult.TempFilePath;
+            parameters.TempInputA = preparetionResult.TempFilePath;
             parameters.Version = this.applicationObject.Version;
             parameters.ControlName = ctrlId;
             parameters.ObjectShapes = preparetionResult.ObjectShapes;
@@ -898,32 +898,39 @@ namespace DaisyWord2007AddIn {
             } while (!nameIsValid);
 
             result.InitializeWindow = new Initialize();
-            object newName = Path.GetTempFileName() + Path.GetExtension((string)currentDoc.FullName);
-            File.Copy((string)currentDoc.FullName, (string)newName);
-
-            // open the duplicated file
+            object originalPath = currentDoc.FullName;
+            object tmpFileName = this.addinLib.GetTempPath((string)originalPath, ".docx");
+            object newName = Path.GetTempFileName() + Path.GetExtension((string)originalPath);
+            
+            // Duplicate the current doc and use the copy
             object addToRecentFiles = false;
             object readOnly = false;
-            object isVisible = false;
-            
 
-            Document newDoc = this.applicationObject.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
+            // visibility
+            object visible = true;
+            object invisible = false;
 
-            // generate docx file from the duplicated file (under a temporary file)
-            object tmpFileName = this.addinLib.GetTempPath((string)currentDoc.FullName, ".docx");
             object format = WdSaveFormat.wdFormatXMLDocument;
-            newDoc.SaveAs(ref tmpFileName, ref format, ref missing, ref missing, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
 
-            // close and remove the duplicated file
+            // FIX 05/03/2021 : Error is raised here for onedrive files that are using "http(s)" urls
+            // For now we replace the copy by a standard office save and reopen the original file
+            //File.Copy((string)currentDoc.FullName, (string)newName);
+            //newDoc.SaveAs(ref tmpFileName, ref format, ref missing, ref missing, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
+            //try {
+            //    File.Delete((string)newName);
+            //} catch (IOException) {}
+
+            // Save a copy and reopen the the original document
+            currentDoc.SaveAs(ref tmpFileName, ref format, ref missing, ref missing, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
+            currentDoc = this.applicationObject.Documents.Open(ref originalPath);
+
+            // Open, or retrieve the temp file if opened in word
+            Document newDoc = this.applicationObject.Documents.Open(ref tmpFileName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref invisible, ref missing, ref missing, ref missing, ref missing);
+            // close the temp file
             object saveChanges = WdSaveOptions.wdDoNotSaveChanges;
             object originalFormat = WdOriginalFormat.wdOriginalDocumentFormat;
-            newDoc.Close(ref saveChanges, ref originalFormat, ref missing);
-
-            try {
-                File.Delete((string)newName);
-            } catch (IOException) {
-
-            }
+            newDoc.Close(ref saveChanges, ref originalFormat, ref missing); 
+            
             docFile = (string)tmpFileName;
 
             PrepopulateDaisyXml prepopulateDaisyXml = new PrepopulateDaisyXml();
@@ -932,8 +939,10 @@ namespace DaisyWord2007AddIn {
             prepopulateDaisyXml.Publisher = DocPropPublish();
             prepopulateDaisyXml.Save();
 
-            result.DocxFilePath = currentDoc.FullName;
-            result.DocFilePath = docFile;
+            // FIX 05/03/2021 : OriginalFilePath is used as InputFile in OoxToDaisyParameters. 
+            // For onedrive url (starting with https) the temp copy is used as input path instead of the real one
+            result.OriginalFilePath = currentDoc.FullName.StartsWith("http") ? docFile : currentDoc.FullName;
+            result.TempFilePath = docFile;
 
             result.MasterSubFlag = MasterSubDecision(docFile, eventsHandler);
             result.InitializeWindow.Show();
@@ -2493,7 +2502,7 @@ namespace DaisyWord2007AddIn {
         /// <param name="eventsHandler"></param>
         /// <returns></returns>
         public bool OoxToDaisyOwn(PreparetionResult preparetionResult, String cTrl, IPluginEventsHandler eventsHandler) {
-            SubdocumentsList subdocuments = SubdocumentsManager.FindSubdocuments(preparetionResult.DocFilePath, preparetionResult.DocxFilePath);
+            SubdocumentsList subdocuments = SubdocumentsManager.FindSubdocuments(preparetionResult.TempFilePath, preparetionResult.OriginalFilePath);
             //MessageBox.Show("Check for errors when retrieving subdocuments pathes");
             if(subdocuments.Errors.Count > 0) {
                 StringBuilder errorMessage = new StringBuilder();
@@ -2510,7 +2519,7 @@ namespace DaisyWord2007AddIn {
 
             //MessageBox.Show("Doc sublist");
             ArrayList subList = new ArrayList();
-            subList.Add(preparetionResult.DocFilePath + "|Master");
+            subList.Add(preparetionResult.TempFilePath + "|Master");
             foreach (string subdoc in subdocuments.GetSubdocumentsNameWithRelationship()) {
                 subList.Add(subdoc);
             }
