@@ -9,6 +9,27 @@ SaveAsDAISY is available for Windows only. We provide an installer for Microsoft
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller.exe)
 - [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller_Office64bits.exe)
 
+## Feedbacks / Known issues
+
+### The accessibility ribbon does not appear after successfull installation
+
+A user reported the addin to be deactivated after installation : 
+In Word, under the **File** / **Options** / **Add-ins** category, **Save As Daisy** appeared under the **Inactive applications** section.
+
+This issue is being investigated, but the following action has been tested and reported working by the user encountering this issue.
+- Open the **Manage** panel, select **COM Add-ins** in the combo box and click the **Go** button, 
+- Check the **Save as Daisy** add-in and click on the **Add** button.
+
+The add-in should start repairing himself before reopening the word document.
+
+### Onedrive-hosted document raises an error
+
+This issue comes from onedrive document being Web hosted file URL and not pure system file.
+
+A fix for this issue is being worked on and should be available in the next release.
+
+In the meantime, it is recommended to save the document under a standard system location (that is not managed by onedrive) and to launch the conversion from the new copy. 
+
 # Changelog
 
 # 2.6.1 beta - Minor update 2 (January 28, 2021)
@@ -20,6 +41,8 @@ Minor update including
 - Added a document file name check pass before launching conversion (to let the user manually rename his file if wanted)
 - Fixed an installer issue where previous version of packages could be used instead of the new ones
 - Name and logos updated in software and installers
+
+
 
 
 # 2.6.1 beta - Minor update 1 (January 14, 2021)
