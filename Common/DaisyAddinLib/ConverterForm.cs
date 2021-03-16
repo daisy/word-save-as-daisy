@@ -40,6 +40,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using Daisy.DaisyConverter.DaisyConverterLib;
 using System.Reflection;
+using System.Xml.Xsl;
 
 namespace Daisy.DaisyConverter.DaisyConverterLib
 {
@@ -143,6 +144,13 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                 this.computeSize = false;
                 converter.Transform(this.inputFile, this.outputFile, this.table, this.listMathMl, true, output_Pipeline);
                 WorkComplete(null);
+            }
+            catch (XsltException e) {
+                AddinLogger.Error(e);
+                AddinLogger.Error(e.InnerException);
+                MessageBox.Show(e.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(e.InnerException.Message, "InnerException data", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                WorkComplete(e);
             }
             catch (Exception e)
             {

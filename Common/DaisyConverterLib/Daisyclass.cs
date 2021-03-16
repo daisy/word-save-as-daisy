@@ -634,9 +634,9 @@ namespace Daisy.DaisyConverter.DaisyConverterLib {
         /// <param name="level"></param>
         /// <returns></returns>
         public String PushLevel(String level) {
-
+            
             if (stackList.Count > 0) {
-                if (Convert.ToInt16(level) > 6 && stackList.Count == 6) {
+                if (level.Length > 0 && Convert.ToInt16(level) > 6 && stackList.Count == 6) {
                     stackList.Push(headingSixLvl);
                 } else if (level != stackList.Peek() + 1) {
                     level = Convert.ToString(Convert.ToInt16(stackList.Peek()) + 1);
