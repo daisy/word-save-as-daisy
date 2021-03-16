@@ -1,7 +1,7 @@
 ﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Sonata.DaisyConverter.CommandLineTool</RootNamespace>
+    <RootNamespace>Daisy.DaisyConverter.CommandLineTool</RootNamespace>
     <AssemblyName>DaisyTranslator</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -124,14 +124,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConverterFactory.cs" />
     <Compile Include="DaisyCommandLineException.cs" />
     <Compile Include="DaisyConverter.cs" />
     <Compile Include="MultipleOOXML.cs" />
     <Compile Include="OoxValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <BaseApplicationManifest Include="Properties\app.manifest" />
+    <Compile Include="Report.cs" />
+    <Compile Include="Word.cs" />
     <None Include="app.config" />
-    <None Include="README.TXT">
+    <None Include="README.MD">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <EmbeddedResource Include="resources\oox2daisy\mathml2.DTD" />

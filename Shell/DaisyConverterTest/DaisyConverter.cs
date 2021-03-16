@@ -66,132 +66,9 @@ namespace Daisy.DaisyConverter.CommandLineTool {
 
     delegate int ControlHandlerFonction(ControlType control);
 
-    class Word {
-        Type _type;
-        object _instance;
-        Type _docsType;
-        object _documents;
+    
 
-        public Word() {
-            _type = Type.GetTypeFromProgID("Word.Application");
-            _instance = Activator.CreateInstance(_type);
-            _docsType = null;
-            _documents = null;
-        }
-
-        public bool Visible {
-            set {
-                object[] args = new object[] { value };
-                _type.InvokeMember("Visible", BindingFlags.SetProperty, null, _instance, args);
-            }
-        }
-
-        public void Quit() {
-            object[] args = new object[] { Missing.Value,
-                                            Missing.Value,
-                                            Missing.Value };
-            _type.InvokeMember("Quit", BindingFlags.InvokeMethod, null, _instance, args);
-        }
-
-        public void Open(string document) {
-            if (_documents == null) {
-                _documents = _type.InvokeMember("Documents", BindingFlags.GetProperty, null, _instance, null);
-                _docsType = _documents.GetType();
-            }
-            object[] args = new object[] { document };
-            _docsType.InvokeMember("Open", BindingFlags.InvokeMethod, null, _documents, args);
-
-        }
-    }
-
-
-    class ConverterFactory {
-        private static AbstractConverter wordInstance;
-
-        protected ConverterFactory() {
-        }
-
-        public static AbstractConverter Instance(Direction transformDirection) {
-            switch (transformDirection) {
-                case Direction.DocxToXml:
-                    if (wordInstance == null) {
-                        wordInstance = new Daisy.DaisyConverter.Word.Converter();
-                    }
-                    return wordInstance;
-                default:
-                    throw new ArgumentException("invalid transform direction type");
-            }
-        }
-    }
-
-    public class Report {
-        public const int DEBUG_LEVEL = 1;
-        public const int INFO_LEVEL = 2;
-        public const int WARNING_LEVEL = 3;
-        public const int ERROR_LEVEL = 4;
-
-        private StreamWriter writer = null;
-        private int level = INFO_LEVEL;
-
-        public Report(string filename, int level) {
-            this.level = level;
-            if (filename != null) {
-                this.writer = new StreamWriter(new FileStream(filename, FileMode.Create, FileAccess.Write));
-                Console.WriteLine("Using report file: " + filename);
-            }
-        }
-
-        /*Function which adds comment*/
-        public void AddComment(string message) {
-            string text = "***" + message;
-
-            if (this.writer != null) {
-                this.writer.WriteLine(text);
-                this.writer.Flush();
-            }
-            Console.WriteLine(text);
-        }
-
-        public void AddLog(string filename, string message, int level) {
-            String text = "";
-            if (level >= this.level) {
-                string label = null;
-                switch (level) {
-                    case 4:
-                        label = Label.ERROR.ToString();
-                        break;
-                    case 3:
-                        label = Label.WARNING.ToString();
-                        break;
-                    case 2:
-                        label = Label.INFO.ToString();
-                        break;
-                    default:
-                        label = Label.DEBUG.ToString();
-                        break;
-                }
-                if (filename != "")
-                    text = "[" + label + "]" + "[" + filename + "] " + message;
-                else
-                    text = "[" + label + "]" + message;
-
-                if (this.writer != null) {
-                    this.writer.WriteLine(text);
-                    this.writer.Flush();
-                }
-                Console.WriteLine(text);
-            }
-        }
-
-        public void Close() {
-            if (this.writer != null) {
-                this.writer.Close();
-                this.writer = null;
-            }
-        }
-
-    }
-
+    
 
     /// <summary>
     /// DaisyTranslatorTest is a CommandLine Program to test the conversion
@@ -250,9 +127,10 @@ namespace Daisy.DaisyConverter.CommandLineTool {
         }
 
         /// <summary>
-        /// Main program.
+        /// Progam entry point
         /// </summary>
-        /// <param name="args">Command Line arguments</param>
+        /// <see cref="usage"/>
+        /// <param name="args">Command Line arguments </param>
         public static void Main(String[] args) {
             DaisyConverter tester = new DaisyConverter();
             Hashtable myHT = new Hashtable();
@@ -303,7 +181,10 @@ namespace Daisy.DaisyConverter.CommandLineTool {
             this.CheckPaths();
         }
 
-        /* Function which which takes the arguements form commandline and assigns to variables*/
+        /// <summary>
+        /// Parses the command line arguments and assigns the values to the corresponding variables
+        /// </summary>
+        /// <param name="args"></param>
         private void RetrieveArgs(string[] args) {
             for (int i = 0; i < args.Length; i++) {
                 switch (args[i]) {
@@ -454,7 +335,9 @@ namespace Daisy.DaisyConverter.CommandLineTool {
                 myHT.Add("ImageSizeOption", "original");
         }
 
-        /* Function which Translates a single docx file*/
+        /// <summary>
+        /// Convert a docx file
+        /// </summary>
         private void Proceed() {
             this.report = new Report(this.reportPath, this.reportLevel);
             String titleDoc = "";
@@ -546,6 +429,7 @@ namespace Daisy.DaisyConverter.CommandLineTool {
                 converter.DirectTransform = transformDirection == Direction.DocxToXml;
 
                 converter.Transform(input, output, table, null, false, "");
+
                 fidilityLoss = converter.FidilityLoss;
                 ValidateOutputFile(output);
                 DeleteDTD(Path.GetDirectoryName(output) + "\\dtbook-2005-3.dtd", output);
