@@ -60,6 +60,7 @@ namespace DaisyWord2007AddIn {
     using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
     using System.Globalization;
     using System.Text.RegularExpressions;
+    using System.Threading;
 
 
     #region Read me for Add-in installation and setup information.
@@ -948,14 +949,42 @@ namespace DaisyWord2007AddIn {
             result.InitializeWindow.Show();
             Application.DoEvents();
             try {
-                saveasshapes();
+                Exception threadEx = null;
+                Thread staThread = new Thread(
+                    delegate () {
+                        try {
+                            saveasshapes();
+                        } catch (Exception ex) {
+                            threadEx = ex;
+                        }
+                    });
+                staThread.SetApartmentState(ApartmentState.STA);
+                staThread.Start();
+                staThread.Join();
+                if(threadEx != null) {
+                    throw threadEx;
+                }
             } catch (Exception e) {
                 eventsHandler.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
                     "\r\n- " + e.Message + 
                     "\r\n" + e.StackTrace);
             }
             try {
-                SaveasImages();
+                Exception threadEx = null;
+                Thread staThread = new Thread(
+                    delegate () {
+                        try {
+                            SaveasImages();
+                        } catch (Exception ex) {
+                            threadEx = ex;
+                        }
+                    });
+                staThread.SetApartmentState(ApartmentState.STA);
+                staThread.Start();
+                staThread.Join();
+                if (threadEx != null) {
+                    throw threadEx;
+                }
             } catch (Exception e) {
                 eventsHandler.OnError("An error occured while preprocessing images and may prevent the rest of the conversion to success:" +
                     "\r\n- " + e.Message +
