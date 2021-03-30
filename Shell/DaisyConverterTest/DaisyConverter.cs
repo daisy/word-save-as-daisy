@@ -40,6 +40,11 @@ using Daisy.DaisyConverter.DaisyConverterLib;
 using System.Xml;
 using System.Resources;
 using System.IO.Packaging;
+using System.Drawing.Imaging;
+
+using MSword = Microsoft.Office.Interop.Word;
+using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace Daisy.DaisyConverter.CommandLineTool {
     enum ControlType : int {
@@ -81,6 +86,7 @@ namespace Daisy.DaisyConverter.CommandLineTool {
         private string titleProp = null;
         private string output = null;                    // output path
         private bool open = false;                       // try to open the result of the transformations
+        private bool preprocessOnly = false;
         private string reportPath = null;                // file to save report
         private int reportLevel = Report.INFO_LEVEL;     // file to save report
         private string xslPath = null;                   // Path to an external stylesheet
@@ -131,6 +137,7 @@ namespace Daisy.DaisyConverter.CommandLineTool {
         /// </summary>
         /// <see cref="usage"/>
         /// <param name="args">Command Line arguments </param>
+        [STAThread]
         public static void Main(String[] args) {
             DaisyConverter tester = new DaisyConverter();
             Hashtable myHT = new Hashtable();
@@ -322,6 +329,9 @@ namespace Daisy.DaisyConverter.CommandLineTool {
                     case "/STYLE":
                         myHT.Add("CharacterStyles", "True");
                         break;
+                    case "/PREPROCESS":
+                        preprocessOnly = true;
+                        break;
                     default:
                         break;
                 }
@@ -409,7 +419,64 @@ namespace Daisy.DaisyConverter.CommandLineTool {
             validated = ValidateFile(input);
             if (validated) {
                 report.AddLog(input, "Translating file: " + input + " into " + output, Report.INFO_LEVEL);
-                converted = ConvertFile(input, output, transformDirection, table);
+                // Preprocess shapes
+                Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+                
+                
+                string shapeOutput = preprocessOnly ? Path.GetDirectoryName(output) : Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY";
+                try {
+                    Exception threadEx = null;
+                    Thread staThread = new Thread(
+                        delegate () {
+                            try {
+                                saveasshapes(app, input, shapeOutput);
+                            } catch (Exception ex) {
+                                threadEx = ex;
+                            }
+                        });
+                    staThread.SetApartmentState(ApartmentState.STA);
+                    staThread.Start();
+                    staThread.Join();
+                    if (threadEx != null) {
+                        throw threadEx;
+                    }
+                } catch (Exception e) {
+                    report.AddLog(input, "Warning while parsing shapes of " + input + ": " + e.Message + "\r\n" + e.StackTrace, Report.WARNING_LEVEL);
+                }
+                try {
+                    Exception threadEx = null;
+                    Thread staThread = new Thread(
+                        delegate () {
+                            try {
+                                SaveasImages(app, input, shapeOutput);
+                            } catch (Exception ex) {
+                                threadEx = ex;
+                            }
+                        });
+                    staThread.SetApartmentState(ApartmentState.STA);
+                    staThread.Start();
+                    staThread.Join();
+                    if (threadEx != null) {
+                        throw threadEx;
+                    }
+                } catch (Exception e) {
+                    report.AddLog(input, "Warning while parsing images of " + input + ": " + e.Message + "\r\n" + e.StackTrace, Report.WARNING_LEVEL);
+                }
+                if (!preprocessOnly) {
+                    converted = ConvertFile(input, output, transformDirection, table);
+                } else {
+                    // copy generated shapes to output
+                    string parametersOutput = Path.Combine(shapeOutput, "parametersTable.csv");
+                    string content = "key;value;\r\n";
+                    
+                    foreach (DictionaryEntry param in table) {
+                        content += param.Key + ";";
+                        content += param.Value + ";\r\n";
+
+                    }
+                    File.WriteAllText(parametersOutput,content);
+                }
+                
             }
 
             if (!converted) {
@@ -418,6 +485,7 @@ namespace Daisy.DaisyConverter.CommandLineTool {
             }
 
         }
+
 
         /*Function to translate the current document */
         private bool ConvertFile(string input, string output, Direction transformDirection, Hashtable table) {
@@ -1153,6 +1221,240 @@ namespace Daisy.DaisyConverter.CommandLineTool {
         }
 
         #endregion
+
+        #region ShapesObject
+
+        public void saveasshapes(Microsoft.Office.Interop.Word.Application WordInstance, string docPath, string outputPath) {
+            Microsoft.Office.Interop.Word.Document doc = WordInstance.Documents.Open(docPath);
+            
+            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
+            List<string> warnings = new List<string>();
+            String fileName = doc.Name.Replace(" ", "_");
+            foreach (MSword.Shape item in doc.Shapes) {
+                if (!item.Name.Contains("Text Box")) {
+                    object missing = Type.Missing;
+                    item.Select(ref missing);
+
+                    string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
+                    WordInstance.Selection.CopyAsPicture();
+                    try {
+                        // Note : using Clipboard.GetImage() set Word to display a clipboard data save request on closing
+                        // So we rely on the user32 clipboard methods that does not seem to be intercepted by Office
+                        System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                        byte[] Ret;
+                        MemoryStream ms = new MemoryStream();
+                        image.Save(ms, ImageFormat.Png);
+                        Ret = ms.ToArray();
+                        FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                        fs.Write(Ret, 0, Ret.Length);
+                        fs.Flush();
+                        fs.Dispose();
+                    } catch (ClipboardDataException cde) {
+                        warnings.Add("- Shape " + item.ID + ": " + cde.Message);
+                    } catch (Exception e) {
+                        throw e;
+                    } finally {
+                        Clipboard.Clear();
+                    }
+
+                }
+            }
+
+            doc.Save();
+            doc.Close();
+
+            if (warnings.Count > 0) {
+                string warningMessage = "Some shapes could not be exported from the document:";
+                foreach (string warning in warnings) {
+                    warningMessage += "\r\n" + warning;
+                }
+                throw new Exception(warningMessage);
+            }
+
+        }
+
+        public void saveasshapes(Microsoft.Office.Interop.Word.Application WordInstance, ArrayList subList, String saveFlag, string outputPath) {
+            object addToRecentFiles = false;
+            object readOnly = false;
+            object isVisible = false;
+            object missing = Type.Missing;
+            object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
+            object originalFormat = Microsoft.Office.Interop.Word.WdOriginalFormat.wdOriginalDocumentFormat;
+            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
+            List<string> warnings = new List<string>();
+            for (int i = 0; i < subList.Count; i++) {
+                object newName = subList[i];
+                String fileName = newName.ToString().Replace(" ", "_");
+                MSword.Document newDoc = WordInstance.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
+                foreach (MSword.Shape item in newDoc.Shapes) {
+                    if (!item.Name.Contains("Text Box")) {
+                        item.Select(ref missing);
+                        string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
+                        WordInstance.Selection.CopyAsPicture();
+                        try {
+                            System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                            byte[] Ret;
+                            MemoryStream ms = new MemoryStream();
+                            image.Save(ms, ImageFormat.Png);
+                            Ret = ms.ToArray();
+                            FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                            fs.Write(Ret, 0, Ret.Length);
+                            fs.Flush();
+                            fs.Dispose();
+                        } catch (ClipboardDataException cde) {
+                            warnings.Add("- Shape " + item.ID.ToString() + ": " + cde.Message);
+                        } catch (Exception e) {
+                            throw e;
+                        } finally {
+                            Clipboard.Clear();
+
+                        }
+                    }
+                }
+
+                newDoc.Close(ref saveChanges, ref originalFormat, ref missing);
+            }
+            if (warnings.Count > 0) {
+                string warningMessage = "Some shapes could not be exported from the documents:";
+                foreach (string warning in warnings) {
+                    warningMessage += "\r\n" + warning;
+                }
+                throw new Exception(warningMessage);
+            }
+        }
+        /// <summary>
+        /// Save the inline shapes 
+        /// (Not e : not of type Embedded OLE or Pictures, so it is probably targeting inlined vectorial drawings)
+        /// </summary>
+        public void SaveasImages(Microsoft.Office.Interop.Word.Application WordInstance, string docPath, string outputPath) {
+            Microsoft.Office.Interop.Word.Document doc = WordInstance.Documents.Open(docPath);
+
+            object missing = Type.Missing;
+            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
+            List<string> warnings = new List<string>();
+            String fileName = doc.Name.Replace(" ", "_");
+            MSword.Range rng;
+            foreach (MSword.Range tmprng in doc.StoryRanges) {
+                rng = tmprng;
+                while (rng != null) {
+                    foreach (MSword.InlineShape item in rng.InlineShapes) {
+                        if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
+                            object range = item.Range;
+                            string str = "Shapes_" + GenerateId().ToString();
+                            string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
+
+                            item.Range.Bookmarks.Add(str, ref range);
+                            item.Range.CopyAsPicture();
+                            try {
+                                System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                                byte[] Ret;
+                                MemoryStream ms = new MemoryStream();
+                                image.Save(ms, ImageFormat.Png);
+                                Ret = ms.ToArray();
+                                FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                                fs.Write(Ret, 0, Ret.Length);
+                                fs.Flush();
+                                fs.Dispose();
+                            } catch (ClipboardDataException cde) {
+                                warnings.Add("- Image with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
+                            } catch (Exception e) {
+                                throw e;
+                            } finally {
+                                Clipboard.Clear();
+                            }
+                        }
+                    }
+                    rng = rng.NextStoryRange;
+                }
+            }
+
+            doc.Save();
+            doc.Close();
+
+            if (warnings.Count > 0) {
+                string warningMessage = "Some images could not be exported from the document:";
+                foreach (string warning in warnings) {
+                    warningMessage += "\r\n" + warning;
+                }
+                throw new Exception(warningMessage);
+            }
+        }
+
+        public void SaveasImages(Microsoft.Office.Interop.Word.Application WordInstance, ArrayList subList, String saveFlag, string outputPath) {
+            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
+            object addToRecentFiles = false;
+            object readOnly = false;
+            object isVisible = false;
+            object missing = Type.Missing;
+            object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
+            object originalFormat = Microsoft.Office.Interop.Word.WdOriginalFormat.wdOriginalDocumentFormat;
+            List<string> warnings = new List<string>();
+            for (int i = 0; i < subList.Count; i++) {
+                object newName = subList[i].ToString();
+                MSword.Document newDoc = WordInstance.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
+                MSword.Range rng;
+                String fileName = newName.ToString().Replace(" ", "_");
+                foreach (MSword.Range tmprng in newDoc.StoryRanges) {
+                    rng = tmprng;
+                    while (rng != null) {
+                        foreach (MSword.InlineShape item in rng.InlineShapes) {
+                            if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
+                                string str = "Shapes_" + GenerateId().ToString();
+                                string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
+
+                                object range = item.Range;
+
+                                item.Range.Bookmarks.Add(str, ref range);
+                                item.Range.CopyAsPicture();
+
+                                try {
+                                    System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                                    byte[] Ret;
+                                    MemoryStream ms = new MemoryStream();
+                                    image.Save(ms, ImageFormat.Png);
+                                    Ret = ms.ToArray();
+                                    FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                                    fs.Write(Ret, 0, Ret.Length);
+                                    fs.Flush();
+                                    fs.Dispose();
+                                } catch (ClipboardDataException cde) {
+                                    warnings.Add("- Image with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
+                                } catch (Exception e) {
+                                    throw e;
+                                } finally {
+                                    Clipboard.Clear();
+
+                                }
+                            }
+                        }
+                        rng = rng.NextStoryRange;
+                    }
+                }
+
+                newDoc.Save();
+                newDoc.Close(ref saveChanges, ref originalFormat, ref missing);
+            }
+
+            if (warnings.Count > 0) {
+                string warningMessage = "Some images could not be exported from the documents:";
+                foreach (string warning in warnings) {
+                    warningMessage += "\r\n" + warning;
+                }
+                throw new Exception(warningMessage);
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Function to generate Random ID
+        /// </summary>
+        /// <returns></returns>
+        public long GenerateId() {
+            byte[] buffer = Guid.NewGuid().ToByteArray();
+            return BitConverter.ToInt64(buffer, 0);
+        }
+
 
     }
 
