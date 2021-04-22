@@ -16,11 +16,6 @@
                 xmlns:d="DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
-  <!--Imports all the XSLT-->
-  <!--<xsl:import href ="Common1.xsl"/>
-	<xsl:import href ="Common2.xsl"/>
-	<xsl:import href ="Common3.xsl"/>
-	<xsl:import href ="OOML2MML.xsl"/>-->
   <!--Parameter citation-->
   <xsl:param name="Cite_style" select="d:Citation($myObj)"/>
 

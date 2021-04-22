@@ -14,10 +14,6 @@
                 xmlns:d="DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl">
-	<!--<xsl:param name="sOperators"/>
-	<xsl:param name="sMinuses"/>
-	<xsl:param name="sNumbers"/>
-	<xsl:param name="sZeros"/>-->
 
 	<!--Template for adding Levels-->
 	<xsl:template name="AddLevel">

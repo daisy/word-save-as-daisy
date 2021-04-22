@@ -16,10 +16,6 @@
                 xmlns:d="DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
-	<!--<xsl:param name="sOperators"/>
-	<xsl:param name="sMinuses"/>
-	<xsl:param name="sNumbers"/>
-	<xsl:param name="sZeros"/>-->
 	<!--Storing the default language of the document from styles.xml-->
 	<xsl:variable name="doclang" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
 	<xsl:variable name="doclangbidi" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
@@ -444,20 +440,6 @@
 				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
 					<xsl:sequence select="d:sink(d:CheckShapeId($myObj,concat('Shape',../w:bookmarkStart[last()]/@w:name)))"/> <!-- empty -->
 				</xsl:when>
-				<!--<xsl:when test="w:drawing/wp:anchor/wp:docPr/@id">
-					<xsl:choose>
-						<xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Chart')">
-							<xsl:variable name="id" select="concat('Shape',w:drawing/wp:anchor/wp:docPr/@id)"/>
-							<xsl:value-of select="d:CheckShapeId($myObj,$id)"/>
-						</xsl:when>
-						<xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Diagram')">
-							<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>-->
 			</xsl:choose>
 		</xsl:variable>
 		<!--
@@ -736,9 +718,6 @@
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<xsl:variable name="quote">"</xsl:variable>
-				<!--<xsl:variable name="imageId">
-					<xsl:value-of select="d:ReturnImageGroupId()"/>
-				</xsl:variable>-->
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'optional',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
 				<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
@@ -778,9 +757,6 @@
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')">
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<xsl:variable name="quote">"</xsl:variable>
-				<!--<xsl:variable name="imageId">
-					<xsl:value-of select="d:ReturnImageGroupId()"/>
-				</xsl:variable>-->
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'required',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
 				<!--Getting the language id by calling the PictureLanguage template-->
 				<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
@@ -1355,7 +1331,6 @@
 						<xsl:when test="name()='w:sectPr'">
 							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:sequence select="d:sink(d:CheckSectionFront($myObj))"/> <!-- empty -->
-								<!--<xsl:variable name="frontCounter" select="d:IncrementPageNo()"/>-->
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
 									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">

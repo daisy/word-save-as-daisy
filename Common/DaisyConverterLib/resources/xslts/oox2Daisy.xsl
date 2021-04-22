@@ -19,8 +19,6 @@
 	<xsl:import href="Common.xsl"/>
   <!--Implements Table of Contents-->
   <xsl:import href ="TOC.xsl"/>
-	<!--Implements Paragraph-->
-	<!--<xsl:import href ="Common1.xsl"/>-->
 	<!--Implements Table and Frontmatter-->
 	<xsl:import href ="Common2.xsl"/>
 	<!--Implements Lists and levels-->
@@ -331,64 +329,6 @@
 					</xsl:call-template>
 				</xsl:if>
 				
-				<!-- DB: when document contains any matter style then output xml should conain the same front, body and rear matter content
-							otherwise front matter will contain only title and author attributes, all document content should be body of the output xml-->
-				<!--<xsl:choose>
-					<xsl:when test="d:IsAnyPageStyleApplied()='true'">
-						<frontmatter>
-							<doctitle></doctitle>
-							<xsl:call-template name ="Matter">
-								<xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-								<xsl:with-param name="version" select ="$Version"/>
-								<xsl:with-param name="custom" select="$Custom"/>
-								<xsl:with-param name="masterSub" select="$MasterSub"/>
-								<xsl:with-param name="sOperators" select="$sOperators"/>
-								<xsl:with-param name="sMinuses" select="$sMinuses"/>
-								<xsl:with-param name="sNumbers" select="$sNumbers"/>
-								<xsl:with-param name="sZeros" select="$sZeros"/>
-								<xsl:with-param name="imgOption" select="$ImageSizeOption"/>
-								<xsl:with-param name="dpi" select="$DPI"/>
-								<xsl:with-param name="charStyles" select="$CharacterStyles"/>
-								<xsl:with-param name="matterType" select="'Frontmatter'" />
-							</xsl:call-template>
-						</frontmatter>
-						<bodymatter id="bodymatter_0001">
-							<xsl:call-template name ="Matter">
-								<xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-								<xsl:with-param name="version" select ="$Version"/>
-								<xsl:with-param name="custom" select="$Custom"/>
-								<xsl:with-param name="masterSub" select="$MasterSub"/>
-								<xsl:with-param name="sOperators" select="$sOperators"/>
-								<xsl:with-param name="sMinuses" select="$sMinuses"/>
-								<xsl:with-param name="sNumbers" select="$sNumbers"/>
-								<xsl:with-param name="sZeros" select="$sZeros"/>
-								<xsl:with-param name="imgOption" select="$ImageSizeOption"/>
-								<xsl:with-param name="dpi" select="$DPI"/>
-								<xsl:with-param name="charStyles" select="$CharacterStyles"/>
-								<xsl:with-param name="matterType" select="'Bodymatter'" />
-							</xsl:call-template>
-						</bodymatter>
-						<xsl:if test="d:IsRearmatterStyleApplied()='true'">
-						<rearmatter>
-							<xsl:call-template name ="Matter">
-								<xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-								<xsl:with-param name="version" select ="$Version"/>
-								<xsl:with-param name="custom" select="$Custom"/>
-								<xsl:with-param name="masterSub" select="$MasterSub"/>
-								<xsl:with-param name="sOperators" select="$sOperators"/>
-								<xsl:with-param name="sMinuses" select="$sMinuses"/>
-								<xsl:with-param name="sNumbers" select="$sNumbers"/>
-								<xsl:with-param name="sZeros" select="$sZeros"/>
-								<xsl:with-param name="imgOption" select="$ImageSizeOption"/>
-								<xsl:with-param name="dpi" select="$DPI"/>
-								<xsl:with-param name="charStyles" select="$CharacterStyles"/>
-								<xsl:with-param name="matterType" select="'Rearmatter'" />
-							</xsl:call-template>
-						</rearmatter>
-						</xsl:if>
-					</xsl:when>
-					<xsl:otherwise>-->
-
 						<!--Calling Frontmatter template and passing parameters Title and Creator
             for doctitle and docpublisher-->
             <frontmatter>

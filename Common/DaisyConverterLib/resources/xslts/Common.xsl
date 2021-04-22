@@ -16,11 +16,6 @@
                 xmlns:d="DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
-    <!--Imports all the XSLT-->
-    <!--<xsl:import href ="Common1.xsl"/>
-        <xsl:import href ="Common2.xsl"/>
-        <xsl:import href ="Common3.xsl"/>
-        <xsl:import href ="OOML2MML.xsl"/>-->
     <!--Parameter citation-->
     <xsl:param name="Cite_style" select="d:Citation($myObj)"/>
 
@@ -617,9 +612,6 @@
                         <xsl:if test="(not(w:r/w:rPr/w:rStyle[@w:val='PageNumberDAISY']) and ($custom='Custom')) or (not($custom='Custom'))">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                         </xsl:if>
-                        <!--<xsl:if test="not($txt='')">
-                                                        <xsl:value-of select="$txt"/>
-                                                </xsl:if>-->
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:if>
@@ -2321,11 +2313,6 @@
             </xsl:variable>
             <!--Checking for Ordered List type-->
             <xsl:choose>
-                <!-- CHANGED BY DB -->
-                <!--<xsl:when test="($type='decimal') or ($type='lowerLetter') or ($type='lowerRoman') or ($type='upperRoman') or ($type='upperLetter')or ($type='decimalZero')">
-                                        <xsl:variable name="aquote">"</xsl:variable>
-                                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'ol',$aquote,'&gt;')"/>
-                                </xsl:when>-->
                 <xsl:when test="$type='decimal'">
                     <xsl:variable name="aquote">"</xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;', 'list', ' type=', $aquote, 'ol', $aquote,' start=', $aquote, d:GetListCounter($myObj,$checkilvl, $checknumId), $aquote, '&gt;')"/>
@@ -3848,23 +3835,6 @@
                 <xsl:when test="(count(w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1) or (count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1)">
                     <xsl:if test="d:SetCurrentMatterType($myObj,'Rearmatter')"/>
                 </xsl:when>
-                <!--<xsl:when test="not(count(w:r/w:br[@w:type='page'])=0)">
-                                        <xsl:variable name="nextNodePosition" select="(position() + 1)" />
-                                        <xsl:for-each select="parent::node()/w:p[$nextNodePosition]">
-                                                <xsl:call-template name="SetCurrentMatterType">
-                                                        <xsl:with-param name="isRecursiveCall" select="'true'" />
-                                                        <xsl:with-param name="nodePosition" select="$nextNodePosition + 1" />
-                                                </xsl:call-template>
-                                        </xsl:for-each>
-                                </xsl:when>
-                                <xsl:when test="count(child::node())=0 and $isRecursiveCall='true'">
-                                        <xsl:for-each select="parent::node()/w:p[$nodePosition]">
-                                                <xsl:call-template name="SetCurrentMatterType">
-                                                        <xsl:with-param name="isRecursiveCall" select="'true'" />
-                                                        <xsl:with-param name="nodePosition" select="$nodePosition + 1" />
-                                                </xsl:call-template>
-                                        </xsl:for-each>
-                                </xsl:when>-->
             </xsl:choose>
         </xsl:if>
     </xsl:template>
