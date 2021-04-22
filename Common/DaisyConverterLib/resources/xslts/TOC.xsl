@@ -88,7 +88,7 @@
         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level1','&gt;')"/>
       </xsl:if>
       <!-- Calling function to Reset the counter value -->
-      <xsl:variable name="setlist" select="d:Get_Toc($myObj)"/>
+      <xsl:sequence select="d:sink(d:Get_Toc($myObj))"/> <!-- empty -->
 
       <!--checking for Table of content-->
       <xsl:for-each select="$documentXml//w:document/w:body/node()">
@@ -135,7 +135,7 @@
                     </xsl:choose>
                   </xsl:if>
                 </xsl:for-each>
-                <xsl:variable name="setToc" select="d:Get_tabToc($myObj)"/>
+                <xsl:sequence select="d:sink(d:Get_tabToc($myObj))"/> <!-- empty -->
                 <!--Closing the li Tag-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
               </xsl:for-each>
@@ -150,7 +150,7 @@
         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level1','&gt;')"/>
       </xsl:if>
       <!--Calling function which resets the counter value for TOC-->
-      <xsl:variable name="set_li" select="d:Get_Toc($myObj)"/>
+      <xsl:sequence select="d:sink(d:Get_Toc($myObj))"/> <!-- empty -->
 
       <!--Checking for Table of content-->
       <xsl:for-each select="$documentXml//w:body/w:sdt">
@@ -163,7 +163,7 @@
             <xsl:attribute name="class">
               <xsl:value-of select="'print_toc'"/>
             </xsl:attribute>
-            <xsl:variable name="occurToc" select="d:CheckTocOccur($myObj)"/>
+            <xsl:sequence select="d:sink(d:CheckTocOccur($myObj))"/> <!-- empty -->
             <xsl:if test="$custom='Automatic'">
               <!--Calling countpageTOC template to check number of pages before TOC-->
               <!--<xsl:call-template name="countpageTOC"/>-->

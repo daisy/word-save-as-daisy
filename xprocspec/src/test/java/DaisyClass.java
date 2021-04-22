@@ -2594,6 +2594,8 @@ public class DaisyClass {
 		_currentMatterType = "";
 	}
 
+	public static void sink(Object item) {}
+
 	private static String GetFileNameWithoutExtension(File f) {
 		String name = f.getName();
 		if (name.lastIndexOf('.') >= 0)

@@ -261,7 +261,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 				<meta name="dc:Language" content="{$doclang}"/>
-				<xsl:variable name="insertLangDefault" select="d:AddLanguage($myObj,$doclang)"/>
+				<xsl:sequence select="d:sink(d:AddLanguage($myObj,$doclang))"/> <!-- empty -->
 				<xsl:for-each select="$documentXml//w:body/w:p/w:r/w:rPr">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="w:lang">

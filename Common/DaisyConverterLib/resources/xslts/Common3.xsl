@@ -113,7 +113,7 @@
 								</xsl:call-template>
 							</xsl:if>
 						</xsl:for-each>
-						<xsl:variable name="SetFlag" select="d:InitializeNoteFlag($myObj)"/>
+						<xsl:sequence select="d:sink(d:InitializeNoteFlag($myObj))"/> <!-- empty -->
 					</xsl:if>
 				</xsl:for-each>
 			</note>
@@ -230,7 +230,7 @@
 						</xsl:for-each>
 					</note>
 				</xsl:if>
-				<xsl:variable name="SetFlag" select="d:InitializeNoteFlag($myObj)"/>
+				<xsl:sequence select="d:sink(d:InitializeNoteFlag($myObj))"/> <!-- empty -->
 			</xsl:for-each>
 			<!--Calling the template footnote recursively until d:FootNoteId() returns 0-->
 			<xsl:call-template name="footnote">
@@ -252,8 +252,7 @@
 		<xsl:choose>
 			<!--Checking for inbuilt caption and Image-CaptionDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Caption') or ($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-				<!--Variable holds the count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
+				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<caption>
 					<!--attribute holds the value of the image id-->
 					<xsl:attribute name="imgref">
@@ -308,8 +307,7 @@
 			</xsl:when>
 			<!--Checking for inbuilt caption and Prodnote-OptionalDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
-				<!--Variable holds the count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
+				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<xsl:variable name="quote">"</xsl:variable>
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render= ',$quote,'optional',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
@@ -348,8 +346,7 @@
 			</xsl:when>
 			<!--Checking for inbuilt caption and Prodnote-RequiredDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')">
-				<!--Variable holds the count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
+				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<xsl:variable name="quote">"</xsl:variable>
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'required',$quote,' imgref=',$quote, $imageId ,$quote,'&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
@@ -387,7 +384,7 @@
 				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
-		<xsl:sequence select="d:ResetCaptionsProdnotes($myObj)"/>
+		<xsl:sequence select="d:ResetCaptionsProdnotes($myObj)"/> <!-- empty -->
 	</xsl:template>
 
 	<!--Template for implementing Simple Images i.e, ungrouped images-->
@@ -445,7 +442,7 @@
 					<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',substring-after(../../../../@id,'s')))"/>
 				</xsl:when>
 				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
-					<xsl:variable name="id" select="d:CheckShapeId($myObj,concat('Shape',../w:bookmarkStart[last()]/@w:name))"/>
+					<xsl:sequence select="d:sink(d:CheckShapeId($myObj,concat('Shape',../w:bookmarkStart[last()]/@w:name)))"/> <!-- empty -->
 				</xsl:when>
 				<!--<xsl:when test="w:drawing/wp:anchor/wp:docPr/@id">
 					<xsl:choose>
@@ -681,8 +678,7 @@
 		<xsl:choose>
 			<!--Checking for Image-CaptionDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-				<!--Variable that holds count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
+				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<caption>
 					<xsl:attribute name="imgref">
 						<xsl:value-of select="$imageId"/>
@@ -738,8 +734,7 @@
 			</xsl:when>
 			<!--Checking for Prodnote-OptionalDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
-				<!--Variable that holds count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
+				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<xsl:variable name="quote">"</xsl:variable>
 				<!--<xsl:variable name="imageId">
 					<xsl:value-of select="d:ReturnImageGroupId()"/>
@@ -781,8 +776,7 @@
 			</xsl:when>
 			<!--Checking for Prodnote-RequiredDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')">
-				<!--Variable that holds count of the captions and prodnotes-->
-				<xsl:variable name="tmpcount" select="d:AddCaptionsProdnotes($myObj)"/>
+				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<xsl:variable name="quote">"</xsl:variable>
 				<!--<xsl:variable name="imageId">
 					<xsl:value-of select="d:ReturnImageGroupId()"/>
@@ -823,7 +817,7 @@
 				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
-		<xsl:sequence select="d:ResetCaptionsProdnotes($myObj)"/>
+		<xsl:sequence select="d:ResetCaptionsProdnotes($myObj)"/> <!-- empty -->
 	</xsl:template>
 
 	<!--Template for Implementing grouped images-->
@@ -846,7 +840,7 @@
 
 				</xsl:for-each>
 			</xsl:variable>
-			<xsl:variable name="InsertedCaption" select="d:InsertCaption($myObj,$caption)"/>
+			<xsl:sequence select="d:sink(d:InsertCaption($myObj,$caption))"/> <!-- empty -->
 		</xsl:if>
 		<!--Looping through each pict element and storing the caption value in the caption variable-->
 
@@ -866,7 +860,7 @@
 				</xsl:for-each>
 			</xsl:variable>
 			<!--Inserting the caption value in the Arraylist-->
-			<xsl:variable name="InsertedCaption" select="d:InsertCaption($myObj,$caption)"/>
+			<xsl:sequence select="d:sink(d:InsertCaption($myObj,$caption))"/> <!-- empty -->
 		</xsl:if>
 		<xsl:variable name="Imageid">
 			<xsl:value-of select ="d:CheckShapeId($myObj,concat('Shape',substring-after(w:pict/v:group/@id,'s')))"/>
@@ -1302,13 +1296,13 @@
 		<xsl:param name="count"/>
 		<xsl:param name="node"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
-		<xsl:variable name="initialize" select="d:InitalizeCheckSectionBody($myObj)"/>
-		<xsl:variable name="reSetConPageBreak" select="d:ResetSetConPageBreak($myObj)"/>
+		<xsl:sequence select="d:sink(d:InitalizeCheckSectionBody($myObj))"/> <!-- empty -->
+		<xsl:sequence select="d:sink(d:ResetSetConPageBreak($myObj))"/> <!-- empty -->
 		<xsl:choose>
 			<!--if page number for front matter-->
 			<xsl:when test="$node='front'">
 				<!--incrementing the default page counter-->
-				<xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
+				<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
 				<!--Traversing through each node-->
 				<xsl:for-each select="following-sibling::node()">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
@@ -1360,7 +1354,7 @@
 						<!--Checking for Section in a document-->
 						<xsl:when test="name()='w:sectPr'">
 							<xsl:if test="d:CheckSectionBody($myObj)=1">
-								<xsl:variable name="setSectionFront" select="d:CheckSectionFront($myObj)"/>
+								<xsl:sequence select="d:sink(d:CheckSectionFront($myObj))"/> <!-- empty -->
 								<!--<xsl:variable name="frontCounter" select="d:IncrementPageNo()"/>-->
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
@@ -1410,7 +1404,7 @@
 			<!--if page number for body matter-->
 			<xsl:when test="$node='body'">
 				<xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:sectPr">
-					<xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
+					<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="../following-sibling::node()">
@@ -1510,7 +1504,7 @@
 			<!--Checking for paragraph-->
 			<xsl:when test="$node='Para'">
 				<xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
-					<xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
+					<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="following-sibling::node()">
@@ -1610,7 +1604,7 @@
 			<!--Checking for bodysection-->
 			<xsl:when test="$node='bodysection'">
 				<xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
-					<xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
+					<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
 				</xsl:if>
 				<xsl:choose>
 					<!--Checking for paragraph section break-->
@@ -1661,7 +1655,7 @@
 			<!--Checking for Table-->
 			<xsl:when test="$node='Table'">
 				<xsl:if test="../../preceding-sibling::node()[1]/w:pPr/w:sectPr">
-					<xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
+					<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="../../following-sibling::node()">
@@ -1765,8 +1759,8 @@
 			<xsl:choose>
 				<!--Checking for page break in TOC-->
 				<xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
-					<xsl:variable name="check" select="d:PageForTOC($myObj)"/>
-					<xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
+					<xsl:sequence select="d:sink(d:PageForTOC($myObj))"/> <!-- empty -->
+					<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
 					<xsl:if test="not(w:r/w:t)">
 						<!--Calling template for initializing page number info-->
 						<xsl:call-template name="SectionBreak">
@@ -1781,8 +1775,8 @@
 					</xsl:if>
 				</xsl:when>
 				<xsl:when test="(w:sdtContent/w:p/w:r/w:br/@w:type='page') or (w:sdtContent/w:p/w:r/lastRenderedPageBreak)">
-					<xsl:variable name="check" select="d:PageForTOC($myObj)"/>
-					<xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
+					<xsl:sequence select="d:sink(d:PageForTOC($myObj))"/> <!-- empty -->
+					<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
 				</xsl:when>
 			</xsl:choose>
 		</xsl:for-each>
@@ -1977,7 +1971,7 @@
 			<!--Frontmatter page number-->
 			<xsl:when test="$matter='front'">
 				<xsl:if test="d:GetSectionFront($myObj)=1">
-					<xsl:variable name="count" select="d:IncrementPageNo($myObj)"/>
+					<xsl:sequence select="d:sink(d:IncrementPageNo($myObj))"/> <!-- empty -->
 				</xsl:if>
 				<xsl:choose>
 					<!--LowerRoman page number-->
