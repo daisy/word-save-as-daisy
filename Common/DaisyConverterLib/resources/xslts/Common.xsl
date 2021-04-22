@@ -16,11 +16,6 @@
                 xmlns:d="DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
-    <!--Imports all the XSLT-->
-    <!--<xsl:import href ="Common1.xsl"/>
-        <xsl:import href ="Common2.xsl"/>
-        <xsl:import href ="Common3.xsl"/>
-        <xsl:import href ="OOML2MML.xsl"/>-->
     <!--Parameter citation-->
     <xsl:param name="Cite_style" select="d:Citation($myObj)"/>
 
@@ -726,9 +721,6 @@
                         <xsl:if test="(not(w:r/w:rPr/w:rStyle[@w:val='PageNumberDAISY']) and ($custom='Custom')) or (not($custom='Custom'))">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                         </xsl:if>
-                        <!--<xsl:if test="not($txt='')">
-                                                        <xsl:value-of select="$txt"/>
-                                                </xsl:if>-->
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:if>
@@ -2573,11 +2565,6 @@
             </xsl:variable>
             <!--Checking for Ordered List type-->
             <xsl:choose>
-                <!-- CHANGED BY DB -->
-                <!--<xsl:when test="($type='decimal') or ($type='lowerLetter') or ($type='lowerRoman') or ($type='upperRoman') or ($type='upperLetter')or ($type='decimalZero')">
-                                        <xsl:variable name="aquote">"</xsl:variable>
-                                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'ol',$aquote,'&gt;')"/>
-                                </xsl:when>-->
                 <xsl:when test="$type='decimal'">
                     <xsl:variable name="aquote">"</xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;', 'list', ' type=', $aquote, 'ol', $aquote,' start=', $aquote, d:GetListCounter($myObj,$checkilvl, $checknumId), $aquote, '&gt;')"/>

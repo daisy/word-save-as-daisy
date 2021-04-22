@@ -16,10 +16,6 @@
                 xmlns:d="DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
-	<!--<xsl:param name="sOperators"/>
-	<xsl:param name="sMinuses"/>
-	<xsl:param name="sNumbers"/>
-	<xsl:param name="sZeros"/>-->
 	<!--Storing the default language of the document from styles.xml-->
 	<xsl:variable name="doclang" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
 	<xsl:variable name="doclangbidi" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
@@ -142,7 +138,6 @@
                     <note id="{concat('footnote-',$checkid)}" class="Footnote">
                         <!--Travering each element inside w:footnote in footnote.xml file-->
                         <xsl:for-each select="./node()">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <!--Checking for Paragraph element-->
                             <xsl:if test="name()='w:p'">
                                 <xsl:choose>
@@ -281,7 +276,6 @@
                     </xsl:if>
                     <!--Looping through each of the node to print text to the output xml-->
                     <xsl:for-each select="$followingnodes[1]/node()">
-                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                         <xsl:if test="name()='w:r'">
                             <xsl:call-template name="TempCharacterStyle">
                                 <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -307,7 +301,6 @@
             </xsl:when>
             <!--Checking for inbuilt caption and Prodnote-OptionalDAISY custom paragraph style-->
             <xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
-                <!--Variable holds the count of the captions and prodnotes-->
                 <xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
                 <xsl:variable name="quote">"</xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render= ',$quote,'optional',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
@@ -325,7 +318,6 @@
                 </xsl:if>
                 <!--Looping through each of the node to print text to the output xml-->
                 <xsl:for-each select="$followingnodes[1]/node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:if test="name()='w:r'">
                         <xsl:call-template name="TempCharacterStyle">
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -347,7 +339,6 @@
             </xsl:when>
             <!--Checking for inbuilt caption and Prodnote-RequiredDAISY custom paragraph style-->
             <xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')">
-                <!--Variable holds the count of the captions and prodnotes-->
                 <xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
                 <xsl:variable name="quote">"</xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'required',$quote,' imgref=',$quote, $imageId ,$quote,'&gt;')"/>
@@ -365,7 +356,6 @@
                 </xsl:if>
                 <!--Looping through each of the node to print text to the output xml-->
                 <xsl:for-each select="$followingnodes[1]/node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:if test="name()='w:r'">
                         <xsl:call-template name="TempCharacterStyle">
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -446,20 +436,6 @@
 				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
 					<xsl:sequence select="d:sink(d:CheckShapeId($myObj,concat('Shape',../w:bookmarkStart[last()]/@w:name)))"/> <!-- empty -->
 				</xsl:when>
-				<!--<xsl:when test="w:drawing/wp:anchor/wp:docPr/@id">
-					<xsl:choose>
-						<xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Chart')">
-							<xsl:variable name="id" select="concat('Shape',w:drawing/wp:anchor/wp:docPr/@id)"/>
-							<xsl:value-of select="d:CheckShapeId($myObj,$id)"/>
-						</xsl:when>
-						<xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Diagram')">
-							<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
-						</xsl:when>
-						<xsl:otherwise>
-							<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
-						</xsl:otherwise>
-					</xsl:choose>
-				</xsl:when>-->
 			</xsl:choose>
 		</xsl:variable>
 		<!--
@@ -630,7 +606,6 @@
                             </xsl:if>
                             <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                                 <xsl:for-each select="../node()">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <!--Printing the Caption value-->
                                     <xsl:if test="name()='w:r'">
                                         <xsl:call-template name="TempCharacterStyle">
@@ -680,10 +655,8 @@
         <xsl:choose>
             <!--Checking for Image-CaptionDAISY custom paragraph style-->
             <xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                <!--Variable that holds count of the captions and prodnotes-->
                 <xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
                 <caption>
-                    <!--attribute that holds image id returned from C# ReturnImageGroupId()-->
                     <xsl:attribute name="imgref">
                         <xsl:value-of select="$imageId"/>
                     </xsl:attribute>
@@ -712,7 +685,6 @@
                     </xsl:if>
                     <!--Looping through each of the node to print the text to the output xml-->
                     <xsl:for-each select="$followingnodes[1]/node()">
-                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                         <xsl:if test="name()='w:r'">
                             <xsl:call-template name="TempCharacterStyle">
                                 <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -738,12 +710,8 @@
             </xsl:when>
             <!--Checking for Prodnote-OptionalDAISY custom paragraph style-->
             <xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
-                <!--Variable that holds count of the captions and prodnotes-->
                 <xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
                 <xsl:variable name="quote">"</xsl:variable>
-                <!--<xsl:variable name="imageId">
-                    <xsl:value-of select="d:ReturnImageGroupId($myObj)"/>
-                </xsl:variable>-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'optional',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
                 <!--Checking if image is bidirectionally oriented-->
                 <xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
@@ -759,7 +727,6 @@
                 </xsl:if>
                 <!--Looping through each of the node to print the text to the output xml-->
                 <xsl:for-each select="$followingnodes[1]/node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:if test="name()='w:r'">
                         <xsl:call-template name="TempCharacterStyle">
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -784,9 +751,6 @@
                 <!--Variable that holds count of the captions and prodnotes-->
                 <xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
                 <xsl:variable name="quote">"</xsl:variable>
-                <!--<xsl:variable name="imageId">
-                    <xsl:value-of select="d:ReturnImageGroupId($myObj)"/>
-                </xsl:variable>-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'required',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
                 <!--Getting the language id by calling the PictureLanguage template-->
                 <xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
@@ -802,7 +766,7 @@
                 </xsl:if>
                 <!--Looping through each of the node to print the text to the output xml-->
                 <xsl:for-each select="$followingnodes[1]/node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
+                
                     <xsl:if test="name()='w:r'">
                         <xsl:call-template name="TempCharacterStyle">
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -834,7 +798,6 @@
         <xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY'">
             <xsl:variable name="caption">
                 <xsl:for-each select="../preceding-sibling::node()[1]/node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:if test="name()='w:r'">
                         <xsl:call-template name="TempCharacterStyle">
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -853,7 +816,6 @@
         <xsl:if test="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:pPr/w:pStyle[@w:val='Caption']">
             <xsl:variable name="caption">
                 <xsl:for-each select="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:if test="name()='w:r'">
                         <xsl:call-template name="TempCharacterStyle">
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -944,7 +906,6 @@
 
     <xsl:template name="Imagegroup2003">
         <xsl:param name="characterStyle"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <!--Variable that holds the Image Id-->
         <xsl:variable name="imageId">
             <xsl:value-of select="concat(w:pict/v:shape/v:imagedata/@r:id,d:GenerateImageId($myObj))"/>
@@ -1011,7 +972,6 @@
                         </xsl:if>
                         <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                             <xsl:for-each select="../preceding-sibling::node()[1]/node()">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <!--Printing the Caption value-->
                                 <xsl:if test="name()='w:r'">
                                     <xsl:call-template name="TempCharacterStyle">
@@ -1027,7 +987,6 @@
                         </xsl:if>
                         <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                             <xsl:for-each select="../node()">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <!--Printing the Caption value-->
                                 <xsl:if test="name()='w:r'">
                                     <xsl:call-template name="TempCharacterStyle">
@@ -1131,7 +1090,6 @@
                             </xsl:if>
                             <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                                 <xsl:for-each select="../preceding-sibling::node()[1]/node()">
-                                 <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <!--Printing the Caption value-->
                                     <xsl:if test="name()='w:r'">
                                         <xsl:call-template name="TempCharacterStyle">
@@ -1146,7 +1104,6 @@
                             </xsl:if>
                             <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                                 <xsl:for-each select="../node()">
-                                 <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <!--Printing the Caption value-->
                                     <xsl:if test="name()='w:r'">
                                         <xsl:call-template name="TempCharacterStyle">
@@ -1243,7 +1200,6 @@
                         </xsl:if>
                         <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                             <xsl:for-each select="../preceding-sibling::node()[1]/node()">
-                             <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
 
                                 <!--Printing the Caption value-->
 
@@ -1261,7 +1217,6 @@
                         </xsl:if>
                         <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                             <xsl:for-each select="../node()">
-                             <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
 
                                 <!--Printing the Caption value-->
 
@@ -1317,7 +1272,6 @@
                 <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
                 <!--Traversing through each node-->
                 <xsl:for-each select="following-sibling::node()">
-                 <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:choose>
                         <!--Checking for paragraph section break-->
                         <xsl:when test="w:pPr/w:sectPr">
@@ -1367,7 +1321,6 @@
                         <xsl:when test="name()='w:sectPr'">
                             <xsl:if test="d:CheckSectionBody($myObj)=1">
                                 <xsl:sequence select="d:sink(d:CheckSectionFront($myObj))"/> <!-- empty -->
-                                <!--<xsl:variable name="frontCounter" select="d:IncrementPageNo($myObj)"/>-->
                                 <xsl:choose>
                                     <!--Checking if page start and page format is present-->
                                     <xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
@@ -1420,7 +1373,6 @@
                 </xsl:if>
                 <!--Traversing through each node-->
                 <xsl:for-each select="../following-sibling::node()">
-                 <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:choose>
                         <!--Checking for paragraph section break-->
                         <xsl:when test="w:pPr/w:sectPr">
@@ -1520,7 +1472,6 @@
                 </xsl:if>
                 <!--Traversing through each node-->
                 <xsl:for-each select="following-sibling::node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:choose>
                         <!--Checking for paragraph section break-->
                         <xsl:when test="w:pPr/w:sectPr">
@@ -1671,7 +1622,6 @@
                 </xsl:if>
                 <!--Traversing through each node-->
                 <xsl:for-each select="../../following-sibling::node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:choose>
                         <!--Checking for paragraph section break-->
                         <xsl:when test="w:pPr/w:sectPr">
@@ -1767,7 +1717,6 @@
     <xsl:template name="countpageTOC">
         <xsl:message terminate="no">debug in countpageTOC</xsl:message>
         <xsl:for-each select="preceding-sibling::*">
-         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
             <xsl:choose>
                 <!--Checking for page break in TOC-->
                 <xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
@@ -2096,7 +2045,7 @@
         <xsl:param name="txt"/>
         <xsl:message terminate="no">debug in Languages</xsl:message>
         <xsl:variable name="quote">"</xsl:variable>
-        <xsl:variable name="count_lang">      
+        <xsl:variable name="count_lang">
             <xsl:for-each select="w:r[1]/w:rPr/w:lang">
                 <xsl:value-of select="count(@*)"/>
             </xsl:for-each>
@@ -2357,9 +2306,6 @@
                                     <xsl:otherwise>
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
                                     </xsl:otherwise>
-                                    <!--<xsl:otherwise>
-                                        <xsl:value-of select="w:r/w:rPr/w:lang/@w:val"/>
-                                    </xsl:otherwise>-->
                                 </xsl:choose>
                             </xsl:when>
                             <xsl:otherwise>
@@ -2373,7 +2319,6 @@
 
                                     <xsl:otherwise>
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,$doclang,$quote,'&gt;')"/>
-                                        <!--<xsl:value-of select="$doclang"/>-->
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:otherwise>
@@ -2390,7 +2335,6 @@
                                     <!--Assingning language value-->
 
                                     <xsl:otherwise>
-                                        <!--<xsl:value-of select="w:r/w:rPr/w:lang/@w:val"/>-->
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
@@ -2403,7 +2347,6 @@
                                     </xsl:when>
                                     <!--Assingning language value-->
                                     <xsl:otherwise>
-                                        <!--<xsl:value-of select="w:r/w:rPr/w:lang/@w:eastAsia"/>-->
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
                                     </xsl:otherwise>
                                 </xsl:choose>
@@ -2417,7 +2360,6 @@
                                     <!--Assingning language value-->
                                     <xsl:otherwise>
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
-                                        <!--<xsl:value-of select="w:r/w:rPr/w:lang/@w:bidi"/>-->
                                     </xsl:otherwise>
                                 </xsl:choose>
                             </xsl:when>
