@@ -261,7 +261,6 @@
 					</xsl:if>
 					<!--Checking if image is bidirectionally oriented-->
 					<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
-						<xsl:variable name="quote">"</xsl:variable>
 						<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
 						<xsl:variable name="Bd">
 							<!--calling the PictureLanguage template-->
@@ -269,8 +268,8 @@
 								<xsl:with-param name="CheckLang" select="'picture'"/>
 							</xsl:call-template>
 						</xsl:variable>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 					</xsl:if>
 					<!--Looping through each of the node to print text to the output xml-->
 					<xsl:for-each select="$followingnodes[1]/node()">
@@ -301,8 +300,7 @@
 			<!--Checking for inbuilt caption and Prodnote-OptionalDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
-				<xsl:variable name="quote">"</xsl:variable>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render= ',$quote,'optional',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render= ','&quot;','optional','&quot;',' imgref=','&quot;',$imageId,'&quot;','&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
 				<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
 					<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
@@ -312,8 +310,8 @@
 							<xsl:with-param name="CheckLang" select="'picture'"/>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 				</xsl:if>
 				<!--Looping through each of the node to print text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
@@ -340,8 +338,7 @@
 			<!--Checking for inbuilt caption and Prodnote-RequiredDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')">
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
-				<xsl:variable name="quote">"</xsl:variable>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'required',$quote,' imgref=',$quote, $imageId ,$quote,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=','&quot;','required','&quot;',' imgref=','&quot;', $imageId ,'&quot;','&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
 				<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
 					<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
@@ -351,8 +348,8 @@
 							<xsl:with-param name="CheckLang" select="'picture'"/>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 				</xsl:if>
 				<!--Looping through each of the node to print text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
@@ -481,7 +478,6 @@
 		<xsl:if test="string-length($Img_Id)>0">
 			<!--Checking if document is bidirectionally oriented-->
 			<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
-				<xsl:variable name="quote">"</xsl:variable>
 				<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
 				<xsl:variable name="imgBd">
 					<!--calling the PictureLanguage template-->
@@ -489,7 +485,7 @@
 						<xsl:with-param name="CheckLang" select="'picture'"/>
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote, ' xml:lang=',$quote,$imgBd,$quote,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;', ' xml:lang=','&quot;',$imgBd,'&quot;','&gt;')"/>
 			</xsl:if>
 			<xsl:variable name="imageTest">
 				<xsl:choose>
@@ -580,14 +576,13 @@
 								</xsl:attribute>
 							</xsl:if>
 							<xsl:if test="(../following-sibling::w:p[1]/w:pPr/w:bidi) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rtl)">
-								<xsl:variable name="quote">"</xsl:variable>
 								<xsl:variable name="Bd">
 									<xsl:call-template name="PictureLanguage">
 										<xsl:with-param name="CheckLang" select="'picture'"/>
 									</xsl:call-template>
 								</xsl:variable>
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 							</xsl:if>
 							<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
@@ -674,7 +669,6 @@
 					</xsl:if>
 					<!--Checking if image is bidirectionally oriented-->
 					<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
-						<xsl:variable name="quote">"</xsl:variable>
 						<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
 						<xsl:variable name="Bd">
 							<!--calling the PictureLanguage template-->
@@ -682,8 +676,8 @@
 								<xsl:with-param name="CheckLang" select="'imagegroup'"/>
 							</xsl:call-template>
 						</xsl:variable>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 					</xsl:if>
 					<!--Looping through each of the node to print the text to the output xml-->
 					<xsl:for-each select="$followingnodes[1]/node()">
@@ -714,8 +708,7 @@
 			<!--Checking for Prodnote-OptionalDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
-				<xsl:variable name="quote">"</xsl:variable>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'optional',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=','&quot;','optional','&quot;',' imgref=','&quot;',$imageId,'&quot;','&gt;')"/>
 				<!--Checking if image is bidirectionally oriented-->
 				<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
 					<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
@@ -725,8 +718,8 @@
 							<xsl:with-param name="CheckLang" select="'imagegroup'"/>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 				</xsl:if>
 				<!--Looping through each of the node to print the text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
@@ -753,8 +746,7 @@
 			<!--Checking for Prodnote-RequiredDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')">
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
-				<xsl:variable name="quote">"</xsl:variable>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$quote,'required',$quote,' imgref=',$quote,$imageId,$quote,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=','&quot;','required','&quot;',' imgref=','&quot;',$imageId,'&quot;','&gt;')"/>
 				<!--Getting the language id by calling the PictureLanguage template-->
 				<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
 					<!--attribute that holds language id-->
@@ -764,8 +756,8 @@
 							<xsl:with-param name="CheckLang" select="'imagegroup'"/>
 						</xsl:call-template>
 					</xsl:variable>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 				</xsl:if>
 				<!--Looping through each of the node to print the text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
@@ -878,14 +870,13 @@
 						</xsl:if>
 						<!--Checking if image is bidirectionally oriented-->
 						<xsl:if test="../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:pPr/w:bidi or (../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:r/w:rPr/w:rtl)">
-							<xsl:variable name="quote">"</xsl:variable>
 							<xsl:variable name="Bd">
 								<xsl:call-template name="PictureLanguage">
 									<xsl:with-param name="CheckLang" select="'imagegroup'"/>
 								</xsl:call-template>
 							</xsl:variable>
-							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 						</xsl:if>
 						<xsl:value-of select="$checkcaption"/>
 						<xsl:if test="../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:pPr/w:bidi">
@@ -916,13 +907,12 @@
 		</xsl:variable>
 		<!--Checking if image is bidirectionally oriented-->
 		<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
-			<xsl:variable name="quote">"</xsl:variable>
 			<xsl:variable name="imgBd">
 				<xsl:call-template name="PictureLanguage">
 					<xsl:with-param name="CheckLang" select="'picture'"/>
 				</xsl:call-template>
 			</xsl:variable>
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote, ' xml:lang=',$quote,$imgBd,$quote,'&gt;')"/>
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;', ' xml:lang=','&quot;',$imgBd,'&quot;','&gt;')"/>
 		</xsl:if>
 		<xsl:variable name="checkImage">
 			<xsl:value-of select="d:CheckImage($myObj,d:Image($myObj,w:pict/v:shape/v:imagedata/@r:id,w:pict/v:shape/v:imagedata/@o:title))"/>
@@ -965,14 +955,13 @@
 							</xsl:attribute>
 						</xsl:if>
 						<xsl:if test="(../following-sibling::w:p[1]/w:pPr/w:bidi) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rtl)">
-							<xsl:variable name="quote">"</xsl:variable>
 							<xsl:variable name="Bd">
 								<xsl:call-template name="PictureLanguage">
 									<xsl:with-param name="CheckLang" select="'picture'"/>
 								</xsl:call-template>
 							</xsl:variable>
-							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 						</xsl:if>
 						<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 							<xsl:for-each select="../preceding-sibling::node()[1]/node()">
@@ -1037,12 +1026,11 @@
 	<xsl:template name="Object">
 		<xsl:param name="characterStyle"/>
 		<xsl:if test="not(contains(w:object/o:OLEObject/@ProgID,'Equation'))">
-			<xsl:variable name="quote">"</xsl:variable>
 			<xsl:if test="(contains(w:object/o:OLEObject/@ProgID,'Excel')) or (contains(w:object/o:OLEObject/@ProgID,'Word')) or (contains(w:object/o:OLEObject/@ProgID,'PowerPoint'))">
 				<xsl:variable name="href">
 					<xsl:value-of select="d:Object($myObj,w:object/o:OLEObject/@r:id)"/>
 				</xsl:variable>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','href=',$quote,$href,$quote,' ','external=',$quote,'true',$quote,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','href=','&quot;',$href,'&quot;',' ','external=','&quot;','true','&quot;','&gt;')"/>
 			</xsl:if>
 			<xsl:variable name="ImageName" select="d:MathImage($myObj,w:object/v:shape/v:imagedata/@r:id)"/>
 			<xsl:variable name ="id" select="d:GenerateObjectId($myObj)"/>
@@ -1087,8 +1075,8 @@
 										<xsl:with-param name="CheckLang" select="'picture'"/>
 									</xsl:call-template>
 								</xsl:variable>
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 							</xsl:if>
 							<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
@@ -1193,14 +1181,13 @@
 							</xsl:attribute>
 						</xsl:if>
 						<xsl:if test="(../following-sibling::w:p[1]/w:pPr/w:bidi) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rtl)">
-							<xsl:variable name="quote">"</xsl:variable>
 							<xsl:variable name="Bd">
 								<xsl:call-template name="PictureLanguage">
 									<xsl:with-param name="CheckLang" select="'picture'"/>
 								</xsl:call-template>
 							</xsl:variable>
-							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 						</xsl:if>
 						<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 							<xsl:for-each select="../preceding-sibling::node()[1]/node()">
@@ -2054,7 +2041,6 @@
 	<xsl:template name="Languages">
 		<xsl:param name="Attribute"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
-		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:variable name="count_lang">
 			<xsl:text>0</xsl:text>
 			<xsl:for-each select="w:r[1]/w:rPr/w:lang">
@@ -2070,7 +2056,7 @@
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
 							<xsl:when test="$Attribute='0'">
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;','&gt;')"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<!--Assingning language value-->
@@ -2082,7 +2068,7 @@
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
 							<xsl:when test="$Attribute='0'">
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclangbidi,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclangbidi,'&quot;','&gt;')"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<!--Assingning default language value-->
@@ -2099,7 +2085,7 @@
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
 							<xsl:when test="$Attribute='0'">
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;','&gt;')"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<!--Assingning language value-->
@@ -2111,7 +2097,7 @@
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
 							<xsl:when test="$Attribute='0'">
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclangeastAsia,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclangeastAsia,'&quot;','&gt;')"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<!--Assingning default language value-->
@@ -2129,7 +2115,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:val)[1],$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:val)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
@@ -2141,7 +2127,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclang,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclang,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning default language value-->
 									<xsl:otherwise>
@@ -2157,7 +2143,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:val)[1],$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:val)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
@@ -2169,7 +2155,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:eastAsia)[1],$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:eastAsia)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
@@ -2182,7 +2168,7 @@
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
 
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:bidi)[1],$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:bidi)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
@@ -2198,13 +2184,13 @@
 							<xsl:when test="$Attribute='0'">
 								<xsl:choose>
 									<xsl:when test="w:r/w:rPr/w:lang/@w:val">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:val)[1],$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:val)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<xsl:when test="w:r/w:rPr/w:lang/@w:eastAsia">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:eastAsia)[1],$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:eastAsia)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<xsl:when test="w:r/w:rPr/w:lang/@w:bidi">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,(w:r/w:rPr/w:lang/@w:bidi)[1],$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:bidi)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
@@ -2227,7 +2213,6 @@
 		<xsl:param name="Attribute"/>
 		<xsl:param name ="level"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
-		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:variable name="count_lang">
 			<xsl:text>0</xsl:text>
       <!--NOTE: Use w:r instead w:r[1]-->
@@ -2245,11 +2230,11 @@
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
 							<xsl:when test="$Attribute='0'">
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;','&gt;')"/>
 							</xsl:when>
 							<!--Creating <level> element with xml:lang attribute-->
 							<xsl:otherwise>
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;','&gt;')"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
@@ -2258,12 +2243,12 @@
 							<!--Creating <p> element with xml:lang attribute-->
 
 							<xsl:when test="$Attribute='0'">
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclangbidi,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclangbidi,'&quot;','&gt;')"/>
 							</xsl:when>
 							<!--Creating <level> element with xml:lang attribute-->
 
 							<xsl:otherwise>
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,$doclangbidi,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',$doclangbidi,'&quot;','&gt;')"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:otherwise>
@@ -2277,12 +2262,12 @@
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
 							<xsl:when test="$Attribute='0'">
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;','&gt;')"/>
 							</xsl:when>
 							<!--Creating <level> element with xml:lang attribute-->
 
 							<xsl:otherwise>
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;','&gt;')"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:when>
@@ -2291,12 +2276,12 @@
 							<!--Creating <p> element with xml:lang attribute-->
 
 							<xsl:when test="$Attribute='0'">
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclangeastAsia,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclangeastAsia,'&quot;','&gt;')"/>
 							</xsl:when>
 							<!--Creating <level> element with xml:lang attribute-->
 
 							<xsl:otherwise>
-								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,$doclangeastAsia,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',$doclangeastAsia,'&quot;','&gt;')"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:otherwise>
@@ -2311,12 +2296,12 @@
 									<!--Creating <p> element with xml:lang attribute-->
 
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 
 									<xsl:otherwise>
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;','&gt;')"/>
 									</xsl:otherwise>
 									<!--<xsl:otherwise>
 										<xsl:value-of select="w:r/w:rPr/w:lang/@w:val"/>
@@ -2328,12 +2313,12 @@
 									<!--Creating <p> element with xml:lang attribute-->
 
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclang,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclang,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning default language value-->
 
 									<xsl:otherwise>
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,$doclang,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',$doclang,'&quot;','&gt;')"/>
 										<!--<xsl:value-of select="$doclang"/>-->
 									</xsl:otherwise>
 								</xsl:choose>
@@ -2346,13 +2331,13 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 
 									<xsl:otherwise>
 										<!--<xsl:value-of select="w:r/w:rPr/w:lang/@w:val"/>-->
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;','&gt;')"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
@@ -2360,12 +2345,12 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
 										<!--<xsl:value-of select="w:r/w:rPr/w:lang/@w:eastAsia"/>-->
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;','&gt;')"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
@@ -2373,11 +2358,11 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="$Attribute='0'">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;','&gt;')"/>
 										<!--<xsl:value-of select="w:r/w:rPr/w:lang/@w:bidi"/>-->
 									</xsl:otherwise>
 								</xsl:choose>
@@ -2630,7 +2615,6 @@
 	<!--Template for taking language for bdo Tag-->
 	<xsl:template name="BdoLanguages">
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
-		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:variable name="count_lang">
 			<xsl:text>0</xsl:text>
 			<xsl:for-each select="../../w:r[1]/w:rPr/w:lang">
@@ -2693,7 +2677,6 @@
 	<!--Template for taking language for bdo Tag-->
 	<xsl:template name="BdoRtlLanguages">
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
-		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:variable name="count_lang">
 			<xsl:text>0</xsl:text>
 			<xsl:for-each select="../w:r[1]/w:rPr/w:lang">

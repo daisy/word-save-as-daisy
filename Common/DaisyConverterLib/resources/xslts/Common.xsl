@@ -345,8 +345,7 @@
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
+                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr ','title=','&quot;',$full,'&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                         </xsl:when>
                                         <xsl:otherwise>
@@ -359,12 +358,10 @@
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:variable name="temp" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
+                                            <xsl:variable name="temp" select="concat('&lt;','abbr ','title=','&quot;',$full,'&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <xsl:variable name="aquote">"</xsl:variable>
                                             <xsl:variable name="temp" select="concat('&lt;','abbr','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                         </xsl:otherwise>
@@ -384,13 +381,11 @@
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=','&quot;','yes','&quot;',' title=','&quot;',$full,'&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
+                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=','&quot;','yes','&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                         </xsl:otherwise>
                                     </xsl:choose>
@@ -399,13 +394,11 @@
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                            <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=','&quot;','yes','&quot;',' title=','&quot;',$full,'&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
+                                            <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=','&quot;','yes','&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                         </xsl:otherwise>
                                     </xsl:choose>
@@ -424,13 +417,11 @@
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=','&quot;','no','&quot;',' title=','&quot;',$full,'&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
+                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=','&quot;','no','&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                         </xsl:otherwise>
                                     </xsl:choose>
@@ -439,13 +430,11 @@
                                     <xsl:choose>
                                         <!--checking whether an Abbreviation is having Full Form or not-->
                                         <xsl:when test="not($full='')">
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                            <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=','&quot;','no','&quot;',' title=','&quot;',$full,'&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                         </xsl:when>
                                         <xsl:otherwise>
-                                            <xsl:variable name="aquote">"</xsl:variable>
-                                            <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
+                                            <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=','&quot;','no','&quot;','&gt;')"/>
                                             <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                         </xsl:otherwise>
                                     </xsl:choose>
@@ -520,7 +509,6 @@
         <xsl:param name="dpiPara"/>
         <xsl:param name="charparahandlerStyle"/>
         <xsl:message terminate="no">progress:parahandler</xsl:message>
-        <xsl:variable name="quote">"</xsl:variable>
         <!--Calling Footnote template when the page break is encountered.-->
 
         <xsl:if test="((w:r/w:lastRenderedPageBreak) or (w:r/w:br/@w:type='page')) and (not($flag='0'))">
@@ -625,8 +613,7 @@
 
             <xsl:if test="name()='w:subDoc'">
                 <xsl:if test="$mastersubpara='Yes'">
-                    <xsl:variable name="aquote">"</xsl:variable>
-                    <xsl:variable name="temp"    select="concat('&lt;','subdoc ','rId=',$aquote,@r:id,$aquote,'&gt;','&lt;','/subdoc','&gt;')"/>
+                    <xsl:variable name="temp"    select="concat('&lt;','subdoc ','rId=','&quot;',@r:id,'&quot;','&gt;','&lt;','/subdoc','&gt;')"/>
                     <xsl:sequence select="d:sink(d:PushMasterSubdoc($myObj,$temp))"/> <!-- empty -->
                     <xsl:sequence select="d:sink(d:MasterSubSetFlag($myObj))"/> <!-- empty -->
                 </xsl:if>
@@ -647,7 +634,7 @@
                 <xsl:choose>
                     <!--Checking for BDO Element in MathEquation-->
                     <xsl:when test="../w:pPr/w:bidi">
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,'&gt;')"/>
+                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;','&gt;')"/>
                         <!--Calling Mathml Template for Math Equations-->
                         <xsl:call-template name="ooml2mml">
                             <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -737,8 +724,7 @@
                             <xsl:choose>
                                 <!--checking whether an Abbreviation is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
+                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr ','title=','&quot;',$full,'&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                 </xsl:when>
                                 <xsl:otherwise>
@@ -751,12 +737,10 @@
                             <xsl:choose>
                                 <!--checking whether an Abbreviation is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
+                                    <xsl:variable name="temp" select="concat('&lt;','abbr ','title=','&quot;',$full,'&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:variable name="temp" select="concat('&lt;','abbr','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                 </xsl:otherwise>
@@ -775,13 +759,11 @@
                             <xsl:choose>
                                 <!--checking whether an Acronym is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=','&quot;','yes','&quot;',' title=','&quot;',$full,'&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
+                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=','&quot;','yes','&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -790,13 +772,11 @@
                             <xsl:choose>
                                 <!--checking whether an Acronym is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=','&quot;','yes','&quot;',' title=','&quot;',$full,'&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
+                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=','&quot;','yes','&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -814,13 +794,11 @@
                             <xsl:choose>
                                 <!--checking whether an Acronym is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=','&quot;','no','&quot;',' title=','&quot;',$full,'&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
+                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=','&quot;','no','&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:SetAbbrAcrFlag($myObj))"/> <!-- empty -->
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -829,13 +807,11 @@
                             <xsl:choose>
                                 <!--checking whether an Acronym is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=','&quot;','no','&quot;',' title=','&quot;',$full,'&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
+                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=','&quot;','no','&quot;','&gt;')"/>
                                     <xsl:sequence select="d:sink(d:PushAbrAcr($myObj,$temp))"/> <!-- empty -->
                                 </xsl:otherwise>
                             </xsl:choose>
@@ -845,19 +821,18 @@
 
                 <!--Checking for hyperlink-->
                 <xsl:if test="d:GetHyperlinkName($myObj,@w:name)=1 and not(substring(@w:name,1,13)='Abbreviations') and not(substring(@w:name,1,11)='AcronymsYes') and not(substring(@w:name,1,10)='AcronymsNo')">
-                    <xsl:variable name="aquote">"</xsl:variable>
                     <xsl:choose>
                         <!--If hyperling in Table of content-->
                         <xsl:when test="not(contains(@w:name,'_Toc'))">
                             <xsl:sequence select="d:sink(d:TestRun($myObj))"/> <!-- empty -->
                             <xsl:variable name="initialize" select="d:SetHyperLinkFlag($myObj)"/>
                             <xsl:if test="$initialize=1">
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=',$aquote,d:EscapeSpecial(@w:name),$aquote,'&gt;')"/>
+                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=','&quot;',d:EscapeSpecial(@w:name),'&quot;','&gt;')"/>
                                 <xsl:sequence select="d:sink(d:StroreId($myObj,@w:id))"/> <!-- empty -->
                             </xsl:if>
                             <xsl:if test="$initialize&gt;1">
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=',$aquote,d:EscapeSpecial(@w:name),$aquote,'&gt;')"/>
+                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=','&quot;',d:EscapeSpecial(@w:name),'&quot;','&gt;')"/>
                                 <xsl:sequence select="d:sink(d:StroreId($myObj,@w:id))"/> <!-- empty -->
                             </xsl:if>
                         </xsl:when>
@@ -1173,7 +1148,6 @@
         <xsl:param name="charparahandlerStyle"/>
         <xsl:param name="VERSION"/>
         <xsl:message terminate="no">progress:parahandler</xsl:message>
-        <xsl:variable name="quote">"</xsl:variable>
 
         <!--Checking for line breaks-->
         <xsl:if test="((w:br/@w:type='textWrapping') or (w:br)) and (not(w:br/@w:type='page'))">
@@ -1471,7 +1445,7 @@
                         <xsl:variable name="bdoflag" select="d:SetbdoFlag($myObj)"/>
                         <!--opening bdo Tag-->
                         <xsl:if test="$bdoflag=1">
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
                         </xsl:if>
                     </xsl:when>
 
@@ -1486,7 +1460,7 @@
                         <!--checking condition for opening p tag-->
                         <!--opening bdo Tag-->
                         <xsl:if test="$bdoflag=1">
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
                         </xsl:if>
                     </xsl:when>
 
@@ -1501,7 +1475,7 @@
                         <!--opening bdo Tag-->
                         <xsl:if test="$bdoflag=1">
                             <!--If flag value is 1 opening bdo element-->
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
                         </xsl:if>
                     </xsl:when>
                 </xsl:choose>
@@ -1902,7 +1876,6 @@
         <xsl:param name="custom"/>
         <xsl:param name="txt"/>
         <xsl:param name="customcharStyle"/>
-        <xsl:variable name="aquote">"</xsl:variable>
         <xsl:choose>
             <!--Checking for SampleDAISY/HTMLSample custom character style-->
             <xsl:when test="($customTag='SampleDAISY') or ($customTag='HTMLSample')" >
@@ -1926,7 +1899,7 @@
             <!--Checking for CodeDAISY/HTMLCode custom character style-->
             <xsl:when test="($customTag='CodeDAISY') or ($customTag='HTMLCode')">
                 <xsl:if test="count(preceding-sibling::w:r[1]/w:rPr/w:rStyle[contains(@w:val,'Code')])=0">
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','code ','xml:space=',$aquote,'preserve',$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','code ','xml:space=','&quot;','preserve','&quot;','&gt;')"/>
                     <xsl:sequence select="d:sink(d:CodeFlag($myObj))"/> <!-- empty -->
                 </xsl:if>
                 <xsl:call-template name="CustomCharStyle">
@@ -2005,7 +1978,7 @@
                         </xsl:choose>
                     </xsl:variable>
                     <!--Opening page number tag-->
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','pagenum ','page=',$aquote,$page,$aquote,' id=',$aquote,concat('page',d:GeneratePageId($myObj)),$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','pagenum ','page=','&quot;',$page,'&quot;',' id=','&quot;',concat('page',d:GeneratePageId($myObj)),'&quot;','&gt;')"/>
                 </xsl:if>
                 <!--Calling template for page number text-->
                 <xsl:call-template name="CustomCharStyle">
@@ -2286,38 +2259,31 @@
             <!--Checking for Ordered List type-->
             <xsl:choose>
                 <xsl:when test="$type='decimal'">
-                    <xsl:variable name="aquote">"</xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;', 'list', ' type=', $aquote, 'ol', $aquote,' start=', $aquote, d:GetListCounter($myObj,$checkilvl, $checknumId), $aquote, '&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;', 'list', ' type=', '&quot;', 'ol', '&quot;',' start=', '&quot;', d:GetListCounter($myObj,$checkilvl, $checknumId), '&quot;', '&gt;')"/>
                 </xsl:when>
                 <xsl:when test="($type='lowerLetter') or ($type='lowerRoman') or ($type='upperRoman') or ($type='upperLetter')or ($type='decimalZero')">
-                    <xsl:variable name="aquote">"</xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'pl',$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','pl','&quot;','&gt;')"/>
                 </xsl:when>
                 <!--Checking for Unordered list and Preformatted List type-->
                 <xsl:when test="$type='bullet'">
                     <xsl:choose>
                         <xsl:when test ="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:lvlPicBulletId">
-                            <xsl:variable name="aquote">"</xsl:variable>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'pl',$aquote,'&gt;')"/>
+                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','pl','&quot;','&gt;')"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:variable name="aquote">"</xsl:variable>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'ul',$aquote,'&gt;')"/>
+                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','ul','&quot;','&gt;')"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:when>
                 <xsl:when test="$type='none'">
-                    <xsl:variable name="aquote">"</xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'pl',$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','pl','&quot;','&gt;')"/>
                 </xsl:when>
                 <!--If in word/numbering.xml,numbering formatis having any style(means no w:numFmt element), we are taking default style as ordered list-->
                 <xsl:when test="$type=''">
-                    <xsl:variable name="aquote">"</xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'ol',$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','ol','&quot;','&gt;')"/>
                 </xsl:when>
                 <xsl:otherwise>
-                    <xsl:variable name="aquote">"</xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'pl',$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','pl','&quot;','&gt;')"/>
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
@@ -3079,7 +3045,6 @@
         <xsl:param name="dpiPara"/>
         <xsl:param name="characterparaStyle"/>
 
-        <xsl:variable name="aquote">"</xsl:variable>
         <xsl:message terminate="no">progress:ParagraphStyle</xsl:message>
         <xsl:variable name="checkImageposition" select="d:GetCaptionsProdnotes($myObj)"/>
         <xsl:choose>
@@ -3090,7 +3055,7 @@
                         <xsl:with-param name="Attribute" select="'1'"/>
                     </xsl:call-template>
                 </xsl:variable>
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','doctitle ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','doctitle ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 <xsl:call-template name="ParaHandler">
                     <xsl:with-param name="flag" select="'0'"/>
                     <xsl:with-param name="VERSION" select="$VERSION"/>
@@ -3107,7 +3072,7 @@
                         <xsl:with-param name="Attribute" select="'1'"/>
                     </xsl:call-template>
                 </xsl:variable>
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','author ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','author ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 <xsl:if test="$flagNote='Note'">
                     <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
@@ -3129,7 +3094,7 @@
                         <xsl:with-param name="Attribute" select="'1'"/>
                     </xsl:call-template>
                 </xsl:variable>
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','covertitle ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','covertitle ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 <xsl:call-template name="Paracharacterstyle">
                     <xsl:with-param name="characterStyle" select="$characterparaStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
@@ -3151,7 +3116,7 @@
                         <xsl:with-param name="Attribute" select="'1'"/>
                     </xsl:call-template>
                 </xsl:variable>
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','byline ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','byline ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 <xsl:call-template name="Paracharacterstyle">
                     <xsl:with-param name="characterStyle" select="$characterparaStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
@@ -3173,7 +3138,7 @@
                         <xsl:with-param name="Attribute" select="'1'"/>
                     </xsl:call-template>
                 </xsl:variable>
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','dateline ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','dateline ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 <xsl:call-template name="Paracharacterstyle">
                     <xsl:with-param name="characterStyle" select="$characterparaStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
@@ -3189,7 +3154,7 @@
                             <xsl:with-param name="Attribute" select="'1'"/>
                         </xsl:call-template>
                     </xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$aquote,'optional',$aquote,' xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=','&quot;','optional','&quot;',' xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 </xsl:if>
 
                 <xsl:call-template name="Paracharacterstyle">
@@ -3210,7 +3175,7 @@
                             <xsl:with-param name="Attribute" select="'1'"/>
                         </xsl:call-template>
                     </xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$aquote,'required',$aquote,' xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=','&quot;','required','&quot;',' xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 </xsl:if>
 
                 <xsl:call-template name="Paracharacterstyle">
@@ -3238,7 +3203,7 @@
                             <xsl:with-param name="Attribute" select="'1'"/>
                         </xsl:call-template>
                     </xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','poem ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','poem ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 </xsl:if>
                 <xsl:if test="w:pPr/w:pStyle/@w:val='Poem-TitleDAISY'">
                     <title>
@@ -3265,7 +3230,7 @@
                                 <xsl:with-param name="Attribute" select="'1'"/>
                             </xsl:call-template>
                         </xsl:variable>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','linegroup ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','linegroup ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                     </xsl:if>
                     <line>
                         <xsl:call-template name="Paracharacterstyle">
@@ -3308,7 +3273,7 @@
                             <xsl:with-param name="Attribute" select="'1'"/>
                         </xsl:call-template>
                     </xsl:variable>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','epigraph ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','epigraph ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                 </xsl:if>
                 <xsl:call-template name="Paracharacterstyle">
                     <xsl:with-param name="characterStyle" select="$characterparaStyle"/>
@@ -3337,7 +3302,7 @@
                             </xsl:call-template>
                         </xsl:variable>
                         <!--Opening Address tag-->
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','address ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','address ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                     </xsl:when>
                     <xsl:when test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='AddressDAISY'])=0">
                         <xsl:variable name="lang">
@@ -3346,7 +3311,7 @@
                             </xsl:call-template>
                         </xsl:variable>
                         <!--Opening Address tag-->
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','address ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
+                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','address ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
                     </xsl:when>
                 </xsl:choose>
                 <line>
@@ -3416,8 +3381,7 @@
                             <xsl:variable name="definitionlistBd">
                                 <xsl:call-template name="BdoRtlLanguages"/>
                             </xsl:variable>
-                            <xsl:variable name="quote">"</xsl:variable>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$definitionlistBd,$quote,'&gt;')"/>
+                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$definitionlistBd,'&quot;','&gt;')"/>
                         </xsl:if>
                         <xsl:value-of select="w:r/w:t"/>
                         <xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">
@@ -3568,8 +3532,7 @@
                             <xsl:variable name="definitionlistBd">
                                 <xsl:call-template name="BdoRtlLanguages"/>
                             </xsl:variable>
-                            <xsl:variable name="quote">"</xsl:variable>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$definitionlistBd,$quote,'&gt;')"/>
+                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$definitionlistBd,'&quot;','&gt;')"/>
                         </xsl:if>
                         <xsl:value-of select="w:r/w:t"/>
                         <xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">

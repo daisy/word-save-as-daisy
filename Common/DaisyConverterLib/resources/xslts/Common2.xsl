@@ -531,8 +531,7 @@
 	<xsl:template name="recursive">
 		<xsl:param name="rec"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
-		<xsl:variable name="aquote">"</xsl:variable>
-		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'ol',$aquote,'&gt;')"/>
+		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','ol','&quot;','&gt;')"/>
 		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
 		<xsl:variable name="dec" select="d:Decrement($rec)"/>
 		<xsl:if test="$dec!=0">
@@ -784,7 +783,6 @@
 		<xsl:param name="custom"/>
 		<xsl:param name="mastersubtbl"/>
 		<xsl:param name="characterStyle"/>
-		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:message terminate="no">progress:tablehandler</xsl:message>
 		<xsl:if test="$custom='Automatic'">
 			<xsl:for-each select="w:tr/w:tc">
@@ -820,8 +818,8 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:sequence select="d:sink(d:SetcaptionFlag($myObj))"/> <!-- empty -->
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$varBdo,$quote,'&gt;')"/>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$varBdo,$quote,'&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=','&quot;',$varBdo,'&quot;','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$varBdo,'&quot;','&gt;')"/>
 					</xsl:if>
 
 					<xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
@@ -1020,20 +1018,20 @@
 											<xsl:variable name="colspan" select="w:tcPr/w:gridSpan/@w:val"/>
 											<!--variale holds the value of number of Rows span-->
 											<!--Creating td tag with rowspan and colspan attribute-->
-											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=',$quote,$colspan,$quote,' ',' rowspan=',$quote,d:GetRowspan($myObj)+1,$quote,'&gt;')"/>
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=','&quot;',$colspan,'&quot;',' ',' rowspan=','&quot;',d:GetRowspan($myObj)+1,'&quot;','&gt;')"/>
 										</xsl:when>
 										<!--Checking for colspan and not rowspan-->
 										<xsl:when test="(w:tcPr/w:gridSpan) and not(w:tcPr/w:vMerge[@w:val='restart'])">
 											<!--colspan variable holds colspan value-->
 											<xsl:variable name="colspan" select="w:tcPr/w:gridSpan/@w:val"/>
 											<!--Creating td tag with colspan attribute-->
-											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=',$quote,$colspan,$quote,'&gt;')"/>
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=','&quot;',$colspan,'&quot;','&gt;')"/>
 										</xsl:when>
 										<!--Checking for rowspan and not colspan-->
 										<xsl:when test="(w:tcPr/w:vMerge[@w:val='restart']) and not(w:tcPr/w:gridSpan)">
 											<!--rowspan variable holds rowspan value-->
 											<!--Creating td tag with rowspan attribute-->
-											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','rowspan=',$quote,d:GetRowspan($myObj)+1,$quote,'&gt;')"/>
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','rowspan=','&quot;',d:GetRowspan($myObj)+1,'&quot;','&gt;')"/>
 										</xsl:when>
 										<xsl:otherwise >
 											<!--Opening the td tag-->
