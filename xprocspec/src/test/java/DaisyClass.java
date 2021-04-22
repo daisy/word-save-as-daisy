@@ -1628,6 +1628,8 @@ public class DaisyClass {
 
 	/**
 	 * Function to increment flag value for BDO
+	 *
+	 * @return the new value
 	 */
 	public int SetbdoFlag() {
 		bdoflag++;
@@ -1636,10 +1638,13 @@ public class DaisyClass {
 
 	/**
 	 * Function to set flag value for BDO
+	 *
+	 * @return the previous value
 	 */
 	public int reSetbdoFlag() {
+		int r = bdoflag;
 		bdoflag = 0;
-		return bdoflag;
+		return r;
 	}
 
 	/**
