@@ -252,7 +252,7 @@
             <xsl:if test="d:GetCurrentMatterType($myObj)=$matterType">
                 <xsl:choose>
                     <!--Checking for Praragraph element-->
-                    <xsl:when test="name()='w:p'
+                    <xsl:when test="self::w:p
                                                                                                 and not(*/w:pStyle[substring(@w:val, 1, 11)='Frontmatter'])
                                                                                                 and not(*/w:pStyle[substring(@w:val, 1, 10)='Bodymatter'])
                                                                                                 and not(*/w:pStyle[substring(@w:val, 1, 10)='Rearmatter'])">
@@ -269,7 +269,7 @@
                         </xsl:call-template>
                     </xsl:when>
                     <!--Checking for Table element-->
-                    <xsl:when test="name()='w:tbl'">
+                    <xsl:when test="self::w:tbl">
                         <!--If exists then calling TableHandler-->
                         <xsl:sequence select="d:sink(d:CheckCaverPage($myObj))"/> <!-- empty -->
                         <xsl:call-template name="TableHandler">
@@ -280,7 +280,7 @@
                         </xsl:call-template>
                     </xsl:when>
                     <!--Checking for section element-->
-                    <xsl:when test="name()='w:sectPr'">
+                    <xsl:when test="self::w:sectPr">
                         <!--calling for foonote template and displaying footnote text at the end of the page-->
                         <xsl:call-template name="footnote">
                             <xsl:with-param name="verfoot" select="$version"/>
@@ -297,7 +297,7 @@
                         </xsl:if>
                     </xsl:when>
                     <!--Checking for Structured document element-->
-                    <xsl:when test="name()='w:sdt'">
+                    <xsl:when test="self::w:sdt">
                         <xsl:choose>
                             <xsl:when test="w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents'">
                                 <!--Save Level before closing all levels-->
@@ -332,7 +332,7 @@
                         </xsl:choose>
                     </xsl:when>
                     <!--Checking for BookmarkStart element-->
-                    <xsl:when test="name()='w:bookmarkStart'">
+                    <xsl:when test="self::w:bookmarkStart">
                         <!--Checking Whether BookMarkStart is related to Abbreviations or not -->
                         <xsl:if test="substring(@w:name,1,13)='Abbreviations'">
                             <!--Storing the full form of Abbreviation in a variable-->
@@ -443,7 +443,7 @@
                         </xsl:if>
                     </xsl:when>
                     <!--Checking for BookMarkEnd -->
-                    <xsl:when test="name()='w:bookmarkEnd'">
+                    <xsl:when test="self::w:bookmarkEnd">
                         <xsl:variable name="seperate">
                             <xsl:variable name="id" select="@w:id"/>
                             <xsl:variable name="tempAbbr" select="$documentXml//w:bookmarkStart[@w:id=$id]/@w:name"/>
@@ -513,7 +513,7 @@
 
         <xsl:if test="((w:r/w:lastRenderedPageBreak) or (w:r/w:br/@w:type='page')) and (not($flag='0'))">
             <!--If parent element is not table cell-->
-            <xsl:if test="not(name(..)='w:tc')">
+            <xsl:if test="not(parent::w:tc)">
                 <xsl:call-template name="footnote">
                     <xsl:with-param name="verfoot" select="$VERSION"/>
                     <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -611,7 +611,7 @@
         <xsl:for-each select="./node()">
             <xsl:message terminate="no">progress:parahandler</xsl:message>
 
-            <xsl:if test="name()='w:subDoc'">
+            <xsl:if test="self::w:subDoc">
                 <xsl:if test="$mastersubpara='Yes'">
                     <xsl:variable name="temp"    select="concat('&lt;','subdoc ','rId=','&quot;',@r:id,'&quot;','&gt;','&lt;','/subdoc','&gt;')"/>
                     <xsl:sequence select="d:sink(d:PushMasterSubdoc($myObj,$temp))"/> <!-- empty -->
@@ -669,17 +669,17 @@
             </xsl:if>
 
             <!--Checking for smartTag element-->
-            <xsl:if test="name()='w:smartTag'">
+            <xsl:if test="self::w:smartTag">
                 <xsl:call-template name="smartTag"/>
             </xsl:if>
 
             <!--Checking for fldSimple element-->
-            <xsl:if test="name()='w:fldSimple'">
+            <xsl:if test="self::w:fldSimple">
                 <xsl:call-template name="fldSimple"/>
             </xsl:if>
 
             <!--Checking for Hyperlink element-->
-            <xsl:if test="name()='w:hyperlink' and not(preceding-sibling::w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])">
+            <xsl:if test="self::w:hyperlink and not(preceding-sibling::w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])">
                 <xsl:if test="d:GetTestRun($myObj)&gt;='1'">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
                     <xsl:sequence select="d:sink(d:SetBookmark($myObj))"/> <!-- empty -->
@@ -714,7 +714,7 @@
             </xsl:if>
 
             <!--Checking for BookMarkStart-->
-            <xsl:if test="name()='w:bookmarkStart'">
+            <xsl:if test="self::w:bookmarkStart">
                 <!--Checking whether BookMarkStart is related to Abbreviations or not -->
                 <xsl:if test="substring(@w:name,1,13)='Abbreviations'">
                     <xsl:variable name="full" select="d:FullAbbr($myObj,@w:name,$VERSION)"/>
@@ -842,7 +842,7 @@
             </xsl:if>
 
             <!--Checking for BookMarkEnd -->
-            <xsl:if test="name()='w:bookmarkEnd'">
+            <xsl:if test="self::w:bookmarkEnd">
                 <xsl:variable name="seperate">
                     <xsl:variable name="id" select="@w:id"/>
                     <xsl:choose>
@@ -891,7 +891,7 @@
             </xsl:if>
 
             <!--checking sdt element for citation-->
-            <xsl:if test="name()='w:sdt'">
+            <xsl:if test="self::w:sdt">
                 <!--Checking for Citation Element-->
                 <xsl:if test="w:sdtContent/w:fldSimple/w:r">
                     <cite>
@@ -975,7 +975,7 @@
                 </xsl:if>
             </xsl:if>
 
-            <xsl:if test="name()='w:del'">
+            <xsl:if test="self::w:del">
                 <xsl:if test="$prmTrack='No'">
                     <xsl:for-each select="w:r">
                         <xsl:message terminate="no">progress:parahandler</xsl:message>
@@ -984,7 +984,7 @@
                 </xsl:if>
             </xsl:if>
 
-            <xsl:if test="name()='w:ins'">
+            <xsl:if test="self::w:ins">
                 <xsl:if test="$prmTrack='Yes'">
                     <xsl:for-each select="w:r">
                         <xsl:message terminate="no">progress:parahandler</xsl:message>
@@ -993,7 +993,7 @@
                 </xsl:if>
             </xsl:if>
 
-            <xsl:if test="name()='w:r' and not(preceding-sibling::w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])">
+            <xsl:if test="self::w:r and not(preceding-sibling::w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])">
                 <xsl:call-template name="TempParaHandler">
                     <xsl:with-param name="flag" select="$flag"/>
                     <xsl:with-param name="imgOptionPara" select="$imgOptionPara"/>
@@ -1006,7 +1006,7 @@
             </xsl:if>
 
             <!--Capturing Fidelity loss for Copy Right-->
-            <xsl:if test="name()='w:sdt'">
+            <xsl:if test="self::w:sdt">
                 <xsl:if test="not(w:sdtPr/w:citation)">
                     <xsl:message terminate="no">
                         <xsl:value-of select="concat('translation.oox2Daisy.UncoveredElement|','Copy Right')"/>
@@ -1101,7 +1101,7 @@
                             </xsl:call-template>
                         </xsl:when>
                         <!--Checking for Table in sidebar-->
-                        <xsl:when test="name()='w:tbl'">
+                        <xsl:when test="self::w:tbl">
                             <xsl:call-template name="TableHandler">
                                 <xsl:with-param name="parmVerTable" select="$VERSION"/>
                                 <xsl:with-param name="custom" select="$custom"/>
@@ -1261,7 +1261,7 @@
                         </xsl:call-template>
                     </xsl:when>
                     <!--checking image groups-->
-                    <xsl:when test="(w:pict/v:group) and (($VERSION='11.0') or ($VERSION='10.0'))and (not(descendant::node()[name()='w:txbxContent'])) and (not(w:pict/v:rect/v:textbox/w:txbxContent))">
+                    <xsl:when test="(w:pict/v:group) and (($VERSION='11.0') or ($VERSION='10.0'))and not(descendant::w:txbxContent) and (not(w:pict/v:rect/v:textbox/w:txbxContent))">
                         <xsl:call-template name="Imagegroups">
                             <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                         </xsl:call-template>
@@ -1271,12 +1271,12 @@
                             <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                         </xsl:call-template>
                     </xsl:when>
-                    <xsl:when test="(w:pict/v:shape/@o:spid)    and (not(descendant::node()[name()='w:txbxContent'])) and(not(w:pict/v:rect/v:textbox/w:txbxContent))">
+                    <xsl:when test="(w:pict/v:shape/@o:spid) and not(descendant::w:txbxContent) and(not(w:pict/v:rect/v:textbox/w:txbxContent))">
                         <xsl:call-template name="tmpShape">
                             <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                         </xsl:call-template>
                     </xsl:when>
-                    <xsl:when test="(w:pict/v:shape) and not(contains(w:pict/v:shape/@id,'i')) and (not(descendant::node()[name()='w:txbxContent'])) and(not(w:pict/v:rect/v:textbox/w:txbxContent))">
+                    <xsl:when test="(w:pict/v:shape) and not(contains(w:pict/v:shape/@id,'i')) and not(descendant::w:txbxContent) and(not(w:pict/v:rect/v:textbox/w:txbxContent))">
                         <xsl:call-template name="tmpShape">
                             <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                         </xsl:call-template>
@@ -1315,7 +1315,7 @@
 
                         <xsl:variable name="Math_DSMT4">
                             <xsl:choose>
-                                <xsl:when test="ancestor::node()[name()='w:txbxContent']">
+                                <xsl:when test="ancestor::w:txbxContent">
                                     <xsl:value-of select="d:GetMathML($myObj,'wdTextFrameStory')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
@@ -1483,8 +1483,8 @@
                 <!--Calling Custom styles template if not caption-->
                 <xsl:if test="not((((../w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
                                                                                                                                 or (../w:pPr/w:pStyle/@w:val='Caption'))
-                                                                                                                and ((../following-sibling::node()[1][name()='w:tbl'])
-                                                                                                                                or (../preceding-sibling::node()[1][name()='w:tbl'])))
+                                                                                                                and ((../following-sibling::node()[1][self::w:tbl])
+                                                                                                                                or (../preceding-sibling::node()[1][self::w:tbl])))
                                                                                                  or ((../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')
                                                                                                                 and ((../following-sibling::node()[1]/w:r/w:drawing)
                                                                                                                                 or (../following-sibling::node()[1]/w:r/w:pict)
@@ -1819,7 +1819,7 @@
                     </xsl:if>
                 </xsl:when>
                 <!--Checking for section break-->
-                <xsl:when test="name()='w:sectPr'">
+                <xsl:when test="self::w:sectPr">
                     <xsl:if test="d:GetSectionPageStart($myObj)=1">
                         <xsl:sequence select="d:sink(d:SectionCounter($myObj,w:pgNumType/@w:fmt,w:pgNumType/@w:start))"/> <!-- empty -->
                     </xsl:if>
@@ -2020,7 +2020,7 @@
                             </linenum>
                         </line>
                         <xsl:choose>
-                            <xsl:when test="(following-sibling::node()[1][name()='w:r']) and (not(following-sibling::node()[1]/w:rPr/w:rStyle[contains(@w:val,'Line')]))">
+                            <xsl:when test="(following-sibling::node()[1][self::w:r]) and (not(following-sibling::node()[1]/w:rPr/w:rStyle[contains(@w:val,'Line')]))">
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                             </xsl:when>
                             <xsl:otherwise>
@@ -2198,17 +2198,17 @@
                     </xsl:call-template>
                     <xsl:message terminate="no">progress:parahandler</xsl:message>
                     <xsl:choose>
-                        <xsl:when test="name()='w:commentReference'">
+                        <xsl:when test="self::w:commentReference">
                             <!--Capturing fidility loss-->
                             <xsl:message terminate="no">translation.oox2Daisy.commentReference</xsl:message>
                             <!--Capturing fidility loss-->
                         </xsl:when>
-                        <xsl:when test="name()='w:object'">
+                        <xsl:when test="self::w:object">
                             <xsl:message terminate="no">translation.oox2Daisy.object</xsl:message>
                         </xsl:when>
                         <xsl:otherwise>
                             <!--Capturing fidility loss-->
-                            <xsl:if test="not((name()='w:rPr')or(name()='w:fldSimple') or (name()='w:lastRenderedPageBreak') or (name()='w:br') or (name()='w:tab')or(name()='w:fldChar') or (name()='w:t'))">
+                            <xsl:if test="not(self::w:rPr|self::w:fldSimple|self::w:lastRenderedPageBreak|self::w:br|self::w:tab|self::w:fldChar|self::w:t)">
                                 <xsl:message terminate="no">
                                     <xsl:value-of select="concat('translation.oox2Daisy.UncoveredElement|',name())"/>
                                 </xsl:message>
@@ -2413,7 +2413,7 @@
                 </xsl:call-template>
             </xsl:when>
 
-            <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' or @w:val/d:CompareHeading(.,$styleHeading)=1] and (not(name(..)='w:tc'))">
+            <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' or @w:val/d:CompareHeading(.,$styleHeading)=1] and not(parent::w:tc)">
                 <!--calling Close level template for closing all the higher levels-->
                 <xsl:if test="(w:r/w:lastRenderedPageBreak) or (w:r/w:br/@w:type='page')">
                     <xsl:call-template name="footnote">
@@ -2552,7 +2552,7 @@
             </xsl:when>
 
             <!--Checking for Bridgehead custom style-->
-            <xsl:when test="(w:pPr/w:pStyle/@w:val='BridgeheadDAISY') and (not(name(..)='w:tc'))">
+            <xsl:when test="(w:pPr/w:pStyle/@w:val='BridgeheadDAISY') and not(parent::w:tc)">
                 <bridgehead>
                     <xsl:call-template name="ParaHandler">
                         <xsl:with-param name="flag" select="'0'"/>
@@ -2626,9 +2626,9 @@
                                                                                                                         or (preceding-sibling::node()[$checkImageposition]/w:r/w:object)
                                                                                                                         or (((w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
                                                                                                                                         or (w:pPr/w:pStyle/@w:val='Caption')
-                                                                                                                                        or (./node()[name()='w:fldSimple']))
-                                                                                                                        and ((preceding-sibling::node()[1][name()='w:tbl'])
-                                                                                                                                        or (following-sibling::node()[1][name()='w:tbl']))))">
+                                                                                                                                        or (child::w:fldSimple))
+                                                                                                                        and ((preceding-sibling::node()[1][self::w:tbl])
+                                                                                                                                        or (following-sibling::node()[1][self::w:tbl]))))">
                             <xsl:call-template name="ParagraphStyle">
                                 <xsl:with-param name="prmTrack" select="$prmTrack"/>
                                 <xsl:with-param name="VERSION" select="$VERSION"/>
@@ -3556,7 +3556,7 @@
                 </xsl:if>
             </xsl:when>
             <!--Checking if table occurs in the document and implementing all the styles applied on it-->
-            <xsl:when test="(name(..)='w:tc')
+            <xsl:when test="(parent::w:tc)
                                                                                         and (not((w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')
                                                                                                                         or (w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')
                                                                                                                         or (w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')))">
@@ -3571,9 +3571,9 @@
             <!--Checking if no style exist and then calling the template named ParaHandler-->
             <xsl:when test="not((((w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
                                                                                                                 or (w:pPr/w:pStyle/@w:val='Caption')
-                                                                                                                or (./node()[name()='w:fldSimple']))
-                                                                                                        and ((preceding-sibling::node()[1][name()='w:tbl'])
-                                                                                                                or (following-sibling::node()[1][name()='w:tbl'])))
+                                                                                                                or child::w:fldSimple)
+                                                                                                        and ((preceding-sibling::node()[1][self::w:tbl])
+                                                                                                                or (following-sibling::node()[1][self::w:tbl])))
                                                                                                 or (w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])
                                                                                                 or (preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
                                                                                                 or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict)
@@ -3597,15 +3597,7 @@
             <xsl:otherwise>
                 <!--Other elements are considered as fidelity loss-->
                 <!--Capturing fidility loss elements-->
-                <xsl:if test="not((name()='w:pPr')
-                                                                                                or (name()='w:p')
-                                                                                                or (name()='w:r')
-                                                                                                or (name()='w:fldSimple')
-                                                                                                or (name()='w:fldChar')
-                                                                                                or (name()='w:proofErr')
-                                                                                                or (name()='w:lastRenderedPageBreak')
-                                                                                                or (name()='w:br')
-                                                                                                or (name()='w:tab'))">
+                <xsl:if test="not(self::w:pPr|self::w:p|self::w:r|self::w:fldSimple|self::w:fldChar|self::w:proofErr|self::w:lastRenderedPageBreak|self::w:br|self::w:tab)">
                     <xsl:message terminate="no">
                         <xsl:value-of select="concat('translation.oox2Daisy.UncoveredElement|', name())"/>
                     </xsl:message>
@@ -3717,7 +3709,7 @@
     <xsl:template name="CheckPageStyles">
         <xsl:for-each select="$documentXml//w:document/w:body/node()">
             <xsl:message terminate="no">progress:checkpagestyles</xsl:message>
-            <xsl:if test="name()='w:p'">
+            <xsl:if test="self::w:p">
                 <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter']">
                     <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
                 </xsl:for-each>
@@ -3750,7 +3742,7 @@
 
     <xsl:template name="SetCurrentMatterType">
         <xsl:message terminate="no">progress:setcurrentmattertype</xsl:message>
-        <xsl:if test="name()='w:p'">
+        <xsl:if test="self::w:p">
             <xsl:choose>
                 <xsl:when test="(count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1 or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1)">
                     <xsl:if test="d:SetCurrentMatterType($myObj,'Frontmatter')"/>

@@ -95,7 +95,7 @@
 						<xsl:for-each select="./node()">
 							<xsl:message terminate="no">progress:parahandler</xsl:message>
 							<!--Checking for Paragraph element-->
-							<xsl:if test="name()='w:p'">
+							<xsl:if test="self::w:p">
 								<xsl:call-template name="ParagraphStyle">
 									<xsl:with-param name="VERSION" select="$vernote"/>
 									<xsl:with-param name="flagNote" select="'Note'"/>
@@ -139,7 +139,7 @@
 						<xsl:for-each select="./node()">
 							<xsl:message terminate="no">progress:parahandler</xsl:message>
 							<!--Checking for Paragraph element-->
-							<xsl:if test="name()='w:p'">
+							<xsl:if test="self::w:p">
 								<xsl:choose>
 									<!--Checking for MathImage in Word2003/xp  footnotes-->
 									<xsl:when test="(w:r/w:object/v:shape/v:imagedata/@r:id) and (not(w:r/w:object/o:OLEObject[@ProgID='Equation.DSMT4']))" >
@@ -274,12 +274,12 @@
 					<!--Looping through each of the node to print text to the output xml-->
 					<xsl:for-each select="$followingnodes[1]/node()">
 						<xsl:message terminate="no">progress:parahandler</xsl:message>
-						<xsl:if test="name()='w:r'">
+						<xsl:if test="self::w:r">
 							<xsl:call-template name ="TempCharacterStyle">
 								<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 							</xsl:call-template>
 						</xsl:if>
-						<xsl:if test="name()='w:fldSimple'">
+						<xsl:if test="self::w:fldSimple">
 							<xsl:value-of select="w:r/w:t"/>
 						</xsl:if>
 
@@ -316,7 +316,7 @@
 				<!--Looping through each of the node to print text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
-					<xsl:if test="name()='w:r'">
+					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
@@ -354,7 +354,7 @@
 				<!--Looping through each of the node to print text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
-					<xsl:if test="name()='w:r'">
+					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
@@ -588,12 +588,12 @@
 								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
 									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
-									<xsl:if test="name()='w:r'">
+									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
 											<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 										</xsl:call-template>
 									</xsl:if>
-									<xsl:if test="name()='w:fldSimple'">
+									<xsl:if test="self::w:fldSimple">
 										<xsl:value-of select="w:r/w:t"/>
 									</xsl:if>
 
@@ -604,12 +604,12 @@
 								<xsl:for-each select="../node()">
 									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
-									<xsl:if test="name()='w:r'">
+									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
 											<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 										</xsl:call-template>
 									</xsl:if>
-									<xsl:if test="name()='w:fldSimple'">
+									<xsl:if test="self::w:fldSimple">
 										<xsl:value-of select="w:r/w:t"/>
 									</xsl:if>
 
@@ -682,12 +682,12 @@
 					<!--Looping through each of the node to print the text to the output xml-->
 					<xsl:for-each select="$followingnodes[1]/node()">
 						<xsl:message terminate="no">progress:parahandler</xsl:message>
-						<xsl:if test="name()='w:r'">
+						<xsl:if test="self::w:r">
 							<xsl:call-template name ="TempCharacterStyle">
 								<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 							</xsl:call-template>
 						</xsl:if>
-						<xsl:if test="name()='w:fldSimple'">
+						<xsl:if test="self::w:fldSimple">
 							<xsl:value-of select="w:r/w:t"/>
 						</xsl:if>
 
@@ -724,7 +724,7 @@
 				<!--Looping through each of the node to print the text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
-					<xsl:if test="name()='w:r'">
+					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
@@ -762,7 +762,7 @@
 				<!--Looping through each of the node to print the text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
-					<xsl:if test="name()='w:r'">
+					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
@@ -794,12 +794,12 @@
 			<xsl:variable name="caption">
 				<xsl:for-each select="../preceding-sibling::node()[1]/node()">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
-					<xsl:if test="name()='w:r'">
+					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
 					</xsl:if>
-					<xsl:if test="name()='w:fldSimple'">
+					<xsl:if test="self::w:fldSimple">
 						<xsl:value-of select="w:r/w:t"/>
 					</xsl:if>
 
@@ -813,12 +813,12 @@
 			<xsl:variable name="caption">
 				<xsl:for-each select="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/node()">
 					<xsl:message terminate="no">progress:parahandler</xsl:message>
-					<xsl:if test="name()='w:r'">
+					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
 					</xsl:if>
-					<xsl:if test="name()='w:fldSimple'">
+					<xsl:if test="self::w:fldSimple">
 						<xsl:value-of select="w:r/w:t"/>
 					</xsl:if>
 
@@ -967,12 +967,12 @@
 							<xsl:for-each select="../preceding-sibling::node()[1]/node()">
 								<xsl:message terminate="no">progress:parahandler</xsl:message>
 								<!--Printing the Caption value-->
-								<xsl:if test="name()='w:r'">
+								<xsl:if test="self::w:r">
 									<xsl:call-template name ="TempCharacterStyle">
 										<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 									</xsl:call-template>
 								</xsl:if>
-								<xsl:if test="name()='w:fldSimple'">
+								<xsl:if test="self::w:fldSimple">
 									<xsl:value-of select="w:r/w:t"/>
 								</xsl:if>
 
@@ -983,12 +983,12 @@
 							<xsl:for-each select="../node()">
 								<xsl:message terminate="no">progress:parahandler</xsl:message>
 								<!--Printing the Caption value-->
-								<xsl:if test="name()='w:r'">
+								<xsl:if test="self::w:r">
 									<xsl:call-template name ="TempCharacterStyle">
 										<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 									</xsl:call-template>
 								</xsl:if>
-								<xsl:if test="name()='w:fldSimple'">
+								<xsl:if test="self::w:fldSimple">
 									<xsl:value-of select="w:r/w:t"/>
 								</xsl:if>
 
@@ -1082,12 +1082,12 @@
 								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
 									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
-									<xsl:if test="name()='w:r'">
+									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
 											<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 										</xsl:call-template>
 									</xsl:if>
-									<xsl:if test="name()='w:fldSimple'">
+									<xsl:if test="self::w:fldSimple">
 										<xsl:value-of select="w:r/w:t"/>
 									</xsl:if>
 
@@ -1097,12 +1097,12 @@
 								<xsl:for-each select="../node()">
 									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
-									<xsl:if test="name()='w:r'">
+									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
 											<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 										</xsl:call-template>
 									</xsl:if>
-									<xsl:if test="name()='w:fldSimple'">
+									<xsl:if test="self::w:fldSimple">
 										<xsl:value-of select="w:r/w:t"/>
 									</xsl:if>
 
@@ -1195,12 +1195,12 @@
 
 								<!--Printing the Caption value-->
 
-								<xsl:if test="name()='w:r'">
+								<xsl:if test="self::w:r">
 									<xsl:call-template name ="TempCharacterStyle">
 										<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 									</xsl:call-template>
 								</xsl:if>
-								<xsl:if test="name()='w:fldSimple'">
+								<xsl:if test="self::w:fldSimple">
 									<xsl:value-of select="w:r/w:t"/>
 								</xsl:if>
 
@@ -1214,12 +1214,12 @@
 								<!--Printing the Caption value-->
 
 
-								<xsl:if test="name()='w:r'">
+								<xsl:if test="self::w:r">
 									<xsl:call-template name ="TempCharacterStyle">
 										<xsl:with-param name ="characterStyle" select="$characterStyle"/>
 									</xsl:call-template>
 								</xsl:if>
-								<xsl:if test="name()='w:fldSimple'">
+								<xsl:if test="self::w:fldSimple">
 									<xsl:value-of select="w:r/w:t"/>
 								</xsl:if>
 
@@ -1312,7 +1312,7 @@
 							</xsl:if>
 						</xsl:when>
 						<!--Checking for Section in a document-->
-						<xsl:when test="name()='w:sectPr'">
+						<xsl:when test="self::w:sectPr">
 							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:sequence select="d:sink(d:CheckSectionFront($myObj))"/> <!-- empty -->
 								<xsl:choose>
@@ -1413,7 +1413,7 @@
 							</xsl:if>
 						</xsl:when>
 						<!--Checking for Section in a document-->
-						<xsl:when test="name()='w:sectPr'">
+						<xsl:when test="self::w:sectPr">
 							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
@@ -1513,7 +1513,7 @@
 							</xsl:if>
 						</xsl:when>
 						<!--Checking for Section in a document-->
-						<xsl:when test="name()='w:sectPr'">
+						<xsl:when test="self::w:sectPr">
 							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
@@ -1662,7 +1662,7 @@
 							</xsl:choose>
 						</xsl:when>
 						<!--Checking for Section in a document-->
-						<xsl:when test="name()='w:sectPr'">
+						<xsl:when test="self::w:sectPr">
 							<xsl:if test="d:CheckSectionBody($myObj)=1">
 								<xsl:choose>
 									<!--Checking if page start and page format is present-->
