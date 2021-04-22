@@ -19,11 +19,6 @@
     <xsl:param name="sNumbers"/>
     <xsl:param name="sZeros"/>-->
 
-    <!--  $stylesXml = word/styles.xml
-          $numberingXml = word/numbering.xml
-    -->
-    <xsl:output method="xml" indent="no" />
-
     <!--Template for adding Levels-->
     <xsl:template name="AddLevel">
         <!--Parameter levelValue holds the value of the current level -->
@@ -45,11 +40,10 @@
         
         <xsl:message terminate="no">progress:Adding level <xsl:value-of select="$levelValue"/></xsl:message>
         <!--Pushing level into the stack-->
-        <xsl:variable name="headingIncrementCounters" select="d:IncrementHeadingCounters($myObj,$levelValue,substring-after($txt,'!'),$abValue)"/>
+        <xsl:sequence select="d:IncrementHeadingCounters($myObj,string($levelValue),substring-after($txt,'!'),$abValue)"/> <!-- empty -->
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-        <xsl:variable name="copyCounter" select="d:CopyToBaseCounter($myObj,substring-after($txt,'!'))"/>
+        <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,substring-after($txt,'!')))"/> <!-- empty -->
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-        
         <xsl:variable name="level" select="d:PushLevel($myObj,$levelValue)"/>
         
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
@@ -57,42 +51,42 @@
             <!--Checking the level value-->
             <xsl:when test="$level &lt; 7">
                 <!--Levels upto 6-->
-                <!--Creating level element-->
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level',$level,'&gt;')"/>
-                <xsl:if test="(d:GetPageNum($myObj)=0) and (d:CheckTocOccur($myObj)=1) and ($custom='Automatic')">
-                    <xsl:if test="preceding-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Cover Pages'">
-                        <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
-                    </xsl:if>
-                    <xsl:if test="not(w:r[1]/w:br/@w:type='page') or not(w:r[1]/w:lastRenderedPageBreak)">
-                        <xsl:call-template name="DefaultPageNum"/>
-                    </xsl:if>
-                </xsl:if>
+				<!--Creating level element-->
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level',$level,'&gt;')"/>
+				<xsl:if test="(d:GetPageNum($myObj)=0) and (d:CheckTocOccur($myObj)=1) and ($custom='Automatic')">
+					<xsl:if test="preceding-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Cover Pages'">
+						<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+					</xsl:if>
+					<xsl:if test="not(w:r[1]/w:br/@w:type='page') or not(w:r[1]/w:lastRenderedPageBreak)">
+						<xsl:call-template name="DefaultPageNum"/>
+					</xsl:if>
+				</xsl:if>
                 <!--Checking whether heading is present in the document-->
                 <xsl:if test="$check!=0">
                     <!--checking for custom style set for page numbers-->
                     <xsl:if test="$custom='Automatic'">
-                        <xsl:choose>
-                            <!--Checking page breaks-->
-                            <xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
-                                <xsl:choose>
-                                    <xsl:when test="((w:r/w:br/@w:type='page') and not((following-sibling::w:p[1]/w:pPr/w:sectPr) or (following-sibling::w:p[2]/w:r/w:lastRenderedPageBreak) or (following-sibling::w:p[1]/w:r/w:lastRenderedPageBreak) or (following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')))">
-                                        <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
-                                        <xsl:call-template name="SectionBreak">
-                                            <xsl:with-param name="count" select="'1'"/>
-                                            <xsl:with-param name="node" select="'Para'"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <xsl:when test="(w:r/w:lastRenderedPageBreak)">
-                                        <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
-                                        <xsl:call-template name="SectionBreak">
-                                            <xsl:with-param name="count" select="'1'"/>
-                                            <xsl:with-param name="node" select="'Para'"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                </xsl:choose>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:if>
+						<xsl:choose>
+							<!--Checking page breaks-->
+							<xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
+								<xsl:choose>
+									<xsl:when test="((w:r/w:br/@w:type='page') and not((following-sibling::w:p[1]/w:pPr/w:sectPr) or (following-sibling::w:p[2]/w:r/w:lastRenderedPageBreak) or (following-sibling::w:p[1]/w:r/w:lastRenderedPageBreak) or (following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')))">
+										<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+										<xsl:call-template name="SectionBreak">
+											<xsl:with-param name="count" select="'1'"/>
+											<xsl:with-param name="node" select="'Para'"/>
+										</xsl:call-template>
+									</xsl:when>
+									<xsl:when test="(w:r/w:lastRenderedPageBreak)">
+										<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+										<xsl:call-template name="SectionBreak">
+											<xsl:with-param name="count" select="'1'"/>
+											<xsl:with-param name="node" select="'Para'"/>
+										</xsl:call-template>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:when>
+						</xsl:choose>
+					</xsl:if>
                     <!--Calling tmpHeading template for adding Levels-->
 
                     <!-- DB :  Check if PageNumberDAISY style is applied to skip heading styles in output file when this style is applied.  -->
@@ -482,7 +476,7 @@
             <xsl:when test="not(w:t) and (w:lastRenderedPageBreak) and (w:br/@w:type='page')">
               <xsl:if test="not(../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')">
                 <xsl:if test="not(../preceding-sibling::node()[1]/w:pPr/w:sectPr)">
-                  <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
+                  <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
                   <!--calling template to initialize page number information-->
                   <xsl:call-template name="SectionBreak">
                     <xsl:with-param name="count" select="'1'"/>
@@ -503,7 +497,7 @@
                                 or (../following-sibling::w:p[1]/w:r/w:lastRenderedPageBreak)
                                 or (../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')) )">
               <!--Incrementing page numbers-->
-              <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
+              <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
               <!--calling template to initialize page number information-->
               <xsl:call-template name="SectionBreak">
                 <xsl:with-param name="count" select="'1'"/>
@@ -513,7 +507,7 @@
             <xsl:when test="(w:lastRenderedPageBreak)
                             and not(../w:pPr/w:sectPr
                                 or ../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')">
-              <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
+              <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
               <!--calling template to initialize page number information-->
               <xsl:call-template name="SectionBreak">
                 <xsl:with-param name="count" select="'1'"/>
@@ -539,12 +533,12 @@
         <!--Pushes the current level into the stack-->
         <xsl:variable name="PeekLevel" select="d:ListPeekLevel($myObj)"/>
 
-        <!--Checking the current level with the PeekLevel in the stack-->
-        <xsl:if test="$PeekLevel=$openlvl">
-            <xsl:variable name="PeekLevel1" select="d:ListPush($myObj,$openlvl)"/>
-            <xsl:variable name="IncListCounter" select="d:IncrementListCounters($myObj,$openlvl,$openId)"/>
-            <xsl:variable name="txt" select="d:TextList($myObj,$numFmt,$lText,$openId,$openlvl)"/>
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
+		<!--Checking the current level with the PeekLevel in the stack-->
+		<xsl:if test="$PeekLevel=$openlvl">
+			<xsl:sequence select="d:sink(d:ListPush($myObj,$openlvl))"/> <!-- empty -->
+			<xsl:sequence select="d:IncrementListCounters($myObj,$openlvl,$openId)"/> <!-- empty -->
+			<xsl:variable name="txt" select="d:TextList($myObj,$numFmt,$lText,$openId,$openlvl)"/>
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
 
             <xsl:choose>
                 <xsl:when  test="($numFmt='lowerLetter')
@@ -560,6 +554,7 @@
                     </xsl:call-template>
                 </xsl:when>
                 <xsl:otherwise>
+                    <xsl:sequence select="d:sink($txt)"/> <!-- empty-->
                     <xsl:call-template name="ParagraphStyle">
                         <xsl:with-param name="custom" select="$custom"/>
                         <!--<xsl:with-param name="txt" select="$txt"/>-->
@@ -570,15 +565,15 @@
 
         </xsl:if>
     
-        <!--Checking the current level with the PeekLevel in the stack-->
-        <xsl:if test="$openlvl &gt; $PeekLevel">
-            <xsl:variable name="diffLevel" select="d:DiffLevel($myObj, $openlvl,$PeekLevel)"/>
-            <xsl:choose>
-                <xsl:when test="$diffLevel = 1">
-                    <xsl:variable name="PeekLevel1" select="d:ListPush($myObj, $openlvl)"/>
-                    <xsl:variable name="IncListCounter" select="d:IncrementListCounters($myObj, $openlvl,$openId)"/>
-                    <xsl:variable name="txt" select="d:TextList($myObj, $numFmt,$lText,$openId,$openlvl)"/>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
+		<!--Checking the current level with the PeekLevel in the stack-->
+		<xsl:if test="$openlvl &gt; $PeekLevel">
+			<xsl:variable name="diffLevel" select="d:DiffLevel($openlvl,$PeekLevel)"/>
+			<xsl:choose>
+				<xsl:when test="$diffLevel = 1">
+					<xsl:sequence select="d:sink(d:ListPush($myObj,$openlvl))"/> <!-- empty -->
+					<xsl:sequence select="d:IncrementListCounters($myObj,$openlvl,$openId)"/> <!-- empty -->
+					<xsl:variable name="txt" select="d:TextList($myObj,$numFmt,$lText,$openId,$openlvl)"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
 
                     <xsl:choose>
                         <xsl:when  test="($numFmt='lowerLetter')
@@ -586,30 +581,31 @@
                           or ($numFmt='upperRoman')
                           or ($numFmt='upperLetter')
                           or ($numFmt='decimalZero')">
-                            <xsl:call-template name="ParagraphStyle">
-                                <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="txt" select="$txt"/>
-                                <xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
-                            </xsl:call-template>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:call-template name="ParagraphStyle">
-                                <xsl:with-param name="custom" select="$custom"/>
-                                <!--<xsl:with-param name="txt" select="$txt"/>-->
-                                <xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
-                            </xsl:call-template>
-                        </xsl:otherwise>
-                    </xsl:choose>
+							<xsl:call-template name="ParagraphStyle">
+								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="txt" select="$txt"/>
+								<xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
+							</xsl:call-template>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="d:sink($txt)"/> <!-- empty -->
+							<xsl:call-template name="ParagraphStyle">
+								<xsl:with-param name ="custom" select="$custom"/>
+								<!--<xsl:with-param name="txt" select="$txt"/>-->
+								<xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
+							</xsl:call-template>
+						</xsl:otherwise>
+					</xsl:choose>
 
-                </xsl:when>
-                <xsl:otherwise>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
-                    <xsl:variable name="reduceOne" select="d:ReduceOne($myObj, $diffLevel)"/>
-                    <xsl:call-template name="recursive">
-                        <xsl:with-param name="rec" select="$reduceOne"/>
-                    </xsl:call-template>
-                    <xsl:value-of select="d:Increment($myObj, $openlvl,$PeekLevel,$openId)"/>
-                    <xsl:variable name="txt" select="d:TextList($myObj, $numFmt,$lText,$openId,$openlvl)"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
+					<xsl:variable name="reduceOne" select="d:ReduceOne($diffLevel)"/>
+					<xsl:call-template name="recursive">
+						<xsl:with-param name="rec" select="$reduceOne"/>
+					</xsl:call-template>
+					<xsl:value-of select="d:Increment2($myObj,$openlvl,$PeekLevel,$openId)"/> <!-- empty -->
+					<xsl:variable name ="txt" select="d:TextList($myObj,$numFmt,$lText,$openId,$openlvl)"/>
 
                     <xsl:choose>
                         <xsl:when  test="($numFmt='lowerLetter')
@@ -638,19 +634,19 @@
 
     </xsl:template>
 
-    <!--Template to close the List-->
-    <xsl:template name="closelist">
-        <xsl:param name="close"/>
-        <xsl:message terminate="no">progress:closelist</xsl:message>
-        <!--Gets the current level of the stack  -->
-        <xsl:variable name="PeekLevel" select="d:ListPeekLevel($myObj)"/>
-        <!--Checking the current level with the PeekLevel in the stack-->
-        <xsl:if test="$close &lt; $PeekLevel">
-            <!--PoPs one level from the stack-->
-            <xsl:variable name="PopLevel" select="d:ListPoPLevel($myObj)"/>
-      <xsl:if test="not(preceding-sibling::node()[1][w:r/w:rPr/w:rStyle[substring(@w:val,1,15)='PageNumberDAISY']])">
-              <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
-      </xsl:if>
+	<!--Template to close the List-->
+	<xsl:template name="closelist">
+		<xsl:param name="close"/>
+		<xsl:message terminate="no">progress:closelist</xsl:message>
+		<!--Gets the current level of the stack  -->
+		<xsl:variable name="PeekLevel" select="d:ListPeekLevel($myObj)"/>
+		<!--Checking the current level with the PeekLevel in the stack-->
+		<xsl:if test="$close &lt; $PeekLevel">
+			<!--PoPs one level from the stack-->
+			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
+            <xsl:if test="not(preceding-sibling::node()[1][w:r/w:rPr/w:rStyle[substring(@w:val,1,15)='PageNumberDAISY']])">
+                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
+            </xsl:if>
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
             <!--Loop through until we have closed all the Lower levels-->
@@ -679,77 +675,77 @@
         <xsl:param name="level"/>
         <xsl:message terminate="no">debug in recStart</xsl:message>
         <xsl:choose>
-            <xsl:when test="$level='0'">
-                <xsl:variable name="strStart">
-                    <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$abstLevel]/w:lvl[@w:ilvl=$level]/w:start/@w:val"/>
-                </xsl:variable>
-                <xsl:choose>
-                    <xsl:when test="$strStart=''">
-                        <xsl:variable name="appendString" select="d:StartString($myObj, $level,'0')"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:variable name="appendString" select="d:StartString($myObj, $level,$strStart)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:variable name="strStart">
-                    <xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$abstLevel]/w:lvl[@w:ilvl=$level]/w:start/@w:val"/>
-                </xsl:variable>
-                <xsl:choose>
-                    <xsl:when test="$strStart=''">
-                        <xsl:variable name="appendString" select="d:StartString($myObj, $level,'0')"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:variable name="appendString" select="d:StartString($myObj, $level,$strStart)"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-                <xsl:variable name="dec" select="d:DecrementStart($myObj, $level)"/>
-                <xsl:call-template name="recStart">
-                    <xsl:with-param name="abstLevel" select="$abstLevel"/>
-                    <xsl:with-param name="level" select="$dec"/>
-                </xsl:call-template>
-            </xsl:otherwise>
-        </xsl:choose>
+			<xsl:when test="$level=0">
+				<xsl:variable name="strStart">
+					<xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$abstLevel]/w:lvl[@w:ilvl=$level]/w:start/@w:val"/>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$strStart=''">
+						<xsl:sequence select="d:sink(d:StartString($myObj,$level,'0'))"/> <!-- empty -->
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:sequence select="d:sink(d:StartString($myObj,$level,$strStart))"/> <!-- empty -->
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:variable name="strStart">
+					<xsl:value-of select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$abstLevel]/w:lvl[@w:ilvl=$level]/w:start/@w:val"/>
+				</xsl:variable>
+				<xsl:choose>
+					<xsl:when test="$strStart=''">
+						<xsl:sequence select="d:sink(d:StartString($myObj,$level,'0'))"/> <!-- empty -->
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:sequence select="d:sink(d:StartString($myObj,$level,$strStart))"/> <!-- empty -->
+					</xsl:otherwise>
+				</xsl:choose>
+				<xsl:variable name="dec" select="d:DecrementStart($level)"/>
+				<xsl:call-template name="recStart">
+					<xsl:with-param name="abstLevel" select="$abstLevel"/>
+					<xsl:with-param name="level" select="$dec"/>
+				</xsl:call-template>
+			</xsl:otherwise>
+		</xsl:choose>
     </xsl:template>
 
     <!--Template to Close Complex List-->
     <xsl:template name="ComplexListClose">
-        <xsl:param name="close"/>
-        <xsl:message terminate="no">progress:closelist</xsl:message>
-        <!--Gets the current level of the stack  -->
-        <xsl:variable name="PeekLevel" select="d:ListPeekLevel($myObj)"/>
-        <!--Checking the current level with the PeekLevel in the stack-->
-        <xsl:if test="$close &lt; $PeekLevel">
-            <!--PoPs one level from the stack-->
-            <xsl:variable name="PoPLevel" select="d:ListPoPLevel($myObj)"/>
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
-            <!--Loop through until we have closed all the Lower levels-->
-            <xsl:call-template name="ComplexListClose">
-                <xsl:with-param name="close" select="$close"/>
-            </xsl:call-template>
-        </xsl:if>
-    </xsl:template>
+		<xsl:param name="close"/>
+		<xsl:message terminate="no">progress:closelist</xsl:message>
+		<!--Gets the current level of the stack  -->
+		<xsl:variable name="PeekLevel" select="d:ListPeekLevel($myObj)"/>
+		<!--Checking the current level with the PeekLevel in the stack-->
+		<xsl:if test="$close &lt; $PeekLevel">
+			<!--PoPs one level from the stack-->
+			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
+			<!--Loop through until we have closed all the Lower levels-->
+			<xsl:call-template name="ComplexListClose">
+				<xsl:with-param name="close" select="$close"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
 
     <!--Template to Close All nested List-->
     <xsl:template name="CloseLastlist">
         <xsl:param name="close"/>
     <xsl:param name="custom"/>
-        <xsl:message terminate="no">progress:closelist</xsl:message>
-        <!--Gets the current level of the stack  -->
-        <xsl:variable name="PeekLevel" select="d:ListPeekLevel($myObj)"/>
-        <!--Checking the current level with the PeekLevel in the stack-->
-        <xsl:if test="$close &lt;= $PeekLevel">
-            <!--PoPs one level from the stack-->
-            <xsl:variable name="PoPLevel" select="d:ListPoPLevel($myObj)"/>
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
-            <xsl:if test="$PeekLevel!=0">
-                <!--Loop through until we have closed all the Lower levels-->
-                <xsl:call-template name="CloseLastlist">
-                    <xsl:with-param name="close" select="$close"/>
-          <xsl:with-param name="custom" select="$custom"/>
+		<xsl:message terminate="no">progress:closelist</xsl:message>
+		<!--Gets the current level of the stack  -->
+		<xsl:variable name="PeekLevel" select="d:ListPeekLevel($myObj)"/>
+		<!--Checking the current level with the PeekLevel in the stack-->
+		<xsl:if test="$close &lt;= $PeekLevel">
+			<!--PoPs one level from the stack-->
+			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
+			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
+			<xsl:if test="$PeekLevel!=0">
+				<!--Loop through until we have closed all the Lower levels-->
+				<xsl:call-template name="CloseLastlist">
+					<xsl:with-param name="close" select="$close"/>
+                    <xsl:with-param name="custom" select="$custom"/>
                 </xsl:call-template>
             </xsl:if>
         </xsl:if>
@@ -759,102 +755,102 @@
     <xsl:template name="DefaultPageNum">
         <xsl:message terminate="no">debug in DefaultPageNum</xsl:message>
         <xsl:if test="d:ReturnPageNum($myObj)&lt;=1">
-            <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
-        </xsl:if>
-        <xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
-            <xsl:variable name="setConPageBreak" select="d:SetConPageBreak($myObj)"/>
-        </xsl:if>
-        <!--Traversing through each node-->
-        <xsl:for-each select="following-sibling::node()">
-            <xsl:choose>
-                <!--Checking for paragraph section break-->
-                <xsl:when test="w:pPr/w:sectPr">
-                    <xsl:if test="d:CheckSection($myObj)=1">
-                        <xsl:variable name="sectionInfo" select="d:SectionCounter($myObj,w:pPr/w:sectPr/w:pgNumType/@w:fmt,w:pPr/w:sectPr/w:pgNumType/@w:start)"/>
-                        <xsl:choose>
-                            <!--Checking if page start and page format is present-->
-                            <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                <!--Calling tempale for page number text-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                    <xsl:with-param name="matter" select="'body'"/>
-                                    <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <!--Checking if page format is present and not page start-->
-                            <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                <!--Calling tempale for page number text-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                    <xsl:with-param name="matter" select="'body'"/>
-                                    <xsl:with-param name="counter" select="'0'"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <!--Checking if page start is present and not page format-->
-                            <xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                <!--Calling tempale for page number text-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                    <xsl:with-param name="matter" select="'body'"/>
-                                    <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <!--If both are not present-->
-                                <!--Calling tempale for page number text-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                    <xsl:with-param name="matter" select="'body'"/>
-                                    <xsl:with-param name="counter" select="'0'"/>
-                                </xsl:call-template>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:if>
-                </xsl:when>
-                <!--Checking for Section in a document-->
-                <xsl:when test="name()='w:sectPr'">
-                    <xsl:if test="d:CheckSection($myObj)=1">
-                        <xsl:variable name="sectionInfo" select="d:SectionCounter($myObj,w:pgNumType/@w:fmt,w:pgNumType/@w:start)"/>
-                        <xsl:choose>
-                            <!--Checking if page start and page format is present-->
-                            <xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                    <xsl:with-param name="matter" select="'body'"/>
-                                    <xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <!--Checking if page format is present and not page start-->
-                            <xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                    <xsl:with-param name="matter" select="'body'"/>
-                                    <xsl:with-param name="counter" select="'0'"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <!--Checking if page start is present and not page format-->
-                            <xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                    <xsl:with-param name="matter" select="'body'"/>
-                                    <xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <!--If both are not present-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                    <xsl:with-param name="matter" select="'body'"/>
-                                    <xsl:with-param name="counter" select="'0'"/>
-                                </xsl:call-template>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:if>
-                </xsl:when>
-            </xsl:choose>
-        </xsl:for-each>
-        <xsl:variable name="reSetConPageBreak" select="d:ResetSetConPageBreak($myObj)"/>
-        <xsl:variable name="initialize" select="d:InitalizeCheckSection($myObj)"/>
+			<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+		</xsl:if>
+		<xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
+			<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
+		</xsl:if>
+		<!--Traversing through each node-->
+		<xsl:for-each select="following-sibling::node()">
+			<xsl:choose>
+				<!--Checking for paragraph section break-->
+				<xsl:when test="w:pPr/w:sectPr">
+					<xsl:if test="d:CheckSection($myObj)=1">
+						<xsl:sequence select="d:sink(d:SectionCounter($myObj,w:pPr/w:sectPr/w:pgNumType/@w:fmt,w:pPr/w:sectPr/w:pgNumType/@w:start))"/> <!-- empty -->
+						<xsl:choose>
+							<!--Checking if page start and page format is present-->
+							<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+								<!--Calling tempale for page number text-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+									<xsl:with-param name="matter" select="'body'"/>
+									<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+								</xsl:call-template>
+							</xsl:when>
+							<!--Checking if page format is present and not page start-->
+							<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
+								<!--Calling tempale for page number text-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+									<xsl:with-param name="matter" select="'body'"/>
+									<xsl:with-param name="counter" select="'0'"/>
+								</xsl:call-template>
+							</xsl:when>
+							<!--Checking if page start is present and not page format-->
+							<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+								<!--Calling tempale for page number text-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+									<xsl:with-param name="matter" select="'body'"/>
+									<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+								</xsl:call-template>
+							</xsl:when>
+							<xsl:otherwise>
+								<!--If both are not present-->
+								<!--Calling tempale for page number text-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+									<xsl:with-param name="matter" select="'body'"/>
+									<xsl:with-param name="counter" select="'0'"/>
+								</xsl:call-template>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:if>
+				</xsl:when>
+				<!--Checking for Section in a document-->
+				<xsl:when test="name()='w:sectPr'">
+					<xsl:if test="d:CheckSection($myObj)=1">
+						<xsl:sequence select="d:sink(d:SectionCounter($myObj,w:pgNumType/@w:fmt,w:pgNumType/@w:start))"/> <!-- empty -->
+						<xsl:choose>
+							<!--Checking if page start and page format is present-->
+							<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+									<xsl:with-param name="matter" select="'body'"/>
+									<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
+								</xsl:call-template>
+							</xsl:when>
+							<!--Checking if page format is present and not page start-->
+							<xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+									<xsl:with-param name="matter" select="'body'"/>
+									<xsl:with-param name="counter" select="'0'"/>
+								</xsl:call-template>
+							</xsl:when>
+							<!--Checking if page start is present and not page format-->
+							<xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+									<xsl:with-param name="matter" select="'body'"/>
+									<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
+								</xsl:call-template>
+							</xsl:when>
+							<xsl:otherwise>
+								<!--If both are not present-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+									<xsl:with-param name="matter" select="'body'"/>
+									<xsl:with-param name="counter" select="'0'"/>
+								</xsl:call-template>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:if>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:for-each>
+		<xsl:sequence select="d:sink(d:ResetSetConPageBreak($myObj))"/> <!-- empty -->
+		<xsl:sequence select="d:sink(d:InitalizeCheckSection($myObj))"/> <!-- empty -->
     </xsl:template>
 
     <xsl:template name="tmpHeading">
@@ -879,32 +875,32 @@
         <xsl:param name="levelValue"/>
         <xsl:message terminate="no">debug in tmpAbbrAcrHeading</xsl:message>
         <xsl:choose>
-            <xsl:when test="(d:AbbrAcrFlag($myObj)='1') and not(w:r/w:pict/v:shape/v:textbox)">
-                <xsl:variable name="temp">
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
-                </xsl:variable>
-                <xsl:variable name="abbrpara" select="d:PushAbrAcrhead($myObj, $temp)"/>
-                <xsl:if test="d:ListMasterSubFlag($myObj)='1'">
-                    <xsl:variable name="curLevel" select="d:PeekLevel($myObj)"/>
-                    <xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj, $curLevel)"/>
-                    <xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
-                    <xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag($myObj)"/>
-                    <xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj, $curLevel)"/>
-                </xsl:if>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:if test="not(w:r/w:pict/v:shape/v:textbox)">
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
-                    <xsl:if test="d:ListMasterSubFlag($myObj)='1'">
-                        <xsl:variable name="curLevel" select="d:PeekLevel($myObj)"/>
-                        <xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj, $curLevel)"/>
-                        <xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
-                        <xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag($myObj)"/>
-                        <xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj, $curLevel)"/>
-                    </xsl:if>
-                </xsl:if>
-            </xsl:otherwise>
-        </xsl:choose>
+			<xsl:when test="(d:AbbrAcrFlag($myObj)=1) and not(w:r/w:pict/v:shape/v:textbox)">
+				<xsl:variable name="temp">
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
+				</xsl:variable>
+				<xsl:sequence select="d:sink(d:PushAbrAcrhead($myObj,$temp))"/> <!-- empty -->
+				<xsl:if test="d:ListMasterSubFlag($myObj)=1">
+					<xsl:variable name ="curLevel" select="d:PeekLevel($myObj)"/>
+					<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj,$curLevel)"/>
+					<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
+					<xsl:sequence select="d:sink(d:MasterSubResetFlag($myObj))"/> <!-- empty -->
+					<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj,$curLevel)"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:if test="not(w:r/w:pict/v:shape/v:textbox)">
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
+					<xsl:if test="d:ListMasterSubFlag($myObj)=1">
+						<xsl:variable name ="curLevel" select="d:PeekLevel($myObj)"/>
+						<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj,$curLevel)"/>
+						<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
+						<xsl:sequence select="d:sink(d:MasterSubResetFlag($myObj))"/> <!-- empty -->
+						<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj,$curLevel)"/>
+					</xsl:if>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
         <!-- NP 20220503 : removing empty paragraphs for now-->
         <!--<xsl:if test="(following-sibling::node()[1][name()='w:sectPr']) or (following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,8,1)=$levelValue])">
             <p></p>
@@ -920,42 +916,42 @@
         <xsl:variable name="quote">"</xsl:variable>
         <xsl:message terminate="no">progress:Table found</xsl:message>
         <xsl:if test="$custom='Automatic'">
-            <xsl:for-each select="w:tr/w:tc">
-                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                <xsl:if test="((w:p/w:r/w:lastRenderedPageBreak) or (w:p/w:r/w:br/@w:type='page'))">
-                    <xsl:if test="not((../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:lastRenderedPageBreak) or (../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:br/@w:type='page') or (preceding-sibling::w:tc[1]/w:p/w:r/w:lastRenderedPageBreak) or (preceding-sibling::w:tc[1]/w:p/w:r/w:br/@w:type='page'))">
-                        <xsl:variable name="increment" select="d:IncrementPage($myObj)"/>
-                        <!--Calling SectionBreak template for getting the section page type information-->
-                        <xsl:call-template name="SectionBreak">
-                            <xsl:with-param name="count" select="'1'"/>
-                            <xsl:with-param name="node" select="'Table'"/>
-                        </xsl:call-template>
-                    </xsl:if>
-                </xsl:if>
-            </xsl:for-each>
-        </xsl:if>
+			<xsl:for-each select="w:tr/w:tc">
+				<!-- <xsl:message terminate="no">progress:parahandler</xsl:message> -->
+				<xsl:if test="((w:p/w:r/w:lastRenderedPageBreak) or (w:p/w:r/w:br/@w:type='page'))">
+					<xsl:if test="not((../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:lastRenderedPageBreak) or (../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:br/@w:type='page') or (preceding-sibling::w:tc[1]/w:p/w:r/w:lastRenderedPageBreak) or (preceding-sibling::w:tc[1]/w:p/w:r/w:br/@w:type='page'))">
+						<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+						<!--Calling SectionBreak template for getting the section page type information-->
+						<xsl:call-template name="SectionBreak">
+							<xsl:with-param name="count" select="'1'"/>
+							<xsl:with-param name="node" select="'Table'"/>
+						</xsl:call-template>
+					</xsl:if>
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:if>
         <table border="1">
             <!-- check previous sibling is a /w:pPr/w:pStyle[@w:val='Caption'], if so print w:t-->
             <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption') or (preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY') or (following-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
                 <caption>
                     <xsl:if test="(preceding-sibling::node()[1]/w:r/w:rPr/w:lang) or (preceding-sibling::node()[1]/w:r/w:rPr/w:rFonts/@w:hint)">
-                        <xsl:attribute name="xml:lang">
-                            <!--Calling PictureLanguage template for implementing language for the text in the Table-->
-                            <xsl:call-template name="PictureLanguage">
-                                <xsl:with-param name="CheckLang" select="'Table'"/>
-                            </xsl:call-template>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <xsl:if test="(preceding-sibling::node()[1]/w:r/w:rPr/w:rtl) or (preceding-sibling::node()[1]/w:pPr/w:bidi)">
-                        <xsl:variable name="varBdo">
-                            <xsl:call-template name="PictureLanguage">
-                                <xsl:with-param name="CheckLang" select="'Table'"/>
-                            </xsl:call-template>
-                        </xsl:variable>
-                        <xsl:variable name="bdoflag" select="d:SetcaptionFlag($myObj)"/>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$varBdo,$quote,'&gt;')"/>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$varBdo,$quote,'&gt;')"/>
-                    </xsl:if>
+						<xsl:attribute name="xml:lang">
+							<!--Calling PictureLanguage template for implementing language for the text in the Table-->
+							<xsl:call-template name="PictureLanguage">
+								<xsl:with-param name="CheckLang" select="'Table'"/>
+							</xsl:call-template>
+						</xsl:attribute>
+					</xsl:if>
+					<xsl:if test="(preceding-sibling::node()[1]/w:r/w:rPr/w:rtl) or (preceding-sibling::node()[1]/w:pPr/w:bidi)">
+						<xsl:variable name="varBdo">
+							<xsl:call-template name="PictureLanguage">
+								<xsl:with-param name="CheckLang" select="'Table'"/>
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:sequence select="d:sink(d:SetcaptionFlag($myObj))"/> <!-- empty -->
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$varBdo,$quote,'&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$varBdo,$quote,'&gt;')"/>
+					</xsl:if>
 
                     <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
                         <xsl:for-each select="preceding-sibling::node()[1]/node()">
@@ -1036,43 +1032,30 @@
                         </xsl:for-each>
                     </xsl:if>
                     <xsl:if test="d:SetcaptionFlag($myObj)=2">
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                    </xsl:if>
-                    <xsl:variable name="captionflag" select="d:reSetcaptionFlag($myObj)"/>
-                    <xsl:if test="(preceding-sibling::w:p[1]/w:r/w:rPr/w:rtl) or (preceding-sibling::w:p[1]/w:pPr/w:bidi)">
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
-                        <!--<xsl:call-template name="CloseLevel">
-                            <xsl:with-param name="CurrentLevel" select="-1"/>
-                            <xsl:with-param name="verfoot" select="$VERSION"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                            <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                        </xsl:call-template>-->
-                    </xsl:if>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+					</xsl:if>
+					<xsl:sequence select="d:sink(d:reSetcaptionFlag($myObj))"/> <!-- empty -->
+					<xsl:if test="(preceding-sibling::w:p[1]/w:r/w:rPr/w:rtl) or (preceding-sibling::w:p[1]/w:pPr/w:bidi)">
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+					</xsl:if>
                 </caption>
             </xsl:if>
             <xsl:if test="(following-sibling::w:p[1]/w:pPr/w:pStyle/@w:val='Caption')">
-                <xsl:message terminate="no">translation.oox2Daisy.TableCaption</xsl:message>
-            </xsl:if>
-            <!--Checking whether alingment of the cell is set-->
-            <xsl:if test="w:tr/w:tc/w:p/w:pPr/w:jc">
-                <!--Creating col element of the table for specifying alignment of the cell content-->
-                <xsl:variable name="colvalue">
-                    <xsl:value-of select="w:tr/w:tc/w:p/w:pPr/w:jc/@w:val"/>
-                </xsl:variable>
-                <xsl:choose>
-                    <xsl:when test="not($colvalue='left') and not($colvalue='center') and not($colvalue='right') and not($colvalue='justify')and not($colvalue='char')">
-                        <col align="left"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <col align="{$colvalue}"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:if>
+				<xsl:message terminate="no">translation.oox2Daisy.TableCaption</xsl:message>
+			</xsl:if>
+			<!--Checking whether alingment of the cell is set-->
+			<xsl:if test="w:tr/w:tc/w:p/w:pPr/w:jc">
+				<!--Creating col element of the table for specifying alignment of the cell content-->
+				<xsl:variable name="colvalue" select="(w:tr/w:tc/w:p/w:pPr/w:jc/@w:val)[1]"/>
+				<xsl:choose>
+					<xsl:when test="not($colvalue='left') and not($colvalue='center') and not($colvalue='right') and not($colvalue='justify')and not($colvalue='char')">
+						<col align="left"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<col align="{$colvalue}"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:if>
             <!--Checking for table header-->
             <xsl:if test="w:tr/w:trPr/w:tblHeader">
                 <thead>
@@ -1143,67 +1126,67 @@
                             <xsl:for-each select="w:tc">
                                 <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:if test="w:tcPr/w:vMerge[@w:val='restart']">
-                                    <xsl:variable name="columnPosition" select="position()"/>
-                                    <xsl:for-each select="../following-sibling::w:tr/w:tc[$columnPosition]/w:tcPr">
-                                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                                        <xsl:if test="d:ReturnFlagRowspan($myObj)=0">
-                                            <xsl:if test="(w:vMerge) and not(w:vMerge/@w:val='restart')">
-                                                <xsl:variable name="rowspan" select="d:Rowspan($myObj)"/>
-                                            </xsl:if>
-                                        </xsl:if>
-                                        <xsl:if test="not(w:vMerge)">
-                                            <xsl:variable name="getflagRowspan" select="d:GetFlagRowspan($myObj)"/>
-                                        </xsl:if>
-                                    </xsl:for-each>
-                                    <xsl:variable name="setflagRowspan" select="d:SetFlagRowspan($myObj)"/>
-                                </xsl:if>
+									<xsl:variable name="columnPosition" select="position()"/>
+									<xsl:for-each select="../following-sibling::w:tr/w:tc[$columnPosition]/w:tcPr">
+										<!-- <xsl:message terminate="no">progress:parahandler</xsl:message> -->
+										<xsl:if test="d:ReturnFlagRowspan($myObj)=0">
+											<xsl:if test="(w:vMerge) and not(w:vMerge/@w:val='restart')">
+												<xsl:sequence select="d:sink(d:Rowspan($myObj))"/> <!-- empty -->
+											</xsl:if>
+										</xsl:if>
+										<xsl:if test="not(w:vMerge)">
+											<xsl:sequence select="d:sink(d:GetFlagRowspan($myObj))"/> <!-- empty -->
+										</xsl:if>
+									</xsl:for-each>
+									<xsl:sequence select="d:sink(d:SetFlagRowspan($myObj))"/> <!-- empty -->
+								</xsl:if>
                                 <!--If paragraph element exists-->
                                 <xsl:if test="w:p">
                                     <xsl:choose>
-                                        <!--Checking for both colspan and rowspan-->
-                                        <xsl:when test="(w:tcPr/w:gridSpan) and (w:tcPr/w:vMerge[@w:val='restart'])">
-                                            <!--If Column span property is set the assinging the value-->
-                                            <xsl:variable name="colspan" select="w:tcPr/w:gridSpan/@w:val"/>
-                                            <!--variale holds the value of number of Rows span-->
-                                            <!--Creating td tag with rowspan and colspan attribute-->
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=',$quote,$colspan,$quote,' ',' rowspan=',$quote,d:GetRowspan($myObj)+1,$quote,'&gt;')"/>
-                                        </xsl:when>
-                                        <!--Checking for colspan and not rowspan-->
-                                        <xsl:when test="(w:tcPr/w:gridSpan) and not(w:tcPr/w:vMerge[@w:val='restart'])">
-                                            <!--colspan variable holds colspan value-->
-                                            <xsl:variable name="colspan" select="w:tcPr/w:gridSpan/@w:val"/>
-                                            <!--Creating td tag with colspan attribute-->
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=',$quote,$colspan,$quote,'&gt;')"/>
-                                        </xsl:when>
-                                        <!--Checking for rowspan and not colspan-->
-                                        <xsl:when test="(w:tcPr/w:vMerge[@w:val='restart']) and not(w:tcPr/w:gridSpan)">
-                                            <!--rowspan variable holds rowspan value-->
-                                            <!--Creating td tag with rowspan attribute-->
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','rowspan=',$quote,d:GetRowspan($myObj)+1,$quote,'&gt;')"/>
-                                        </xsl:when>
-                                        <xsl:otherwise >
-                                            <!--Opening the td tag-->
-                                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','&gt;')"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
+										<!--Checking for both colspan and rowspan-->
+										<xsl:when test="(w:tcPr/w:gridSpan) and (w:tcPr/w:vMerge[@w:val='restart'])">
+											<!--If Column span property is set the assinging the value-->
+											<xsl:variable name="colspan" select="w:tcPr/w:gridSpan/@w:val"/>
+											<!--variale holds the value of number of Rows span-->
+											<!--Creating td tag with rowspan and colspan attribute-->
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=',$quote,$colspan,$quote,' ',' rowspan=',$quote,d:GetRowspan($myObj)+1,$quote,'&gt;')"/>
+										</xsl:when>
+										<!--Checking for colspan and not rowspan-->
+										<xsl:when test="(w:tcPr/w:gridSpan) and not(w:tcPr/w:vMerge[@w:val='restart'])">
+											<!--colspan variable holds colspan value-->
+											<xsl:variable name="colspan" select="w:tcPr/w:gridSpan/@w:val"/>
+											<!--Creating td tag with colspan attribute-->
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=',$quote,$colspan,$quote,'&gt;')"/>
+										</xsl:when>
+										<!--Checking for rowspan and not colspan-->
+										<xsl:when test="(w:tcPr/w:vMerge[@w:val='restart']) and not(w:tcPr/w:gridSpan)">
+											<!--rowspan variable holds rowspan value-->
+											<!--Creating td tag with rowspan attribute-->
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','rowspan=',$quote,d:GetRowspan($myObj)+1,$quote,'&gt;')"/>
+										</xsl:when>
+										<xsl:otherwise >
+											<!--Opening the td tag-->
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','&gt;')"/>
+										</xsl:otherwise>
+									</xsl:choose>
                                     <xsl:variable name="var_heading">
-                                        <xsl:for-each select="$stylesXml//w:styles/w:style/w:name[@w:val='heading 1']">
-                                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                                            <xsl:value-of select="../@w:styleId"/>
-                                        </xsl:for-each>
-                                    </xsl:variable>
-                                    <xsl:variable name="setRowspan" select="d:SetRowspan($myObj)"/>
-                                    <xsl:for-each select="w:p">
-                                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                                        <!--Calling paragraph template whenever w:p element is encountered.-->
-                                        <xsl:call-template name="StyleContainer">
-                                            <xsl:with-param name="VERSION" select="$parmVerTable"/>
-                                            <xsl:with-param name="custom" select="$custom"/>
-                                            <xsl:with-param name="styleHeading" select="$var_heading"/>
-                                            <xsl:with-param name="mastersubstyle" select="$mastersubtbl"/>
-                                            <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                        </xsl:call-template>
-                                    </xsl:for-each>
+										<xsl:for-each select="$stylesXml//w:styles/w:style/w:name[@w:val='heading 1']">
+											<!-- <xsl:message terminate="no">progress:parahandler</xsl:message> -->
+											<xsl:value-of select="../@w:styleId"/>
+										</xsl:for-each>
+									</xsl:variable>
+									<xsl:sequence select="d:sink(d:SetRowspan($myObj))"/> <!-- empty -->
+									<xsl:for-each select="w:p">
+										<!-- <xsl:message terminate="no">progress:parahandler</xsl:message> -->
+										<!--Calling paragraph template whenever w:p element is encountered.-->
+										<xsl:call-template name="StyleContainer">
+											<xsl:with-param name="VERSION" select="$parmVerTable"/>
+											<xsl:with-param name ="custom" select="$custom"/>
+											<xsl:with-param name ="styleHeading" select="$var_heading"/>
+											<xsl:with-param name ="mastersubstyle" select="$mastersubtbl"/>
+											<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+										</xsl:call-template>
+									</xsl:for-each>
                                     <!--Checking for nested table-->
                                     <xsl:for-each select="child::w:tbl">
                                         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
@@ -1222,7 +1205,7 @@
                                     </xsl:if>
                                 </xsl:if>
                             </xsl:for-each>
-                            <xsl:variable name="setRowspan" select="d:SetRowspan($myObj)"/>
+                            <xsl:sequence select="d:sink(d:SetRowspan($myObj))"/> <!-- empty -->
                             <!--Closing table row-->
                         </tr>
                     </xsl:if>
