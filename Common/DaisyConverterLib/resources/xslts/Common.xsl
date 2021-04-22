@@ -1134,13 +1134,11 @@
         </xsl:for-each>
 
         <!--checking    condition to close bdo Tag -->
-        <xsl:if test="d:SetbdoFlag($myObj)&gt;=2">
+        <xsl:if test="d:reSetbdoFlag($myObj)&gt;=1">
             <!--Closing BDO tag-->
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
         </xsl:if>
 
-        <!--reseting bdo flag-->
-        <xsl:sequence select="d:sink(d:reSetbdoFlag($myObj))"/> <!-- empty -->
         <xsl:sequence select="d:sink(d:AssingBookmark($myObj))"/> <!-- empty -->
 
         <!--closing paragraph tag-->
