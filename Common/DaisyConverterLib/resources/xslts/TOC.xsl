@@ -32,7 +32,6 @@
           <xsl:if test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']">
             <!--Checking for w:hyperlink Element-->
             <xsl:if test="w:hyperlink">
-              <xsl:variable name="aquote">"</xsl:variable>
               <xsl:variable name="set_list" select="d:Set_Toc($myObj)"/>
               <xsl:if test="$set_list=1">
                 <!--Opening level1 and list Tag-->
@@ -42,7 +41,7 @@
                     <xsl:value-of select="w:r/w:t"/>
                   </h1>
                 </xsl:if>
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'pl',$aquote,'&gt;')"/>
+                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','pl','&quot;','&gt;')"/>
               </xsl:if>
               <!--Checking for w:hyperlink Element-->
               <xsl:if test="w:hyperlink and not(w:pPr/w:pStyle[@w:val='TOCHeading'])">
@@ -89,7 +88,6 @@
           <!--Checking for TOC Style-->
           <xsl:if test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']">
             <xsl:if test ="not(w:hyperlink)">
-              <xsl:variable name="aquote">"</xsl:variable>
               <xsl:variable name="set_list" select="d:Set_Toc($myObj)"/>
               <xsl:if test="$set_list=1">
                 <!--opening level1 and list Tag-->
@@ -99,7 +97,7 @@
                     <xsl:value-of select="w:r/w:t"/>
                   </h1>
                 </xsl:if>
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'pl',$aquote,'&gt;')"/>
+                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','pl','&quot;','&gt;')"/>
               </xsl:if>
               <xsl:for-each select=".">
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
@@ -143,7 +141,6 @@
 
       <!--Checking for Table of content-->
       <xsl:for-each select="$documentXml//w:body/w:sdt">
-        <xsl:variable name="aquote">"</xsl:variable>
         <!--Checking for Table of content-->
         <xsl:if test="w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents'">
           <level1>
@@ -159,7 +156,7 @@
             <h1>
               <xsl:value-of select="w:sdtContent/w:p/w:r/w:t"/>
             </h1>
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'pl',$aquote,'&gt;')"/>
+            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','pl','&quot;','&gt;')"/>
             <!-- if Automatic TOC -->
             <xsl:if test="w:sdtContent/w:p/w:hyperlink">
               <xsl:for-each select="w:sdtContent/w:p/w:hyperlink">
