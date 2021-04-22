@@ -27,7 +27,7 @@
       <!--checking for Table of content Element-->
       <xsl:for-each select="$documentXml//w:document/w:body/node()">
         <!--Checking for w:p element-->
-        <xsl:if test="name()='w:p'">
+        <xsl:if test="self::w:p">
           <!-- Checking for TOC style-->
           <xsl:if test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']">
             <!--Checking for w:hyperlink Element-->
@@ -84,7 +84,7 @@
       <!--checking for Table of content-->
       <xsl:for-each select="$documentXml//w:document/w:body/node()">
         <!--Checking for w:p Tag-->
-        <xsl:if test="name()='w:p'">
+        <xsl:if test="self::w:p">
           <!--Checking for TOC Style-->
           <xsl:if test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']">
             <xsl:if test ="not(w:hyperlink)">

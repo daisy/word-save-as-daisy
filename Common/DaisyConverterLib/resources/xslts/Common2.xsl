@@ -465,7 +465,7 @@
     <xsl:param name="custom"/>
     
     <xsl:for-each select ="./node()">
-      <xsl:if test="name()='w:r'">
+      <xsl:if test="self::w:r">
         <xsl:if test="((w:lastRenderedPageBreak) or (w:br/@w:type='page'))
                       and ($custom='Automatic') ">
           <xsl:choose>
@@ -803,7 +803,7 @@
 					</xsl:if>
 				</xsl:when>
 				<!--Checking for Section in a document-->
-				<xsl:when test="name()='w:sectPr'">
+				<xsl:when test="self::w:sectPr">
 					<xsl:if test="d:CheckSection($myObj)=1">
 						<xsl:sequence select="d:sink(d:SectionCounter($myObj,w:pgNumType/@w:fmt,w:pgNumType/@w:start))"/> <!-- empty -->
 						<xsl:choose>
@@ -897,7 +897,7 @@
 			</xsl:otherwise>
 		</xsl:choose>
         <!-- NP 20220503 : removing empty paragraphs for now-->
-        <!--<xsl:if test="(following-sibling::node()[1][name()='w:sectPr']) or (following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,8,1)=$levelValue])">
+        <!--<xsl:if test="(following-sibling::node()[1][self::w:sectPr]) or (following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,8,1)=$levelValue])">
             <p></p>
         </xsl:if>-->
     </xsl:template>
@@ -950,7 +950,7 @@
                     <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
                         <xsl:for-each select="preceding-sibling::node()[1]/node()">
                             <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                            <xsl:if test="name()='w:r'">
+                            <xsl:if test="self::w:r">
                                 <xsl:for-each select=".">
                                     <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
@@ -965,7 +965,7 @@
                                     </xsl:choose>
                                 </xsl:for-each>
                             </xsl:if>
-                            <xsl:if test="name()='w:fldSimple'">
+                            <xsl:if test="self::w:fldSimple">
                                 <xsl:for-each select=".">
                                     <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
@@ -976,7 +976,7 @@
                     <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
                         <xsl:for-each select="preceding-sibling::node()[1]/node()">
                             <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                            <xsl:if test="name()='w:r'">
+                            <xsl:if test="self::w:r">
                                 <xsl:for-each select=".">
                                     <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
@@ -991,7 +991,7 @@
                                     </xsl:choose>
                                 </xsl:for-each>
                             </xsl:if>
-                            <xsl:if test="name()='w:fldSimple'">
+                            <xsl:if test="self::w:fldSimple">
                                 <xsl:for-each select=".">
                                     <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
@@ -1002,7 +1002,7 @@
                     <xsl:if test="(following-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
                         <xsl:for-each select="following-sibling::node()[1]/node()">
                             <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                            <xsl:if test="name()='w:r'">
+                            <xsl:if test="self::w:r">
                                 <xsl:for-each select=".">
                                     <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
@@ -1017,7 +1017,7 @@
                                     </xsl:choose>
                                 </xsl:for-each>
                             </xsl:if>
-                            <xsl:if test="name()='w:fldSimple'">
+                            <xsl:if test="self::w:fldSimple">
                                 <xsl:for-each select=".">
                                     <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
