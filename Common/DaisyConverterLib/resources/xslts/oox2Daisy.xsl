@@ -167,7 +167,7 @@
 	<!--Extending the DTD to support MathML-->
 	<xsl:template name="main">
 		<xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet href="dtbookbasic.css" type="text/css"?&gt;</xsl:text>
-		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'</xsl:text>
+		<!--<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'</xsl:text>
 		<xsl:text disable-output-escaping="yes">[&lt;!ENTITY % MATHML.prefixed "INCLUDE" &gt;
       &lt;!ENTITY % MATHML.prefix "mml"&gt;
       &lt;!ENTITY % Schema.prefix "sch"&gt;
@@ -189,7 +189,7 @@
        &lt;!ENTITY % externalNamespaces "xmlns:mml CDATA #FIXED 
                   'http://www.w3.org/1998/Math/MathML'" &gt;
 ] &gt;
-</xsl:text>
+</xsl:text>-->
 		<xsl:text>&#10;</xsl:text>
 		<!--This Xslt is Adding meta elements in Dtbook head element
     It is also calling templates Frontmatter, Bodymatter and Rearmatter-->
