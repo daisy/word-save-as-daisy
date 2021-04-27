@@ -26,7 +26,6 @@
 	<xsl:template name="tmpProcessFootNote">
 		<xsl:param name="varFootnote_Id"/>
 		<xsl:param name="varNote_Class"/>
-		<xsl:param name="characterStyle"/>
 		<xsl:message terminate="no">progress:footnote</xsl:message>
 		<!--Checking for matching reference Id for Fotnote and Endnote in footnote.xml
     or endnote.xml-->
@@ -119,7 +118,6 @@
 	<!--Template for Adding footnote-->
 	<xsl:template name="footnote">
 		<xsl:param name="verfoot"/>
-		<xsl:param name="mastersubfoot"/>
 		<xsl:param name="characterStyle"/>
 		<xsl:param name="sOperators"/>
 		<xsl:param name="sMinuses"/>
@@ -231,7 +229,6 @@
 			<!--Calling the template footnote recursively until d:FootNoteId() returns 0-->
 			<xsl:call-template name="footnote">
 				<xsl:with-param name ="verfoot" select ="$verfoot"/>
-				<xsl:with-param name ="mastersubfoot" select ="$mastersubfoot"/>
 				<xsl:with-param name="sOperators" select="$sOperators"/>
 				<xsl:with-param name="sMinuses" select="$sMinuses"/>
 				<xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -2056,7 +2053,6 @@
 	<!--Template to implement Languages-->
 	<xsl:template name="Languages">
 		<xsl:param name="Attribute"/>
-		<xsl:param name ="txt"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="quote">"</xsl:variable>
 		<xsl:variable name="count_lang">

@@ -284,7 +284,6 @@
                         <!--calling for foonote template and displaying footnote text at the end of the page-->
                         <xsl:call-template name="footnote">
                             <xsl:with-param name="verfoot" select="$version"/>
-                            <xsl:with-param name="mastersubfoot" select="$masterSub"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -529,7 +528,6 @@
             <xsl:if test="not(name(..)='w:tc')">
                 <xsl:call-template name="footnote">
                     <xsl:with-param name="verfoot" select="$VERSION"/>
-                    <xsl:with-param name="mastersubfoot" select="$mastersubpara"/>
                     <xsl:with-param name="sOperators" select="$sOperators"/>
                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -540,7 +538,6 @@
                     <xsl:when test="((w:r/w:br/@w:type='page') and not((following-sibling::w:p[1]/w:pPr/w:sectPr) or (following-sibling::w:p[2]/w:r/w:lastRenderedPageBreak) or (following-sibling::w:p[1]/w:r/w:lastRenderedPageBreak) or (following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')))">
                         <xsl:call-template name="footnote">
                             <xsl:with-param name="verfoot" select="$VERSION"/>
-                            <xsl:with-param name="mastersubfoot" select="$mastersubpara"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -551,7 +548,6 @@
                     <xsl:when test="(w:r/w:lastRenderedPageBreak)">
                         <xsl:call-template name="footnote">
                             <xsl:with-param name="verfoot" select="$VERSION"/>
-                            <xsl:with-param name="mastersubfoot" select="$mastersubpara"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -605,7 +601,6 @@
                     <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
                         <xsl:call-template name="Languages">
                             <xsl:with-param name="Attribute" select="'0'"/>
-                            <xsl:with-param name="txt" select="$txt"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
@@ -693,9 +688,7 @@
 
             <!--Checking for fldSimple element-->
             <xsl:if test="name()='w:fldSimple'">
-                <xsl:call-template name="fldSimple">
-                    <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                </xsl:call-template>
+                <xsl:call-template name="fldSimple"/>
             </xsl:if>
 
             <!--Checking for Hyperlink element-->
@@ -729,9 +722,7 @@
                         </xsl:when>
                     </xsl:choose>
                     <!--Calling hyperlink template for hyperlink text-->
-                    <xsl:call-template name="hyperlink">
-                        <xsl:with-param name="verhyp" select="$VERSION"/>
-                    </xsl:call-template>
+                    <xsl:call-template name="hyperlink"/>
                 </a>
             </xsl:if>
 
@@ -1131,8 +1122,6 @@
                         <!--Checking for lists in sidebar-->
                         <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId))">
                             <xsl:call-template name="List">
-                                <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                                <xsl:with-param name="verlist" select="$VERSION"/>
                                 <xsl:with-param name="listcharStyle" select="$charparahandlerStyle"/>
                             </xsl:call-template>
                         </xsl:when>
@@ -1151,7 +1140,6 @@
                                 <xsl:with-param name="prmTrack" select="$prmTrack"/>
                                 <xsl:with-param name="VERSION" select="$VERSION"/>
                                 <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="flag" select="'0'"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="characterparaStyle" select="$charparahandlerStyle"/>
                             </xsl:call-template>
@@ -1436,7 +1424,6 @@
                         <xsl:call-template name="tmpProcessFootNote">
                             <xsl:with-param name="varFootnote_Id" select="$footnoteid"/>
                             <xsl:with-param name="varNote_Class" select="$class"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!---->
@@ -1447,7 +1434,6 @@
                         <xsl:call-template name="tmpProcessFootNote">
                             <xsl:with-param name="varFootnote_Id" select="$footnoteid"/>
                             <xsl:with-param name="varNote_Class" select="$class"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                         </xsl:call-template>
                     </xsl:when>
                 </xsl:choose>
@@ -1462,7 +1448,6 @@
                         <xsl:call-template name="tmpProcessFootNote">
                             <xsl:with-param name="varFootnote_Id" select="$endnoteid"/>
                             <xsl:with-param name="varNote_Class" select="$class"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:when test="w:endnoteReference">
@@ -1471,7 +1456,6 @@
                         <xsl:call-template name="tmpProcessFootNote">
                             <xsl:with-param name="varFootnote_Id" select="$endnoteid"/>
                             <xsl:with-param name="varNote_Class" select="$class"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                         </xsl:call-template>
                     </xsl:when>
                 </xsl:choose>
@@ -1568,7 +1552,6 @@
 
     <!--Template for hyperlink-->
     <xsl:template name="hyperlink">
-        <xsl:param name="verhyp"/>
         <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:for-each select="w:r">
             <xsl:message terminate="no">progress:parahandler</xsl:message>
@@ -1594,7 +1577,6 @@
 
     <!--Template for fldSimple-->
     <xsl:template name="fldSimple">
-        <xsl:param name="characterStyle"/>
         <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:for-each select="w:r">
             <xsl:message terminate="no">progress:parahandler</xsl:message>
@@ -1875,8 +1857,6 @@
 
     <!--Template to Implement Blocquote using Blocklist Template -->
     <xsl:template name="Blocklist">
-        <xsl:param name="prmTrack"/>
-        <xsl:param name="VERSION"/>
         <xsl:param name="custom"/>
         <xsl:param name="blkcharstyle"/>
         <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,5)='Block'])=0">
@@ -1897,7 +1877,6 @@
             <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId))">
                 <!--variable checkilvl holds level(w:ilvl) value of the List-->
                 <xsl:call-template name="List">
-                    <xsl:with-param name="verlist" select="$VERSION"/>
                     <xsl:with-param name="listcharStyle" select="$blkcharstyle"/>
                 </xsl:call-template>
             </xsl:when>
@@ -1905,7 +1884,6 @@
                 <xsl:if test="not(w:pPr/pStyle/@w:val='List-HeadingDAISY')">
                     <!--Calling ParagraphStyle Template-->
                     <xsl:call-template name="ParagraphStyle">
-                        <xsl:with-param name="flag" select="'0'"/>
                         <xsl:with-param name="custom" select="$custom"/>
                         <xsl:with-param name="characterparaStyle" select="$blkcharstyle"/>
                     </xsl:call-template>
@@ -2270,13 +2248,7 @@
     </xsl:template>
 
     <xsl:template name="List">
-        <xsl:param name="verlist"/>
-        <xsl:param name="prmTrack"/>
         <xsl:param name="custom"/>
-        <xsl:param name="sOperators"/>
-        <xsl:param name="sMinuses"/>
-        <xsl:param name="sNumbers"/>
-        <xsl:param name="sZeros"/>
         <xsl:param name="listcharStyle"/>
         <xsl:message terminate="no">progress:parahandler</xsl:message>
         <!--variable checkilvl holds level(w:ilvl) value of the List-->
@@ -2388,7 +2360,6 @@
         <xsl:call-template name="addlist">
             <xsl:with-param name="openId" select="$checknumId"/>
             <xsl:with-param name="openlvl" select="$checkilvl"/>
-            <xsl:with-param name="verlist" select="$verlist"/>
             <xsl:with-param name="custom" select="$custom"/>
             <xsl:with-param name="numFmt" select="$numFormat"/>
             <xsl:with-param name="lText" select="$lvlText"/>
@@ -2444,8 +2415,6 @@
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,5)='Block']">
                 <!--Calling Blocklist Template-->
                 <xsl:call-template name="Blocklist">
-                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                    <xsl:with-param name="VERSION" select="$VERSION"/>
                     <xsl:with-param name="custom" select="$custom"/>
                     <xsl:with-param name="blkcharstyle" select="$characterStyle"/>
                 </xsl:call-template>
@@ -2483,7 +2452,6 @@
                 <xsl:if test="(w:r/w:lastRenderedPageBreak) or (w:r/w:br/@w:type='page')">
                     <xsl:call-template name="footnote">
                         <xsl:with-param name="verfoot" select="$VERSION"/>
-                        <xsl:with-param name="mastersubfoot" select="$mastersubstyle"/>
                         <xsl:with-param name="sOperators" select="$sOperators"/>
                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
                         <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -2679,7 +2647,6 @@
 
                     <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId) and not(w:pPr/w:rPr/w:vanish)) and not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' or @w:val/d:CompareHeading(.,$styleHeading)=1])">
                         <xsl:call-template name="List">
-                            <xsl:with-param name="prmTrack" select="$prmTrack"/>
                             <xsl:with-param name="custom" select="$custom"/>
                             <xsl:with-param name="listcharStyle" select="$characterStyle"/>
                         </xsl:call-template>
@@ -2699,7 +2666,6 @@
                             <xsl:call-template name="ParagraphStyle">
                                 <xsl:with-param name="prmTrack" select="$prmTrack"/>
                                 <xsl:with-param name="VERSION" select="$VERSION"/>
-                                <xsl:with-param name="flag" select="'0'"/>
                                 <xsl:with-param name="custom" select="$custom"/>
                                 <xsl:with-param name="masterparastyle" select="$mastersubstyle"/>
                                 <xsl:with-param name="imgOptionPara" select="$imgOptionStyle"/>
@@ -3100,7 +3066,6 @@
     <xsl:template name="ParagraphStyle">
         <xsl:param name="prmTrack"/>
         <xsl:param name="VERSION"/>
-        <xsl:param name="flag"/>
         <xsl:param name="flagNote"/>
         <xsl:param name="checkid"/>
         <xsl:param name="custom"/>
@@ -3821,8 +3786,6 @@
     </xsl:template>
 
     <xsl:template name="SetCurrentMatterType">
-        <xsl:param name="isRecursiveCall" />
-        <xsl:param name="nodePosition" />
         <xsl:message terminate="no">progress:setcurrentmattertype</xsl:message>
         <xsl:if test="name()='w:p'">
             <xsl:choose>

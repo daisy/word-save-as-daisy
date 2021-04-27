@@ -397,7 +397,6 @@
 	<xsl:template name="addlist">
 		<xsl:param name="openId"/>
 		<xsl:param name="openlvl"/>
-		<xsl:param name ="verlist"/>
 		<xsl:param name ="custom"/>
 		<xsl:param name="numFmt"/>
 		<xsl:param name="lText"/>
