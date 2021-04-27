@@ -52,10 +52,10 @@
 	<xsl:param name="Version" as="xs:string"/>
 	<!--Holds Documents version value-->
 	<xsl:param name="Custom" as="xs:string"/> <!-- Automatic|Custom -->
-	<xsl:param name="MasterSub" as="xs:string"/>
+	<xsl:param name="MasterSub" as="xs:boolean"/>
 	<xsl:param name="ImageSizeOption" as="xs:string"/> <!-- resize|resample|original -->
-	<xsl:param name="DPI" as="xs:string"/>
-	<xsl:param name="CharacterStyles" as="xs:string"/>
+	<xsl:param name="DPI" as="xs:float"/>
+	<xsl:param name="CharacterStyles" as="xs:boolean"/>
 	<xsl:param name="MathML" as="map(xs:string,array(xs:string))"/>
 
 	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)"/>
@@ -335,7 +335,7 @@
 			<!--Starting Book Element-->
 			<book showin="blp">
 
-				<xsl:if test="not($MasterSub='Yes')">
+				<xsl:if test="not($MasterSub)">
 					<xsl:call-template name="CheckPageStyles">
 					</xsl:call-template>
 				</xsl:if>

@@ -21,13 +21,13 @@
 		<!--Parameter levelValue holds the value of the current level -->
 		<xsl:param name="levelValue" as="xs:integer?"/>
 		<!--Parameter check holds the value that checks for different level values-->
-		<xsl:param name="check" as="xs:integer"/>
+		<xsl:param name="check" as="xs:boolean"/>
 		<xsl:param name="verhead" as="xs:string"/>
 		<xsl:param name="custom" as="xs:string"/>
-		<xsl:param name="mastersubhead" as="xs:string"/>
+		<xsl:param name="mastersubhead" as="xs:boolean"/>
 		<xsl:param name="abValue" as="xs:string" select="''"/>
 		<xsl:param name="txt" as="xs:string"/>
-		<xsl:param name="lvlcharStyle" as="xs:string"/>
+		<xsl:param name="lvlcharStyle" as="xs:boolean"/>
 		<xsl:param name="sOperators" as="xs:string"/>
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
@@ -55,7 +55,7 @@
 					</xsl:if>
 				</xsl:if>
 				<!--Checking whether heading is present in the document-->
-				<xsl:if test="$check!=0">
+				<xsl:if test="$check">
 					<!--checking for custom style set for page numbers-->
 					<xsl:if test="$custom='Automatic'">
 						<xsl:choose>
@@ -83,19 +83,10 @@
 					<!--Calling tmpHeading template for adding Levels-->
 
 					<!-- DB :  Check if PageNumberDAISY style is applied to skip heading styles in output file when this style is applied.  -->
-					<xsl:variable name="IsPageNumberDAISYApplied" as="xs:string">
-						<xsl:choose>
-							<xsl:when test="w:pPr/w:rPr/w:rStyle/@w:val='PageNumberDAISY'">
-								<xsl:sequence select="'true'"/>
-							</xsl:when>
-							<xsl:otherwise>
-								<xsl:sequence select="'false'"/>
-							</xsl:otherwise>
-						</xsl:choose>
-					</xsl:variable>
+					<xsl:variable name="IsPageNumberDAISYApplied" as="xs:boolean" select="w:pPr/w:rPr/w:rStyle/@w:val='PageNumberDAISY'"/>
 
 					<!-- DB : write header in output when PageNumberDAISY is not applied  -->
-					<xsl:if test="not($IsPageNumberDAISYApplied='true')">
+					<xsl:if test="not($IsPageNumberDAISYApplied)">
 						<xsl:call-template name="tmpHeading">
 							<xsl:with-param name="level" select="string($level)"/>
 						</xsl:call-template>
@@ -116,7 +107,7 @@
 					</xsl:call-template>
 
 					<!-- DB : write header in output when PageNumberDAISY is not applied  -->
-					<xsl:if test="not($IsPageNumberDAISYApplied='true')">
+					<xsl:if test="not($IsPageNumberDAISYApplied)">
 						<!--Calling tmpAbbrAcrHeading template setting AbbrAcr flag and closing heading tag-->
 						<xsl:call-template name="tmpAbbrAcrHeading">
 							<xsl:with-param name="level" select="string($level)"/>
@@ -162,15 +153,15 @@
 		<xsl:param name ="custom" as="xs:string"/>
 		<xsl:param name="level" as="xs:integer"/>
 		<xsl:param name ="txt" as="xs:string"/>
-		<xsl:param name ="mastersubhead" as="xs:string"/>
-		<xsl:param name="lvlcharStyle" as="xs:string"/>
+		<xsl:param name ="mastersubhead" as="xs:boolean"/>
+		<xsl:param name="lvlcharStyle" as="xs:boolean"/>
 		<xsl:param name="sOperators" as="xs:string"/>
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
-			<xsl:when test="$lvlcharStyle='True'">
+			<xsl:when test="$lvlcharStyle">
 				<xsl:choose>
 					<xsl:when test="w:pPr/w:ind[@w:left] and w:pPr/w:ind[@w:right]">
 						<xsl:variable name="val" as="xs:integer" select="w:pPr/w:ind/@w:left"/>
@@ -401,7 +392,7 @@
 		<xsl:param name ="custom" as="xs:string"/>
 		<xsl:param name="numFmt" as="xs:string"/>
 		<xsl:param name="lText" as="xs:string"/>
-		<xsl:param name="lstcharStyle" as="xs:string"/>
+		<xsl:param name="lstcharStyle" as="xs:boolean"/>
 		<xsl:message terminate="no">progress:addlist</xsl:message>
 		<!--Pushes the current level into the stack-->
 		<xsl:variable name="PeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
@@ -727,7 +718,7 @@
 		<xsl:choose>
 			<xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
 				<xsl:call-template name="LanguagesPara">
-					<xsl:with-param name="Attribute" select="'1'"/>
+					<xsl:with-param name="Attribute" select="true()"/>
 					<xsl:with-param name ="level" select="concat('h',$level)"/>
 				</xsl:call-template>
 			</xsl:when>
@@ -778,8 +769,8 @@
 	<xsl:template name="TableHandler">
 		<xsl:param name="parmVerTable" as="xs:string"/>
 		<xsl:param name="custom" as="xs:string"/>
-		<xsl:param name="mastersubtbl" as="xs:string"/>
-		<xsl:param name="characterStyle" as="xs:string"/>
+		<xsl:param name="mastersubtbl" as="xs:boolean"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:message terminate="no">progress:tablehandler</xsl:message>
 		<xsl:if test="$custom='Automatic'">
 			<xsl:for-each select="w:tr/w:tc">
@@ -1041,7 +1032,7 @@
 											<xsl:sequence select="../@w:styleId"/>
 										</xsl:for-each>
 									</xsl:variable>
-									<xsl:variable name ="var_heading" as="xs:string" select="string-join($var_heading,'')"/>
+									<xsl:variable name ="var_heading" as="xs:string?" select="string-join($var_heading,'')[not(.='')]"/>
 									<xsl:sequence select="d:sink(d:SetRowspan($myObj))"/> <!-- empty -->
 									<xsl:for-each select="w:p">
 										<xsl:message terminate="no">progress:parahandler</xsl:message>

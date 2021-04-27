@@ -441,7 +441,7 @@ public class DaisyClass {
 	/**
 	 * Function to resample images in the document according to daisy settings
 	 */
-	public String ResampleImage(String inNum, String imageName, String resampleValue)
+	public String ResampleImage(String inNum, String imageName, float resampleValue)
 			throws IOException, InvalidFormatException {
 		for (PackageRelationship searchRelation : pack.getRelationshipsByType(wordRelationshipType)) {
 			relationship = searchRelation;
@@ -454,7 +454,7 @@ public class DaisyClass {
 		String srcFormat = imgPartxml.getPartName().getURI().toString()
 		                             .substring(imgPartxml.getPartName().getURI().toString().lastIndexOf('.') + 1);
 		BufferedImage srcImg = ImageIO.read(imgPartxml.getInputStream());
-		BufferedImage resampledImg = ImageProcessing.ResampleImage(srcImg, Float.parseFloat(resampleValue));
+		BufferedImage resampledImg = ImageProcessing.ResampleImage(srcImg, resampleValue);
 		return ImageProcessing.SaveProcessedImage(resampledImg, outputFilename, srcName, srcFormat);
 	}
 
@@ -1741,10 +1741,8 @@ public class DaisyClass {
 	 */
 	public static int CompareHeading(String strA, String strB) {
 		int value = 0;
-		if (!"".equals(strA) && !"".equals(strB)) {
-			if (strA.substring(0, strA.length() - 1).equals(strB.substring(0, strB.length() - 1)))
-				value = 1;
-		}
+		if (strA.substring(0, strA.length() - 1).equals(strB.substring(0, strB.length() - 1)))
+			value = 1;
 		return value;
 	}
 
