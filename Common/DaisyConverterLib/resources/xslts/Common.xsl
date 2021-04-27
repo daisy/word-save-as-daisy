@@ -690,16 +690,11 @@
                         </xsl:when>
                         <!--If only anchor for hyperlink is present-->
                         <xsl:when test="@w:anchor">
-                            <xsl:attribute name="href">
-                                <xsl:text>#</xsl:text>
-                                <xsl:value-of select="d:EscapeSpecial(@w:anchor)"/>
-                            </xsl:attribute>
+                            <xsl:attribute name="href" select="concat('#',d:EscapeSpecial(@w:anchor))"/>
                         </xsl:when>
                         <!--If only id for hyperlink is present-->
                         <xsl:when test="@r:id">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="d:Anchor($myObj,@r:id)"/>
-                            </xsl:attribute>
+                            <xsl:attribute name="href" select="d:Anchor($myObj,@r:id)"/>
                             <xsl:attribute name="external">true</xsl:attribute>
                         </xsl:when>
                     </xsl:choose>
@@ -1331,18 +1326,16 @@
                                     <img>
                                         <!--Creating variable mathimage for storing r:id value from document.xml-->
                                         <xsl:variable name="Math_rid" as="xs:string" select="w:object/v:shape/v:imagedata/@r:id"/>
-                                        <xsl:attribute name="alt">
-                                            <xsl:choose>
-                                                <!--Checking for alt Text-->
-                                                <xsl:when test="w:object/v:shape/@alt">
-                                                    <xsl:value-of select="w:object/v:shape/@alt"/>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
-                                                    <xsl:value-of select="'Math Equation'"/>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </xsl:attribute>
+                                        <xsl:choose>
+                                            <!--Checking for alt Text-->
+                                            <xsl:when test="w:object/v:shape/@alt">
+                                                <xsl:sequence select="w:object/v:shape/@alt"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
+                                                <xsl:attribute name="alt" select="'Math Equation'"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
                                         <xsl:attribute name="src">
                                             <!--Calling MathImage function-->
                                             <xsl:value-of select="d:MathImage($myObj,$Math_rid)"/>

@@ -150,22 +150,19 @@
 												<img>
 													<!--Variable to hold r:id from document.xml-->
 													<xsl:variable name="Math_id" as="xs:string" select="w:r/w:object/v:shape/v:imagedata/@r:id"/>
-													<xsl:attribute name="alt">
-														<xsl:choose>
-															<!--Checking for alt text for MathEquation Image or providing
+													<xsl:choose>
+														<!--Checking for alt text for MathEquation Image or providing
 											  'Math Equation' as alttext-->
-															<xsl:when test="w:r/w:object/v:shape/@alt">
-																<xsl:value-of select="w:r/w:object/v:shape/@alt"/>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:value-of select ="'Math Equation'"/>
-															</xsl:otherwise>
-														</xsl:choose>
-													</xsl:attribute>
+														<xsl:when test="w:r/w:object/v:shape/@alt">
+															<xsl:sequence select="w:r/w:object/v:shape/@alt"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:attribute name="alt" select ="'Math Equation'"/>
+														</xsl:otherwise>
+													</xsl:choose>
 													<!--Attribute holding the name of the Image-->
-													<xsl:attribute name="src">
+													<xsl:attribute name="src" select ="d:MathImageFootnote($myObj,$Math_id)">
 														<!--Caling MathImageFootnote for copying Image to output folder-->
-														<xsl:value-of select ="d:MathImageFootnote($myObj,$Math_id)"/>
 													</xsl:attribute>
 												</img>
 											</imggroup>
@@ -179,21 +176,18 @@
 													<img>
 														<!--Creating variable mathimage for storing r:id value from document.xml-->
 														<xsl:variable name="Math_rid" as="xs:string" select="w:r/w:object/v:shape/v:imagedata/@r:id"/>
-														<xsl:attribute name="alt">
-															<xsl:choose>
-																<!--Checking for alt Text-->
-																<xsl:when test="w:r/w:object/v:shape/@alt">
-																	<xsl:value-of select="w:r/w:object/v:shape/@alt"/>
-																</xsl:when>
-																<xsl:otherwise>
-																	<!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
-																	<xsl:value-of select ="'Math Equation'"/>
-																</xsl:otherwise>
-															</xsl:choose>
-														</xsl:attribute>
-														<xsl:attribute name="src">
+														<xsl:choose>
+															<!--Checking for alt Text-->
+															<xsl:when test="w:r/w:object/v:shape/@alt">
+																<xsl:sequence select="w:r/w:object/v:shape/@alt"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
+																<xsl:attribute name="alt" select ="'Math Equation'"/>
+															</xsl:otherwise>
+														</xsl:choose>
+														<xsl:attribute name="src" select ="d:MathImageFootnote($myObj,$Math_rid)">
 															<!--Calling MathImage function-->
-															<xsl:value-of select ="d:MathImageFootnote($myObj,$Math_rid)"/>
 														</xsl:attribute>
 													</img>
 												</imggroup>
@@ -245,9 +239,7 @@
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<caption>
 					<!--attribute holds the value of the image id-->
-					<xsl:attribute name="imgref">
-						<xsl:value-of select="$imageId"/>
-					</xsl:attribute>
+					<xsl:attribute name="imgref" select="$imageId"/>
 					<xsl:if test="($followingnodes[1]/w:r/w:rPr/w:lang) or ($followingnodes[1]/w:r/w:rPr/w:rFonts/@w:hint)">
 						<!--attribute holds the id of the language-->
 						<xsl:attribute name="xml:lang">
@@ -522,58 +514,40 @@
 				<imggroup>
 					<img>
 						<!--attribute that holds the value of the Image ID-->
-						<xsl:attribute name="id">
-							<xsl:value-of select="$imageId"/>
-						</xsl:attribute>
+						<xsl:attribute name="id" select="$imageId"/>
 						<!--attribute that holds the filename of the image returned for d:Image()-->
 						<xsl:choose>
 							<xsl:when test="$imgOpt='resize' and contains($Img_Id,'rId')">
-								<xsl:attribute name="src">
-									<xsl:value-of select ="$imageTest"/>
-								</xsl:attribute>
+								<xsl:attribute name="src" select ="$imageTest"/>
 								<!--attribute that holds the alternate text for the image-->
-								<xsl:attribute name="alt">
-									<xsl:value-of select="$alttext"/>
-								</xsl:attribute>
-								<xsl:attribute name="width">
-									<xsl:value-of select="round(($imageWidth) div (9525))"/> <!-- assuming 96 dpi -->
-								</xsl:attribute>
-								<xsl:attribute name="height">
-									<xsl:value-of select="round(($imageHeight) div (9525))"/> <!-- assuming 96 dpi -->
-								</xsl:attribute>
+								<xsl:attribute name="alt" select="$alttext"/>
+								<xsl:attribute name="width" select="round(($imageWidth) div (9525))"/> <!-- assuming 96 dpi -->
+								<xsl:attribute name="height" select="round(($imageHeight) div (9525))"/> <!-- assuming 96 dpi -->
 							</xsl:when>
 							<xsl:when test="$imgOpt='resample'  and contains($Img_Id,'rId')">
-								<xsl:attribute name="src">
-									<xsl:value-of select ="$imageTest"/>
-								</xsl:attribute>
+								<xsl:attribute name="src" select ="$imageTest"/>
 								<!--attribute that holds the alternate text for the image-->
-								<xsl:attribute name="alt">
-									<xsl:value-of select="$alttext"/>
-								</xsl:attribute>
+								<xsl:attribute name="alt" select="$alttext"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:attribute name="src">
 									<xsl:choose>
 										<xsl:when test="contains($Img_Id,'rId')">
-											<xsl:value-of select ="$imageTest"/>
+											<xsl:sequence select ="$imageTest"/>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:value-of select="$imageTest"/>
+											<xsl:sequence select="$imageTest"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:attribute>
-								<xsl:attribute name="alt">
-									<xsl:value-of select="$alttext"/>
-								</xsl:attribute>
+								<xsl:attribute name="alt" select="$alttext"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</img>
 					<!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
 					<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY') or (../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 						<caption>
-							<xsl:attribute name="imgref">
-								<xsl:value-of select="$imageId"/>
-							</xsl:attribute>
+							<xsl:attribute name="imgref" select="$imageId"/>
 							<xsl:if test="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rFonts/@w:hint)">
 								<xsl:attribute name="xml:lang">
 									<xsl:call-template name="PictureLanguage">
@@ -660,9 +634,7 @@
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<caption>
-					<xsl:attribute name="imgref">
-						<xsl:value-of select="$imageId"/>
-					</xsl:attribute>
+					<xsl:attribute name="imgref" select="$imageId"/>
 					<!--Getting the language id by calling the PictureLanguage template-->
 					<xsl:if test="($followingnodes[1]/w:r/w:rPr/w:lang) or ($followingnodes[1]/w:r/w:rPr/w:rFonts/@w:hint)">
 						<!--attribute that holds language id-->
@@ -842,26 +814,18 @@
 			<imggroup>
 				<img>
 					<!--Creating attribute id of img element-->
-					<xsl:attribute name="id">
-						<xsl:value-of select="$Imageid"/>
-					</xsl:attribute>
+					<xsl:attribute name="id" select="$Imageid"/>
 					<!--Creating attribute alt for alternate text of img element-->
-					<xsl:attribute name="alt">
-						<xsl:value-of select="w:pict/v:group/@alt"/>
-					</xsl:attribute>
+					<xsl:attribute name="alt" select="w:pict/v:group/@alt"/>
 					<!--Creating attribute src of img element-->
-					<xsl:attribute name="src">
-						<xsl:value-of select ="concat($Imageid,'.png')"/>
-					</xsl:attribute>
+					<xsl:attribute name="src" select ="concat($Imageid,'.png')"/>
 				</img>
 
 				<xsl:variable name="checkcaption" as="xs:string" select="d:ReturnCaption($myObj)"/>
 				<!--Checking if checkcaption variables holds any value-->
 				<xsl:if test="$checkcaption!='0'">
 					<caption>
-						<xsl:attribute name="imgref">
-							<xsl:value-of select="$Imageid"/>
-						</xsl:attribute>
+						<xsl:attribute name="imgref" select="$Imageid"/>
 						<!--Creating xml:lang and assinging it the value returned by PictureLanguage template-->
 						<xsl:if test="(../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:r/w:rPr/w:lang) or ../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:r/w:rPr/w:rFonts/@w:hint">
 							<xsl:attribute name="xml:lang">
@@ -919,21 +883,15 @@
 			<imggroup>
 				<img>
 					<!--attribute to store Image id-->
-					<xsl:attribute name="id">
-						<xsl:value-of select="$imageId"/>
-					</xsl:attribute>
+					<xsl:attribute name="id" select="$imageId"/>
 					<!--variable to store Image name-->
 					<xsl:variable name="image2003Name" as="xs:string" select="w:pict/v:shape/v:imagedata/@o:title"/>
 					<!--variable to store Image id-->
 					<xsl:variable name="rid" as="xs:string" select="w:pict/v:shape/v:imagedata/@r:id"/>
 					<!--Creating attribute src of img element-->
-					<xsl:attribute name="src">
-						<xsl:value-of select ="d:Image($myObj,$rid,$image2003Name)"/>
-					</xsl:attribute>
+					<xsl:attribute name="src" select ="d:Image($myObj,$rid,$image2003Name)"/>
 					<!--Creating attribute alt for alternate text of img element-->
-					<xsl:attribute name="alt">
-						<xsl:value-of select="w:pict/v:shape/@alt"/>
-					</xsl:attribute>
+					<xsl:attribute name="alt" select="w:pict/v:shape/@alt"/>
 				</img>
 				<!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
 				<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')or (../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
@@ -1147,15 +1105,9 @@
 		<xsl:if test="$checkImage='1'">
 			<imggroup>
 				<img>
-					<xsl:attribute name="id">
-						<xsl:value-of select="$imageId"/>
-					</xsl:attribute>
-					<xsl:attribute name="src">
-						<xsl:value-of select="concat($imageId,'.png')"/>
-					</xsl:attribute>
-					<xsl:attribute name="alt">
-						<xsl:value-of select="w:pict/v:shape/@alt"/>
-					</xsl:attribute>
+					<xsl:attribute name="id" select="$imageId"/>
+					<xsl:attribute name="src" select="concat($imageId,'.png')"/>
+					<xsl:attribute name="alt" select="w:pict/v:shape/@alt"/>
 				</img>
 
 				<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY') or (../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
