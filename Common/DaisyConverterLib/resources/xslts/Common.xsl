@@ -793,16 +793,11 @@
                         </xsl:when>
                         <!--If only anchor for hyperlink is present-->
                         <xsl:when test="@w:anchor">
-                            <xsl:attribute name="href">
-                                <xsl:text>#</xsl:text>
-                                <xsl:value-of select="d:EscapeSpecial(@w:anchor)"/>
-                            </xsl:attribute>
+                            <xsl:attribute name="href" select="concat('#',d:EscapeSpecial(@w:anchor))"/>
                         </xsl:when>
                         <!--If only id for hyperlink is present-->
                         <xsl:when test="@r:id">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="d:Anchor($myObj,@r:id,$flagNote)"/>
-                            </xsl:attribute>
+                            <xsl:attribute name="href" select="d:Anchor($myObj,@r:id)"/>
                             <xsl:attribute name="external">true</xsl:attribute>
                         </xsl:when>
                     </xsl:choose>
@@ -1215,11 +1210,9 @@
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
         </xsl:if>
         <xsl:for-each select="w:r/w:pict//v:textbox/w:txbxContent">
-            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
             <sidebar>
                 <xsl:attribute    name="render">required</xsl:attribute>
                 <xsl:for-each select="./node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:choose>
                         <!--Checking for Headings in sidebar-->
                         <xsl:when test="(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or (w:pPr/w:pStyle/@w:val='BridgeheadDAISY')">
@@ -1331,7 +1324,6 @@
                             <xsl:if test="not(../preceding-sibling::node()[1]/w:pPr/w:sectPr)">
                                 <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
                                 <!--Closing paragraph tag-->
-                                <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                                 <xsl:call-template name="CloseLevel">
                                     <xsl:with-param name="CurrentLevel" select="-1"/>
                                     <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1359,7 +1351,6 @@
                                 </prodnote>
                                 <xsl:if test="$flag='3'">
                                     <!--Closing paragraph tag-->
-                                    <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                                     <xsl:call-template name="CloseLevel">
                                         <xsl:with-param name="CurrentLevel" select="-1"/>
                                         <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1409,7 +1400,6 @@
                         </xsl:call-template>
                         <xsl:if test="$flag='3'">
                             <!--Closing paragraph tag-->
-                            <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                             <xsl:call-template name="CloseLevel">
                                 <xsl:with-param name="CurrentLevel" select="-1"/>
                                 <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1432,7 +1422,6 @@
                     )">
                         <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
                         <!--Closing paragraph tag-->
-                        <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                         <xsl:call-template name="CloseLevel">
                             <xsl:with-param name="CurrentLevel" select="-1"/>
                             <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1555,18 +1544,16 @@
                                     <img>
                                         <!--Creating variable mathimage for storing r:id value from document.xml-->
                                         <xsl:variable name="Math_rid" as="xs:string" select="w:object/v:shape/v:imagedata/@r:id"/>
-                                        <xsl:attribute name="alt">
-                                            <xsl:choose>
-                                                <!--Checking for alt Text-->
-                                                <xsl:when test="w:object/v:shape/@alt">
-                                                    <xsl:value-of select="w:object/v:shape/@alt"/>
-                                                </xsl:when>
-                                                <xsl:otherwise>
-                                                    <!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
-                                                    <xsl:value-of select="'Math Equation'"/>
-                                                </xsl:otherwise>
-                                            </xsl:choose>
-                                        </xsl:attribute>
+                                        <xsl:choose>
+                                            <!--Checking for alt Text-->
+                                            <xsl:when test="w:object/v:shape/@alt">
+                                                <xsl:sequence select="w:object/v:shape/@alt"/>
+                                            </xsl:when>
+                                            <xsl:otherwise>
+                                                <!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
+                                                <xsl:attribute name="alt" select="'Math Equation'"/>
+                                            </xsl:otherwise>
+                                        </xsl:choose>
                                         <xsl:attribute name="src">
                                             <!--Calling MathImage function-->
                                             <xsl:value-of select="d:MathImage($myObj,$Math_rid)"/>
@@ -2477,11 +2464,14 @@
             </xsl:if>
         </xsl:if>
 
-        <xsl:if test="string-length(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val) = 0
-                or (preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val &lt; $checkilvl
-                and not(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val=$checkilvl))
-                or preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']
-                or preceding-sibling::node()[1]/w:pPr/w:rPr/w:vanish">
+        <xsl:if test="(
+			string-length(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val) = 0
+			or (
+				preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val &lt; $checkilvl
+				and not(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val=$checkilvl)
+			) or preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']
+			or preceding-sibling::node()[1]/w:pPr/w:rPr/w:vanish
+		)">
             <xsl:variable name="val" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
             <!--Checking numbering.xml for the type of List-->
             <xsl:variable    name="type" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:numFmt/@w:val"/>
@@ -2558,10 +2548,10 @@
         <!--Closing the current List item(li) element when there is no nested list-->
         <xsl:variable name="LPeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
         <xsl:if test="(
-			    $LPeekLevel = $checkilvl
-                and following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val = $checkilvl]
-                and not(following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])
-                and not(following-sibling::node()[1]/w:pPr/w:rPr/w:vanish)
+			$LPeekLevel = $checkilvl
+			and following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val = $checkilvl]
+			and not(following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])
+			and not(following-sibling::node()[1]/w:pPr/w:rPr/w:vanish)
 		)">
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
         </xsl:if>
@@ -2573,9 +2563,9 @@
 
         <!--Closing all the nested Lists-->
         <xsl:if test="(
-			    count(following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val])=0
-                or following-sibling::w:p[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']
-                or (following-sibling::w:p[1]/w:pPr/w:rPr/w:vanish)
+			count(following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val])=0
+			or following-sibling::w:p[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']
+			or (following-sibling::w:p[1]/w:pPr/w:rPr/w:vanish)
 		)">
             <xsl:call-template name="CloseLastlist">
                 <xsl:with-param name="close" select="0"/>
@@ -2615,9 +2605,10 @@
                 </xsl:call-template>
             </xsl:when>
             <!-- TOC starting paragraphe -->
-            <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']
-                    and not(preceding::w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])
-            ">
+            <xsl:when test="(
+				w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']
+				and not(preceding::w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])
+            )">
                 <!--Save Level before closing all levels-->
                 <xsl:variable name="PeekLevel" as="xs:integer" select="d:PeekLevel($myObj)"/>
                 <!--Close all levels before Table Of Contents-->
@@ -2663,10 +2654,12 @@
                 )
             )">
                 <!--calling Close level template for closing all the higher levels-->
-                <xsl:if test="((w:r/w:lastRenderedPageBreak)
-                        or (w:r/w:br/@w:type='page'))
-                        and $FootnotesPosition='page'
-                ">
+                <xsl:if test="(
+					(
+						(w:r/w:lastRenderedPageBreak)
+						or (w:r/w:br/@w:type='page')
+					) and $FootnotesPosition='page'
+                )">
                     <xsl:call-template name="InsertFootnotes">>
                         <xsl:with-param name="verfoot" select="$VERSION"/>
                         <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -2735,7 +2728,6 @@
                         <xsl:variable name="text_heading" as="xs:string*">
                             <xsl:variable name="nameHeading" as="xs:string" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:choose>
                                     <xsl:when test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
@@ -2763,7 +2755,6 @@
                         <xsl:variable name="absValue" as="xs:string*">
                             <xsl:variable name="nameHeading" as="xs:string" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:if test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                     <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
                                     <xsl:sequence select="d:sink(d:GetCheckLvlInt($myObj,./w:pPr/w:outlineLvl/@w:val))"/> <!-- empty -->
@@ -2779,7 +2770,6 @@
                         <xsl:variable name="ilvl" as="xs:string*">
                             <xsl:variable name="nameHeading" as="xs:string" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:choose>
                                     <xsl:when test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                         <xsl:sequence    select="./w:pPr/w:outlineLvl/@w:val"/>
@@ -3018,7 +3008,6 @@
         <xsl:param name="checkilvl" as="xs:integer"/>
         <xsl:param name="checknumId" as="xs:string"/>
         <xsl:param name="doc" as="xs:string"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:variable name="val" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
 
         <xsl:variable name="CheckNumId" as="xs:string" select="d:CheckHeadingNumID($myObj,$checknumId)"/>
@@ -3070,7 +3059,6 @@
     <xsl:template name="CharacterStyles">
         <xsl:param name="characterStyle" as="xs:boolean"/>
         <xsl:param name="txt" as="xs:string"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:choose>
             <xsl:when test="$characterStyle">
                 <xsl:choose>
@@ -4098,22 +4086,22 @@
         <xsl:if test="self::w:p">
             <xsl:choose>
                 <xsl:when test="(
-                        count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1
-                        or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1
+					count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1
+					or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1
                 )">
                     <xsl:message terminate="no">progress:SetCurrentMatterType - Found Frontmatter</xsl:message>
                     <xsl:if test="d:SetCurrentMatterType($myObj, 'Frontmatter')"/>
                 </xsl:when>
                 <xsl:when test="(
-                        count(w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
-                        or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
+					count(w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
+					or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
                 )">
                     <xsl:message terminate="no">progress:SetCurrentMatterType - Found Bodymatter</xsl:message>
                     <xsl:if test="d:SetCurrentMatterType($myObj, 'Bodymatter')"/>
                 </xsl:when>
                 <xsl:when test="(
-                        count(w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
-                        or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
+					count(w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
+					or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
                 )">
                     <xsl:message terminate="no">progress:SetCurrentMatterType - Found Rearmatter</xsl:message>
                     <xsl:if test="d:SetCurrentMatterType($myObj, 'Rearmatter')"/>

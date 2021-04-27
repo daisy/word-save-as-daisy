@@ -147,22 +147,18 @@
 												<img>
 													<!--Variable to hold r:id from document.xml-->
 													<xsl:variable name="Math_id"  as="xs:string" select="w:r/w:object/v:shape/v:imagedata/@r:id" />
-													<xsl:attribute name="alt">
-														<xsl:choose>
-															<!--Checking for alt text for MathEquation Image or providing
-											  'Math Equation' as alttext-->
-															<xsl:when test="w:r/w:object/v:shape/@alt">
-																<xsl:value-of select="w:r/w:object/v:shape/@alt"/>
-															</xsl:when>
-															<xsl:otherwise>
-																<xsl:value-of select ="'Math Equation'"/>
-															</xsl:otherwise>
-														</xsl:choose>
-													</xsl:attribute>
+													<xsl:choose>
+														<!--Checking for alt text for MathEquation Image or providing 'Math Equation' as alttext-->
+														<xsl:when test="w:r/w:object/v:shape/@alt">
+															<xsl:sequence select="w:r/w:object/v:shape/@alt"/>
+														</xsl:when>
+														<xsl:otherwise>
+															<xsl:attribute name="alt" select ="'Math Equation'"/>
+														</xsl:otherwise>
+													</xsl:choose>
 													<!--Attribute holding the name of the Image-->
-													<xsl:attribute name="src">
+													<xsl:attribute name="src" select ="d:MathImageFootnote($myObj,$Math_id)">
 														<!--Caling MathImageFootnote for copying Image to output folder-->
-														<xsl:value-of select ="d:MathImageFootnote($myObj, $Math_id)"/>
 													</xsl:attribute>
 												</img>
 											</imggroup>
@@ -176,21 +172,18 @@
 													<img>
 														<!--Creating variable mathimage for storing r:id value from document.xml-->
 														<xsl:variable name="Math_rid" as="xs:string" select="w:r/w:object/v:shape/v:imagedata/@r:id"/>
-														<xsl:attribute name="alt">
-															<xsl:choose>
-																<!--Checking for alt Text-->
-																<xsl:when test="w:r/w:object/v:shape/@alt">
-																	<xsl:value-of select="w:r/w:object/v:shape/@alt"/>
-																</xsl:when>
-																<xsl:otherwise>
-																	<!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
-																	<xsl:value-of select ="'Math Equation'"/>
-																</xsl:otherwise>
-															</xsl:choose>
-														</xsl:attribute>
-														<xsl:attribute name="src">
+														<xsl:choose>
+															<!--Checking for alt Text-->
+															<xsl:when test="w:r/w:object/v:shape/@alt">
+																<xsl:sequence select="w:r/w:object/v:shape/@alt"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
+																<xsl:attribute name="alt" select ="'Math Equation'"/>
+															</xsl:otherwise>
+														</xsl:choose>
+														<xsl:attribute name="src" select ="d:MathImageFootnote($myObj,$Math_rid)">
 															<!--Calling MathImage function-->
-															<xsl:value-of select ="d:MathImageFootnote($myObj, $Math_rid)"/>
 														</xsl:attribute>
 													</img>
 												</imggroup>
@@ -242,9 +235,7 @@
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<caption>
 					<!--attribute holds the value of the image id-->
-					<xsl:attribute name="imgref">
-						<xsl:value-of select="$imageId"/>
-					</xsl:attribute>
+					<xsl:attribute name="imgref" select="$imageId"/>
 					<xsl:if test="($followingnodes[1]/w:r/w:rPr/w:lang) or ($followingnodes[1]/w:r/w:rPr/w:rFonts/@w:hint)">
 						<!--attribute holds the id of the language-->
 						<xsl:attribute name="xml:lang">
@@ -515,58 +506,40 @@
 				<imggroup>
 					<img>
 						<!--attribute that holds the value of the Image ID-->
-						<xsl:attribute name="id">
-							<xsl:value-of select="$imageId"/>
-						</xsl:attribute>
+						<xsl:attribute name="id" select="$imageId"/>
 						<!--attribute that holds the filename of the image returned for d:Image()-->
 						<xsl:choose>
 							<xsl:when test="$imgOpt='resize' and contains($Img_Id,'rId')">
-								<xsl:attribute name="src">
-									<xsl:value-of select ="$imageTest"/>
-								</xsl:attribute>
+								<xsl:attribute name="src" select ="$imageTest"/>
 								<!--attribute that holds the alternate text for the image-->
-								<xsl:attribute name="alt">
-									<xsl:value-of select="$alttext"/>
-								</xsl:attribute>
-								<xsl:attribute name="width">
-									<xsl:value-of select="round(($imageWidth) div (9525))"/> <!-- assuming 96 dpi -->
-								</xsl:attribute>
-								<xsl:attribute name="height">
-									<xsl:value-of select="round(($imageHeight) div (9525))"/> <!-- assuming 96 dpi -->
-								</xsl:attribute>
+								<xsl:attribute name="alt" select="$alttext"/>
+								<xsl:attribute name="width" select="round(($imageWidth) div (9525))"/> <!-- assuming 96 dpi -->
+								<xsl:attribute name="height" select="round(($imageHeight) div (9525))"/> <!-- assuming 96 dpi -->
 							</xsl:when>
 							<xsl:when test="$imgOpt='resample'  and contains($Img_Id,'rId')">
-								<xsl:attribute name="src">
-									<xsl:value-of select ="$imageTest"/>
-								</xsl:attribute>
+								<xsl:attribute name="src" select ="$imageTest"/>
 								<!--attribute that holds the alternate text for the image-->
-								<xsl:attribute name="alt">
-									<xsl:value-of select="$alttext"/>
-								</xsl:attribute>
+								<xsl:attribute name="alt" select="$alttext"/>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:attribute name="src">
 									<xsl:choose>
 										<xsl:when test="contains($Img_Id,'rId')">
-											<xsl:value-of select ="$imageTest"/>
+											<xsl:sequence select ="$imageTest"/>
 										</xsl:when>
 										<xsl:otherwise>
-											<xsl:value-of select="$imageTest"/>
+											<xsl:sequence select="$imageTest"/>
 										</xsl:otherwise>
 									</xsl:choose>
 								</xsl:attribute>
-								<xsl:attribute name="alt">
-									<xsl:value-of select="$alttext"/>
-								</xsl:attribute>
+								<xsl:attribute name="alt" select="$alttext"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</img>
 					<!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
 					<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY') or (../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 						<caption>
-							<xsl:attribute name="imgref">
-								<xsl:value-of select="$imageId"/>
-							</xsl:attribute>
+							<xsl:attribute name="imgref" select="$imageId"/>
 							<xsl:if test="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rFonts/@w:hint)">
 								<xsl:attribute name="xml:lang">
 									<xsl:call-template name="PictureLanguage">
@@ -652,9 +625,7 @@
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
 				<caption>
-					<xsl:attribute name="imgref">
-						<xsl:value-of select="$imageId"/>
-					</xsl:attribute>
+					<xsl:attribute name="imgref" select="$imageId"/>
 					<!--Getting the language id by calling the PictureLanguage template-->
 					<xsl:if test="($followingnodes[1]/w:r/w:rPr/w:lang) or ($followingnodes[1]/w:r/w:rPr/w:rFonts/@w:hint)">
 						<!--attribute that holds language id-->
@@ -829,27 +800,18 @@
 			<imggroup>
 				<img>
 					<!--Creating attribute id of img element-->
-					<xsl:attribute name="id">
-						<xsl:value-of select="$Imageid"/>
-					</xsl:attribute>
+					<xsl:attribute name="id" select="$Imageid"/>
 					<!--Creating attribute alt for alternate text of img element-->
-					<xsl:attribute name="alt">
-						<xsl:value-of select="w:pict/v:group/@alt"/>
-					</xsl:attribute>
+					<xsl:attribute name="alt" select="w:pict/v:group/@alt"/>
 					<!--Creating attribute src of img element-->
-					<xsl:attribute name="src">
-						<xsl:value-of select ="concat($Imageid,'.png')"/>
-					</xsl:attribute>
+					<xsl:attribute name="src" select ="concat($Imageid,'.png')"/>
 				</img>
 
 				<xsl:variable name="checkcaption" as="xs:string" select="d:ReturnCaption($myObj)"/>
 				<!--Checking if checkcaption variables holds any value-->
 				<xsl:if test="$checkcaption!='0'">
 					<caption>
-						<!--Creating imgref attribute and assinging it the value returned by C# returnImagegroupId -->
-						<xsl:attribute name="imgref">
-							<xsl:value-of select="$Imageid"/>
-						</xsl:attribute>
+						<xsl:attribute name="imgref" select="$Imageid"/>
 						<!--Creating xml:lang and assinging it the value returned by PictureLanguage template-->
 						<xsl:if test="(../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:r/w:rPr/w:lang) or ../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:r/w:rPr/w:rFonts/@w:hint">
 							<xsl:attribute name="xml:lang">
@@ -907,21 +869,15 @@
 			<imggroup>
 				<img>
 					<!--attribute to store Image id-->
-					<xsl:attribute name="id">
-						<xsl:value-of select="$imageId"/>
-					</xsl:attribute>
+					<xsl:attribute name="id" select="$imageId"/>
 					<!--variable to store Image name-->
 					<xsl:variable name="image2003Name" as="xs:string" select="w:pict/v:shape/v:imagedata/@o:title"/>
 					<!--variable to store Image id-->
 					<xsl:variable name="rid" as="xs:string" select="w:pict/v:shape/v:imagedata/@r:id"/>
 					<!--Creating attribute src of img element-->
-					<xsl:attribute name="src">
-						<xsl:value-of select ="d:Image($myObj,$rid,$image2003Name)"/>
-					</xsl:attribute>
+					<xsl:attribute name="src" select ="d:Image($myObj,$rid,$image2003Name)"/>
 					<!--Creating attribute alt for alternate text of img element-->
-					<xsl:attribute name="alt">
-						<xsl:value-of select="w:pict/v:shape/@alt"/>
-					</xsl:attribute>
+					<xsl:attribute name="alt" select="w:pict/v:shape/@alt"/>
 				</img>
 				<!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
 				<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')or (../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
@@ -1135,15 +1091,9 @@
 		<xsl:if test="$checkImage='1'">
 			<imggroup>
 				<img>
-					<xsl:attribute name="id">
-						<xsl:value-of select="$imageId"/>
-					</xsl:attribute>
-					<xsl:attribute name="src">
-						<xsl:value-of select="concat($imageId,'.png')"/>
-					</xsl:attribute>
-					<xsl:attribute name="alt">
-						<xsl:value-of select="w:pict/v:shape/@alt"/>
-					</xsl:attribute>
+					<xsl:attribute name="id" select="$imageId"/>
+					<xsl:attribute name="src" select="concat($imageId,'.png')"/>
+					<xsl:attribute name="alt" select="w:pict/v:shape/@alt"/>
 				</img>
 
 				<xsl:if test="(
@@ -1342,7 +1292,7 @@
 			<!--if page number for body matter-->
 			<xsl:when test="$node='body'">
 				<xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:sectPr">
-				<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
+					<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="../following-sibling::node()">
@@ -1909,28 +1859,28 @@
 				<xsl:choose>
 					<!--LowerRoman page number-->
 					<xsl:when test="$pagetype='lowerRoman'">
-						<xsl:variable name="pageno" as="xs:string" select="d:PageNumLowerRoman($myObj, $counter)"/>
+						<xsl:variable name="pageno" as="xs:string" select="d:PageNumLowerRoman($counter)"/>
 						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$pageno"/>
 						</pagenum>
 					</xsl:when>
 					<!--UpperRoman page number-->
 					<xsl:when test="$pagetype='upperRoman'">
-						<xsl:variable name="pageno" as="xs:string" select="d:PageNumUpperRoman($myObj, $counter)"/>
+						<xsl:variable name="pageno" as="xs:string" select="d:PageNumUpperRoman($counter)"/>
 						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$pageno"/>
 						</pagenum>
 					</xsl:when>
 					<!--LowerLetter page number-->
 					<xsl:when test="$pagetype='lowerLetter'">
-						<xsl:variable name="pageno" as="xs:string" select="d:PageNumLowerAlphabet($myObj, $counter)"/>
+						<xsl:variable name="pageno" as="xs:string" select="d:PageNumLowerAlphabet($counter)"/>
 						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$pageno"/>
 						</pagenum>
 					</xsl:when>
 					<!--UpperLetter page number-->
 					<xsl:when test="$pagetype='upperLetter'">
-						<xsl:variable name="pageno" as="xs:string" select="d:PageNumUpperAlphabet($myObj, $counter)"/>
+						<xsl:variable name="pageno" as="xs:string" select="d:PageNumUpperAlphabet($counter)"/>
 						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
 							<xsl:value-of select="$pageno"/>
 						</pagenum>
@@ -2688,33 +2638,33 @@
 					</xsl:when>
 
 					<xsl:when test="../w:pPr/w:ind[@w:left] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
-						<xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
-						<xsl:variable name="val_left" select="($val div 1440)"/>
-						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<xsl:variable name="val" as="xs:integer" select="../w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
+						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
 						<span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-indent:',$val_left,'in')}">
 							<xsl:value-of select="w:t"/>
 						</span>
 					</xsl:when>
 
 					<xsl:when test="../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
-						<xsl:variable name="val" select="../w:pPr/w:ind/@w:right"/>
-						<xsl:variable name="val_right" select="($val div 1440)"/>
-						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<xsl:variable name="val" as="xs:integer" select="../w:pPr/w:ind/@w:right"/>
+						<xsl:variable name="val_right" as="xs:integer" select="($val div 1440)"/>
+						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
 						<span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-indent:',$val_right,'in')}">
 							<xsl:value-of select="w:t"/>
 						</span>
 					</xsl:when>
 
 					<xsl:when test="../w:pPr/w:jc and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
-						<xsl:variable name="val" select="../w:pPr/w:jc/@w:val"/>
-						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<xsl:variable name="val" as="xs:string" select="../w:pPr/w:jc/@w:val"/>
+						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
 						<span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-align:',$val)}">
 							<xsl:value-of select="w:t"/>
 						</span>
 					</xsl:when>
 
 					<xsl:when test="w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
-						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
 						<span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase')}">
 							<xsl:value-of select="w:t"/>
 						</span>
@@ -2722,37 +2672,37 @@
 
 
 					<xsl:when test="../w:pPr/w:ind[@w:left] and ../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
-						<xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
-						<xsl:variable name="val_left" select="($val div 1440)"/>
-						<xsl:variable name="valright" select="../w:pPr/w:ind/@w:right"/>
-						<xsl:variable name="val_right" select="($valright div 1440)"/>
-						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<xsl:variable name="val" as="xs:integer" select="../w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
+						<xsl:variable name="valright" as="xs:integer" select="../w:pPr/w:ind/@w:right"/>
+						<xsl:variable name="val_right" as="xs:integer" select="($valright div 1440)"/>
+						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
 						<span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:','right=',$val_right,'in',';left=',$val_left,'in')}">
 							<xsl:value-of select="w:t"/>
 						</span>
 					</xsl:when>
 
 					<xsl:when test="../w:pPr/w:ind[@w:left] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
-						<xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
-						<xsl:variable name="val_left" select="($val div 1440)"/>
-						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<xsl:variable name="val" as="xs:integer" select="../w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
+						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
 						<span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:',$val_left,'in')}">
 							<xsl:value-of select="w:t"/>
 						</span>
 					</xsl:when>
 
 					<xsl:when test="../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
-						<xsl:variable name="val" select="../w:pPr/w:ind/@w:right"/>
-						<xsl:variable name="val_right" select="($val div 1440)"/>
-						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<xsl:variable name="val" as="xs:integer" select="../w:pPr/w:ind/@w:right"/>
+						<xsl:variable name="val_right" as="xs:integer" select="($val div 1440)"/>
+						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
 						<span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:',$val_right,'in')}">
 							<xsl:value-of select="w:t"/>
 						</span>
 					</xsl:when>
 
 					<xsl:when test="../w:pPr/w:jc and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
-						<xsl:variable name="val" select="../w:pPr/w:jc/@w:val"/>
-						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<xsl:variable name="val" as="xs:string" select="../w:pPr/w:jc/@w:val"/>
+						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
 						<span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-align:',$val)}">
 							<xsl:value-of select="w:t"/>
 						</span>
