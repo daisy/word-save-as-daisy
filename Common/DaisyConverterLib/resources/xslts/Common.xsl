@@ -714,7 +714,6 @@
                     <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
                         <xsl:call-template name="Languages">
                             <xsl:with-param name="Attribute" select="'0'"/>
-                            <xsl:with-param name="txt" select="$txt"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
@@ -803,9 +802,7 @@
 
             <!--Checking for fldSimple element-->
             <xsl:if test="name()='w:fldSimple'">
-                <xsl:call-template name="fldSimple">
-                    <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                </xsl:call-template>
+                <xsl:call-template name="fldSimple"/>
             </xsl:if>
 
             <!--Checking for Hyperlink element-->
@@ -841,9 +838,7 @@
                         </xsl:when>
                     </xsl:choose>
                     <!--Calling hyperlink template for hyperlink text-->
-                    <xsl:call-template name="hyperlink">
-                        <xsl:with-param name="verhyp" select="$VERSION"/>
-                    </xsl:call-template>
+                    <xsl:call-template name="hyperlink"/>
                 </a>
             </xsl:if>
 
@@ -1279,8 +1274,6 @@
                         <!--Checking for lists in sidebar-->
                         <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId))">
                             <xsl:call-template name="List">
-                                <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                                <xsl:with-param name="verlist" select="$VERSION"/>
                                 <xsl:with-param name="listcharStyle" select="$charparahandlerStyle"/>
                             </xsl:call-template>
                         </xsl:when>
@@ -1299,7 +1292,6 @@
                                 <xsl:with-param name="prmTrack" select="$prmTrack"/>
                                 <xsl:with-param name="VERSION" select="$VERSION"/>
                                 <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="flag" select="'0'"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="characterparaStyle" select="$charparahandlerStyle"/>
                             </xsl:call-template>
@@ -2102,8 +2094,6 @@
 
     <!--Template to Implement Blocquote using Blocklist Template -->
     <xsl:template name="Blocklist">
-        <xsl:param name="prmTrack"/>
-        <xsl:param name="VERSION"/>
         <xsl:param name="custom"/>
         <xsl:param name="blkcharstyle"/>
         <xsl:param name="FootnotesLevel" select="0"/>
@@ -2128,7 +2118,6 @@
             <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId))">
                 <!--variable checkilvl holds level(w:ilvl) value of the List-->
                 <xsl:call-template name="List">
-                    <xsl:with-param name="verlist" select="$VERSION"/>
                     <xsl:with-param name="listcharStyle" select="$blkcharstyle"/>
                 </xsl:call-template>
             </xsl:when>
@@ -2136,7 +2125,6 @@
                 <xsl:if test="not(w:pPr/pStyle/@w:val='List-HeadingDAISY')">
                     <!--Calling ParagraphStyle Template-->
                     <xsl:call-template name="ParagraphStyle">
-                        <xsl:with-param name="flag" select="'0'"/>
                         <xsl:with-param name="custom" select="$custom"/>
                         <xsl:with-param name="characterparaStyle" select="$blkcharstyle"/>
                     </xsl:call-template>
@@ -2291,17 +2279,6 @@
                     </xsl:when>
                     <xsl:when test="(d:Getlinenumflag($myObj)=1)">
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
-                        <!--<xsl:call-template name="CloseLevel">
-                            <xsl:with-param name="CurrentLevel" select="-1"/>
-                            <xsl:with-param name="verfoot" select="$VERSION"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                            <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                        </xsl:call-template>-->
                         <line>
                             <linenum>
                                 <xsl:call-template name="CustomCharStyle">
@@ -2522,13 +2499,7 @@
     </xsl:template>
 
     <xsl:template name="List">
-        <xsl:param name="verlist"/>
-        <xsl:param name="prmTrack"/>
         <xsl:param name="custom"/>
-        <xsl:param name="sOperators"/>
-        <xsl:param name="sMinuses"/>
-        <xsl:param name="sNumbers"/>
-        <xsl:param name="sZeros"/>
         <xsl:param name="listcharStyle"/>
         <xsl:message terminate="no">debug in List</xsl:message>
         <!--variable checkilvl holds level(w:ilvl) value of the List-->
@@ -2640,7 +2611,6 @@
         <xsl:call-template name="addlist">
             <xsl:with-param name="openId" select="$checknumId"/>
             <xsl:with-param name="openlvl" select="$checkilvl"/>
-            <xsl:with-param name="verlist" select="$verlist"/>
             <xsl:with-param name="custom" select="$custom"/>
             <xsl:with-param name="numFmt" select="$numFormat"/>
             <xsl:with-param name="lText" select="$lvlText"/>
@@ -2700,8 +2670,6 @@
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,5)='Block']">
                 <!--Calling Blocklist Template-->
                 <xsl:call-template name="Blocklist">
-                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                    <xsl:with-param name="VERSION" select="$VERSION"/>
                     <xsl:with-param name="custom" select="$custom"/>
                     <xsl:with-param name="blkcharstyle" select="$characterStyle"/>
                     <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
@@ -2984,7 +2952,6 @@
 
                     <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId) and not(w:pPr/w:rPr/w:vanish)) and not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' or @w:val/d:CompareHeading(.,$styleHeading)=1])">
                         <xsl:call-template name="List">
-                            <xsl:with-param name="prmTrack" select="$prmTrack"/>
                             <xsl:with-param name="custom" select="$custom"/>
                             <xsl:with-param name="listcharStyle" select="$characterStyle"/>
                             <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
@@ -3006,7 +2973,6 @@
                             <xsl:call-template name="ParagraphStyle">
                                 <xsl:with-param name="prmTrack" select="$prmTrack"/>
                                 <xsl:with-param name="VERSION" select="$VERSION"/>
-                                <xsl:with-param name="flag" select="'0'"/>
                                 <xsl:with-param name="custom" select="$custom"/>
                                 <xsl:with-param name="masterparastyle" select="$mastersubstyle"/>
                                 <xsl:with-param name="imgOptionPara" select="$imgOptionStyle"/>
@@ -3409,7 +3375,6 @@
     <xsl:template name="ParagraphStyle">
         <xsl:param name="prmTrack"/>
         <xsl:param name="VERSION"/>
-        <xsl:param name="flag"/>
         <xsl:param name="flagNote"/>
         <xsl:param name="checkid"/>
         <xsl:param name="custom"/>

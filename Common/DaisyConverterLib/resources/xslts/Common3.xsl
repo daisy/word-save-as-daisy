@@ -119,7 +119,6 @@
     <!--Template for Adding footnote-->
     <xsl:template name="InsertFootnotes">
         <xsl:param name="verfoot"/>
-        <xsl:param name="characterStyle"/>
         <xsl:param name="sOperators"/>
         <xsl:param name="sMinuses"/>
         <xsl:param name="sNumbers"/>
@@ -216,7 +215,6 @@
                                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                                             <xsl:with-param name="sZeros" select="$sZeros"/>
-                                            <xsl:with-param name="characterparaStyle" select="$characterStyle"/>
                                         </xsl:call-template>
                                     </xsl:otherwise>
                                 </xsl:choose>
@@ -229,7 +227,6 @@
             <!--Calling the template footnote recursively until the C# function returns 0-->
             <xsl:call-template name="InsertFootnotes">
                 <xsl:with-param name="verfoot" select ="$verfoot"/>
-                <xsl:with-param name="characStyle" select="$characterStyle"/>
                 <xsl:with-param name="sOperators" select="$sOperators"/>
                 <xsl:with-param name="sMinuses" select="$sMinuses"/>
                 <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -854,7 +851,6 @@
                     </xsl:attribute>
                 </img>
 
-                <!--Variable holds the caption value returned form C# function returncaption-->
                 <xsl:variable name="checkcaption">
                     <xsl:value-of select="d:ReturnCaption($myObj)"/>
                 </xsl:variable>
@@ -2218,6 +2214,7 @@
         <xsl:message terminate="no">debug in LanguagesPara</xsl:message>
         <xsl:variable name="quote">"</xsl:variable>
         <xsl:variable name="count_lang">
+            <xsl:text>0</xsl:text>
       <!--NOTE: Use w:r instead w:r[1]-->
             <xsl:for-each select="w:r/w:rPr/w:lang">
                 <xsl:value-of select="count(@*)"/>
