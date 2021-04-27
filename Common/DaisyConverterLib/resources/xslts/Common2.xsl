@@ -16,38 +16,36 @@
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl">
 
-    <!--Template for adding Levels-->
-    <xsl:template name="AddLevel">
-        <!--Parameter levelValue holds the value of the current level -->
-        <xsl:param name="levelValue" as="xs:integer?"/>
-        <!--Parameter check holds the value that checks for different level values-->
-        <xsl:param name="check" as="xs:integer"/>
-        <xsl:param name="verhead" as="xs:string"/>
-        <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="mastersubhead" as="xs:string"/>
-        <xsl:param name="abValue" as="xs:string" select="''"/>
-        <xsl:param name="txt" as="xs:string"/>
-        <xsl:param name="lvlcharStyle" as="xs:string"/>
-        <xsl:param name="sOperators" as="xs:string"/>
-        <xsl:param name="sMinuses" as="xs:string"/>
-        <xsl:param name="sNumbers" as="xs:string"/>
-        <xsl:param name="sZeros" as="xs:string"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
-        
+	<!--Template for adding Levels-->
+	<xsl:template name="AddLevel">
+		<!--Parameter levelValue holds the value of the current level -->
+		<xsl:param name="levelValue" as="xs:integer?"/>
+		<!--Parameter check holds the value that checks for different level values-->
+		<xsl:param name="check" as="xs:boolean"/>
+		<xsl:param name="verhead" as="xs:string"/>
+		<xsl:param name="custom" as="xs:string"/>
+		<xsl:param name="mastersubhead" as="xs:boolean"/>
+		<xsl:param name="abValue" as="xs:string" select="''"/>
+		<xsl:param name="txt" as="xs:string"/>
+		<xsl:param name="lvlcharStyle" as="xs:boolean"/>
+		<xsl:param name="sOperators" as="xs:string"/>
+		<xsl:param name="sMinuses" as="xs:string"/>
+		<xsl:param name="sNumbers" as="xs:string"/>
+		<xsl:param name="sZeros" as="xs:string"/>
+		<xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
+        <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
         <xsl:message terminate="no">progress:Adding level <xsl:value-of select="$levelValue"/></xsl:message>
-        <!--Pushing level into the stack-->
-        <xsl:sequence select="d:IncrementHeadingCounters($myObj,string($levelValue),substring-after($txt,'!'),$abValue)"/> <!-- empty -->
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-        <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,substring-after($txt,'!')))"/> <!-- empty -->
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-        <xsl:variable name="level" as="xs:integer" select="d:PushLevel($myObj,$levelValue)"/>
-        
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-        <xsl:choose>
-            <!--Checking the level value-->
-            <xsl:when test="$level &lt; 7">
-                <!--Levels upto 6-->
+		<!--Pushing level into the stack-->
+		<xsl:sequence select="d:IncrementHeadingCounters($myObj,string($levelValue),substring-after($txt,'!'),$abValue)"/> <!-- empty -->
+		<xsl:message terminate="no">progress:parahandler</xsl:message>
+		<xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,substring-after($txt,'!')))"/> <!-- empty -->
+		<xsl:message terminate="no">progress:parahandler</xsl:message>
+		<xsl:variable name="level" as="xs:integer" select="d:PushLevel($myObj,($levelValue,0)[1])"/>
+		<xsl:message terminate="no">progress:parahandler</xsl:message>
+		<xsl:choose>
+			<!--Checking the level value-->
+			<xsl:when test="$level &lt; 7">
+				<!--Levels upto 6-->
 				<!--Creating level element-->
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level',$level,'&gt;')"/>
 				<xsl:if test="(d:GetPageNum($myObj)=0) and (d:CheckTocOccur($myObj)=1) and ($custom='Automatic')">
@@ -58,10 +56,10 @@
 						<xsl:call-template name="DefaultPageNum"/>
 					</xsl:if>
 				</xsl:if>
-                <!--Checking whether heading is present in the document-->
-                <xsl:if test="$check!=0">
-                    <!--checking for custom style set for page numbers-->
-                    <xsl:if test="$custom='Automatic'">
+				<!--Checking whether heading is present in the document-->
+				<xsl:if test="$check">
+					<!--checking for custom style set for page numbers-->
+					<xsl:if test="$custom='Automatic'">
 						<xsl:choose>
 							<!--Checking page breaks-->
 							<xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
@@ -86,24 +84,15 @@
 					</xsl:if>
                     <!--Calling tmpHeading template for adding Levels-->
 
-                    <!-- DB :  Check if PageNumberDAISY style is applied to skip heading styles in output file when this style is applied.  -->
-                    <xsl:variable name="IsPageNumberDAISYApplied" as="xs:string">
-                        <xsl:choose>
-                            <xsl:when test="w:pPr/w:rPr/w:rStyle/@w:val='PageNumberDAISY'">
-                                <xsl:sequence select="'true'"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:sequence select="'false'"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:variable>
+					<!-- DB :  Check if PageNumberDAISY style is applied to skip heading styles in output file when this style is applied.  -->
+					<xsl:variable name="IsPageNumberDAISYApplied" as="xs:boolean" select="w:pPr/w:rPr/w:rStyle/@w:val='PageNumberDAISY'"/>
 
-                    <!-- DB : write header in output when PageNumberDAISY is not applied  -->
-                    <xsl:if test="not($IsPageNumberDAISYApplied='true')">
-                        <xsl:call-template name="tmpHeading">
-                            <xsl:with-param name="level" select="$level"/>
-                        </xsl:call-template>
-                    </xsl:if>
+					<!-- DB : write header in output when PageNumberDAISY is not applied  -->
+					<xsl:if test="not($IsPageNumberDAISYApplied)">
+						<xsl:call-template name="tmpHeading">
+							<xsl:with-param name="level" select="string($level)"/>
+						</xsl:call-template>
+					</xsl:if>
 
                     <!--Calling ParaHandler template for heading text-->
                     <xsl:call-template name="TempLevelSpan">
@@ -128,7 +117,7 @@
                     </xsl:call-template>
 
 					<!-- DB : write header in output when PageNumberDAISY is not applied  -->
-					<xsl:if test="not($IsPageNumberDAISYApplied='true')">
+					<xsl:if test="not($IsPageNumberDAISYApplied)">
 						<!--Calling tmpAbbrAcrHeading template setting AbbrAcr flag and closing heading tag-->
 						<xsl:call-template name="tmpAbbrAcrHeading">
 							<xsl:with-param name="level" select="string($level)"/>
@@ -177,88 +166,88 @@
 		</xsl:choose>
 	</xsl:template>
 
-    <xsl:template name="TempLevelSpan">
-        <xsl:param name="verhead" as="xs:string"/>
-        <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="level" as="xs:integer"/>
-        <xsl:param name="txt" as="xs:string"/>
-        <xsl:param name="mastersubhead" as="xs:string"/>
-        <xsl:param name="lvlcharStyle" as="xs:string"/>
-        <xsl:param name="sOperators" as="xs:string"/>
-        <xsl:param name="sMinuses" as="xs:string"/>
-        <xsl:param name="sNumbers" as="xs:string"/>
-        <xsl:param name="sZeros" as="xs:string"/>
-        <xsl:param name="FootnotesLevel" select="0"/>
+	<xsl:template name ="TempLevelSpan">
+		<xsl:param name="verhead" as="xs:string"/>
+		<xsl:param name ="custom" as="xs:string"/>
+		<xsl:param name="level" as="xs:integer"/>
+		<xsl:param name ="txt" as="xs:string"/>
+		<xsl:param name ="mastersubhead" as="xs:boolean"/>
+		<xsl:param name="lvlcharStyle" as="xs:boolean"/>
+		<xsl:param name="sOperators" as="xs:string"/>
+		<xsl:param name="sMinuses" as="xs:string"/>
+		<xsl:param name="sNumbers" as="xs:string"/>
+		<xsl:param name="sZeros" as="xs:string"/>
+		<xsl:param name="FootnotesLevel" select="0"/>
         <xsl:param name="FootnotesPosition" select="'page'"/>
         <xsl:message terminate="no">debug In TempLevelSpan</xsl:message>
-        <xsl:choose>
-            <xsl:when test="$lvlcharStyle='True'">
-                <xsl:choose>
-                    <xsl:when test="w:pPr/w:ind[@w:left] and w:pPr/w:ind[@w:right]">
-                        <xsl:variable name="val" as="xs:integer" select="w:pPr/w:ind/@w:left"/>
-                        <xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
-                        <xsl:variable name="valright" as="xs:integer" select="w:pPr/w:ind/@w:right"/>
-                        <xsl:variable name="val_right" as="xs:integer" select="($valright div 1440)"/>
-                        <span class="{concat('text-indent:', 'right=',$val_right,'in',';left=',$val_left,'in')}">
-                            <xsl:call-template name="ParaHandler">
-                                <xsl:with-param name="flag" select="'0'"/>
-                                <xsl:with-param name="VERSION" select="$verhead"/>
-                                <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="level" select="$level"/>
-                                <xsl:with-param name="txt" select="$txt"/>
-                                <xsl:with-param name="sOperators" select="$sOperators"/>
-                                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                <xsl:with-param name="sZeros" select="$sZeros"/>
-                                <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
-                                <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
+		<xsl:choose>
+			<xsl:when test="$lvlcharStyle">
+				<xsl:choose>
+					<xsl:when test="w:pPr/w:ind[@w:left] and w:pPr/w:ind[@w:right]">
+						<xsl:variable name="val" as="xs:integer" select="w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
+						<xsl:variable name="valright" as="xs:integer" select="w:pPr/w:ind/@w:right"/>
+						<xsl:variable name="val_right" as="xs:integer" select="($valright div 1440)"/>
+						<span class="{concat('text-indent:', 'right=',$val_right,'in',';left=',$val_left,'in')}">
+							<xsl:call-template name="ParaHandler">
+								<xsl:with-param name="flag" select="'0'"/>
+								<xsl:with-param name="VERSION" select="$verhead"/>
+								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="level" select="$level"/>
+								<xsl:with-param name ="txt" select="$txt"/>
+								<xsl:with-param name="sOperators" select="$sOperators"/>
+								<xsl:with-param name="sMinuses" select="$sMinuses"/>
+								<xsl:with-param name="sNumbers" select="$sNumbers"/>
+								<xsl:with-param name="sZeros" select="$sZeros"/>
+								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
+								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
                                 <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
                                 <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                            </xsl:call-template>
-                        </span>
-                    </xsl:when>
-                    <xsl:when test="w:pPr/w:ind[@w:left] and  w:pPr/w:jc">
-                        <xsl:variable name="val" as="xs:integer" select="w:pPr/w:ind/@w:left"/>
-                        <xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
-                        <xsl:variable name="val1" as="xs:string" select="w:pPr/w:jc/@w:val"/>
-                        <span class="{concat('text-indent:',';left=',$val_left,'in',';text-align:',$val1)}">
-                            <xsl:call-template name="ParaHandler">
-                                <xsl:with-param name="flag" select="'0'"/>
-                                <xsl:with-param name="VERSION" select="$verhead"/>
-                                <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="level" select="$level"/>
-                                <xsl:with-param name="txt" select="$txt"/>
-                                <xsl:with-param name="sOperators" select="$sOperators"/>
-                                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                <xsl:with-param name="sZeros" select="$sZeros"/>
-                                <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
-                                <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
+							</xsl:call-template>
+						</span>
+					</xsl:when>
+					<xsl:when test="w:pPr/w:ind[@w:left] and  w:pPr/w:jc">
+						<xsl:variable name="val" as="xs:integer" select="w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
+						<xsl:variable name="val1" as="xs:string" select="w:pPr/w:jc/@w:val"/>
+						<span class="{concat('text-indent:',';left=',$val_left,'in',';text-align:',$val1)}">
+							<xsl:call-template name="ParaHandler">
+								<xsl:with-param name="flag" select="'0'"/>
+								<xsl:with-param name="VERSION" select="$verhead"/>
+								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="level" select="$level"/>
+								<xsl:with-param name ="txt" select="$txt"/>
+								<xsl:with-param name="sOperators" select="$sOperators"/>
+								<xsl:with-param name="sMinuses" select="$sMinuses"/>
+								<xsl:with-param name="sNumbers" select="$sNumbers"/>
+								<xsl:with-param name="sZeros" select="$sZeros"/>
+								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
+								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
                                 <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
                                 <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                            </xsl:call-template>
-                        </span>
-                    </xsl:when>
-                    <xsl:when test="w:pPr/w:ind[@w:left]">
-                        <xsl:variable name="val" as="xs:integer" select="w:pPr/w:ind/@w:left"/>
-                        <xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
-                        <span class="{concat('text-indent:',$val_left,'in')}">
-                            <xsl:call-template name="ParaHandler">
-                                <xsl:with-param name="flag" select="'0'"/>
-                                <xsl:with-param name="VERSION" select="$verhead"/>
-                                <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="level" select="$level"/>
-                                <xsl:with-param name="txt" select="$txt"/>
-                                <xsl:with-param name="sOperators" select="$sOperators"/>
-                                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                <xsl:with-param name="sZeros" select="$sZeros"/>
-                                <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
-                                <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
+							</xsl:call-template>
+						</span>
+					</xsl:when>
+					<xsl:when test="w:pPr/w:ind[@w:left]">
+						<xsl:variable name="val" as="xs:integer" select="w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" as="xs:integer" select="($val div 1440)"/>
+						<span class="{concat('text-indent:',$val_left,'in')}">
+							<xsl:call-template name="ParaHandler">
+								<xsl:with-param name="flag" select="'0'"/>
+								<xsl:with-param name="VERSION" select="$verhead"/>
+								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="level" select="$level"/>
+								<xsl:with-param name ="txt" select="$txt"/>
+								<xsl:with-param name="sOperators" select="$sOperators"/>
+								<xsl:with-param name="sMinuses" select="$sMinuses"/>
+								<xsl:with-param name="sNumbers" select="$sNumbers"/>
+								<xsl:with-param name="sZeros" select="$sZeros"/>
+								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
+								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
                                 <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
                                 <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                            </xsl:call-template>
-                        </span>
+							</xsl:call-template>
+						</span>
 
                     </xsl:when>
                     <xsl:when test="w:pPr/w:ind[@w:right]">
@@ -340,7 +329,7 @@
             </xsl:otherwise>
         </xsl:choose>
 
-    </xsl:template>
+	</xsl:template>
 
     <!--Template to Close Levels-->
     <xsl:template name="CloseLevel">
@@ -524,7 +513,7 @@
 		<xsl:param name ="custom" as="xs:string"/>
 		<xsl:param name="numFmt" as="xs:string"/>
 		<xsl:param name="lText" as="xs:string"/>
-		<xsl:param name="lstcharStyle" as="xs:string"/>
+		<xsl:param name="lstcharStyle" as="xs:boolean"/>
 		<xsl:message terminate="no">progress:addlist</xsl:message>
 		<!--Pushes the current level into the stack-->
 		<xsl:variable name="PeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
@@ -850,7 +839,7 @@
         <xsl:choose>
             <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
                 <xsl:call-template name="LanguagesPara">
-                    <xsl:with-param name="Attribute" select="'1'"/>
+                    <xsl:with-param name="Attribute" select="true()"/>
                     <xsl:with-param name="level" select="concat('h',$level)"/>
                 </xsl:call-template>
             </xsl:when>
@@ -898,14 +887,14 @@
         </xsl:if>-->
     </xsl:template>
 
-    <!--Template for Implementing Table-->
-    <xsl:template name="TableHandler">
-        <xsl:param name="parmVerTable" as="xs:string"/>
-        <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="mastersubtbl" as="xs:string"/>
-        <xsl:param name="characterStyle" as="xs:string"/>
-        <xsl:message terminate="no">progress:Table found</xsl:message>
-        <xsl:if test="$custom='Automatic'">
+	<!--Template for Implementing Table-->
+	<xsl:template name="TableHandler">
+		<xsl:param name="parmVerTable" as="xs:string"/>
+		<xsl:param name="custom" as="xs:string"/>
+		<xsl:param name="mastersubtbl" as="xs:boolean"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
+		<xsl:message terminate="no">progress:Table found</xsl:message>
+		<xsl:if test="$custom='Automatic'">
 			<xsl:for-each select="w:tr/w:tc">
 				<!-- <xsl:message terminate="no">progress:parahandler</xsl:message> -->
 				<xsl:if test="((w:p/w:r/w:lastRenderedPageBreak) or (w:p/w:r/w:br/@w:type='page'))">
@@ -945,10 +934,8 @@
 
                     <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
                         <xsl:for-each select="preceding-sibling::node()[1]/node()">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:if test="self::w:r">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
                                         <xsl:when test="w:noBreakHyphen">
                                             <xsl:text>-</xsl:text>
@@ -963,7 +950,6 @@
                             </xsl:if>
                             <xsl:if test="self::w:fldSimple">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:for-each>
                             </xsl:if>
@@ -971,10 +957,8 @@
                     </xsl:if>
                     <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
                         <xsl:for-each select="preceding-sibling::node()[1]/node()">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:if test="self::w:r">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
                                         <xsl:when test="w:noBreakHyphen">
                                             <xsl:text>-</xsl:text>
@@ -989,7 +973,6 @@
                             </xsl:if>
                             <xsl:if test="self::w:fldSimple">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:for-each>
                             </xsl:if>
@@ -997,10 +980,8 @@
                     </xsl:if>
                     <xsl:if test="(following-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
                         <xsl:for-each select="following-sibling::node()[1]/node()">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:if test="self::w:r">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
                                         <xsl:when test="w:noBreakHyphen">
                                             <xsl:text>-</xsl:text>
@@ -1015,7 +996,6 @@
                             </xsl:if>
                             <xsl:if test="self::w:fldSimple">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:for-each>
                             </xsl:if>
@@ -1051,14 +1031,12 @@
                 <thead>
                     <!--Looping through each row of the table-->
                     <xsl:for-each select="w:tr">
-                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                         <!--Checking for table header-->
                         <xsl:if test="w:trPr/w:tblHeader">
                             <!--Looping through each row of the table-->
                             <tr>
                                 <!--Looping through each cell of the table-->
                                 <xsl:for-each select="w:tc/w:p">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <th>
                                         <!--Assinging value as Table head-->
                                         <xsl:call-template name="ParagraphStyle">
@@ -1078,17 +1056,14 @@
                 <tfoot>
                     <!--Looping through each row of the table-->
                     <xsl:for-each select="w:tr">
-                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                         <xsl:if test="position()=last()">
                             <tr>
                                 <!--Looping through each cell of the table-->
                                 <xsl:for-each select="w:tc">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:if test="(w:p) and (not((following-sibling::w:p[1]/w:pPr/w:pStyle[@w:val='DefinitionDataDAISY']) or (following-sibling::w:p[1]/w:r/w:rPr/w:rStyle[@w:val='DefinitionTermDAISY'])))">
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','th','&gt;')"/>
                                     </xsl:if>
                                     <xsl:for-each select="w:p">
-                                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                         <xsl:call-template name="ParagraphStyle">
                                             <xsl:with-param name="custom" select="$custom"/>
                                             <xsl:with-param name="VERSION" select="$parmVerTable"/>
@@ -1108,17 +1083,14 @@
                 <!--Counting each paragraph element for counting the number of rows spaned-->
                 <!--Looping through each row of the table-->
                 <xsl:for-each select="w:tr">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <!--Checking if the row is not header row-->
                     <xsl:if test="not(w:trPr/w:tblHeader) and not(w:trPr/w:cnfStyle)">
                         <tr>
                             <!--Looping through each cell of the table-->
                             <xsl:for-each select="w:tc">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:if test="w:tcPr/w:vMerge[@w:val='restart']">
 									<xsl:variable name="columnPosition" as="xs:integer" select="position()"/>
 									<xsl:for-each select="../following-sibling::w:tr/w:tc[$columnPosition]/w:tcPr">
-										<!-- <xsl:message terminate="no">progress:parahandler</xsl:message> -->
 										<xsl:if test="d:ReturnFlagRowspan($myObj)=0">
 											<xsl:if test="(w:vMerge) and not(w:vMerge/@w:val='restart')">
 												<xsl:sequence select="d:sink(d:Rowspan($myObj))"/> <!-- empty -->
@@ -1161,14 +1133,12 @@
 									</xsl:choose>
 									<xsl:variable name ="var_heading" as="xs:string*">
 										<xsl:for-each select="$stylesXml//w:styles/w:style/w:name[@w:val='heading 1']">
-											<!-- <xsl:message terminate="no">progress:parahandler</xsl:message> -->
 											<xsl:sequence select="../@w:styleId"/>
 										</xsl:for-each>
 									</xsl:variable>
-									<xsl:variable name ="var_heading" as="xs:string" select="string-join($var_heading,'')"/>
+									<xsl:variable name ="var_heading" as="xs:string?" select="string-join($var_heading,'')[not(.='')]"/>
 									<xsl:sequence select="d:sink(d:SetRowspan($myObj))"/> <!-- empty -->
 									<xsl:for-each select="w:p">
-										<!-- <xsl:message terminate="no">progress:parahandler</xsl:message> -->
 										<!--Calling paragraph template whenever w:p element is encountered.-->
 										<xsl:call-template name="StyleContainer">
 											<xsl:with-param name="VERSION" select="$parmVerTable"/>
@@ -1180,7 +1150,6 @@
 									</xsl:for-each>
                                     <!--Checking for nested table-->
                                     <xsl:for-each select="child::w:tbl">
-                                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                         <!--Calling template Tablehandler for nested tables-->
                                         <xsl:call-template name="TableHandler">
                                             <xsl:with-param name="parmVerTable" select="$parmVerTable"/>

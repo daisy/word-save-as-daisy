@@ -32,14 +32,14 @@
         <xsl:param name="version" as="xs:string"/>
         <!--Parameter custom page number-->
         <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="masterSub" as="xs:string"/>
+        <xsl:param name="masterSub" as="xs:boolean"/>
         <xsl:param name="sOperators" as="xs:string"/>
         <xsl:param name="sMinuses" as="xs:string"/>
         <xsl:param name="sNumbers" as="xs:string"/>
         <xsl:param name="sZeros" as="xs:string"/>
         <xsl:param name="imgOption" as="xs:string"/>
-        <xsl:param name="dpi" as="xs:string"/>
-        <xsl:param name="charStyles" as="xs:string"/>
+        <xsl:param name="dpi" as="xs:float"/>
+        <xsl:param name="charStyles" as="xs:boolean"/>
         <xsl:param name="FootnotesPosition" as="xs:string"/>
         <xsl:param name="FootnotesLevel" as="xs:integer"/>
 
@@ -107,14 +107,14 @@
         <xsl:param name="version" as="xs:string"/>
         <!--Parameter custom page number-->
         <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="masterSub" as="xs:string"/>
+        <xsl:param name="masterSub" as="xs:boolean"/>
         <xsl:param name="sOperators" as="xs:string"/>
         <xsl:param name="sMinuses" as="xs:string"/>
         <xsl:param name="sNumbers" as="xs:string"/>
         <xsl:param name="sZeros" as="xs:string"/>
         <xsl:param name="imgOption" as="xs:string"/>
-        <xsl:param name="dpi" as="xs:string"/>
-        <xsl:param name="charStyles" as="xs:string"/>
+        <xsl:param name="dpi" as="xs:float"/>
+        <xsl:param name="charStyles" as="xs:boolean"/>
         <xsl:param name="FootnotesPosition" as="xs:string"/>
         <xsl:param name="FootnotesLevel" as="xs:integer"/>
         <xsl:message terminate="no">progress:Building the bodymatter</xsl:message>
@@ -148,16 +148,16 @@
         <xsl:param name="version" as="xs:string"/>
         <!--Parameter custom page number-->
         <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="masterSub" as="xs:string"/>
+        <xsl:param name="masterSub" as="xs:boolean"/>
         <xsl:param name="sOperators" as="xs:string"/>
         <xsl:param name="sMinuses" as="xs:string"/>
         <xsl:param name="sNumbers" as="xs:string"/>
         <xsl:param name="sZeros" as="xs:string"/>
         <xsl:param name="imgOption" as="xs:string"/>
-        <xsl:param name="dpi" as="xs:string"/>
-        <xsl:param name="charStyles" as="xs:string"/>
-        <xsl:param name="FootnotesPosition" />
-        <xsl:param name="FootnotesLevel" />
+        <xsl:param name="dpi" as="xs:float"/>
+        <xsl:param name="charStyles" as="xs:boolean"/>
+        <xsl:param name="FootnotesPosition" as="xs:string" />
+        <xsl:param name="FootnotesLevel" as="xs:integer" />
         <xsl:message terminate="no">progress:Building the rearmatter</xsl:message>
         <rearmatter>
             <xsl:if test="(
@@ -212,14 +212,14 @@
         <xsl:param name="version" as="xs:string"/>
         <!--Parameter custom page number-->
         <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="masterSub" as="xs:string"/>
+        <xsl:param name="masterSub" as="xs:boolean"/>
         <xsl:param name="sOperators" as="xs:string"/>
         <xsl:param name="sMinuses" as="xs:string"/>
         <xsl:param name="sNumbers" as="xs:string"/>
         <xsl:param name="sZeros" as="xs:string"/>
         <xsl:param name="imgOption" as="xs:string"/>
-        <xsl:param name="dpi" as="xs:string"/>
-        <xsl:param name="charStyles" as="xs:string"/>
+        <xsl:param name="dpi" as="xs:float"/>
+        <xsl:param name="charStyles" as="xs:boolean"/>
         <xsl:param name="matterType" as="xs:string"/> <!-- Frontmatter|Bodymatter|Readmatter -->
         <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
         <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
@@ -239,7 +239,7 @@
                 <xsl:sequence select="../@w:styleId"/>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:variable name="var_heading" as="xs:string" select="string-join($var_heading,'')"/>
+        <xsl:variable name="var_heading" as="xs:string?" select="string-join($var_heading,'')[not(.='')]"/>
         <!--Looping through each hyperlink-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:hyperlink">
             <xsl:message terminate="no">progress:Parse hyperlinks</xsl:message>
@@ -259,7 +259,7 @@
                 <!--Calling Template to add level1-->
                 <xsl:call-template name="AddLevel">
                     <xsl:with-param name="levelValue" select="1"/>
-                    <xsl:with-param name="check" select="0"/>
+                    <xsl:with-param name="check" select="false()"/>
                     <xsl:with-param name="verhead" select="$version"/>
                     <xsl:with-param name="custom" select="$custom"/>
                     <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -278,7 +278,7 @@
         <!--Traversing through each node of the document-->
         <xsl:for-each select="$documentXml//w:body/node()">
             <xsl:message terminate="no">progress:parahandler</xsl:message>
-            <xsl:if test="not($masterSub='Yes')">
+            <xsl:if test="not($masterSub)">
                 <xsl:call-template name="SetCurrentMatterType" />
             </xsl:if>
             <xsl:if test="d:GetCurrentMatterType()=$matterType">
@@ -329,8 +329,6 @@
                             <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
                             <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
-                        
-                        <!--<xsl:if test="$currentLevel=$FootnotesLevel and not($paragraphStyleOutline)">-->
                     </xsl:when>
                     <!--Checking for Table element-->
                     <xsl:when test="self::w:tbl">
@@ -381,7 +379,7 @@
                                 <!--Open $PeekLevel levels after Table Of Contents-->
                                 <xsl:call-template name="AddLevel">
                                     <xsl:with-param name="levelValue" select="$PeekLevel"/>
-                                    <xsl:with-param name="check" select="1"/>
+                                    <xsl:with-param name="check" select="true()"/>
                                     <xsl:with-param name="verhead" select="$version"/>
                                     <xsl:with-param name="custom" select="$custom"/>
                                     <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -576,19 +574,20 @@
         <xsl:param name="custom" as="xs:string"/>
         <xsl:param name="txt" as="xs:string" select="''"/>
         <xsl:param name="level" as="xs:integer?"/>
-        <xsl:param name="mastersubpara" as="xs:string" select="''"/>
+        <xsl:param name="mastersubpara" as="xs:boolean" select="false()"/>
         <xsl:param name="imgOptionPara" as="xs:string" select="''"/>
-        <xsl:param name="dpiPara" as="xs:string" select="''"/>
-        <xsl:param name="charparahandlerStyle" as="xs:string"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
+        <xsl:param name="dpiPara" as="xs:float?"/>
+        <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
+        <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
+        <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
         <xsl:message terminate="no">debug in ParaHandler</xsl:message>
         <!--Calling Footnote template when the page break is encountered.-->
         <xsl:if test="(
-                    (w:r/w:lastRenderedPageBreak) 
-                    or (w:r/w:br/@w:type='page')
-                ) and (not($flag='0'))
-        ">
+            ( 
+                (w:r/w:lastRenderedPageBreak) 
+                or (w:r/w:br/@w:type='page')
+            ) and (not($flag='0'))
+        )">
             <!--If parent element is not table cell-->
             <xsl:if test="not(parent::w:tc)">
                 
@@ -685,7 +684,7 @@
                 <xsl:choose>
                     <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
                         <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'0'"/>
+                            <xsl:with-param name="Attribute" select="false()"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
@@ -708,7 +707,7 @@
         <xsl:for-each select="./node()">
 
             <xsl:if test="self::w:subDoc">
-                <xsl:if test="$mastersubpara='Yes'">
+                <xsl:if test="$mastersubpara">
                     <xsl:message terminate="no">progress:Found subdocument reference</xsl:message>
                     <xsl:variable name="temp" as="xs:string" select="concat('&lt;','subdoc ','rId=','&quot;',@r:id,'&quot;','&gt;','&lt;','/subdoc','&gt;')"/>
                     <xsl:sequence select="d:sink(d:PushMasterSubdoc($myObj,$temp))"/> <!-- empty -->
@@ -991,7 +990,7 @@
                 <xsl:if test="w:sdtContent/w:fldSimple/w:r">
                     <cite>
                         <!--Creating variable SupressAuthor for checking    value '\n'-->
-                        <xsl:variable name="SupressAuthor" as="xs:string">
+                        <xsl:variable name="SupressAuthor" as="xs:boolean">
                             <xsl:choose>
                                 <xsl:when test="./w:sdtContent/w:fldSimple/@w:instr">
                                     <xsl:sequence select="contains(./w:sdtContent/w:fldSimple/@w:instr,'\n')"/>
@@ -1000,12 +999,12 @@
                                     <xsl:sequence select="contains(./w:sdtContent/w:r/w:instrText,'\n')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:sequence select="''"/>
+                                    <xsl:sequence select="false()"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:variable>
                         <!--Creating variable SupressTitle for checking    value '\t'-->
-                        <xsl:variable name="SupressTitle" as="xs:string">
+                        <xsl:variable name="SupressTitle" as="xs:boolean">
                             <xsl:choose>
                                 <xsl:when test="./w:sdtContent/w:fldSimple/@w:instr">
                                     <xsl:sequence select="contains(./w:sdtContent/w:fldSimple/@w:instr,'\t')"/>
@@ -1014,12 +1013,12 @@
                                     <xsl:sequence select="contains(./w:sdtContent/w:r/w:instrText,'\t')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:sequence select="''"/>
+                                    <xsl:sequence select="false()"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:variable>
                         <!--Creating variable SupressYear for checking    value '\y'-->
-                        <xsl:variable name="SupressYear" as="xs:string">
+                        <xsl:variable name="SupressYear" as="xs:boolean">
                             <xsl:choose>
                                 <xsl:when test="./w:sdtContent/w:fldSimple/@w:instr">
                                     <xsl:sequence select="contains(./w:sdtContent/w:fldSimple/@w:instr,'\y')"/>
@@ -1028,7 +1027,7 @@
                                     <xsl:sequence select="contains(./w:sdtContent/w:r/w:instrText,'\y')"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:sequence select="''"/>
+                                    <xsl:sequence select="false()"/>
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:variable>
@@ -1177,7 +1176,7 @@
                         </xsl:if>
                     </xsl:otherwise>
                 </xsl:choose>
-                <xsl:if test="(d:ListMasterSubFlag($myObj)=1) and ($mastersubpara = 'Yes')">
+                <xsl:if test="(d:ListMasterSubFlag($myObj)=1) and $mastersubpara">
                     <xsl:variable name="curLevel" as="xs:integer" select="d:PeekLevel($myObj)"/>
                     <xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj,$curLevel)"/>
                     <xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
@@ -1205,8 +1204,8 @@
         <xsl:param name="txt" as="xs:string"/>
         <xsl:param name="prmTrack" as="xs:string"/>
         <xsl:param name="VERSION" as="xs:string"/>
-        <xsl:param name="charparahandlerStyle" as="xs:string"/>
-        <xsl:param name="mastersubpara" as="xs:string"/>
+        <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
+        <xsl:param name="mastersubpara" as="xs:boolean"/>
         <xsl:param name="level" as="xs:integer"/>
         <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
         <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
@@ -1291,10 +1290,10 @@
          - 2 =  -->
         <xsl:param name="flag" as="xs:string"/> 
         <xsl:param name="imgOptionPara" as="xs:string"/>
-        <xsl:param name="dpiPara" as="xs:string"/>
+        <xsl:param name="dpiPara" as="xs:float?"/>
         <xsl:param name="custom" as="xs:string"/>
         <xsl:param name="txt" as="xs:string"/>
-        <xsl:param name="charparahandlerStyle" as="xs:string"/>
+        <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
         <xsl:param name="VERSION" as="xs:string"/>
         <!-- For footnote handling-->
         <xsl:param name="sOperators" as="xs:string"/>
@@ -1792,21 +1791,21 @@
 
     <!--Template to implement citation styles-->
     <xsl:template name="styleCitation">
-        <xsl:param name="supressAuthor" as="xs:string"/>
-        <xsl:param name="supressTitle" as="xs:string"/>
-        <xsl:param name="supressYear" as="xs:string"/>
+        <xsl:param name="supressAuthor" as="xs:boolean"/>
+        <xsl:param name="supressTitle" as="xs:boolean"/>
+        <xsl:param name="supressYear" as="xs:boolean"/>
         <xsl:message terminate="no">debug in styleCitation</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
-            <xsl:when test="($supressAuthor='true')and ($supressTitle='true') and($supressYear='true')">
+            <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
                 <xsl:value-of select="./w:sdtContent//w:t"/>
             </xsl:when>
             <!--Checking condition for supressing Author,Title-->
-            <xsl:when test="($supressAuthor='true') and ($supressTitle='true')">
+            <xsl:when test="$supressAuthor and $supressTitle">
                 <xsl:value-of select="d:GetYear($myObj)"/>
             </xsl:when>
             <!--Checking condition for supressing Author,Year-->
-            <xsl:when test="($supressAuthor='true') and ($supressYear='true')">
+            <xsl:when test="$supressAuthor and $supressYear">
                 <xsl:text>(</xsl:text>
                 <title>
                     <xsl:value-of select="d:GetTitle($myObj)"/>
@@ -1814,7 +1813,7 @@
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <!--Checking condition for supressing Title,Year-->
-            <xsl:when test="($supressTitle='true') and ($supressYear='true')">
+            <xsl:when test="$supressTitle and $supressYear">
                 <xsl:text>(</xsl:text>
                 <author>
                     <xsl:value-of select="d:GetAuthor($myObj)"/>
@@ -1822,7 +1821,7 @@
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <!--Checking condition for supressing Author-->
-            <xsl:when test="$supressAuthor='true'">
+            <xsl:when test="$supressAuthor">
                 <xsl:text>(</xsl:text>
                 <title>
                     <xsl:value-of select="d:GetTitle($myObj)"/>
@@ -1832,7 +1831,7 @@
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <!--Checking condition for supressing Title-->
-            <xsl:when test="$supressTitle='true'">
+            <xsl:when test="$supressTitle">
                 <xsl:text>(</xsl:text>
                 <author>
                     <xsl:value-of select="d:GetAuthor($myObj)"/>
@@ -1842,7 +1841,7 @@
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <!--Checking condition for supressing Year-->
-            <xsl:when test="$supressYear='true'">
+            <xsl:when test="$supressYear">
                 <xsl:text>(</xsl:text>
                 <author>
                     <!--Calling GetAuthor function to get the value of Author-->
@@ -1894,22 +1893,22 @@
 
     <!--Template to implement citation styles MLA-->
     <xsl:template name="styleCitationMLA">
-        <xsl:param name="supressAuthor" as="xs:string"/>
-        <xsl:param name="supressTitle" as="xs:string"/>
-        <xsl:param name="supressYear" as="xs:string"/>
+        <xsl:param name="supressAuthor" as="xs:boolean"/>
+        <xsl:param name="supressTitle" as="xs:boolean"/>
+        <xsl:param name="supressYear" as="xs:boolean"/>
         <xsl:message terminate="no">debug in styleCitationMLA</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
-            <xsl:when test="($supressAuthor='true')and ($supressTitle='true') and($supressYear='true')">
+            <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
                 <xsl:value-of select="./w:sdtContent//w:t"/>
             </xsl:when>
-            <xsl:when test="$supressAuthor='true'">
+            <xsl:when test="$supressAuthor">
                 <title>
                     <!--Calling GetTitle function to get the value of the Title-->
                     <xsl:value-of select="d:GetTitle($myObj)"/>
                 </title>
             </xsl:when>
-            <xsl:when test="$supressTitle='true'">
+            <xsl:when test="$supressTitle">
                 <author>
                     <!--Calling GetAuthor function to get the value of the Author-->
                     <xsl:value-of select="d:GetAuthor($myObj)"/>
@@ -1944,30 +1943,30 @@
 
     <!--Template to implement citation styleSIST02-->
     <xsl:template name="styleCitationSIST02">
-        <xsl:param name="supressAuthor" as="xs:string"/>
-        <xsl:param name="supressTitle" as="xs:string"/>
-        <xsl:param name="supressYear" as="xs:string"/>
+        <xsl:param name="supressAuthor" as="xs:boolean"/>
+        <xsl:param name="supressTitle" as="xs:boolean"/>
+        <xsl:param name="supressYear" as="xs:boolean"/>
         <xsl:message terminate="no">debug in styleCitationSIST02</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
-            <xsl:when test="($supressAuthor='true')and ($supressTitle='true') and($supressYear='true')">
+            <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
                 <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
                     <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:value-of select="w:t"/>
                 </xsl:for-each>
             </xsl:when>
-            <xsl:when test="($supressAuthor='true')">
+            <xsl:when test="$supressAuthor">
                 <xsl:text>(</xsl:text>
                 <!--Calling GetYear function to get the value of the Year-->
                 <xsl:value-of select="d:GetYear($myObj)"/>
                 <xsl:text>)</xsl:text>
             </xsl:when>
             <!--Checking condition for supressing Author,Year-->
-            <xsl:when test="($supressAuthor='true') and ($supressYear='true')">
+            <xsl:when test="$supressAuthor and $supressYear">
                 <xsl:value-of select="./w:sdtContent//w:t"/>
             </xsl:when>
             <!--Checking condition for supressing Title,Year-->
-            <xsl:when test="($supressTitle='true') and ($supressYear='true')">
+            <xsl:when test="$supressTitle and $supressYear">
                 <author>
                     <xsl:text>(</xsl:text>
                     <!--Calling GetAuthor function to get the value of the Author-->
@@ -1976,12 +1975,12 @@
                 </author>
             </xsl:when>
             <!--Checking condition for supressing Author-->
-            <xsl:when test="$supressAuthor='true'">
+            <xsl:when test="$supressAuthor">
                 <!--Calling GetYear function to get the value of the Year-->
                 <xsl:value-of select="d:GetYear($myObj)"/>
             </xsl:when>
             <!--Checking condition for supressing Year-->
-            <xsl:when test="$supressYear='true'">
+            <xsl:when test="$supressYear">
                 <author>
                     <xsl:text>(</xsl:text>
                     <!--Calling GetAuthor function to get the value of the Author-->
@@ -2052,7 +2051,7 @@
     <!--Template to Implement Blocquote using Blocklist Template -->
     <xsl:template name="Blocklist">
         <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="blkcharstyle" as="xs:string"/>
+        <xsl:param name="blkcharstyle" as="xs:boolean"/>
         <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
         <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
         <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,5)='Block'])=0">
@@ -2099,7 +2098,7 @@
         <xsl:param name="customTag" as="xs:string"/>
         <xsl:param name="custom" as="xs:string"/>
         <xsl:param name="txt" as="xs:string" select="''"/>
-        <xsl:param name="customcharStyle" as="xs:string"/>
+        <xsl:param name="customcharStyle" as="xs:boolean"/>
         <xsl:choose>
             <!--Checking for SampleDAISY/HTMLSample custom character style-->
             <xsl:when test="($customTag='SampleDAISY') or ($customTag='HTMLSample')" >
@@ -2300,7 +2299,7 @@
     Change to be made : 
      - Merge emphasis/strong block : use a flag system to create start and closing tag for text decoration -->
     <xsl:template name="CustomCharStyle">
-        <xsl:param name="characterStyle" as="xs:string" select="''"/>
+        <xsl:param name="characterStyle" as="xs:boolean" select="false()"/>
         <xsl:param name="txt" as="xs:string" select="''"/>
         
         <!-- Compute character group status -->
@@ -2456,7 +2455,7 @@
 
     <xsl:template name="List">
         <xsl:param name="custom" as="xs:string" select="''"/>
-        <xsl:param name="listcharStyle" as="xs:string"/>
+        <xsl:param name="listcharStyle" as="xs:boolean"/>
         <xsl:message terminate="no">debug in List</xsl:message>
         <!--variable checkilvl holds level(w:ilvl) value of the List-->
         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
@@ -2591,18 +2590,18 @@
         <xsl:param name="prmTrack" as="xs:string" select="''"/>
         <xsl:param name="VERSION" as="xs:string"/>
         <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="styleHeading" as="xs:string" select="''"/>
+        <xsl:param name="styleHeading" as="xs:string?"/>
         <xsl:param name="sOperators" as="xs:string" select="''"/>
         <xsl:param name="sMinuses" as="xs:string" select="''"/>
         <xsl:param name="sNumbers" as="xs:string" select="''"/>
         <xsl:param name="sZeros" as="xs:string" select="''"/>
-        <xsl:param name="mastersubstyle" as="xs:string"/>
+        <xsl:param name="mastersubstyle" as="xs:boolean"/>
         <xsl:param name="txt" as="xs:string" select="''"/>
         <xsl:param name="imgOptionStyle" as="xs:string" select="''"/>
-        <xsl:param name="dpiStyle" as="xs:string" select="''"/>
-        <xsl:param name="characterStyle" as="xs:string"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
+        <xsl:param name="dpiStyle" as="xs:float?"/>
+        <xsl:param name="characterStyle" as="xs:boolean"/>
+        <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
+        <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
         <xsl:message terminate="no">debug In StyleContainer</xsl:message>
         <xsl:choose>
             <!--Checking for List in Blockquote-->
@@ -2640,7 +2639,7 @@
                 <!--Open $PeekLevel levels after Table Of Contents-->
                 <xsl:call-template name="AddLevel">
                     <xsl:with-param name="levelValue" select="$PeekLevel"/>
-                    <xsl:with-param name="check" select="1"/>
+                    <xsl:with-param name="check" select="true()"/>
                     <xsl:with-param name="verhead" select="$VERSION"/>
                     <xsl:with-param name="custom" select="$custom"/>
                     <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -2654,21 +2653,21 @@
                     <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:when>
-            
-            <!-- Heading paragraphe
-            Note : the first test is English specific and will not work in other language,
-                The second could be replaced by a real outline lvl check -->
+
             <xsl:when test="(
-                    (w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])
-                    or (d:CompareHeading(w:pPr/w:pStyle/@w:val,$styleHeading)=1)
-                ) and (
-                    not(parent::w:tc)
+                w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' 
+                or (
+                    exists($styleHeading) 
+                    and @w:val/d:CompareHeading(.,$styleHeading)=1)] 
+                    and not(parent::w:tc)
+                )
             )">
+                <!--calling Close level template for closing all the higher levels-->
                 <xsl:if test="((w:r/w:lastRenderedPageBreak)
                         or (w:r/w:br/@w:type='page'))
                         and $FootnotesPosition='page'
                 ">
-                    <xsl:call-template name="InsertFootnotes">
+                    <xsl:call-template name="InsertFootnotes">>
                         <xsl:with-param name="verfoot" select="$VERSION"/>
                         <xsl:with-param name="sOperators" select="$sOperators"/>
                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -2717,7 +2716,7 @@
                         <xsl:call-template name="AddLevel">
                             <!--Passing parameter levelValue which holds the Heading type value-->
                             <xsl:with-param name="levelValue" select="w:pPr/w:numPr/w:ilvl/@w:val"/>
-                            <xsl:with-param name="check" select="1"/>
+                            <xsl:with-param name="check" select="true()"/>
                             <xsl:with-param name="verhead" select="$VERSION"/>
                             <xsl:with-param name="custom" select="$custom"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -2811,7 +2810,7 @@
 
                         <xsl:call-template name="AddLevel">
                             <xsl:with-param name="levelValue" select="$ilvl"/>
-                            <xsl:with-param name="check" select="1"/>
+                            <xsl:with-param name="check" select="true()"/>
                             <xsl:with-param name="verhead" select="$VERSION"/>
                             <xsl:with-param name="custom" select="$custom"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -2895,7 +2894,16 @@
                         </xsl:choose>
                     </xsl:when>
 
-                    <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId) and not(w:pPr/w:rPr/w:vanish)) and not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' or @w:val/d:CompareHeading(.,$styleHeading)=1])">
+                    <xsl:when test="(
+                        (w:pPr/w:numPr/w:ilvl) 
+                        and (w:pPr/w:numPr/w:numId) 
+                        and not(w:pPr/w:rPr/w:vanish)
+                    ) and not(
+                        w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' 
+                        or (
+                            exists($styleHeading) and @w:val/d:CompareHeading(.,$styleHeading)=1)]
+                        )
+                    )">
                         <xsl:call-template name="List">
                             <xsl:with-param name="custom" select="$custom"/>
                             <xsl:with-param name="listcharStyle" select="$characterStyle"/>
@@ -2907,19 +2915,18 @@
                     <xsl:otherwise>
                         <!--calling template named ParagraphStyle-->
                         <xsl:variable name="checkImageposition" as="xs:integer" select="d:GetCaptionsProdnotes($myObj)"/>
-                        <xsl:if test="(
-                            not( 
-                                (preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
-                                or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict)
-                                or (preceding-sibling::node()[$checkImageposition]/w:r/w:object)
-                                or ((
-                                        (w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
-                                        or (w:pPr/w:pStyle/@w:val='Caption')
-                                        or (child::w:fldSimple)
-                                    ) and (
-                                        (preceding-sibling::node()[1][self::w:tbl])
-                                        or (following-sibling::node()[1][self::w:tbl])
-                                    )
+                        <xsl:if test="not( 
+                            (preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
+                            or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict)
+                            or (preceding-sibling::node()[$checkImageposition]/w:r/w:object)
+                            or ( 
+                                (
+                                    (w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
+                                    or (w:pPr/w:pStyle/@w:val='Caption')
+                                    or (child::w:fldSimple)
+                                ) and (
+                                    (preceding-sibling::node()[1][self::w:tbl])
+                                    or (following-sibling::node()[1][self::w:tbl])
                                 )
                             )
                         )">
@@ -3022,7 +3029,7 @@
         <!--Checking numbering.xml for the type of List-->
         <xsl:variable    name="numFormat" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:numFmt/@w:val"/>
         <xsl:variable    name="lvlText" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:lvlText/@w:val"/>
-        <xsl:variable    name="lStartOverride" as="xs:string" select="($numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val,'')[1]"/>
+        <xsl:variable    name="lStartOverride" as="xs:string?" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
         <xsl:variable    name="lStart" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
 
         <xsl:sequence select="d:sink(d:AddCurrHeadId($myObj,$checknumId))"/> <!-- empty -->
@@ -3031,12 +3038,12 @@
         <xsl:choose>
             <xsl:when test="string-length(substring-before($addCurrLvl,'|'))=0">
                 <xsl:choose>
-                    <xsl:when test="not($lStartOverride='')">
+                    <xsl:when test="exists($lStartOverride)">
                         <xsl:sequence select="d:sink(d:StartHeadingNewCtr($myObj,$checknumId,$val))"/> <!-- empty -->
                         <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStartOverride,$checknumId,$val,$doc,'Yes'))"/> <!-- empty -->
                         <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
                     </xsl:when>
-                    <xsl:when test="$lStartOverride='' and $numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride">
+                    <xsl:when test="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride">
                         <xsl:sequence select="d:sink(d:StartHeadingNewCtr($myObj,$checknumId,$val))"/> <!-- empty -->
                         <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,'0',$checknumId,$val,$doc,'Yes'))"/> <!-- empty -->
                         <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
@@ -3061,11 +3068,11 @@
     </xsl:template>
 
     <xsl:template name="CharacterStyles">
-        <xsl:param name="characterStyle" as="xs:string"/>
+        <xsl:param name="characterStyle" as="xs:boolean"/>
         <xsl:param name="txt" as="xs:string"/>
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:choose>
-            <xsl:when test="$characterStyle='True'">
+            <xsl:when test="$characterStyle">
                 <xsl:choose>
                     <xsl:when test="( w:rPr/w:u and(not(w:rPr/w:u[@w:val='none']))) and w:rPr/w:strike and w:rPr/w:color and w:rPr/w:sz and w:rPr/w:spacing">
                         <xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
@@ -3320,12 +3327,12 @@
         <xsl:param name="sNumbers" as="xs:string" select="''"/>
         <xsl:param name="sZeros" as="xs:string" select="''"/>
         <xsl:param name="txt" as="xs:string" select="''"/>
-        <xsl:param name="masterparastyle" as="xs:string" select="''"/>
+        <xsl:param name="masterparastyle" as="xs:boolean" select="false()"/>
         <xsl:param name="imgOptionPara" as="xs:string" select="''"/>
-        <xsl:param name="dpiPara" as="xs:string" select="''"/>
-        <xsl:param name="characterparaStyle" as="xs:string"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
+        <xsl:param name="dpiPara" as="xs:float?"/>
+        <xsl:param name="characterparaStyle" as="xs:boolean"/>
+        <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
+        <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
 
         <xsl:message terminate="no">progress:ParagraphStyle</xsl:message>
         <xsl:variable name="checkImageposition" as="xs:integer" select="d:GetCaptionsProdnotes($myObj)"/>
@@ -3334,7 +3341,7 @@
             <xsl:when test="(w:pPr/w:pStyle/@w:val='Title') or (w:pPr/w:pStyle/@w:val='Subtitle')">
                 <xsl:variable name="lang" as="xs:string">
                     <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
+                        <xsl:with-param name="Attribute" select="true()"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','doctitle ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3353,7 +3360,7 @@
             <xsl:when test="(w:pPr/w:pStyle/@w:val='AuthorDAISY')">
                 <xsl:variable name="lang" as="xs:string">
                     <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
+                        <xsl:with-param name="Attribute" select="true()"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','author ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3375,7 +3382,7 @@
             <xsl:when test="(w:pPr/w:pStyle/@w:val='CovertitleDAISY')">
                 <xsl:variable name="lang" as="xs:string">
                     <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
+                        <xsl:with-param name="Attribute" select="true()"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','covertitle ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3397,7 +3404,7 @@
                 </xsl:if>
                 <xsl:variable name="lang" as="xs:string">
                     <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
+                        <xsl:with-param name="Attribute" select="true()"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','byline ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3419,7 +3426,7 @@
                 </xsl:if>
                 <xsl:variable name="lang" as="xs:string">
                     <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
+                        <xsl:with-param name="Attribute" select="true()"/>
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','dateline ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3435,7 +3442,7 @@
                 <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='Prodnote-OptionalDAISY'])=0">
                     <xsl:variable name="lang" as="xs:string">
                         <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
+                            <xsl:with-param name="Attribute" select="true()"/>
                         </xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=','&quot;','optional','&quot;',' xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3456,7 +3463,7 @@
                 <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='Prodnote-RequiredDAISY'])=0">
                     <xsl:variable name="lang" as="xs:string">
                         <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
+                            <xsl:with-param name="Attribute" select="true()"/>
                         </xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=','&quot;','required','&quot;',' xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3484,7 +3491,7 @@
                 <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,4)='Poem'])=0">
                     <xsl:variable name="lang" as="xs:string">
                         <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
+                            <xsl:with-param name="Attribute" select="true()"/>
                         </xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','poem ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3511,7 +3518,7 @@
                     <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='PoemDAISY'])=0">
                         <xsl:variable name="lang" as="xs:string">
                             <xsl:call-template name="Languages">
-                                <xsl:with-param name="Attribute" select="'1'"/>
+                                <xsl:with-param name="Attribute" select="true()"/>
                             </xsl:call-template>
                         </xsl:variable>
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','linegroup ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3554,7 +3561,7 @@
                 <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,8)='Epigraph'])=0">
                     <xsl:variable name="lang" as="xs:string">
                         <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
+                            <xsl:with-param name="Attribute" select="true()"/>
                         </xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','epigraph ','xml:lang=','&quot;',$lang,'&quot;','&gt;')"/>
@@ -3582,7 +3589,7 @@
                     <xsl:when test="(w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId)">
                         <xsl:variable name="lang" as="xs:string">
                             <xsl:call-template name="Languages">
-                                <xsl:with-param name="Attribute" select="'1'"/>
+                                <xsl:with-param name="Attribute" select="true()"/>
                             </xsl:call-template>
                         </xsl:variable>
                         <!--Opening Address tag-->
@@ -3591,7 +3598,7 @@
                     <xsl:when test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='AddressDAISY'])=0">
                         <xsl:variable name="lang" as="xs:string">
                             <xsl:call-template name="Languages">
-                                <xsl:with-param name="Attribute" select="'1'"/>
+                                <xsl:with-param name="Attribute" select="true()"/>
                             </xsl:call-template>
                         </xsl:variable>
                         <!--Opening Address tag-->
@@ -3691,7 +3698,7 @@
                 </xsl:if>
             </xsl:when>
 
-            <xsl:when test="$characterparaStyle='True'">
+            <xsl:when test="$characterparaStyle">
                 <xsl:choose>
                     <xsl:when test="w:pPr/w:ind[@w:left] and w:pPr/w:ind[@w:right]">
                         <p>
@@ -3877,26 +3884,24 @@
                 </xsl:call-template>
             </xsl:when>
             <!--Checking if no style exist and then calling the template named ParaHandler-->
-            <xsl:when test="(
-                not(
+            <xsl:when test="not(
+                (
                     (
-                        (
-                            (w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
-                            or (w:pPr/w:pStyle/@w:val='Caption')
-                            or child::w:fldSimple
-                        ) and (
-                            (preceding-sibling::node()[1][self::w:tbl])
-                            or (following-sibling::node()[1][self::w:tbl])
-                        )
-                    ) or (w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])
-                    or (preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
-                    or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict)
-                    or (
-                        (w:pPr/w:pStyle[@w:val='Image-CaptionDAISY'])
-                        and (
-                            (following-sibling::node()[1]/w:r/w:drawing)
-                            or (following-sibling::node()[1]/w:r/w:pict)
-                        )
+                        (w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
+                        or (w:pPr/w:pStyle/@w:val='Caption')
+                        or child::w:fldSimple
+                    ) and (
+                        (preceding-sibling::node()[1][self::w:tbl])
+                        or (following-sibling::node()[1][self::w:tbl])
+                    )
+                ) or (w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])
+                or (preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
+                or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict)
+                or (
+                    (w:pPr/w:pStyle[@w:val='Image-CaptionDAISY'])
+                    and (
+                        (following-sibling::node()[1]/w:r/w:drawing)
+                        or (following-sibling::node()[1]/w:r/w:pict)
                     )
                 )
             )">
@@ -3941,14 +3946,14 @@
     <xsl:template name="Paracharacterstyle">
         <xsl:param name="VERSION" as="xs:string" select="''"/>
         <xsl:param name="custom" as="xs:string" select="''"/>
-        <xsl:param name="characterStyle" as="xs:string"/>
+        <xsl:param name="characterStyle" as="xs:boolean"/>
         <xsl:param name="flag" as="xs:string"/>
         <xsl:param name="txt" as="xs:string"/>
         <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
         <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
         <xsl:message terminate="no">debug in Paracharacterstyle</xsl:message>
         <xsl:choose>
-            <xsl:when test="$characterStyle='True'">
+            <xsl:when test="$characterStyle">
                 <xsl:choose>
                     <xsl:when test="w:pPr/w:ind[@w:left] and w:pPr/w:ind[@w:right]">
                         <xsl:variable name="val" as="xs:integer" select="w:pPr/w:ind/@w:left"/>

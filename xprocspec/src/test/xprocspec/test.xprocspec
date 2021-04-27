@@ -16,10 +16,10 @@
       <p:option name="prmTRACK" select="'NoTrack'"/>
       <p:option name="Version" select="'14'"/>
       <p:option name="Custom" select="''"/>
-      <p:option name="MasterSub" select="'No'"/>
+      <p:option name="MasterSub" select="false()"/>
       <p:option name="ImageSizeOption" select="'original'"/>
-      <p:option name="DPI" select="'96'"/>
-      <p:option name="CharacterStyles" select="''"/>
+      <p:option name="DPI" select="96"/>
+      <p:option name="CharacterStyles" select="false()"/>
       <p:option name="MathML" select="map{'wdTextFrameStory':[],
                                           'wdFootnotesStory':[],
                                           'wdMainTextStory':[]}"/>

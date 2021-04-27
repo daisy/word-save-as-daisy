@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-                xmlns:xs="http://www.w3.org/2001/XMLSchema"
-                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-                xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
-                xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-                xmlns:dcterms="http://purl.org/dc/terms/"
-                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
-                xmlns:dc="http://purl.org/dc/elements/1.1/"
-                xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-                xmlns:v="urn:schemas-microsoft-com:vml"
-                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
-                xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"
-                xmlns:o="urn:schemas-microsoft-com:office:office"
-                xmlns:d="DaisyClass"
-                xmlns="http://www.daisy.org/z3986/2005/dtbook/"
-                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
+				xmlns:xs="http://www.w3.org/2001/XMLSchema"
+				xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+				xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+				xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+				xmlns:dcterms="http://purl.org/dc/terms/"
+				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+				xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+				xmlns:dc="http://purl.org/dc/elements/1.1/"
+				xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+				xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+				xmlns:v="urn:schemas-microsoft-com:vml"
+				xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+				xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"
+				xmlns:o="urn:schemas-microsoft-com:office:office"
+				xmlns:d="DaisyClass"
+				xmlns="http://www.daisy.org/z3986/2005/dtbook/"
+				exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
 	<!--Storing the default language of the document from styles.xml-->
 	<xsl:variable name="doclang" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
 	<xsl:variable name="doclangbidi" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
@@ -24,260 +24,257 @@
 	<!--Template to create NoteReference for FootNote and EndNote
   It is taking two parameters varFootnote_Id and varNote_Class. varFootnote_Id 
   will contain the Reference id of either Footnote or Endnote.-->
-    <xsl:template name="NoteReference">
-        <xsl:param name="noteID" as="xs:integer"/>
-        <xsl:param name="noteClass" as="xs:string"/>
-        <xsl:message terminate="no">progress:footnote</xsl:message>
-        <!--Checking for matching reference Id for Fotnote and Endnote in footnote.xml
-    or endnote.xml-->
-        <xsl:if test="$footnotesXml//w:footnotes/w:footnote[@w:id=$noteID]or $endnotesXml//w:endnotes/w:endnote[@w:id=$noteID]">
-            <noteref>
-                <!--Creating the attribute idref for Noteref element and assining it a value.-->
-                <xsl:attribute name="idref">
-                    <!--If Note_Class is Footnotereference then it will have footnote id value -->
-                    <xsl:if test="$noteClass='FootnoteReference'">
-                        <xsl:value-of select="concat('#footnote-',$noteID)"/>
-                    </xsl:if>
-                    <!--If Note_Class is Footnotereference then it will have footnote id value -->
-                    <xsl:if test="$noteClass='EndnoteReference'">
-                        <xsl:value-of select="concat('#endnote-',$noteID)"/>
-                    </xsl:if>
-                </xsl:attribute>
-                <!--Creating the attribute class for Noteref element and assinging it a value.-->
-                <xsl:attribute name="class">
-                    <xsl:if test="$noteClass='FootnoteReference'">
-                        <xsl:value-of select="substring($noteClass,1,8)"/>
-                    </xsl:if>
-                    <!--Creating the attribute class for Noteref element and assinging it a value.-->
-                    <xsl:if test="$noteClass='EndnoteReference'">
-                        <xsl:value-of select="substring($noteClass,1,7)"/>
-                    </xsl:if>
-                </xsl:attribute>
-                <!--Checking for languages-->
-                <xsl:if test="(w:rPr/w:lang) or (w:rPr/w:rFonts/@w:hint)">
-                    <xsl:attribute name="xml:lang">
-                        <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
-                        </xsl:call-template>
-                    </xsl:attribute>
-                </xsl:if>
-                <xsl:value-of select="$noteID"/>
-            </noteref>
-        </xsl:if>
-    </xsl:template>
+	<xsl:template name="NoteReference">
+		<xsl:param name="noteID" as="xs:integer"/>
+		<xsl:param name="noteClass" as="xs:string"/>
+		<xsl:message terminate="no">progress:footnote</xsl:message>
+		<!--Checking for matching reference Id for Fotnote and Endnote in footnote.xml
+	or endnote.xml-->
+		<xsl:if test="$footnotesXml//w:footnotes/w:footnote[@w:id=$noteID]or $endnotesXml//w:endnotes/w:endnote[@w:id=$noteID]">
+			<noteref>
+				<!--Creating the attribute idref for Noteref element and assining it a value.-->
+				<xsl:attribute name="idref">
+					<!--If Note_Class is Footnotereference then it will have footnote id value -->
+					<xsl:if test="$noteClass='FootnoteReference'">
+						<xsl:value-of select="concat('#footnote-',$noteID)"/>
+					</xsl:if>
+					<!--If Note_Class is Footnotereference then it will have footnote id value -->
+					<xsl:if test="$noteClass='EndnoteReference'">
+						<xsl:value-of select="concat('#endnote-',$noteID)"/>
+					</xsl:if>
+				</xsl:attribute>
+				<!--Creating the attribute class for Noteref element and assinging it a value.-->
+				<xsl:attribute name="class">
+					<xsl:if test="$noteClass='FootnoteReference'">
+						<xsl:value-of select="substring($noteClass,1,8)"/>
+					</xsl:if>
+					<!--Creating the attribute class for Noteref element and assinging it a value.-->
+					<xsl:if test="$noteClass='EndnoteReference'">
+						<xsl:value-of select="substring($noteClass,1,7)"/>
+					</xsl:if>
+				</xsl:attribute>
+				<!--Checking for languages-->
+				<xsl:if test="(w:rPr/w:lang) or (w:rPr/w:rFonts/@w:hint)">
+					<xsl:attribute name="xml:lang">
+						<xsl:call-template name="Languages">
+							<xsl:with-param name="Attribute" select="'1'"/>
+						</xsl:call-template>
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:value-of select="$noteID"/>
+			</noteref>
+		</xsl:if>
+	</xsl:template>
 
-    <!--Template to add EndNote-->
-    <xsl:template name="InsertEndnotes">
-        <xsl:param name="endNoteId" as="xs:integer"/>
-        <xsl:param name="vernote" as="xs:string"/>
-        <xsl:param name="characterStyle" as="xs:string" select="''"/>
-        <xsl:param name="sOperators" as="xs:string"/>
-        <xsl:param name="sMinuses" as="xs:string"/>
-        <xsl:param name="sNumbers" as="xs:string"/>
-        <xsl:param name="sZeros" as="xs:string"/>
-        <!--Checking for EndNoteId greater than 0-->
-        <xsl:if test="$endNoteId &gt; 0">
-            <note>
-                <!--Creating attribute ID for Note element-->
-                <xsl:attribute name="id">
-                    <xsl:value-of select="concat('endnote-',$endNoteId)"/>
-                </xsl:attribute>
-                <!--Creating attribute class for Note element-->
-                <xsl:attribute name="class">
-                    <xsl:value-of select="'Endnote'"/>
-                </xsl:attribute>
-                <!--Travering each w:endnote element in endnote.xml file-->
-                <xsl:for-each select="$endnotesXml//w:endnotes/w:endnote">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                    <!--Checks for matching Id-->
-                    <xsl:if test="@w:id=$endNoteId">
-                        <xsl:message terminate="no">progress:Insert endnote <xsl:value-of select="$endNoteId"/> </xsl:message>
-                        <!--Travering each element inside w:endnote in endnote.xml file-->
-                        <xsl:for-each select="./node()">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                            <!--Checking for Paragraph element-->
-                            <xsl:if test="self::w:p">
-                                <xsl:call-template name="ParagraphStyle">
-                                    <xsl:with-param name="VERSION" select="$vernote"/>
-                                    <xsl:with-param name="flagNote" select="'endnote'"/>
-                                    <xsl:with-param name="checkid" select="$endNoteId + 1"/>
-                                    <xsl:with-param name="sOperators" select="$sOperators"/>
-                                    <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                    <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                    <xsl:with-param name="sZeros" select="$sZeros"/>
-                                    <xsl:with-param name="characterparaStyle" select="$characterStyle"/>
-                                </xsl:call-template>
-                            </xsl:if>
-                        </xsl:for-each>
-                        <xsl:sequence select="d:sink(d:InitializeNoteFlag($myObj))"/> <!-- empty -->
-                    </xsl:if>
-                </xsl:for-each>
-            </note>
-        </xsl:if>
-    </xsl:template>
-
-    <!--Template for Adding footnote-->
-    <xsl:template name="InsertFootnotes">
-        <xsl:param name="verfoot" as="xs:string"/>
-		<xsl:param name="characterStyle" as="xs:string" select="''"/>
+	<!--Template to add EndNote-->
+	<xsl:template name="InsertEndnotes">
+		<xsl:param name="endNoteId" as="xs:integer"/>
+		<xsl:param name="vernote" as="xs:string"/>
+		<xsl:param name="characterStyle" as="xs:boolean" select="false()"/>
 		<xsl:param name="sOperators" as="xs:string"/>
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-        <xsl:message terminate="no">progressfootnote</xsl:message>
-        <!--Inserting default footnote id in the array list-->
-        <xsl:variable name="checkid" as="xs:integer" select="d:FootNoteId($myObj,0)"/>
-        <!--Checking for the matching Id returned from footnoteId function of c#-->
-        <xsl:if test="$checkid!=0">
-            <!--Traversing through each footnote element in footnotes.xml file-->
-            <xsl:for-each select="$footnotesXml//w:footnotes/w:footnote">
-                <!--Checking if Id returned from C# is equal to the footnote Id in footnotes.xml file-->
-                <xsl:if test="@w:id=$checkid">
-                    <xsl:message terminate="no">progress:Insert footnote <xsl:value-of select="$checkid"/></xsl:message>
-                    <!--Creating note element and it's attribute values-->
-                    <note id="{concat('footnote-',$checkid)}" class="Footnote">
-                        <!--Travering each element inside w:footnote in footnote.xml file-->
-                        <xsl:for-each select="./node()">
-                            <!--Checking for Paragraph element-->
-                            <xsl:if test="self::w:p">
-                                <xsl:choose>
-                                    <!--Checking for MathImage in Word2003/xp  footnotes-->
-                                    <xsl:when test="(w:r/w:object/v:shape/v:imagedata/@r:id) and (not(w:r/w:object/o:OLEObject[@ProgID='Equation.DSMT4']))" >
-                                        <p>
-                                            <xsl:value-of select="$checkid + 1"/>
-                                            <imggroup>
-                                                <img>
-                                                    <!--Variable to hold r:id from document.xml-->
-                                                    <xsl:variable name="Math_id"  as="xs:string" select="w:r/w:object/v:shape/v:imagedata/@r:id" />
-                                                    <xsl:attribute name="alt">
-                                                        <xsl:choose>
-                                                            <!--Checking for alt text for MathEquation Image or providing
-                                              'Math Equation' as alttext-->
-                                                            <xsl:when test="w:r/w:object/v:shape/@alt">
-                                                                <xsl:value-of select="w:r/w:object/v:shape/@alt"/>
-                                                            </xsl:when>
-                                                            <xsl:otherwise>
-                                                                <xsl:value-of select ="'Math Equation'"/>
-                                                            </xsl:otherwise>
-                                                        </xsl:choose>
-                                                    </xsl:attribute>
-                                                    <!--Attribute holding the name of the Image-->
-                                                    <xsl:attribute name="src">
-                                                        <!--Caling MathImageFootnote for copying Image to output folder-->
-                                                        <xsl:value-of select ="d:MathImageFootnote($myObj, $Math_id)"/>
-                                                    </xsl:attribute>
-                                                </img>
-                                            </imggroup>
-                                        </p>
-                                    </xsl:when>
-                                    <xsl:when test="w:r/w:object/o:OLEObject[@ProgID='Equation.DSMT4']">
-                                        <xsl:variable name="Math_DSMT4" as="xs:string" select="d:GetMathML($myObj,'wdFootnotesStory')"/>
-                                        <xsl:choose>
-                                            <xsl:when test="$Math_DSMT4=''">
-                                                <imggroup>
-                                                    <img>
-                                                        <!--Creating variable mathimage for storing r:id value from document.xml-->
-                                                        <xsl:variable name="Math_rid" as="xs:string" select="w:r/w:object/v:shape/v:imagedata/@r:id"/>
-                                                        <xsl:attribute name="alt">
-                                                            <xsl:choose>
-                                                                <!--Checking for alt Text-->
-                                                                <xsl:when test="w:r/w:object/v:shape/@alt">
-                                                                    <xsl:value-of select="w:r/w:object/v:shape/@alt"/>
-                                                                </xsl:when>
-                                                                <xsl:otherwise>
-                                                                    <!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
-                                                                    <xsl:value-of select ="'Math Equation'"/>
-                                                                </xsl:otherwise>
-                                                            </xsl:choose>
-                                                        </xsl:attribute>
-                                                        <xsl:attribute name="src">
-                                                            <!--Calling MathImage function-->
-                                                            <xsl:value-of select ="d:MathImageFootnote($myObj, $Math_rid)"/>
-                                                        </xsl:attribute>
-                                                    </img>
-                                                </imggroup>
-                                            </xsl:when>
-                                            <xsl:otherwise>
-                                                <xsl:value-of disable-output-escaping="yes" select="$Math_DSMT4"/>
-                                            </xsl:otherwise>
-                                        </xsl:choose>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <!--Calling template for checking style in the footnote text-->
-                                        <xsl:call-template name="ParagraphStyle">
-                                            <xsl:with-param name="VERSION" select="$verfoot"/>
-                                            <xsl:with-param name="flagNote" select="'footnote'"/>
-                                            <xsl:with-param name="checkid" select="$checkid + 1"/>
-                                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                            <xsl:with-param name="sZeros" select="$sZeros"/>
-                                            <xsl:with-param name="characterparaStyle" select="$characterStyle"/>
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                        </xsl:for-each>
-                    </note>
-                </xsl:if>
-                <xsl:sequence select="d:sink(d:InitializeNoteFlag($myObj))"/> <!-- empty -->
-            </xsl:for-each>
-            <!--Calling the template footnote recursively until the C# function returns 0-->
-            <xsl:call-template name="InsertFootnotes">
-                <xsl:with-param name="verfoot" select ="$verfoot"/>
-                <xsl:with-param name="sOperators" select="$sOperators"/>
-                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                <xsl:with-param name="sZeros" select="$sZeros"/>
-            </xsl:call-template>
-        </xsl:if>
-    </xsl:template>
+		<!--Checking for EndNoteId greater than 0-->
+		<xsl:if test="$endNoteId &gt; 0">
+			<note>
+				<!--Creating attribute ID for Note element-->
+				<xsl:attribute name="id">
+					<xsl:value-of select="concat('endnote-',$endNoteId)"/>
+				</xsl:attribute>
+				<!--Creating attribute class for Note element-->
+				<xsl:attribute name="class">
+					<xsl:value-of select="'Endnote'"/>
+				</xsl:attribute>
+				<!--Travering each w:endnote element in endnote.xml file-->
+				<xsl:for-each select="$endnotesXml//w:endnotes/w:endnote">
+					<!--Checks for matching Id-->
+					<xsl:if test="@w:id=$endNoteId">
+						<xsl:message terminate="no">progress:Insert endnote <xsl:value-of select="$endNoteId"/> </xsl:message>
+						<!--Travering each element inside w:endnote in endnote.xml file-->
+						<xsl:for-each select="./node()">
+							<!--Checking for Paragraph element-->
+							<xsl:if test="self::w:p">
+								<xsl:call-template name="ParagraphStyle">
+									<xsl:with-param name="VERSION" select="$vernote"/>
+									<xsl:with-param name="flagNote" select="'endnote'"/>
+									<xsl:with-param name="checkid" select="$endNoteId + 1"/>
+									<xsl:with-param name="sOperators" select="$sOperators"/>
+									<xsl:with-param name="sMinuses" select="$sMinuses"/>
+									<xsl:with-param name="sNumbers" select="$sNumbers"/>
+									<xsl:with-param name="sZeros" select="$sZeros"/>
+									<xsl:with-param name="characterparaStyle" select="$characterStyle"/>
+								</xsl:call-template>
+							</xsl:if>
+						</xsl:for-each>
+						<xsl:sequence select="d:sink(d:InitializeNoteFlag($myObj))"/> <!-- empty -->
+					</xsl:if>
+				</xsl:for-each>
+			</note>
+		</xsl:if>
+	</xsl:template>
 
-    <!--Template for handling multiple Prodnotes and Captions applied to an image-->
-    <xsl:template name="ProcessCaptionProdNote">
-        <xsl:param name="followingnodes" as="node()*"/>
+	<!--Template for Adding footnote-->
+	<xsl:template name="InsertFootnotes">
+		<xsl:param name="verfoot" as="xs:string"/>
+		<xsl:param name="characterStyle" as="xs:boolean" select="false()"/>
+		<xsl:param name="sOperators" as="xs:string"/>
+		<xsl:param name="sMinuses" as="xs:string"/>
+		<xsl:param name="sNumbers" as="xs:string"/>
+		<xsl:param name="sZeros" as="xs:string"/>
+		<xsl:message terminate="no">progressfootnote</xsl:message>
+		<!--Inserting default footnote id in the array list-->
+		<xsl:variable name="checkid" as="xs:integer" select="d:FootNoteId($myObj,0)"/>
+		<!--Checking for the matching Id returned from footnoteId function of c#-->
+		<xsl:if test="$checkid!=0">
+			<!--Traversing through each footnote element in footnotes.xml file-->
+			<xsl:for-each select="$footnotesXml//w:footnotes/w:footnote">
+				<!--Checking if Id returned from C# is equal to the footnote Id in footnotes.xml file-->
+				<xsl:if test="@w:id=$checkid">
+					<xsl:message terminate="no">progress:Insert footnote <xsl:value-of select="$checkid"/></xsl:message>
+					<!--Creating note element and it's attribute values-->
+					<note id="{concat('footnote-',$checkid)}" class="Footnote">
+						<!--Travering each element inside w:footnote in footnote.xml file-->
+						<xsl:for-each select="./node()">
+							<!--Checking for Paragraph element-->
+							<xsl:if test="self::w:p">
+								<xsl:choose>
+									<!--Checking for MathImage in Word2003/xp  footnotes-->
+									<xsl:when test="(w:r/w:object/v:shape/v:imagedata/@r:id) and (not(w:r/w:object/o:OLEObject[@ProgID='Equation.DSMT4']))" >
+										<p>
+											<xsl:value-of select="$checkid + 1"/>
+											<imggroup>
+												<img>
+													<!--Variable to hold r:id from document.xml-->
+													<xsl:variable name="Math_id"  as="xs:string" select="w:r/w:object/v:shape/v:imagedata/@r:id" />
+													<xsl:attribute name="alt">
+														<xsl:choose>
+															<!--Checking for alt text for MathEquation Image or providing
+											  'Math Equation' as alttext-->
+															<xsl:when test="w:r/w:object/v:shape/@alt">
+																<xsl:value-of select="w:r/w:object/v:shape/@alt"/>
+															</xsl:when>
+															<xsl:otherwise>
+																<xsl:value-of select ="'Math Equation'"/>
+															</xsl:otherwise>
+														</xsl:choose>
+													</xsl:attribute>
+													<!--Attribute holding the name of the Image-->
+													<xsl:attribute name="src">
+														<!--Caling MathImageFootnote for copying Image to output folder-->
+														<xsl:value-of select ="d:MathImageFootnote($myObj, $Math_id)"/>
+													</xsl:attribute>
+												</img>
+											</imggroup>
+										</p>
+									</xsl:when>
+									<xsl:when test="w:r/w:object/o:OLEObject[@ProgID='Equation.DSMT4']">
+										<xsl:variable name="Math_DSMT4" as="xs:string" select="d:GetMathML($myObj,'wdFootnotesStory')"/>
+										<xsl:choose>
+											<xsl:when test="$Math_DSMT4=''">
+												<imggroup>
+													<img>
+														<!--Creating variable mathimage for storing r:id value from document.xml-->
+														<xsl:variable name="Math_rid" as="xs:string" select="w:r/w:object/v:shape/v:imagedata/@r:id"/>
+														<xsl:attribute name="alt">
+															<xsl:choose>
+																<!--Checking for alt Text-->
+																<xsl:when test="w:r/w:object/v:shape/@alt">
+																	<xsl:value-of select="w:r/w:object/v:shape/@alt"/>
+																</xsl:when>
+																<xsl:otherwise>
+																	<!--Hardcoding value 'Math Equation'if user donot provide alt text for Math Equations-->
+																	<xsl:value-of select ="'Math Equation'"/>
+																</xsl:otherwise>
+															</xsl:choose>
+														</xsl:attribute>
+														<xsl:attribute name="src">
+															<!--Calling MathImage function-->
+															<xsl:value-of select ="d:MathImageFootnote($myObj, $Math_rid)"/>
+														</xsl:attribute>
+													</img>
+												</imggroup>
+											</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of disable-output-escaping="yes" select="$Math_DSMT4"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:when>
+									<xsl:otherwise>
+										<!--Calling template for checking style in the footnote text-->
+										<xsl:call-template name="ParagraphStyle">
+											<xsl:with-param name="VERSION" select="$verfoot"/>
+											<xsl:with-param name="flagNote" select="'footnote'"/>
+											<xsl:with-param name="checkid" select="$checkid + 1"/>
+											<xsl:with-param name="sOperators" select="$sOperators"/>
+											<xsl:with-param name="sMinuses" select="$sMinuses"/>
+											<xsl:with-param name="sNumbers" select="$sNumbers"/>
+											<xsl:with-param name="sZeros" select="$sZeros"/>
+											<xsl:with-param name="characterparaStyle" select="$characterStyle"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:for-each>
+					</note>
+				</xsl:if>
+				<xsl:sequence select="d:sink(d:InitializeNoteFlag($myObj))"/> <!-- empty -->
+			</xsl:for-each>
+			<!--Calling the template footnote recursively until the C# function returns 0-->
+			<xsl:call-template name="InsertFootnotes">
+				<xsl:with-param name="verfoot" select ="$verfoot"/>
+				<xsl:with-param name="sOperators" select="$sOperators"/>
+				<xsl:with-param name="sMinuses" select="$sMinuses"/>
+				<xsl:with-param name="sNumbers" select="$sNumbers"/>
+				<xsl:with-param name="sZeros" select="$sZeros"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:template>
+
+	<!--Template for handling multiple Prodnotes and Captions applied to an image-->
+	<xsl:template name="ProcessCaptionProdNote">
+		<xsl:param name="followingnodes" as="node()*"/>
 		<xsl:param name="imageId" as="xs:string"/>
-		<xsl:param name="characterStyle" as="xs:string"/>
-        <xsl:choose>
-            <!--Checking for inbuilt caption and Image-CaptionDAISY custom paragraph style-->
-            <xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Caption') or ($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                <xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
-                <caption>
-                    <!--attribute holds the value of the image id-->
-                    <xsl:attribute name="imgref">
-                        <xsl:value-of select="$imageId"/>
-                    </xsl:attribute>
-                    <xsl:if test="($followingnodes[1]/w:r/w:rPr/w:lang) or ($followingnodes[1]/w:r/w:rPr/w:rFonts/@w:hint)">
-                        <!--attribute holds the id of the language-->
-                        <xsl:attribute name="xml:lang">
-                            <xsl:call-template name="PictureLanguage">
-                                <xsl:with-param name="CheckLang" select="'picture'"/>
-                            </xsl:call-template>
-                        </xsl:attribute>
-                    </xsl:if>
-                    <!--Checking if image is bidirectionally oriented-->
-                    <xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
-                        <!--Variable holds the value which indicates that the image is bidirectionally oriented-->
-                        <xsl:variable name="Bd" as="xs:string">
-                            <!--calling the PictureLanguage template-->
-                            <xsl:call-template name="PictureLanguage">
-                                <xsl:with-param name="CheckLang" select="'picture'"/>
-                            </xsl:call-template>
-                        </xsl:variable>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
+		<xsl:choose>
+			<!--Checking for inbuilt caption and Image-CaptionDAISY custom paragraph style-->
+			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Caption') or ($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+				<xsl:sequence select="d:sink(d:AddCaptionsProdnotes($myObj))"/> <!-- empty -->
+				<caption>
+					<!--attribute holds the value of the image id-->
+					<xsl:attribute name="imgref">
+						<xsl:value-of select="$imageId"/>
+					</xsl:attribute>
+					<xsl:if test="($followingnodes[1]/w:r/w:rPr/w:lang) or ($followingnodes[1]/w:r/w:rPr/w:rFonts/@w:hint)">
+						<!--attribute holds the id of the language-->
+						<xsl:attribute name="xml:lang">
+							<xsl:call-template name="PictureLanguage">
+								<xsl:with-param name="CheckLang" select="'picture'"/>
+							</xsl:call-template>
+						</xsl:attribute>
+					</xsl:if>
+					<!--Checking if image is bidirectionally oriented-->
+					<xsl:if test="($followingnodes[1]/w:pPr/w:bidi) or ($followingnodes[1]/w:r/w:rPr/w:rtl)">
+						<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
+						<xsl:variable name="Bd" as="xs:string">
+							<!--calling the PictureLanguage template-->
+							<xsl:call-template name="PictureLanguage">
+								<xsl:with-param name="CheckLang" select="'picture'"/>
+							</xsl:call-template>
+						</xsl:variable>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
-                    </xsl:if>
-                    <!--Looping through each of the node to print text to the output xml-->
-                    <xsl:for-each select="$followingnodes[1]/node()">
-                        <xsl:if test="self::w:r">
-                            <xsl:call-template name="TempCharacterStyle">
-                                <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                            </xsl:call-template>
-                        </xsl:if>
-                        <xsl:if test="self::w:fldSimple">
-                            <xsl:value-of select="w:r/w:t"/>
-                        </xsl:if>
-
+					</xsl:if>
+					<!--Looping through each of the node to print text to the output xml-->
+					<xsl:for-each select="$followingnodes[1]/node()">
+						<xsl:if test="self::w:r">
+							<xsl:call-template name="TempCharacterStyle">
+								<xsl:with-param name="characterStyle" select="$characterStyle"/>
+							</xsl:call-template>
+						</xsl:if>
+						<xsl:if test="self::w:fldSimple">
+							<xsl:value-of select="w:r/w:t"/>
+						</xsl:if>
 					</xsl:for-each>
 					<!--Checking if image is bidirectionally oriented-->
 					<xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
@@ -373,12 +370,12 @@
 	<!--Template for implementing Simple Images i.e, ungrouped images-->
 	<xsl:template name="PictureHandler">
 		<xsl:param name="imgOpt" as="xs:string"/>
-		<xsl:param name="dpi" as="xs:string"/>
-		<xsl:param name="characterStyle" as="xs:string"/>
+		<xsl:param name="dpi" as="xs:float?"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:message terminate="no">debug in PictureHandler</xsl:message>
 		<xsl:variable name="alttext" as="xs:string" select="w:drawing/wp:inline/wp:docPr/@descr"/>
 		<!--Variable holds the value of Image Id-->
-		<xsl:variable name="Img_Id" as="xs:string">
+		<xsl:variable name="Img_Id" as="xs:string?">
 			<xsl:choose>
 				<xsl:when  test="w:drawing/wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed">
 					<xsl:sequence select="w:drawing/wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed"/>
@@ -392,9 +389,6 @@
 				<xsl:when test="w:drawing/wp:anchor/wp:docPr/@id">
 					<xsl:sequence select="w:drawing/wp:anchor/wp:docPr/@id"/>
 				</xsl:when>
-				<xsl:otherwise>
-					<xsl:sequence select="''"/>
-				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
 		<!--Variable holds the filename of the image-->
@@ -482,7 +476,7 @@
 			</xsl:choose>
 		</xsl:variable>
 		<!--Checking if Img_Id variable contains any Image Id-->
-		<xsl:if test="string-length($Img_Id)>0">
+		<xsl:if test="exists($Img_Id)">
 			<!--Checking if document is bidirectionally oriented-->
 			<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
 				<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
@@ -602,57 +596,57 @@
 										<xsl:value-of select="w:r/w:t"/>
 									</xsl:if>
 
-                                </xsl:for-each>
-                                <xsl:text> </xsl:text>
-                            </xsl:if>
-                            <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                                <xsl:for-each select="../node()">
-                                    <!--Printing the Caption value-->
-                                    <xsl:if test="self::w:r">
-                                        <xsl:call-template name="TempCharacterStyle">
-                                            <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                        </xsl:call-template>
-                                    </xsl:if>
-                                    <xsl:if test="self::w:fldSimple">
-                                        <xsl:value-of select="w:r/w:t"/>
-                                    </xsl:if>
+								</xsl:for-each>
+								<xsl:text> </xsl:text>
+							</xsl:if>
+							<xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+								<xsl:for-each select="../node()">
+									<!--Printing the Caption value-->
+									<xsl:if test="self::w:r">
+										<xsl:call-template name="TempCharacterStyle">
+											<xsl:with-param name="characterStyle" select="$characterStyle"/>
+										</xsl:call-template>
+									</xsl:if>
+									<xsl:if test="self::w:fldSimple">
+										<xsl:value-of select="w:r/w:t"/>
+									</xsl:if>
 
-                                </xsl:for-each>
-                                <xsl:text> </xsl:text>
-                            </xsl:if>
-                            <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
-                            </xsl:if>
-                        </caption>
-                    </xsl:if>
-                    <!--calling the template to handle multiple Prodnotes and Captions applied for an image-->
-                    <xsl:call-template name="ProcessCaptionProdNote">
-                        <xsl:with-param name="followingnodes" select="../following-sibling::node()"/>
-                        <xsl:with-param name="imageId" select="$imageId"/>
-                        <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                    </xsl:call-template>
-                    <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
-                        <xsl:message terminate="no">translation.oox2Daisy.ImageCaption</xsl:message>
-                    </xsl:if>
-                </imggroup>
-                <!--Checking if document is bidirectionally oriented-->
-                <xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                </xsl:if>
-            </xsl:if>
-            <xsl:if test="$checkImage='0'">
-                <xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
-            </xsl:if>
-            <!--Checking if Img_Id contains null value and returns the fidelity loss message-->
-        </xsl:if>
-    </xsl:template>
+								</xsl:for-each>
+								<xsl:text> </xsl:text>
+							</xsl:if>
+							<xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+							</xsl:if>
+						</caption>
+					</xsl:if>
+					<!--calling the template to handle multiple Prodnotes and Captions applied for an image-->
+					<xsl:call-template name="ProcessCaptionProdNote">
+						<xsl:with-param name="followingnodes" select="../following-sibling::node()"/>
+						<xsl:with-param name="imageId" select="$imageId"/>
+						<xsl:with-param name="characterStyle" select="$characterStyle"/>
+					</xsl:call-template>
+					<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
+						<xsl:message terminate="no">translation.oox2Daisy.ImageCaption</xsl:message>
+					</xsl:if>
+				</imggroup>
+				<!--Checking if document is bidirectionally oriented-->
+				<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+				</xsl:if>
+			</xsl:if>
+			<xsl:if test="$checkImage='0'">
+				<xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
+			</xsl:if>
+			<!--Checking if Img_Id contains null value and returns the fidelity loss message-->
+		</xsl:if>
+	</xsl:template>
 
 	<!--Template for handling multiple Prodnotes and Captions applied for grouped images-->
 	<xsl:template name="ProcessProdNoteImggroups">
 		<xsl:param name="followingnodes" as="node()*"/>
 		<xsl:param name="imageId" as="xs:string"/>
-		<xsl:param name="characterStyle" as="xs:string"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:choose>
 			<!--Checking for Image-CaptionDAISY custom paragraph style-->
 			<xsl:when test="($followingnodes[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
@@ -682,17 +676,17 @@
 						</xsl:variable>
 						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
-                    </xsl:if>
-                    <!--Looping through each of the node to print the text to the output xml-->
-                    <xsl:for-each select="$followingnodes[1]/node()">
-                        <xsl:if test="self::w:r">
-                            <xsl:call-template name="TempCharacterStyle">
-                                <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                            </xsl:call-template>
-                        </xsl:if>
-                        <xsl:if test="self::w:fldSimple">
-                            <xsl:value-of select="w:r/w:t"/>
-                        </xsl:if>
+					</xsl:if>
+					<!--Looping through each of the node to print the text to the output xml-->
+					<xsl:for-each select="$followingnodes[1]/node()">
+						<xsl:if test="self::w:r">
+							<xsl:call-template name="TempCharacterStyle">
+								<xsl:with-param name="characterStyle" select="$characterStyle"/>
+							</xsl:call-template>
+						</xsl:if>
+						<xsl:if test="self::w:fldSimple">
+							<xsl:value-of select="w:r/w:t"/>
+						</xsl:if>
 
 					</xsl:for-each>
 					<!--Checking for image is bidirectionally oriented-->
@@ -788,7 +782,7 @@
 
 	<!--Template for Implementing grouped images-->
 	<xsl:template name="Imagegroups">
-		<xsl:param name="characterStyle" as="xs:string"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:message terminate="no">progress:imagegroups</xsl:message>
 		<!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
 		<xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY'">
@@ -803,24 +797,24 @@
 						<xsl:sequence select="w:r/w:t"/>
 					</xsl:if>
 
-                </xsl:for-each>
-            </xsl:variable>
+				</xsl:for-each>
+			</xsl:variable>
 			<xsl:variable name="caption" as="xs:string" select="string-join($caption,'')"/>
-            <xsl:sequence select="d:sink(d:InsertCaption($myObj,$caption))"/> <!-- empty -->
-        </xsl:if>
-        <!--Looping through each pict element and storing the caption value in the caption variable-->
+			<xsl:sequence select="d:sink(d:InsertCaption($myObj,$caption))"/> <!-- empty -->
+		</xsl:if>
+		<!--Looping through each pict element and storing the caption value in the caption variable-->
 
-        <xsl:if test="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:pPr/w:pStyle[@w:val='Caption']">
-            <xsl:variable name="caption" as="xs:string*">
-                <xsl:for-each select="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/node()">
-                    <xsl:if test="self::w:r">
-                        <xsl:call-template name="TempCharacterStyle">
-                            <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                        </xsl:call-template>
-                    </xsl:if>
-                    <xsl:if test="self::w:fldSimple">
-                        <xsl:sequence select="w:r/w:t"/>
-                    </xsl:if>
+		<xsl:if test="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:pPr/w:pStyle[@w:val='Caption']">
+			<xsl:variable name="caption" as="xs:string*">
+				<xsl:for-each select="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/node()">
+					<xsl:if test="self::w:r">
+						<xsl:call-template name="TempCharacterStyle">
+							<xsl:with-param name="characterStyle" select="$characterStyle"/>
+						</xsl:call-template>
+					</xsl:if>
+					<xsl:if test="self::w:fldSimple">
+						<xsl:sequence select="w:r/w:t"/>
+					</xsl:if>
 
 				</xsl:for-each>
 			</xsl:variable>
@@ -852,7 +846,7 @@
 				<!--Checking if checkcaption variables holds any value-->
 				<xsl:if test="$checkcaption!='0'">
 					<caption>
-                        <!--Creating imgref attribute and assinging it the value returned by C# returnImagegroupId -->
+						<!--Creating imgref attribute and assinging it the value returned by C# returnImagegroupId -->
 						<xsl:attribute name="imgref">
 							<xsl:value-of select="$Imageid"/>
 						</xsl:attribute>
@@ -895,7 +889,7 @@
 	</xsl:template>
 
 	<xsl:template name="Imagegroup2003">
-		<xsl:param name="characterStyle" as="xs:string"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<!--Variable that holds the Image Id-->
 		<xsl:variable name="imageId" as="xs:string" select="concat(w:pict/v:shape/v:imagedata/@r:id,d:GenerateImageId($myObj))"/>
@@ -950,73 +944,73 @@
 							</xsl:variable>
 							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
-                        </xsl:if>
-                        <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                            <xsl:for-each select="../preceding-sibling::node()[1]/node()">
-                                <!--Printing the Caption value-->
-                                <xsl:if test="self::w:r">
-                                    <xsl:call-template name="TempCharacterStyle">
-                                        <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                    </xsl:call-template>
-                                </xsl:if>
-                                <xsl:if test="self::w:fldSimple">
-                                    <xsl:value-of select="w:r/w:t"/>
-                                </xsl:if>
+						</xsl:if>
+						<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+							<xsl:for-each select="../preceding-sibling::node()[1]/node()">
+								<!--Printing the Caption value-->
+								<xsl:if test="self::w:r">
+									<xsl:call-template name="TempCharacterStyle">
+										<xsl:with-param name="characterStyle" select="$characterStyle"/>
+									</xsl:call-template>
+								</xsl:if>
+								<xsl:if test="self::w:fldSimple">
+									<xsl:value-of select="w:r/w:t"/>
+								</xsl:if>
 
-                            </xsl:for-each>
-                            <xsl:text> </xsl:text>
-                        </xsl:if>
-                        <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                            <xsl:for-each select="../node()">
-                                <!--Printing the Caption value-->
-                                <xsl:if test="self::w:r">
-                                    <xsl:call-template name="TempCharacterStyle">
-                                        <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                    </xsl:call-template>
-                                </xsl:if>
-                                <xsl:if test="self::w:fldSimple">
-                                    <xsl:value-of select="w:r/w:t"/>
-                                </xsl:if>
+							</xsl:for-each>
+							<xsl:text> </xsl:text>
+						</xsl:if>
+						<xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+							<xsl:for-each select="../node()">
+								<!--Printing the Caption value-->
+								<xsl:if test="self::w:r">
+									<xsl:call-template name="TempCharacterStyle">
+										<xsl:with-param name="characterStyle" select="$characterStyle"/>
+									</xsl:call-template>
+								</xsl:if>
+								<xsl:if test="self::w:fldSimple">
+									<xsl:value-of select="w:r/w:t"/>
+								</xsl:if>
 
-                            </xsl:for-each>
-                            <xsl:text> </xsl:text>
-                        </xsl:if>
-                        <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
-                        </xsl:if>
-                    </caption>
-                </xsl:if>
-                <!--calling the template to handle multiple Prodnotes and Captions applied for an image-->
-                <xsl:call-template name="ProcessCaptionProdNote">
-                    <xsl:with-param name="followingnodes" select="../following-sibling::node()"/>
-                    <xsl:with-param name="imageId" select="$imageId"/>
-                    <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                </xsl:call-template>
-                <!--Capturing Fidelity loss for Captions above the image-->
-                <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
-                    <xsl:message terminate="no">translation.oox2Daisy.ImageCaption</xsl:message>
-                </xsl:if>
-            </imggroup>
-            <!--Checking if image is bidirectionally oriented-->
-            <xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="$checkImage='0'">
-            <xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
-        </xsl:if>
-    </xsl:template>
+							</xsl:for-each>
+							<xsl:text> </xsl:text>
+						</xsl:if>
+						<xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+						</xsl:if>
+					</caption>
+				</xsl:if>
+				<!--calling the template to handle multiple Prodnotes and Captions applied for an image-->
+				<xsl:call-template name="ProcessCaptionProdNote">
+					<xsl:with-param name="followingnodes" select="../following-sibling::node()"/>
+					<xsl:with-param name="imageId" select="$imageId"/>
+					<xsl:with-param name="characterStyle" select="$characterStyle"/>
+				</xsl:call-template>
+				<!--Capturing Fidelity loss for Captions above the image-->
+				<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
+					<xsl:message terminate="no">translation.oox2Daisy.ImageCaption</xsl:message>
+				</xsl:if>
+			</imggroup>
+			<!--Checking if image is bidirectionally oriented-->
+			<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+			</xsl:if>
+		</xsl:if>
+		<xsl:if test="$checkImage='0'">
+			<xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
+		</xsl:if>
+	</xsl:template>
 
 
 	<xsl:template name="Object">
-		<xsl:param name="characterStyle" as="xs:string"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:if test="not(contains(w:object/o:OLEObject/@ProgID,'Equation'))">
 			<xsl:if test="(
-                contains(w:object/o:OLEObject/@ProgID,'Excel')
-                or contains(w:object/o:OLEObject/@ProgID,'Word')
-                or contains(w:object/o:OLEObject/@ProgID,'PowerPoint')
-            )">
+				contains(w:object/o:OLEObject/@ProgID,'Excel')
+				or contains(w:object/o:OLEObject/@ProgID,'Word')
+				or contains(w:object/o:OLEObject/@ProgID,'PowerPoint')
+			)">
 				<xsl:variable name="href" as="xs:string" select="d:Object($myObj,w:object/o:OLEObject/@r:id)"/>
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','href=','&quot;',$href,'&quot;',' ','external=','&quot;','true','&quot;','&gt;')"/>
 			</xsl:if>
@@ -1065,65 +1059,65 @@
 								</xsl:variable>
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
-                            </xsl:if>
-                            <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                                <xsl:for-each select="../preceding-sibling::node()[1]/node()">
-                                    <!--Printing the Caption value-->
-                                    <xsl:if test="self::w:r">
-                                        <xsl:call-template name="TempCharacterStyle">
-                                            <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                        </xsl:call-template>
-                                    </xsl:if>
-                                    <xsl:if test="self::w:fldSimple">
-                                        <xsl:value-of select="w:r/w:t"/>
-                                    </xsl:if>
+							</xsl:if>
+							<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
+									<!--Printing the Caption value-->
+									<xsl:if test="self::w:r">
+										<xsl:call-template name="TempCharacterStyle">
+											<xsl:with-param name="characterStyle" select="$characterStyle"/>
+										</xsl:call-template>
+									</xsl:if>
+									<xsl:if test="self::w:fldSimple">
+										<xsl:value-of select="w:r/w:t"/>
+									</xsl:if>
 
-                                </xsl:for-each>
-                            </xsl:if>
-                            <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                                <xsl:for-each select="../node()">
-                                    <!--Printing the Caption value-->
-                                    <xsl:if test="self::w:r">
-                                        <xsl:call-template name="TempCharacterStyle">
-                                            <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                        </xsl:call-template>
-                                    </xsl:if>
-                                    <xsl:if test="self::w:fldSimple">
-                                        <xsl:value-of select="w:r/w:t"/>
-                                    </xsl:if>
+								</xsl:for-each>
+							</xsl:if>
+							<xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+								<xsl:for-each select="../node()">
+									<!--Printing the Caption value-->
+									<xsl:if test="self::w:r">
+										<xsl:call-template name="TempCharacterStyle">
+											<xsl:with-param name="characterStyle" select="$characterStyle"/>
+										</xsl:call-template>
+									</xsl:if>
+									<xsl:if test="self::w:fldSimple">
+										<xsl:value-of select="w:r/w:t"/>
+									</xsl:if>
 
-                                </xsl:for-each>
-                                <xsl:text> </xsl:text>
-                            </xsl:if>
-                            <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
-                            </xsl:if>
-                            <!--Printing the field value of the Caption-->
-                        </caption>
-                    </xsl:if>
-                    <xsl:call-template name="ProcessCaptionProdNote">
-                        <xsl:with-param name="followingnodes" select="../following-sibling::node()"/>
-                        <xsl:with-param name="imageId" select="$ImageId"/>
-                        <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                    </xsl:call-template>
+								</xsl:for-each>
+								<xsl:text> </xsl:text>
+							</xsl:if>
+							<xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+							</xsl:if>
+							<!--Printing the field value of the Caption-->
+						</caption>
+					</xsl:if>
+					<xsl:call-template name="ProcessCaptionProdNote">
+						<xsl:with-param name="followingnodes" select="../following-sibling::node()"/>
+						<xsl:with-param name="imageId" select="$ImageId"/>
+						<xsl:with-param name="characterStyle" select="$characterStyle"/>
+					</xsl:call-template>
 
-                </imggroup>
-                <xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                </xsl:if>
-                <xsl:if test="contains(w:object/o:OLEObject/@ProgID,'Excel') or contains(w:object/o:OLEObject/@ProgID,'Word') or contains(w:object/o:OLEObject/@ProgID,'PowerPoint')">
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
-                </xsl:if>
-            </xsl:if>
-            <xsl:if test="$checkImage='0'">
-                <xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
-            </xsl:if>
-        </xsl:if>
-    </xsl:template>
+				</imggroup>
+				<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+				</xsl:if>
+				<xsl:if test="contains(w:object/o:OLEObject/@ProgID,'Excel') or contains(w:object/o:OLEObject/@ProgID,'Word') or contains(w:object/o:OLEObject/@ProgID,'PowerPoint')">
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
+				</xsl:if>
+			</xsl:if>
+			<xsl:if test="$checkImage='0'">
+				<xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
+			</xsl:if>
+		</xsl:if>
+	</xsl:template>
 
 	<xsl:template name="tmpShape">
-		<xsl:param name="characterStyle" as="xs:string"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:variable name="imageId" as="xs:string">
 			<xsl:choose>
 				<xsl:when test="(w:pict/v:shape/@id) and (w:pict/v:shape/@o:spid)">
@@ -1153,10 +1147,10 @@
 				</img>
 
 				<xsl:if test="(
-                    (../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY') 
-                    or (../w:pPr/w:pStyle/@w:val='Caption') 
-                    or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')
-                )">
+					(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY') 
+					or (../w:pPr/w:pStyle/@w:val='Caption') 
+					or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')
+				)">
 					<caption>
 						<xsl:attribute name="imgref">
 							<xsl:value-of select="$imageId"/>
@@ -1176,66 +1170,66 @@
 							</xsl:variable>
 							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
 							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$Bd,'&quot;','&gt;')"/>
-                        </xsl:if>
-                        <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                            <xsl:for-each select="../preceding-sibling::node()[1]/node()">
+						</xsl:if>
+						<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+							<xsl:for-each select="../preceding-sibling::node()[1]/node()">
 
-                                <!--Printing the Caption value-->
+								<!--Printing the Caption value-->
 
-                                <xsl:if test="self::w:r">
-                                    <xsl:call-template name="TempCharacterStyle">
-                                        <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                    </xsl:call-template>
-                                </xsl:if>
-                                <xsl:if test="self::w:fldSimple">
-                                    <xsl:value-of select="w:r/w:t"/>
-                                </xsl:if>
+								<xsl:if test="self::w:r">
+									<xsl:call-template name="TempCharacterStyle">
+										<xsl:with-param name="characterStyle" select="$characterStyle"/>
+									</xsl:call-template>
+								</xsl:if>
+								<xsl:if test="self::w:fldSimple">
+									<xsl:value-of select="w:r/w:t"/>
+								</xsl:if>
 
-                            </xsl:for-each>
-                            <xsl:text> </xsl:text>
-                        </xsl:if>
-                        <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                            <xsl:for-each select="../node()">
+							</xsl:for-each>
+							<xsl:text> </xsl:text>
+						</xsl:if>
+						<xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+							<xsl:for-each select="../node()">
 
-                                <!--Printing the Caption value-->
+								<!--Printing the Caption value-->
 
 
-                                <xsl:if test="self::w:r">
-                                    <xsl:call-template name="TempCharacterStyle">
-                                        <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                    </xsl:call-template>
-                                </xsl:if>
-                                <xsl:if test="self::w:fldSimple">
-                                    <xsl:value-of select="w:r/w:t"/>
-                                </xsl:if>
+								<xsl:if test="self::w:r">
+									<xsl:call-template name="TempCharacterStyle">
+										<xsl:with-param name="characterStyle" select="$characterStyle"/>
+									</xsl:call-template>
+								</xsl:if>
+								<xsl:if test="self::w:fldSimple">
+									<xsl:value-of select="w:r/w:t"/>
+								</xsl:if>
 
-                            </xsl:for-each>
-                            <xsl:text> </xsl:text>
-                        </xsl:if>
-                        <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
-                        </xsl:if>
-                    </caption>
-                    <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
-                    </xsl:if>
-                </xsl:if>
-                <xsl:call-template name="ProcessCaptionProdNote">
-                    <xsl:with-param name="followingnodes" select="../following-sibling::node()"/>
-                    <xsl:with-param name="imageId" select="$imageId"/>
-                    <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                </xsl:call-template>
-            </imggroup>
-            <xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-            </xsl:if>
-        </xsl:if>
-        <xsl:if test="$checkImage='0'">
-            <xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
-        </xsl:if>
-    </xsl:template>
+							</xsl:for-each>
+							<xsl:text> </xsl:text>
+						</xsl:if>
+						<xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+						</xsl:if>
+					</caption>
+					<xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+					</xsl:if>
+				</xsl:if>
+				<xsl:call-template name="ProcessCaptionProdNote">
+					<xsl:with-param name="followingnodes" select="../following-sibling::node()"/>
+					<xsl:with-param name="imageId" select="$imageId"/>
+					<xsl:with-param name="characterStyle" select="$characterStyle"/>
+				</xsl:call-template>
+			</imggroup>
+			<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+			</xsl:if>
+		</xsl:if>
+		<xsl:if test="$checkImage='0'">
+			<xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
+		</xsl:if>
+	</xsl:template>
 
 	<!--Template for checking section breaks for page numbers-->
 	<xsl:template name="SectionBreak">
@@ -1244,488 +1238,488 @@
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:sequence select="d:sink(d:InitalizeCheckSectionBody($myObj))"/> <!-- empty -->
 		<xsl:sequence select="d:sink(d:ResetSetConPageBreak($myObj))"/> <!-- empty -->
-        <xsl:choose>
-            <!--if page number for front matter-->
-            <xsl:when test="$node='front'">
-                <!--incrementing the default page counter-->
-                <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
-                <!--Traversing through each node-->
-                <xsl:for-each select="following-sibling::node()">
-                    <xsl:choose>
-                        <!--Checking for paragraph section break-->
-                        <xsl:when test="w:pPr/w:sectPr">
+		<xsl:choose>
+			<!--if page number for front matter-->
+			<xsl:when test="$node='front'">
+				<!--incrementing the default page counter-->
+				<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+				<!--Traversing through each node-->
+				<xsl:for-each select="following-sibling::node()">
+					<xsl:choose>
+						<!--Checking for paragraph section break-->
+						<xsl:when test="w:pPr/w:sectPr">
 
-                            <xsl:if test="d:CheckSectionBody($myObj)=1">
-                                <xsl:choose>
-                                    <!--Checking if page start and page format is present-->
-                                    <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="$count"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page format is present and not page start-->
-                                    <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="$count"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page start is present and not page format-->
-                                    <xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="$count"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--If both are not present-->
-                                    <xsl:otherwise>
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="$count"/>
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                        </xsl:when>
-                        <!--Checking for Section in a document-->
-                        <xsl:when test="self::w:sectPr">
-                            <xsl:if test="d:CheckSectionBody($myObj)=1">
-                                <xsl:sequence select="d:sink(d:CheckSectionFront($myObj))"/> <!-- empty -->
-                                <xsl:choose>
-                                    <!--Checking if page start and page format is present-->
-                                    <xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="$count"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page format is present and not page start-->
-                                    <xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="$count"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page start is present and not page format-->
-                                    <xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="$count"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--If both are not present-->
-                                    <xsl:otherwise>
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="$count"/>
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                        </xsl:when>
-                    </xsl:choose>
-                </xsl:for-each>
-            </xsl:when>
-        </xsl:choose>
-        <xsl:choose>
-            <!--if page number for body matter-->
-            <xsl:when test="$node='body'">
-                <xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:sectPr">
-                <xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
-                </xsl:if>
-                <!--Traversing through each node-->
-                <xsl:for-each select="../following-sibling::node()">
-                    <xsl:choose>
-                        <!--Checking for paragraph section break-->
-                        <xsl:when test="w:pPr/w:sectPr">
-                            <xsl:if test="d:CheckSectionBody($myObj)=1">
-                                <xsl:choose>
-                                    <!--Checking if page start and page format is present-->
-                                    <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page format is present and not page start-->
-                                    <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page start is present and not page format-->
-                                    <xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--If both are not present-->
-                                    <xsl:otherwise>
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                        </xsl:when>
-                        <!--Checking for Section in a document-->
-                        <xsl:when test="self::w:sectPr">
-                            <xsl:if test="d:CheckSectionBody($myObj)=1">
-                                <xsl:choose>
-                                    <!--Checking if page start and page format is present-->
-                                    <xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page format is present and not page start-->
-                                    <xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page start is present and not page format-->
-                                    <xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--If both are not present-->
-                                    <xsl:otherwise>
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                        </xsl:when>
-                    </xsl:choose>
-                </xsl:for-each>
-            </xsl:when>
-        </xsl:choose>
-        <xsl:choose>
-            <!--Checking for paragraph-->
-            <xsl:when test="$node='Para'">
-                <xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
-                    <xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
-                </xsl:if>
-                <!--Traversing through each node-->
-                <xsl:for-each select="following-sibling::node()">
-                    <xsl:choose>
-                        <!--Checking for paragraph section break-->
-                        <xsl:when test="w:pPr/w:sectPr">
-                            <xsl:if test="d:CheckSectionBody($myObj)=1">
-                                <xsl:choose>
-                                    <!--Checking if page start and page format is present-->
-                                    <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page format is present and not page start-->
-                                    <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page start is present and not page format-->
-                                    <xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--If both are not present-->
-                                    <xsl:otherwise>
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                        </xsl:when>
-                        <!--Checking for Section in a document-->
-                        <xsl:when test="self::w:sectPr">
-                            <xsl:if test="d:CheckSectionBody($myObj)=1">
-                                <xsl:choose>
-                                    <!--Checking if page start and page format is present-->
-                                    <xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page format is present and not page start-->
-                                    <xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page start is present and not page format-->
-                                    <xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--If both are not present-->
-                                    <xsl:otherwise>
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="$node"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                        </xsl:when>
-                    </xsl:choose>
-                </xsl:for-each>
-            </xsl:when>
-        </xsl:choose>
-        <xsl:choose>
-            <!--Checking for bodysection-->
-            <xsl:when test="$node='bodysection'">
-                <xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
-                    <xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
-                </xsl:if>
-                <xsl:choose>
-                    <!--Checking for paragraph section break-->
-                    <xsl:when test="w:pPr/w:sectPr">
-                        <xsl:choose>
-                            <!--Checking if page start and page format is present-->
-                            <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                <!--Calling template for page number text-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                    <xsl:with-param name="matter" select="$node"/>
-                                    <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <!--Checking if page format is present and not page start-->
-                            <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                <!--Calling template for page number text-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                    <xsl:with-param name="matter" select="$node"/>
-                                    <xsl:with-param name="counter" select="0"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <!--Checking if page start is present and not page format-->
-                            <xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                <!--Calling template for page number text-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                    <xsl:with-param name="matter" select="$node"/>
-                                    <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                </xsl:call-template>
-                            </xsl:when>
-                            <!--If both are not present-->
-                            <xsl:otherwise>
-                                <!--Calling template for page number text-->
-                                <xsl:call-template name="PageNumber">
-                                    <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                    <xsl:with-param name="matter" select="$node"/>
-                                    <xsl:with-param name="counter" select="0"/>
-                                </xsl:call-template>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
-                </xsl:choose>
-            </xsl:when>
-        </xsl:choose>
-        <xsl:choose>
-            <!--Checking for Table-->
-            <xsl:when test="$node='Table'">
-                <xsl:if test="../../preceding-sibling::node()[1]/w:pPr/w:sectPr">
-                    <xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
-                </xsl:if>
-                <!--Traversing through each node-->
-                <xsl:for-each select="../../following-sibling::node()">
-                    <xsl:choose>
-                        <!--Checking for paragraph section break-->
-                        <xsl:when test="w:pPr/w:sectPr">
-                            <xsl:choose>
-                                <!--Checking if page start and page format is present-->
-                                <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                    <!--Calling template for page number text-->
-                                    <xsl:call-template name="PageNumber">
-                                        <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                        <xsl:with-param name="matter" select="$node"/>
-                                        <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                    </xsl:call-template>
-                                </xsl:when>
-                                <!--Checking if page format is present and not page start-->
-                                <xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                    <!--Calling template for page number text-->
-                                    <xsl:call-template name="PageNumber">
-                                        <xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
-                                        <xsl:with-param name="matter" select="$node"/>
-                                        <xsl:with-param name="counter" select="0"/>
-                                    </xsl:call-template>
-                                </xsl:when>
-                                <!--Checking if page start is present and not page format-->
-                                <xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
-                                    <!--Calling template for page number text-->
-                                    <xsl:call-template name="PageNumber">
-                                        <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                        <xsl:with-param name="matter" select="$node"/>
-                                        <xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
-                                    </xsl:call-template>
-                                </xsl:when>
-                                <!--If both are not present-->
-                                <xsl:otherwise>
-                                    <!--Calling template for page number text-->
-                                    <xsl:call-template name="PageNumber">
-                                        <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                        <xsl:with-param name="matter" select="$node"/>
-                                        <xsl:with-param name="counter" select="0"/>
-                                    </xsl:call-template>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:when>
-                        <!--Checking for Section in a document-->
-                        <xsl:when test="self::w:sectPr">
-                            <xsl:if test="d:CheckSectionBody($myObj)=1">
-                                <xsl:choose>
-                                    <!--Checking if page start and page format is present-->
-                                    <xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="'body'"/>
-                                            <xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page format is present and not page start-->
-                                    <xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
-                                            <xsl:with-param name="matter" select="'body'"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--Checking if page start is present and not page format-->
-                                    <xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="'body'"/>
-                                            <xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
-                                        </xsl:call-template>
-                                    </xsl:when>
-                                    <!--If both are not present-->
-                                    <xsl:otherwise>
-                                        <!--Calling template for page number text-->
-                                        <xsl:call-template name="PageNumber">
-                                            <xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
-                                            <xsl:with-param name="matter" select="'body'"/>
-                                            <xsl:with-param name="counter" select="0"/>
-                                        </xsl:call-template>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:if>
-                        </xsl:when>
-                    </xsl:choose>
-                </xsl:for-each>
-            </xsl:when>
-        </xsl:choose>
-    </xsl:template>
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
+								<xsl:choose>
+									<!--Checking if page start and page format is present-->
+									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="$count"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page format is present and not page start-->
+									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="$count"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page start is present and not page format-->
+									<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="$count"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--If both are not present-->
+									<xsl:otherwise>
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="$count"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:when>
+						<!--Checking for Section in a document-->
+						<xsl:when test="self::w:sectPr">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
+								<xsl:sequence select="d:sink(d:CheckSectionFront($myObj))"/> <!-- empty -->
+								<xsl:choose>
+									<!--Checking if page start and page format is present-->
+									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="$count"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page format is present and not page start-->
+									<xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="$count"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page start is present and not page format-->
+									<xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="$count"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--If both are not present-->
+									<xsl:otherwise>
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="$count"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:choose>
+			<!--if page number for body matter-->
+			<xsl:when test="$node='body'">
+				<xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:sectPr">
+				<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
+				</xsl:if>
+				<!--Traversing through each node-->
+				<xsl:for-each select="../following-sibling::node()">
+					<xsl:choose>
+						<!--Checking for paragraph section break-->
+						<xsl:when test="w:pPr/w:sectPr">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
+								<xsl:choose>
+									<!--Checking if page start and page format is present-->
+									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page format is present and not page start-->
+									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page start is present and not page format-->
+									<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--If both are not present-->
+									<xsl:otherwise>
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:when>
+						<!--Checking for Section in a document-->
+						<xsl:when test="self::w:sectPr">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
+								<xsl:choose>
+									<!--Checking if page start and page format is present-->
+									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page format is present and not page start-->
+									<xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page start is present and not page format-->
+									<xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--If both are not present-->
+									<xsl:otherwise>
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:choose>
+			<!--Checking for paragraph-->
+			<xsl:when test="$node='Para'">
+				<xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
+					<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
+				</xsl:if>
+				<!--Traversing through each node-->
+				<xsl:for-each select="following-sibling::node()">
+					<xsl:choose>
+						<!--Checking for paragraph section break-->
+						<xsl:when test="w:pPr/w:sectPr">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
+								<xsl:choose>
+									<!--Checking if page start and page format is present-->
+									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page format is present and not page start-->
+									<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page start is present and not page format-->
+									<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--If both are not present-->
+									<xsl:otherwise>
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:when>
+						<!--Checking for Section in a document-->
+						<xsl:when test="self::w:sectPr">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
+								<xsl:choose>
+									<!--Checking if page start and page format is present-->
+									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page format is present and not page start-->
+									<xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page start is present and not page format-->
+									<xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--If both are not present-->
+									<xsl:otherwise>
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="$node"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:choose>
+			<!--Checking for bodysection-->
+			<xsl:when test="$node='bodysection'">
+				<xsl:if test="preceding-sibling::node()[1]/w:pPr/w:sectPr">
+					<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
+				</xsl:if>
+				<xsl:choose>
+					<!--Checking for paragraph section break-->
+					<xsl:when test="w:pPr/w:sectPr">
+						<xsl:choose>
+							<!--Checking if page start and page format is present-->
+							<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+								<!--Calling template for page number text-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+									<xsl:with-param name="matter" select="$node"/>
+									<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+								</xsl:call-template>
+							</xsl:when>
+							<!--Checking if page format is present and not page start-->
+							<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
+								<!--Calling template for page number text-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+									<xsl:with-param name="matter" select="$node"/>
+									<xsl:with-param name="counter" select="0"/>
+								</xsl:call-template>
+							</xsl:when>
+							<!--Checking if page start is present and not page format-->
+							<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+								<!--Calling template for page number text-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+									<xsl:with-param name="matter" select="$node"/>
+									<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+								</xsl:call-template>
+							</xsl:when>
+							<!--If both are not present-->
+							<xsl:otherwise>
+								<!--Calling template for page number text-->
+								<xsl:call-template name="PageNumber">
+									<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+									<xsl:with-param name="matter" select="$node"/>
+									<xsl:with-param name="counter" select="0"/>
+								</xsl:call-template>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+				</xsl:choose>
+			</xsl:when>
+		</xsl:choose>
+		<xsl:choose>
+			<!--Checking for Table-->
+			<xsl:when test="$node='Table'">
+				<xsl:if test="../../preceding-sibling::node()[1]/w:pPr/w:sectPr">
+					<xsl:sequence select="d:sink(d:SetConPageBreak($myObj))"/> <!-- empty -->
+				</xsl:if>
+				<!--Traversing through each node-->
+				<xsl:for-each select="../../following-sibling::node()">
+					<xsl:choose>
+						<!--Checking for paragraph section break-->
+						<xsl:when test="w:pPr/w:sectPr">
+							<xsl:choose>
+								<!--Checking if page start and page format is present-->
+								<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+									<!--Calling template for page number text-->
+									<xsl:call-template name="PageNumber">
+										<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+										<xsl:with-param name="matter" select="$node"/>
+										<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+									</xsl:call-template>
+								</xsl:when>
+								<!--Checking if page format is present and not page start-->
+								<xsl:when test="(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and not(w:pPr/w:sectPr/w:pgNumType/@w:start)">
+									<!--Calling template for page number text-->
+									<xsl:call-template name="PageNumber">
+										<xsl:with-param name="pagetype" select="w:pPr/w:sectPr/w:pgNumType/@w:fmt"/>
+										<xsl:with-param name="matter" select="$node"/>
+										<xsl:with-param name="counter" select="0"/>
+									</xsl:call-template>
+								</xsl:when>
+								<!--Checking if page start is present and not page format-->
+								<xsl:when test="not(w:pPr/w:sectPr/w:pgNumType/@w:fmt) and (w:pPr/w:sectPr/w:pgNumType/@w:start)">
+									<!--Calling template for page number text-->
+									<xsl:call-template name="PageNumber">
+										<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+										<xsl:with-param name="matter" select="$node"/>
+										<xsl:with-param name="counter" select="w:pPr/w:sectPr/w:pgNumType/@w:start"/>
+									</xsl:call-template>
+								</xsl:when>
+								<!--If both are not present-->
+								<xsl:otherwise>
+									<!--Calling template for page number text-->
+									<xsl:call-template name="PageNumber">
+										<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+										<xsl:with-param name="matter" select="$node"/>
+										<xsl:with-param name="counter" select="0"/>
+									</xsl:call-template>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:when>
+						<!--Checking for Section in a document-->
+						<xsl:when test="self::w:sectPr">
+							<xsl:if test="d:CheckSectionBody($myObj)=1">
+								<xsl:choose>
+									<!--Checking if page start and page format is present-->
+									<xsl:when test="(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="'body'"/>
+											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page format is present and not page start-->
+									<xsl:when test="(w:pgNumType/@w:fmt) and not(w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="w:pgNumType/@w:fmt"/>
+											<xsl:with-param name="matter" select="'body'"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--Checking if page start is present and not page format-->
+									<xsl:when test="not(w:pgNumType/@w:fmt) and (w:pgNumType/@w:start)">
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="'body'"/>
+											<xsl:with-param name="counter" select="w:pgNumType/@w:start"/>
+										</xsl:call-template>
+									</xsl:when>
+									<!--If both are not present-->
+									<xsl:otherwise>
+										<!--Calling template for page number text-->
+										<xsl:call-template name="PageNumber">
+											<xsl:with-param name="pagetype" select="d:GetPageFormat($myObj)"/>
+											<xsl:with-param name="matter" select="'body'"/>
+											<xsl:with-param name="counter" select="0"/>
+										</xsl:call-template>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:if>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:for-each>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
 
-    <!--Template for counting number of pages before TOC-->
-    <xsl:template name="countpageTOC">
-        <xsl:message terminate="no">debug in countpageTOC</xsl:message>
-        <xsl:for-each select="preceding-sibling::*">
-            <xsl:choose>
-                <!--Checking for page break in TOC-->
-                <xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
-                    <xsl:sequence select="d:sink(d:PageForTOC($myObj))"/> <!-- empty -->
-                    <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
-                    <xsl:if test="not(w:r/w:t)">
-                        <!--Calling template for initializing page number info-->
-                        <xsl:call-template name="SectionBreak">
-                            <xsl:with-param name="count" select="d:ReturnPageNum($myObj)"/>
-                            <xsl:with-param name="node" select="'front'"/>
-                        </xsl:call-template>
-                        <!--producer note for empty text-->
-                        <prodnote>
-                            <xsl:attribute name="render">optional</xsl:attribute>
-                            <xsl:value-of select="'Blank Page'"/>
-                        </prodnote>
-                    </xsl:if>
-                </xsl:when>
-                <xsl:when test="(w:sdtContent/w:p/w:r/w:br/@w:type='page') or (w:sdtContent/w:p/w:r/lastRenderedPageBreak)">
-                    <xsl:sequence select="d:sink(d:PageForTOC($myObj))"/> <!-- empty -->
-                    <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/>
-                </xsl:when>
-            </xsl:choose>
-        </xsl:for-each>
-        <xsl:variable name="countPage" as="xs:integer" select="d:PageForTOC($myObj) - 1"/>
-        <xsl:call-template name="SectionBreak">
-            <xsl:with-param name="count" select="$countPage"/>
-            <xsl:with-param name="node" select="'front'"/>
-        </xsl:call-template>
-    </xsl:template>
+	<!--Template for counting number of pages before TOC-->
+	<xsl:template name="countpageTOC">
+		<xsl:message terminate="no">debug in countpageTOC</xsl:message>
+		<xsl:for-each select="preceding-sibling::*">
+			<xsl:choose>
+				<!--Checking for page break in TOC-->
+				<xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
+					<xsl:sequence select="d:sink(d:PageForTOC($myObj))"/> <!-- empty -->
+					<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+					<xsl:if test="not(w:r/w:t)">
+						<!--Calling template for initializing page number info-->
+						<xsl:call-template name="SectionBreak">
+							<xsl:with-param name="count" select="d:ReturnPageNum($myObj)"/>
+							<xsl:with-param name="node" select="'front'"/>
+						</xsl:call-template>
+						<!--producer note for empty text-->
+						<prodnote>
+							<xsl:attribute name="render">optional</xsl:attribute>
+							<xsl:value-of select="'Blank Page'"/>
+						</prodnote>
+					</xsl:if>
+				</xsl:when>
+				<xsl:when test="(w:sdtContent/w:p/w:r/w:br/@w:type='page') or (w:sdtContent/w:p/w:r/lastRenderedPageBreak)">
+					<xsl:sequence select="d:sink(d:PageForTOC($myObj))"/> <!-- empty -->
+					<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+				</xsl:when>
+			</xsl:choose>
+		</xsl:for-each>
+		<xsl:variable name="countPage" as="xs:integer" select="d:PageForTOC($myObj) - 1"/>
+		<xsl:call-template name="SectionBreak">
+			<xsl:with-param name="count" select="$countPage"/>
+			<xsl:with-param name="node" select="'front'"/>
+		</xsl:call-template>
+	</xsl:template>
 
 	<!--Template to translate page number information-->
 	<xsl:template name="PageNumber">
@@ -1791,64 +1785,64 @@
 					</xsl:choose>
 				</xsl:if>
 			</xsl:when>
-      
+	  
 			<xsl:when test="d:GetCurrentMatterType($myObj)='Bodymatter'">
 				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
 					<xsl:variable name="count" as="xs:integer" select="d:IncrementPageNo($myObj)-1"/>
-          <xsl:choose>
-            <!--LowerRoman page number-->
-            <xsl:when test="$pagetype='lowerRoman'">
-              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                <xsl:value-of select="d:PageNumLowerRoman($count)"/>
-              </pagenum>
-            </xsl:when>
-            <!--UpperRoman page number-->
-            <xsl:when test="$pagetype='upperRoman'">
-              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                <xsl:value-of select="d:PageNumUpperRoman($count)"/>
-              </pagenum>
-            </xsl:when>
-            <!--LowerLetter page number-->
-            <xsl:when test="$pagetype='lowerLetter'">
-              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                <xsl:value-of select="d:PageNumLowerAlphabet($count)"/>
-              </pagenum>
-            </xsl:when>
-            <!--UpperLetter page number-->
-            <xsl:when test="$pagetype='upperLetter'">
-              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                <xsl:value-of select="d:PageNumUpperAlphabet($count)"/>
-              </pagenum>
-            </xsl:when>
-            <!--Page number with dash-->
-            <xsl:when test="$pagetype='numberInDash'">
-              <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                <xsl:value-of select="concat('-',$count,'-')"/>
-              </pagenum>
-            </xsl:when>
-            <!--Normal page number-->
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="$counter=0 and d:GetSectionFront($myObj)=1">
-                  <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
-                    <xsl:value-of select="$count"/>
-                  </pagenum>
-                </xsl:when>
-                <xsl:when test="$counter=0 and d:GetSectionFront($myObj)=0">
-                  <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
-                    <xsl:value-of select="d:ReturnPageNum($myObj)"/>
-                  </pagenum>
-                </xsl:when>
-                <xsl:otherwise>
-                  <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
-                    <xsl:value-of select="$count"/>
-                  </pagenum>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
-                </xsl:if>
-            </xsl:when>
+		  			<xsl:choose>
+						<!--LowerRoman page number-->
+						<xsl:when test="$pagetype='lowerRoman'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerRoman($count)"/>
+							</pagenum>
+						</xsl:when>
+						<!--UpperRoman page number-->
+						<xsl:when test="$pagetype='upperRoman'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperRoman($count)"/>
+							</pagenum>
+						</xsl:when>
+						<!--LowerLetter page number-->
+						<xsl:when test="$pagetype='lowerLetter'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerAlphabet($count)"/>
+							</pagenum>
+						</xsl:when>
+						<!--UpperLetter page number-->
+						<xsl:when test="$pagetype='upperLetter'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperAlphabet($count)"/>
+							</pagenum>
+						</xsl:when>
+						<!--Page number with dash-->
+						<xsl:when test="$pagetype='numberInDash'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="concat('-',$count,'-')"/>
+							</pagenum>
+						</xsl:when>
+						<!--Normal page number-->
+						<xsl:otherwise>
+							<xsl:choose>
+								<xsl:when test="$counter=0 and d:GetSectionFront($myObj)=1">
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="$count"/>
+									</pagenum>
+								</xsl:when>
+								<xsl:when test="$counter=0 and d:GetSectionFront($myObj)=0">
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="d:ReturnPageNum($myObj)"/>
+									</pagenum>
+								</xsl:when>
+								<xsl:otherwise>
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="$count"/>
+									</pagenum>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:if>
+			</xsl:when>
 
 			<xsl:when test="d:GetCurrentMatterType($myObj)='Reartmatter'">
 				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
@@ -1907,120 +1901,118 @@
 					</xsl:choose>
 				</xsl:if>
 			</xsl:when>
-      
-            <!--Frontmatter page number-->
-            <xsl:when test="$matter='front'">
-                <xsl:if test="d:GetSectionFront($myObj)=1">
-                    <xsl:sequence select="d:sink(d:IncrementPageNo($myObj))"/> <!-- empty -->
-                </xsl:if>
-                <xsl:choose>
-                    <!--LowerRoman page number-->
-                    <xsl:when test="$pagetype='lowerRoman'">
-                        <xsl:variable name="pageno" as="xs:string" select="d:PageNumLowerRoman($myObj, $counter)"/>
-                        <pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
-                            <xsl:value-of select="$pageno"/>
-                        </pagenum>
-                    </xsl:when>
-                    <!--UpperRoman page number-->
-                    <xsl:when test="$pagetype='upperRoman'">
-                        <xsl:variable name="pageno" as="xs:string" select="d:PageNumUpperRoman($myObj, $counter)"/>
-                        <pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
-                            <xsl:value-of select="$pageno"/>
-                        </pagenum>
-                    </xsl:when>
-                    <!--LowerLetter page number-->
-                    <xsl:when test="$pagetype='lowerLetter'">
-                        <xsl:variable name="pageno" as="xs:string" select="d:PageNumLowerAlphabet($myObj, $counter)"/>
-                        <pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
-                            <xsl:value-of select="$pageno"/>
-                        </pagenum>
-                    </xsl:when>
-                    <!--UpperLetter page number-->
-                    <xsl:when test="$pagetype='upperLetter'">
-                        <xsl:variable name="pageno" as="xs:string" select="d:PageNumUpperAlphabet($myObj, $counter)"/>
-                        <pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
-                            <xsl:value-of select="$pageno"/>
-                        </pagenum>
-                    </xsl:when>
-                    <!--Page number with dash-->
-                    <xsl:when test="$pagetype='numberInDash'">
-                        <pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
-                            <xsl:value-of select="concat('-',$counter,'-')"/>
-                        </pagenum>
-                    </xsl:when>
-                    <!--Normal page number-->
-                    <xsl:otherwise>
-                        <pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
-                            <xsl:value-of select="$counter"/>
-                        </pagenum>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-      
-            <!--Bodymatter page number-->
-            <xsl:when test="($matter='body') or ($matter='bodysection') or ($matter='Para')">
-                <xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
-                    <xsl:variable name="count" as="xs:integer" select="d:IncrementPageNo($myObj)-1"/>
-                    <xsl:choose>
-                        <!--LowerRoman page number-->
-                        <xsl:when test="$pagetype='lowerRoman'">
-                            <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                                <xsl:value-of select="d:PageNumLowerRoman($myObj, $count)"/>
-                            </pagenum>
-                        </xsl:when>
-                        <!--UpperRoman page number-->
-                        <xsl:when test="$pagetype='upperRoman'">
-                            <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                                <xsl:value-of select="d:PageNumUpperRoman($myObj, $count)"/>
-                            </pagenum>
-                        </xsl:when>
-                        <!--LowerLetter page number-->
-                        <xsl:when test="$pagetype='lowerLetter'">
-                            <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                                <xsl:value-of select="d:PageNumLowerAlphabet($myObj, $count)"/>
-                            </pagenum>
-                        </xsl:when>
-                        <!--UpperLetter page number-->
-                        <xsl:when test="$pagetype='upperLetter'">
-                            <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                                <xsl:value-of select="d:PageNumUpperAlphabet($myObj, $count)"/>
-                            </pagenum>
-                        </xsl:when>
-                        <!--Page number with dash-->
-                        <xsl:when test="$pagetype='numberInDash'">
-                            <pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
-                                <xsl:value-of select="concat('-',$count,'-')"/>
-                            </pagenum>
-                        </xsl:when>
-                        <!--Normal page number-->
-                        <xsl:otherwise>
-                            <xsl:choose>
-                                <xsl:when test="$counter=0 and d:GetSectionFront($myObj)=1">
-                                    <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
-                                        <xsl:value-of select="$count"/>
-                                    </pagenum>
-                                </xsl:when>
-                                <xsl:when test="$counter=0 and d:GetSectionFront($myObj)=0">
-                                    <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
-                                        <xsl:value-of select="d:ReturnPageNum($myObj)"/>
-                                    </pagenum>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
-                                        <xsl:value-of select="$count"/>
-                                    </pagenum>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:if>
-            </xsl:when>
-        </xsl:choose>
-    </xsl:template>
+			<!--Frontmatter page number-->
+			<xsl:when test="$matter='front'">
+				<xsl:if test="d:GetSectionFront($myObj)=1">
+					<xsl:sequence select="d:sink(d:IncrementPageNo($myObj))"/> <!-- empty -->
+				</xsl:if>
+				<xsl:choose>
+					<!--LowerRoman page number-->
+					<xsl:when test="$pagetype='lowerRoman'">
+						<xsl:variable name="pageno" as="xs:string" select="d:PageNumLowerRoman($myObj, $counter)"/>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+							<xsl:value-of select="$pageno"/>
+						</pagenum>
+					</xsl:when>
+					<!--UpperRoman page number-->
+					<xsl:when test="$pagetype='upperRoman'">
+						<xsl:variable name="pageno" as="xs:string" select="d:PageNumUpperRoman($myObj, $counter)"/>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+							<xsl:value-of select="$pageno"/>
+						</pagenum>
+					</xsl:when>
+					<!--LowerLetter page number-->
+					<xsl:when test="$pagetype='lowerLetter'">
+						<xsl:variable name="pageno" as="xs:string" select="d:PageNumLowerAlphabet($myObj, $counter)"/>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+							<xsl:value-of select="$pageno"/>
+						</pagenum>
+					</xsl:when>
+					<!--UpperLetter page number-->
+					<xsl:when test="$pagetype='upperLetter'">
+						<xsl:variable name="pageno" as="xs:string" select="d:PageNumUpperAlphabet($myObj, $counter)"/>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+							<xsl:value-of select="$pageno"/>
+						</pagenum>
+					</xsl:when>
+					<!--Page number with dash-->
+					<xsl:when test="$pagetype='numberInDash'">
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+							<xsl:value-of select="concat('-',$counter,'-')"/>
+						</pagenum>
+					</xsl:when>
+					<!--Normal page number-->
+					<xsl:otherwise>
+						<pagenum page="front" id="{concat('page',d:GeneratePageId($myObj))}">
+							<xsl:value-of select="$counter"/>
+						</pagenum>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<!--Bodymatter page number-->
+			<xsl:when test="($matter='body') or ($matter='bodysection') or ($matter='Para')">
+				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
+					<xsl:variable name="count" as="xs:integer" select="d:IncrementPageNo($myObj)-1"/>
+					<xsl:choose>
+						<!--LowerRoman page number-->
+						<xsl:when test="$pagetype='lowerRoman'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerRoman($count)"/>
+							</pagenum>
+						</xsl:when>
+						<!--UpperRoman page number-->
+						<xsl:when test="$pagetype='upperRoman'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperRoman($count)"/>
+							</pagenum>
+						</xsl:when>
+						<!--LowerLetter page number-->
+						<xsl:when test="$pagetype='lowerLetter'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumLowerAlphabet($count)"/>
+							</pagenum>
+						</xsl:when>
+						<!--UpperLetter page number-->
+						<xsl:when test="$pagetype='upperLetter'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="d:PageNumUpperAlphabet($count)"/>
+							</pagenum>
+						</xsl:when>
+						<!--Page number with dash-->
+						<xsl:when test="$pagetype='numberInDash'">
+							<pagenum page="special" id="{concat('page',d:GeneratePageId($myObj))}">
+								<xsl:value-of select="concat('-',$count,'-')"/>
+							</pagenum>
+						</xsl:when>
+						<!--Normal page number-->
+						<xsl:otherwise>
+							<xsl:choose>
+								<xsl:when test="$counter=0 and d:GetSectionFront($myObj)=1">
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="$count"/>
+									</pagenum>
+								</xsl:when>
+								<xsl:when test="$counter=0 and d:GetSectionFront($myObj)=0">
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="d:ReturnPageNum($myObj)"/>
+									</pagenum>
+								</xsl:when>
+								<xsl:otherwise>
+									<pagenum page="normal" id="{concat('page',d:GeneratePageId($myObj))}">
+										<xsl:value-of select="$count"/>
+									</pagenum>
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:if>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
 
 	<!--Template to implement Languages-->
 	<xsl:template name="Languages">
-		<xsl:param name="Attribute" as="xs:string"/>
+		<xsl:param name="Attribute" as="xs:boolean"/>
 		<xsl:message terminate="no">debug in Languages</xsl:message>
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',w:r[1]/w:rPr/w:lang/count(@*)),''))"/>
 		<xsl:choose>
@@ -2031,7 +2023,7 @@
 					<xsl:when test="w:r/w:rPr/w:lang/@w:bidi">
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;','&gt;')"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -2043,7 +2035,7 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclangbidi,'&quot;','&gt;')"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -2060,7 +2052,7 @@
 					<xsl:when test="w:r/w:rPr/w:lang/@w:eastAsia">
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;','&gt;')"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -2072,7 +2064,7 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclangeastAsia,'&quot;','&gt;')"/>
 							</xsl:when>
 							<xsl:otherwise>
@@ -2090,7 +2082,7 @@
 							<xsl:when test="w:r/w:rPr/w:lang/@w:val">
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:val)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
@@ -2102,7 +2094,7 @@
 							<xsl:otherwise>
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclang,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning default language value-->
@@ -2118,7 +2110,7 @@
 							<xsl:when test="w:r/w:rPr/w:lang/@w:val">
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:val)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
@@ -2130,7 +2122,7 @@
 							<xsl:when test="w:r/w:rPr/w:lang/@w:eastAsia">
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:eastAsia)[1],'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
@@ -2142,7 +2134,7 @@
 							<xsl:when test="w:r/w:rPr/w:lang/@w:bidi">
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:bidi)[1],'&quot;','&gt;')"/>
 									</xsl:when>
@@ -2157,7 +2149,7 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:choose>
 									<xsl:when test="w:r/w:rPr/w:lang/@w:val">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',(w:r/w:rPr/w:lang/@w:val)[1],'&quot;','&gt;')"/>
@@ -2186,10 +2178,10 @@
 
 	<!--Template to implement Languages-->
 	<xsl:template name="LanguagesPara">
-		<xsl:param name="Attribute" as="xs:string"/>
+		<xsl:param name="Attribute" as="xs:boolean"/>
 		<xsl:param name ="level" as="xs:string"/>
 		<xsl:message terminate="no">debug in LanguagesPara</xsl:message>
-        <!--NOTE: Use w:r instead w:r[1]-->
+		<!--NOTE: Use w:r instead w:r[1]-->
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',w:r/w:rPr/w:lang/count(@*)),''))" />
 		<xsl:choose>
 			<!--Checking for language type CS-->
@@ -2200,7 +2192,7 @@
 					<xsl:when test="w:r/w:rPr/w:lang/@w:bidi">
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;','&gt;')"/>
 							</xsl:when>
 							<!--Creating <level> element with xml:lang attribute-->
@@ -2213,7 +2205,7 @@
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
 
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclangbidi,'&quot;','&gt;')"/>
 							</xsl:when>
 							<!--Creating <level> element with xml:lang attribute-->
@@ -2232,7 +2224,7 @@
 					<xsl:when test="w:r/w:rPr/w:lang/@w:eastAsia">
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;','&gt;')"/>
 							</xsl:when>
 							<!--Creating <level> element with xml:lang attribute-->
@@ -2246,7 +2238,7 @@
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
 
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclangeastAsia,'&quot;','&gt;')"/>
 							</xsl:when>
 							<!--Creating <level> element with xml:lang attribute-->
@@ -2266,7 +2258,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
@@ -2283,7 +2275,7 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',$doclang,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning default language value-->
@@ -2300,7 +2292,7 @@
 							<xsl:when test="w:r/w:rPr/w:lang/@w:val">
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
@@ -2313,7 +2305,7 @@
 							<xsl:when test="w:r/w:rPr/w:lang/@w:eastAsia">
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
@@ -2325,7 +2317,7 @@
 							<xsl:when test="w:r/w:rPr/w:lang/@w:bidi">
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=','&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;','&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
@@ -2337,7 +2329,7 @@
 							<xsl:otherwise>
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-									<xsl:when test="$Attribute='0'">
+									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
 									</xsl:when>
 									<!--Assingning default language value-->
@@ -2351,7 +2343,7 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<!--Creating <p> element with xml:lang attribute-->
-							<xsl:when test="$Attribute='0'">
+							<xsl:when test="not($Attribute)">
 								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
 							</xsl:when>
 							<!--Assingning default language value-->
@@ -2505,64 +2497,64 @@
 						<xsl:choose>
 							<!--Getting value from eastasia attribute in lang tag-->
 
-                            <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia">
-                                <xsl:sequence select="(preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia)"/>
-                            </xsl:when>
-                            <!--Assinging default eastAsia language-->
+							<xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia">
+								<xsl:sequence select="(preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia)"/>
+							</xsl:when>
+							<!--Assinging default eastAsia language-->
 
-                            <xsl:otherwise>
-                                <xsl:sequence select="$doclangeastAsia"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
-                    <!--Checking for language type CS-->
-                    <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:rFonts/@w:hint='cs'">
-                        <xsl:choose>
-                            <!--Checking for bidirectional language-->
-                            <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi">
-                                <!--Getting value from bidi attribute in lang tag-->
-                                <xsl:sequence select="(preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi)"/>
-                            </xsl:when>
-                            <!--Assinging default bidirectional language-->
-                            <xsl:otherwise>
-                                <xsl:sequence select="$doclangbidi"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:choose>
-                            <xsl:when test="$count_lang &gt; 1">
-                                <xsl:choose>
-                                    <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val">
-                                        <xsl:sequence select="(preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val)"/>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:sequence select="$doclang"/>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:when>
-                            <xsl:when test="$count_lang = 1">
-                                <xsl:choose>
-                                    <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val">
-                                        <xsl:sequence select="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val"/>
-                                    </xsl:when>
-                                    <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia">
-                                        <xsl:sequence select="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia"/>
-                                    </xsl:when>
-                                    <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi">
-                                        <xsl:sequence select="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi"/>
-                                    </xsl:when>
-                                </xsl:choose>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:sequence select="$doclang"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-        </xsl:choose>
-    </xsl:template>
+							<xsl:otherwise>
+								<xsl:sequence select="$doclangeastAsia"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<!--Checking for language type CS-->
+					<xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:rFonts/@w:hint='cs'">
+						<xsl:choose>
+							<!--Checking for bidirectional language-->
+							<xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi">
+								<!--Getting value from bidi attribute in lang tag-->
+								<xsl:sequence select="(preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi)"/>
+							</xsl:when>
+							<!--Assinging default bidirectional language-->
+							<xsl:otherwise>
+								<xsl:sequence select="$doclangbidi"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:choose>
+							<xsl:when test="$count_lang &gt; 1">
+								<xsl:choose>
+									<xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val">
+										<xsl:sequence select="(preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val)"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:sequence select="$doclang"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:when test="$count_lang = 1">
+								<xsl:choose>
+									<xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val">
+										<xsl:sequence select="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val"/>
+									</xsl:when>
+									<xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia">
+										<xsl:sequence select="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia"/>
+									</xsl:when>
+									<xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi">
+										<xsl:sequence select="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi"/>
+									</xsl:when>
+								</xsl:choose>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:sequence select="$doclang"/>
+							</xsl:otherwise>
+						</xsl:choose>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
 
 	<!--Template for taking language for bdo Tag-->
 	<xsl:template name="BdoLanguages">
@@ -2679,10 +2671,10 @@
 		</xsl:choose>
 	</xsl:template>
 	<xsl:template name="TempCharacterStyle">
-		<xsl:param name ="characterStyle" as="xs:string"/>
+		<xsl:param name ="characterStyle" as="xs:boolean"/>
 		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
-			<xsl:when test="$characterStyle='True'">
+			<xsl:when test="$characterStyle">
 				<xsl:choose>
 					<xsl:when test="../w:pPr/w:ind[@w:left] and ../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
 						<xsl:variable name="val" as="xs:integer" select="../w:pPr/w:ind/@w:left"/>
@@ -2695,76 +2687,76 @@
 						</span>
 					</xsl:when>
 
-                    <xsl:when test="../w:pPr/w:ind[@w:left] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
-                        <xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
-                        <xsl:variable name="val_left" select="($val div 1440)"/>
-                        <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
-                        <span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-indent:',$val_left,'in')}">
-                            <xsl:value-of select="w:t"/>
-                        </span>
-                    </xsl:when>
+					<xsl:when test="../w:pPr/w:ind[@w:left] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
+						<xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" select="($val div 1440)"/>
+						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-indent:',$val_left,'in')}">
+							<xsl:value-of select="w:t"/>
+						</span>
+					</xsl:when>
 
-                    <xsl:when test="../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
-                        <xsl:variable name="val" select="../w:pPr/w:ind/@w:right"/>
-                        <xsl:variable name="val_right" select="($val div 1440)"/>
-                        <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
-                        <span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-indent:',$val_right,'in')}">
-                            <xsl:value-of select="w:t"/>
-                        </span>
-                    </xsl:when>
+					<xsl:when test="../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
+						<xsl:variable name="val" select="../w:pPr/w:ind/@w:right"/>
+						<xsl:variable name="val_right" select="($val div 1440)"/>
+						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-indent:',$val_right,'in')}">
+							<xsl:value-of select="w:t"/>
+						</span>
+					</xsl:when>
 
-                    <xsl:when test="../w:pPr/w:jc and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
-                        <xsl:variable name="val" select="../w:pPr/w:jc/@w:val"/>
-                        <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
-                        <span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-align:',$val)}">
-                            <xsl:value-of select="w:t"/>
-                        </span>
-                    </xsl:when>
+					<xsl:when test="../w:pPr/w:jc and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
+						<xsl:variable name="val" select="../w:pPr/w:jc/@w:val"/>
+						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase',';text-align:',$val)}">
+							<xsl:value-of select="w:t"/>
+						</span>
+					</xsl:when>
 
-                    <xsl:when test="w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
-                        <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
-                        <span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase')}">
-                            <xsl:value-of select="w:t"/>
-                        </span>
-                    </xsl:when>
+					<xsl:when test="w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
+						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase')}">
+							<xsl:value-of select="w:t"/>
+						</span>
+					</xsl:when>
 
 
-                    <xsl:when test="../w:pPr/w:ind[@w:left] and ../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
-                        <xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
-                        <xsl:variable name="val_left" select="($val div 1440)"/>
-                        <xsl:variable name="valright" select="../w:pPr/w:ind/@w:right"/>
-                        <xsl:variable name="val_right" select="($valright div 1440)"/>
-                        <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
-                        <span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:','right=',$val_right,'in',';left=',$val_left,'in')}">
-                            <xsl:value-of select="w:t"/>
-                        </span>
-                    </xsl:when>
+					<xsl:when test="../w:pPr/w:ind[@w:left] and ../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
+						<xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" select="($val div 1440)"/>
+						<xsl:variable name="valright" select="../w:pPr/w:ind/@w:right"/>
+						<xsl:variable name="val_right" select="($valright div 1440)"/>
+						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:','right=',$val_right,'in',';left=',$val_left,'in')}">
+							<xsl:value-of select="w:t"/>
+						</span>
+					</xsl:when>
 
-                    <xsl:when test="../w:pPr/w:ind[@w:left] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
-                        <xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
-                        <xsl:variable name="val_left" select="($val div 1440)"/>
-                        <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
-                        <span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:',$val_left,'in')}">
-                            <xsl:value-of select="w:t"/>
-                        </span>
-                    </xsl:when>
+					<xsl:when test="../w:pPr/w:ind[@w:left] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
+						<xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
+						<xsl:variable name="val_left" select="($val div 1440)"/>
+						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:',$val_left,'in')}">
+							<xsl:value-of select="w:t"/>
+						</span>
+					</xsl:when>
 
-                    <xsl:when test="../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
-                        <xsl:variable name="val" select="../w:pPr/w:ind/@w:right"/>
-                        <xsl:variable name="val_right" select="($val div 1440)"/>
-                        <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
-                        <span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:',$val_right,'in')}">
-                            <xsl:value-of select="w:t"/>
-                        </span>
-                    </xsl:when>
+					<xsl:when test="../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
+						<xsl:variable name="val" select="../w:pPr/w:ind/@w:right"/>
+						<xsl:variable name="val_right" select="($val div 1440)"/>
+						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-indent:',$val_right,'in')}">
+							<xsl:value-of select="w:t"/>
+						</span>
+					</xsl:when>
 
-                    <xsl:when test="../w:pPr/w:jc and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
-                        <xsl:variable name="val" select="../w:pPr/w:jc/@w:val"/>
-                        <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
-                        <span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-align:',$val)}">
-                            <xsl:value-of select="w:t"/>
-                        </span>
-                    </xsl:when>
+					<xsl:when test="../w:pPr/w:jc and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
+						<xsl:variable name="val" select="../w:pPr/w:jc/@w:val"/>
+						<xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
+						<span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps',';text-align:',$val)}">
+							<xsl:value-of select="w:t"/>
+						</span>
+					</xsl:when>
 
 					<xsl:when test="w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
 						<xsl:variable name="val_color" as="xs:string" select="w:rPr/w:color/@w:val"/>
@@ -2773,25 +2765,25 @@
 						</span>
 					</xsl:when>
 
-                    <xsl:when test="w:rPr/w:u and w:t">
-                        <span class="text-decoration: underline">
-                            <xsl:value-of disable-output-escaping="yes" select="w:t"/>
-                        </span>
-                    </xsl:when>
-                    <xsl:when test="w:rPr/w:strike and w:t">
-                        <span class="text-decoration:line-through">
-                            <xsl:value-of disable-output-escaping="yes" select="concat(' ',w:t)"/>
-                        </span>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="w:t"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="w:t"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+					<xsl:when test="w:rPr/w:u and w:t">
+						<span class="text-decoration: underline">
+							<xsl:value-of disable-output-escaping="yes" select="w:t"/>
+						</span>
+					</xsl:when>
+					<xsl:when test="w:rPr/w:strike and w:t">
+						<span class="text-decoration:line-through">
+							<xsl:value-of disable-output-escaping="yes" select="concat(' ',w:t)"/>
+						</span>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:value-of select="w:t"/>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of select="w:t"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
 
 </xsl:stylesheet>
