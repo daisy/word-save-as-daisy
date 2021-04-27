@@ -801,8 +801,8 @@ public class DaisyClass {
 	/**
 	 * Function to add Footnote to an Array
 	 */
-	public String AddFootNote(String inNum) {
-		arrListNote.add(Integer.parseInt(inNum));
+	public int AddFootNote(int inNum) {
+		arrListNote.add(inNum);
 		return inNum;
 	}
 
@@ -1038,9 +1038,9 @@ public class DaisyClass {
 	/**
 	 * Function which resets the counter value for TOC
 	 */
-	public String Get_Toc() {
+	public int Get_Toc() {
 		set_Toc = 0;
-		return "" + set_Toc;
+		return set_Toc;
 	}
 
 	/**
@@ -1841,8 +1841,8 @@ public class DaisyClass {
 		return opLvl - PeekLvl;
 	}
 
-	public static String ReduceOne(int opLvl) {
-		return "" + (opLvl - 1);
+	public static int ReduceOne(int opLvl) {
+		return opLvl - 1;
 	}
 
 	/**

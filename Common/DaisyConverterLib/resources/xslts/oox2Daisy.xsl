@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
                 xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
@@ -27,45 +28,57 @@
 	<xsl:import href ="OOML2MML.xsl"/>
 
 	<!-- Original location of input .docx file (URI) -->
-	<xsl:param name="OriginalInputFile"/>
+	<xsl:param name="OriginalInputFile" as="xs:string"/>
 	<!-- Input .docx file (URI) (may or may not be the same as OriginalDocx; this one will be read) -->
-	<xsl:param name="InputFile"/>
+	<xsl:param name="InputFile" as="xs:string"/>
 	<!-- Destination folder of .xml file (URI) -->
-	<xsl:param name="OutputDir"/>
+	<xsl:param name="OutputDir" as="xs:string"/>
 	<!-- Final destination folder (URI) -->
-	<xsl:param name="FinalOutputDir"/>
+	<xsl:param name="FinalOutputDir" as="xs:string"/>
 
 	<!--Implements Image,imagegroup,Note and Notereference-->
 	<!--Declaring Global paramaters-->
-	<xsl:param name="Title"/>
+	<xsl:param name="Title" as="xs:string"/>
 	<!--Holds Documents Title value-->
-	<xsl:param name="Creator"/>
+	<xsl:param name="Creator" as="xs:string"/>
 	<!--Holds Documents creator value-->
-	<xsl:param name="Publisher"/>
+	<xsl:param name="Publisher" as="xs:string"/>
 	<!--Holds Documents Publisher value-->
-	<xsl:param name="UID"/>
+	<xsl:param name="UID" as="xs:string"/>
 	<!--Holds Document unique id value-->
-	<xsl:param name="Subject"/>
+	<xsl:param name="Subject" as="xs:string"/>
 	<!--Holds Documents Subject value-->
-	<xsl:param name="prmTRACK"/>
-	<xsl:param name="Version"/>
+	<xsl:param name="prmTRACK" as="xs:string"/>
+	<xsl:param name="Version" as="xs:string"/>
 	<!--Holds Documents version value-->
-	<xsl:param name="Custom"/>
-	<xsl:param name="MasterSub"/>
-	<xsl:param name="ImageSizeOption"/>
-	<xsl:param name="DPI"/>
-	<xsl:param name="CharacterStyles"/>
-	<xsl:param name="MathML"/>
+	<xsl:param name="Custom" as="xs:string"/> <!-- Automatic|Custom -->
+	<xsl:param name="MasterSub" as="xs:string"/>
+	<xsl:param name="ImageSizeOption" as="xs:string"/> <!-- resize|resample|original -->
+	<xsl:param name="DPI" as="xs:string"/>
+	<xsl:param name="CharacterStyles" as="xs:string"/>
+	<xsl:param name="MathML" as="map(xs:string,array(xs:string))"/>
 
 	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)"/>
-	<xsl:variable name="documentXml" select="document(concat('jar:',$InputFile,'!/word/document.xml'))"/>
-	<xsl:variable name="stylesXml" select="document(concat('jar:',$InputFile,'!/word/styles.xml'))"/>
-	<xsl:variable name="numberingXml" select="document(concat('jar:',$InputFile,'!/word/numbering.xml'))"/>
-	<xsl:variable name="footnotesXml" select="document(concat('jar:',$InputFile,'!/word/footnotes.xml'))"/>
-	<xsl:variable name="endnotesXml" select="document(concat('jar:',$InputFile,'!/word/endnotes.xml'))"/>
-	<xsl:variable name="docPropsCoreXml" select="document(concat('jar:',$InputFile,'!/docProps/core.xml'))"/>
+	<xsl:variable name="documentXml"
+	              as="document-node(element(w:document))"
+	              select="document(concat('jar:',$InputFile,'!/word/document.xml'))"/>
+	<xsl:variable name="stylesXml"
+	              as="document-node(element(w:styles))"
+	              select="document(concat('jar:',$InputFile,'!/word/styles.xml'))"/>
+	<xsl:variable name="numberingXml"
+	              as="document-node(element(w:numbering))?"
+	              select="document(concat('jar:',$InputFile,'!/word/numbering.xml'))"/>
+	<xsl:variable name="footnotesXml"
+	              as="document-node(element(w:footnotes))?"
+	              select="document(concat('jar:',$InputFile,'!/word/footnotes.xml'))"/>
+	<xsl:variable name="endnotesXml"
+	              as="document-node(element(w:endnotes))?"
+	              select="document(concat('jar:',$InputFile,'!/word/endnotes.xml'))"/>
+	<xsl:variable name="docPropsCoreXml"
+	              as="document-node(element(cp:coreProperties))"
+	              select="document(concat('jar:',$InputFile,'!/docProps/core.xml'))"/>
 
-	<xsl:variable name="sOperators"
+	<xsl:variable name="sOperators" as="xs:string"
       select="concat(
 					'&#x0021;&#x0022;&#x0028;&#x0029;&#x002B;&#x002C;&#x002D;&#x002F;&#x2AFE;&#x003A;&#x003B;&#x003C;',
 					'&#x003D;&#x003E;&#x003F;&#x005B;&#x005C;&#x005D;&#x007B;&#x007C;&#x007D;&#x00A1;&#x00AC;&#x00B1;',
@@ -147,16 +160,16 @@
 					'&#x2AE5;&#x2AE6;&#x2AE7;&#x2AE8;&#x2AE9;&#x2AEA;&#x2AEB;&#x2AEC;&#x2AED;&#x2AEE;&#x2AEF;&#x2AF0;',
 					'&#x2AF2;&#x2AF3;&#x2AF4;&#x2AF5;&#x2AF6;&#x2AF7;&#x2AF8;&#x2AF9;&#x2AFA;&#x2AFB;&#x2AFC;&#x2AFD;')" />
 	<!-- A string of '-'s repeated exactly as many times as the operators above -->
-	<xsl:variable name="sMinuses">
+	<xsl:variable name="sMinuses" as="xs:string">
 		<xsl:call-template name="SRepeatChar">
 			<xsl:with-param name="cchRequired" select="string-length($sOperators)" />
 			<xsl:with-param name="ch" select="'-'" />
 		</xsl:call-template>
 	</xsl:variable>
 	<!-- Every single unicode character that is recognized by OMML as a number -->
-	<xsl:variable name="sNumbers" select="'0123456789'"/>
+	<xsl:variable name="sNumbers" as="xs:string" select="'0123456789'"/>
 	<!-- A string of '0's repeated exactly as many times as the list of numbers above -->
-	<xsl:variable name="sZeros">
+	<xsl:variable name="sZeros" as="xs:string">
 		<xsl:call-template name="SRepeatChar">
 			<xsl:with-param name="cchRequired" select="string-length($sNumbers)" />
 			<xsl:with-param name="ch" select="'0'" />
@@ -194,22 +207,20 @@
 		<!--Adding dtbook element-->
 		<dtbook version="2005-3"
 	  xmlns:mml="http://www.w3.org/1998/Math/MathML">
-			<xsl:variable name="doclang" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
-			<xsl:variable name="doclangbidi" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
-			<xsl:variable name="doclangeastAsia" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
+			<xsl:variable name="doclang" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
+			<xsl:variable name="doclangbidi" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
+			<xsl:variable name="doclangeastAsia" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
 			<xsl:attribute name="xml:lang">
 				<xsl:value-of select="$doclang"/>
 			</xsl:attribute>
-			<xsl:variable name="documentDate" select="$docPropsCoreXml//cp:coreProperties/dcterms:modified"/>
-			<xsl:variable name="documentSubject" select="d:DocPropSubject($myObj)"/>
-			<xsl:variable name="documentDescription" select="d:DocPropDescription($myObj)"/>
+			<xsl:variable name="documentDate" as="xs:string" select="$docPropsCoreXml//cp:coreProperties/dcterms:modified"/>
+			<xsl:variable name="documentSubject" as="xs:string" select="d:DocPropSubject($myObj)"/>
+			<xsl:variable name="documentDescription" as="xs:string" select="d:DocPropDescription($myObj)"/>
 			<!--Adding head element-->
 			<head>
 				<!--Adding head element-->
-				<xsl:variable name="Auto">
-					<!--Auto variable holds autogenerated UID value-->
-					<xsl:value-of select="concat('AUTO-UID-',d:GenerateId())"/>
-				</xsl:variable>
+				<!--Auto variable holds autogenerated UID value-->
+				<xsl:variable name="Auto" as="xs:string" select="concat('AUTO-UID-',d:GenerateId())"/>
 				<!--Choose block for checking whether user has entered the UID value or not-->
 				<xsl:choose>
 					<xsl:when test="string-length($UID) = 0">

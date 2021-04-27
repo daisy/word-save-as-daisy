@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
                 xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
                 xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
@@ -21,7 +22,7 @@
 
   <!--template for frontmatter elements-->
   <xsl:template name="TableOfContents">
-    <xsl:param name="custom"/>
+    <xsl:param name="custom" as="xs:string"/>
     <xsl:message terminate="no">progress:frontmatter</xsl:message>
 
       <!--checking for Table of content Element-->
@@ -33,7 +34,7 @@
           <xsl:if test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']">
             <!--Checking for w:hyperlink Element-->
             <xsl:if test="w:hyperlink">
-              <xsl:variable name="set_list" select="d:Set_Toc($myObj)"/>
+              <xsl:variable name="set_list" as="xs:integer" select="d:Set_Toc($myObj)"/>
               <xsl:if test="$set_list=1">
                 <!--Opening level1 and list Tag-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level1','&gt;')"/>
@@ -49,9 +50,7 @@
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
                 <xsl:for-each select="w:hyperlink/w:r/w:rPr/w:rStyle[@w:val='Hyperlink']">
                   <xsl:message terminate="no">progress:parahandler</xsl:message>
-                  <xsl:variable name="club">
-                    <xsl:value-of select="../../w:t"/>
-                  </xsl:variable>
+                  <xsl:variable name="club" as="xs:string" select="../../w:t"/>
                   <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                 </xsl:for-each>
                 <lic>
@@ -92,7 +91,7 @@
           <!--Checking for TOC Style-->
           <xsl:if test="w:pPr/w:pStyle[substring(@w:val,1,3)='TOC']">
             <xsl:if test ="not(w:hyperlink)">
-              <xsl:variable name="set_list" select="d:Set_Toc($myObj)"/>
+              <xsl:variable name="set_list" as="xs:integer" select="d:Set_Toc($myObj)"/>
               <xsl:if test="$set_list=1">
                 <!--opening level1 and list Tag-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level1','&gt;')"/>
@@ -109,7 +108,7 @@
                 <xsl:for-each select="w:r">
                   <xsl:message terminate="no">progress:parahandler</xsl:message>
                   <xsl:if test="w:t">
-                    <xsl:variable name="setToc" select="d:Set_tabToc($myObj)"/>
+                    <xsl:variable name="setToc" as="xs:integer" select="d:Set_tabToc($myObj)"/>
                     <xsl:choose>
                       <xsl:when test="$setToc&gt;=2">
                         <lic>
@@ -171,9 +170,7 @@
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
                 <xsl:for-each select="w:r/w:rPr/w:rStyle[@w:val='Hyperlink']">
                   <xsl:message terminate="no">progress:parahandler</xsl:message>
-                  <xsl:variable name="club">
-                    <xsl:value-of select="../../w:t"/>
-                  </xsl:variable>
+                  <xsl:variable name="club" as="xs:string" select="../../w:t"/>
                   <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                 </xsl:for-each>
                 <lic>
@@ -202,9 +199,7 @@
                   <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
                   <xsl:for-each select="w:r/w:t">
                     <xsl:message terminate="no">progress:parahandler</xsl:message>
-                    <xsl:variable name="club">
-                      <xsl:value-of select="."/>
-                    </xsl:variable>
+                    <xsl:variable name="club" as="xs:string" select="."/>
                     <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                   </xsl:for-each>
                   <lic>
