@@ -1026,21 +1026,15 @@
                                 </xsl:otherwise>
                             </xsl:choose>
                         </xsl:variable>
-                        <!--Creating variable TagName to store CitationDetails -->
-                        <xsl:variable name="TagName" as="xs:string">
-                            <xsl:choose>
-                                <xsl:when test="./w:sdtContent/w:fldSimple/@w:instr">
-                                    <xsl:sequence select="d:CitationDetails($myObj,./w:sdtContent/w:fldSimple/@w:instr)"/>
-                                </xsl:when>
-                                <xsl:when test="./w:sdtContent/w:r/w:instrText">
-                                    <xsl:sequence select="d:CitationDetails($myObj,./w:sdtContent/w:r/w:instrText)"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:sequence select="''"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
-                        </xsl:variable>
-                        <xsl:sequence select="d:sink($TagName)"/> <!-- empty -->
+                        <!-- store CitationDetails -->
+                        <xsl:choose>
+                            <xsl:when test="./w:sdtContent/w:fldSimple/@w:instr">
+                                <xsl:sequence select="d:sink(d:CitationDetails($myObj,./w:sdtContent/w:fldSimple/@w:instr))"/> <!-- empty -->
+                            </xsl:when>
+                            <xsl:when test="./w:sdtContent/w:r/w:instrText">
+                                <xsl:sequence select="d:sink(d:CitationDetails($myObj,./w:sdtContent/w:r/w:instrText))"/> <!-- empty -->
+                            </xsl:when>
+                        </xsl:choose>
                         <xsl:choose>
 
                             <!--Checking for APA style-->
