@@ -23,11 +23,9 @@
   <!--template for frontmatter elements-->
   <xsl:template name="TableOfContents">
     <xsl:param name="custom" as="xs:string"/>
-    <xsl:message terminate="no">progress:frontmatter</xsl:message>
 
       <!--checking for Table of content Element-->
       <xsl:for-each select="$documentXml//w:document/w:body/node()">
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <!--Checking for w:p element-->
         <xsl:if test="self::w:p">
           <!-- Checking for TOC style-->
@@ -49,7 +47,6 @@
               <xsl:if test="w:hyperlink and not(w:pPr/w:pStyle[@w:val='TOCHeading'])">
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
                 <xsl:for-each select="w:hyperlink/w:r/w:rPr/w:rStyle[@w:val='Hyperlink']">
-                  <xsl:message terminate="no">progress:parahandler</xsl:message>
                   <xsl:variable name="club" as="xs:string" select="../../w:t"/>
                   <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                 </xsl:for-each>
@@ -58,7 +55,6 @@
                 </lic>
                 <xsl:value-of select="d:NullMsg($myObj)"/>
                 <xsl:for-each select="w:hyperlink/w:r">
-                  <xsl:message terminate="no">progress:parahandler</xsl:message>
                   <xsl:if test="not(w:rPr/w:rStyle[@w:val='Hyperlink'])and w:t">
                     <lic>
                       <xsl:attribute name="class">pagenum</xsl:attribute>
@@ -85,7 +81,6 @@
 
       <!--checking for Table of content-->
       <xsl:for-each select="$documentXml//w:document/w:body/node()">
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <!--Checking for w:p Tag-->
         <xsl:if test="self::w:p">
           <!--Checking for TOC Style-->
@@ -103,10 +98,8 @@
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','pl','&quot;','&gt;')"/>
               </xsl:if>
               <xsl:for-each select=".">
-                <xsl:message terminate="no">progress:parahandler</xsl:message>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
                 <xsl:for-each select="w:r">
-                  <xsl:message terminate="no">progress:parahandler</xsl:message>
                   <xsl:if test="w:t">
                     <xsl:variable name="setToc" as="xs:integer" select="d:Set_tabToc($myObj)"/>
                     <xsl:choose>
@@ -146,7 +139,6 @@
 
       <!--Checking for Table of content-->
       <xsl:for-each select="$documentXml//w:body/w:sdt">
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <!--Checking for Table of content-->
         <xsl:if test="w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents'">
           <level1>
@@ -166,10 +158,8 @@
             <!-- if Automatic TOC -->
             <xsl:if test="w:sdtContent/w:p/w:hyperlink">
               <xsl:for-each select="w:sdtContent/w:p/w:hyperlink">
-                <xsl:message terminate="no">progress:parahandler</xsl:message>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
                 <xsl:for-each select="w:r/w:rPr/w:rStyle[@w:val='Hyperlink']">
-                  <xsl:message terminate="no">progress:parahandler</xsl:message>
                   <xsl:variable name="club" as="xs:string" select="../../w:t"/>
                   <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                 </xsl:for-each>
@@ -178,7 +168,6 @@
                 </lic>
                 <xsl:value-of select="d:NullMsg($myObj)"/>
                 <xsl:for-each select="w:r">
-                  <xsl:message terminate="no">progress:parahandler</xsl:message>
                   <xsl:if test="not(w:rPr/w:rStyle[@w:val='Hyperlink']) and w:t">
                     <lic>
                       <xsl:attribute name="class">pagenum</xsl:attribute>
@@ -195,10 +184,8 @@
             <xsl:if test="not(w:sdtContent/w:p/w:hyperlink)">
               <xsl:for-each select="w:sdtContent/w:p">
                 <xsl:if test="not(w:pPr/w:pStyle[@w:val='TOCHeading'])">
-                  <xsl:message terminate="no">progress:parahandler</xsl:message>
                   <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
                   <xsl:for-each select="w:r/w:t">
-                    <xsl:message terminate="no">progress:parahandler</xsl:message>
                     <xsl:variable name="club" as="xs:string" select="."/>
                     <xsl:value-of select="d:SetTOCMessage($myObj,$club)"/>
                   </xsl:for-each>

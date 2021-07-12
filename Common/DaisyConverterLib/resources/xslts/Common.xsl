@@ -41,8 +41,6 @@
         <xsl:param name="dpi" as="xs:float"/>
         <xsl:param name="charStyles" as="xs:boolean"/>
 
-        <xsl:message terminate="no">progress:frontmatter</xsl:message>
-
         <doctitle>
             <xsl:choose>
                 <!--Taking Document Title value from core.xml-->
@@ -144,7 +142,6 @@
                 <!--Checking if any elements should be translated to the rearmatter-->
                 <!--Otherwise Traversing through document.xml file and passing the Endnote id to the Note template.-->
                 <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle">
-                    <xsl:message terminate="no">progress:parahandler</xsl:message>
                     <xsl:if test="@w:val='EndnoteReference'">
                         <xsl:call-template name="tmpNote">
                             <xsl:with-param name="endNoteId" select="../../w:endnoteReference/@w:id"/>
@@ -205,24 +202,19 @@
 
         <xsl:variable name="var_heading" as="xs:string*">
             <xsl:for-each select="$stylesXml//w:styles/w:style/w:name[@w:val='heading 1']">
-                <xsl:message terminate="no">progress:parahandler</xsl:message>
                 <xsl:sequence select="../@w:styleId"/>
             </xsl:for-each>
         </xsl:variable>
         <xsl:variable name="var_heading" as="xs:string?" select="string-join($var_heading,'')[not(.='')]"/>
         <!--Looping through each hyperlink-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:hyperlink">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <!--Calling d:AddHyperlink() for storing Anchor in Hyperlink-->
             <xsl:sequence select="d:sink(d:AddHyperlink($myObj,string(@w:anchor)))"/> <!-- empty -->
         </xsl:for-each>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
-
 
         <!--<xsl:if test="$matterType=''">-->
         <!--Checking the first paragraph of the document-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p[1]">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <!--If first paragraph is not Heading-->
             <xsl:if test="not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or $matterType='Rearmatter'">
                 <!--Calling Template to add level1-->
@@ -246,7 +238,6 @@
         <xsl:sequence select="d:ResetCurrentMatterType($myObj)"/> <!-- empty -->
         <!--Traversing through each node of the document-->
         <xsl:for-each select="$documentXml//w:body/node()">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <xsl:if test="not($masterSub)">
                 <xsl:call-template name="SetCurrentMatterType" />
             </xsl:if>
@@ -503,7 +494,6 @@
         <xsl:param name="imgOptionPara" as="xs:string" select="''"/>
         <xsl:param name="dpiPara" as="xs:float?"/>
         <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <!--Calling Footnote template when the page break is encountered.-->
 
         <xsl:if test="((w:r/w:lastRenderedPageBreak) or (w:r/w:br/@w:type='page')) and (not($flag='0'))">
@@ -604,7 +594,6 @@
 
         <!--Traversing through each node inside a paragraph-->
         <xsl:for-each select="./node()">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
 
             <xsl:if test="self::w:subDoc">
                 <xsl:if test="$mastersubpara">
@@ -970,7 +959,6 @@
             <xsl:if test="self::w:del">
                 <xsl:if test="$prmTrack='No'">
                     <xsl:for-each select="w:r">
-                        <xsl:message terminate="no">progress:parahandler</xsl:message>
                         <xsl:value-of select="w:delText"/>
                     </xsl:for-each>
                 </xsl:if>
@@ -979,7 +967,6 @@
             <xsl:if test="self::w:ins">
                 <xsl:if test="$prmTrack='Yes'">
                     <xsl:for-each select="w:r">
-                        <xsl:message terminate="no">progress:parahandler</xsl:message>
                         <xsl:value-of select="w:t"/>
                     </xsl:for-each>
                 </xsl:if>
@@ -1061,17 +1048,14 @@
         <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
         <xsl:param name="mastersubpara" as="xs:boolean"/>
         <xsl:param name="level" as="xs:integer"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
 
         <xsl:if test="$flag='0'">
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
         </xsl:if>
         <xsl:for-each select="w:r/w:pict//v:textbox/w:txbxContent">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <sidebar>
                 <xsl:attribute    name="render">required</xsl:attribute>
                 <xsl:for-each select="./node()">
-                    <xsl:message terminate="no">progress:parahandler</xsl:message>
                     <xsl:choose>
                         <!--Checking for Headings in sidebar-->
                         <xsl:when test="(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or (w:pPr/w:pStyle/@w:val='BridgeheadDAISY')">
@@ -1137,7 +1121,6 @@
         <xsl:param name="txt" as="xs:string"/>
         <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
         <xsl:param name="VERSION" as="xs:string"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
 
         <!--Checking for line breaks-->
         <xsl:if test="((w:br/@w:type='textWrapping') or (w:br)) and (not(w:br/@w:type='page'))">
@@ -1510,24 +1493,18 @@
 
     <!--Template for hyperlink-->
     <xsl:template name="hyperlink">
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:for-each select="w:r">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <xsl:call-template name="CustomCharStyle"/>
         </xsl:for-each>
     </xsl:template>
 
     <!--Template for smartTag-->
     <xsl:template name="smartTag">
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:for-each select="w:r">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <xsl:value-of select="w:t"/>
         </xsl:for-each>
         <xsl:for-each select="w:smartTag">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <xsl:for-each select="w:r">
-                <xsl:message terminate="no">progress:parahandler</xsl:message>
                 <xsl:value-of select="w:t"/>
             </xsl:for-each>
         </xsl:for-each>
@@ -1535,16 +1512,13 @@
 
     <!--Template for fldSimple-->
     <xsl:template name="fldSimple">
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:for-each select="w:r">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <xsl:value-of select="w:t"/>
         </xsl:for-each>
     </xsl:template>
 
     <!--template for traping fidelity loss element structure document-->
     <xsl:template name="structuredocument">
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:if test="w:sdtPr/w:docPartObj/w:docPartGallery">
             <!--Displaying fidelity loss message-->
             <xsl:message terminate="no">
@@ -1558,7 +1532,6 @@
         <xsl:param name="supressAuthor" as="xs:boolean"/>
         <xsl:param name="supressTitle" as="xs:boolean"/>
         <xsl:param name="supressYear" as="xs:boolean"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
             <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
@@ -1660,7 +1633,6 @@
         <xsl:param name="supressAuthor" as="xs:boolean"/>
         <xsl:param name="supressTitle" as="xs:boolean"/>
         <xsl:param name="supressYear" as="xs:boolean"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
             <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
@@ -1710,12 +1682,10 @@
         <xsl:param name="supressAuthor" as="xs:boolean"/>
         <xsl:param name="supressTitle" as="xs:boolean"/>
         <xsl:param name="supressYear" as="xs:boolean"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
             <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
                 <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                    <xsl:message terminate="no">progress:parahandler</xsl:message>
                     <xsl:value-of select="w:t"/>
                 </xsl:for-each>
             </xsl:when>
@@ -1756,13 +1726,11 @@
                 <xsl:choose>
                     <xsl:when test="d:GetAuthor($myObj)=''">
                         <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                            <xsl:message terminate="no">progress:parahandler</xsl:message>
                             <xsl:value-of select="w:t"/>
                         </xsl:for-each>
                     </xsl:when>
                     <xsl:when test="(d:GetAuthor($myObj)='') and (d:GetTitle($myObj)='') and (d:GetYear($myObj)='')">
                         <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                            <xsl:message terminate="no">progress:parahandler</xsl:message>
                             <xsl:value-of select="w:t"/>
                         </xsl:for-each>
                     </xsl:when>
@@ -1792,9 +1760,7 @@
 
     <!--Tmplate to capture section information-->
     <xsl:template name="SectionInfo">
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:for-each select="following-sibling::*">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <xsl:choose>
                 <!--Checking for section break-->
                 <xsl:when test="w:pPr/w:sectPr">
@@ -2180,7 +2146,6 @@
                         <xsl:with-param name="characterStyle" select="$characterStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                     </xsl:call-template>
-                    <xsl:message terminate="no">progress:parahandler</xsl:message>
                     <xsl:choose>
                         <xsl:when test="self::w:commentReference">
                             <!--Capturing fidility loss-->
@@ -2207,7 +2172,6 @@
     <xsl:template name="List">
         <xsl:param name="custom" as="xs:string" select="''"/>
         <xsl:param name="listcharStyle" as="xs:boolean"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <!--variable checkilvl holds level(w:ilvl) value of the List-->
         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
         <xsl:variable name="checkilvl" as="xs:integer" select="d:GetCheckLvlInt($myObj,w:pPr/w:numPr/w:ilvl/@w:val)"/>
@@ -2349,7 +2313,6 @@
         <xsl:param name="imgOptionStyle" as="xs:string" select="''"/>
         <xsl:param name="dpiStyle" as="xs:float?"/>
         <xsl:param name="characterStyle" as="xs:boolean"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:choose>
             <!--Checking for List in Blockquote-->
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,5)='Block']">
@@ -2448,7 +2411,6 @@
                         <xsl:variable name="text_heading" as="xs:string*">
                             <xsl:variable name="nameHeading" as="xs:string" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <xsl:message terminate="no">progress:parahandler</xsl:message>
                                 <xsl:choose>
                                     <xsl:when test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
@@ -2476,7 +2438,6 @@
                         <xsl:variable name="absValue" as="xs:string*">
                             <xsl:variable name="nameHeading" as="xs:string" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <xsl:message terminate="no">progress:parahandler</xsl:message>
                                 <xsl:if test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                     <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
                                     <xsl:sequence select="d:sink(d:GetCheckLvlInt($myObj,./w:pPr/w:outlineLvl/@w:val))"/> <!-- empty -->
@@ -2492,7 +2453,6 @@
                         <xsl:variable name="ilvl" as="xs:string*">
                             <xsl:variable name="nameHeading" as="xs:string" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <xsl:message terminate="no">progress:parahandler</xsl:message>
                                 <xsl:choose>
                                     <xsl:when test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                         <xsl:sequence    select="./w:pPr/w:outlineLvl/@w:val"/>
@@ -2632,7 +2592,6 @@
         <xsl:param name="checkilvl" as="xs:integer"/>
         <xsl:param name="checknumId" as="xs:string"/>
         <xsl:param name="checkCounter" as="xs:string"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:variable name="val" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
         <xsl:variable    name="lStartOverride" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
         <xsl:variable    name="lStart" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
@@ -2697,7 +2656,6 @@
         <xsl:param name="checkilvl" as="xs:integer"/>
         <xsl:param name="checknumId" as="xs:string"/>
         <xsl:param name="doc" as="xs:string"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:variable name="val" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
 
         <xsl:variable name="CheckNumId" as="xs:string" select="d:CheckHeadingNumID($myObj,$checknumId)"/>
@@ -2749,7 +2707,6 @@
     <xsl:template name="CharacterStyles">
         <xsl:param name="characterStyle" as="xs:boolean"/>
         <xsl:param name="txt" as="xs:string"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:choose>
             <xsl:when test="$characterStyle">
                 <xsl:choose>
@@ -3011,7 +2968,6 @@
         <xsl:param name="dpiPara" as="xs:float?"/>
         <xsl:param name="characterparaStyle" as="xs:boolean"/>
 
-        <xsl:message terminate="no">progress:ParagraphStyle</xsl:message>
         <xsl:variable name="checkImageposition" as="xs:integer" select="d:GetCaptionsProdnotes($myObj)"/>
         <xsl:choose>
             <!--Checking for Title/Subtitle paragraph style-->
@@ -3578,7 +3534,6 @@
         <xsl:param name="characterStyle" as="xs:boolean"/>
         <xsl:param name="flag" as="xs:string"/>
         <xsl:param name="txt" as="xs:string"/>
-        <xsl:message terminate="no">progress:parahandler</xsl:message>
         <xsl:choose>
             <xsl:when test="$characterStyle">
                 <xsl:choose>
@@ -3674,7 +3629,6 @@
 
     <xsl:template name="CheckPageStyles">
         <xsl:for-each select="$documentXml//w:document/w:body/node()">
-            <xsl:message terminate="no">progress:checkpagestyles</xsl:message>
             <xsl:if test="self::w:p">
                 <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter']">
                     <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
@@ -3707,7 +3661,6 @@
     </xsl:template>
 
     <xsl:template name="SetCurrentMatterType">
-        <xsl:message terminate="no">progress:setcurrentmattertype</xsl:message>
         <xsl:if test="self::w:p">
             <xsl:choose>
                 <xsl:when test="(count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1 or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1)">

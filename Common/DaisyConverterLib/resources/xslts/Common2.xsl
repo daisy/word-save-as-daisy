@@ -32,14 +32,10 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:message terminate="no">progress:addlevel</xsl:message>
 		<!--Pushing level into the stack-->
 		<xsl:sequence select="d:IncrementHeadingCounters($myObj,string($levelValue),substring-after($txt,'!'),$abValue)"/> <!-- empty -->
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,substring-after($txt,'!')))"/> <!-- empty -->
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="level" as="xs:integer" select="d:PushLevel($myObj,($levelValue,0)[1])"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<!--Checking the level value-->
 			<xsl:when test="$level &lt; 7">
@@ -159,7 +155,6 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<xsl:when test="$lvlcharStyle">
 				<xsl:choose>
@@ -301,7 +296,6 @@
 	<!--Template to Close Levels-->
 	<xsl:template name="CloseLevel">
 		<xsl:param name="CurrentLevel" as="xs:double"/> <!-- xs:integer|NaN -->
-		<xsl:message terminate="no">progress:closelevel</xsl:message>
 		<!--<xsl:value-of select="$CurrentLevel"/>-->
 		<!--Peeking the top value of the stack-->
 		<xsl:variable name="PeekLevel" as="xs:integer" select="d:PeekLevel($myObj)"/>
@@ -393,7 +387,6 @@
 		<xsl:param name="numFmt" as="xs:string"/>
 		<xsl:param name="lText" as="xs:string"/>
 		<xsl:param name="lstcharStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:addlist</xsl:message>
 		<!--Pushes the current level into the stack-->
 		<xsl:variable name="PeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
 
@@ -501,7 +494,6 @@
 	<!--Template to close the List-->
 	<xsl:template name="closelist">
 		<xsl:param name="close" as="xs:integer"/>
-		<xsl:message terminate="no">progress:closelist</xsl:message>
 		<!--Gets the current level of the stack  -->
 		<xsl:variable name="PeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
 		<!--Checking the current level with the PeekLevel in the stack-->
@@ -522,7 +514,6 @@
 
 	<xsl:template name="recursive">
 		<xsl:param name="rec" as="xs:integer"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','ol','&quot;','&gt;')"/>
 		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
 		<xsl:variable name="dec" as="xs:integer" select="d:Decrement($rec)"/>
@@ -536,7 +527,6 @@
 	<xsl:template name="recStart">
 		<xsl:param name="abstLevel" as="xs:string"/>
 		<xsl:param name="level" as="xs:integer"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<xsl:when test="$level=0">
 				<xsl:variable name="strStart" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$abstLevel]/w:lvl[@w:ilvl=$level]/w:start/@w:val"/>
@@ -571,7 +561,6 @@
 	<!--Template to Close Complex List-->
 	<xsl:template name="ComplexListClose">
 		<xsl:param name="close" as="xs:integer"/>
-		<xsl:message terminate="no">progress:closelist</xsl:message>
 		<!--Gets the current level of the stack  -->
 		<xsl:variable name="PeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
 		<!--Checking the current level with the PeekLevel in the stack-->
@@ -591,7 +580,6 @@
 	<xsl:template name="CloseLastlist">
 		<xsl:param name="close" as="xs:integer"/>
     <xsl:param name="custom" as="xs:string"/>
-		<xsl:message terminate="no">progress:closelist</xsl:message>
 		<!--Gets the current level of the stack  -->
 		<xsl:variable name="PeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
 		<!--Checking the current level with the PeekLevel in the stack-->
@@ -612,7 +600,6 @@
 
 	<!--Template for default Page number-->
 	<xsl:template name="DefaultPageNum">
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:if test="d:ReturnPageNum($myObj)&lt;=1">
 			<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
 		</xsl:if>
@@ -714,7 +701,6 @@
 
 	<xsl:template name="tmpHeading">
 		<xsl:param name="level" as="xs:string"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
 				<xsl:call-template name="LanguagesPara">
@@ -732,7 +718,6 @@
 	<xsl:template name="tmpAbbrAcrHeading">
 		<xsl:param name="level" as="xs:string"/>
 		<xsl:param name="levelValue" as="xs:integer?" required="yes"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<xsl:when test="(d:AbbrAcrFlag($myObj)=1) and not(w:r/w:pict/v:shape/v:textbox)">
 				<xsl:variable name="temp" as="xs:string">
@@ -771,10 +756,8 @@
 		<xsl:param name="custom" as="xs:string"/>
 		<xsl:param name="mastersubtbl" as="xs:boolean"/>
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:tablehandler</xsl:message>
 		<xsl:if test="$custom='Automatic'">
 			<xsl:for-each select="w:tr/w:tc">
-				<xsl:message terminate="no">progress:parahandler</xsl:message>
 				<xsl:if test="((w:p/w:r/w:lastRenderedPageBreak) or (w:p/w:r/w:br/@w:type='page'))">
 					<xsl:if test="not((../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:lastRenderedPageBreak) or (../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:br/@w:type='page') or (preceding-sibling::w:tc[1]/w:p/w:r/w:lastRenderedPageBreak) or (preceding-sibling::w:tc[1]/w:p/w:r/w:br/@w:type='page'))">
 						<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
@@ -812,10 +795,8 @@
 
 					<xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
 						<xsl:for-each select="preceding-sibling::node()[1]/node()">
-							<xsl:message terminate="no">progress:parahandler</xsl:message>
 							<xsl:if test="self::w:r">
 								<xsl:for-each select=".">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<xsl:choose>
 										<xsl:when test="w:noBreakHyphen">
 											<xsl:text>-</xsl:text>
@@ -830,7 +811,6 @@
 							</xsl:if>
 							<xsl:if test="self::w:fldSimple">
 								<xsl:for-each select=".">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<xsl:value-of select="w:r/w:t"/>
 								</xsl:for-each>
 							</xsl:if>
@@ -838,10 +818,8 @@
 					</xsl:if>
 					<xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
 						<xsl:for-each select="preceding-sibling::node()[1]/node()">
-							<xsl:message terminate="no">progress:parahandler</xsl:message>
 							<xsl:if test="self::w:r">
 								<xsl:for-each select=".">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<xsl:choose>
 										<xsl:when test="w:noBreakHyphen">
 											<xsl:text>-</xsl:text>
@@ -856,7 +834,6 @@
 							</xsl:if>
 							<xsl:if test="self::w:fldSimple">
 								<xsl:for-each select=".">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<xsl:value-of select="w:r/w:t"/>
 								</xsl:for-each>
 							</xsl:if>
@@ -864,10 +841,8 @@
 					</xsl:if>
 					<xsl:if test="(following-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
 						<xsl:for-each select="following-sibling::node()[1]/node()">
-							<xsl:message terminate="no">progress:parahandler</xsl:message>
 							<xsl:if test="self::w:r">
 								<xsl:for-each select=".">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<xsl:choose>
 										<xsl:when test="w:noBreakHyphen">
 											<xsl:text>-</xsl:text>
@@ -882,7 +857,6 @@
 							</xsl:if>
 							<xsl:if test="self::w:fldSimple">
 								<xsl:for-each select=".">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<xsl:value-of select="w:r/w:t"/>
 								</xsl:for-each>
 							</xsl:if>
@@ -918,14 +892,12 @@
 				<thead>
 					<!--Looping through each row of the table-->
 					<xsl:for-each select="w:tr">
-						<xsl:message terminate="no">progress:parahandler</xsl:message>
 						<!--Checking for table header-->
 						<xsl:if test="w:trPr/w:tblHeader">
 							<!--Looping through each row of the table-->
 							<tr>
 								<!--Looping through each cell of the table-->
 								<xsl:for-each select="w:tc/w:p">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<th>
 										<!--Assinging value as Table head-->
 										<xsl:call-template name="ParagraphStyle">
@@ -945,17 +917,14 @@
 				<tfoot>
 					<!--Looping through each row of the table-->
 					<xsl:for-each select="w:tr">
-						<xsl:message terminate="no">progress:parahandler</xsl:message>
 						<xsl:if test="position()=last()">
 							<tr>
 								<!--Looping through each cell of the table-->
 								<xsl:for-each select="w:tc">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<xsl:if test="(w:p) and (not((following-sibling::w:p[1]/w:pPr/w:pStyle[@w:val='DefinitionDataDAISY']) or (following-sibling::w:p[1]/w:r/w:rPr/w:rStyle[@w:val='DefinitionTermDAISY'])))">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','th','&gt;')"/>
 									</xsl:if>
 									<xsl:for-each select="w:p">
-										<xsl:message terminate="no">progress:parahandler</xsl:message>
 										<xsl:call-template name="ParagraphStyle">
 											<xsl:with-param name ="custom" select="$custom"/>
 											<xsl:with-param name ="VERSION" select="$parmVerTable"/>
@@ -975,17 +944,14 @@
 				<!--Counting each paragraph element for counting the number of rows spaned-->
 				<!--Looping through each row of the table-->
 				<xsl:for-each select="w:tr">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<!--Checking if the row is not header row-->
 					<xsl:if test="not(w:trPr/w:tblHeader) and not(w:trPr/w:cnfStyle)">
 						<tr>
 							<!--Looping through each cell of the table-->
 							<xsl:for-each select="w:tc">
-								<xsl:message terminate="no">progress:parahandler</xsl:message>
 								<xsl:if test="w:tcPr/w:vMerge[@w:val='restart']">
 									<xsl:variable name="columnPosition" as="xs:integer" select="position()"/>
 									<xsl:for-each select="../following-sibling::w:tr/w:tc[$columnPosition]/w:tcPr">
-										<xsl:message terminate="no">progress:parahandler</xsl:message>
 										<xsl:if test="d:ReturnFlagRowspan($myObj)=0">
 											<xsl:if test="(w:vMerge) and not(w:vMerge/@w:val='restart')">
 												<xsl:sequence select="d:sink(d:Rowspan($myObj))"/> <!-- empty -->
@@ -1028,14 +994,12 @@
 									</xsl:choose>
 									<xsl:variable name ="var_heading" as="xs:string*">
 										<xsl:for-each select="$stylesXml//w:styles/w:style/w:name[@w:val='heading 1']">
-											<xsl:message terminate="no">progress:parahandler</xsl:message>
 											<xsl:sequence select="../@w:styleId"/>
 										</xsl:for-each>
 									</xsl:variable>
 									<xsl:variable name ="var_heading" as="xs:string?" select="string-join($var_heading,'')[not(.='')]"/>
 									<xsl:sequence select="d:sink(d:SetRowspan($myObj))"/> <!-- empty -->
 									<xsl:for-each select="w:p">
-										<xsl:message terminate="no">progress:parahandler</xsl:message>
 										<!--Calling paragraph template whenever w:p element is encountered.-->
 										<xsl:call-template name="StyleContainer">
 											<xsl:with-param name="VERSION" select="$parmVerTable"/>
@@ -1047,7 +1011,6 @@
 									</xsl:for-each>
 									<!--Checking for nested table-->
 									<xsl:for-each select="child::w:tbl">
-										<xsl:message terminate="no">progress:parahandler</xsl:message>
 										<!--Calling template Tablehandler for nested tables-->
 										<xsl:call-template name="TableHandler">
 											<xsl:with-param name="parmVerTable" select="$parmVerTable"/>

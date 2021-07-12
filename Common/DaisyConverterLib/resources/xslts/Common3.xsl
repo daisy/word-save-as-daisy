@@ -27,7 +27,6 @@
 	<xsl:template name="tmpProcessFootNote">
 		<xsl:param name="varFootnote_Id" as="xs:integer"/>
 		<xsl:param name="varNote_Class" as="xs:string"/>
-		<xsl:message terminate="no">progress:footnote</xsl:message>
 		<!--Checking for matching reference Id for Fotnote and Endnote in footnote.xml
     or endnote.xml-->
 		<xsl:if test="$footnotesXml//w:footnotes/w:footnote[@w:id=$varFootnote_Id]or $endnotesXml//w:endnotes/w:endnote[@w:id=$varFootnote_Id]">
@@ -75,7 +74,6 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:message terminate="no">progress:note</xsl:message>
 		<!--Checking for EndNoteId greater than 1-->
 		<xsl:if test="$endNoteId &gt; 1">
 			<note>
@@ -89,12 +87,10 @@
 				</xsl:attribute>
 				<!--Travering each w:endnote element in endnote.xml file-->
 				<xsl:for-each select="$endnotesXml//w:endnotes/w:endnote">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<!--Checks for matching Id-->
 					<xsl:if test="@w:id=$endNoteId">
 						<!--Travering each element inside w:endnote in endnote.xml file-->
 						<xsl:for-each select="./node()">
-							<xsl:message terminate="no">progress:parahandler</xsl:message>
 							<!--Checking for Paragraph element-->
 							<xsl:if test="self::w:p">
 								<xsl:call-template name="ParagraphStyle">
@@ -124,21 +120,18 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:message terminate="no">progressfootnote</xsl:message>
 		<!--Inserting default footnote id in the array list-->
 		<xsl:variable name="checkid" as="xs:integer" select="d:FootNoteId($myObj,0)"/>
 		<!--Chaecking for the matching Id returned from d:FootNoteId()-->
 		<xsl:if test="$checkid!=0">
 			<!--Traversing through each footnote element in footnotes.xml file-->
 			<xsl:for-each select="$footnotesXml//w:footnotes/w:footnote">
-				<xsl:message terminate="no">progress:parahandler</xsl:message>
 				<!--Checking if Id returned from d:FootNoteId() is equal to the footnote Id in footnotes.xml file-->
 				<xsl:if test="@w:id=$checkid">
 					<!--Creating note element and it's attribute values-->
 					<note id="{concat('footnote-',$checkid - 1)}" class="Footnote">
 						<!--Travering each element inside w:footnote in footnote.xml file-->
 						<xsl:for-each select="./node()">
-							<xsl:message terminate="no">progress:parahandler</xsl:message>
 							<!--Checking for Paragraph element-->
 							<xsl:if test="self::w:p">
 								<xsl:choose>
@@ -262,7 +255,6 @@
 					</xsl:if>
 					<!--Looping through each of the node to print text to the output xml-->
 					<xsl:for-each select="$followingnodes[1]/node()">
-						<xsl:message terminate="no">progress:parahandler</xsl:message>
 						<xsl:if test="self::w:r">
 							<xsl:call-template name ="TempCharacterStyle">
 								<xsl:with-param name ="characterStyle" select="$characterStyle"/>
@@ -304,7 +296,6 @@
 				</xsl:if>
 				<!--Looping through each of the node to print text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
@@ -342,7 +333,6 @@
 				</xsl:if>
 				<!--Looping through each of the node to print text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
@@ -371,7 +361,6 @@
 		<xsl:param name="imgOpt" as="xs:string"/>
 		<xsl:param name="dpi" as="xs:float?"/>
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:picturehandler</xsl:message>
 		<xsl:variable name="alttext" as="xs:string" select="w:drawing/wp:inline/wp:docPr/@descr"/>
 		<!--Variable holds the value of Image Id-->
 		<xsl:variable name="Img_Id" as="xs:string?">
@@ -566,7 +555,6 @@
 							</xsl:if>
 							<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
 									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
@@ -582,7 +570,6 @@
 							</xsl:if>
 							<xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 								<xsl:for-each select="../node()">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
 									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
@@ -659,7 +646,6 @@
 					</xsl:if>
 					<!--Looping through each of the node to print the text to the output xml-->
 					<xsl:for-each select="$followingnodes[1]/node()">
-						<xsl:message terminate="no">progress:parahandler</xsl:message>
 						<xsl:if test="self::w:r">
 							<xsl:call-template name ="TempCharacterStyle">
 								<xsl:with-param name ="characterStyle" select="$characterStyle"/>
@@ -701,7 +687,6 @@
 				</xsl:if>
 				<!--Looping through each of the node to print the text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
@@ -739,7 +724,6 @@
 				</xsl:if>
 				<!--Looping through each of the node to print the text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
@@ -766,12 +750,10 @@
 	<!--Template for Implementing grouped images-->
 	<xsl:template name="Imagegroups">
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:imagegroups</xsl:message>
 		<!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
 		<xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY'">
 			<xsl:variable name="caption" as="xs:string*">
 				<xsl:for-each select="../preceding-sibling::node()[1]/node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
@@ -791,7 +773,6 @@
 		<xsl:if test="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:pPr/w:pStyle[@w:val='Caption']">
 			<xsl:variable name="caption" as="xs:string*">
 				<xsl:for-each select="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="self::w:r">
 						<xsl:call-template name ="TempCharacterStyle">
 							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
@@ -866,7 +847,6 @@
 
 	<xsl:template name="Imagegroup2003">
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<!--Variable that holds the Image Id-->
 		<xsl:variable name="imageId" as="xs:string" select="concat(w:pict/v:shape/v:imagedata/@r:id,d:GenerateImageId($myObj))"/>
 		<!--Checking if image is bidirectionally oriented-->
@@ -917,7 +897,6 @@
 						</xsl:if>
 						<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 							<xsl:for-each select="../preceding-sibling::node()[1]/node()">
-								<xsl:message terminate="no">progress:parahandler</xsl:message>
 								<!--Printing the Caption value-->
 								<xsl:if test="self::w:r">
 									<xsl:call-template name ="TempCharacterStyle">
@@ -933,7 +912,6 @@
 						</xsl:if>
 						<xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 							<xsl:for-each select="../node()">
-								<xsl:message terminate="no">progress:parahandler</xsl:message>
 								<!--Printing the Caption value-->
 								<xsl:if test="self::w:r">
 									<xsl:call-template name ="TempCharacterStyle">
@@ -1030,7 +1008,6 @@
 							</xsl:if>
 							<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
 									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
@@ -1045,7 +1022,6 @@
 							</xsl:if>
 							<xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 								<xsl:for-each select="../node()">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
 									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
@@ -1133,7 +1109,6 @@
 						</xsl:if>
 						<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 							<xsl:for-each select="../preceding-sibling::node()[1]/node()">
-								<xsl:message terminate="no">progress:parahandler</xsl:message>
 
 								<!--Printing the Caption value-->
 
@@ -1151,7 +1126,6 @@
 						</xsl:if>
 						<xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 							<xsl:for-each select="../node()">
-								<xsl:message terminate="no">progress:parahandler</xsl:message>
 
 								<!--Printing the Caption value-->
 
@@ -1197,7 +1171,6 @@
 	<xsl:template name="SectionBreak">
 		<xsl:param name="count" as="xs:integer"/>
 		<xsl:param name="node" as="xs:string"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:sequence select="d:sink(d:InitalizeCheckSectionBody($myObj))"/> <!-- empty -->
 		<xsl:sequence select="d:sink(d:ResetSetConPageBreak($myObj))"/> <!-- empty -->
 		<xsl:choose>
@@ -1207,7 +1180,6 @@
 				<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
 				<!--Traversing through each node-->
 				<xsl:for-each select="following-sibling::node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:choose>
 						<!--Checking for paragraph section break-->
 						<xsl:when test="w:pPr/w:sectPr">
@@ -1309,7 +1281,6 @@
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="../following-sibling::node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:choose>
 						<!--Checking for paragraph section break-->
 						<xsl:when test="w:pPr/w:sectPr">
@@ -1409,7 +1380,6 @@
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="following-sibling::node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:choose>
 						<!--Checking for paragraph section break-->
 						<xsl:when test="w:pPr/w:sectPr">
@@ -1560,7 +1530,6 @@
 				</xsl:if>
 				<!--Traversing through each node-->
 				<xsl:for-each select="../../following-sibling::node()">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:choose>
 						<!--Checking for paragraph section break-->
 						<xsl:when test="w:pPr/w:sectPr">
@@ -1654,9 +1623,7 @@
 
 	<!--Template for counting number of pages before TOC-->
 	<xsl:template name="countpageTOC">
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:for-each select="preceding-sibling::*">
-			<xsl:message terminate="no">progress:parahandler</xsl:message>
 			<xsl:choose>
 				<!--Checking for page break in TOC-->
 				<xsl:when test="(w:r/w:br/@w:type='page') or (w:r/w:lastRenderedPageBreak)">
@@ -1693,7 +1660,6 @@
 		<xsl:param name="pagetype" as="xs:string"/>
 		<xsl:param name="matter" as="xs:string"/>
 		<xsl:param name="counter" as="xs:integer"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<xsl:when test="d:GetCurrentMatterType($myObj)='Frontmatter'">
 				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
@@ -1982,7 +1948,6 @@
 	<!--Template to implement Languages-->
 	<xsl:template name="Languages">
 		<xsl:param name="Attribute" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',w:r[1]/w:rPr/w:lang/count(@*)),''))"/>
 		<xsl:choose>
 			<!--Checking for language type CS-->
@@ -2149,7 +2114,6 @@
 	<xsl:template name="LanguagesPara">
 		<xsl:param name="Attribute" as="xs:boolean"/>
 		<xsl:param name ="level" as="xs:string"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',w:r/w:rPr/w:lang/count(@*)),''))">
 			<!--NOTE: Use w:r instead w:r[1]-->
 		</xsl:variable>
@@ -2334,7 +2298,6 @@
 	<!--Template to implement Languages-->
 	<xsl:template name="PictureLanguage" as="xs:string">
 		<xsl:param name="CheckLang" as="xs:string"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<!--Checking languge for picture-->
 			<xsl:when test="$CheckLang='picture'">
@@ -2532,7 +2495,6 @@
 
 	<!--Template for taking language for bdo Tag-->
 	<xsl:template name="BdoLanguages">
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',../../w:r[1]/w:rPr/w:lang/count(@*)),''))"/>
 		<xsl:choose>
 			<xsl:when test="../../w:r/w:rPr/w:rFonts/@w:hint='cs'">
@@ -2589,7 +2551,6 @@
 	</xsl:template>
 	<!--Template for taking language for bdo Tag-->
 	<xsl:template name="BdoRtlLanguages" as="xs:string">
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',../w:r[1]/w:rPr/w:lang/count(@*)),''))"/>
 		<xsl:choose>
 			<xsl:when test="w:rPr/w:rFonts/@w:hint='cs'">
@@ -2646,7 +2607,6 @@
 	</xsl:template>
 	<xsl:template name="TempCharacterStyle">
 		<xsl:param name ="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<xsl:when test="$characterStyle">
 				<xsl:choose>
