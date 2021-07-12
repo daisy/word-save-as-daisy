@@ -275,7 +275,6 @@
 				<meta name="dc:Language" content="{$doclang}"/>
 				<xsl:sequence select="d:sink(d:AddLanguage($myObj,$doclang))"/> <!-- empty -->
 				<xsl:for-each select="$documentXml//w:body/w:p/w:r/w:rPr">
-					<xsl:message terminate="no">progress:parahandler</xsl:message>
 					<xsl:if test="w:lang">
 						<xsl:choose>
 							<xsl:when test="w:rFonts/@w:hint='cs'">

@@ -249,11 +249,15 @@
         <xsl:message terminate="no">progress:Start parsing document for <xsl:value-of select="$matterType"/>  </xsl:message>
         
 
+=======
+            <!--Calling d:AddHyperlink() for storing Anchor in Hyperlink-->
+            <xsl:sequence select="d:sink(d:AddHyperlink($myObj,string(@w:anchor)))"/> <!-- empty -->
+        </xsl:for-each>
+>>>>>>> b230cbb ([XSLT] Remove progress messages)
 
         <!--<xsl:if test="$matterType=''">-->
         <!--Checking the first paragraph of the document-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p[1]">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <!--If first paragraph is not Heading-->
             <xsl:if test="not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or $matterType='Rearmatter'">
                 <!--Calling Template to add level1-->
@@ -277,7 +281,6 @@
         <xsl:sequence select="d:ResetCurrentMatterType($myObj)"/> <!-- empty -->
         <!--Traversing through each node of the document-->
         <xsl:for-each select="$documentXml//w:body/node()">
-            <xsl:message terminate="no">progress:parahandler</xsl:message>
             <xsl:if test="not($masterSub)">
                 <xsl:call-template name="SetCurrentMatterType" />
             </xsl:if>
@@ -1073,7 +1076,6 @@
             <xsl:if test="self::w:del">
                 <xsl:if test="$prmTrack='No'">
                     <xsl:for-each select="w:r">
-                        <xsl:message terminate="no">progress:Readding deleted text ?</xsl:message>
                         <xsl:value-of select="w:delText"/>
                     </xsl:for-each>
                 </xsl:if>
@@ -1082,7 +1084,6 @@
             <xsl:if test="self::w:ins">
                 <xsl:if test="$prmTrack='Yes'">
                     <xsl:for-each select="w:r">
-                        <xsl:message terminate="no">progress:Adding inserted text</xsl:message>
                         <xsl:value-of select="w:t"/>
                     </xsl:for-each>
                 </xsl:if>
@@ -1754,7 +1755,6 @@
     <xsl:template name="fldSimple">
         <xsl:message terminate="no">debug in fldSimple</xsl:message>
         <xsl:for-each select="w:r">
-            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
             <xsl:value-of select="w:t"/>
         </xsl:for-each>
     </xsl:template>
@@ -1932,7 +1932,6 @@
             <!--Checking condition for supressing Author,Title,Year-->
             <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
                 <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:value-of select="w:t"/>
                 </xsl:for-each>
             </xsl:when>
@@ -1973,13 +1972,11 @@
                 <xsl:choose>
                     <xsl:when test="d:GetAuthor($myObj)=''">
                         <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:value-of select="w:t"/>
                         </xsl:for-each>
                     </xsl:when>
                     <xsl:when test="(d:GetAuthor($myObj)='') and (d:GetTitle($myObj)='') and (d:GetYear($myObj)='')">
                         <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:value-of select="w:t"/>
                         </xsl:for-each>
                     </xsl:when>
@@ -2406,7 +2403,6 @@
                         <xsl:with-param name="characterStyle" select="$characterStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                     </xsl:call-template>
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:choose>
                         <xsl:when test="self::w:commentReference">
                             <!--Capturing fidility loss-->
@@ -3316,7 +3312,6 @@
         <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
         <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
 
-        <xsl:message terminate="no">progress:ParagraphStyle</xsl:message>
         <xsl:variable name="checkImageposition" as="xs:integer" select="d:GetCaptionsProdnotes($myObj)"/>
         <xsl:choose>
             <!--Checking for Title/Subtitle paragraph style-->

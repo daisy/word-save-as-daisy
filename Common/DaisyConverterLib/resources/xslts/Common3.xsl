@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-				xmlns:xs="http://www.w3.org/2001/XMLSchema"
-				xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-				xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
-				xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-				xmlns:dcterms="http://purl.org/dc/terms/"
-				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
-				xmlns:dc="http://purl.org/dc/elements/1.1/"
-				xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-				xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-				xmlns:v="urn:schemas-microsoft-com:vml"
-				xmlns:dcmitype="http://purl.org/dc/dcmitype/"
-				xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"
-				xmlns:o="urn:schemas-microsoft-com:office:office"
-				xmlns:d="DaisyClass"
-				xmlns="http://www.daisy.org/z3986/2005/dtbook/"
-				exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+                xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+                xmlns:dcterms="http://purl.org/dc/terms/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+                xmlns:v="urn:schemas-microsoft-com:vml"
+                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"
+                xmlns:o="urn:schemas-microsoft-com:office:office"
+                xmlns:d="DaisyClass"
+                xmlns="http://www.daisy.org/z3986/2005/dtbook/"
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
 	<!--Storing the default language of the document from styles.xml-->
 	<xsl:variable name="doclang" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
 	<xsl:variable name="doclangbidi" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
@@ -122,7 +122,6 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:message terminate="no">progressfootnote</xsl:message>
 		<!--Inserting default footnote id in the array list-->
 		<xsl:variable name="checkid" as="xs:integer" select="d:FootNoteId($myObj,0)"/>
 		<!--Checking for the matching Id returned from footnoteId function of c#-->
@@ -558,7 +557,6 @@
 							</xsl:if>
 							<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
 								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
-									<xsl:message terminate="no">progress:parahandler</xsl:message>
 									<!--Printing the Caption value-->
 									<xsl:if test="self::w:r">
 										<xsl:call-template name ="TempCharacterStyle">
@@ -754,7 +752,6 @@
 	<!--Template for Implementing grouped images-->
 	<xsl:template name="Imagegroups">
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:imagegroups</xsl:message>
 		<!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
 		<xsl:if test="../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY'">
 			<xsl:variable name="caption" as="xs:string*">
@@ -852,7 +849,6 @@
 
 	<xsl:template name="Imagegroup2003">
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<!--Variable that holds the Image Id-->
 		<xsl:variable name="imageId" as="xs:string" select="concat(w:pict/v:shape/v:imagedata/@r:id,d:GenerateImageId($myObj))"/>
 		<!--Checking if image is bidirectionally oriented-->
@@ -1185,7 +1181,6 @@
 	<xsl:template name="SectionBreak">
 		<xsl:param name="count" as="xs:integer"/>
 		<xsl:param name="node" as="xs:string"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:sequence select="d:sink(d:InitalizeCheckSectionBody($myObj))"/> <!-- empty -->
 		<xsl:sequence select="d:sink(d:ResetSetConPageBreak($myObj))"/> <!-- empty -->
 		<xsl:choose>
@@ -2508,7 +2503,6 @@
 
 	<!--Template for taking language for bdo Tag-->
 	<xsl:template name="BdoLanguages">
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',../../w:r[1]/w:rPr/w:lang/count(@*)),''))"/>
 		<xsl:choose>
 			<xsl:when test="../../w:r/w:rPr/w:rFonts/@w:hint='cs'">
@@ -2565,7 +2559,6 @@
 	</xsl:template>
 	<!--Template for taking language for bdo Tag-->
 	<xsl:template name="BdoRtlLanguages" as="xs:string">
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',../w:r[1]/w:rPr/w:lang/count(@*)),''))"/>
 		<xsl:choose>
 			<xsl:when test="w:rPr/w:rFonts/@w:hint='cs'">
@@ -2622,7 +2615,6 @@
 	</xsl:template>
 	<xsl:template name="TempCharacterStyle">
 		<xsl:param name ="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:parahandler</xsl:message>
 		<xsl:choose>
 			<xsl:when test="$characterStyle">
 				<xsl:choose>
