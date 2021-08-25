@@ -41,7 +41,7 @@
 			<xsl:when test="$level &lt; 7">
 				<!--Levels upto 6-->
 				<!--Creating level element-->
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level',$level,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;level',$level,'&gt;')"/>
 				<xsl:if test="(d:GetPageNum($myObj)=0) and (d:CheckTocOccur($myObj)=1) and ($custom='Automatic')">
 					<xsl:if test="preceding-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Cover Pages'">
 						<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
@@ -115,7 +115,7 @@
 			</xsl:when>
 			<!--Levels above 6-->
 			<xsl:when test="$level &gt; 6">
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','level',6,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;level',6,'&gt;')"/>
 				<!--Calling tmpHeading template for adding Levels-->
 				<xsl:call-template name="tmpHeading">
 					<xsl:with-param name="level" select="'6'"/>
@@ -305,7 +305,7 @@
 			<xsl:when test ="$CurrentLevel &gt; 6 and $PeekLevel = 6 ">
 				<xsl:variable name="PopLevel" as="xs:string" select="d:PoPLevel($myObj)"/>
 				<!--Close that level-->
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level',$PopLevel,'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;/level',$PopLevel,'&gt;')"/>
 				<!--Loop through until we have closed all the Lower levels-->
 			</xsl:when>
 			<xsl:otherwise>
@@ -313,7 +313,7 @@
 					<xsl:variable name="PopLevel" as="xs:string" select="d:PoPLevel($myObj)"/>
 					<!--Close that level-->
           <p/>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level',$PopLevel,'&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;/level',$PopLevel,'&gt;')"/>
 					<!--Loop through until we have closed all the Lower levels-->
 					<xsl:call-template name="CloseLevel">
 						<xsl:with-param name="CurrentLevel" select="$CurrentLevel"/>
@@ -395,7 +395,7 @@
 			<xsl:sequence select="d:sink(d:ListPush($myObj,$openlvl))"/> <!-- empty -->
 			<xsl:sequence select="d:IncrementListCounters($myObj,$openlvl,$openId)"/> <!-- empty -->
 			<xsl:variable name="txt" as="xs:string" select="d:TextList($myObj,$numFmt,$lText,$openId,$openlvl)"/>
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;li&gt;'"/>
 
 			<xsl:choose>
 				<xsl:when  test="($numFmt='lowerLetter')
@@ -430,7 +430,7 @@
 					<xsl:sequence select="d:sink(d:ListPush($myObj,$openlvl))"/> <!-- empty -->
 					<xsl:sequence select="d:IncrementListCounters($myObj,$openlvl,$openId)"/> <!-- empty -->
 					<xsl:variable name="txt" as="xs:string" select="d:TextList($myObj,$numFmt,$lText,$openId,$openlvl)"/>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="'&lt;li&gt;'"/>
 
 					<xsl:choose>
 						<xsl:when  test="($numFmt='lowerLetter')
@@ -456,7 +456,7 @@
 
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="'&lt;li&gt;'"/>
 					<xsl:variable name="reduceOne" as="xs:integer" select="d:ReduceOne($diffLevel)"/>
 					<xsl:call-template name="recursive">
 						<xsl:with-param name="rec" select="$reduceOne"/>
@@ -501,10 +501,10 @@
 			<!--PoPs one level from the stack-->
 			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
       <xsl:if test="not(preceding-sibling::node()[1][w:r/w:rPr/w:rStyle[substring(@w:val,1,15)='PageNumberDAISY']])">
-			  <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
+			  <xsl:value-of disable-output-escaping="yes" select="'&lt;/li&gt;'"/>
       </xsl:if>
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;/list&gt;'"/>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;/li&gt;'"/>
 			<!--Loop through until we have closed all the Lower levels-->
 			<xsl:call-template name="closelist">
 				<xsl:with-param name="close" select="$close"/>
@@ -514,8 +514,8 @@
 
 	<xsl:template name="recursive">
 		<xsl:param name="rec" as="xs:integer"/>
-		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=','&quot;','ol','&quot;','&gt;')"/>
-		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
+		<xsl:value-of disable-output-escaping="yes" select="'&lt;list type=&quot;ol&quot;&gt;'"/>
+		<xsl:value-of disable-output-escaping="yes" select="'&lt;li&gt;'"/>
 		<xsl:variable name="dec" as="xs:integer" select="d:Decrement($rec)"/>
 		<xsl:if test="$dec!=0">
 			<xsl:call-template name="recursive">
@@ -567,8 +567,8 @@
 		<xsl:if test="$close &lt; $PeekLevel">
 			<!--PoPs one level from the stack-->
 			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;/list&gt;'"/>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;/li&gt;'"/>
 			<!--Loop through until we have closed all the Lower levels-->
 			<xsl:call-template name="ComplexListClose">
 				<xsl:with-param name="close" select="$close"/>
@@ -586,8 +586,8 @@
 		<xsl:if test="$close &lt;= $PeekLevel">
 			<!--PoPs one level from the stack-->
 			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
-			<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;/li&gt;'"/>
+			<xsl:value-of disable-output-escaping="yes" select="'&lt;/list&gt;'"/>
 			<xsl:if test="$PeekLevel!=0">
 				<!--Loop through until we have closed all the Lower levels-->
 				<xsl:call-template name="CloseLastlist">
@@ -709,7 +709,7 @@
 				</xsl:call-template>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('h',$level),'&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;h',$level,'&gt;')"/>
 			</xsl:otherwise>
 		</xsl:choose>
 
@@ -721,7 +721,7 @@
 		<xsl:choose>
 			<xsl:when test="(d:AbbrAcrFlag($myObj)=1) and not(w:r/w:pict/v:shape/v:textbox)">
 				<xsl:variable name="temp" as="xs:string">
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;/h',$level,'&gt;')"/>
 				</xsl:variable>
 				<xsl:sequence select="d:sink(d:PushAbrAcrhead($myObj,$temp))"/> <!-- empty -->
 				<xsl:if test="d:ListMasterSubFlag($myObj)=1">
@@ -734,7 +734,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:if test="not(w:r/w:pict/v:shape/v:textbox)">
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;/h',$level,'&gt;')"/>
 					<xsl:if test="d:ListMasterSubFlag($myObj)=1">
 						<xsl:variable name ="curLevel" as="xs:integer" select="d:PeekLevel($myObj)"/>
 						<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj,$curLevel)"/>
@@ -789,8 +789,8 @@
 							</xsl:call-template>
 						</xsl:variable>
 						<xsl:sequence select="d:sink(d:SetcaptionFlag($myObj))"/> <!-- empty -->
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=','&quot;',$varBdo,'&quot;','&gt;')"/>
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ','&quot;','rtl','&quot;',' xml:lang=','&quot;',$varBdo,'&quot;','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p  xml:lang=&quot;',$varBdo,'&quot;&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;bdo dir= &quot;rtl&quot; xml:lang=&quot;',$varBdo,'&quot;&gt;')"/>
 					</xsl:if>
 
 					<xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
@@ -863,11 +863,11 @@
 						</xsl:for-each>
 					</xsl:if>
 					<xsl:if test="d:SetcaptionFlag($myObj)=2">
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="'&lt;/bdo&gt;'"/>
 					</xsl:if>
 					<xsl:sequence select="d:sink(d:reSetcaptionFlag($myObj))"/> <!-- empty -->
 					<xsl:if test="(preceding-sibling::w:p[1]/w:r/w:rPr/w:rtl) or (preceding-sibling::w:p[1]/w:pPr/w:bidi)">
-						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="'&lt;/p&gt;'"/>
 					</xsl:if>
 				</caption>
 			</xsl:if>
@@ -922,7 +922,7 @@
 								<!--Looping through each cell of the table-->
 								<xsl:for-each select="w:tc">
 									<xsl:if test="(w:p) and (not((following-sibling::w:p[1]/w:pPr/w:pStyle[@w:val='DefinitionDataDAISY']) or (following-sibling::w:p[1]/w:r/w:rPr/w:rStyle[@w:val='DefinitionTermDAISY'])))">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','th','&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="'&lt;th&gt;'"/>
 									</xsl:if>
 									<xsl:for-each select="w:p">
 										<xsl:call-template name="ParagraphStyle">
@@ -932,7 +932,7 @@
 										</xsl:call-template>
 									</xsl:for-each>
 									<xsl:if test="(w:p) and (not((following-sibling::w:p[1]/w:pPr/w:pStyle[@w:val='DefinitionDataDAISY']) or (following-sibling::w:p[1]/w:r/w:rPr/w:rStyle[@w:val='DefinitionTermDAISY'])))">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/th','&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="'&lt;/th&gt;'"/>
 									</xsl:if>
 								</xsl:for-each>
 							</tr>
@@ -972,24 +972,24 @@
 											<xsl:variable name="colspan" as="xs:string" select="w:tcPr/w:gridSpan/@w:val"/>
 											<!--variale holds the value of number of Rows span-->
 											<!--Creating td tag with rowspan and colspan attribute-->
-											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=','&quot;',$colspan,'&quot;',' ',' rowspan=','&quot;',d:GetRowspan($myObj)+1,'&quot;','&gt;')"/>
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;td colspan=&quot;',$colspan,'&quot;  rowspan=&quot;',d:GetRowspan($myObj)+1,'&quot;&gt;')"/>
 										</xsl:when>
 										<!--Checking for colspan and not rowspan-->
 										<xsl:when test="(w:tcPr/w:gridSpan) and not(w:tcPr/w:vMerge[@w:val='restart'])">
 											<!--colspan variable holds colspan value-->
 											<xsl:variable name="colspan" as="xs:string" select="w:tcPr/w:gridSpan/@w:val"/>
 											<!--Creating td tag with colspan attribute-->
-											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','colspan=','&quot;',$colspan,'&quot;','&gt;')"/>
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;td colspan=&quot;',$colspan,'&quot;&gt;')"/>
 										</xsl:when>
 										<!--Checking for rowspan and not colspan-->
 										<xsl:when test="(w:tcPr/w:vMerge[@w:val='restart']) and not(w:tcPr/w:gridSpan)">
 											<!--rowspan variable holds rowspan value-->
 											<!--Creating td tag with rowspan attribute-->
-											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','rowspan=','&quot;',d:GetRowspan($myObj)+1,'&quot;','&gt;')"/>
+											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;td rowspan=&quot;',d:GetRowspan($myObj)+1,'&quot;&gt;')"/>
 										</xsl:when>
 										<xsl:otherwise >
 											<!--Opening the td tag-->
-											<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','td ','&gt;')"/>
+											<xsl:value-of disable-output-escaping="yes" select="'&lt;td &gt;'"/>
 										</xsl:otherwise>
 									</xsl:choose>
 									<xsl:variable name ="var_heading" as="xs:string*">
@@ -1022,7 +1022,7 @@
 									<!--Checking if not nested table then td is closed-->
 									<xsl:if test="not(child::w:tbl) or not(count(child::w:tbl)=0)">
 										<!--Closing the td tag-->
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/td','&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="'&lt;/td&gt;'"/>
 									</xsl:if>
 								</xsl:if>
 							</xsl:for-each>
