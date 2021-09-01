@@ -9,9 +9,10 @@ using Microsoft.Office.Core;
 using System.Collections.Generic;
 using System.ComponentModel;
 using MSword = Microsoft.Office.Interop.Word;
-using Daisy.DaisyConverter.DaisyConverterLib;
+using Daisy.SaveAsDAISY.Conversion;
+using Daisy.SaveAsDAISY;
 
-namespace DaisyTranslatorWord2003Addin
+namespace Daisy.SaveAsDAISY.Addins.Word2003
 {
     public partial class Mark2003 : Form
     {
@@ -20,7 +21,7 @@ namespace DaisyTranslatorWord2003Addin
         String pronounceAbbrAcr = "No", allOccurences = "No";
         XmlDocument dc = new XmlDocument();
         XmlDocument manageAbbrAcr = new XmlDocument();
-        public DaisyAddinLib addinLib;
+        public AddinResources addinLib;
         object type = MsoDocProperties.msoPropertyTypeString;
 
         /// <summary>
@@ -33,7 +34,7 @@ namespace DaisyTranslatorWord2003Addin
             InitializeComponent();
             currentDoc = doc;
             checkAbbrAcr = valueAbbrAcr;
-            this.addinLib = new Daisy.DaisyConverter.Word.Addin();
+            this.addinLib = new Daisy.SaveAsDAISY.AddinResources();
 
             //Checking whether call is from Abbreviation button or Acronym button
             //to diifferenciate the Look and Feel of UI

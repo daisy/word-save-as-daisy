@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Office.Interop.Word;
 using MSword = Microsoft.Office.Interop.Word;
 
-namespace DaisyWord2007AddIn
+namespace Daisy.SaveAsDAISY.Addins.Word2007
 {
     public partial class Language : Form
     {

@@ -1,4 +1,4 @@
-namespace Daisy.DaisyConverter.DaisyConverterLib
+namespace Daisy.SaveAsDAISY.Forms
 {
     partial class ProgressValidation
     {

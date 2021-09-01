@@ -11,9 +11,10 @@ using System.IO;
 using System.Windows.Forms;
 using System.IO.Packaging;
 using System.Drawing.Imaging;
+using Daisy.SaveAsDAISY.Forms;
+using Daisy.SaveAsDAISY.Forms.Controls;
 
-
-namespace Daisy.DaisyConverter.DaisyConverterLib
+namespace Daisy.SaveAsDAISY.Conversion
 {
     public partial class MultipleSub : Form
     {
@@ -21,60 +22,47 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
         PackageRelationship packRelationship = null;
         const string appNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes";
-        ArrayList listDocuments;
-        private ResourceManager manager;
+        List<string> listDocuments;
+        private ResourceManager Labels;
         Hashtable table = new Hashtable();
         int subCount = 0;
         int masterSubFlag = 0;
         string fileOutputPath, versionInfo = "";
-        private string mInputPath;
         private ScriptParser mParser = null;
         private bool useAScript = false;
-        string btnID = "";
         String input = "", uId = "";
         private string mProjectDirectory;
         string strBrtextBox = "";
         TableLayoutPanel oTableLayoutPannel = new TableLayoutPanel();
-        public MultipleSub(ResourceManager manager, String versionInfo, string control)
-        {
-            InitializeComponent();
-            listDocuments = new ArrayList();
-            this.manager = manager;
-            btn_Up.Enabled = false;
-            btn_Down.Enabled = false;
-            btn_Delete.Enabled = false;
-            btn_Populate.Enabled = false;
-            this.versionInfo = versionInfo;
-            btnID = control;
-        }
+       
 
-        public MultipleSub(ResourceManager manager, String versionInfo, string control, string scriptPath, string inputPath)
-        {
+        public ConversionParameters UpdatedConversionParameters { get; private set; }
+
+        public MultipleSub(ConversionParameters conversion) {
+            UpdatedConversionParameters = conversion;
             InitializeComponent();
-            listDocuments = new ArrayList();
-            this.manager = manager;
-            mInputPath = inputPath;
+            listDocuments = new List<string>();
+            this.Labels = AddInHelper.LabelsManager;
             btn_Up.Enabled = false;
             btn_Down.Enabled = false;
             btn_Delete.Enabled = false;
             btn_Populate.Enabled = false;
-            this.versionInfo = versionInfo;
-            btnID = control;
-            mParser = new ScriptParser(scriptPath);
-            useAScript = true;
-            FileInfo f = new FileInfo(scriptPath);
-            this.Text = f.Name.Replace(f.Extension, "");
+            this.versionInfo = UpdatedConversionParameters.Version;
+            useAScript = UpdatedConversionParameters.ScriptPath != null && UpdatedConversionParameters.ScriptPath.Length > 0;
+            if (useAScript) {
+                if(UpdatedConversionParameters.PostProcessSettings == null )
+                    UpdatedConversionParameters.PostProcessSettings = new ScriptParser(UpdatedConversionParameters.ScriptPath);
+                
+                this.Text = UpdatedConversionParameters.PostProcessSettings.NiceName;
+            }
+            
         }
         /// <summary>
         /// Prpoperty to return Selected Documents
         /// </summary>
-        public ArrayList GetFileNames
+        public List<string> GetFileNames
         {
             get { return listDocuments; }
-        }
-        public ScriptParser getParser
-        {
-            get { return mParser; }
         }
         /// <summary>
         /// Prpoperty to return Output file path
@@ -119,35 +107,23 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         {
         	CleanOutputDirDlg cleanUpDialog;
 
-            if ((btnID == "DaisyMultiple" || btnID == "DaisyTabMultiple" || btnID == "Button2") && !useAScript)
-            {
-                if (lBx_SubDocs.Items.Count == 0)
-                {
-                    MessageBox.Show(manager.GetString("SubdocsError"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            if (!useAScript) {
+                if (lBx_SubDocs.Items.Count == 0) {
+                    MessageBox.Show(Labels.GetString("SubdocsError"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btn_Browse.Focus();
-                }
-                else if (tBx_output.Text == "")
-                {
-                    MessageBox.Show(manager.GetString("ChoseDestinationFile"), manager.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else if (tBx_output.Text == "") {
+                    MessageBox.Show(Labels.GetString("ChoseDestinationFile"), Labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btn_Output.Focus();
-                }
-                else if (Directory.Exists(Path.GetDirectoryName(tBx_output.Text)) == false)
-                {
-                    MessageBox.Show("Directory " + string.Concat(Path.GetDirectoryName(tBx_output.Text), " ", "does not exist"), manager.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else if (Directory.Exists(Path.GetDirectoryName(tBx_output.Text)) == false) {
+                    MessageBox.Show("Directory " + string.Concat(Path.GetDirectoryName(tBx_output.Text), " ", "does not exist"), Labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btn_Output.Focus();
-                }
-                else if (Path.GetFileNameWithoutExtension(tBx_output.Text) == "")
-                {
-                    MessageBox.Show("Please provide proper filename", manager.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else if (Path.GetFileNameWithoutExtension(tBx_output.Text) == "") {
+                    MessageBox.Show("Please provide proper filename", Labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btn_Output.Focus();
-                }
-                else if (tBx_Title.Text.TrimEnd() == "")
-                {
-                    MessageBox.Show("Please enter the Title", manager.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else if (tBx_Title.Text.TrimEnd() == "") {
+                    MessageBox.Show("Please enter the Title", Labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     tBx_Title.Focus();
-                }
-                else
-                {
+                } else {
                     for (int i = 0; i < lBx_SubDocs.Items.Count; i++)
                     {
                         listDocuments.Add(lBx_SubDocs.Items[i].ToString());
@@ -155,23 +131,22 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                         btn_Populate.Enabled = true;
                     }
 
-                    table.Add("Title", tBx_Title.Text);
-                    table.Add("Creator", tBx_Creator.Text);
-                    table.Add("Publisher", tBx_Publisher.Text);
-                    table.Add("Subject", tBx_Subject.Text);
-                    table.Add("MasterSub", "Yes");
-                    table.Add("Version", this.versionInfo);
+                    UpdatedConversionParameters = UpdatedConversionParameters.withParameter("Title", tBx_Title.Text)
+                        .withParameter("Creator", tBx_Creator.Text)
+                        .withParameter("Publisher", tBx_Publisher.Text)
+                        .withParameter("Subject", tBx_Subject.Text)
+                        .withParameter("MasterSub", "Yes");
 
 
                     if (tBx_Uid.Text != "")
                     {
                         if (uId == tBx_Uid.Text)
-                            table.Add("UID", "AUTO-UID-" + tBx_Uid.Text);
+                            UpdatedConversionParameters.withParameter("UID", "AUTO-UID-" + tBx_Uid.Text);
                         else
-                            table.Add("UID", tBx_Uid.Text);
+                            UpdatedConversionParameters.withParameter("UID", tBx_Uid.Text);
                     }
                     else
-                        table.Add("UID", "AUTO-UID-" + GenerateId().ToString());
+                        UpdatedConversionParameters.withParameter("UID", "AUTO-UID-" + GenerateId().ToString());
 
 
                     if (Path.GetExtension(tBx_output.Text) == "")
@@ -179,7 +154,9 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                         tBx_output.Text = tBx_output.Text + ".xml";
 
                     fileOutputPath = tBx_output.Text;
-                    DaisyTranslationSettings daisySt = new DaisyTranslationSettings();
+                    UpdatedConversionParameters.OutputPath = fileOutputPath;
+                    // Now retrieved by the conversion parameters class while building the params hash
+                    /*ConverterSettings daisySt = new ConverterSettings();
                     String imgoption = daisySt.GetImageOption;
                     String resampleValue = daisySt.GetResampleValue;
                     String characterStyle = daisySt.GetCharacterStyle;
@@ -196,15 +173,12 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                     if (pagenumStyle != " ")
                     {
                         table.Add("Custom", pagenumStyle);
-                    }
+                    }*/
 
                     masterSubFlag = 1;
                     this.Close();
                 }
-            }
-
-            else
-            {
+            } else {
             	string scriptOutput = string.Empty;
                 for (int i = 0; i < mLayoutPanel.Controls.Count; i++)
                 {
@@ -221,7 +195,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                     }
                 }
 
-				foreach (ScriptParameter p in mParser.ParameterList)
+				foreach (ScriptParameter p in UpdatedConversionParameters.PostProcessSettings.ParameterList)
 				{
 					if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
 					{
@@ -264,31 +238,22 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
 
             	cleanUpDialog = new CleanOutputDirDlg(strBrtextBox, scriptOutput);
 
-            	if (lBx_SubDocs.Items.Count == 0)
-                {
-                    MessageBox.Show(manager.GetString("SubdocsError"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            	if (lBx_SubDocs.Items.Count == 0) {
+                    MessageBox.Show(Labels.GetString("SubdocsError"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     btn_Browse.Focus();
-                }
-                else if (tBx_Title.Text.TrimEnd() == "")
-                {
-                    MessageBox.Show("Please enter the Title", manager.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else if (tBx_Title.Text.TrimEnd() == "") {
+                    MessageBox.Show("Please enter the Title", Labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
                     tBx_Title.Focus();
-                }
-                else if (strBrtextBox.TrimEnd() == "")
-                {
+                } else if (strBrtextBox.TrimEnd() == "") {
                     MessageBox.Show("Please select the Destination folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     mLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
-                }
-				else if (cleanUpDialog.Clean(this) == DialogResult.Cancel)
-                {
+                } else if (cleanUpDialog.Clean(this) == DialogResult.Cancel) {
                     mLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
-                }
-                else
-				{
+                } else {
 					if (strBrtextBox != cleanUpDialog.OutputDir)
 					{
 						strBrtextBox = cleanUpDialog.OutputDir;
-						foreach (ScriptParameter p in mParser.ParameterList)
+						foreach (ScriptParameter p in UpdatedConversionParameters.PostProcessSettings.ParameterList)
 						{
 							if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
 							{
@@ -306,43 +271,26 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                         btn_Populate.Enabled = true;
                     }
 
-                    table.Add("Title", tBx_Title.Text);
-                    table.Add("Creator", tBx_Creator.Text);
-                    table.Add("Publisher", tBx_Publisher.Text);
-                    table.Add("Subject", tBx_Subject.Text);
-                    table.Add("MasterSub", "Yes");
-                    table.Add("Version", this.versionInfo);
+                    UpdatedConversionParameters.withParameter("Title", tBx_Title.Text)
+                        .withParameter("Creator", tBx_Creator.Text)
+                        .withParameter("Publisher", tBx_Publisher.Text)
+                        .withParameter("Subject", tBx_Subject.Text)
+                        .withParameter("MasterSub", "Yes")
+                        .withParameter("PipelineOutput", strBrtextBox);
 
                     if (tBx_Uid.Text != "")
                         if (uId == tBx_Uid.Text)
-                            table.Add("UID", "AUTO-UID-" + tBx_Uid.Text);
+                            UpdatedConversionParameters.withParameter("UID", "AUTO-UID-" + tBx_Uid.Text);
                         else
-                            table.Add("UID", tBx_Uid.Text);
+                            UpdatedConversionParameters.withParameter("UID", tBx_Uid.Text);
                     else
-                        table.Add("UID", "AUTO-UID-" + GenerateId().ToString());
+                        UpdatedConversionParameters.withParameter("UID", "AUTO-UID-" + GenerateId().ToString());
 
                     if (Path.GetExtension(tBx_output.Text) == "")
                         tBx_output.Text = Path.Combine(tBx_output.Text, "MultipleNarrator" + ".xml");
 
                     fileOutputPath = tBx_output.Text;
-                    DaisyTranslationSettings daisySt = new DaisyTranslationSettings();
-                    String imgoption = daisySt.GetImageOption;
-                    String resampleValue = daisySt.GetResampleValue;
-                    String characterStyle = daisySt.GetCharacterStyle;
-                    String pagenumStyle = daisySt.GetPagenumStyle;
-                    if (imgoption != " ")
-                    {
-                        table.Add("ImageSizeOption", imgoption);
-                        table.Add("DPI", resampleValue);
-                    }
-                    if (characterStyle != " ")
-                    {
-                        table.Add("CharacterStyles", characterStyle);
-                    }
-                    if (pagenumStyle != " ")
-                    {
-                        table.Add("Custom", pagenumStyle);
-                    }
+                    UpdatedConversionParameters.OutputPath = fileOutputPath;
 
                     masterSubFlag = 1;
                     this.Close();
@@ -506,7 +454,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             btn_Populate.Enabled = false;
             subCount = 0;
             int counter = 0;
-            if ((btnID != "DaisyMultiple" && btnID != "DaisyTabMultiple" && btnID != "Button2") || useAScript )
+            if (useAScript )
             //if (useAScript) 
             {
                 mLayoutPanel.Controls[0].Controls[0].Controls[1].Text = "";
@@ -560,8 +508,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         {
             tBx_Uid.Text = GenerateId().ToString();
             uId = tBx_Uid.Text;
-            if ((btnID == "DaisyMultiple" || btnID == "Button2" || btnID == "DaisyTabMultiple") && !useAScript)
-            //if (!useAScript) 
+            if (!useAScript)
             {
                 mLayoutPanel.Visible = false;
                 oLayoutPanel.Visible = false;
@@ -576,6 +523,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             }
             else
             {
+                this.Text = UpdatedConversionParameters.PostProcessSettings.NiceName;
                 groupBoxXml.Visible = false;
                 btnShow.Visible = true;
                 btnHide.Visible = false;
@@ -598,7 +546,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                 oTableLayoutPannel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
                 //shaby (end)  : Implementing TableLayoutPannel
 
-                foreach (ScriptParameter p in mParser.ParameterList)
+                foreach (ScriptParameter p in UpdatedConversionParameters.PostProcessSettings.ParameterList)
                 {
                     if (p.Name != "input" && p.ParameterDataType is PathDataType && p.IsParameterRequired)
                     {
@@ -697,7 +645,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
                     tBx_Publisher.Text = DocPropPublisher(fileSelected);
                 }
                 else
-                    MessageBox.Show(manager.GetString("Populateopen"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(Labels.GetString("Populateopen"), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

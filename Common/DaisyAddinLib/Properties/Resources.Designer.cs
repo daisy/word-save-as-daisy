@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Daisy.DaisyConverter.DaisyConverterLib.Properties {
+namespace Daisy.SaveAsDAISY.Forms.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DaisyAddinLib.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Daisy.SaveAsDAISY.Forms.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

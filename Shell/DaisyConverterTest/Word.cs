@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace Daisy.DaisyConverter.CommandLineTool {
+namespace Daisy.SaveAsDAISY.CommandLineTool {
     class Word {
         Type _type;
         object _instance;

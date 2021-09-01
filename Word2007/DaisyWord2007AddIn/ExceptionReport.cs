@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
-namespace DaisyWord2007AddIn {
+namespace Daisy.SaveAsDAISY.Addins.Word2007 {
     public partial class ExceptionReport : Form {
         private Exception ExceptionRaised { get;  }
         public ExceptionReport(Exception raised) {

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 using System.Resources;
 using System.Reflection;
 
-namespace DaisyWord2007AddIn
+namespace Daisy.SaveAsDAISY.Addins.Word2007
 {
     public partial class frmValidate2007 : Form
     {

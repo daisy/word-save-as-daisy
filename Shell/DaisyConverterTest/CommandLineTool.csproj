@@ -51,7 +51,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG</DefineConstants>
     <Prefer32Bit>false</Prefer32Bit>
@@ -132,7 +132,6 @@
     <Compile Include="ConverterFactory.cs" />
     <Compile Include="DaisyCommandLineException.cs" />
     <Compile Include="DaisyConverter.cs" />
-    <Compile Include="MultipleOOXML.cs" />
     <Compile Include="OoxValidator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <BaseApplicationManifest Include="Properties\app.manifest" />
@@ -147,10 +146,6 @@
     <EmbeddedResource Include="resources\oox2daisy\dtbook-2005-3.dtd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Addin\Addin.csproj">
-      <Project>{5fbf8430-af2f-4e5e-ba37-7a70310ba709}</Project>
-      <Name>Addin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
       <Project>{599773ff-1e86-4ac2-8b24-34bbac707370}</Project>
       <Name>DaisyAddinLib</Name>
@@ -159,9 +154,9 @@
       <Project>{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}</Project>
       <Name>DaisyConverterLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Converter\Converter.csproj">
-      <Project>{b7552412-f668-429f-a90d-c63764148051}</Project>
-      <Name>Converter</Name>
+    <ProjectReference Include="..\..\Word2007\DaisyWord2007AddIn\DaisyWord2007AddIn.csproj">
+      <Project>{9b3a86f5-d5a5-4cc2-a995-2362a28d0ea9}</Project>
+      <Name>DaisyWord2007AddIn</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

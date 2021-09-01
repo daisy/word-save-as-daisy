@@ -1,57 +1,57 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="OnLoad">
-	<ribbon>
-		<officeMenu>
-            <menu id="DaisyMenu" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" itemSize="large" getImage="GetImage">
-                <button id="DaisySingle" tag="DaisySingle" label="DAISY XML (from &amp;Single docx)"  onAction="SaveAsDaisy"  enabled="true" getImage="GetImageSingleXML" keytip="s" getDescription="GetDescriptionSingle"/>
-                <dynamicMenu id="DaisyDTBookSingle" label="Full D&amp;AISY (from single docx)"  getContent="GetDTbook" getImage="GetImage" getDescription="GetDescriptionSingleDTBook"/>
-                <button id="DaisyMultiple" tag="DaisyTabMultiple" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" getDescription="GetDescriptionMultiple"/>
-                <dynamicMenu id="DaisyDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="GetImage7" getDescription="GetDescriptionMultipleDTBook"/>
+    <ribbon>
+        <officeMenu>
+            <menu id="DaisyMenu" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" itemSize="large" getImage="iconSelector">
+                <button id="DaisySingle" tag="_postprocess" label="DAISY XML (from &amp;Single docx)"  onAction="SaveAsDaisy"  enabled="true" getImage="iconSelector" keytip="s" getDescription="GetDescriptionSingle"/>
+                <dynamicMenu id="DaisyDTBookSingle" label="Full D&amp;AISY (from single docx)"  getContent="GetDTbook" getImage="iconSelector" getDescription="GetDescriptionSingleDTBook"/>
+                <button id="DaisyMultiple" tag="_postprocess" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="iconSelector" keytip="m" getDescription="GetDescriptionMultiple"/>
+                <dynamicMenu id="DaisyDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="iconSelector" getDescription="GetDescriptionMultipleDTBook"/>
             </menu>
-		</officeMenu>
-		<tabs>
-			<tab id="CustomTab" label="Accessibility">
-				<group id="SampleGroup" label="Save As DAISY">
-					<menu id="DaisyMnu" label="S&amp;aveAsDAISY" size="large" getImage="GetImage" >
-						<button id="DaisyTabSingle" tag="DaisyTabSingle" label="DAISY XML (from &amp;Single docx)" onAction="SaveAsDaisy" enabled="true" getImage="GetImageSingleXML" keytip="s" screentip="DAISY XML only (dtbook dtd)"/>
-						<dynamicMenu id="DaisyTabDTBookSingle" label="Full D&amp;AISY (from single docx)" getContent="GetDTbook" getImage="GetImage" />
-						<button id="DaisyTabMultiple" tag="DaisyTabMultiple" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="GetImageMultipleXML" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
-						<dynamicMenu id="DaisyTabDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="GetImage7" />
-					</menu>
-				</group >
+        </officeMenu>
+        <tabs>
+            <tab id="CustomTab" label="Accessibility">
+                <group id="SampleGroup" label="Save As DAISY">
+                    <menu id="DaisyMnu" label="S&amp;aveAsDAISY" size="large" getImage="iconSelector" >
+                        <button id="DaisyTabSingle" tag="_postprocess" label="DAISY XML (from &amp;Single docx)" onAction="SaveAsDaisy" enabled="true" getImage="iconSelector" keytip="s" screentip="DAISY XML only (dtbook dtd)"/>
+                        <dynamicMenu id="DaisyTabDTBookSingle" label="Full D&amp;AISY (from single docx)" getContent="GetDTbook" getImage="iconSelector" />
+                        <button id="DaisyTabMultiple" tag="_postprocess" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="iconSelector" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
+                        <dynamicMenu id="DaisyTabDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="iconSelector" />
+                    </menu>
+                </group >
 
-				<group id="SampleGroup2" label="Abbreviations">
-					<button id="Button3"  label="Mark As A&amp;bbreviation" size="large" onAction="MarkAsAbbreviationUI" getImage="GetImage1"/>
-					<button id="Button4" label="Ma&amp;nage Abbreviation" size="large" onAction="ManageAbbreviation" getImage="GetImage2"/>
-				</group>
-				<group id="SampleGroup3" label="Acronyms">
-					<button id="Button5"  label="Mark As A&amp;cronym" size="large" onAction="MarkAsAcronymUI" getImage="GetImage3"/>
-					<button id="Button6" label="Mana&amp;ge Acronym" size="large" onAction="ManageAcronym" getImage="GetImage4"/>
-				</group >
-				<group id="SampleGroup4" label="Validate">
-					<toggleButton id="toggleValidate" label="&amp;Accessibility check" screentip="&amp;Run the accessibility checker on the current document. For Word 2007, a custom word validation process is applied. " description="&amp;Run the accessiblity checker on the current document. For Word 2007, a custom word validation process is applied. " size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="GetImage9"/>
-				</group>
-				<group id="SampleGroup5" label ="DAISY Styles">
-					<button id="Button7" label="&amp;Import" size="large" onAction="Update_Styles" getEnabled="getEnabled" getImage="GetImage10"/>
-				</group>
-				<group id="SampleGroup9" label="AddFootnote">
-					<button id="Button11" label="Add&amp;Footnote" size="large" onAction="AddFotenote" getImage="GetImage11"/>
-				</group >
-				<group id="SampleGroup10" label ="Language">
-					<button id="Button12" label="&amp;Language" size="large" onAction="GetlanguageSettings" getImage="GetImage13"/>
-				</group>
-				<group id="SampleGroup7" label ="DAISY Settings">
-					<button id="Button10" label="&amp;Settings" size="large" onAction="GetDaisySettings" getImage="GetImage12"/>
-				</group>
+                <group id="SampleGroup2" label="Abbreviations">
+                    <button id="Button3"  label="Mark As A&amp;bbreviation" size="large" onAction="MarkAsAbbreviationUI" getImage="iconSelector"/>
+                    <button id="Button4" label="Ma&amp;nage Abbreviation" size="large" onAction="ManageAbbreviation" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup3" label="Acronyms">
+                    <button id="Button5"  label="Mark As A&amp;cronym" size="large" onAction="MarkAsAcronymUI" getImage="iconSelector"/>
+                    <button id="Button6" label="Mana&amp;ge Acronym" size="large" onAction="ManageAcronym" getImage="iconSelector"/>
+                </group >
+                <group id="SampleGroup4" label="Validate">
+                    <toggleButton id="toggleValidate" label="&amp;Accessibility check" screentip="&amp;Run the accessibility checker on the current document. For Word 2007, a custom word validation process is applied. " description="&amp;Run the accessiblity checker on the current document. For Word 2007, a custom word validation process is applied. " size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup5" label ="DAISY Styles">
+                    <button id="Button7" label="&amp;Import" size="large" onAction="Update_Styles" getEnabled="getEnabled" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup9" label="AddFootnote">
+                    <button id="Button11" label="Add&amp;Footnote" size="large" onAction="AddFotenote" getImage="iconSelector"/>
+                </group >
+                <group id="SampleGroup10" label ="Language">
+                    <button id="Button12" label="&amp;Language" size="large" onAction="GetlanguageSettings" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup7" label ="DAISY Settings">
+                    <button id="Button10" label="&amp;Settings" size="large" onAction="GetDaisySettings" getImage="iconSelector"/>
+                </group>
                 <group id="SampleGroup6" label="Help">
-                    <button id="Button8"  label="&amp;Version Details" size="large" onAction="AboutUI" getImage="GetImage8"/>
-                    <menu id="DaisyHelpMnu" label="&amp;Documentation" size="large" getImage="GetImage" >
+                    <button id="Button8"  label="&amp;Version Details" size="large" onAction="AboutUI" getImage="iconSelector"/>
+                    <menu id="DaisyHelpMnu" label="&amp;Documentation" size="large" getImage="iconSelector" >
                         <button id="Button9"  label="Instruction Manual" onAction="ShowWordManual" />
                         <!--<button id="Button13"  label="DAISY Manual in DTBook Format" onAction="ShowDtBookManual" />-->
                         <button id="Button13"  label="Authoring guidelines" onAction="ShowAuthoringGuidelines" />
                     </menu>
                 </group>
-			</tab>
-		</tabs>
-	</ribbon>
+            </tab>
+        </tabs>
+    </ribbon>
 </customUI>

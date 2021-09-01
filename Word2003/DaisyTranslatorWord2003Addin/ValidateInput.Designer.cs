@@ -1,4 +1,4 @@
-namespace DaisyTranslatorWord2003Addin
+namespace Daisy.SaveAsDAISY.Addins.Word2003
 {
     partial class frmValidate2003
     {

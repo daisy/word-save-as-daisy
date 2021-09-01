@@ -33,7 +33,7 @@ using System.Text;
 using System.Reflection;
 using System.Xml;
 
-namespace Daisy.DaisyConverter.DaisyConverterLib
+namespace Daisy.SaveAsDAISY.Conversion
 {
 	/// <summary>
 	/// An XmlUrlResolver for embedded resources.

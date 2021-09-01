@@ -38,7 +38,7 @@ using System.Resources;
 using System.Collections;
 using System.Runtime.InteropServices;
 
-namespace Daisy.DaisyConverter.DaisyConverterLib
+namespace Daisy.SaveAsDAISY.Conversion
 {
     public partial class InfoBox : Form
     {

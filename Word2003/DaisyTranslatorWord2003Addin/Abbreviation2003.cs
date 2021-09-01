@@ -9,7 +9,7 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using MSword = Microsoft.Office.Interop.Word;
 
-namespace DaisyTranslatorWord2003Addin
+namespace Daisy.SaveAsDAISY.Addins.Word2003
 {
     public partial class Abbreviation2003 : Form
     {

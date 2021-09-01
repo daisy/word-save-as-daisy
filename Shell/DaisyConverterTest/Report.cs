@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Daisy.DaisyConverter.CommandLineTool {
+namespace Daisy.SaveAsDAISY.CommandLineTool {
 
 
     public class Report {

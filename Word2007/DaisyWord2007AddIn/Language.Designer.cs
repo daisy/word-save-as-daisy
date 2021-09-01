@@ -1,4 +1,4 @@
-namespace DaisyWord2007AddIn
+namespace Daisy.SaveAsDAISY.Addins.Word2007
 {
     partial class Language
     {

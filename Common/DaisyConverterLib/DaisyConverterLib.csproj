@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <OutputType>Library</OutputType>
-    <RootNamespace>Daisy.DaisyConverter.DaisyConverterLib</RootNamespace>
+    <RootNamespace>Daisy.SaveAsDAISY.Conversion</RootNamespace>
     <AssemblyName>DaisyConverterLib</AssemblyName>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -121,6 +121,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\..\Lib\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -133,62 +136,123 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AbstractConverter.cs" />
-    <Compile Include="AbstractPostProcessor.cs" />
+    <Compile Include="AddinLogger.cs" />
+    <Compile Include="Converter.cs" />
+    <Compile Include="Events\SilentEventsHandler.cs" />
+    <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
+    <Compile Include="Parameters\PrepopulateDaisyXml.cs" />
+    <Compile Include="Preprocessing\FilenameValidator.cs" />
+    <Compile Include="Preprocessing\IDocumentPreprocessor.cs" />
+    <Compile Include="PackageUtilities.cs" />
+    <Compile Include="Parameters\DocumentParameters.cs" />
+    <Compile Include="Preprocessing\ConversionStatus.cs" />
+    <Compile Include="WordToDTBookXMLTransform.cs" />
+    <Compile Include="ChainResourceManager.cs" />
+    <Compile Include="Parameters\ConversionParameters.cs" />
+    <Compile Include="ConversionResult.cs" />
+    <Compile Include="ConverterHelper.cs" />
+    <Compile Include="ConverterSettings.cs" />
     <Compile Include="Daisyclass.cs" />
     <Compile Include="EmbeddedResourceResolver.cs" />
-    <Compile Include="examples.cs" />
+    <Compile Include="Events\IConversionEventsHandler.cs" />
     <Compile Include="ImageProcessing.cs" />
     <Compile Include="NotAnOoxDocumentException.cs" />
     <Compile Include="DaisyEventArgs.cs" />
     <Compile Include="PageStylesValidation\ValidatoinResult.cs" />
     <Compile Include="PageStylesValidation\PageStyle.cs" />
     <Compile Include="PageStylesValidation\PageStylesValidator.cs" />
+    <Compile Include="Pipeline\DataTypes\BoolDataType.cs" />
+    <Compile Include="Pipeline\DataTypes\EnumDataType.cs" />
+    <Compile Include="Pipeline\DataTypes\IntegerDataType.cs" />
+    <Compile Include="Pipeline\DataTypes\PathDataType.cs" />
+    <Compile Include="Pipeline\DataTypes\StringDataType.cs" />
+    <Compile Include="Pipeline\Pipeline.cs" />
+    <Compile Include="Pipeline\ScriptParameter.cs" />
+    <Compile Include="Pipeline\ScriptParser.cs" />
+    <Compile Include="Preprocessing\PreprocessingData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShapesObjectExport.cs" />
     <Compile Include="SharedXmlUrlResolver.cs" />
+    <Compile Include="Preprocessing\SubdocumentInfo.cs" />
+    <Compile Include="Preprocessing\SubdocumentsList.cs" />
+    <Compile Include="Preprocessing\SubdocumentsManager.cs" />
     <Compile Include="ZipResolver.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="resources\Labels.resx" />
     <EmbeddedResource Include="resources\source.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="resources\oox2daisy\dtbookbasic.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\oox2daisy\dtbook-2005-3.dtd" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\oox2daisy\Shematron.xsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\oox2daisy\isoamsa.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isoamsb.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isoamsc.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isoamsn.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isoamso.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isoamsr.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isobox.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isocyr1.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isocyr2.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isodia.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isogrk3.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isolat1.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isolat2.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isomfrk.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isomopf.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isomscr.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isonum.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isopub.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\isotech.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\mathml2-qname-1.mod" />
-    <EmbeddedResource Include="resources\oox2daisy\mmlalias.ent" />
-    <EmbeddedResource Include="resources\oox2daisy\mmlextra.ent" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="resources\oox2daisy\mathml2.DTD" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="DaisyTranslatorPhaseTwo.snk" />
+    <EmbeddedResource Include="resources\dtds\dtbook-2005-3.dtd">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\dtds\mathml2.DTD">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isoamsa.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isoamsb.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isoamsc.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isoamsn.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isoamso.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isoamsr.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isobox.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isocyr1.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isocyr2.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isodia.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isogrk3.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isolat1.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isolat2.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isomfrk.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isomopf.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isomscr.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isonum.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isopub.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\isotech.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\mmlalias.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\mmlextra.ent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -217,5 +281,35 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="resources\css\dtbookbasic.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\entities\mathml2-qname-1.mod">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\Common.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\Common2.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\Common3.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\OOML2MML.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\oox2Daisy.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\Schematron.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\TOC.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

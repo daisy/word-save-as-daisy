@@ -9,7 +9,7 @@ using System.Text;
 using System.Windows.Forms;
 using MSword = Microsoft.Office.Interop.Word;
 
-namespace DaisyTranslatorWord2003Addin
+namespace Daisy.SaveAsDAISY.Addins.Word2003
 {
     public partial class progressBar : Form
     {

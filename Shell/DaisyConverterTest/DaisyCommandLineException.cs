@@ -29,7 +29,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Daisy.DaisyConverter.CommandLineTool {
+namespace Daisy.SaveAsDAISY.CommandLineTool {
 
     /// <summary>Thrown whenever an error occurs during the build.</summary>
     [Serializable]

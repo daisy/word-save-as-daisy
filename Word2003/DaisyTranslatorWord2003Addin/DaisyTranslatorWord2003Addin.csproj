@@ -18,7 +18,7 @@
     </StartupObject>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>DaisyTranslatorWord2003Addin</AssemblyName>
-    <RootNamespace>DaisyTranslatorWord2003Addin</RootNamespace>
+    <RootNamespace>Daisy.SaveAsDAISY.Addin.Word2003</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DaisyTranslatorPhaseTwo.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
@@ -69,7 +69,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\x64\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <RegisterForComInterop>true</RegisterForComInterop>
+    <RegisterForComInterop>false</RegisterForComInterop>
     <PlatformTarget>x64</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -146,6 +146,7 @@
     <Compile Include="Connect.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DocumentPreprocessor.cs" />
     <Compile Include="Language.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,21 +229,17 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Addin\Addin.csproj">
-      <Project>{5FBF8430-AF2F-4E5E-BA37-7A70310BA709}</Project>
-      <Name>Addin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
       <Project>{599773FF-1E86-4AC2-8B24-34BBAC707370}</Project>
       <Name>DaisyAddinLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
+      <Project>{8cb777eb-36ed-45d8-84ff-bdd64ad5026e}</Project>
+      <Name>DaisyConverterLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\ManagedAggregator\ManagedAggregator.csproj">
       <Project>{9f777c87-f4fc-4954-bf3e-1ef20ee2d11d}</Project>
       <Name>ManagedAggregator</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Converter\Converter.csproj">
-      <Project>{b7552412-f668-429f-a90d-c63764148051}</Project>
-      <Name>Converter</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

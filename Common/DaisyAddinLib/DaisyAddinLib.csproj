@@ -7,7 +7,7 @@
     <ProjectGuid>{599773FF-1E86-4AC2-8B24-34BBAC707370}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DaisyAddinLib</RootNamespace>
+    <RootNamespace>Daisy.SaveAsDAISY.Forms</RootNamespace>
     <AssemblyName>DaisyAddinLib</AssemblyName>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DaisyTranslatorPhaseTwo.snk</AssemblyOriginatorKeyFile>
@@ -32,7 +32,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile />
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -121,14 +122,11 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -143,21 +141,19 @@
     <Compile Include="About.designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
-    <Compile Include="AddinLogger.cs" />
-    <Compile Include="bDatatype.cs" />
-    <Compile Include="BoolControl.cs">
+    <Compile Include="Controls\BoolControl.cs">
       <SubType>UserControl</SubType>
+      <CustomToolNamespace>Daisy.SaveAsDAISY.Forms.Controls</CustomToolNamespace>
     </Compile>
-    <Compile Include="BoolControl.Designer.cs">
+    <Compile Include="Controls\BoolControl.Designer.cs">
       <DependentUpon>BoolControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="bUserControl.cs">
+    <Compile Include="Controls\BaseUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="bUserControl.Designer.cs">
-      <DependentUpon>bUserControl.cs</DependentUpon>
+    <Compile Include="Controls\BaseUserControl.Designer.cs">
+      <DependentUpon>BaseUserControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="ChainResourceManager.cs" />
     <Compile Include="CleanOutputDirDlg.cs">
       <SubType>Form</SubType>
       <CustomToolNamespace>Sonata.DaisyConverter.DaisyConverterLib</CustomToolNamespace>
@@ -165,41 +161,30 @@
     <Compile Include="CleanOutputDirDlg.Designer.cs">
       <DependentUpon>CleanOutputDirDlg.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConverterForm.cs">
+    <Compile Include="ConversionProgress.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ConverterForm.Designer.cs">
-      <DependentUpon>ConverterForm.cs</DependentUpon>
+    <Compile Include="ConversionProgress.Designer.cs">
+      <DependentUpon>ConversionProgress.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\AddInHelper.cs" />
-    <Compile Include="Converters\ConvertResult.cs" />
-    <Compile Include="Converters\ConvertResultType.cs" />
-    <Compile Include="Converters\PrepopulateDaisyOutput.cs" />
-    <Compile Include="Converters\PrepopulateDaisyXml.cs" />
-    <Compile Include="Converters\SingleConverter.cs" />
-    <Compile Include="Converters\SingleConverterUI.cs" />
-    <Compile Include="Converters\SubdocumentInfo.cs" />
-    <Compile Include="Converters\SubdocumentsList.cs" />
-    <Compile Include="Converters\TranslationParametersBuilder.cs" />
-    <Compile Include="Converters\SubdocumentsManager.cs" />
-    <Compile Include="DAISY Settings.cs">
+    <Compile Include="AddInHelper.cs" />
+    <Compile Include="GraphicalConverter.cs" />
+    <Compile Include="ConverterSettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DAISY Settings.designer.cs">
-      <DependentUpon>DAISY Settings.cs</DependentUpon>
+    <Compile Include="ConverterSettingsForm.designer.cs">
+      <DependentUpon>ConverterSettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="DaisyTranslationSettings.cs" />
-    <Compile Include="DesignForm.cs">
+    <Compile Include="ConversionParametersForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DesignForm.Designer.cs">
-      <DependentUpon>DesignForm.cs</DependentUpon>
+    <Compile Include="ConversionParametersForm.Designer.cs">
+      <DependentUpon>ConversionParametersForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="eDataType.cs" />
-    <Compile Include="EnumControl.cs">
+    <Compile Include="Controls\EnumControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EnumControl.Designer.cs">
+    <Compile Include="Controls\EnumControl.Designer.cs">
       <DependentUpon>EnumControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Fidility.cs">
@@ -208,7 +193,7 @@
     <Compile Include="Fidility.Designer.cs">
       <DependentUpon>Fidility.cs</DependentUpon>
     </Compile>
-    <Compile Include="DaisyAddinLib.cs">
+    <Compile Include="AddinResources.cs">
     </Compile>
     <Compile Include="InfoBox.cs">
       <SubType>Form</SubType>
@@ -216,19 +201,13 @@
     <Compile Include="InfoBox.designer.cs">
       <DependentUpon>InfoBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Initialize.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Initialize.Designer.cs">
-      <DependentUpon>Initialize.cs</DependentUpon>
-    </Compile>
-    <Compile Include="IntegerDataType.cs" />
-    <Compile Include="IntUserControl.cs">
+    <Compile Include="Controls\IntUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="IntUserControl.Designer.cs">
+    <Compile Include="Controls\IntUserControl.Designer.cs">
       <DependentUpon>IntUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="GraphicalEventsHandler.cs" />
     <Compile Include="MasterSubValidation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -241,21 +220,12 @@
     <Compile Include="MultipleSub.designer.cs">
       <DependentUpon>MultipleSub.cs</DependentUpon>
     </Compile>
-    <Compile Include="Converters\OoxToDaisyParameters.cs" />
     <Compile Include="OoxPageStylesValidator.cs" />
-    <Compile Include="PathBrowserControl.cs">
+    <Compile Include="Controls\PathBrowserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PathBrowserControl.Designer.cs">
+    <Compile Include="Controls\PathBrowserControl.Designer.cs">
       <DependentUpon>PathBrowserControl.cs</DependentUpon>
-    </Compile>
-    <Compile Include="pDataType.cs" />
-    <Compile Include="PipelineInfo.cs" />
-    <Compile Include="Progress.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Progress.designer.cs">
-      <DependentUpon>Progress.cs</DependentUpon>
     </Compile>
     <Compile Include="ProgressValidation.cs">
       <SubType>Form</SubType>
@@ -269,14 +239,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="ScriptParameter.cs" />
-    <Compile Include="ScriptParser.cs" />
-    <Compile Include="ShapesObject.cs" />
-    <Compile Include="StringDataType.cs" />
-    <Compile Include="StrUserControl.cs">
+    <Compile Include="Controls\StrUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="StrUserControl.Designer.cs">
+    <Compile Include="Controls\StrUserControl.Designer.cs">
       <DependentUpon>StrUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Validation.cs">
@@ -286,15 +252,14 @@
       <DependentUpon>Validation.cs</DependentUpon>
     </Compile>
     <Compile Include="WindowHandle.cs" />
-    <EmbeddedResource Include="ConverterForm.resx">
-      <DependentUpon>ConverterForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
+    <EmbeddedResource Include="ConversionProgress.resx">
+      <DependentUpon>ConversionProgress.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DesignForm.ja-JP.resx">
-      <DependentUpon>DesignForm.cs</DependentUpon>
+    <EmbeddedResource Include="ConversionParametersForm.ja-JP.resx">
+      <DependentUpon>ConversionParametersForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DesignForm.resx">
-      <DependentUpon>DesignForm.cs</DependentUpon>
+    <EmbeddedResource Include="ConversionParametersForm.resx">
+      <DependentUpon>ConversionParametersForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\Labels.resx">
       <SubType>Designer</SubType>
@@ -349,10 +314,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MultipleSub.resx">
       <DependentUpon>MultipleSub.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Progress.resx">
-      <DependentUpon>Progress.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\Images\DaisyLogo.png" />
@@ -449,15 +410,15 @@
     <EmbeddedResource Include="resources\Images\version.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="BoolControl.resx">
+    <EmbeddedResource Include="Controls\BoolControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>BoolControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EnumControl.resx">
+    <EmbeddedResource Include="Controls\EnumControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>EnumControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PathBrowserControl.resx">
+    <EmbeddedResource Include="Controls\PathBrowserControl.resx">
       <SubType>Designer</SubType>
       <DependentUpon>PathBrowserControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -465,7 +426,7 @@
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Daisy.DaisyConverter.DaisyConverterLib.Properties</CustomToolNamespace>
+      <CustomToolNamespace>Daisy.SaveAsDAISY.Forms.Properties</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\Images\import.gif" />
     <EmbeddedResource Include="resources\Images\subfolder.gif" />
@@ -473,29 +434,23 @@
     <EmbeddedResource Include="resources\Images\version.gif" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DAISY Settings.resx">
-      <DependentUpon>DAISY Settings.cs</DependentUpon>
+    <EmbeddedResource Include="ConverterSettingsForm.resx">
+      <DependentUpon>ConverterSettingsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="IntUserControl.resx">
+    <EmbeddedResource Include="Controls\IntUserControl.resx">
       <DependentUpon>IntUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\Images\Footnotes.gif" />
     <EmbeddedResource Include="resources\Images\footnotes.png" />
-    <EmbeddedResource Include="StrUserControl.resx">
+    <EmbeddedResource Include="Controls\StrUserControl.resx">
       <DependentUpon>StrUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="DaisyTranslatorPhaseTwo.snk" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Initialize.resx">
-      <DependentUpon>Initialize.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="resources\Images\Multiplexml.gif" />
@@ -526,19 +481,15 @@
       <DependentUpon>CleanOutputDirDlg.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ConverterForm.ja-JP.resx">
-      <DependentUpon>ConverterForm.cs</DependentUpon>
+    <EmbeddedResource Include="ConverterSettingsForm.ja-JP.resx">
+      <DependentUpon>ConverterSettingsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="DAISY Settings.ja-JP.resx">
-      <DependentUpon>DAISY Settings.cs</DependentUpon>
+    <EmbeddedResource Include="ConverterSettingsForm.ru-RU.resx">
+      <DependentUpon>ConverterSettingsForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="DAISY Settings.ru-RU.resx">
-      <DependentUpon>DAISY Settings.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EnumControl.ja-JP.resx">
+    <EmbeddedResource Include="Controls\EnumControl.ja-JP.resx">
       <DependentUpon>EnumControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -558,14 +509,6 @@
       <DependentUpon>InfoBox.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Initialize.ja-JP.resx">
-      <DependentUpon>Initialize.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Initialize.ru-RU.resx">
-      <DependentUpon>Initialize.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="MasterSubValidation.ja-JP.resx">
       <DependentUpon>MasterSubValidation.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -574,16 +517,8 @@
       <DependentUpon>MultipleSub.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="PathBrowserControl.ja-JP.resx">
+    <EmbeddedResource Include="Controls\PathBrowserControl.ja-JP.resx">
       <DependentUpon>PathBrowserControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Progress.ja-JP.resx">
-      <DependentUpon>Progress.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Progress.ru-RU.resx">
-      <DependentUpon>Progress.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ProgressValidation.ja-JP.resx">
@@ -596,7 +531,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="resources\Images\language.gif" />
     <EmbeddedResource Include="resources\Images\Language.png" />
-    <EmbeddedResource Include="StrUserControl.ja-JP.resx">
+    <EmbeddedResource Include="Controls\StrUserControl.ja-JP.resx">
       <DependentUpon>StrUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>

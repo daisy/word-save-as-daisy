@@ -1,5 +1,5 @@
 ﻿
-namespace DaisyWord2007AddIn {
+namespace Daisy.SaveAsDAISY.Addins.Word2007 {
     partial class ExceptionReport {
         /// <summary>
         /// Required designer variable.
@@ -41,6 +41,9 @@ namespace DaisyWord2007AddIn {
             // 
             // ExceptionMessage
             // 
+            this.ExceptionMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.ExceptionMessage.Location = new System.Drawing.Point(12, 43);
             this.ExceptionMessage.Multiline = true;
             this.ExceptionMessage.Name = "ExceptionMessage";
@@ -52,6 +55,7 @@ namespace DaisyWord2007AddIn {
             // 
             // SendReport
             // 
+            this.SendReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.SendReport.Location = new System.Drawing.Point(348, 418);
             this.SendReport.Name = "SendReport";
             this.SendReport.Size = new System.Drawing.Size(77, 20);

@@ -15,8 +15,8 @@ using System.Xml.XPath;
 using System.Xml.Xsl;
 using System.Windows.Forms;
 using System.IO.Packaging;
-using Daisy.DaisyConverter.DaisyConverterLib;
-namespace Daisy.DaisyConverter.DaisyConverterLib
+using Daisy.SaveAsDAISY.Conversion;
+namespace Daisy.SaveAsDAISY.Forms
 {
 	public partial class ProgressValidation : Form
 	{
@@ -212,7 +212,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             if (tocNode != null)
             {
                 XmlNode bodymatterNode = tocNode.SelectSingleNode("following::w:pPr/w:pStyle[substring(@w:val, 1, 10)='Bodymatter']", nsManager);
-
+				
                 if (bodymatterNode == null)
                     this.CreateBookmark(" :" + Properties.Resources.TocBodymatterValidationMessage, tocNode, tocNode, tocNode);
             }

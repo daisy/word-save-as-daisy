@@ -10,7 +10,7 @@
     </StartupObject>
     <NoStandardLibraries>false</NoStandardLibraries>
     <AssemblyName>DaisyWord2007AddIn</AssemblyName>
-    <RootNamespace>DaisyWord2007AddIn</RootNamespace>
+    <RootNamespace>Daisy.SaveAsDaisy.Addin.Word2007</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>DaisyTranslatorPhaseTwo.snk</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
@@ -164,13 +164,13 @@
     <Compile Include="Connect.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DocumentPreprocessor.cs" />
     <Compile Include="ExceptionReport.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ExceptionReport.Designer.cs">
       <DependentUpon>ExceptionReport.cs</DependentUpon>
     </Compile>
-    <Compile Include="IPluginEventsHandler.cs" />
     <Compile Include="Language.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -182,13 +182,6 @@
     </Compile>
     <Compile Include="Mark.Designer.cs">
       <DependentUpon>Mark.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PreparetionResult.cs" />
-    <Compile Include="progressBar.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="progressBar.designer.cs">
-      <DependentUpon>progressBar.cs</DependentUpon>
     </Compile>
     <Compile Include="SuggestedReferences.cs">
       <SubType>Form</SubType>
@@ -226,10 +219,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Addin\Addin.csproj">
-      <Project>{5FBF8430-AF2F-4E5E-BA37-7A70310BA709}</Project>
-      <Name>Addin</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
       <Project>{599773FF-1E86-4AC2-8B24-34BBAC707370}</Project>
       <Name>DaisyAddinLib</Name>
@@ -262,18 +251,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Mark.ja-JP.resx">
       <DependentUpon>Mark.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="progressBar.ja-JP.resx">
-      <DependentUpon>progressBar.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="progressBar.resx">
-      <DependentUpon>progressBar.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="progressBar.ru-RU.resx">
-      <DependentUpon>progressBar.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\customUIOld.xml" />

@@ -142,12 +142,11 @@ namespace DaisyInstaller
                         Properties.Resources.DaisyAddinForWordSetup_x86);
                     File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
 #elif X64INSTALLER
-                    File.WriteAllBytes(daisySetupPath, Properties.Resources_Office64bits.DaisyAddinForWordSetup_x64);
-                    File.WriteAllBytes(pipelineCabPath, Properties.Resources_Office64bits.pipeline_cab);
+                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
+                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
 #else
                     File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
                     File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
-                
 #endif
 
                     // launch the msi

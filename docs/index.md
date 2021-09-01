@@ -7,8 +7,8 @@ SaveAsDAISY is available for Windows only. We provide an installer for Microsoft
 
 ## Latest version: 2.6.1 beta - Minor update 2 (released on January 27, 2020)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller.exe)
-- [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller_Office64bits.exe)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.3-beta/SaveAsDAISYInstaller.exe)
+- [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.3-beta/SaveAsDAISYInstaller_Office64bits.exe)
 
 ## Report issues
 

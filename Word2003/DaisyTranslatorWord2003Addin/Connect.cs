@@ -26,49 +26,50 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace DaisyTranslatorWord2003Addin
-{
-	using System;
-	using System.IO;
-	using System.Collections;
-	using Extensibility;
-	using System.Xml;
-	using System.Reflection;
-	using System.IO.Packaging;
-	using System.Windows.Forms;
-	using System.Collections.Generic;
-	using Microsoft.Office.Core;
-	using System.Runtime.InteropServices;
-	using MSword = Microsoft.Office.Interop.Word;
-	using Daisy.DaisyConverter.DaisyConverterLib;
-	using System.Drawing;
-	using System.Drawing.Imaging;
+namespace Daisy.SaveAsDAISY.Addins.Word2003 {
+    using System;
+    using System.IO;
+    using System.Collections;
+    using Extensibility;
+    using System.Xml;
+    using System.Reflection;
+    using System.IO.Packaging;
+    using System.Windows.Forms;
+    using System.Collections.Generic;
+    using Microsoft.Office.Core;
+    using System.Runtime.InteropServices;
+    using MSword = Microsoft.Office.Interop.Word;
+    using Daisy.SaveAsDAISY.Conversion;
+    using Daisy.SaveAsDAISY;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
-	using Microsoft.Win32;
-	using System.Text;
-	using Word = Microsoft.Office.Interop.Word.InlineShape;
-	using IConnectDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
-	using ConnectFORMATETC = System.Runtime.InteropServices.ComTypes.FORMATETC;
-	using ConnectSTGMEDIUM = System.Runtime.InteropServices.ComTypes.STGMEDIUM;
-	using ConnectIEnumETC = System.Runtime.InteropServices.ComTypes.IEnumFORMATETC;
-	using COMException = System.Runtime.InteropServices.COMException;
-	using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
+    using Microsoft.Win32;
+    using System.Text;
+    using Word = Microsoft.Office.Interop.Word.InlineShape;
+    using IConnectDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
+    using ConnectFORMATETC = System.Runtime.InteropServices.ComTypes.FORMATETC;
+    using ConnectSTGMEDIUM = System.Runtime.InteropServices.ComTypes.STGMEDIUM;
+    using ConnectIEnumETC = System.Runtime.InteropServices.ComTypes.IEnumFORMATETC;
+    using COMException = System.Runtime.InteropServices.COMException;
+    using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
+    using Daisy.SaveAsDAISY.Forms;
 
-	#region Read me for Add-in installation and setup information.
-	// When run, the Add-in wizard prepared the registry for the Add-in.
-	// At a later time, if the Add-in becomes unavailable for reasons such as:
-	//   1) You moved this project to a computer other than which is was originally created on.
-	//   2) You chose 'Yes' when presented with a message asking if you wish to remove the Add-in.
-	//   3) Registry corruption.
-	// you will need to re-register the Add-in by building the DaisyTranslatorWord2003AddinSetup project, 
-	// right click the project in the Solution Explorer, then choose install.
-	#endregion
+    #region Read me for Add-in installation and setup information.
+    // When run, the Add-in wizard prepared the registry for the Add-in.
+    // At a later time, if the Add-in becomes unavailable for reasons such as:
+    //   1) You moved this project to a computer other than which is was originally created on.
+    //   2) You chose 'Yes' when presented with a message asking if you wish to remove the Add-in.
+    //   3) Registry corruption.
+    // you will need to re-register the Add-in by building the DaisyTranslatorWord2003AddinSetup project, 
+    // right click the project in the Solution Explorer, then choose install.
+    #endregion
 
-	/// <summary>
-	///   The object for implementing an Add-in.
-	/// </summary>
-	/// <seealso class='IDTExtensibility2' />
-	[GuidAttribute("32B42A31-8592-459F-B6AE-AC70D254CD14"), ProgId("DaisyTranslatorWord2003Addin.Connect")]
+    /// <summary>
+    ///   The object for implementing an Add-in.
+    /// </summary>
+    /// <seealso class='IDTExtensibility2' />
+    [GuidAttribute("32B42A31-8592-459F-B6AE-AC70D254CD14"), ProgId("DaisyTranslatorWord2003Addin.Connect")]
 	public class Connect : Object, Extensibility.IDTExtensibility2
 	{
 
@@ -136,7 +137,7 @@ namespace DaisyTranslatorWord2003Addin
 		/// </summary>
 		public Connect()
 		{
-			this.addinLib = new Daisy.DaisyConverter.Word.Addin();
+			this.addinLib = new Daisy.SaveAsDAISY.AddinResources();
 		}
 
 		/// <summary>
@@ -234,7 +235,7 @@ namespace DaisyTranslatorWord2003Addin
 				single = barImport.Controls.Add(MsoControlType.msoControlButton, Type.Missing, "", 1, true);
 				//single.Caption = this.addinLib.GetString("DaisySingle");
 				single.Caption = "Daisy";
-				single.Tag = "DaisySingle";
+				single.Tag = "_postprocess";
 				single.Visible = true;
 				single.TooltipText = "DAISY XML only (dtbook dtd)";
 				CommandBarButton importButtonSingle = (CommandBarButton)single;
@@ -258,7 +259,7 @@ namespace DaisyTranslatorWord2003Addin
 					Singlescript = barDtbook.Controls.Add(MsoControlType.msoControlButton, Type.Missing, "", 1, true);
 					Singlescript.Caption = PipelineMenuItem.Text;
 					Singlescript.Visible = true;
-					Singlescript.Tag = "DaisyDTBookSingle";
+					Singlescript.Tag = k.Key;
 					CommandBarButton btn_ScrSingle = (CommandBarButton)Singlescript;
 					btn_ScrSingle.Picture = this.addinLib.GetLogo("speaker.gif");
 					btn_ScrSingle.Click += new _CommandBarButtonEvents_ClickEventHandler(importButtonSingle_Click);
@@ -354,7 +355,7 @@ namespace DaisyTranslatorWord2003Addin
 
 		void _BtnSettings_Click(CommandBarButton Ctrl, ref bool CancelDefault)
 		{
-			DAISY_Settings daisyfrm = new DAISY_Settings();
+			ConverterSettingsForm daisyfrm = new ConverterSettingsForm();
 			daisyfrm.ShowDialog();
 		}
 
@@ -371,74 +372,41 @@ namespace DaisyTranslatorWord2003Addin
 		void _BtnMasterSub_Click(CommandBarButton Ctrl, ref bool CancelDefault)
 		{
 			Application.DoEvents();
-			objectShapes = new ArrayList();
-			multipleMathMl = new Hashtable();
-			imageId = new ArrayList();
-			inlineShapes = new ArrayList();
-			inlineId = new ArrayList();
-			MultipleSub mulsubDoc;
-			if (Ctrl.Tag == "DaisyMultiple" || Ctrl.Tag == "Button2")
-			{
-				mulsubDoc = new MultipleSub(this.addinLib.ResManager, this.applicationObject.Version, Ctrl.Tag);
-			}
-			else
-			{
-				mulsubDoc = new MultipleSub(this.addinLib.ResManager, this.applicationObject.Version, Ctrl.Tag, pipe.ScriptsInfo[Ctrl.Caption].FullName, "");
-			}
-			int mulsubFlag = mulsubDoc.DoTranslate();
-			if (mulsubFlag == 1)
-			{
-				Initialize inz = new Initialize();
-				inz.Show();
-				Application.DoEvents();
-				ArrayList subList = mulsubDoc.GetFileNames;
-				string outputFilePath = mulsubDoc.GetOutputFilePath;
-				string output_Pipeline = mulsubDoc.pipeOutput;
-				mergeXmlDoc = new XmlDocument();
-				mergeDoclanguage = new ArrayList();
-				String individual_docs = "individual";
-				String resultOpenSub = CheckFileOPen(subList);
-				saveasshapes(subList, "No");
-				SaveasImages(subList, "No");
-				if (resultOpenSub == "notopen")
-				{
-					String resultSub = CheckingSubDocs(subList, true);
+			try {
+				GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+				IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+				FileInfo pipelineScript = this.pipe?.ScriptsInfo[Ctrl.Tag];
 
-					if (resultSub == "simple")
-					{
-						if (mulsubFlag == 1)
-						{
-							MathMLMultiple(subList);
-							inz.Close();
-							//TODO : rename result
-							bool result = this.addinLib.OoxToDaisySub(outputFilePath, subList, individual_docs, mulsubDoc.HTable, Ctrl.Tag, multipleMathMl, output_Pipeline);
-							if (!AddInHelper.IsSingleDaisyFromMultipleButton(Ctrl.Tag) && result)
-							{
-								try
-								{
-									mulsubDoc.getParser.ExecuteScript(outputFilePath);
-								}
-								catch (Exception e)
-								{
-									MessageBox.Show(e.Message);
-								}
-							}
+				ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript.FullName);
+				WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+				GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+				// Note : the current form for multiple also include conversion settings update
+				List<string> documentsPathes = converter.requestUserDocumentsList();
+				if (documentsPathes != null && documentsPathes.Count > 0) {
+					List<DocumentParameters> documents = new List<DocumentParameters>();
+
+					foreach (string inputPath in documentsPathes) {
+						DocumentParameters subDoc = null;
+						try {
+							subDoc = converter.preprocessDocument(inputPath);
+						} catch (Exception e) {
+							string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
+							eventsHandler.onPreprocessingError(inputPath, errors);
+						}
+						if (subDoc != null) {
+							documents.Add(subDoc);
+						} else {
+							// abort documents conversion
+							documents.Clear();
+							break;
 						}
 					}
-					else
-					{
-						inz.Close();
-						MessageBox.Show(addinLib.GetString("AddSimpleMasterSub"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
-					}
+					if (documents.Count > 0) converter.convert(documents);
 				}
-				else
-				{
-					inz.Close();
-					String tempArray = "";
-					for (int i = 0; i < openSubdocs.Count; i++)
-						tempArray += (i + 1) + ". " + openSubdocs[i].ToString();
-					MessageBox.Show(this.addinLib.GetString("OPenState") + "\n\n" + tempArray, "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
-				}
+
+				applicationObject.ActiveDocument.Save();
+			} catch (Exception e) {
+				MessageBox.Show(e.Message);
 			}
 		}
 
@@ -569,7 +537,7 @@ namespace DaisyTranslatorWord2003Addin
 						CommandBar barImport = popupMenu.CommandBar;
 						tool_Single = barImport.Controls.Add(MsoControlType.msoControlButton, Type.Missing, "", 1, true);
 						tool_Single.Caption = this.addinLib.GetString("DaisySingle");
-						tool_Single.Tag = "DaisySingle";
+						tool_Single.Tag = "_postprocess";
 						tool_Single.Visible = true;
 						tool_Single.TooltipText = "Translate the document to DAISY xml.";
 						CommandBarButton importButtonSingle = (CommandBarButton)tool_Single;
@@ -584,14 +552,13 @@ namespace DaisyTranslatorWord2003Addin
 						CommandBarPopup mnuDtbookSingle = (CommandBarPopup)tool_singleXml;
 						CommandBar barDtbook = mnuDtbookSingle.CommandBar;
 
-						foreach (KeyValuePair<string, FileInfo> k in pipe.ScriptsInfo)
-						{
+						foreach (KeyValuePair<string, FileInfo> k in pipe.ScriptsInfo) if (!k.Key.Equals("_postprocess"))  {
 							PipelineMenuItem.Text = k.Key;
 							PipelineMenuItem.AccessibleName = k.Key;
 							tool_SingleScr = barDtbook.Controls.Add(MsoControlType.msoControlButton, Type.Missing, "", 1, true);
 							tool_SingleScr.Caption = PipelineMenuItem.Text;
 							tool_SingleScr.Visible = true;
-							tool_SingleScr.Tag = "DaisyDTBookSingle";
+							tool_SingleScr.Tag = k.Key;
 							CommandBarButton btn_ScrSingle = (CommandBarButton)tool_SingleScr;
 							btn_ScrSingle.Picture = this.addinLib.GetLogo("speaker.gif");
 						}
@@ -615,14 +582,13 @@ namespace DaisyTranslatorWord2003Addin
 						CommandBarPopup mnuDtbookMultiple = (CommandBarPopup)tool_Multiple;
 						CommandBar barDtbookMul = mnuDtbookMultiple.CommandBar;
 
-						foreach (KeyValuePair<string, FileInfo> k in pipe.ScriptsInfo)
-						{
+						foreach (KeyValuePair<string, FileInfo> k in pipe.ScriptsInfo) if (!k.Key.Equals("_postprocess")) {
 							PipelineMenuItem.Text = k.Key;
 							PipelineMenuItem.AccessibleName = k.Key;
 							tool_MulScr = barDtbookMul.Controls.Add(MsoControlType.msoControlButton, Type.Missing, "", 1, true);
 							tool_MulScr.Caption = PipelineMenuItem.Text;
 							tool_MulScr.Visible = true;
-							tool_MulScr.Tag = "DaisyDTBookMultiple";
+							tool_MulScr.Tag = k.Key;
 							CommandBarButton btn_multipleScript = (CommandBarButton)tool_MulScr;
 							btn_multipleScript.Picture = this.addinLib.GetLogo("subfolder.gif");
 						}
@@ -833,101 +799,39 @@ namespace DaisyTranslatorWord2003Addin
 			listmathML = new ArrayList();
 			int fileIndex;
 			MSword.Document doc = this.applicationObject.ActiveDocument;
-
-			if (!doc.Saved || doc.FullName.LastIndexOf('.') < 0)
-			{
+			if (!doc.Saved || doc.FullName.LastIndexOf('.') < 0) {
 				System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentBeforeExport"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
 
-			}
-			else if (doc.Saved)
-			{
+			} else if (doc.Saved) {
 				fileIndex = doc.FullName.LastIndexOf('.');
 				String substr = doc.FullName.Substring(fileIndex);
 
-				if (substr.ToLower() != ".docx")
-				{
+				if (substr.ToLower() != ".docx") {
 					System.Windows.Forms.MessageBox.Show(addinLib.GetString("DaisySaveDocumentin2007"), "SaveAsDAISY", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Stop);
-				}
-				else
-				{
+				} else {
+					try {
+						GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+						IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+						FileInfo pipelineScript = this.pipe?.ScriptsInfo[Ctrl.Tag];
 
-					Initialize inz = new Initialize();
-					object newName = Path.GetTempFileName() + Path.GetExtension((string)doc.FullName);
-					File.Copy((string)doc.FullName, (string)newName);
+						ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript.FullName);
+						WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+						GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+						DocumentParameters currentDocument = converter.preprocessDocument(this.applicationObject.ActiveDocument.FullName);
+						if (converter.requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
+							ConversionResult result = converter.convert(currentDocument);
+							/*if (!(result.Canceled || result.Succeeded)) {
+								MessageBox.Show(result., "Conversion aborted");
+							}*/
+						}
 
-					// open the duplicated file
-					object addToRecentFiles = false;
-					object readOnly = false;
-					object isVisible = false;
-					object missing = Type.Missing;
-
-					MSword.Document newDoc = this.applicationObject.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
-
-					// generate docx file from the duplicated file (under a temporary file)
-					object tmpFileName = this.addinLib.GetTempPath((string)doc.FullName, ".docx");
-					//object format = MSword.WdSaveFormat.wdFormatDocument;
-					object format = Word12SaveFormat;
-					newDoc.SaveAs(ref tmpFileName, ref format, ref missing, ref missing, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
-
-					// close and remove the duplicated file
-					object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
-					object originalFormat = Microsoft.Office.Interop.Word.WdOriginalFormat.wdOriginalDocumentFormat;
-					newDoc.Close(ref saveChanges, ref originalFormat, ref missing);
-
-					try
-					{
-						//File.Delete((string)newName);
-					}
-					catch (IOException)
-					{
-
-					}
-					docFile = (string)tmpFileName;
-					docTemp = new XmlDocument();
-
-					XmlElement elmtDaisy = docTemp.CreateElement("Daisy");
-					docTemp.AppendChild(elmtDaisy);
-
-					XmlElement elmtCreator, elmtTitle, elmtPublisher;
-					elmtCreator = docTemp.CreateElement("Creator");
-					elmtDaisy.AppendChild(elmtCreator);
-					elmtCreator.InnerText = DocPropCreator();
-
-					elmtTitle = docTemp.CreateElement("Title");
-					elmtDaisy.AppendChild(elmtTitle);
-					elmtTitle.InnerText = DocPropTitle();
-
-					elmtPublisher = docTemp.CreateElement("Publisher");
-					elmtDaisy.AppendChild(elmtPublisher);
-
-					elmtPublisher.InnerText = DocPropPublish();
-					if (Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY"))
-						docTemp.Save(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY\\prepopulated_daisy.xml");
-					else
-					{
-						Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY");
-						docTemp.Save(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY\\prepopulated_daisy.xml");
-					}
-					string docxFile = doc.FullName;
-					MasterSubDecision(docFile);
-					inz.Show();
-					Application.DoEvents();
-					saveasshapes(masterSubFlag);
-					SaveasImages(masterSubFlag);
-					if (masterSubFlag == "Yes")
-					{
-						OoxToDaisyOwn(docxFile, (string)newName, Ctrl, masterSubFlag, inz);
-					}
-					else
-					{
-						MTGetEquationAddin();
-						inz.Close();
-						OoxToDaisyUI(docxFile, docFile, (string)newName, Ctrl, masterSubFlag);
+						//applicationObject.ActiveDocument.Save();
+					} catch (Exception e) {
+						MessageBox.Show(e.Message);
 					}
 				}
 			}
-			if (masterSubFlag != "Yes")
-				this.applicationObject.ActiveDocument.Save();
+
 		}
 
 		/// <summary>
@@ -962,14 +866,14 @@ namespace DaisyTranslatorWord2003Addin
 		}
 
 		/*Core Function which Translates Docx file*/
-		public void OoxToDaisyUI(string inputFile, string tempInputFile, String tempInput, CommandBarButton control, String masterSubFlag)
+		/*public void OoxToDaisyUI(string inputFile, string tempInputFile, String tempInput, CommandBarButton control, String masterSubFlag)
 		{
 
 			if (Directory.Exists(path_For_Pipeline))
 			{
 				try
 				{
-					OoxToDaisyParameters parameters = new OoxToDaisyParameters();
+					ConversionParameters parameters = new ConversionParameters();
 					parameters.InputFile = inputFile;
 					parameters.TempInputFile = tempInput;
 					parameters.Version = this.applicationObject.Version;
@@ -979,7 +883,7 @@ namespace DaisyTranslatorWord2003Addin
 					parameters.ImageIds = imageId;
 					parameters.InlineShapes = inlineShapes;
 					parameters.InlineIds = inlineId;
-					parameters.MasterSubFlag = masterSubFlag;
+					parameters.ParseSubDocuments = masterSubFlag;
 					if (control.Tag == "DaisySingle" || control.Tag == "Button1")
 					{
 						this.addinLib.StartSingleWordConversion(parameters);
@@ -987,7 +891,7 @@ namespace DaisyTranslatorWord2003Addin
 					else
 					{
 						parameters.ScriptPath = pipe.ScriptsInfo[control.Caption].FullName;
-						parameters.Directory = string.Empty;
+						//parameters.Directory = string.Empty;
 						this.addinLib.StartSingleWordConversion(parameters);
 					}
 				}
@@ -998,7 +902,7 @@ namespace DaisyTranslatorWord2003Addin
 			}
 			else
 			{
-				OoxToDaisyParameters parameters = new OoxToDaisyParameters();
+				ConversionParameters parameters = new ConversionParameters();
 				parameters.InputFile = inputFile;
 				parameters.TempInputFile = tempInput;
 				parameters.Version = this.applicationObject.Version;
@@ -1008,16 +912,16 @@ namespace DaisyTranslatorWord2003Addin
 				parameters.ImageIds = imageId;
 				parameters.InlineShapes = inlineShapes;
 				parameters.InlineIds = inlineId;
-				parameters.MasterSubFlag = masterSubFlag;
+				parameters.ParseSubDocuments = masterSubFlag;
 
 				this.addinLib.StartSingleWordConversion(parameters);
 			}
-		}
+		}*/
 
 		private MSword.Application applicationObject;
 		private CommandBarControl importButton, single, multiple, singleXml, Singlescript, mutipleXml, multipleScript;
 		private CommandBarButton import, btnImport, btnMasterSub;
-		private DaisyAddinLib addinLib;
+		private AddinResources addinLib;
 
 
 		#region Document Properties
@@ -2753,7 +2657,7 @@ namespace DaisyTranslatorWord2003Addin
 			return masterSubFlag;
 		}
 
-		public void OoxToDaisyOwn(String docxFile, String tempInputFile, CommandBarButton ctrl, String masterSubFlag, Initialize inz)
+		/*public void OoxToDaisyOwn(String docxFile, String tempInputFile, CommandBarButton ctrl, String masterSubFlag, Initialize inz)
 		{
 			//try
 			//{
@@ -2898,7 +2802,7 @@ namespace DaisyTranslatorWord2003Addin
 				inz.Close();
 				MessageBox.Show("Some Sub documents are in open state. Please close all the Sub documents before Translation:", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
-		}
+		}*/
 
 		#endregion
 

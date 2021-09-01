@@ -69,14 +69,6 @@
     </WixExtension>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Addin\Addin.csproj">
-      <Name>Addin</Name>
-      <Project>{5fbf8430-af2f-4e5e-ba37-7a70310ba709}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
       <Name>DaisyAddinLib</Name>
       <Project>{599773ff-1e86-4ac2-8b24-34bbac707370}</Project>
@@ -96,14 +88,6 @@
     <ProjectReference Include="..\..\Common\ManagedAggregator\ManagedAggregator.csproj">
       <Name>ManagedAggregator</Name>
       <Project>{9f777c87-f4fc-4954-bf3e-1ef20ee2d11d}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Converter\Converter.csproj">
-      <Name>Converter</Name>
-      <Project>{b7552412-f668-429f-a90d-c63764148051}</Project>
       <Private>True</Private>
       <DoNotHarvest>True</DoNotHarvest>
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>

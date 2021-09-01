@@ -1,43 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="OnLoad">
-	<ribbon>
-		<officeMenu>
-			<button id="Daisy" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" onAction="SaveAsDaisy"  enabled="true" getImage="GetImage" keytip="y" screentip="SaveAsDAISY"/>
-		</officeMenu>
-		<tabs>
-			<tab id="CustomTab" label="Accessibility">
-				<group id="SampleGroup" label="Save As Daisy">
-					<button id="Button1" tag="Button1" label="Single Document" size="large" onAction="SaveAsDaisy" getImage="GetImage" keytip="Y"/>
-					<button id="Button2" tag="Button2" label="&amp;Multiple Document" size="large" onAction="Mutiple" getImage="GetImage7"/>
-				</group >
-				<group id="SampleGroup2" label="Abbreviations">
-					<button id="Button3"  label="Mark As A&amp;bbreviation" size="large" onAction="MarkAsAbbreviationUI" getImage="GetImage1"/>
-					<button id="Button4" label="Ma&amp;nage Abbreviation" size="large" onAction="ManageAbbreviation" getImage="GetImage2"/>
-				</group>
-				<group id="SampleGroup3" label="Acronyms">
-					<button id="Button5"  label="Mark As A&amp;cronym" size="large" onAction="MarkAsAcronymUI" getImage="GetImage3"/>
-					<button id="Button6" label="Mana&amp;ge Acronym" size="large" onAction="ManageAcronym" getImage="GetImage4"/>
-				</group >
-				<group id="SampleGroup4" label="Validate">
-					<toggleButton id="toggleValidate" label="&amp;Validate" size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="GetImage9"/>
-				</group>
-				<group id="SampleGroup5" label ="Daisy Styles">
-					<button id="Button7" label="&amp;Import" size="large" onAction="Update_Styles" getEnabled="getEnabled" getImage="GetImage10"/>
-				</group>
-				<group id="SampleGroup9" label="AddFootnote">
-					<button id="Button11" label="Add&amp;Footnote" size="large" onAction="AddFotenote" getImage="GetImage11"/>
-				</group >
-				<group id="SampleGroup10" label ="Language">
-					<button id="Button12" label="&amp;Language" size="large" onAction="GetlanguageSettings" getImage="GetImage13"/>
-				</group>
-				<group id="SampleGroup7" label ="DAISY Settings">
-					<button id="Button10" label="&amp;Settings" size="large" onAction="GetDaisySettings" getImage="GetImage12"/>
-				</group>
-				<group id="SampleGroup6" label="Help">
-					<button id="Button8"  label="Version &amp;Details" size="large" onAction="AboutUI" getImage="GetImage8"/>
-					<button id="Button9"  label="Translator &amp;Help" size="large" onAction="HelpUI" getImage="GetImage5"/>
-				</group>
-			</tab>
-		</tabs>
-	</ribbon>
+    <ribbon>
+        <officeMenu>
+            <button id="Daisy" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" onAction="SaveAsDaisy"  enabled="true" getImage="iconSelector" keytip="y" screentip="SaveAsDAISY"/>
+        </officeMenu>
+        <tabs>
+            <tab id="CustomTab" label="Accessibility">
+                <group id="SampleGroup" label="Save As Daisy">
+                    <button id="Button1" tag="_postprocess" label="Single Document" size="large" onAction="SaveAsDaisy" getImage="iconSelector" keytip="Y"/>
+                    <button id="Button2" tag="_postprocess" label="&amp;Multiple Document" size="large" onAction="Mutiple" getImage="iconSelector"/>
+                </group >
+                <group id="SampleGroup2" label="Abbreviations">
+                    <button id="Button3"  label="Mark As A&amp;bbreviation" size="large" onAction="MarkAsAbbreviationUI" getImage="iconSelector"/>
+                    <button id="Button4" label="Ma&amp;nage Abbreviation" size="large" onAction="ManageAbbreviation" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup3" label="Acronyms">
+                    <button id="Button5"  label="Mark As A&amp;cronym" size="large" onAction="MarkAsAcronymUI" getImage="iconSelector"/>
+                    <button id="Button6" label="Mana&amp;ge Acronym" size="large" onAction="ManageAcronym" getImage="iconSelector"/>
+                </group >
+                <group id="SampleGroup4" label="Validate">
+                    <toggleButton id="toggleValidate" label="&amp;Validate" size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup5" label ="Daisy Styles">
+                    <button id="Button7" label="&amp;Import" size="large" onAction="Update_Styles" getEnabled="getEnabled" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup9" label="AddFootnote">
+                    <button id="Button11" label="Add&amp;Footnote" size="large" onAction="AddFotenote" getImage="iconSelector"/>
+                </group >
+                <group id="SampleGroup10" label ="Language">
+                    <button id="Button12" label="&amp;Language" size="large" onAction="GetlanguageSettings" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup7" label ="DAISY Settings">
+                    <button id="Button10" label="&amp;Settings" size="large" onAction="GetDaisySettings" getImage="iconSelector"/>
+                </group>
+                <group id="SampleGroup6" label="Help">
+                    <button id="Button8"  label="Version &amp;Details" size="large" onAction="AboutUI" getImage="iconSelector"/>
+                    <button id="Button9"  label="Translator &amp;Help" size="large" onAction="HelpUI" getImage="iconSelector"/>
+                </group>
+            </tab>
+        </tabs>
+    </ribbon>
 </customUI>

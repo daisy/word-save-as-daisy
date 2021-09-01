@@ -36,7 +36,7 @@ using System.Threading;
 using System.Xml.Schema;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using Daisy.DaisyConverter.DaisyConverterLib;
+using Daisy.SaveAsDAISY.Conversion;
 using System.Xml;
 using System.Resources;
 using System.IO.Packaging;
@@ -45,8 +45,10 @@ using System.Drawing.Imaging;
 using MSword = Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Daisy.SaveAsDAISY.Addins.Word2007;
+using Daisy.SaveAsDAISY.Forms;
 
-namespace Daisy.DaisyConverter.CommandLineTool {
+namespace Daisy.SaveAsDAISY.CommandLineTool {
     enum ControlType : int {
         CTRL_C_EVENT = 0,
         CTRL_BREAK_EVENT = 1,
@@ -95,7 +97,6 @@ namespace Daisy.DaisyConverter.CommandLineTool {
         public Report report = null;
         private Word word = null;
         private OoxValidator ooxValidator = null;
-        private MultipleOOXML multipleOoxml = null;
         private Direction batch = Direction.None;
         Hashtable myHT = new Hashtable();
         Hashtable myLabel = new Hashtable();
@@ -112,6 +113,17 @@ namespace Daisy.DaisyConverter.CommandLineTool {
         ArrayList MathList8879, MathList9573, MathListmathml;
         String errorText = "";
         const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
+        
+        private Pipeline _postprocessingPipeline = null;
+        public Pipeline PostprocessingPipeline {
+            get {
+                if (ConverterHelper.PipelineIsInstalled() && _postprocessingPipeline == null)
+                    _postprocessingPipeline = new Pipeline();
+                return _postprocessingPipeline;
+            }
+            set => _postprocessingPipeline = value;
+        }
+
 
 #if MONO
 		static bool SetConsoleCtrlHandler(ControlHandlerFonction handlerRoutine, bool add) 
@@ -166,7 +178,6 @@ namespace Daisy.DaisyConverter.CommandLineTool {
         /*Constructor*/
         private DaisyConverter() {
             this.skipedPostProcessors = new ArrayList();
-            AddMathmlDtds();
             myLabel.Add("translation.oox2Daisy.commentReference", " Comment Reference is not translated");
             myLabel.Add("translation.oox2Daisy.ExternalImage", " External Images are not translated");
             myLabel.Add("translation.oox2Daisy.GeometricShapeElement", " Geometric shapes is is not translated");
@@ -380,7 +391,8 @@ namespace Daisy.DaisyConverter.CommandLineTool {
                             if (this.titleProp == null)
                                 myHT.Add("Title", titleDoc);
                         }
-                        this.ProceedOwnBatchDocx();
+                        //this.ProceedOwnBatchDocx();
+                        this.ProceedSingleFile(this.input, this.output, this.transformDirection, myHT);
                     }
                     break;
                 default:  // no batch mode
@@ -418,65 +430,26 @@ namespace Daisy.DaisyConverter.CommandLineTool {
             bool validated = false;
             validated = ValidateFile(input);
             if (validated) {
-                report.AddLog(input, "Translating file: " + input + " into " + output, Report.INFO_LEVEL);
-                // Preprocess shapes
-                Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
-                
-                
-                string shapeOutput = preprocessOnly ? Path.GetDirectoryName(output) : Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY";
-                try {
-                    Exception threadEx = null;
-                    Thread staThread = new Thread(
-                        delegate () {
-                            try {
-                                saveasshapes(app, input, shapeOutput);
-                            } catch (Exception ex) {
-                                threadEx = ex;
-                            }
-                        });
-                    staThread.SetApartmentState(ApartmentState.STA);
-                    staThread.Start();
-                    staThread.Join();
-                    if (threadEx != null) {
-                        throw threadEx;
-                    }
-                } catch (Exception e) {
-                    report.AddLog(input, "Warning while parsing shapes of " + input + ": " + e.Message + "\r\n" + e.StackTrace, Report.WARNING_LEVEL);
-                }
-                try {
-                    Exception threadEx = null;
-                    Thread staThread = new Thread(
-                        delegate () {
-                            try {
-                                SaveasImages(app, input, shapeOutput);
-                            } catch (Exception ex) {
-                                threadEx = ex;
-                            }
-                        });
-                    staThread.SetApartmentState(ApartmentState.STA);
-                    staThread.Start();
-                    staThread.Join();
-                    if (threadEx != null) {
-                        throw threadEx;
-                    }
-                } catch (Exception e) {
-                    report.AddLog(input, "Warning while parsing images of " + input + ": " + e.Message + "\r\n" + e.StackTrace, Report.WARNING_LEVEL);
-                }
-                if (!preprocessOnly) {
-                    converted = ConvertFile(input, output, transformDirection, table);
-                } else {
-                    // copy generated shapes to output
-                    string parametersOutput = Path.Combine(shapeOutput, "parametersTable.csv");
-                    string content = "key;value;\r\n";
-                    
-                    foreach (DictionaryEntry param in table) {
-                        content += param.Key + ";";
-                        content += param.Value + ";\r\n";
 
-                    }
-                    File.WriteAllText(parametersOutput,content);
+                object _input = (object)input;
+                Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+                MSword.Document doc = app.Documents.Open(ref _input);
+
+                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(app);
+                FileInfo pipelineScript = this.PostprocessingPipeline?.ScriptsInfo["_postprocess"];
+
+                ConversionParameters conversion = new ConversionParameters(app.Version, pipelineScript.FullName);
+                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                DocumentParameters currentDocument = converter.preprocessDocument(app.ActiveDocument.FullName);
+                if (converter.requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
+                    ConversionResult result = converter.convert(currentDocument);
+                    converted = result.Succeeded;
+                } else {
+                    eventsHandler.onConversionCanceled();
                 }
-                
+
             }
 
             if (!converted) {
@@ -486,37 +459,6 @@ namespace Daisy.DaisyConverter.CommandLineTool {
 
         }
 
-
-        /*Function to translate the current document */
-        private bool ConvertFile(string input, string output, Direction transformDirection, Hashtable table) {
-            try {
-                DateTime start = DateTime.Now;
-                AbstractConverter converter = ConverterFactory.Instance(transformDirection);
-                converter.ExternalResources = this.xslPath;
-                converter.SkipedPostProcessors = this.skipedPostProcessors;
-                converter.DirectTransform = transformDirection == Direction.DocxToXml;
-
-                converter.Transform(input, output, table, null, false, "");
-
-                fidilityLoss = converter.FidilityLoss;
-                ValidateOutputFile(output);
-                DeleteDTD(Path.GetDirectoryName(output) + "\\dtbook-2005-3.dtd", output);
-                DeleteMath(Path.GetDirectoryName(output));
-                InputFidilityLoss(fidilityLoss);
-                if (fidilityLossMsg.Count != 0) {
-                    for (int i = 0; i < fidilityLossMsg.Count; i++)
-                        this.report.AddLog(input, "Fidility Loss of Input file: " + fidilityLossMsg[i].ToString(), Report.WARNING_LEVEL);
-                }
-                TimeSpan duration = DateTime.Now - start;
-                this.report.AddLog(input, "Translation succeeded", Report.INFO_LEVEL);
-                this.report.AddLog(input, "Total translation time: " + duration, Report.INFO_LEVEL);
-                return true;
-            } catch (Exception e) {
-                this.report.AddLog(input, "Translation failed - Error during conversion" + e.Message, Report.ERROR_LEVEL);
-                this.report.AddLog(input, e.Message + "(" + e.StackTrace + ")", Report.DEBUG_LEVEL);
-                return false;
-            }
-        }
 
         /*Function which translates a batch of docx files*/
         private void ProceedBatchDaisy() {
@@ -586,96 +528,43 @@ namespace Daisy.DaisyConverter.CommandLineTool {
         /*Function which translates a batch of docx files*/
         private void ProceedBatchDocx() {
             try {
-                if (this.multipleOoxml == null) {
-                    this.multipleOoxml = new MultipleOOXML(this.report);
+                Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
+                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(app);
+                FileInfo pipelineScript = this.PostprocessingPipeline?.ScriptsInfo["_postprocess"];
+
+                ConversionParameters conversion = new ConversionParameters(app.Version, pipelineScript.FullName);
+                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+
+
+                List<string> documentsPathes = new List<string>();
+                foreach (string docPath in batchDoc) {
+                    documentsPathes.Add(docPath);
                 }
+                if (documentsPathes != null && documentsPathes.Count > 0) {
+                    List<DocumentParameters> documents = new List<DocumentParameters>();
 
-                mergeXmlDoc = new XmlDocument();
-                String resultOpenSub = CheckFileIndOPen(batchDoc);
-                String tempArray = "";
-
-                string outputFile = this.GenerateOutputName(Path.GetDirectoryName(batchDoc[0].ToString()), "MultipleDoc", ".xml");
-
-                if (resultOpenSub == "notopen") {
-                    String resultSub = CheckingIndSubDocs(batchDoc);
-                    if (resultSub == "simple") {
-                        report.AddLog(input, "Translating all files into: " + outputFile, Report.INFO_LEVEL);
-                        DateTime start = DateTime.Now;
-                        this.multipleOoxml.MultipleBatchDoc(outputFile, batchDoc, myHT);
-                        fidilityLoss = this.multipleOoxml.FidilityLoss;
-                        if (fidilityLoss.Count != 0) {
-                            for (int i = 0; i < fidilityLoss.Count; i++)
-                                this.report.AddLog("", "Fidility Loss of Input file: " + fidilityLoss[i].ToString(), Report.WARNING_LEVEL);
+                    foreach (string inputPath in documentsPathes) {
+                        DocumentParameters subDoc = null;
+                        try {
+                            subDoc = converter.preprocessDocument(inputPath);
+                        } catch (Exception e) {
+                            string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
+                            eventsHandler.onPreprocessingError(inputPath, errors);
                         }
-                        if (this.multipleOoxml.ValidationError != "")
-                            this.report.AddLog("", this.multipleOoxml.ValidationError, Report.ERROR_LEVEL);
-
-                        TimeSpan duration = DateTime.Now - start;
-                        this.report.AddLog(input, "Translation succeeded", Report.INFO_LEVEL);
-                        this.report.AddLog(input, "Total translation time: " + duration, Report.INFO_LEVEL);
-                    } else {
-                        this.report.AddLog("", "Some of the added documents are MasterSub documents.Please add simple documents", Report.ERROR_LEVEL);
-                    }
-                } else {
-                    for (int j = 0; j < openSubdocs.Count; j++) {
-                        tempArray += (j + 1) + ". " + openSubdocs[j].ToString();
-                    }
-                    this.report.AddLog("", "Following documents are opened. Please close the following documents before translation:" + "\n\n" + tempArray, Report.ERROR_LEVEL);
-                }
-            } catch (Exception e) {
-                this.report.AddLog("", this.multipleOoxml.ValidationError, Report.ERROR_LEVEL);
-            }
-        }
-
-        /*Function which translates a file along with sub documents*/
-        private void ProceedOwnBatchDocx() {
-            try {
-                if (this.multipleOoxml == null) {
-                    this.multipleOoxml = new MultipleOOXML(this.report);
-                }
-
-                string outputFile = GenerateOutputName(Path.GetDirectoryName(this.input) + "\\" + Path.GetFileNameWithoutExtension(this.input), ".xml");
-                this.multipleOoxml.MultipleOwnDocCore(this.input, outputFile);
-
-                ArrayList batchOwnDoc = this.multipleOoxml.DocListOwn;
-                String resultOpenSub = CheckFileOPen(batchOwnDoc);
-
-                //Checking whether any Subdocumets is already Open or not
-                if (resultOpenSub == "notopen") {
-                    String resultSub = CheckingSubDocs(batchOwnDoc);
-
-                    //Checking whether Sub documents are Simple documents or a Master document
-                    if (resultSub == "simple") {
-
-                        int subCount = this.multipleOoxml.FileCount;
-                        if (subCount == batchOwnDoc.Count) {
-                            bool validated = false;
-                            validated = ValidateFile(input);
-                            if (validated) {
-                                report.AddLog(input, "Translating file: " + input + " into " + outputFile, Report.INFO_LEVEL);
-                                DateTime start = DateTime.Now;
-                                this.multipleOoxml.MultipleOwnDoc(outputFile, batchOwnDoc, myHT);
-                                fidilityLoss = this.multipleOoxml.FidilityLoss;
-                                if (fidilityLoss.Count != 0) {
-                                    for (int i = 0; i < fidilityLoss.Count; i++)
-                                        this.report.AddLog("", "Fidility Loss of Input file: " + fidilityLoss[i].ToString(), Report.WARNING_LEVEL);
-                                }
-                                TimeSpan duration = DateTime.Now - start;
-                                this.report.AddLog(input, "Translation succeeded", Report.INFO_LEVEL);
-                                this.report.AddLog(input, "Total translation time: " + duration, Report.INFO_LEVEL);
-                            }
+                        if (subDoc != null) {
+                            documents.Add(subDoc);
                         } else {
-
-                            this.report.AddLog(input, "Some Problem in Sub documents", Report.ERROR_LEVEL);
+                            // abort documents conversion
+                            documents.Clear();
+                            break;
                         }
-                    } else {
-                        this.report.AddLog(input, "Some of the added documents are MasterSub documents.Please add simple documents.", Report.ERROR_LEVEL);
                     }
-                } else {
-                    this.report.AddLog(input, "Some Sub documents are in open state. Please close all the Sub documents before Translation.", Report.ERROR_LEVEL);
+                    if (documents.Count > 0) converter.convert(documents);
                 }
             } catch (Exception e) {
-                this.report.AddLog("", this.multipleOoxml.ValidationError, Report.ERROR_LEVEL);
+                this.report.AddLog("", "Erros in bacch conversion:\r\n" + e.Message, Report.ERROR_LEVEL);
             }
         }
 
@@ -787,75 +676,6 @@ namespace Daisy.DaisyConverter.CommandLineTool {
 
         #endregion
 
-
-        /*Function to track the Fidility Loss */
-        public void InputFidilityLoss(ArrayList list) {
-            fidilityLossMsg = new ArrayList();
-            for (int j = 0; j < list.Count; j++) {
-                string messageKey1 = list[j].ToString();
-                string messageValue = null;
-                if (messageKey1.Contains("Cover Pages"))
-                    messageKey1 = messageKey1.Replace("Cover Pages", "Cover Page");
-
-                if (messageKey1.Contains("|")) {
-                    string[] messageKey = messageKey1.Split('|');
-
-
-                    int index = messageKey[0].IndexOf('%');
-                    // parameters substitution
-                    if (index > 0) {
-                        string[] param = messageKey[0].Substring(index + 1).Split(new char[] { '%' });
-                        foreach (DictionaryEntry myEntry in myLabel) {
-                            if (myEntry.Key.ToString().Equals(messageKey[0].Substring(0, index)))
-                                messageValue = myEntry.Value.ToString();
-                        }
-
-                        if (messageValue != null) {
-                            for (int i = 0; i < param.Length; i++) {
-                                messageValue = messageValue.Replace("%" + (i + 1), param[i]);
-                            }
-                        }
-                    } else {
-                        foreach (DictionaryEntry myEntry in myLabel) {
-                            if (myEntry.Key.ToString().Equals(messageKey[0]))
-                                messageValue = myEntry.Value.ToString();
-                        }
-
-                    }
-
-                    if (messageValue != null && !fidilityLossMsg.Contains(messageKey[1] + messageValue)) {
-                        fidilityLossMsg.Add(messageKey[1] + messageValue);
-                    }
-                } else {
-                    int index = messageKey1.IndexOf('%');
-                    // parameters substitution
-                    if (index > 0) {
-                        string[] param = messageKey1.Substring(index + 1).Split(new char[] { '%' });
-                        foreach (DictionaryEntry myEntry in myLabel) {
-                            if (myEntry.Key.ToString().Equals(messageKey1.Substring(0, index)))
-                                messageValue = myEntry.Value.ToString();
-                        }
-
-                        if (messageValue != null) {
-                            for (int i = 0; i < param.Length; i++) {
-                                messageValue = messageValue.Replace("%" + (i + 1), param[i]);
-                            }
-                        }
-                    } else {
-                        foreach (DictionaryEntry myEntry in myLabel) {
-                            if (myEntry.Key.ToString().Equals(messageKey1))
-                                messageValue = myEntry.Value.ToString();
-                        }
-                    }
-
-                    if (messageValue != null && !fidilityLossMsg.Contains(messageValue)) {
-                        fidilityLossMsg.Add(messageValue);
-                    }
-                }
-            }
-
-        }
-
         /*Function which displays information about Commands to user*/
         private static void usage() {
             Console.WriteLine("Usage: DaisyConverterTest.exe /I PathOrFilename [/O PathOrFilename] [/BATCH-DOCX] [/REPORT Filename] [/TITLE] [/CREATOR] [/PUBLISHER][/UID] [/M] [/APAGE] [/CPAGE] [/STYLE]");
@@ -872,86 +692,9 @@ namespace Daisy.DaisyConverter.CommandLineTool {
             Console.WriteLine("     /APAGE   To Translate the current document with Automatic PageNumber Style");
             Console.WriteLine("     /CPAGE   To Translate the current document with Custom PageNumber Style");
             Console.WriteLine("     /STYLE   To Translate the current document with Character Styles");
+            Console.WriteLine("     /PREPROCESS   To preprocess the document and get the parameteres and shapes exported as images");
         }
 
-
-        #region Copy and Delete DTD's
-
-        /*Function to copy MATHML DTD'S */
-        public void AddMathmlDtds() {
-            MathList8879 = new ArrayList();
-            MathList9573 = new ArrayList();
-            MathListmathml = new ArrayList();
-
-            MathList8879.Add("isobox.ent");
-            MathList8879.Add("isocyr1.ent");
-            MathList8879.Add("isocyr2.ent");
-            MathList8879.Add("isodia.ent");
-            MathList8879.Add("isolat1.ent");
-            MathList8879.Add("isolat2.ent");
-            MathList8879.Add("isonum.ent");
-
-            MathList8879.Add("isopub.ent");
-
-            MathListmathml.Add("mmlalias.ent");
-            MathListmathml.Add("mmlextra.ent");
-
-            MathList9573.Add("isoamsa.ent");
-            MathList9573.Add("isoamsb.ent");
-            MathList9573.Add("isoamsc.ent");
-            MathList9573.Add("isoamsn.ent");
-            MathList9573.Add("isoamso.ent");
-            MathList9573.Add("isoamsr.ent");
-            MathList9573.Add("isogrk3.ent");
-            MathList9573.Add("isomfrk.ent");
-            MathList9573.Add("isomopf.ent");
-            MathList9573.Add("isomscr.ent");
-            MathList9573.Add("isotech.ent");
-        }
-
-        /*Function to delete Dtbook DTD*/
-        public void DeleteDTD(String fileDTD, String fileName) {
-
-            StreamReader reader = new StreamReader(fileName);
-            string data = reader.ReadToEnd();
-            reader.Close();
-
-            StreamWriter writer = new StreamWriter(fileName);
-            data = data.Replace("<!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'", "<!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'");
-            data = data.Replace("<dtbook version=\"" + "2005-3\"", "<dtbook xmlns=\"http://www.daisy.org/z3986/2005/dtbook/\" version=\"2005-3\"");
-            if (!data.Contains("</mml:math>")) {
-                data = data.Remove(203, 917);
-                data = data.Replace(Environment.NewLine + "<dtbook", "<dtbook");
-                data = data.Replace("xmlns:mml=\"http://www.w3.org/1998/Math/MathML\"", "");
-            }
-            data = data.Replace("<!ENTITY % mathML2 SYSTEM 'mathml2.dtd'>", "<!ENTITY % mathML2 PUBLIC \"-//W3C//DTD MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/mathml2.dtd\">");
-            writer.Write(data);
-            writer.Close();
-
-            if (File.Exists(fileDTD)) {
-                File.Delete(fileDTD);
-            }
-
-        }
-
-        /*Core Function to delete MATHML DTD*/
-        public void DeleteMath(String fileName) {
-            DeleteFile(fileName + "\\mathml2.DTD");
-            DeleteFile(fileName + "\\mathml2-qname-1.mod");
-            Directory.Delete(fileName + "\\iso8879", true);
-            Directory.Delete(fileName + "\\iso9573-13", true);
-            Directory.Delete(fileName + "\\mathml", true);
-
-        }
-
-        /*Function to delete MATHML DTD*/
-        public void DeleteFile(String file) {
-            if (File.Exists(file)) {
-                File.Delete(file);
-            }
-        }
-
-        # endregion
 
         #region Document Properties
 
@@ -1125,335 +868,6 @@ namespace Daisy.DaisyConverter.CommandLineTool {
 
         #endregion
 
-        #region MULTIPLE OOXML supporting fucntions
-
-        /* Function checks whether Document si Master/sub doc or simple doc*/
-        public String CheckingSubDocs(ArrayList listSubDocs) {
-            String resultSubDoc = "simple";
-            for (int i = 1; i < listSubDocs.Count; i++) {
-                string[] splt = listSubDocs[i].ToString().Split('|');
-                Package pack;
-                pack = Package.Open(splt[0].ToString(), FileMode.Open, FileAccess.ReadWrite);
-
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    packRelationship = searchRelation;
-                    break;
-                }
-
-                Uri partUri = PackUriHelper.ResolvePartUri(packRelationship.SourceUri, packRelationship.TargetUri);
-                PackagePart mainPartxml = pack.GetPart(partUri);
-
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships()) {
-                    packRelationship = searchRelation;
-                    //checking whether Doc is simple or Master\sub Doc
-                    if (packRelationship.RelationshipType == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument") {
-                        if (packRelationship.TargetMode.ToString() == "External") {
-                            resultSubDoc = "complex";
-                        }
-                    }
-                }
-                pack.Close();
-            }
-            return resultSubDoc;
-        }
-
-        /* Function to check Whether Docs are already open or not*/
-        public String CheckFileOPen(ArrayList listSubDocs) {
-            String resultSubDoc = "notopen";
-            for (int i = 0; i < listSubDocs.Count; i++) {
-                string[] splt = listSubDocs[i].ToString().Split('|');
-                try {
-                    Package pack;
-                    pack = Package.Open(splt[0].ToString(), FileMode.Open, FileAccess.ReadWrite);
-                    pack.Close();
-                } catch (Exception e) {
-                    resultSubDoc = "open";
-                }
-            }
-            return resultSubDoc;
-        }
-
-        /* Function to whether the Document is already open or Not*/
-        public String CheckFileIndOPen(ArrayList listSubDocs) {
-            String resultSubDoc = "notopen";
-            openSubdocs = new ArrayList();
-            for (int i = 0; i < listSubDocs.Count; i++) {
-                string[] splt = listSubDocs[i].ToString().Split('|');
-                try {
-                    Package pack;
-                    pack = Package.Open(splt[0].ToString(), FileMode.Open, FileAccess.ReadWrite);
-                    pack.Close();
-                } catch {
-                    resultSubDoc = "open";
-                    openSubdocs.Add(splt[0].ToString() + "\n");
-                }
-            }
-            return resultSubDoc;
-        }
-
-        /* Function to Check selected Documents are Master/Sub dcouemnts or simple Documents */
-        public String CheckingIndSubDocs(ArrayList listSubDocs) {
-            String resultSubDoc = "simple";
-            for (int i = 0; i < listSubDocs.Count; i++) {
-                string[] splitName = listSubDocs[i].ToString().Split('|');
-                Package pack;
-                pack = Package.Open(splitName[0].ToString(), FileMode.Open, FileAccess.ReadWrite);
-
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    packRelationship = searchRelation;
-                    break;
-                }
-
-                Uri partUri = PackUriHelper.ResolvePartUri(packRelationship.SourceUri, packRelationship.TargetUri);
-                PackagePart mainPartxml = pack.GetPart(partUri);
-
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships()) {
-                    packRelationship = searchRelation;
-                    if (packRelationship.RelationshipType == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/subDocument") {
-                        if (packRelationship.TargetMode.ToString() == "External") {
-                            resultSubDoc = "complex";
-                        }
-                    }
-                }
-                pack.Close();
-            }
-            return resultSubDoc;
-        }
-
-        #endregion
-
-        #region ShapesObject
-
-        public void saveasshapes(Microsoft.Office.Interop.Word.Application WordInstance, string docPath, string outputPath) {
-            Microsoft.Office.Interop.Word.Document doc = WordInstance.Documents.Open(docPath);
-            
-            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
-            List<string> warnings = new List<string>();
-            String fileName = doc.Name.Replace(" ", "_");
-            foreach (MSword.Shape item in doc.Shapes) {
-                if (!item.Name.Contains("Text Box")) {
-                    object missing = Type.Missing;
-                    item.Select(ref missing);
-
-                    string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
-                    WordInstance.Selection.CopyAsPicture();
-                    try {
-                        // Note : using Clipboard.GetImage() set Word to display a clipboard data save request on closing
-                        // So we rely on the user32 clipboard methods that does not seem to be intercepted by Office
-                        System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                        byte[] Ret;
-                        MemoryStream ms = new MemoryStream();
-                        image.Save(ms, ImageFormat.Png);
-                        Ret = ms.ToArray();
-                        FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                        fs.Write(Ret, 0, Ret.Length);
-                        fs.Flush();
-                        fs.Dispose();
-                    } catch (ClipboardDataException cde) {
-                        warnings.Add("- Shape " + item.ID + ": " + cde.Message);
-                    } catch (Exception e) {
-                        throw e;
-                    } finally {
-                        Clipboard.Clear();
-                    }
-
-                }
-            }
-
-            doc.Save();
-            doc.Close();
-
-            if (warnings.Count > 0) {
-                string warningMessage = "Some shapes could not be exported from the document:";
-                foreach (string warning in warnings) {
-                    warningMessage += "\r\n" + warning;
-                }
-                throw new Exception(warningMessage);
-            }
-
-        }
-
-        public void saveasshapes(Microsoft.Office.Interop.Word.Application WordInstance, ArrayList subList, String saveFlag, string outputPath) {
-            object addToRecentFiles = false;
-            object readOnly = false;
-            object isVisible = false;
-            object missing = Type.Missing;
-            object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
-            object originalFormat = Microsoft.Office.Interop.Word.WdOriginalFormat.wdOriginalDocumentFormat;
-            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
-            List<string> warnings = new List<string>();
-            for (int i = 0; i < subList.Count; i++) {
-                object newName = subList[i];
-                String fileName = newName.ToString().Replace(" ", "_");
-                MSword.Document newDoc = WordInstance.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
-                foreach (MSword.Shape item in newDoc.Shapes) {
-                    if (!item.Name.Contains("Text Box")) {
-                        item.Select(ref missing);
-                        string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
-                        WordInstance.Selection.CopyAsPicture();
-                        try {
-                            System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                            byte[] Ret;
-                            MemoryStream ms = new MemoryStream();
-                            image.Save(ms, ImageFormat.Png);
-                            Ret = ms.ToArray();
-                            FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                            fs.Write(Ret, 0, Ret.Length);
-                            fs.Flush();
-                            fs.Dispose();
-                        } catch (ClipboardDataException cde) {
-                            warnings.Add("- Shape " + item.ID.ToString() + ": " + cde.Message);
-                        } catch (Exception e) {
-                            throw e;
-                        } finally {
-                            Clipboard.Clear();
-
-                        }
-                    }
-                }
-
-                newDoc.Close(ref saveChanges, ref originalFormat, ref missing);
-            }
-            if (warnings.Count > 0) {
-                string warningMessage = "Some shapes could not be exported from the documents:";
-                foreach (string warning in warnings) {
-                    warningMessage += "\r\n" + warning;
-                }
-                throw new Exception(warningMessage);
-            }
-        }
-        /// <summary>
-        /// Save the inline shapes 
-        /// (Not e : not of type Embedded OLE or Pictures, so it is probably targeting inlined vectorial drawings)
-        /// </summary>
-        public void SaveasImages(Microsoft.Office.Interop.Word.Application WordInstance, string docPath, string outputPath) {
-            Microsoft.Office.Interop.Word.Document doc = WordInstance.Documents.Open(docPath);
-
-            object missing = Type.Missing;
-            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
-            List<string> warnings = new List<string>();
-            String fileName = doc.Name.Replace(" ", "_");
-            MSword.Range rng;
-            foreach (MSword.Range tmprng in doc.StoryRanges) {
-                rng = tmprng;
-                while (rng != null) {
-                    foreach (MSword.InlineShape item in rng.InlineShapes) {
-                        if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
-                            object range = item.Range;
-                            string str = "Shapes_" + GenerateId().ToString();
-                            string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
-
-                            item.Range.Bookmarks.Add(str, ref range);
-                            item.Range.CopyAsPicture();
-                            try {
-                                System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                                byte[] Ret;
-                                MemoryStream ms = new MemoryStream();
-                                image.Save(ms, ImageFormat.Png);
-                                Ret = ms.ToArray();
-                                FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                                fs.Write(Ret, 0, Ret.Length);
-                                fs.Flush();
-                                fs.Dispose();
-                            } catch (ClipboardDataException cde) {
-                                warnings.Add("- Image with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
-                            } catch (Exception e) {
-                                throw e;
-                            } finally {
-                                Clipboard.Clear();
-                            }
-                        }
-                    }
-                    rng = rng.NextStoryRange;
-                }
-            }
-
-            doc.Save();
-            doc.Close();
-
-            if (warnings.Count > 0) {
-                string warningMessage = "Some images could not be exported from the document:";
-                foreach (string warning in warnings) {
-                    warningMessage += "\r\n" + warning;
-                }
-                throw new Exception(warningMessage);
-            }
-        }
-
-        public void SaveasImages(Microsoft.Office.Interop.Word.Application WordInstance, ArrayList subList, String saveFlag, string outputPath) {
-            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
-            object addToRecentFiles = false;
-            object readOnly = false;
-            object isVisible = false;
-            object missing = Type.Missing;
-            object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
-            object originalFormat = Microsoft.Office.Interop.Word.WdOriginalFormat.wdOriginalDocumentFormat;
-            List<string> warnings = new List<string>();
-            for (int i = 0; i < subList.Count; i++) {
-                object newName = subList[i].ToString();
-                MSword.Document newDoc = WordInstance.Documents.Open(ref newName, ref missing, ref readOnly, ref addToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref isVisible, ref missing, ref missing, ref missing, ref missing);
-                MSword.Range rng;
-                String fileName = newName.ToString().Replace(" ", "_");
-                foreach (MSword.Range tmprng in newDoc.StoryRanges) {
-                    rng = tmprng;
-                    while (rng != null) {
-                        foreach (MSword.InlineShape item in rng.InlineShapes) {
-                            if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
-                                string str = "Shapes_" + GenerateId().ToString();
-                                string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png";
-
-                                object range = item.Range;
-
-                                item.Range.Bookmarks.Add(str, ref range);
-                                item.Range.CopyAsPicture();
-
-                                try {
-                                    System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                                    byte[] Ret;
-                                    MemoryStream ms = new MemoryStream();
-                                    image.Save(ms, ImageFormat.Png);
-                                    Ret = ms.ToArray();
-                                    FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                                    fs.Write(Ret, 0, Ret.Length);
-                                    fs.Flush();
-                                    fs.Dispose();
-                                } catch (ClipboardDataException cde) {
-                                    warnings.Add("- Image with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
-                                } catch (Exception e) {
-                                    throw e;
-                                } finally {
-                                    Clipboard.Clear();
-
-                                }
-                            }
-                        }
-                        rng = rng.NextStoryRange;
-                    }
-                }
-
-                newDoc.Save();
-                newDoc.Close(ref saveChanges, ref originalFormat, ref missing);
-            }
-
-            if (warnings.Count > 0) {
-                string warningMessage = "Some images could not be exported from the documents:";
-                foreach (string warning in warnings) {
-                    warningMessage += "\r\n" + warning;
-                }
-                throw new Exception(warningMessage);
-            }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// Function to generate Random ID
-        /// </summary>
-        /// <returns></returns>
-        public long GenerateId() {
-            byte[] buffer = Guid.NewGuid().ToByteArray();
-            return BitConverter.ToInt64(buffer, 0);
-        }
 
 
     }

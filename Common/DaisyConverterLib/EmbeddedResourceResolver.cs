@@ -34,7 +34,7 @@ using System.Reflection;
 using System.Xml;
 using System.Windows.Forms;
 
-namespace Daisy.DaisyConverter.DaisyConverterLib
+namespace Daisy.SaveAsDAISY.Conversion
 {
 	/// <summary>
 	/// An XmlUrlResolver for embedded resources.
@@ -106,16 +106,34 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             if (ASSEMBLY_URI_SCHEME.Equals(absoluteUri.Scheme))
             {
                 string location = null;
+                string resourceLocation = absoluteUri.OriginalString.Remove(0, ASSEMBLY_URI_SCHEME.Length + ASSEMBLY_URI_HOST.Length + 4).Replace("/", ".");
+
                 if (this.resourceLocation == null)
                 {
-                    location = ".resources.oox2daisy.";
+                    location = ".resources.";
+                    switch (Path.GetExtension(resourceLocation)) {
+                        case ".ent":
+                        case ".mod":
+                            location = location + "entities.";
+                            break;
+                        case ".xsl":
+                            location = location + "xslts.";
+                            break;
+                        case ".dtd":
+                            location = location + "dtds.";
+                            break;
+                        case ".css":
+                            location = location + "css.";
+                            break;
+                    }
                 }
                 else
                 {
                     location = this.resourceLocation;
                 }
+                
+                string resource = location + resourceLocation;
 
-                string resource = location + absoluteUri.OriginalString.Remove(0, ASSEMBLY_URI_SCHEME.Length + ASSEMBLY_URI_HOST.Length + 4).Replace("/", ".");
                 Stream stream = this.appAssembly.GetManifestResourceStream(this.appNamespace + resource);
                 if (stream != null)
                 {
@@ -141,13 +159,30 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             string location = null;
             if (this.resourceLocation == null)
             {
-                location = ".resources.oox2daisy.";
+                location = ".resources.";
+                switch (Path.GetExtension(fileName)) {
+                    case ".ent":
+                    case ".mod":
+                        location = location + "entities.";
+                        break;
+                    case ".xsl":
+                        location = location + "xslts.";
+                        break;
+                    case ".dtd":
+                        location = location + "dtds.";
+                        break;
+                    case ".css":
+                        location = location + "css.";
+                        break;
+                }
             }
             else
             {
                 location = this.resourceLocation;
             }
+            
             string path = this.appNamespace + location;
+            string[] temp = this.appAssembly.GetManifestResourceNames();
             return this.appAssembly.GetManifestResourceStream(path + fileName);
 		}
 		

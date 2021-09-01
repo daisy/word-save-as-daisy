@@ -1,21 +1,21 @@
-﻿using Daisy.DaisyConverter.DaisyConverterLib;
+﻿using Daisy.SaveAsDAISY.Conversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Daisy.DaisyConverter.CommandLineTool {
+namespace Daisy.SaveAsDAISY.CommandLineTool {
     class ConverterFactory {
-        private static AbstractConverter wordInstance;
+        private static WordToDTBookXMLTransform wordInstance;
 
         protected ConverterFactory() {
         }
 
-        public static AbstractConverter Instance(Direction transformDirection) {
+        public static WordToDTBookXMLTransform Instance(Direction transformDirection) {
             switch (transformDirection) {
                 case Direction.DocxToXml:
                     if (wordInstance == null) {
-                        wordInstance = new Daisy.DaisyConverter.Word.Converter();
+                        wordInstance = new WordToDTBookXMLTransform();
                     }
                     return wordInstance;
                 default:

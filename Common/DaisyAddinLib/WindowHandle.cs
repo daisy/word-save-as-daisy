@@ -7,7 +7,7 @@ using System.Reflection;
 using System.Diagnostics;
 using System.Text;
 
-namespace Daisy.DaisyConverter.DaisyConverterLib
+namespace Daisy.SaveAsDAISY.Conversion
 {
 
     ///<summary>

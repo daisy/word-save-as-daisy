@@ -11,20 +11,19 @@ using System.Collections;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Daisy.DaisyConverter.DaisyConverterLib
+namespace Daisy.SaveAsDAISY.Conversion
 {
     public partial class Fidility : Form
     {
         private ResourceManager resManager;
-        String outputPath, inputPath, strResource;
+        String outputPath, strResource;
 
         /*Constructor to set the DataGrid View properties*/
-        public Fidility(string label, ArrayList details, String inputFile, String outputFile, ResourceManager manager)
+        public Fidility(string label, ArrayList details, String outputFile, ResourceManager manager)
         {
             InitializeComponent();
             this.resManager = manager;
             lbl_Information.Text = manager.GetString(label);
-            inputPath = inputFile;
             outputPath = outputFile;
             StringBuilder bld = new StringBuilder();
 
@@ -125,7 +124,7 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
             sfd.FileName = Path.GetDirectoryName(outputPath) + "\\LogFile.txt";
             sfd.ShowDialog();
             StreamWriter writer = new StreamWriter(sfd.FileName);
-            writer.Write("Fidelity Loss during Translation " + inputPath.Substring(inputPath.LastIndexOf("\\") + 1) + ":");
+            writer.Write("Fidelity Loss during Translation " + outputPath.Substring(outputPath.LastIndexOf("\\") + 1) + ":");
             writer.Write(Environment.NewLine);
             writer.Write("**************************************");
             writer.Write(Environment.NewLine);

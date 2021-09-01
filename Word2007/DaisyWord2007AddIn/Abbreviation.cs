@@ -10,7 +10,7 @@ using System.Collections;
 using Microsoft.Office.Core;
 using MSword = Microsoft.Office.Interop.Word;
 
-namespace DaisyWord2007AddIn {
+namespace Daisy.SaveAsDAISY.Addins.Word2007 {
     public partial class Abbreviation : Form {
         MSword.Document pdoc;
         ArrayList lostElements = new ArrayList();

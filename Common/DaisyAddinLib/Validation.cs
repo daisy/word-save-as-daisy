@@ -12,22 +12,21 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 
 
-namespace Daisy.DaisyConverter.DaisyConverterLib
+namespace Daisy.SaveAsDAISY.Conversion
 {
     public partial class Validation : Form
     {
         private ResourceManager resManager;
-        String outputPath, inputPath;
+        String outputPath;
 
         /*Constructor*/
-        public Validation(string label, string details, String inputFile, String outputFile, ResourceManager manager)
+        public Validation(string label, string details, String outputFile, ResourceManager manager)
         {
             InitializeComponent();
             this.resManager = manager;
-            inputPath = inputFile;
             outputPath = outputFile;
             lbl_Information.Text = manager.GetString(label);
-            string text = manager.GetString(details);
+            //string text = manager.GetString(details);
             details = details.Replace('\r', ' ');
             String[] str = details.Split('\n');
             for (int i = 0; i < str.Length; i++)
@@ -52,15 +51,16 @@ namespace Daisy.DaisyConverter.DaisyConverterLib
         /*Function to save Log file*/
         private void saveloglinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Text files (*.txt)|*.txt";
-            sfd.FilterIndex = 1;
-            sfd.CheckPathExists = true;
-            sfd.DefaultExt = ".txt";
-            sfd.FileName = Path.GetDirectoryName(outputPath) + "\\LogFile.txt";
+            SaveFileDialog sfd = new SaveFileDialog {
+                Filter = "Text files (*.txt)|*.txt",
+                FilterIndex = 1,
+                CheckPathExists = true,
+                DefaultExt = ".txt",
+                FileName = Path.GetDirectoryName(outputPath) + "\\LogFile.txt"
+            };
             sfd.ShowDialog();
             StreamWriter writer = new StreamWriter(sfd.FileName);
-            writer.Write("Validation errors occured during Translation for " + inputPath.Substring(inputPath.LastIndexOf("\\") + 1) + ":");
+            writer.Write("Validation errors occured during Translation to " + outputPath.Substring(outputPath.LastIndexOf("\\") + 1) + ":");
             writer.Write(Environment.NewLine);
             writer.Write("**************************************");
             writer.Write(Environment.NewLine);
