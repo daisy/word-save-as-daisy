@@ -146,15 +146,15 @@
     <EmbeddedResource Include="resources\oox2daisy\dtbook-2005-3.dtd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
+    <ProjectReference Include="..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
       <Project>{599773ff-1e86-4ac2-8b24-34bbac707370}</Project>
       <Name>DaisyAddinLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
+    <ProjectReference Include="..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
       <Project>{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}</Project>
       <Name>DaisyConverterLib</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Word2007\DaisyWord2007AddIn\DaisyWord2007AddIn.csproj">
+    <ProjectReference Include="..\Word2007\DaisyWord2007AddIn\DaisyWord2007AddIn.csproj">
       <Project>{9b3a86f5-d5a5-4cc2-a995-2362a28d0ea9}</Project>
       <Name>DaisyWord2007AddIn</Name>
     </ProjectReference>

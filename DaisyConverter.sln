@@ -7,8 +7,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8BC2F4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Word", "Word", "{27450D4D-9CE9-4787-8674-E0199EC5B7C7}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shell", "Shell", "{97D3A80C-342E-4F14-8ED4-01AF8C8CF766}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Word2007", "Word2007", "{01FCA8EF-C79E-4AAC-831F-5FA4737EB028}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Word2003", "Word2003", "{31C42F5A-FB16-40B5-95E8-E90FC0C1537D}"
@@ -30,8 +28,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaisyAddinLib", "Common\DaisyAddinLib\DaisyAddinLib.csproj", "{599773FF-1E86-4AC2-8B24-34BBAC707370}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DaisyConverterLib", "Common\DaisyConverterLib\DaisyConverterLib.csproj", "{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineTool", "Shell\DaisyConverterTest\CommandLineTool.csproj", "{289C4B72-B929-4E3D-808F-F622E275AC70}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomActionAddin", "CustomActionAddin\CustomActionAddin.csproj", "{BB7510E0-87FB-4514-AF94-3F21332FB236}"
 EndProject
@@ -75,6 +71,10 @@ EndProject
 Project("{930C7802-8A8C-48F9-8165-68863BCCD9DD}") = "DaisyAddinForWordSetup", "Installer\DaisyAddinForWordSetup\DaisyAddinForWordSetup.wixproj", "{9FD72ED2-BA9C-4F70-A53C-9051F5123816}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SaveAsDAISYInstaller", "Installer\SaveAsDAISYInstaller\SaveAsDAISYInstaller.csproj", "{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommandLineTool", "CommandLineTool", "{7641489B-0771-46A1-9E5E-034ABD60FEB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineTool", "CommandLineTool\CommandLineTool.csproj", "{289C4B72-B929-4E3D-808F-F622E275AC70}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -125,23 +125,6 @@ Global
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release|x64.Build.0 = Release|x64
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release|x86.ActiveCfg = Release|x86
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release|x86.Build.0 = Release|x86
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|x64.ActiveCfg = Debug|x64
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|x64.Build.0 = Debug|x64
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|x86.ActiveCfg = Debug|x86
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|x86.Build.0 = Debug|x86
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|Any CPU.ActiveCfg = DebugWord2003|Any CPU
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|Any CPU.Build.0 = DebugWord2003|Any CPU
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|x64.ActiveCfg = DebugWord2003|x64
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|x86.ActiveCfg = DebugWord2003|x86
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|x86.Build.0 = DebugWord2003|x86
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x64.ActiveCfg = Release|x64
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x86.ActiveCfg = Release|x86
-		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x86.Build.0 = Release|x86
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Debug|x64.ActiveCfg = Debug|x64
@@ -288,6 +271,30 @@ Global
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|x64.Build.0 = Release|x64
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|x86.ActiveCfg = Release|x86
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|x86.Build.0 = Release|x86
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|x64.ActiveCfg = Debug|x64
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|x64.Build.0 = Debug|x64
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|x86.ActiveCfg = Debug|x86
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Debug|x86.Build.0 = Debug|x86
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|Any CPU.ActiveCfg = DebugWord2003|Any CPU
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|Any CPU.Build.0 = DebugWord2003|Any CPU
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|x64.ActiveCfg = DebugWord2003|x64
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|x86.ActiveCfg = DebugWord2003|x86
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.DebugWord2003|x86.Build.0 = DebugWord2003|x86
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release to Client(signed)|Any CPU.ActiveCfg = Release to Client(signed)|Any CPU
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release to Client(signed)|Any CPU.Build.0 = Release to Client(signed)|Any CPU
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release to Client(signed)|x64.ActiveCfg = Release to Client(signed)|x64
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release to Client(signed)|x64.Build.0 = Release to Client(signed)|x64
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release to Client(signed)|x86.ActiveCfg = Release to Client(signed)|x86
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release to Client(signed)|x86.Build.0 = Release to Client(signed)|x86
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x64.ActiveCfg = Release|x64
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x64.Build.0 = Release|x64
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x86.ActiveCfg = Release|x86
+		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
