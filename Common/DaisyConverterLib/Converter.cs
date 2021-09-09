@@ -110,7 +110,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
 			eventsHandler.onDocumentPreprocessingStart(inputPath);
 			DocumentParameters result = new DocumentParameters(inputPath) {
 				CopyPath = ConverterHelper.GetTempPath(inputPath, ".docx"),
-				ResourceId = resourceId != null ? resourceId : null
+				ResourceId = resourceId != null ? resourceId : null,
+				ReopenInputDocument = conversion.Visible
 			};
 			// dot not make visible subdocuments (documents with resource Id assigned)
 			object preprocessedObject = documentPreprocessor.startPreprocessing(result, eventsHandler);

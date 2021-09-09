@@ -26,8 +26,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public string ControlName { get; set; }
 		public string ScriptPath { get; set; }
-
-        public string TempOutputFile { get; set; }
         
 
         // From the "TranslationParametersBuilder" and PrepopulatedDaisyXml class
@@ -64,6 +62,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 
         /// <summary>
+        /// Keep word visible during conversion
+        /// </summary>
+        public bool Visible { get; set; } = true;
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="wordVersion">Version of word use for the conversion</param>
@@ -94,15 +97,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
             Creator = PackageUtilities.DocPropCreator(mainDocument.CopyPath ?? mainDocument.InputPath);
             Title = PackageUtilities.DocPropTitle(mainDocument.CopyPath ?? mainDocument.InputPath);
             Publisher = PackageUtilities.DocPropPublish(mainDocument.CopyPath ?? mainDocument.InputPath);
-            /*if(mainDocument.SubDocuments.Count > 0) {
-                if(eventsHandler != null) {
-                    ParseSubDocuments = eventsHandler.AskForTranslatingSubdocuments() ? "Yes" : "No";
-                } else {
-                    ParseSubDocuments = "No";
-                }
-            } else {
-                ParseSubDocuments = "NoMasterSub";
-            }*/
             return this;
         }
 
@@ -152,6 +146,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     TrackChanges = (string)value; break;
                 case "ParseSubDocuments":
                     ParseSubDocuments = (string)value; break;
+                case "Visible":
+                    Visible = (bool)value; break;
                 default:
                     break;
             }

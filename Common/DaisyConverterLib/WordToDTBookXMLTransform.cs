@@ -383,7 +383,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 					File.Move(tempOutputPath, document.OutputPath);
 					CopyCSSToDestinationfolder(document.OutputPath);
 					// TODO: The handling of DTD and math needs to be cleanedup
-					// For now, the transform set a system dtd and
+					// For now, the transform set a system dtd for validation
 					Int16 value = (Int16)document.OutputPath.LastIndexOf("\\");
 					String tempStr = document.OutputPath.Substring(0, value);
 					
@@ -392,10 +392,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 					if (conversion.Validate) {
 						validateXML(document.OutputPath);
 					}
-					// We need to change this method : it does not only delete the dtds files,
-					// it updates the file dtds
-					DeleteDTD(tempStr + "\\" + "dtbook-2005-3.dtd", document.OutputPath, conversion.ScriptPath != null);
-					DeleteMath(tempStr, conversion.ScriptPath != null);
+					// We need to change this method and the copy for validation : 
+					// it does not only delete the dtds files,
+					// it also updates the file dtds
+					DeleteDTD(tempStr + "\\" + "dtbook-2005-3.dtd", document.OutputPath, true);
+					DeleteMath(tempStr, true);
 				}
 			} finally {
 				if (File.Exists(tempInputPath)) {
@@ -423,8 +424,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// </summary>
 		/// <param name="fileDTD">dtd file to be removed from disk</param>
 		/// <param name="fileName">path of the file to be updated</param>
-		/// <param name="value">boolean flag - if true, tha actions are applied on the updated file</param>
-		public void DeleteDTD(String fileDTD, String fileName, bool value)
+		/// <param name="switchToPublicDtd">if true, the system dtd are replaced by public dtd on the output </param>
+		public void DeleteDTD(String fileDTD, String fileName, bool switchToPublicDtd)
 		{
 
 			/*temperory solution - needs to be changed*/
@@ -433,7 +434,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			reader.Close();
 
 			StreamWriter writer = new StreamWriter(fileName);
-			if (value)
+			if (switchToPublicDtd)
 			{
 				data = data.Replace("<!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'", "<!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'");
 				data = data.Replace("<dtbook version=\"" + "2005-3\"", "<dtbook xmlns=\"http://www.daisy.org/z3986/2005/dtbook/\" version=\"2005-3\"");
@@ -448,7 +449,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			writer.Write(data);
 			writer.Close();
 
-			if (value)
+			if (switchToPublicDtd)
 			{
 				if (File.Exists(fileDTD))
 				{
@@ -552,11 +553,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void onXSLTMessageEvent(object sender, XsltMessageEncounteredEventArgs e) {
-			if (e.Message.StartsWith("progress:")) {
-				progressMessageIntercepted?.Invoke(this, new DaisyEventArgs(e.Message));
-			} else if (e.Message.StartsWith("translation.oox2Daisy.")) {
+			if (e.Message.StartsWith("translation.oox2Daisy.")) {
 				fidilityLoss.Add(e.Message);
 				feedbackMessageIntercepted?.Invoke(this, new DaisyEventArgs(e.Message));
+			} else if (!e.Message.StartsWith("progress")) {
+				progressMessageIntercepted?.Invoke(this, new DaisyEventArgs(e.Message));
 			}
 		}
 
@@ -566,9 +567,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		private void onXSLTProgressMessageEvent(object sender, XsltMessageEncounteredEventArgs e) {
-			if (e.Message.StartsWith("progress:")) {
+			/*if (e.Message.StartsWith("progress")) {
 				progressMessageInterceptedMaster?.Invoke(this, new DaisyEventArgs(e.Message));
-			}
+			}*/
 		}
 
 		public void AddProgressMessageListener(XSLTMessagesListener listener)
@@ -1141,7 +1142,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 				doctypeToRemove,
 				"<?xml-stylesheet href=\"dtbookbasic.css\" type=\"text/css\"?>"
 			);
-			if (hasMathMl) { // I don't know what this part extracts exactly
+			if (hasMathMl) { 
+				// This seems to extract the mathml definition
 				cutData = data.Substring(95, 1091);
 				data = data.Remove(95, 1091);
 			}

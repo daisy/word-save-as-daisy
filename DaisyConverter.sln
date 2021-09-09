@@ -76,6 +76,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommandLineTool", "CommandL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineTool", "CommandLineTool\CommandLineTool.csproj", "{289C4B72-B929-4E3D-808F-F622E275AC70}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegressionTests", "Tests\RegressionTests\RegressionTests.csproj", "{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,9 @@ Global
 		DebugWord2003|Any CPU = DebugWord2003|Any CPU
 		DebugWord2003|x64 = DebugWord2003|x64
 		DebugWord2003|x86 = DebugWord2003|x86
+		Release to Client(signed)|Any CPU = Release to Client(signed)|Any CPU
+		Release to Client(signed)|x64 = Release to Client(signed)|x64
+		Release to Client(signed)|x86 = Release to Client(signed)|x86
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
@@ -101,6 +106,12 @@ Global
 		{599773FF-1E86-4AC2-8B24-34BBAC707370}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{599773FF-1E86-4AC2-8B24-34BBAC707370}.DebugWord2003|x86.ActiveCfg = DebugWord2003|x86
 		{599773FF-1E86-4AC2-8B24-34BBAC707370}.DebugWord2003|x86.Build.0 = DebugWord2003|x86
+		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release to Client(signed)|Any CPU.ActiveCfg = Release to Client(signed)|Any CPU
+		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release to Client(signed)|Any CPU.Build.0 = Release to Client(signed)|Any CPU
+		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release to Client(signed)|x64.ActiveCfg = Release to Client(signed)|x64
+		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release to Client(signed)|x64.Build.0 = Release to Client(signed)|x64
+		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release to Client(signed)|x86.ActiveCfg = Release to Client(signed)|x86
+		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release to Client(signed)|x86.Build.0 = Release to Client(signed)|x86
 		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release|Any CPU.Build.0 = Release|Any CPU
 		{599773FF-1E86-4AC2-8B24-34BBAC707370}.Release|x64.ActiveCfg = Release|x64
@@ -119,6 +130,12 @@ Global
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.DebugWord2003|x86.ActiveCfg = DebugWord2003|x86
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.DebugWord2003|x86.Build.0 = DebugWord2003|x86
+		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release to Client(signed)|Any CPU.ActiveCfg = Release to Client(signed)|Any CPU
+		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release to Client(signed)|Any CPU.Build.0 = Release to Client(signed)|Any CPU
+		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release to Client(signed)|x64.ActiveCfg = Release to Client(signed)|x64
+		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release to Client(signed)|x64.Build.0 = Release to Client(signed)|x64
+		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release to Client(signed)|x86.ActiveCfg = Release to Client(signed)|x86
+		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release to Client(signed)|x86.Build.0 = Release to Client(signed)|x86
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E}.Release|x64.ActiveCfg = Release|x64
@@ -137,6 +154,12 @@ Global
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.DebugWord2003|x86.ActiveCfg = DebugWord2003|Any CPU
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.DebugWord2003|x86.Build.0 = DebugWord2003|Any CPU
+		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release to Client(signed)|Any CPU.ActiveCfg = Release to Client(signed)|Any CPU
+		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release to Client(signed)|Any CPU.Build.0 = Release to Client(signed)|Any CPU
+		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release to Client(signed)|x64.ActiveCfg = Release to Client(signed)|x64
+		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release to Client(signed)|x64.Build.0 = Release to Client(signed)|x64
+		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release to Client(signed)|x86.ActiveCfg = Release to Client(signed)|Any CPU
+		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release to Client(signed)|x86.Build.0 = Release to Client(signed)|Any CPU
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BB7510E0-87FB-4514-AF94-3F21332FB236}.Release|x64.ActiveCfg = Release|x64
@@ -155,6 +178,12 @@ Global
 		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.DebugWord2003|x86.ActiveCfg = DebugWord2003|Any CPU
 		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.DebugWord2003|x86.Build.0 = DebugWord2003|Any CPU
+		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release to Client(signed)|Any CPU.ActiveCfg = Release to Client(signed)|Any CPU
+		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release to Client(signed)|Any CPU.Build.0 = Release to Client(signed)|Any CPU
+		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release to Client(signed)|x64.ActiveCfg = Release to Client(signed)|x64
+		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release to Client(signed)|x64.Build.0 = Release to Client(signed)|x64
+		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release to Client(signed)|x86.ActiveCfg = Release to Client(signed)|Any CPU
+		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release to Client(signed)|x86.Build.0 = Release to Client(signed)|Any CPU
 		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}.Release|x64.ActiveCfg = Release|x64
@@ -171,6 +200,12 @@ Global
 		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.DebugWord2003|x86.ActiveCfg = DebugWord2003|Any CPU
 		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.DebugWord2003|x86.Build.0 = DebugWord2003|Any CPU
+		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release to Client(signed)|Any CPU.ActiveCfg = Release to Client(signed)|Any CPU
+		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release to Client(signed)|Any CPU.Build.0 = Release to Client(signed)|Any CPU
+		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release to Client(signed)|x64.ActiveCfg = Release to Client(signed)|x64
+		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release to Client(signed)|x64.Build.0 = Release to Client(signed)|x64
+		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release to Client(signed)|x86.ActiveCfg = Release to Client(signed)|Any CPU
+		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release to Client(signed)|x86.Build.0 = Release to Client(signed)|Any CPU
 		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7}.Release|x64.ActiveCfg = Release|x64
@@ -187,6 +222,12 @@ Global
 		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.DebugWord2003|x86.ActiveCfg = DebugWord2003|Any CPU
 		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.DebugWord2003|x86.Build.0 = DebugWord2003|Any CPU
+		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release to Client(signed)|Any CPU.ActiveCfg = Release|Any CPU
+		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release to Client(signed)|Any CPU.Build.0 = Release|Any CPU
+		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release to Client(signed)|x64.ActiveCfg = Release|x64
+		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release to Client(signed)|x64.Build.0 = Release|x64
+		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release to Client(signed)|x86.ActiveCfg = Release|Any CPU
+		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release to Client(signed)|x86.Build.0 = Release|Any CPU
 		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9F777C87-F4FC-4954-BF3E-1EF20EE2D11D}.Release|x64.ActiveCfg = Release|x64
@@ -201,6 +242,12 @@ Global
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.DebugWord2003|x86.ActiveCfg = DebugWord2003|Win32
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.DebugWord2003|x86.Build.0 = DebugWord2003|Win32
+		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release to Client(signed)|Any CPU.ActiveCfg = Release|x64
+		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release to Client(signed)|Any CPU.Build.0 = Release|x64
+		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release to Client(signed)|x64.ActiveCfg = Release|x64
+		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release to Client(signed)|x64.Build.0 = Release|x64
+		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release to Client(signed)|x86.ActiveCfg = Release|Win32
+		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release to Client(signed)|x86.Build.0 = Release|Win32
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release|Any CPU.ActiveCfg = Release|Win32
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release|x64.ActiveCfg = Release|x64
 		{B4E4CE97-B0B0-48A0-82E4-0E8E9EC9E00E}.Release|x86.ActiveCfg = Release|Win32
@@ -216,6 +263,12 @@ Global
 		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.DebugWord2003|x86.ActiveCfg = DebugWord2003|Any CPU
 		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.DebugWord2003|x86.Build.0 = DebugWord2003|Any CPU
+		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release to Client(signed)|Any CPU.ActiveCfg = Release|Any CPU
+		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release to Client(signed)|Any CPU.Build.0 = Release|Any CPU
+		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release to Client(signed)|x64.ActiveCfg = Release|x64
+		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release to Client(signed)|x64.Build.0 = Release|x64
+		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release to Client(signed)|x86.ActiveCfg = Release|Any CPU
+		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release to Client(signed)|x86.Build.0 = Release|Any CPU
 		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8BDDCAB0-E3C5-4906-83AF-124863C84531}.Release|x64.ActiveCfg = Release|x64
@@ -232,6 +285,12 @@ Global
 		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.DebugWord2003|x86.ActiveCfg = DebugWord2003|x86
 		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.DebugWord2003|x86.Build.0 = DebugWord2003|x86
+		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release to Client(signed)|Any CPU.ActiveCfg = Release|Any CPU
+		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release to Client(signed)|Any CPU.Build.0 = Release|Any CPU
+		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release to Client(signed)|x64.ActiveCfg = Release|x64
+		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release to Client(signed)|x64.Build.0 = Release|x64
+		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release to Client(signed)|x86.ActiveCfg = Release|x86
+		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release to Client(signed)|x86.Build.0 = Release|x86
 		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FCB212D1-D9E6-483A-8E9E-24DA0387620F}.Release|x64.ActiveCfg = Release|x64
@@ -248,6 +307,12 @@ Global
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.DebugWord2003|x64.Build.0 = DebugWord2003|x64
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.DebugWord2003|x86.ActiveCfg = DebugWord2003|x86
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.DebugWord2003|x86.Build.0 = DebugWord2003|x86
+		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release to Client(signed)|Any CPU.ActiveCfg = Release|x64
+		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release to Client(signed)|Any CPU.Build.0 = Release|x64
+		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release to Client(signed)|x64.ActiveCfg = Release|x64
+		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release to Client(signed)|x64.Build.0 = Release|x64
+		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release to Client(signed)|x86.ActiveCfg = Release|x86
+		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release to Client(signed)|x86.Build.0 = Release|x86
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release|Any CPU.ActiveCfg = Release|x86
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release|x64.ActiveCfg = Release|x64
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816}.Release|x64.Build.0 = Release|x64
@@ -265,6 +330,12 @@ Global
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.DebugWord2003|x64.Build.0 = Debug|x64
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.DebugWord2003|x86.ActiveCfg = Debug|x86
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.DebugWord2003|x86.Build.0 = Debug|x86
+		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release to Client(signed)|Any CPU.ActiveCfg = Release|Any CPU
+		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release to Client(signed)|Any CPU.Build.0 = Release|Any CPU
+		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release to Client(signed)|x64.ActiveCfg = Release|x64
+		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release to Client(signed)|x64.Build.0 = Release|x64
+		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release to Client(signed)|x86.ActiveCfg = Release|x86
+		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release to Client(signed)|x86.Build.0 = Release|x86
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2}.Release|x64.ActiveCfg = Release|x64
@@ -295,6 +366,30 @@ Global
 		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x64.Build.0 = Release|x64
 		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x86.ActiveCfg = Release|x86
 		{289C4B72-B929-4E3D-808F-F622E275AC70}.Release|x86.Build.0 = Release|x86
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Debug|x64.Build.0 = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Debug|x86.Build.0 = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.DebugWord2003|Any CPU.ActiveCfg = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.DebugWord2003|Any CPU.Build.0 = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.DebugWord2003|x64.ActiveCfg = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.DebugWord2003|x64.Build.0 = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.DebugWord2003|x86.ActiveCfg = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.DebugWord2003|x86.Build.0 = Debug|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release to Client(signed)|Any CPU.ActiveCfg = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release to Client(signed)|Any CPU.Build.0 = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release to Client(signed)|x64.ActiveCfg = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release to Client(signed)|x64.Build.0 = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release to Client(signed)|x86.ActiveCfg = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release to Client(signed)|x86.Build.0 = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|x64.ActiveCfg = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|x64.Build.0 = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|x86.ActiveCfg = Release|Any CPU
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -305,7 +400,6 @@ Global
 		{9276C177-1DBA-4A4F-9058-114105455D1A} = {4AF3E01B-91B1-4AE4-9316-11289EFA7B5D}
 		{599773FF-1E86-4AC2-8B24-34BBAC707370} = {8BC2F418-26E0-454F-94D1-D32EB2212FCB}
 		{8CB777EB-36ED-45D8-84FF-BDD64AD5026E} = {8BC2F418-26E0-454F-94D1-D32EB2212FCB}
-		{289C4B72-B929-4E3D-808F-F622E275AC70} = {97D3A80C-342E-4F14-8ED4-01AF8C8CF766}
 		{BB7510E0-87FB-4514-AF94-3F21332FB236} = {27450D4D-9CE9-4787-8674-E0199EC5B7C7}
 		{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9} = {01FCA8EF-C79E-4AAC-831F-5FA4737EB028}
 		{94C3A3CB-7A9A-4D65-8345-21A0D52E82A7} = {31C42F5A-FB16-40B5-95E8-E90FC0C1537D}
@@ -316,6 +410,8 @@ Global
 		{551923B5-D25C-4408-BEF4-0C367E6DBF26} = {9564E389-AB45-4574-9EAF-8357BA5EFCAF}
 		{9FD72ED2-BA9C-4F70-A53C-9051F5123816} = {4AF3E01B-91B1-4AE4-9316-11289EFA7B5D}
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2} = {4AF3E01B-91B1-4AE4-9316-11289EFA7B5D}
+		{289C4B72-B929-4E3D-808F-F622E275AC70} = {7641489B-0771-46A1-9E5E-034ABD60FEB0}
+		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664} = {4AD4C33A-090C-4026-9FD0-80AD773D5665}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		VisualSVNWorkingCopyRoot = .

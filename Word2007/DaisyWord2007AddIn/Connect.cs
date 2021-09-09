@@ -681,29 +681,43 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// UI Call : request conversion of the current active document to DTBook XML or DAISY book
         /// </summary>
         /// <param name="control"></param>
-        public void SaveAsDaisy(IRibbonControl control) {
+        public void SaveAsDaisy(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
-                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
-                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                FileInfo pipelineScript = this.PostprocessingPipeline?.ScriptsInfo[control.Tag];
                 
-                ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript.FullName);
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                IConversionEventsHandler eventsHandler = null;
+                FileInfo pipelineScript = control != null ? this.PostprocessingPipeline?.ScriptsInfo[control.Tag] : null;
+                
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                Converter converter = null;
+                if (conversionIntegrationTestSettings != null) {
+                    eventsHandler = new SilentEventsHandler();
+                    ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
+                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
+                } else {
+                    eventsHandler = new GraphicalEventsHandler();
+                    ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript.FullName);
+                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler) eventsHandler);
+                }
+
                 DocumentParameters currentDocument = converter.preprocessDocument(this.applicationObject.ActiveDocument.FullName);
-                if(converter.requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
+                if(conversionIntegrationTestSettings != null
+                        || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
                     ConversionResult result = converter.convert(currentDocument);
-                    /*if (!(result.Canceled || result.Succeeded)) {
-                        MessageBox.Show(result., "Conversion aborted");
-                    }*/
+                    
                 } else {
                     eventsHandler.onConversionCanceled();
                 }
                 
                 //applicationObject.ActiveDocument.Save();
             } catch (Exception e) {
-                ExceptionReport report = new ExceptionReport(e);
-                report.Show();
+                if(conversionIntegrationTestSettings != null) {
+
+                } else {
+                    ExceptionReport report = new ExceptionReport(e);
+                    report.Show();
+                }
+                
             }
             
         }

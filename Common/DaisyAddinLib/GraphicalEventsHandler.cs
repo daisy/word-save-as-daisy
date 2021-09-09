@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using MSword = Microsoft.Office.Interop.Word;
 
 namespace Daisy.SaveAsDAISY {
     /// <summary>
@@ -113,10 +114,10 @@ namespace Daisy.SaveAsDAISY {
         }
 
         public void onProgressMessageReceived(object sender, EventArgs e) {
-            /*if (progressDialog != null && !progressDialog.IsDisposed) {
+            if (progressDialog != null && !progressDialog.IsDisposed) {
                 if (!progressDialog.Visible) progressDialog.Show();
                 progressDialog.addMessage(((DaisyEventArgs)e).Message);
-            }*/
+            }
         }
 
         public void onFeedbackMessageReceived(object sender, EventArgs e) {
@@ -217,6 +218,25 @@ namespace Daisy.SaveAsDAISY {
 
         public bool AskForTrackConfirmation() {
             return MessageBox.Show(Labels.GetString("TrackConfirmation"), "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
+        }
+
+        public DialogResult documentMustBeRenamed(FilenameValidator authorizedNamePattern) {
+            string BoxText = authorizedNamePattern.UnauthorizedNameMessage +
+                       "\r\n" +
+                       "\r\nDo you want to save this document under a new name ?" +
+                       "\r\nThe document with the original name will not be deleted." +
+                       "\r\n" +
+                       "\r\n(Click Yes to save the document under a new name and use the new one, " +
+                           "No to continue with the current document, " +
+                           "or Cancel to abort the conversion)";
+            return MessageBox.Show(BoxText, "Unauthorized characters in the document filename", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
+        }
+
+        public bool userIsRenamingDocument(ref object preprocessedObject) {
+            object missing = Type.Missing;
+            MSword.Dialog dlg = ((MSword.Document)preprocessedObject).Application.Dialogs[MSword.WdWordDialog.wdDialogFileSaveAs];
+            int saveResult = dlg.Show(ref missing);
+            return saveResult == -1; // ok pressed, see https://docs.microsoft.com/fr-fr/dotnet/api/microsoft.office.interop.word.dialog.show?view=word-pia#Microsoft_Office_Interop_Word_Dialog_Show_System_Object__
         }
     }
 }

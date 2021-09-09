@@ -37,6 +37,23 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         #region Conversion events from word to dtbook XML
 
         /// <summary>
+        /// Raised when a named validation error has occured. <br/>
+        /// This should display a warning to the user telling what was wrong with the file naming.
+        /// This method should return Yes to let the user manually rename the file, No to go with the automatic process, or Cancel to abort the conversion
+        /// </summary>
+        /// <param name="authorizedNamePattern"></param>
+        /// <returns>should return either DialogResult.Yes, DialogResult.No or DialogResult.Cancel </returns>
+        DialogResult documentMustBeRenamed(FilenameValidator authorizedNamePattern);
+
+        /// <summary>
+        /// raised whem the user has choosen to rename the document manually
+        /// </summary>
+        /// <param name="preprocessedObject"> the current word document to be renamed</param>
+        /// <param name="wordInstance">the word application that could be used for dialogs interaction</param>
+        /// <returns>true if the user has renamed the document, false if it has aborted</returns>
+        bool userIsRenamingDocument(ref object preprocessedObject);
+
+        /// <summary>
         /// Method called when the conversion of a list of document starts
         /// </summary>
         /// <param name="documentLists"></param>

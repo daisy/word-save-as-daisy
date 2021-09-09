@@ -5,6 +5,7 @@ using Extensibility;
 using Microsoft.Office.Interop.Word;
 using NUnit.Framework;
 using Daisy.SaveAsDAISY.Conversion;
+using Daisy.SaveAsDAISY.Conversion.Events;
 
 namespace Word2007Addin.IntegrationTests {
     [TestFixture]
@@ -33,15 +34,17 @@ namespace Word2007Addin.IntegrationTests {
         /// </summary>
         [Test]
         public void Test1() {
+            
             //Arrange
             string inputFile = new FileInfo(@"TestData\FromSingleDocx\Test 1\Input\F1.docx").FullName;
+
             string outputDirectoryPath = new DirectoryInfo(@"output\1").FullName;
             string outputFilePath = new FileInfo(@"output\1\F1.xml").FullName;
             string originalOutputPath = new FileInfo(@"TestData\FromSingleDocx\Test 1\Output\F1.xml").FullName;
+            
 
-
-            ConversionParameters parameters = new ConversionParameters();
-            parameters.withParameter("OutputFile", outputDirectoryPath)
+            ConversionParameters parameters = new ConversionParameters()
+                .withParameter("OutputFile", outputDirectoryPath)
                 .withParameter("Title", "Help")
                 .withParameter("Creator", "Balandin Vyacheslav")
                 .withParameter("Publisher", "Pruchkovskaya")
@@ -52,12 +55,12 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
             string currentResult = ReadFile(outputFilePath);
-
+            //
             Assert.AreEqual(originalPluginResult, currentResult, "From Single Docx Test1 failed.");
 
         }
@@ -83,7 +86,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -113,7 +116,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -143,7 +146,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -173,7 +176,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -203,7 +206,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -233,7 +236,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -263,7 +266,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -281,8 +284,8 @@ namespace Word2007Addin.IntegrationTests {
             string originalOutputPath = new FileInfo(@"TestData\FromSingleDocx\Test 9\Output\F9.xml").FullName;
 
 
-            ConversionParameters parameters = new ConversionParameters();
-            parameters.withParameter("OutputFile", outputDirectoryPath)
+            ConversionParameters parameters = new ConversionParameters()
+                .withParameter("OutputFile", outputDirectoryPath)
                 .withParameter("Title", "Tool")
                 .withParameter("Creator", "Balandin Vyacheslav")
                 .withParameter("Publisher", "Pruchkovskaya")
@@ -293,7 +296,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -311,8 +314,8 @@ namespace Word2007Addin.IntegrationTests {
             string originalOutputPath = new FileInfo(@"TestData\FromSingleDocx\Test 10\Output\F10.xml").FullName;
 
 
-            ConversionParameters parameters = new ConversionParameters();
-            parameters.withParameter("OutputFile", outputDirectoryPath)
+            ConversionParameters parameters = new ConversionParameters()
+                .withParameter("OutputFile", outputDirectoryPath)
                 .withParameter("Title", "Problem")
                 .withParameter("Creator", "Balandin Vyacheslav")
                 .withParameter("Publisher", "Pruchkovskaya")
@@ -323,7 +326,7 @@ namespace Word2007Addin.IntegrationTests {
                 .withParameter("Subject", string.Empty);
 
             //Act
-            SaveAsSingleDaisy(inputFile, outputDirectoryPath, parameters);
+            SaveAsSingleDaisy(inputFile, parameters);
 
             //Assert
             string originalPluginResult = ReadFile(originalOutputPath);
@@ -334,22 +337,17 @@ namespace Word2007Addin.IntegrationTests {
 
         #region help methods
 
-        public void SaveAsSingleDaisy(string inputFile, string ouputDirectoryPath, ConversionParameters parameters) {
+        public void SaveAsSingleDaisy(string inputFile, ConversionParameters parameters) {
             Application word = OpenMsWordDocument(inputFile);
 
             Connect connect = new Connect();
 
             Array array = new object[0];
             connect.OnConnection(word, ext_ConnectMode.ext_cm_External, null, ref array);
-            // TODO fix test
-            /*connect.convertDocumentToDTBook(
-                new SilentEventsHandler(),
-                word.ActiveDocument,
-                "DaisySingle",
-                parameters,
-                ouputDirectoryPath);*/
+            connect.SaveAsDaisy(null, parameters);
 
-            
+
+
         }
 
 

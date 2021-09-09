@@ -70,6 +70,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         public string OutputPath { get; set; }
 
+        public bool ReopenInputDocument { get; set; } = true;
 
         public List<string> ObjectShapes { get; set; }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Forms;
 
 namespace Daisy.SaveAsDAISY.Conversion.Events {
 
@@ -112,6 +113,16 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
 
         public bool AskForTrackConfirmation() {
             return true;
+        }
+
+        public DialogResult documentMustBeRenamed(FilenameValidator authorizedNamePattern) {
+            // renamed automatically for silent mode, see the interface reference
+            return DialogResult.No;
+        }
+
+        public bool userIsRenamingDocument(ref object preprocessedObject) {
+            // Should not be used in silent mode
+            throw new NotImplementedException();
         }
     }
 
