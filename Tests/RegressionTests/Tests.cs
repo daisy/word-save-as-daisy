@@ -9,6 +9,8 @@ using Daisy.SaveAsDAISY.Addins.Word2007;
 using Extensibility;
 using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
+using System.Xml;
+using System.Xml.XPath;
 
 namespace RegressionTests {
 
@@ -99,7 +101,7 @@ namespace RegressionTests {
 
 			string testReportPath = Path.Combine(
 				reportsDirectory.FullName,
-				"regressionReport-" + DateTime.Now.ToBinary().ToString() + ".log"
+				"regressionReport" + DateTime.Now.ToBinary().ToString() + ".log"
 			);
 			StreamWriter testReport = new StreamWriter(File.OpenWrite(testReportPath));
 			
@@ -147,12 +149,52 @@ namespace RegressionTests {
 
 					// if result exist in expected
 					if (expectedOutput.Exists) {
-						// compare outputs
-						//Assert
-						string originalPluginResult = ReadFile(Path.Combine(conversionOutput, outputName));
-						string currentResult = ReadFile(Path.Combine(expectedOutput.FullName, outputName));
-						//
-						Assert.AreEqual(originalPluginResult, currentResult, "Possible regression found");
+						
+						XmlDocument expectedResult = new XmlDocument();
+						expectedResult.LoadXml(ReadFile(Path.Combine(conversionOutput, outputName)));
+						cleanForComparison(ref expectedResult);
+
+						XmlDocument outputResult = new XmlDocument();
+						outputResult.LoadXml(ReadFile(Path.Combine(expectedOutput.FullName, outputName)));
+						cleanForComparison(ref outputResult);
+
+                        //
+                        try {
+							Assert.AreEqual(expectedResult.OuterXml, outputResult.OuterXml, "Possible regression found");
+						} catch (Exception e) {
+							// save settings, expected and output and report to reports folder
+							expectedResult.Save(
+								Path.Combine(
+									reportsDirectory.FullName,
+									Path.GetFileNameWithoutExtension(outputName)+"-expected.xml"
+								)
+							);
+							outputResult.Save(
+								Path.Combine(
+									reportsDirectory.FullName,
+									Path.GetFileNameWithoutExtension(outputName)+"-output.xml"
+								)
+							);
+							string conversionSettings = converter.conversionParameters.serialize();
+							StreamWriter conversionSettingsWriter = new StreamWriter(File.OpenWrite(
+								Path.Combine(
+									reportsDirectory.FullName,
+									Path.GetFileNameWithoutExtension(outputName) + "-conversionParameters.json"
+								)));
+							conversionSettingsWriter.Write(conversionSettings);
+							conversionSettingsWriter.Close();
+							string documentSettings = currentDocument.serialize();
+							StreamWriter documentSettingsWriter = new StreamWriter(File.OpenWrite(
+								Path.Combine(
+									reportsDirectory.FullName,
+									Path.GetFileNameWithoutExtension(outputName) + "-documentParameters.json"
+								)));
+							documentSettingsWriter.Write(documentSettings);
+							documentSettingsWriter.Close();
+
+							testReport.WriteLine(e.Message);
+						}
+						
 					} else {
 						// else move result folder to expected
 						Directory.Move(conversionOutput, expectedOutput.FullName);
@@ -170,6 +212,24 @@ namespace RegressionTests {
 
 		}
 
+		private void cleanForComparison(ref XmlDocument toCleanUp) {
+			XmlNode head = toCleanUp.LastChild.FirstChild;
+            for (int i = head.ChildNodes.Count - 1; i >= 0; --i) {
+				bool removeItem = false;
+				if (head.ChildNodes[i].LocalName == "meta") {
+					foreach (XmlAttribute metaAttribute in head.ChildNodes[i].Attributes) {
+						removeItem = removeItem ||
+							metaAttribute.Value == "dc:Date" ||
+							metaAttribute.Value == "dc:Identifier" ||
+							metaAttribute.Value == "dtb:uid";
+					}
+
+				}
+				if (removeItem) {
+					head.RemoveChild(head.ChildNodes[i]);
+				}
+			}
+		}
 
 
 		#region utilities
