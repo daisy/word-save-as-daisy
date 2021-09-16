@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
+using Newtonsoft.Json;
+
 namespace Daisy.SaveAsDAISY.Conversion {
     /// <summary>
     /// Input parameters for a conversion.
@@ -157,7 +159,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <summary>
         /// Get the conversion settings hashtable (to replace the TranslationParametersBuilder behavior)
         /// </summary>
-        public Hashtable ConversionParametersHash {
+        public Hashtable ParametersHash {
             get {
                 Hashtable parameters = new Hashtable();
                 
@@ -170,7 +172,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 // TO BE CHANGED if the value changes in xslts
                 if (OutputPath != null) parameters.Add("OutputFile", OutputPath);
                 
-                // This two should be moved to document parameters
+                // This two fields are stored in document parameters,
+                // but we let the conversion settings capable of overriding them just in case
                 if (TrackChanges != null) parameters.Add("TRACK", TrackChanges);
                 if (ParseSubDocuments != null) parameters.Add("MasterSub", ParseSubDocuments);
 
@@ -217,6 +220,10 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 System.IO.Directory.CreateDirectory(ConverterHelper.AppDataSaveAsDAISYDirectory);
 
             document.Save(ConversionParametersXmlPath);
+        }
+
+        public string serialize() {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

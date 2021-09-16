@@ -347,7 +347,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 				//.withParameter("PostProcessSetting", Conversion.PostProcessSettings);
 
 
-			return UpdatedConversionParameters.ConversionParametersHash;
+			return UpdatedConversionParameters.ParametersHash;
 		}
 
 		private void UpdatePopulateOutputXml(string outputPath)

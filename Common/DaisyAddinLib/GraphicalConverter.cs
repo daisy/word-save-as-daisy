@@ -32,10 +32,10 @@ namespace Daisy.SaveAsDAISY.Forms {
         /// <returns></returns>
         public ConversionStatus requestUserParameters(DocumentParameters currentDocument) {
 
-            ConversionParametersForm conversionSetter = new ConversionParametersForm(currentDocument, conversion);
+            ConversionParametersForm conversionSetter = new ConversionParametersForm(currentDocument, conversionParameters);
             if (conversionSetter.DoTranslate() == 1) {
                 // get the updated settings
-                conversion = conversionSetter.UpdatedConversionParameters;
+                conversionParameters = conversionSetter.UpdatedConversionParameters;
                 return ConversionStatus.ReadyForConversion;
             }
             return ConversionStatus.Canceled;
@@ -46,9 +46,9 @@ namespace Daisy.SaveAsDAISY.Forms {
         /// </summary>
         /// <returns></returns>
         public List<string> requestUserDocumentsList() {
-            MultipleSub userRequest = new MultipleSub(conversion);
+            MultipleSub userRequest = new MultipleSub(conversionParameters);
             if (userRequest.DoTranslate() == 1) {
-                conversion = userRequest.UpdatedConversionParameters;
+                conversionParameters = userRequest.UpdatedConversionParameters;
                 return userRequest.GetFileNames;
             }
 

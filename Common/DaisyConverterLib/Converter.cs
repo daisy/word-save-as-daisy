@@ -25,9 +25,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		/// 
 		/// </summary>
 		protected WordToDTBookXMLTransform documentConverter;
-        protected ConversionParameters conversion;
-
-
+        public ConversionParameters conversionParameters;
 
         protected ChainResourceManager resourceManager;
 
@@ -82,7 +80,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 			
 			this.documentPreprocessor = preprocessor;
 			this.documentConverter = documentConverter;
-			this.conversion = conversionParameters;
+			this.conversionParameters = conversionParameters;
 			this.eventsHandler = eventsHandler ?? new SilentEventsHandler();
 			this.documentConverter.RemoveMessageListeners();
 			this.documentConverter.AddProgressMessageListener(new WordToDTBookXMLTransform.XSLTMessagesListener(this.eventsHandler.onProgressMessageReceived));
@@ -111,7 +109,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 			DocumentParameters result = new DocumentParameters(inputPath) {
 				CopyPath = ConverterHelper.GetTempPath(inputPath, ".docx"),
 				ResourceId = resourceId != null ? resourceId : null,
-				ReopenInputDocument = conversion.Visible
+				ReopenInputDocument = conversionParameters.Visible
 			};
 			// dot not make visible subdocuments (documents with resource Id assigned)
 			object preprocessedObject = documentPreprocessor.startPreprocessing(result, eventsHandler);
@@ -119,7 +117,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 				do {
 					switch (CurrentStatus) {
 						case ConversionStatus.None: // Starting by validating file name
-							CurrentStatus = documentPreprocessor.ValidateName(ref preprocessedObject, conversion.NameValidator, eventsHandler);
+							CurrentStatus = documentPreprocessor.ValidateName(ref preprocessedObject, conversionParameters.NameValidator, eventsHandler);
 							break;
 						case ConversionStatus.ValidatedName: // make the working copy
 							CurrentStatus  = documentPreprocessor.CreateWorkingCopy(ref preprocessedObject, ref result, eventsHandler);
@@ -153,13 +151,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
 			if (result.HasRevisions) {
 				result.TrackChanges = eventsHandler.AskForTrackConfirmation();
 				// To be removed later, after moving TrackChanges eval from conversion to document param object
-				conversion.TrackChanges = result.TrackChanges ? "Yes" : "No";
+				conversionParameters.TrackChanges = result.TrackChanges ? "Yes" : "No";
 			} else {
-				conversion.TrackChanges = "NoTrack";
+				conversionParameters.TrackChanges = "NoTrack";
 			}
 
 			// Only attempt to parse subdocument if no resourceId is provided or if nop attempt to parse was previously done 
-			if (conversion.ParseSubDocuments == null || resourceId == null) {
+			if (conversionParameters.ParseSubDocuments == null || resourceId == null) {
 				SubdocumentsList subDocList = SubdocumentsManager.FindSubdocuments(
 					result.CopyPath,
 					result.InputPath);
@@ -167,13 +165,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
 				if (subDocList.Errors.Count > 0) {
 					string errors = "Subdocuments convertion will be ignored due to the following errors found while extracting them:\r\n" + string.Join("\r\n", subDocList.Errors);
 					eventsHandler.onPreprocessingError(result.InputPath, errors);
-					conversion.ParseSubDocuments = "No";
+					conversionParameters.ParseSubDocuments = "No";
 				} else if (result.HasSubDocuments) {
-					conversion.ParseSubDocuments = "No";
+					conversionParameters.ParseSubDocuments = "No";
 					if (eventsHandler != null) {
-						conversion.ParseSubDocuments = eventsHandler.AskForTranslatingSubdocuments() ? "Yes" : "No";
+						conversionParameters.ParseSubDocuments = eventsHandler.AskForTranslatingSubdocuments() ? "Yes" : "No";
 					}
-					if (conversion.ParseSubDocuments == "Yes") {
+					if (conversionParameters.ParseSubDocuments == "Yes") {
 						foreach (SubdocumentInfo item in subDocList.Subdocuments) {
 							if (CurrentStatus != ConversionStatus.Canceled) {
 								DocumentParameters subDoc = null;
@@ -182,7 +180,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 								} catch (Exception e) {
 									string errors = "Subdocuments convertion will be ignored due to the following errors found while preprocessing "+ item.FileName  +":\r\n" + e.Message;
 									eventsHandler.onPreprocessingError(item.FileName, errors);
-									conversion.ParseSubDocuments = "No";
+									conversionParameters.ParseSubDocuments = "No";
 								}
 								if (subDoc != null) {
 									result.SubDocumentsToConvert.Add(subDoc);
@@ -199,7 +197,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
                         }
 					}
 				} else {
-					conversion.ParseSubDocuments = "NoMasterSub";
+					conversionParameters.ParseSubDocuments = "NoMasterSub";
 				}
 			}
 			CurrentStatus = ConversionStatus.PreprocessingSucceeded;
@@ -219,21 +217,21 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="applyPostProcessing"></param>
         public ConversionResult convert(DocumentParameters document, bool applyPostProcessing = true) {
 
-			this.eventsHandler.onDocumentConversionStart(document, conversion);
+			this.eventsHandler.onDocumentConversionStart(document, conversionParameters);
 			xmlConversionCancel = new CancellationTokenSource();
 			CurrentStatus = ConversionStatus.HasStartedConversion;
 			// If conversion is to be post processed output the xsl transfo to temp
-			string outputDirectory = conversion.ScriptPath != null ?
+			string outputDirectory = conversionParameters.ScriptPath != null ?
 				Path.GetTempPath() : (
-					conversion.OutputPath.EndsWith(".xml") ?
-						Directory.GetParent(conversion.OutputPath).FullName :
-						conversion.OutputPath
+					conversionParameters.OutputPath.EndsWith(".xml") ?
+						Directory.GetParent(conversionParameters.OutputPath).FullName :
+						conversionParameters.OutputPath
 				);
 
 			// Rebuild and sanitize file name
 			string outputFilename = (
-				conversion.OutputPath.EndsWith(".xml") ?
-					Path.GetFileName(conversion.OutputPath) :
+				conversionParameters.OutputPath.EndsWith(".xml") ?
+					Path.GetFileName(conversionParameters.OutputPath) :
 					Path.GetFileNameWithoutExtension(document.InputPath) + ".xml"
 				);
 
@@ -242,7 +240,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 			// Rebuild output path
 			document.OutputPath = Path.Combine(outputDirectory, sanitizedName);
 
-			if (document.SubDocumentsToConvert.Count > 0 && conversion.ParseSubDocuments.ToLower() == "yes") {
+			if (document.SubDocumentsToConvert.Count > 0 && conversionParameters.ParseSubDocuments.ToLower() == "yes") {
                 List<DocumentParameters> flattenList = new List<DocumentParameters> {
                     document
                 };
@@ -253,7 +251,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 			} else {
 				try {
 					conversionTask = Task<XmlDocument>.Factory.StartNew(() => {
-						return documentConverter.ConvertDocument(document, conversion);
+						return documentConverter.ConvertDocument(document, conversionParameters);
 					});
 					conversionTask.Wait(xmlConversionCancel.Token);
 					conversionTask.Dispose();
@@ -274,17 +272,17 @@ namespace Daisy.SaveAsDAISY.Conversion {
 				return ConversionResult.Cancel();
 			}
 
-			this.eventsHandler.onDocumentConversionSuccess(document, conversion);
-			if (applyPostProcessing && conversion.PostProcessSettings != null) { // launch the pipeline post processing
-				this.eventsHandler.onPostProcessingStart(conversion);
+			this.eventsHandler.onDocumentConversionSuccess(document, conversionParameters);
+			if (applyPostProcessing && conversionParameters.PostProcessSettings != null) { // launch the pipeline post processing
+				this.eventsHandler.onPostProcessingStart(conversionParameters);
 				try {
-					conversion.PostProcessSettings.ExecuteScript(document.OutputPath);
+					conversionParameters.PostProcessSettings.ExecuteScript(document.OutputPath);
 				} catch (Exception e) {
 					CurrentStatus = ConversionStatus.Error;
 					this.eventsHandler.OnUnknownError(e.Message);
 					return ConversionResult.Failed(e.Message);
 				}
-				this.eventsHandler.onPostProcessingSuccess(conversion);
+				this.eventsHandler.onPostProcessingSuccess(conversionParameters);
 			}
 			return ConversionResult.Success();
 		}
@@ -296,7 +294,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		/// <param name="conversion">global conversion settings</param>
 		/// <param name="applyPostProcessing">if true, post processing will be applied on the merge result</param>
 		public ConversionResult convert(List<DocumentParameters> documentLists, bool applyPostProcessing = true) {
-			this.eventsHandler.onDocumentListConversionStart(documentLists, conversion);
+			this.eventsHandler.onDocumentListConversionStart(documentLists, conversionParameters);
 			CurrentStatus = ConversionStatus.HasStartedConversion;
 			string errors = "";
 
@@ -305,25 +303,25 @@ namespace Daisy.SaveAsDAISY.Conversion {
 				if (documentLists.Count == 1) {
 					return this.convert(documentLists[0], false);
 				} else {
-					string outputDirectory = conversion.OutputPath.EndsWith(".xml") ?
-						Directory.GetParent(conversion.OutputPath).FullName :
-						conversion.OutputPath;
+					string outputDirectory = conversionParameters.OutputPath.EndsWith(".xml") ?
+						Directory.GetParent(conversionParameters.OutputPath).FullName :
+						conversionParameters.OutputPath;
 					// Rebuild and sanitize file name
 					string outputFilename = (
-						conversion.OutputPath.EndsWith(".xml") ?
-							Path.GetFileName(conversion.OutputPath) :
+						conversionParameters.OutputPath.EndsWith(".xml") ?
+							Path.GetFileName(conversionParameters.OutputPath) :
 							Path.GetFileNameWithoutExtension(documentLists[0].InputPath) + ".xml"
 						).Replace(" ", "_").Replace(",", "_");
 
 					// Rebuild output path based on first document 
-					conversion.OutputPath = Path.Combine(outputDirectory, outputFilename);
+					conversionParameters.OutputPath = Path.Combine(outputDirectory, outputFilename);
 					foreach (DocumentParameters document in documentLists) {
 						//document.OutputPath = outputDirectory + "\\" + Path.GetFileNameWithoutExtension(document.InputPath) + ".xml";
 						// use memory temp for output
 						document.OutputPath = Path.GetTempFileName();
 						try {
 							conversionTask = Task<XmlDocument>.Factory.StartNew(() => {
-								return documentConverter.ConvertDocument(document, conversion, mergeResult);
+								return documentConverter.ConvertDocument(document, conversionParameters, mergeResult);
 							});
 
 							conversionTask.Wait(xmlConversionCancel.Token);
@@ -354,7 +352,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 							return ConversionResult.Cancel();
 						}
 					}
-					documentConverter.finalizeAndSaveMergedDocument(mergeResult, conversion);
+					documentConverter.finalizeAndSaveMergedDocument(mergeResult, conversionParameters);
 				}
 			} catch (Exception e) {
 				// Propagate unhandled exception
@@ -364,7 +362,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 			}
 			if (documentConverter.ValidationErrors.Count > 0) {
-				this.eventsHandler.OnValidationErrors(documentConverter.ValidationErrors, conversion.OutputPath );
+				this.eventsHandler.OnValidationErrors(documentConverter.ValidationErrors, conversionParameters.OutputPath );
 				return ConversionResult.FailedOnValidation(
 					string.Join(
 						"\r\n",
@@ -376,7 +374,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 			} else if (CurrentStatus == ConversionStatus.Canceled) {
 				return ConversionResult.Cancel();
 			} else {
-				this.eventsHandler.onDocumentListConversionSuccess(documentLists, conversion);
+				this.eventsHandler.onDocumentListConversionSuccess(documentLists, conversionParameters);
 				
 				if (documentConverter.LostElements.Count > 0) {
 					ArrayList unconvertedElements = new ArrayList();
@@ -389,21 +387,21 @@ namespace Daisy.SaveAsDAISY.Conversion {
 							unconvertedElements.Add(lostElements);
                         }
                     }
-					this.eventsHandler.OnLostElements(conversion.OutputPath, unconvertedElements);
+					this.eventsHandler.OnLostElements(conversionParameters.OutputPath, unconvertedElements);
 					applyPostProcessing = this.eventsHandler.IsContinueDTBookGenerationOnLostElements();
 				}
-				if (applyPostProcessing && conversion.PostProcessSettings != null) {
+				if (applyPostProcessing && conversionParameters.PostProcessSettings != null) {
 					// If post processing is requested (and can be applied even if lost elements are found)
 					// Launch the post processing pipeline sript 
 					// (cleaning or converting DTBook to another format Like a DAISY book)
-					this.eventsHandler.onPostProcessingStart(conversion);
+					this.eventsHandler.onPostProcessingStart(conversionParameters);
 					try {
-						conversion.PostProcessSettings.ExecuteScript(conversion.OutputPath);
+						conversionParameters.PostProcessSettings.ExecuteScript(conversionParameters.OutputPath);
 					} catch (Exception e) {
 						this.eventsHandler.OnUnknownError(e.Message);
 						return ConversionResult.Failed(e.Message);
 					}
-					this.eventsHandler.onPostProcessingSuccess(conversion);
+					this.eventsHandler.onPostProcessingSuccess(conversionParameters);
 				}
 			}
 			return ConversionResult.Success();

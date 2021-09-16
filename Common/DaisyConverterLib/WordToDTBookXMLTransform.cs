@@ -341,12 +341,24 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 
 					parameters.AddParam("outputFile", "", tempOutputPath);
-
-					foreach (DictionaryEntry myEntry in conversion.ConversionParametersHash) {
+					// Document specific settings
+					foreach (DictionaryEntry myEntry in document.ParametersHash) {
 						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
 					}
-					// write result to conversion.TempOutputFile or a random temp output file
+					// Conversion batch settings
+					foreach (DictionaryEntry myEntry in conversion.ParametersHash) {
+						// We allow conversion settings to override document settings
+						// if wanted
+						if(parameters.GetParam(myEntry.Key.ToString(), "") != null){
+							parameters.RemoveParam(myEntry.Key.ToString(), "");
+						}
+						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
+						
+					}
+
 					
+					// write result to conversion.TempOutputFile or a random temp output file
+
 					XmlWriter finalWriter;
 #if DEBUG
 					StreamWriter streamWriter = new StreamWriter(

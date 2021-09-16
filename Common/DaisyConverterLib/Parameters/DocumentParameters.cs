@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -70,17 +71,35 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         public string OutputPath { get; set; }
 
+        /// <summary>
+        /// If true, the input document is reopened in word after saving the copy used for conversion
+        /// </summary>
         public bool ReopenInputDocument { get; set; } = true;
 
+        /// <summary>
+        /// Pathes of the shapes images extracted during preprocessing
+        /// </summary>
         public List<string> ObjectShapes { get; set; }
 
         /// <summary>
-        /// To be replaced by a list of string later on
-        /// (Needs to update the DaisyClass object for that)
+        /// hash of key => List of mathml equations (stored as string)
         /// </summary>
         public Hashtable ListMathMl { get; set; }
+
+        /// <summary>
+        /// Ids of the shapes extracted during preprocessing
+        ///
+        /// </summary>
         public List<string> ImageIds { get; set; }
+
+        /// <summary>
+        /// Pathes of the inline shapes images extracted during preprocessing
+        /// </summary>
         public List<string> InlineShapes { get; set; }
+
+        /// <summary>
+        /// Ids of the inline shapes extracted during preprocessing
+        /// </summary>
         public List<string> InlineIds { get; set; }
 
 
@@ -152,7 +171,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         /// <summary>
-        /// Parameters 
+        /// Document parameters hash
+        /// (To be used for the Daisy class used in xslt)
         /// </summary>
         public Hashtable ParametersHash { 
             get {
@@ -163,6 +183,10 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 
                 return parameters;
             }
+        }
+
+        public string serialize() {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

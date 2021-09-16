@@ -77,7 +77,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
 
             foreach (MSword.Range tmprng in currentDoc.StoryRanges) {
-                ArrayList listmathML = new ArrayList();
+                List<string> listmathML = new List<string>();
                 rng = tmprng;
                 storyName = rng.StoryType.ToString();
                 while (rng != null) {
@@ -159,6 +159,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus ProcessShapes(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            List<string> objectShapes = new List<string>();
+            List<string> imageIds = new List<string>();
+            List<string> inlineShapes = new List<string>();
+            List<string> inlineShapeIds = new List<string>();
             try {
                 Exception threadEx = null;
                 Thread staThread = new Thread(
@@ -190,9 +194,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                         image.Save(ms, ImageFormat.Png);
                                         Ret = ms.ToArray();
                                         FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                                        
                                         fs.Write(Ret, 0, Ret.Length);
                                         fs.Flush();
                                         fs.Dispose();
+                                        objectShapes.Add(pathShape);
+                                        imageIds.Add(item.ID.ToString());
                                     } catch (ClipboardDataException cde) {
                                         warnings.Add("- Shape " + item.ID.ToString() + ": " + cde.Message);
                                     } catch (Exception e) {
@@ -208,7 +215,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                 while (rng != null) {
                                     foreach (MSword.InlineShape item in rng.InlineShapes) {
                                         if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
-                                            string str = "Shapes_" + ConverterHelper.GenerateId().ToString();
+                                            string shapeId = ConverterHelper.GenerateId().ToString();
+                                            string str = "Shapes_" + shapeId;
+
                                             string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png");
                                             object range = item.Range;
                                             item.Range.Bookmarks.Add(str, ref range);
@@ -223,6 +232,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                                 fs.Write(Ret, 0, Ret.Length);
                                                 fs.Flush();
                                                 fs.Dispose();
+                                                inlineShapes.Add(shapeOutputPath);
+                                                inlineShapeIds.Add(shapeId);
                                             } catch (ClipboardDataException cde) {
                                                 warnings.Add("- InlineShape with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
                                             } catch (Exception e) {
@@ -253,6 +264,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 if (threadEx != null) {
                     throw threadEx;
                 }
+                document.ObjectShapes = objectShapes;
+                document.InlineShapes = inlineShapes;
+                document.ImageIds = imageIds;
+                document.InlineIds = inlineShapeIds;
             } catch (Exception e) {
                 eventsHandler?.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
                     "\r\n- " + e.Message +
@@ -550,7 +565,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         static private void storeMathMLEquation(
             ref Microsoft.Office.Interop.Word.InlineShape shape,
             int indexForVerb,
-            ArrayList listmathML
+            List<string> listmathML
         ) {
             IConnectDataObject mDataObject;
             if (shape != null) {
@@ -643,7 +658,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="listmathML">String array to store the mathml in</param>
         static private void WriteOutMathMLFromStgMedium(
             ref ConnectSTGMEDIUM oStgMedium,
-            ArrayList listmathML
+            List<string> listmathML
         ) {
             IntPtr ptr;
             byte[] rawArray = null;
