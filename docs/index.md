@@ -7,8 +7,8 @@ SaveAsDAISY is available for Windows only. We provide an installer for Microsoft
 
 ## Latest version: 2.6.1 beta - Minor update 2 (released on January 27, 2020)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller.exe)
-- [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.2-beta/SaveAsDAISYInstaller_Office64bits.exe)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.3-beta/SaveAsDAISYInstaller.exe)
+- [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.3-beta/SaveAsDAISYInstaller_Office64bits.exe)
 
 ## Report issues
 
@@ -38,6 +38,17 @@ A fix for this issue is being worked on and should be available in the next rele
 In the meantime, it is recommended to save the document under a standard system location (that is not managed by onedrive) and to launch the conversion from the new copy. 
 
 # Changelog
+
+# 2.6.1 beta - update 3 (September 2021)
+
+Minor behaviour updates including :
+- bugfix for [#6](https://github.com/daisy/word-save-as-daisy/issues/6)
+- bugfix for an issue regarding a PushLevel error message
+- Conversion progress bars are replaced by a Message dialog reporting more precisely the process status
+
+The code base is under a heavy rewrite process to optimize it and prepare the switch to pipeline 2 process,
+allowing to provide more outputed format and better support.
+
 
 # 2.6.1 beta - Minor update 2 (January 28, 2021)
 
