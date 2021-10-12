@@ -153,3 +153,15 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+
+
+# ===================================================
+# Test files that cannot be stored on the online repo
+# ===================================================
+
+Tests/RegressionTests/testfiles/copyrighted/**
+!Tests/RegressionTests/testfiles/copyrighted/.gitkeep
+# we might need to treat copyrighted expected differently
+Tests/RegressionTests/testfiles/expected/**
+!Tests/RegressionTests/testfiles/expected/.gitkeep
+
