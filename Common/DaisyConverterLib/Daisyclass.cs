@@ -272,28 +272,29 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public String GetMathML(String storyType) {
             String strMathMl = "";
             if (listMathMl != null) {
+                List<string> mathMlStory = (List<string>)listMathMl[storyType];
                 if (listMathMl.Count != 0) {
-                    if (storyType == "wdTextFrameStory" && ((ArrayList)listMathMl[storyType]).Count != 0) {
+                    if (storyType == "wdTextFrameStory" && mathMlStory.Count != 0) {
 
-                        if (((ArrayList)listMathMl[storyType])[sidebarFlag] != null) {
-                            if (((ArrayList)listMathMl[storyType]).Count != 0) {
-                                str = ((ArrayList)listMathMl[storyType])[sidebarFlag].ToString();
+                        if (mathMlStory[sidebarFlag] != null) {
+                            if (mathMlStory.Count != 0) {
+                                str = mathMlStory[sidebarFlag].ToString();
                                 strMathMl = str;
                                 sidebarFlag++;
                             }
                         }
-                    } else if (storyType == "wdFootnotesStory" && ((ArrayList)listMathMl[storyType]).Count != 0) {
-                        if (((ArrayList)listMathMl[storyType])[footNoteFlag] != null) {
-                            if (((ArrayList)listMathMl[storyType]).Count != 0) {
-                                str = ((ArrayList)listMathMl[storyType])[footNoteFlag].ToString();
+                    } else if (storyType == "wdFootnotesStory" && mathMlStory.Count != 0) {
+                        if (mathMlStory[footNoteFlag] != null) {
+                            if (mathMlStory.Count != 0) {
+                                str = mathMlStory[footNoteFlag].ToString();
                                 strMathMl = str;
                                 footNoteFlag++;
                             }
                         }
-                    } else if (storyType == "wdMainTextStory" && ((ArrayList)listMathMl[storyType]).Count != 0) {
-                        if (((ArrayList)listMathMl[storyType])[mainFlag] != null) {
-                            if (((ArrayList)listMathMl[storyType]).Count != 0) {
-                                str = ((ArrayList)listMathMl[storyType])[mainFlag].ToString();
+                    } else if (storyType == "wdMainTextStory" && mathMlStory.Count != 0) {
+                        if (mathMlStory[mainFlag] != null) {
+                            if (mathMlStory.Count != 0) {
+                                str = mathMlStory[mainFlag].ToString();
                                 strMathMl = str;
                                 mainFlag++;
                             }
