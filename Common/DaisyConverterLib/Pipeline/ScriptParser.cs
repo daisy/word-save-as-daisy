@@ -15,6 +15,23 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string m_ScriptFilePath;
         private List<ScriptParameter> m_ParameterList;
 
+        
+        
+
+        public delegate void PipelineOutputListener(string message);
+        private event PipelineOutputListener onPipelineOutput;
+        public void setPipelineOutputListener(PipelineOutputListener onPipelineOutput) {
+            this.onPipelineOutput = onPipelineOutput;
+        }
+
+
+        public delegate void PipelineErrorListener(string message);
+        private event PipelineErrorListener onPipelineError;
+        public void setPipelineErrorListener(PipelineErrorListener onPipelineError) {
+            this.onPipelineError = onPipelineError;
+        }
+
+
         private string m_NiceName = "";
 
         /// <summary>
@@ -143,21 +160,45 @@ namespace Daisy.SaveAsDAISY.Conversion
             PipelineProcess.StartInfo.CreateNoWindow = !displayOutputWindow;
             PipelineProcess.StartInfo.UseShellExecute = displayOutputWindow;
             PipelineProcess.StartInfo.ErrorDialog = true;
-            
+
+            if(this.onPipelineError != null) {
+                // redirect pipeline error
+                PipelineProcess.StartInfo.RedirectStandardError = true;
+                PipelineProcess.ErrorDataReceived += (sender, args) => {
+                    this.onPipelineError(args.Data);
+                };
+                
+            }
+
+            if (this.onPipelineOutput != null) {
+                // Redirect pipeline output
+                PipelineProcess.StartInfo.RedirectStandardOutput = true;
+                PipelineProcess.OutputDataReceived += (sender, args) => {
+                    this.onPipelineOutput(args.Data);
+                };
+            }
+
 
             PipelineProcess.StartInfo.FileName = PipelineFilePath;
             PipelineProcess.StartInfo.Arguments = (isQuite ? "--quit " : string.Empty) + "--execute --script \"" + m_ScriptFilePath + "\" --params " + str2;
+#if DEBUG
+            if(this.onPipelineOutput != null) {
+                this.onPipelineOutput("Launching " + PipelineProcess.StartInfo.FileName + " " + PipelineProcess.StartInfo.Arguments);
+            }
+#endif
             PipelineProcess.StartInfo.WorkingDirectory = Directory.GetParent(Directory.GetParent(m_ScriptFilePath).FullName).FullName;
 
             try
             {
+                // Add pipeline logging
                 PipelineProcess.Start();
+                if (this.onPipelineOutput != null) PipelineProcess.BeginOutputReadLine();
+                if (this.onPipelineError != null) PipelineProcess.BeginErrorReadLine();
             }
             catch (System.Exception ex)
             {
                 System.Windows.Forms.MessageBox.Show(ex.ToString());
             }
-            // TODO add pipeline output and error redirection to a log file for pipeline debugging ...
             PipelineProcess.WaitForExit();
             //Deleting the files
             if (File.Exists(inputPath))

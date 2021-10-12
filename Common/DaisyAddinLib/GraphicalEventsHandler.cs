@@ -78,6 +78,16 @@ namespace Daisy.SaveAsDAISY {
             if (progressDialog != null && !progressDialog.IsDisposed) {
                 if (!progressDialog.Visible) progressDialog.Show();
                 progressDialog.addMessage("Starting pipeline processing");
+                conversion.PostProcessSettings.setPipelineErrorListener((string message) => {
+                    if(message != null) {
+                        progressDialog.addMessage(message);
+                    }
+                });
+                conversion.PostProcessSettings.setPipelineOutputListener((string message) => {
+                    if (message != null) {
+                        progressDialog.addMessage(message);
+                    }
+                });
             }
             /*if (progressDialog != null && !progressDialog.IsDisposed) {
                 progressDialog.Close();
@@ -95,7 +105,7 @@ namespace Daisy.SaveAsDAISY {
                 if (!progressDialog.Visible) progressDialog.Show();
                 progressDialog.addMessage("Successful conversion of " + document.InputPath);
             }
-            if (progressDialog != null && !progressDialog.IsDisposed) {
+            if (conversion.PostProcessSettings == null && progressDialog != null && !progressDialog.IsDisposed) {
                 progressDialog.Close();
             }
         }
