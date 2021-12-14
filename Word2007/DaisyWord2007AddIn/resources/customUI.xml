@@ -7,6 +7,8 @@
                 <dynamicMenu id="DaisyDTBookSingle" label="Full D&amp;AISY (from single docx)"  getContent="GetDTbook" getImage="iconSelector" getDescription="GetDescriptionSingleDTBook"/>
                 <button id="DaisyMultiple" tag="_postprocess" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="iconSelector" keytip="m" getDescription="GetDescriptionMultiple"/>
                 <dynamicMenu id="DaisyDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="iconSelector" getDescription="GetDescriptionMultipleDTBook"/>
+                <button id="EpubSingle" tag="dtbook-to-epub3" label="EPUB3 (from &amp;Single docx)"  onAction="SaveAsEPUB3"  enabled="true" getImage="iconSelector" keytip="e" getDescription="GetDescriptionSingle"/>
+
             </menu>
         </officeMenu>
         <tabs>
@@ -17,6 +19,7 @@
                         <dynamicMenu id="DaisyTabDTBookSingle" label="Full D&amp;AISY (from single docx)" getContent="GetDTbook" getImage="iconSelector" />
                         <button id="DaisyTabMultiple" tag="_postprocess" label="DAISY XML (from &amp;Multiple docx, experimental)" onAction="Mutiple" enabled="true" getImage="iconSelector" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
                         <dynamicMenu id="DaisyTabDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, experimental)" getContent="GetDTbook" getImage="iconSelector" />
+                        <button id="EpubTabSingle" tag="dtbook-to-epub3" label="EPUB3 (from &amp;Single docx)"  onAction="SaveAsEPUB3"  enabled="true" getImage="iconSelector" keytip="e" getDescription="GetDescriptionSingle"/>
                     </menu>
                 </group >
 

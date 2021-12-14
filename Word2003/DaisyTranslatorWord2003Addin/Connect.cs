@@ -92,7 +92,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2003 {
 		ArrayList mergeDoclanguage, openSubdocs;
 		frmValidate2003 validateInput;
 		public ArrayList docValidation = new ArrayList();
-		Pipeline pipe;
+		Pipeline1 pipe;
 		ToolStripMenuItem PipelineMenuItem = null;
 		ArrayList objectShapes;
 		ArrayList inlineShapes;
@@ -250,7 +250,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2003 {
 				singleXml.TooltipText = "Full text and full audio in MP3";
 				CommandBarPopup mnuDtbookSingle = (CommandBarPopup)singleXml;
 				CommandBar barDtbook = mnuDtbookSingle.CommandBar;
-				pipe = new Pipeline(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\pipeline-lite-ms\scripts");
+				pipe = Pipeline1.Instance;
 				foreach (KeyValuePair<string, FileInfo> k in pipe.ScriptsInfo)
 				{
 					PipelineMenuItem = new ToolStripMenuItem();
@@ -375,9 +375,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2003 {
 			try {
 				GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
 				IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-				FileInfo pipelineScript = this.pipe?.ScriptsInfo[Ctrl.Tag];
+                Conversion.Script pipelineScript = this.pipe?.getScript(Ctrl.Tag);
 
-				ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript.FullName);
+				ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
 				WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
 				GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
 				// Note : the current form for multiple also include conversion settings update
@@ -388,7 +388,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2003 {
 					foreach (string inputPath in documentsPathes) {
 						DocumentParameters subDoc = null;
 						try {
-							subDoc = converter.preprocessDocument(inputPath);
+							subDoc = converter.PreprocessDocument(inputPath);
 						} catch (Exception e) {
 							string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
 							eventsHandler.onPreprocessingError(inputPath, errors);
@@ -401,7 +401,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2003 {
 							break;
 						}
 					}
-					if (documents.Count > 0) converter.convert(documents);
+					if (documents.Count > 0) converter.Convert(documents);
 				}
 
 				applicationObject.ActiveDocument.Save();
@@ -812,14 +812,14 @@ namespace Daisy.SaveAsDAISY.Addins.Word2003 {
 					try {
 						GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
 						IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-						FileInfo pipelineScript = this.pipe?.ScriptsInfo[Ctrl.Tag];
+						Conversion.Script pipelineScript = this.pipe?.getScript(Ctrl.Tag);
 
-						ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript.FullName);
+						ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
 						WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
 						GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
-						DocumentParameters currentDocument = converter.preprocessDocument(this.applicationObject.ActiveDocument.FullName);
+						DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
 						if (converter.requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
-							ConversionResult result = converter.convert(currentDocument);
+							ConversionResult result = converter.Convert(currentDocument);
 							/*if (!(result.Canceled || result.Succeeded)) {
 								MessageBox.Show(result., "Conversion aborted");
 							}*/
