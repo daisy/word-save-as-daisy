@@ -76,7 +76,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// </summary>
 		public string GetTitle { get { return tBx_Title.Text; } }
 
-		public ScriptParser getParser { get { return UpdatedConversionParameters.PostProcessSettings; } }
+		public Script getParser { get { return UpdatedConversionParameters.PostProcessor; } }
 
 		/// <summary>
 		/// Return Creator information 
@@ -117,11 +117,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 			//this.masterSubFlag = conversion.ParseSubDocuments;
 
 			// if a script is defined in the parameters
-			useAScript = UpdatedConversionParameters.ScriptPath != null && UpdatedConversionParameters.ScriptPath.Length > 0;
+			useAScript = UpdatedConversionParameters.PostProcessor != null;
 			if (useAScript) {
 				mInputPath = document.InputPath;
-				if (UpdatedConversionParameters.PostProcessSettings == null) 
-					UpdatedConversionParameters.PostProcessSettings = new ScriptParser(UpdatedConversionParameters.ScriptPath);
 
 			} else {
 				inputFileName = document.InputPath;
@@ -216,9 +214,10 @@ namespace Daisy.SaveAsDAISY.Conversion
 				}
 			}
 
-			foreach (ScriptParameter p in UpdatedConversionParameters.PostProcessSettings.ParameterList)
+			foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters)
 			{
-				if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
+				var p = kv.Value;
+				if (p.IsParameterRequired && (kv.Key == "outputPath" || kv.Key == "output"))
 				{
 					PathDataType pathDataType = p.ParameterDataType as PathDataType;
 					if (pathDataType == null) continue;
@@ -228,9 +227,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 						try
 						{
 							FileInfo outputFileInfo = new FileInfo(p.ParameterValue);
-							if (!string.IsNullOrEmpty(pathDataType.FileExtenssion) && !pathDataType.FileExtenssion.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
+							if (!string.IsNullOrEmpty(pathDataType.FileExtension) && !pathDataType.FileExtension.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
 							{
-								MessageBox.Show(string.Format("Please select {0} output file", pathDataType.FileExtenssion), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+								MessageBox.Show(string.Format("Please select {0} output file", pathDataType.FileExtension), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 								mLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 								return false;
 							}
@@ -339,12 +338,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 				.withParameter("Publisher", tBx_Publisher.Text)
 				.withParameter("UID", uId == tBx_Uid.Text ? "AUTO-UID-" + tBx_Uid.Text : tBx_Uid.Text)
 				.withParameter("Subject", string.Empty)
-				//.withParameter("TrackChanges", TrackChange()) // Done in preprocessing
-				//.withParameter("Version", officeVersion)
-				//.withParameter("MasterSubFlag", masterSubFlag)
 				.withParameter("PipelineOutput", PipeOutput);
-				//.withParameter("OutputFile", outputFilePath);
-				//.withParameter("PostProcessSetting", Conversion.PostProcessSettings);
 
 
 			return UpdatedConversionParameters.ParametersHash;
@@ -502,7 +496,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			}
 			else
 			{
-				this.Text = UpdatedConversionParameters.PostProcessSettings.NiceName;
+				this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
 				panel1.Visible = false;
 				oLayoutPanel.Visible = false;
 				mLayoutPanel.Location = new Point(panel1.Location.X, panel1.Location.Y);
@@ -525,8 +519,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 				oTableLayoutPannel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
 				//shaby (end)  : Implementing TableLayoutPannel
 
-				foreach (ScriptParameter p in UpdatedConversionParameters.PostProcessSettings.ParameterList)
+				foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters)
 				{
+					ScriptParameter p = kv.Value;
 					PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
 
 					strBrtextBox = prepopulateDaisyOutput != null

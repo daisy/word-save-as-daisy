@@ -14,10 +14,40 @@ namespace Daisy.SaveAsDAISY {
             InitializeComponent();
         }
 
-        public void addMessage(string message) {
-            this.MessageTextArea.Text = this.MessageTextArea.Text + ( message.EndsWith("\n") ? message : message + "\r\n");
-            this.MessageTextArea.Refresh();
+        public void addMessage(string message, bool isProgress = true) {
+            if (isProgress) {
+                LastMessage.Text = message;
+                ConversionProgressBar.PerformStep();
+            }
+            this.MessageTextArea.Text += ( message.EndsWith("\n") ? message : message + "\r\n");
         }
+
+
+        /// <summary>
+        /// Prepare the progress bar
+        /// </summary>
+        /// <param name="message">Progress initialization message</param>
+        /// <param name="maximum">maximum value of the progression (number of step expected)</param>
+        /// <param name="step">step increment (default to one)</param>
+        public void InitializeProgress(string message = "", int maximum = 1, int step = 1) {
+            LastMessage.Text = message;
+            this.MessageTextArea.Text += (message.EndsWith("\n") ? message : message + "\r\n");
+            ConversionProgressBar.Maximum = maximum;
+            ConversionProgressBar.Step = step;
+            ConversionProgressBar.Value = 0;
+
+        }
+
+        public int Progress() {
+            ConversionProgressBar.PerformStep();
+            return ConversionProgressBar.Value;
+        }
+
+        private void MessageTextArea_TextChanged(object sender, EventArgs e) {
+            MessageTextArea.SelectionStart = MessageTextArea.Text.Length;
+            MessageTextArea.ScrollToCaret();
+        }
+
 
         public delegate void CancelClickListener();
 
@@ -36,6 +66,19 @@ namespace Daisy.SaveAsDAISY {
             if (cancelButtonClicked != null) cancelButtonClicked();
         }
 
+        private void ShowHideDetails_Click(object sender, EventArgs e) {
+            if(MessageTextArea.Visible == false) {
+                MessageTextArea.Visible = true;
+                this.Height = 300;
+                MessageTextArea.Height = 135;
+                ShowHideDetails.Text = "Hide details << ";
+            } else {
+                MessageTextArea.Visible = false;
+                this.Height = 300 - 135;
+                MessageTextArea.Height = 0;
+                ShowHideDetails.Text = "Show details >> ";
+            }
+        }
 
     }
 }

@@ -21,8 +21,8 @@ namespace Daisy.SaveAsDAISY.Forms {
             GraphicalEventsHandler eventsHandler
         ) : base(preprocessor, documentConverter, conversionParameters, eventsHandler) {
             progressDialog = new ConversionProgress();
-            progressDialog.setCancelClickListener(requestConversionCancel);
-            ((GraphicalEventsHandler)this.eventsHandler).LinkToProgressDialog(ref progressDialog);
+            progressDialog.setCancelClickListener(RequestConversionCancel);
+            ((GraphicalEventsHandler)this.EventsHandler).LinkToProgressDialog(ref progressDialog);
         }
 
         /// <summary>
@@ -31,11 +31,12 @@ namespace Daisy.SaveAsDAISY.Forms {
         /// <param name="currentDocument">Main document to extract conversion settings</param>
         /// <returns></returns>
         public ConversionStatus requestUserParameters(DocumentParameters currentDocument) {
-
-            ConversionParametersForm conversionSetter = new ConversionParametersForm(currentDocument, conversionParameters);
+            // reset progress bar
+            progressDialog.InitializeProgress("Waiting for user settings");
+            ConversionParametersForm conversionSetter = new ConversionParametersForm(currentDocument, ConversionParameters);
             if (conversionSetter.DoTranslate() == 1) {
                 // get the updated settings
-                conversionParameters = conversionSetter.UpdatedConversionParameters;
+                ConversionParameters = conversionSetter.UpdatedConversionParameters;
                 return ConversionStatus.ReadyForConversion;
             }
             return ConversionStatus.Canceled;
@@ -46,9 +47,9 @@ namespace Daisy.SaveAsDAISY.Forms {
         /// </summary>
         /// <returns></returns>
         public List<string> requestUserDocumentsList() {
-            MultipleSub userRequest = new MultipleSub(conversionParameters);
+            MultipleSub userRequest = new MultipleSub(ConversionParameters);
             if (userRequest.DoTranslate() == 1) {
-                conversionParameters = userRequest.UpdatedConversionParameters;
+                ConversionParameters = userRequest.UpdatedConversionParameters;
                 return userRequest.GetFileNames;
             }
 
