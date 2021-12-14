@@ -13,9 +13,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
     public interface IConversionEventsHandler {
 
         void OnStop(string message);
-        bool AskForTranslatingSubdocuments();
-
-        bool AskForTrackConfirmation();
+        
         void OnError(string errorMessage);
         void OnStop(string message, string title);
 
@@ -26,6 +24,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
 
         #region Preprocess events
         void onDocumentPreprocessingStart(string inputPath);
+
+        bool AskForTranslatingSubdocuments();
+
+        bool AskForTrackConfirmation();
 
         void onPreprocessingCancel();
 
@@ -84,8 +86,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         void onDocumentConversionSuccess(DocumentParameters document, ConversionParameters conversion);
 
 
-        
-
         void onConversionCanceled();
 
 
@@ -142,7 +142,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         bool IsContinueDTBookGenerationOnLostElements();
 
 
-
         void OnMasterSubValidationError(string error);
 
         #endregion Conversion events from word to dtbook XML
@@ -159,6 +158,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// <param name="conversion"></param>
         void onPostProcessingSuccess(ConversionParameters conversion);
         #endregion Post processing events
+
 
     }
 

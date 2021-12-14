@@ -4,23 +4,34 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Windows.Forms;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-    public class IntegerDataType
+    public class IntegerDataType : ParameterDataType
     {
         private List<string> m_ValueList;
         private List<string> m_NiceNameList;
         private int m_SelectedIndex;
-        public ScriptParameter m_Parameter;
 
-        public IntegerDataType(ScriptParameter p, XmlNode node)
-        {
+        public IntegerDataType(ScriptParameter p, XmlNode node) : base(p) {
             m_Parameter = p;
             m_ValueList = new List<string>();
             m_NiceNameList = new List<string>();
             m_SelectedIndex = -1;
             PopulateListFromNode(node);
+        }
+
+        public IntegerDataType(int min, int max) : base()
+        {
+            m_ValueList = new List<string>();
+            m_NiceNameList = new List<string>();
+            m_SelectedIndex = -1;
+            m_ValueList.Add(min.ToString());
+            m_ValueList.Add(max.ToString());
+            for (int i = min; i <= max; i++) {
+                m_NiceNameList.Add(i.ToString());
+            }
         }
 
         private void PopulateListFromNode(XmlNode DatatypeNode)

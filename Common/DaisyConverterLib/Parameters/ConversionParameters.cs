@@ -27,7 +27,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 
         public string ControlName { get; set; }
-		public string ScriptPath { get; set; }
         
 
         // From the "TranslationParametersBuilder" and PrepopulatedDaisyXml class
@@ -43,7 +42,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public FilenameValidator NameValidator { get; set; }
 
-        public ScriptParser PostProcessSettings { get; set; } = null;
+        public Script PostProcessor { get; set; } = null;
 
         /// <summary>
         /// Flag if changes should be tracked
@@ -76,11 +75,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="filenameValidator">File name validator with regex matcher. If null, will default to dtbook XML filename pattern
         /// (see the one declared in ConverterHelper)</param>
         /// <param name="mainDocument">Document to retrieve conversion parameters from (Creator, Title and Publisher) </param>
-        public ConversionParameters(string wordVersion = null, string pipelineScript = null, FilenameValidator filenameValidator = null, DocumentParameters mainDocument = null) {
+        public ConversionParameters(string wordVersion = null, Script pipelineScript = null, FilenameValidator filenameValidator = null, DocumentParameters mainDocument = null) {
             Version = wordVersion;
-            ScriptPath = pipelineScript;
+            //ScriptPath = pipelineScript;
             if (pipelineScript != null) {
-                PostProcessSettings = new ScriptParser(pipelineScript);
+                PostProcessor = pipelineScript;
             }
             if(filenameValidator != null) {
                 NameValidator = filenameValidator;
@@ -123,8 +122,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns>The converter itself</returns>
         public ConversionParameters withParameter(string name, object value) {
             switch (name) {
-                case "ScriptPath":
-                    ScriptPath = (string)value; break;
                 case "OutputFile":
                     OutputPath = (string)value; break;
                 case "Title":
@@ -141,8 +138,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     Version = (string)value; break;
                 case "PipelineOutput":
                     PipelineOutput = (string)value; break;
-                case "PostProcessSetting":
-                    PostProcessSettings = (ScriptParser)value; break;
+                case "PostProcessor":
+                    PostProcessor = (Script)value; break;
                 // Fields to be moved to document settings
                 case "TrackChanges":
                     TrackChanges = (string)value; break;

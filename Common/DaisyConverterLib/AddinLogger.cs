@@ -6,17 +6,18 @@ using log4net.Layout;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-	public class AddinLogger
+	public sealed class AddinLogger
 	{
-		private static ILog _log;
+		private static ILog _log = LogManager.GetLogger(typeof(AddinLogger));
 
 		#region initialization
 
 		static AddinLogger()
 		{
 			ConfigureLogger();
-			_log = LogManager.GetLogger(typeof (AddinLogger));
 		}
+
+		private AddinLogger() { }
 
 		private static void ConfigureLogger()
 		{

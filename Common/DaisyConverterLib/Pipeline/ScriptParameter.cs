@@ -5,6 +5,7 @@ using System.Xml;
 using System.Xml.XPath;
 using System.IO;
 using System.Diagnostics;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -12,12 +13,44 @@ namespace Daisy.SaveAsDAISY.Conversion
     public class ScriptParameter
     {
 
+        public enum ParameterDirection {
+            Input,
+            Output,
+            Option
+        }
+
         private string m_Name;
         private string m_Value;
         private string m_NiceName;
         private bool m_Required;
-        private string m_Discription;
-        private object m_DataType;
+        private string m_Description;
+        private ParameterDataType m_DataType;
+
+        private bool m_Displayed;
+
+        private ParameterDirection m_Direction;
+
+
+        public ScriptParameter(
+            string name,
+            string niceName,
+            ParameterDataType dataType,
+            string initialValue, 
+            bool required = false,
+            string description = "",
+            bool displayed = true,
+            ParameterDirection directon = ParameterDirection.Option
+        ) {
+            m_Name = name;
+            m_NiceName = niceName;
+            m_DataType = dataType;
+            m_DataType.LinkedParameter = this;
+            m_Value = initialValue;
+            m_Description = description;
+            m_Required = required;
+            m_Displayed = displayed;
+            m_Direction = directon;
+        }
 
         public ScriptParameter(XmlNode node)
         {
@@ -71,7 +104,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                         break;
 
                     case "description":
-                        m_Discription = ChildNode.InnerText;
+                        m_Description = ChildNode.InnerText;
                         break;
 
                     case "datatype":
@@ -119,9 +152,17 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public string Name { get { return m_Name; } }
         public string NiceName { get { return m_NiceName; } }
-        public string Description { get { return m_Discription; } }
+        public string Description { get { return m_Description; } }
         public bool IsParameterRequired { get { return m_Required; } }
-        public object ParameterDataType { get { return m_DataType; } }
+
+        public bool IsParameterDisplayed { get { return m_Displayed; } }
+
+        /// <summary>
+        /// Direction of the parameter (input, output or option)
+        /// </summary>
+        public ParameterDirection Direction { get { return m_Direction; } }
+
+        public ParameterDataType ParameterDataType { get { return m_DataType; } }
 
         public string ParameterValue
         {

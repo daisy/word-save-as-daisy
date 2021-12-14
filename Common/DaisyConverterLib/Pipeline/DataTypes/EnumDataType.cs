@@ -4,20 +4,17 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Windows.Forms;
-
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-    public class EnumDataType
-    {
+    public class EnumDataType : ParameterDataType {
         private List<string> m_ValueList;
         private List<string> m_NiceNameList;
         private int m_SelectedIndex;
-        public ScriptParameter m_Parameter;
 
-        public EnumDataType(ScriptParameter p, XmlNode node)
+        public EnumDataType(ScriptParameter p, XmlNode node) : base(p)
         {
-            m_Parameter = p;
             m_ValueList = new List<string>();
             m_NiceNameList = new List<string>();
             m_SelectedIndex = -1;
@@ -27,6 +24,20 @@ namespace Daisy.SaveAsDAISY.Conversion
             if (p.ParameterValue != null && p.ParameterValue != ""
                 && m_ValueList.Contains(p.ParameterValue))
                 m_SelectedIndex = m_ValueList.BinarySearch(p.ParameterValue);
+        }
+
+        public EnumDataType(Dictionary<string,string> itemsList, string defaultValue = "" ) : base() {
+            m_ValueList = new List<string>();
+            m_NiceNameList = new List<string>();
+            m_SelectedIndex = -1;
+            foreach(KeyValuePair<string,string> item in itemsList) {
+                m_NiceNameList.Add(item.Key);
+                m_ValueList.Add(item.Value);
+            }
+            
+            if (defaultValue != null && defaultValue != ""
+                && m_ValueList.Contains(defaultValue))
+                m_SelectedIndex = m_ValueList.BinarySearch(defaultValue);
         }
 
         private void PopulateListFromNode(XmlNode DatatypeNode)
