@@ -152,7 +152,6 @@
     <Compile Include="Pipeline\Pipeline2\Pipeline2Script.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\Daisy3ToEPUB3.cs" />
     <Compile Include="Pipeline\Script.cs" />
-    <Compile Include="Pipeline\ScriptsChain.cs" />
     <Compile Include="Preprocessing\FilenameValidator.cs" />
     <Compile Include="Preprocessing\IDocumentPreprocessor.cs" />
     <Compile Include="PackageUtilities.cs" />

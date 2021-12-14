@@ -114,11 +114,11 @@ namespace Daisy.SaveAsDAISY.CommandLineTool {
         String errorText = "";
         const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
         
-        private Pipeline _postprocessingPipeline = null;
-        public Pipeline PostprocessingPipeline {
+        private Pipeline1 _postprocessingPipeline = null;
+        public Pipeline1 PostprocessingPipeline {
             get {
                 if (ConverterHelper.PipelineIsInstalled() && _postprocessingPipeline == null)
-                    _postprocessingPipeline = new Pipeline();
+                    _postprocessingPipeline = Pipeline1.Instance;
                 return _postprocessingPipeline;
             }
             set => _postprocessingPipeline = value;
@@ -437,14 +437,14 @@ namespace Daisy.SaveAsDAISY.CommandLineTool {
 
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(app);
-                FileInfo pipelineScript = this.PostprocessingPipeline?.ScriptsInfo["_postprocess"];
+                Conversion.Script pipelineScript = this.PostprocessingPipeline?.getScript("_postprocess");
 
-                ConversionParameters conversion = new ConversionParameters(app.Version, pipelineScript.FullName);
+                ConversionParameters conversion = new ConversionParameters(app.Version, pipelineScript);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
                 GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
-                DocumentParameters currentDocument = converter.preprocessDocument(app.ActiveDocument.FullName);
+                DocumentParameters currentDocument = converter.PreprocessDocument(app.ActiveDocument.FullName);
                 if (converter.requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
-                    ConversionResult result = converter.convert(currentDocument);
+                    ConversionResult result = converter.Convert(currentDocument);
                     converted = result.Succeeded;
                 } else {
                     eventsHandler.onConversionCanceled();
@@ -531,9 +531,10 @@ namespace Daisy.SaveAsDAISY.CommandLineTool {
                 Microsoft.Office.Interop.Word.Application app = new Microsoft.Office.Interop.Word.Application();
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(app);
-                FileInfo pipelineScript = this.PostprocessingPipeline?.ScriptsInfo["_postprocess"];
 
-                ConversionParameters conversion = new ConversionParameters(app.Version, pipelineScript.FullName);
+                Conversion.Script pipelineScript = this.PostprocessingPipeline?.getScript("_postprocess");
+
+                ConversionParameters conversion = new ConversionParameters(app.Version, pipelineScript);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
                 GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
 
@@ -548,7 +549,7 @@ namespace Daisy.SaveAsDAISY.CommandLineTool {
                     foreach (string inputPath in documentsPathes) {
                         DocumentParameters subDoc = null;
                         try {
-                            subDoc = converter.preprocessDocument(inputPath);
+                            subDoc = converter.PreprocessDocument(inputPath);
                         } catch (Exception e) {
                             string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
                             eventsHandler.onPreprocessingError(inputPath, errors);
@@ -561,7 +562,7 @@ namespace Daisy.SaveAsDAISY.CommandLineTool {
                             break;
                         }
                     }
-                    if (documents.Count > 0) converter.convert(documents);
+                    if (documents.Count > 0) converter.Convert(documents);
                 }
             } catch (Exception e) {
                 this.report.AddLog("", "Erros in bacch conversion:\r\n" + e.Message, Report.ERROR_LEVEL);
