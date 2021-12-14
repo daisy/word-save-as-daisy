@@ -150,8 +150,10 @@
     <PostBuildEvent>IF NOT EXIST "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources" mkdir "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources"
 IF EXIST "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)" DEL "$(SolutionDir)DaisyInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)"
 IF EXIST "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline_cab" DEL "$(SolutionDir)DaisyInstaller\Resources\pipeline_cab"
+IF EXIST "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline2_cab" DEL "$(SolutionDir)DaisyInstaller\Resources\pipeline2_cab"
 COPY "$(TargetDir)$(TargetName).msi" "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)" /Y
-COPY "$(TargetDir)pipeline.cab" "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline_cab" /Y</PostBuildEvent>
+COPY "$(TargetDir)pipeline.cab" "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline_cab" /Y
+COPY "$(TargetDir)pipeline2.cab" "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline2_cab" /Y</PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

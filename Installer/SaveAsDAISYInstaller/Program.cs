@@ -134,6 +134,7 @@ namespace DaisyInstaller
                     // unpackage the msi needed for install
                     string daisySetupPath = Path.Combine(tempPath, "DaisyAddinForWordSetup.msi");
                     string pipelineCabPath = Path.Combine(tempPath, "pipeline.cab");
+                    string pipeline2CabPath = Path.Combine(tempPath, "pipeline2.cab");
                     if (File.Exists(daisySetupPath)) File.Delete(daisySetupPath);
                     if (File.Exists(pipelineCabPath)) File.Delete(pipelineCabPath);
 #if UNIFIED
@@ -141,12 +142,15 @@ namespace DaisyInstaller
                         Properties.Resources.DaisyAddinForWordSetup_x64 :
                         Properties.Resources.DaisyAddinForWordSetup_x86);
                     File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, Properties.Resources.pipeline2_cab);
 #elif X64INSTALLER
                     File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
                     File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, Properties.Resources.pipeline2_cab);
 #else
                     File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
                     File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, Properties.Resources.pipeline2_cab);
 #endif
 
                     // launch the msi
