@@ -9,7 +9,7 @@
         -->
     
     <!-- Preprocessor variables, update following your addin assemblies version -->
-    <?define AddinVersion = "2.6.1.3" ?>
+    <?define AddinVersion = "2.7.0.0" ?>
     
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
@@ -24,13 +24,13 @@
     <?endif ?>
     
     <!--Change this ID for update -->
-    <Product Id="9ED54F52-1933-4AB2-9FA2-43BEC127C582" 
+    <Product Id="B263167B-8584-4C85-B3BA-7D6EE055D682" 
             Name="SaveAsDAISY add-in version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
         <!--Change this ID for update -->
-        <Package Id="0B22537D-6741-4DE3-A8A7-A4380F0631B2" Compressed="yes" InstallPrivileges="elevated" InstallerVersion="200" />
+        <Package Id="3970795B-048B-4D0A-BDAA-6B9746CCB1EF" Compressed="yes" InstallPrivileges="elevated" InstallerVersion="200" />
         <Media Id="1" Cabinet="Daisy.cab" EmbedCab="yes" />
         <Media Id="2" Cabinet="pipeline.cab" EmbedCab="no" CompressionLevel="high"/>
         <Media Id="3" Cabinet="pipeline2.cab" EmbedCab="no" CompressionLevel="high"/>
@@ -153,11 +153,9 @@
                             <File Id="Help.ico" Name="Help.ico" Source="$(var.SolutionDir)Lib\Help.ico" DiskId="1" KeyPath="yes" />
                         </Component>
 
-                        <!--Components for Office2007 and superior -->
-                        <Component Id="Microsoft.Vbe.Interop.dll" Guid="F4957043-2698-480F-9968-3AA4F37ACA7E">
-                            <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
-                            <File Id="Microsoft.Vbe.Interop.dll" Name="Microsoft.Vbe.Interop.dll" Source="$(var.SolutionDir)Lib\Word2007\Microsoft.Vbe.Interop.dll" DiskId="1" KeyPath="yes" />
-                        </Component>
+                        <!--Components for Office2007 and superior
+                        
+                        -->
                         <Component Id="Microsoft.Office.Interop.Word.dll" Guid="55416793-B4F2-4194-BCB3-A52C2199D882">
                             <Condition><![CDATA[LATESTWORDVERSION>="12.0"]]></Condition>
                             <File Id="Microsoft.Office.Interop.Word.dll" Name="Microsoft.Office.Interop.Word.dll" Source="$(var.SolutionDir)Lib\Word2007\Microsoft.Office.Interop.Word.dll" DiskId="1" KeyPath="yes" />
@@ -2203,7 +2201,6 @@
 
             <ComponentRef Id="extensibility.dll" />
             <ComponentRef Id="Stdole.dll" />
-            <ComponentRef Id="Microsoft.Vbe.Interop.dll" />
             <ComponentRef Id="Microsoft.Office.Interop.Word.dll" />
             <ComponentRef Id="OFFICE.DLL" />
             <ComponentRef Id="CustomActionAddin.dll" />
