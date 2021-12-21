@@ -12,11 +12,18 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             this.ExceptionMessage.Text = raised.Message + "\r\nStacktrace:\r\n" + raised.StackTrace;
         }
 
-        private void SendReport_Click(object sender, EventArgs e) {
+        private void SendReport_Click(object sender, EventArgs evt) {
             StringBuilder message = new StringBuilder("The following exception was reported by a user using the saveAsDaisy addin:\r\n");
             message.AppendLine(this.ExceptionRaised.Message);
             message.AppendLine();
             message.Append(this.ExceptionRaised.StackTrace);
+            Exception e = ExceptionRaised;
+            while (e.InnerException != null) {
+                e = e.InnerException;
+                message.AppendLine(" - Inner exception : " + e.Message);
+                message.AppendLine();
+                message.Append(this.ExceptionRaised.StackTrace);
+            }
             
             string mailto = string.Format(
                 "mailto:{0}?Subject={1}&Body={2}",
