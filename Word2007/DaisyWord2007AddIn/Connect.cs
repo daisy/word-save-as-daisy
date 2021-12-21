@@ -141,10 +141,24 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 //throw;
             }
         }
+
+        /// <summary>
+        /// Only activate the action controls on non-protected view
+        /// </summary>
+        /// <param name="control"></param>
+        /// <returns></returns>
+        public bool ribbonButtonsEnabled(IRibbonControl control) {
+            if(this.applicationObject.ActiveProtectedViewWindow != null) {
+                return false;
+            }
+            return true;
+        }
+        
         /// <summary>
         /// Function to do changes in Look and Feel of UI
         /// </summary>
         void applicationObject_DocumentChange() {
+            
             if(this.applicationObject.Documents.Count > 0) {
                 CheckforAttchments(this.applicationObject.ActiveDocument);
             }
@@ -448,7 +462,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public bool getEnabled(IRibbonControl control) {
-            return !showViewTabBool;
+            return this.ribbonButtonsEnabled(control) && !showViewTabBool;
         }
         //Method for Disabling validate tab
         public bool buttonValidatePressed(IRibbonControl control) {
@@ -688,7 +702,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="control"></param>
         public void SaveAsDaisy(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
-                
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
                 IConversionEventsHandler eventsHandler = null;
                 Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
