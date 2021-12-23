@@ -23,7 +23,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         private JavaNativeInterface jni;
 
         // Classes
-        private IntPtr ScriptRunnerClass,
+        private IntPtr SimpleAPIClass,
             JobClass,
             JobContextClass,
             JobMonitorClass,
@@ -31,8 +31,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
             JobStatusClass,
             MessageAccessorClass,
             BigDecimalClass;
-
-        private IntPtr RunnerInstance;
 
         #region Singleton initialisation
 
@@ -43,9 +41,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         private Pipeline2() {
             // use jnet to execute the conversion on the inputPath
-            string jrePath = IntPtr.Size == 4 && Directory.Exists(InstallationPath + @"/jre-32bits") ?
-                InstallationPath + @"/jre-32bits" :
-                InstallationPath + @"/jre";
+            // check for arch specific jre based on how the jre folders are created by the daisy/pipeline-assembly project (lite-bridge version)
+            string arch = (IntPtr.Size * 8).ToString();
+            string jrePath = Directory.Exists(InstallationPath + @"\jre" + arch) ?
+                InstallationPath + @"\jre" + (IntPtr.Size * 8).ToString() :
+                InstallationPath + @"\jre";
             string jvmDllPath = Path.Combine(
                 jrePath, "bin", "server", "jvm.dll"
             );
@@ -65,8 +65,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
             jni.LoadVM(options, false);
 
             // Initialize runner in the JVM
-            ScriptRunnerClass = jni.GetJavaClass("ScriptRunner");
-            RunnerInstance = jni.CallMethod<IntPtr>(ScriptRunnerClass, IntPtr.Zero, "getInstance", "()LScriptRunner;");
+            SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
             JobClass = jni.GetJavaClass("org/daisy/pipeline/job/Job");
             JobContextClass = jni.GetJavaClass("org/daisy/pipeline/job/JobContext");
             JobMonitorClass = jni.GetJavaClass("org/daisy/pipeline/job/JobMonitor");
@@ -121,7 +120,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         private static List<string> ClassFolders = new List<string> {
             Path.Combine(InstallationPath, "system", "common"),
             Path.Combine(InstallationPath, "system", "no-osgi"),
-            Path.Combine(InstallationPath, "system", "bridge"),
+            Path.Combine(InstallationPath, "system", "simple-api"),
             Path.Combine(InstallationPath, "system", "volatile"),
             Path.Combine(InstallationPath, "modules")
         };
@@ -177,7 +176,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public string ClassPath = JarPathes.Aggregate(
             (acc, path) => acc + Path.PathSeparator + path
-        ) + Path.PathSeparator + Path.Combine(InstallationPath, "system", "bridge");
+        ) + Path.PathSeparator + Path.Combine(InstallationPath, "system", "simple-api");
 
         #endregion
 
@@ -214,9 +213,9 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     }
 
                 IntPtr job = jni.CallMethod<IntPtr>(
-                    ScriptRunnerClass,
-                    RunnerInstance,
-                    "start",
+                    SimpleAPIClass,
+                    IntPtr.Zero,
+                    "startJob",
                     "(Ljava/lang/String;Ljava/util/Map;)Lorg/daisy/pipeline/job/Job;",
                     scriptName,
                     hashMap
@@ -368,19 +367,17 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return alreadySentMessages;
         }
 
-        public List<string> getLastMessages(IntPtr messageAccessorObject) {
+        public List<string> getNewMessages() {
             List<string> messages = new List<string>();
-            if (messageAccessorObject != IntPtr.Zero) {
-                IntPtr messagesList = jni.CallMethod<IntPtr>(ScriptRunnerClass, IntPtr.Zero, "getLastMessages", "(Lorg/daisy/common/messaging/MessageAccessor;)Ljava/util/List;", messageAccessorObject);
-                JavaIterable<IntPtr> messagesIterable = new JavaIterable<IntPtr>(jni, messagesList);
-                IntPtr messageClass = IntPtr.Zero;
-                foreach (IntPtr messageObject in messagesIterable) {
-                    if (messageClass == IntPtr.Zero) {
-                        messageClass = jni.JNIEnvironment.GetObjectClass(messageObject);
-                    }
-                    string message = jni.CallMethod<string>(messageClass, messageObject, "getText", "()Ljava/lang/String;");
-                    messages.Add(message);
+            IntPtr messagesList = jni.CallMethod<IntPtr>(SimpleAPIClass, IntPtr.Zero, "getNewMessages", "()Ljava/util/List;");
+            JavaIterable<IntPtr> messagesIterable = new JavaIterable<IntPtr>(jni, messagesList);
+            IntPtr messageClass = IntPtr.Zero;
+            foreach (IntPtr messageObject in messagesIterable) {
+                if (messageClass == IntPtr.Zero) {
+                    messageClass = jni.JNIEnvironment.GetObjectClass(messageObject);
                 }
+                string message = jni.CallMethod<string>(messageClass, messageObject, "getText", "()Ljava/lang/String;");
+                messages.Add(message);
             }
             return messages;
         }
@@ -388,11 +385,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 
         public string getLastOutput() {
-            return jni.CallMethod<string>(ScriptRunnerClass, IntPtr.Zero, "getOutput", "()Ljava/lang/String;");
+            return jni.CallMethod<string>(SimpleAPIClass, IntPtr.Zero, "getOutput", "()Ljava/lang/String;");
         }
 
         public string getLastError() {
-            return jni.CallMethod<string>(ScriptRunnerClass, IntPtr.Zero, "getError", "()Ljava/lang/String;");
+            return jni.CallMethod<string>(SimpleAPIClass, IntPtr.Zero, "getError", "()Ljava/lang/String;");
         }
 
     }

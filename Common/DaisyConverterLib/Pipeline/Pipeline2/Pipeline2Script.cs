@@ -48,7 +48,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 bool checkStatus = true;
                 while (checkStatus) {
                     if(this.OnPipelineOutput != null) {
-                        foreach (string message in pipeline.getLastMessages(messages)) {
+                        foreach (string message in pipeline.getNewMessages()) {
                             this.OnPipelineOutput(message);
                         }
                         
