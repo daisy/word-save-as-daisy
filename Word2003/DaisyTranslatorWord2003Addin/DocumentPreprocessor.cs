@@ -50,6 +50,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2003 {
             object tmpFileName = document.CopyPath;
             object originalPath = document.InputPath;
             // Save a copy to start working on
+            if (File.Exists((string)tmpFileName)) {
+                File.Delete((string)tmpFileName);
+            }
             currentDoc.SaveAs(ref tmpFileName, ref format, ref missing, ref missing, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
             currentDoc.Close();
 

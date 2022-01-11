@@ -2,7 +2,9 @@
 % WARNING: this file is auto-generated; do not edit
 % UNSUPPORTED: this file and its format may change and/or
 %   may be removed in a future release
-! access-bridge-64.jar
+! access-bridge-32.jar
+com/sun/java/accessibility/
+! access-bridge.jar
 com/sun/java/accessibility/
 ! cldrdata.jar
 sun/text

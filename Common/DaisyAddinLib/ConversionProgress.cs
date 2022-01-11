@@ -10,14 +10,18 @@ using System.Windows.Forms;
 namespace Daisy.SaveAsDAISY {
     public partial class ConversionProgress : Form {
 
+        private string CurrentProgressMessage = "";
         public ConversionProgress() {
             InitializeComponent();
         }
 
         public void addMessage(string message, bool isProgress = true) {
             if (isProgress) {
-                LastMessage.Text = message;
+                CurrentProgressMessage = message;
+                LastMessage.Text = CurrentProgressMessage;
                 ConversionProgressBar.PerformStep();
+            } else {
+                LastMessage.Text = CurrentProgressMessage + " - " + message;
             }
             this.MessageTextArea.Text += ( message.EndsWith("\n") ? message : message + "\r\n");
         }
@@ -30,7 +34,8 @@ namespace Daisy.SaveAsDAISY {
         /// <param name="maximum">maximum value of the progression (number of step expected)</param>
         /// <param name="step">step increment (default to one)</param>
         public void InitializeProgress(string message = "", int maximum = 1, int step = 1) {
-            LastMessage.Text = message;
+            CurrentProgressMessage = message;
+            LastMessage.Text = CurrentProgressMessage;
             this.MessageTextArea.Text += (message.EndsWith("\n") ? message : message + "\r\n");
             ConversionProgressBar.Maximum = maximum;
             ConversionProgressBar.Step = step;
