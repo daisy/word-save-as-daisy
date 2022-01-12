@@ -3,8 +3,8 @@ title: Download SaveAsDAISY Word Addin
 layout: my-default
 ---
 SaveAsDAISY is available for Windows only. 
-We provide an unified installer that detects standards installations of Microsoft Office.
-If office is not found by the installer (preinstalled or windows store versions of MS Office), it will requests which version of word you want the addin to be installed for.
+We provide an unified installer that detects standard installations of Microsoft Office.
+If Office is not found by the installer (like preinstalled or windows store versions of MS Office), it will request which architecture (32bits or 64bits) you want the addin to be installed for.
 
 
 ## Latest version: 2.7 beta (released on January, 2022)
