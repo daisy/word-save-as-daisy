@@ -189,7 +189,7 @@
     <Compile Include="ZipResolver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="resources\Labels.resx" />
+    <EmbeddedResource Include="Properties\Labels.resx" />
     <EmbeddedResource Include="resources\source.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -320,6 +320,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

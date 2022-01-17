@@ -54,7 +54,7 @@ namespace Daisy.SaveAsDAISY
             // Add a default resource managers (for common labels)
             this.resourceManager.Add(
                 new System.Resources.ResourceManager(
-                    "DaisyAddinLib.resources.Labels",
+                    "Daisy.SaveAsDAISY.Forms.Properties.Labels",
                     Assembly.GetExecutingAssembly()
                 )
             );

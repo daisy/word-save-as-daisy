@@ -31,14 +31,19 @@ namespace Daisy.SaveAsDAISY.Conversion
 				System.Resources.ResourceManager manager = (System.Resources.ResourceManager)this.managers[i];
 				if (manager != null)
 				{
-					string value = manager.GetString(name);
-					if (value != null && value.Length > 0)
-					{
-						return value;
-					}
+                    try {
+						string value = manager.GetString(name);
+						if (value != null && value.Length > 0) {
+							return value;
+						}
+					} catch (System.Exception) {
+						// value not found in this manager
+                    }
+					
 				}
 			}
-			return null;
+			// string not found, avoid raising hidden exception by returning the key
+			return name;
 		}
 	}
 }
