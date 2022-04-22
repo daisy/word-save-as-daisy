@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -15,17 +14,29 @@ namespace Daisy.SaveAsDAISY {
             InitializeComponent();
         }
 
-        public void addMessage(string message, bool isProgress = true) {
-            if (isProgress) {
-                CurrentProgressMessage = message;
-                LastMessage.Text = CurrentProgressMessage;
-                ConversionProgressBar.PerformStep();
+        // For external thread calls
+        private delegate void DelegatedAddMessage(string message, bool isProgress = true);
+
+        public void AddMessage(string message, bool isProgress = true) {
+            if (this.InvokeRequired) {
+                this.Invoke(new DelegatedAddMessage(AddMessage), message, isProgress);
             } else {
-                LastMessage.Text = CurrentProgressMessage + " - " + message;
+                if (isProgress)
+                {
+                    CurrentProgressMessage = message;
+                    LastMessage.Text = CurrentProgressMessage;
+                    ConversionProgressBar.PerformStep();
+                }
+                else
+                {
+                    LastMessage.Text = CurrentProgressMessage + " - " + message;
+                }
+                this.MessageTextArea.Text += (message.EndsWith("\n") ? message : message + "\r\n");
             }
-            this.MessageTextArea.Text += ( message.EndsWith("\n") ? message : message + "\r\n");
+            
         }
 
+        private delegate void DelegatedInitializeProgress(string message = "", int maximum = 1, int step = 1);
 
         /// <summary>
         /// Prepare the progress bar
@@ -34,18 +45,33 @@ namespace Daisy.SaveAsDAISY {
         /// <param name="maximum">maximum value of the progression (number of step expected)</param>
         /// <param name="step">step increment (default to one)</param>
         public void InitializeProgress(string message = "", int maximum = 1, int step = 1) {
-            CurrentProgressMessage = message;
-            LastMessage.Text = CurrentProgressMessage;
-            this.MessageTextArea.Text += (message.EndsWith("\n") ? message : message + "\r\n");
-            ConversionProgressBar.Maximum = maximum;
-            ConversionProgressBar.Step = step;
-            ConversionProgressBar.Value = 0;
+            if (this.InvokeRequired) {
+                this.Invoke(new DelegatedInitializeProgress(InitializeProgress), message, maximum, step);
+            } else {
+                CurrentProgressMessage = message;
+                LastMessage.Text = CurrentProgressMessage;
+                this.MessageTextArea.Text += (message.EndsWith("\n") ? message : message + "\r\n");
+                ConversionProgressBar.Maximum = maximum;
+                ConversionProgressBar.Step = step;
+                ConversionProgressBar.Value = 0;
+            }
+            
 
         }
 
+        private delegate int DelegatedProgress();
+
+        /// <summary>
+        /// Increment the progress bar
+        /// </summary>
+        /// <returns></returns>
         public int Progress() {
-            ConversionProgressBar.PerformStep();
-            return ConversionProgressBar.Value;
+            if (this.InvokeRequired) { return (int)this.Invoke(new DelegatedProgress(Progress)) ; } else
+            {
+                ConversionProgressBar.PerformStep();
+                return ConversionProgressBar.Value;
+            }
+            
         }
 
         private void MessageTextArea_TextChanged(object sender, EventArgs e) {

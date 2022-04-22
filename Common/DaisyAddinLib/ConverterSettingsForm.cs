@@ -1,21 +1,7 @@
 using System;
 using System.IO;
 using System.Xml;
-using System.Data;
-using System.Text;
-using System.Xml.Xsl;
 using System.Windows.Forms;
-using System.Drawing;
-using System.Resources;
-using System.Xml.XPath;
-using System.Reflection;
-using System.Collections;
-using System.IO.Packaging;
-using System.ComponentModel;
-using System.IO.Compression;
-using System.Drawing.Imaging;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {

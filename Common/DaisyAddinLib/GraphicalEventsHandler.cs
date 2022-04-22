@@ -30,7 +30,7 @@ namespace Daisy.SaveAsDAISY {
                 DialogThread = new Thread(() => ProgressDialog.ShowDialog());
                 DialogThread.Start();
             }
-            ProgressDialog.addMessage(message, isProgress);
+            ProgressDialog.AddMessage(message, isProgress);
             if (isProgress) ProgressDialog.Progress();
 
         }
@@ -166,17 +166,17 @@ namespace Daisy.SaveAsDAISY {
             }
             conversion.PostProcessor.setPipelineErrorListener((string message) => {
                 if (message != null) {
-                    ProgressDialog.addMessage(message, true);
+                    ProgressDialog.AddMessage(message, true);
                 }
             });
             conversion.PostProcessor.setPipelineOutputListener((string message) => {
                 if (message != null) {
-                    ProgressDialog.addMessage(message,false);
+                    ProgressDialog.AddMessage(message,false);
                 }
             });
             conversion.PostProcessor.setPipelineProgressListener((string message) => {
                 if (message != null) {
-                    ProgressDialog.addMessage(message, true);
+                    ProgressDialog.AddMessage(message, true);
                 }
             });
         }

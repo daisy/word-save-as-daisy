@@ -288,9 +288,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			}
 			catch (Exception e)
 			{
-				string s;
-				s = e.Message;
-				return null;
+				throw e;
 			}
 
 		}
@@ -322,7 +320,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 				XmlWriter writer = null;
 				ZipResolver zipResolver = null;
 
-				try {
+				try
+				{
 					XslCompiledTransform xslt = this.Load(false);
 					zipResolver = new ZipResolver(tempInputPath);
 
@@ -330,33 +329,39 @@ namespace Daisy.SaveAsDAISY.Conversion
 					parameters.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(onXSLTMessageEvent);
 					parameters.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(onXSLTProgressMessageEvent);
 
-					DaisyClass val = new DaisyClass(
+					DaisyClass extension = new DaisyClass(
 								document.InputPath,
 								tempInputPath,
 								conversionOutputDirectory,
 								document.ListMathMl,
 								zipResolver.Archive,
 								conversion.PipelineOutput);
-					parameters.AddExtensionObject("urn:Daisy", val);
+					parameters.AddExtensionObject(
+						"urn:Daisy", extension
+
+					);
 
 
 					parameters.AddParam("outputFile", "", tempOutputPath);
 					// Document specific settings
-					foreach (DictionaryEntry myEntry in document.ParametersHash) {
+					foreach (DictionaryEntry myEntry in document.ParametersHash)
+					{
 						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
 					}
 					// Conversion batch settings
-					foreach (DictionaryEntry myEntry in conversion.ParametersHash) {
+					foreach (DictionaryEntry myEntry in conversion.ParametersHash)
+					{
 						// We allow conversion settings to override document settings
 						// if wanted
-						if(parameters.GetParam(myEntry.Key.ToString(), "") != null){
+						if (parameters.GetParam(myEntry.Key.ToString(), "") != null)
+						{
 							parameters.RemoveParam(myEntry.Key.ToString(), "");
 						}
 						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
-						
+
 					}
 
-					
+
 					// write result to conversion.TempOutputFile or a random temp output file
 
 					XmlWriter finalWriter;
@@ -364,21 +369,35 @@ namespace Daisy.SaveAsDAISY.Conversion
 					StreamWriter streamWriter = new StreamWriter(
 						tempOutputPath,
 						true, System.Text.Encoding.UTF8
-					) { AutoFlush = true };
+					)
+					{ AutoFlush = true };
 					finalWriter = new XmlTextWriter(streamWriter);
-					
+
 					Debug.WriteLine("OUTPUT FILE : '" + tempOutputPath + "'");
 #else
 					finalWriter = new XmlTextWriter(tempOutputPath, System.Text.Encoding.UTF8);
 #endif
 					writer = GetWriter(finalWriter);
-					
+
 
 					source = this.Source;
 					// Apply the transformation
 
 					xslt.Transform(source, parameters, writer, zipResolver);
-				} finally {
+				}
+				catch (Exception ex)
+				{
+					if (writer != null)
+						writer.Close();
+					if (source != null)
+						source.Close();
+					if (zipResolver != null)
+						zipResolver.Dispose();
+
+					throw ex;
+				}
+				finally
+				{
 					if (writer != null)
 						writer.Close();
 					if (source != null)

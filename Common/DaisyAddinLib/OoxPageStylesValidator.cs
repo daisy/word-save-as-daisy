@@ -35,7 +35,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 		}
 
-		public override ValidatoinResult ValidateLastStyle()
+		public override ValidationResult ValidateLastStyle()
 		{
 			var result = base.ValidateLastStyle();
 			

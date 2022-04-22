@@ -113,6 +113,8 @@ namespace Daisy.SaveAsDAISY
             }
             System.Drawing.Bitmap image = new System.Drawing.Bitmap(streamIcon);
             return AddinResources.ConvertImage.Convert(image);
+            //return image;
+
         }
 
         /// <summary>

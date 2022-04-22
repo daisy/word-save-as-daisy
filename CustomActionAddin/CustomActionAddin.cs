@@ -1,17 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
+using System.Collections;
+using System.ComponentModel;
+using System.Configuration.Install;
 
 namespace CustomActionAddin
 {
-    using System;
-    using System.IO;
-    using System.Diagnostics;
-    using System.Collections;
-    using System.ComponentModel;
-    using System.Configuration.Install;
-
     [RunInstaller(true)]
     public class CustomActionAddin : Installer
     {
