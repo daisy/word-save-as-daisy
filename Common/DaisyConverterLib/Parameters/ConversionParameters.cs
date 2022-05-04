@@ -185,6 +185,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 if (GlobalSettings.GetPagenumStyle != " ") {
                     parameters.Add("Custom", GlobalSettings.GetPagenumStyle);
                 }
+                // 20220402 : adding footnotes positioning settings
+                // might be "page", "inline", "end" or "after"
+                if (GlobalSettings.FootnotesPosition != " "){
+                    parameters.Add("FootnotesPosition", GlobalSettings.FootnotesPosition);
+                }
+                // value between -5 and 6, with negative value meaning parents level going upwards,
+                // 0 meaning in current level,
+                // positive value meaning absolute level value where to put the notes
+                if (GlobalSettings.FootnotesLevel != " ")
+                {
+                    parameters.Add("FootnotesLevel", GlobalSettings.FootnotesLevel);
+                }
 
                 return parameters;
             }

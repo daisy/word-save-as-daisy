@@ -587,9 +587,18 @@ namespace Daisy.SaveAsDAISY.Conversion
 			if (e.Message.StartsWith("translation.oox2Daisy.")) {
 				fidilityLoss.Add(e.Message);
 				feedbackMessageIntercepted?.Invoke(this, new DaisyEventArgs(e.Message));
-			} else if (!e.Message.StartsWith("progress")) {
-				progressMessageIntercepted?.Invoke(this, new DaisyEventArgs(e.Message));
+			} else if (e.Message.StartsWith("progress:")) {
+				progressMessageIntercepted?.Invoke(
+					this,
+					new DaisyEventArgs(e.Message.Substring(9))
+				);
 			}
+#if DEBUG
+			//if (e.Message.StartsWith("debug "))
+			//{
+			//	progressMessageIntercepted?.Invoke(this, new DaisyEventArgs(e.Message));
+			//}
+#endif
 		}
 
 		/// <summary>

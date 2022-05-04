@@ -91,6 +91,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         ArrayList arrListLang = new ArrayList();
 
+
+
         /// <summary>
         /// 
         /// </summary>
@@ -148,7 +150,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         int captionFlag = 0, hyperlinkFlag = 0, testRun = 0;
 
-        int set = 0, setbookmark = 0, checkCverpage = 0;
+        int set = 0, setbookmark = 0, checkCoverpage = 0;
 
         int pageId = 0, flagcounter = 0;
 
@@ -247,6 +249,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
             id = id.Replace(" ", "_");
             return id;
         }
+
+
 
         /// <summary>
         /// 
@@ -2162,9 +2166,9 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to increment flag value for Cover page 
         /// </summary>
         /// <returns></returns>
-        public string CheckCaverPage() {
-            checkCverpage++;
-            return checkCverpage.ToString();
+        public string CheckCoverPage() {
+            checkCoverpage++;
+            return checkCoverpage.ToString();
         }
 
         /// <summary>
@@ -3210,6 +3214,35 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         #endregion
 
+        #region Character style stack
+
+
+        /// <summary>
+        /// Stack of character style ti apply on a groupe of letter or text
+        /// This is call by CustomCharStyle template to handle 
+        /// italic (em), bold(strong), superscript(sup) and subscript(sub) groups of characters
+        /// </summary>
+        Stack<string> characterStyle = new Stack<string>();
+        public void PushCharacterStyle(string tag)
+        {
+            characterStyle.Push(tag);
+        }
+
+        public bool HasCharacterStyle(string tag)
+        {
+            return characterStyle.Contains(tag);
+        }
+
+        public string PopCharacterStyle()
+        {
+            if(characterStyle.Count == 0)
+            {
+                return "";
+            } else return characterStyle.Pop();
+        }
+
+
+        #endregion
         #region matter type processing (Frontmatter (DAISY)/Bodymatter (DAISY)/Rearematter (DAISY) )
 
         PageStylesValidator _pageStylesValidator = new PageStylesValidator();
