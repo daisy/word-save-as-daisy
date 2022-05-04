@@ -25,6 +25,10 @@ namespace Daisy.SaveAsDAISY.Conversion
             m_ScriptDocument.Load(reader);
             reader.Close();
 
+            this.niceName = m_ScriptDocument.SelectSingleNode("/taskScript/nicename")?.InnerXml ?? string.Empty;
+            this.name = m_ScriptDocument.SelectSingleNode("/taskScript/@name")?.InnerXml ?? string.Empty;
+            this.description = m_ScriptDocument.SelectSingleNode("/taskScript/description")?.InnerXml ?? string.Empty;
+
             //populate parameters list
             XmlNodeList CompleteNodeList = m_ScriptDocument.GetElementsByTagName("parameter");
             ScriptParameter p = null;
@@ -34,6 +38,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     this._parameters.Add(p.Name,p);
                 }
             }
+           
         }
 
 

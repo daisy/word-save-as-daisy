@@ -71,6 +71,16 @@ namespace Daisy.SaveAsDAISY.Conversion {
             get { return name; }
         }
 
+        protected string description = "";
+
+        /// <summary>
+        /// Description of the script
+        /// </summary>
+        public string Description
+        {
+            get { return name; }
+        }
+
         /// <summary>
         /// Script output path, to be extracted from parameters in runners
         /// </summary>
