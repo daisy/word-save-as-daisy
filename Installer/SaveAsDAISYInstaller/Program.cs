@@ -145,18 +145,18 @@ namespace DaisyInstaller
                     if (File.Exists(pipelineCabPath)) File.Delete(pipelineCabPath);
 #if UNIFIED
                     File.WriteAllBytes(daisySetupPath, officeIs64bits ? 
-                        Properties.Resources.DaisyAddinForWordSetup_x64 :
-                        Properties.Resources.DaisyAddinForWordSetup_x86);
-                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
-                    File.WriteAllBytes(pipeline2CabPath, Properties.Resources.pipeline2_cab);
+                        DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x64 :
+                        DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x86);
+                    File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, DaisyInstaller.Properties.Resources.pipeline2_cab);
 #elif X64INSTALLER
-                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
-                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
-                    File.WriteAllBytes(pipeline2CabPath, Properties.Resources.pipeline2_cab);
+                    File.WriteAllBytes(daisySetupPath, DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x64);
+                    File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, DaisyInstaller.Properties.Resources.pipeline2_cab);
 #else
-                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
-                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
-                    File.WriteAllBytes(pipeline2CabPath, Properties.Resources.pipeline2_cab);
+                    File.WriteAllBytes(daisySetupPath, DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x86);
+                    File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, DaisyInstaller.Properties.Resources.pipeline2_cab);
 #endif
 
                     // launch the msi

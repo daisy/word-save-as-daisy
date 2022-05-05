@@ -9,7 +9,7 @@
         -->
     
     <!-- Preprocessor variables, update following your addin assemblies version -->
-    <?define AddinVersion = "2.7.0.0" ?>
+    <?define AddinVersion = "2.7.1.0" ?>
     
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
@@ -24,13 +24,16 @@
     <?endif ?>
     
     <!--Change this ID for update -->
-    <Product Id="B263167B-8584-4C85-B3BA-7D6EE055D682" 
+    <Product Id="EAFA043F-7164-4908-955B-496891503029" 
             Name="SaveAsDAISY add-in version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
         <!--Change this ID for update -->
-        <Package Id="3970795B-048B-4D0A-BDAA-6B9746CCB1EF" Compressed="yes" InstallPrivileges="elevated" InstallerVersion="200" />
+        <Package Id="EA47897F-B95A-48EA-9AEF-1DD4F3A7E6E9"
+				 Compressed="yes"
+				 InstallPrivileges="limited"
+				 InstallerVersion="200" />
         <Media Id="1" Cabinet="Daisy.cab" EmbedCab="yes" />
         <Media Id="2" Cabinet="pipeline.cab" EmbedCab="no" CompressionLevel="high"/>
         <Media Id="3" Cabinet="pipeline2.cab" EmbedCab="no" CompressionLevel="high"/>
