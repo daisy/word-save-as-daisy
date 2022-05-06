@@ -58,7 +58,7 @@
         <!--Properties section-->
         <Icon Id="icon.ico" SourceFile="$(var.SolutionDir)Lib/speaker.ico" />
         <Property Id="ARPPRODUCTICON" Value="icon.ico" />
-        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLDIR" />
+        <!--<Property Id="WIXUI_INSTALLDIR" Value="APPLICATIONFOLDER" />-->
         <CustomAction Id="SetARPREADME" Property="ARPREADME" Value="[#Readme]" />
         <Property Id="ARPCOMMENTS" Value="$(var.AddinVersion)" />
         <Property Id="ARPCONTACT" Value="DAISY Consortium" />
@@ -70,13 +70,15 @@
             Default assumes office 2007 (12.0) 32bits -->
         <Property Id="LATESTWORDVERSION">"12.0"</Property>
         <Property Id="LATESTWORDISX64">"no"</Property>
+
+		<Property Id="ApplicationFolderName" Value="Save-as-DAISY Word Addin" />
         
 
         <Condition Message="Please install Windows XP Service Pack 3">
             <![CDATA[Installed OR (VersionNT > 501) OR (VersionNT = 501 AND ServicePackLevel >= 3)]]>
         </Condition>
         <!-- Shared libraries -->
-        <ComponentGroup Id="SharedLibraries" Directory="INSTALLDIR">
+        <ComponentGroup Id="SharedLibraries" Directory="APPLICATIONFOLDER">
             <Component Id="DaisyAddinLib.dll" Guid="8E8F0D07-E9DF-4426-920E-3047069249A5" Win64="$(var.Win64)">
                 <File Name="$(var.DaisyAddinLib.TargetFileName)" Source="$(var.DaisyAddinLib.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
@@ -132,15 +134,15 @@
             <!-- In the Program Files folder -->
             <Directory Id="$(var.PlatformProgramFilesFolder)">
                 <!-- Program Files/Daisy Consortium-->
-                <Directory Id="INSTALLDIRX" Name="DAISY Consortium">
+                <Directory Id="DAISYDIR" Name="DAISY Consortium">
                     <!-- Program Files/Daisy/SaveAsDAISY -->
-                    <Directory Id="INSTALLDIR" Name="Save-as-DAISY Word Addin">
+                    <Directory Id="APPLICATIONFOLDER" Name="Save-as-DAISY Word Addin">
                         <Directory Id="ProgramMenuFolder">
                             <Directory Id="SaveAsDAISYShortcuts" Name="Save-as-DAISY Word Addin">
                                 <Component Id="ApplicationShortcut" Guid="26FA1CA4-6C3E-4383-936B-19D84B3ED531">
-                                    <Shortcut Id="ApplicationStartMenuShortcut1" Name="SaveAsDAISY Instruction Manual" Description="SaveAsDAISY Instruction Manual" Target="[INSTALLDIR]SaveAsDAISY_Instruction_Manual_Jan_2021.docx" WorkingDirectory="INSTALLDIR" />
-                                    <Shortcut Id="ApplicationStartMenuShortcut2" Name="Accessibility Demofile" Description="Accessibility Demofile" Target="[INSTALLDIR]Accessibility_demofile.docx" WorkingDirectory="INSTALLDIR" />
-                                    <Shortcut Id="ApplicationStartMenuShortcut4" Name="Authoring guidelines" Description="Authoring guidelines" Target="[INSTALLDIR]Authoring_Guidelines_For_using_SaveAsDAISY.docx" WorkingDirectory="INSTALLDIR" />
+                                    <Shortcut Id="ApplicationStartMenuShortcut1" Name="SaveAsDAISY Instruction Manual" Description="SaveAsDAISY Instruction Manual" Target="[INSTALLDIR]SaveAsDAISY_Instruction_Manual_Jan_2021.docx" WorkingDirectory="APPLICATIONFOLDER" />
+                                    <Shortcut Id="ApplicationStartMenuShortcut2" Name="Accessibility Demofile" Description="Accessibility Demofile" Target="[INSTALLDIR]Accessibility_demofile.docx" WorkingDirectory="APPLICATIONFOLDER" />
+                                    <Shortcut Id="ApplicationStartMenuShortcut4" Name="Authoring guidelines" Description="Authoring guidelines" Target="[INSTALLDIR]Authoring_Guidelines_For_using_SaveAsDAISY.docx" WorkingDirectory="APPLICATIONFOLDER" />
                                     <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
                                     <RegistryValue Root="HKCU" Key="Software\Microsoft\SaveAsDAISY" Name="installed" Type="integer" Value="1" KeyPath="yes" />
                                 </Component>
@@ -2313,7 +2315,7 @@
             </Directory>
         </Directory>
         <!--Feature list-->
-        <Feature Id="ProductFeature" Title="WixProject1" Level="1">
+        <Feature Id="ProductFeature" Title="SaveAsDAISY Word Addin" Level="1">
 
             <ComponentGroupRef Id="JapanResources"/>
             <ComponentGroupRef Id="RussianResources"/>
@@ -2334,6 +2336,7 @@
             <ComponentRef Id="DaisyTranslatorWord2003Shim.dll" />
             <ComponentRef Id="RegistryEntriesWord2003" />
             
+			<!--Office 2007 and up-->
             <ComponentRef Id="Help.chm" />
             <ComponentRef Id="Help.ico" />
             <ComponentRef Id="template2007.dotx" />
@@ -2518,12 +2521,9 @@
             <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction"  Value="LaunchApplication">WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed</Publish>
         </UI>-->
         <!--Custom UI-->
+		
         <UIRef Id="MyUI" />
-        <!--Custom UI-->
-        <!--<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Show Help" />-->
-        <WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)images\bannrbmp.bmp" />
-        <WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)images\dlgbmp.bmp" />
-        <WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)License.rtf" />
+        
         <!--Custom Action-->
         <CustomAction Id="NewerVersionDetected" Error="There is a newer version of this product installed." />
         <!--Built in UI-->

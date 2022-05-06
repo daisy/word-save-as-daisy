@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 	<Fragment>
+		<!-- WIX 3 default UI customization : 
+			https://wixtoolset.org//documentation/manual/v3/wixui/wixui_customizations.html
+		-->
+		<!--<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Show Help" />-->
+		<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)images\bannrbmp.bmp" />
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)images\dlgbmp.bmp" />
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)License.rtf" />
 		
 		<UI Id="MyUI">
-			<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
+			<Property Id="WixAppFolder" Value="WixPerUserFolder" />
+			
+			<!-- Using default advanced installation process to allow for non-administration installation 
+			under localAppData/Apps folder-->
+			<UIRef Id="WixUI_Advanced" />
+			<!--<TextStyle Id="WixUI_Font_Normal" FaceName="Tahoma" Size="8" />
 			<TextStyle Id="WixUI_Font_Bigger" FaceName="Tahoma" Size="12" />
 			<TextStyle Id="WixUI_Font_Title" FaceName="Tahoma" Size="9" Bold="yes" />
 
@@ -21,6 +33,7 @@
 			<DialogRef Id="PrepareDlg" />
 			<DialogRef Id="ProgressDlg" />
 			<DialogRef Id="ResumeDlg" />
+			
 			<DialogRef Id="MyUserExit" />
 			<DialogRef Id="MyInstallScopeDlg"/>
 
@@ -28,7 +41,6 @@
 			<Publish Dialog="MyExitDialog" Control="Finish" Event="EndDialog" Value="Return" Order="999">1</Publish>
 			<Publish Dialog="MyExitDialog" Control="Finish" Order="1" Event="DoAction" Value="ShowReadme">SHOW_README = 1 and NOT Installed</Publish>
 
-			<!-- Changed WelcomeDlg next button to navigate to InstallDirDlg -->
 			<Publish Dialog="MyWelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg">1</Publish>
 
 			<Publish Dialog="LicenseAgreementDlg" Control="Back" Event="NewDialog" Value="MyWelcomeDlg">1</Publish>
@@ -55,12 +67,12 @@
 
 			<Publish Dialog="MaintenanceTypeDlg" Control="RepairButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
 			<Publish Dialog="MaintenanceTypeDlg" Control="RemoveButton" Event="NewDialog" Value="VerifyReadyDlg">1</Publish>
-			<Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MyMaintenanceWelcomeDlg">1</Publish>
+			<Publish Dialog="MaintenanceTypeDlg" Control="Back" Event="NewDialog" Value="MyMaintenanceWelcomeDlg">1</Publish>-->
 
 			<Property Id="ARPNOMODIFY" Value="1" />
 		</UI>
 
-		<UIRef Id="WixUI_Common" />
+		
 		
 		<!--<InstallUISequence>
 			<Show Dialog="MyUserExit" OnExit="success" />

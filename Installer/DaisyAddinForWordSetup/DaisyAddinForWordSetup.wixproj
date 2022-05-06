@@ -46,12 +46,12 @@
     <IntermediateOutputPath>obj\$(Platform)\$(Configuration)\</IntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="MyExitDialog.wxs" />
-    <Compile Include="MyInstallScopeDlg.wxs" />
-    <Compile Include="MyMaintenanceWelcomeDlg.wxs" />
+    <None Include="MyExitDialog.wxs" />
+    <None Include="MyInstallScopeDlg.wxs" />
+    <None Include="MyMaintenanceWelcomeDlg.wxs" />
     <Compile Include="MyUI.wxs" />
-    <Compile Include="MyUserExitDlg.wxs" />
-    <Compile Include="MyWelcomeDlg.wxs" />
+    <None Include="MyUserExitDlg.wxs" />
+    <None Include="MyWelcomeDlg.wxs" />
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
