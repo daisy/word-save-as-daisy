@@ -704,7 +704,7 @@
             </xsl:if>
 
             <!--Adding Note index-->
-            <xsl:if test="$flagNote='Note'">
+            <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                 <xsl:if test="myObj:NoteFlag()=1">
                     <xsl:value-of select="$checkid - 1"/>
                 </xsl:if>
@@ -799,7 +799,7 @@
                         <!--If both id and anchor attribute is present in hyperlink-->
                         <xsl:when test="(@r:id) and (@w:anchor)">
                             <xsl:attribute name="href">
-                                <xsl:value-of select="concat(myObj:Anchor(@r:id),'#',@w:anchor)"/>
+                                <xsl:value-of select="concat(myObj:Anchor(@r:id, $flagNote),'#',@w:anchor)"/>
                             </xsl:attribute>
                             <xsl:attribute name="external">true</xsl:attribute>
                         </xsl:when>
@@ -813,7 +813,7 @@
                         <!--If only id for hyperlink is present-->
                         <xsl:when test="@r:id">
                             <xsl:attribute name="href">
-                                <xsl:value-of select="myObj:Anchor(@r:id)"/>
+                                <xsl:value-of select="myObj:Anchor(@r:id,$flagNote)"/>
                             </xsl:attribute>
                             <xsl:attribute name="external">true</xsl:attribute>
                         </xsl:when>
@@ -970,7 +970,7 @@
                 <xsl:variable name="seperate">
                     <xsl:variable name="id" select="@w:id"/>
                     <xsl:choose>
-                        <xsl:when test="$flagNote='Note'">
+                        <xsl:when test="$flagNote='footnote' or $flagNote='endnote'">
                             <xsl:value-of select="myObj:BookFootnote(@w:id)"/>
                         </xsl:when>
                         <xsl:otherwise>
@@ -2419,6 +2419,21 @@
                     <xsl:with-param name="characterStyle" select="$characterStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
                 </xsl:call-template>
+                <!-- Close style tag if no run with text is found afterward in the paragraph tag -->
+                <xsl:if test="not(following-sibling::w:r/w:t)">
+                    <xsl:call-template name="CloseStyleTag">
+                        <xsl:with-param name="styleTag" select="'em'"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="CloseStyleTag">
+                        <xsl:with-param name="styleTag" select="'strong'"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="CloseStyleTag">
+                        <xsl:with-param name="styleTag" select="'sup'"/>
+                    </xsl:call-template>
+                    <xsl:call-template name="CloseStyleTag">
+                        <xsl:with-param name="styleTag" select="'sub'"/>
+                    </xsl:call-template>
+                </xsl:if>
             </xsl:when>
             
             <!--Checking for WordDAISY custom character style-->
@@ -2517,7 +2532,7 @@
 
         <xsl:if test="string-length(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val) = 0
                 or (preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val &lt; $checkilvl
-                                and not(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val=$checkilvl))
+                and not(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val=$checkilvl))
                 or preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']
                 or preceding-sibling::node()[1]/w:pPr/w:rPr/w:vanish">
             <xsl:variable name="val">
@@ -2626,11 +2641,12 @@
 
         <!--Closing the current List item(li) element when there is no nested list-->
         <xsl:variable name="LPeekLevel" select="myObj:ListPeekLevel()"/>
-        <xsl:if test="($LPeekLevel = $checkilvl
-                                                                                and following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val = $checkilvl]
-                                                                                and not(following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])
-                                                                                and not(following-sibling::node()[1]/w:pPr/w:rPr/w:vanish))
-                                                                ">
+        <xsl:if test="(
+			    $LPeekLevel = $checkilvl
+                and following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val = $checkilvl]
+                and not(following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])
+                and not(following-sibling::node()[1]/w:pPr/w:rPr/w:vanish)
+		)">
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
         </xsl:if>
 
@@ -2640,10 +2656,11 @@
         </xsl:call-template>
 
         <!--Closing all the nested Lists-->
-        <xsl:if test="(count(following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val])=0
-                                                                        or following-sibling::w:p[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']
-                                                                        or (following-sibling::w:p[1]/w:pPr/w:rPr/w:vanish))
-                                                                ">
+        <xsl:if test="(
+			    count(following-sibling::node()[1][w:pPr/w:numPr/w:ilvl/@w:val])=0
+                or following-sibling::w:p[1]/w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']
+                or (following-sibling::w:p[1]/w:pPr/w:rPr/w:vanish)
+		)">
             <xsl:call-template name="CloseLastlist">
                 <xsl:with-param name="close" select="0"/>
                 <xsl:with-param name="custom" select="$custom"/>
@@ -3435,7 +3452,7 @@
                     </xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','author ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
-                <xsl:if test="$flagNote='Note'">
+                <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="myObj:NoteFlag()=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
@@ -3466,7 +3483,7 @@
             </xsl:when>
             <!--Checking for BylineDAISY custom paragraph style-->
             <xsl:when test="(w:pPr/w:pStyle/@w:val='BylineDAISY')">
-                <xsl:if test="$flagNote='Note'">
+                <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="myObj:NoteFlag()=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
@@ -3488,7 +3505,7 @@
             </xsl:when>
             <!--Checking for DatelineDAISY custom paragraph style-->
             <xsl:when test="(w:pPr/w:pStyle/@w:val='DatelineDAISY')">
-                <xsl:if test="$flagNote='Note'">
+                <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="myObj:NoteFlag()=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
@@ -3552,7 +3569,7 @@
             </xsl:when>
             <!--Checking for PoemDAISY/Poem-TitleDAISY/Poem-HeadingDAISY/Poem-AuthorDAISY/Poem-BylineDAISY custom paragraph styles-->
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,4)='Poem']">
-                <xsl:if test="$flagNote='Note'">
+                <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="myObj:NoteFlag()=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>
@@ -3648,7 +3665,7 @@
             </xsl:when>
             <!--Checking for AddressDAISY custom paragraph style-->
             <xsl:when test="w:pPr/w:pStyle[@w:val='AddressDAISY']">
-                <xsl:if test="$flagNote='Note'">
+                <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="myObj:NoteFlag()=1">
                         <p>
                             <xsl:value-of select="$checkid - 1"/>

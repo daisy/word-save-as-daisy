@@ -100,7 +100,7 @@
                             <xsl:if test="name()='w:p'">
                                 <xsl:call-template name="ParagraphStyle">
                                     <xsl:with-param name="VERSION" select="$vernote"/>
-                                    <xsl:with-param name="flagNote" select="'Note'"/>
+                                    <xsl:with-param name="flagNote" select="'endnote'"/>
                                     <xsl:with-param name="checkid" select="$endNoteId + 1"/>
                                     <xsl:with-param name="sOperators" select="$sOperators"/>
                                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -212,7 +212,7 @@
                                         <!--Calling template for checking style in the footnote text-->
                                         <xsl:call-template name="ParagraphStyle">
                                             <xsl:with-param name="VERSION" select="$verfoot"/>
-                                            <xsl:with-param name="flagNote" select="'Note'"/>
+                                            <xsl:with-param name="flagNote" select="'footnote'"/>
                                             <xsl:with-param name="checkid" select="$checkid + 1"/>
                                             <xsl:with-param name="sOperators" select="$sOperators"/>
                                             <xsl:with-param name="sMinuses" select="$sMinuses"/>

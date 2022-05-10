@@ -21,9 +21,9 @@ namespace Daisy.SaveAsDAISY.Conversion {
     /// </summary>
     class DaisyClass {
 
-        const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
-        const string footRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes";
-        const string endRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes";
+        const string documentRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
+        const string footnotesRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes";
+        const string endnotesRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes";
         const string appNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes";
         const string appRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties";
         const string numberRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
@@ -181,7 +181,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         Hashtable headingCounters = new Hashtable();
         int objectId = 0;
         String absVal = "", numFormat = "", lvlText = "", lStartOverride = "", lStart = "", headingInfo = "";
-        PackageRelationship relationship = null, imgRelationship = null, numberRelationship = null, customRelationship = null, footrelationship = null, endrelationship = null;
+        PackageRelationship wordRelationship = null, 
+            imgRelationship = null, 
+            numberRelationship = null, 
+            customRelationship = null, 
+            footRelationship = null, 
+            endRelationship = null;
         Hashtable listMathMl;
         int footNoteFlag = 0, sidebarFlag = 0, mainFlag = 0, img_Flag = 0;
 
@@ -316,20 +321,20 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns></returns>
         public String MathImageFootnote(string inNum) {
             try {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    relationship = searchRelation;
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(footRelationshipType)) {
-                    footrelationship = searchRelation;
+                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(footnotesRelationshipType)) {
+                    footRelationship = searchRelation;
                     break;
                 }
 
-                Uri footpartUri = PackUriHelper.ResolvePartUri(footrelationship.SourceUri, footrelationship.TargetUri);
+                Uri footpartUri = PackUriHelper.ResolvePartUri(footRelationship.SourceUri, footRelationship.TargetUri);
                 PackagePart footPartxml = pack.GetPart(footpartUri);
 
                 imgRelationship = footPartxml.GetRelationship(inNum);
@@ -368,12 +373,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns></returns>
         public String MathImage(string inNum) {
             try {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    relationship = searchRelation;
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
                 imgRelationship = mainPartxml.GetRelationship(inNum);
@@ -409,12 +414,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns></returns>
         public String Image(String inNum, string imageName, String val) {
             try {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    relationship = searchRelation;
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
                 imgRelationship = mainPartxml.GetRelationship(inNum);
@@ -465,12 +470,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="resampleValue"></param>
         /// <returns></returns>
         public String ResampleImage(String inNum, string imageName, String resampleValue) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             imgRelationship = mainPartxml.GetRelationship(inNum);
@@ -507,12 +512,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="imageName"></param>
         /// <returns></returns>
         public String ImageExt(String inNum, String pathName, String imageName) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             imgRelationship = mainPartxml.GetRelationship(inNum);
@@ -554,12 +559,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns></returns>
         public String Image(string inNum, string imagegroupName) {
             try {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    relationship = searchRelation;
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
                 imgRelationship = mainPartxml.GetRelationship(inNum);
@@ -611,18 +616,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <returns></returns>
         public String ExternalImage() {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships()) {
-                relationship = searchRelation;
-                if (relationship.RelationshipType == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image") {
-                    if (relationship.TargetMode.ToString() == "External") {
+                wordRelationship = searchRelation;
+                if (wordRelationship.RelationshipType == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image") {
+                    if (wordRelationship.TargetMode.ToString() == "External") {
                         strImageExt = "translation.oox2Daisy.ExternalImage";
                         break;
                     }
@@ -1251,19 +1256,53 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <summary>
         /// Function returns the target string of an anchor
         /// </summary>
-        /// <param name="inNum"></param>
+        /// <param name="inNum">anchor id in the relathionship file</param>
+        /// <param name="flagNote">type of relationship (footnote, endote or empty for document relationship)</param>
         /// <returns></returns>
-        public String Anchor(string inNum) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+        public String Anchor(string inNum, string flagNote = "") {
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType))
+            {
+                wordRelationship = searchRelation;
                 break;
             }
-
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
-            PackagePart mainPartxml = pack.GetPart(partUri);
-            imgRelationship = mainPartxml.GetRelationship(inNum);
-            String uri = imgRelationship.TargetUri.ToString();
-            return HttpUtility.UrlPathEncode(uri);
+            Uri partUri;
+            PackagePart mainPartxml;
+            PackageRelationship anchorRelationshipFile = null;
+            switch (flagNote)
+            {
+                case "footnote":
+                    partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                    mainPartxml = pack.GetPart(partUri);
+                    foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(footnotesRelationshipType))
+                    {
+                        anchorRelationshipFile = searchRelation;
+                        break;
+                    }
+                    break;
+                case "endnote":
+                    partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                    mainPartxml = pack.GetPart(partUri);
+                    foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(endnotesRelationshipType))
+                    {
+                        anchorRelationshipFile = searchRelation;
+                        break;
+                    }
+                    break;
+                default:
+                    anchorRelationshipFile = wordRelationship;
+                    break;
+            }
+            
+            if(anchorRelationshipFile != null)
+            {
+                partUri = PackUriHelper.ResolvePartUri(anchorRelationshipFile.SourceUri, anchorRelationshipFile.TargetUri);
+                mainPartxml = pack.GetPart(partUri);
+                PackageRelationship anchorRelationship = mainPartxml.GetRelationship(inNum);
+                String uri = anchorRelationship.TargetUri.ToString();
+                return HttpUtility.UrlPathEncode(uri);
+            }
+            return "";
+            
         }
 
         /// <summary>
@@ -1370,12 +1409,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public String Citation() {
 
             String indicator = " ";
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
@@ -1407,12 +1446,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns></returns>
         public String CitationDetails(string citeId) {
             string temp = "";
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
             foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
                 customRelationship = searchRelation;
@@ -1714,20 +1753,20 @@ namespace Daisy.SaveAsDAISY.Conversion {
             String indicator = "false";
             XmlNodeList node;
 
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
 
-            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(footRelationshipType)) {
-                footrelationship = searchRelation;
+            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(footnotesRelationshipType)) {
+                footRelationship = searchRelation;
                 break;
             }
 
-            Uri footpartUri = PackUriHelper.ResolvePartUri(footrelationship.SourceUri, footrelationship.TargetUri);
+            Uri footpartUri = PackUriHelper.ResolvePartUri(footRelationship.SourceUri, footRelationship.TargetUri);
             PackagePart footPartxml = pack.GetPart(footpartUri);
 
             XmlDocument doc = new XmlDocument();
@@ -1741,20 +1780,20 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
             if (node.Count == 0) {
 
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    relationship = searchRelation;
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri1 = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                Uri partUri1 = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                 PackagePart mainPartxml1 = pack.GetPart(partUri1);
 
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(endRelationshipType)) {
-                    endrelationship = searchRelation;
+                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(endnotesRelationshipType)) {
+                    endRelationship = searchRelation;
                     break;
                 }
 
-                Uri endpartUri = PackUriHelper.ResolvePartUri(endrelationship.SourceUri, endrelationship.TargetUri);
+                Uri endpartUri = PackUriHelper.ResolvePartUri(endRelationship.SourceUri, endRelationship.TargetUri);
                 PackagePart endPartxml = pack.GetPart(endpartUri);
 
                 XmlDocument doc1 = new XmlDocument();
@@ -1789,14 +1828,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns></returns>
         public String FullAbbr(String abbrName, String version) {
             String indicator = "";
-            relationship = null;
+            wordRelationship = null;
             if (IsOffice2007Or2010(version)) {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    relationship = searchRelation;
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
                 foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
@@ -1831,12 +1870,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
             if (version == version2003 || version == versionXP) {
                 foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(customPropRelationshipType)) {
-                    relationship = searchRelation;
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                if (relationship != null) {
-                    Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                if (wordRelationship != null) {
+                    Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                     PackagePart mainPartxml = pack.GetPart(partUri);
 
                     XmlDocument doc = new XmlDocument();
@@ -1871,14 +1910,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns></returns>
         public String FullAcr(String acrName, String version) {
             String indicator = "";
-            relationship = null;
+            wordRelationship = null;
             if (IsOffice2007Or2010(version)) {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                    relationship = searchRelation;
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
                 foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
@@ -1912,12 +1951,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
             if (version == version2003 || version == versionXP) {
                 foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(customPropRelationshipType)) {
-                    relationship = searchRelation;
+                    wordRelationship = searchRelation;
                     break;
                 }
 
-                if (relationship != null) {
-                    Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+                if (wordRelationship != null) {
+                    Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
                     PackagePart mainPartxml = pack.GetPart(partUri);
 
                     XmlDocument doc = new XmlDocument();
@@ -2442,12 +2481,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         public void AbstractFormat(String numId, String iLvl) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(numberRelationshipType)) {
@@ -2915,12 +2954,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         public void NumberHeadings(int prevHeadLvl, int currLvl, String location, String absId) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(numberRelationshipType)) {
@@ -3032,12 +3071,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public String Object(string inNum) {
 
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
             imgRelationship = mainPartxml.GetRelationship(inNum);
             Uri imgpartUri = PackUriHelper.ResolvePartUri(imgRelationship.SourceUri, imgRelationship.TargetUri);
@@ -3089,12 +3128,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         public void GeneralList(String iLvl, String numId) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
-                relationship = searchRelation;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+                wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(numberRelationshipType)) {
