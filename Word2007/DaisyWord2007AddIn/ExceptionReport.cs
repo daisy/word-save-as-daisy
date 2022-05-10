@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -24,6 +25,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 message.AppendLine();
                 message.Append(this.ExceptionRaised.StackTrace);
             }
+
+            message.AppendLine();
+            message.AppendLine("Addin version - " + typeof(ExceptionReport).Assembly.GetName().Version);
             
             string mailto = string.Format(
                 "mailto:{0}?Subject={1}&Body={2}",
