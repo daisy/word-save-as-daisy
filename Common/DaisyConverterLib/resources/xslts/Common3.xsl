@@ -463,6 +463,12 @@
 				</xsl:when>-->
 			</xsl:choose>
 		</xsl:variable>
+		<!--
+			imageWidth and imageHeight are expressed in EMU
+			- 914400 EMU in an inch
+			- 9525 EMU in a pixel @ 96 dpi
+			- https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML
+		-->
 		<xsl:variable name="imageWidth">
 			<xsl:choose>
 				<xsl:when  test="w:drawing/wp:inline/wp:extent">
@@ -552,10 +558,10 @@
 									<xsl:value-of select="$alttext"/>
 								</xsl:attribute>
 								<xsl:attribute name="width">
-									<xsl:value-of select="round(($imageWidth) div (9525))"/>
+									<xsl:value-of select="round(($imageWidth) div (9525))"/> <!-- assuming 96 dpi -->
 								</xsl:attribute>
 								<xsl:attribute name="height">
-									<xsl:value-of select="round(($imageHeight) div (9525))"/>
+									<xsl:value-of select="round(($imageHeight) div (9525))"/> <!-- assuming 96 dpi -->
 								</xsl:attribute>
 							</xsl:when>
 							<xsl:when test="$imgOpt='resample'  and contains($Img_Id,'rId')">
