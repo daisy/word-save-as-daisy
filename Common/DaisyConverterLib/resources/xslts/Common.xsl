@@ -2498,7 +2498,7 @@
 
         <!--Checking the current level with the next level-->
         <xsl:variable name="PeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
-        <xsl:if test="d:Difference($checkilvl,$PeekLevel)">
+        <xsl:if test="$PeekLevel - $checkilvl &gt; 1">
             <xsl:value-of disable-output-escaping="yes" select="'&lt;/li&gt;'"/>
             <xsl:call-template name="ComplexListClose">
                 <xsl:with-param name="close" select="$checkilvl"/>

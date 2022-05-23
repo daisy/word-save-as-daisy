@@ -548,7 +548,7 @@
 	
 		<!--Checking the current level with the PeekLevel in the stack-->
 		<xsl:if test="$openlvl &gt; $PeekLevel">
-			<xsl:variable name="diffLevel" as="xs:integer" select="d:DiffLevel($openlvl,$PeekLevel)"/>
+			<xsl:variable name="diffLevel" as="xs:integer" select="$openlvl - $PeekLevel"/>
 			<xsl:choose>
 				<xsl:when test="$diffLevel = 1">
 					<xsl:sequence select="d:sink(d:ListPush($myObj,$openlvl))"/> <!-- empty -->
@@ -581,7 +581,7 @@
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of disable-output-escaping="yes" select="'&lt;li&gt;'"/>
-					<xsl:variable name="reduceOne" as="xs:integer" select="d:ReduceOne($diffLevel)"/>
+					<xsl:variable name="reduceOne" as="xs:integer" select="$diffLevel - 1"/>
 					<xsl:call-template name="recursive">
 						<xsl:with-param name="rec" select="$reduceOne"/>
 					</xsl:call-template>
@@ -640,7 +640,7 @@
 		<xsl:param name="rec" as="xs:integer"/>
 		<xsl:value-of disable-output-escaping="yes" select="'&lt;list type=&quot;ol&quot;&gt;'"/>
 		<xsl:value-of disable-output-escaping="yes" select="'&lt;li&gt;'"/>
-		<xsl:variable name="dec" as="xs:integer" select="d:Decrement($rec)"/>
+		<xsl:variable name="dec" as="xs:integer" select="$rec - 1"/>
 		<xsl:if test="$dec!=0">
 			<xsl:call-template name="recursive">
 				<xsl:with-param name="rec" select="$dec"/>
@@ -674,7 +674,7 @@
 						<xsl:sequence select="d:sink(d:StartString($myObj,$level,$strStart))"/> <!-- empty -->
 					</xsl:otherwise>
 				</xsl:choose>
-				<xsl:variable name="dec" as="xs:integer" select="d:DecrementStart($level)"/>
+				<xsl:variable name="dec" as="xs:integer" select="$level - 1"/>
 				<xsl:call-template name="recStart">
 					<xsl:with-param name="abstLevel" select="$abstLevel"/>
 					<xsl:with-param name="level" select="$dec"/>
