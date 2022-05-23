@@ -165,7 +165,6 @@ public class DaisyClass {
 	private final List<String> prevHeadId = new ArrayList<>();
 	private final Hashtable<String,List<String>> startHeadingItem = new Hashtable<>();
 	private static final List<String> bulletChar = new ArrayList<>();
-	private final List<String> absFormat = new ArrayList<>();
 	private final List<String> OverideNumList = new ArrayList<>();
 	private String prevNumId = "";
 	private String prevHeadNumId = "";
@@ -206,7 +205,6 @@ public class DaisyClass {
 		this.output_Pipeline.mkdirs();
 		for (int i = 0; i < 9; i++) {
 			startItem.add("");
-			absFormat.add("");
 		}
 		for (int i = 0; i < 2; i++) {
 			prevHeadId.add("");
@@ -1874,7 +1872,7 @@ public class DaisyClass {
 			text = text + " ";
 		} else {
 			text = lvlText.substring(lvlText.indexOf('%'));
-			AbstractFormat(numId, xpath, docBuilder);
+			List<String> absFormat = AbstractFormat(numId, xpath, docBuilder);
 			int cntSymbol = 0;
 			for (int j = 0; j < text.length(); j++) {
 				if (text.charAt(j) == '%')
@@ -1951,7 +1949,7 @@ public class DaisyClass {
 		return tempString;
 	}
 
-	private void AbstractFormat(String numId, XPath xpath, DocumentBuilder docBuilder)
+	private List<String> AbstractFormat(String numId, XPath xpath, DocumentBuilder docBuilder)
 			throws InvalidFormatException, IOException, SAXException, XPathExpressionException {
 		PackageRelationship relationship = null;
 		for (PackageRelationship searchRelation : pack.getRelationshipsByType(wordRelationshipType)) {
@@ -1971,6 +1969,7 @@ public class DaisyClass {
 			"w:numbering/w:num[@w:numId=" + numId + "]/w:abstractNumId",
 			ImmutableMap.of("w", docNamespace))
 			.evaluate(doc, XPathConstants.NODESET);
+		List<String> absFormat = new ArrayList<>();
 		if (list.getLength() != 0) {
 			String absNumid = list.item(0).getAttributes().getNamedItemNS(docNamespace, "val").getTextContent();
 			NodeList listAbs = (NodeList)compileXPathExpression(
@@ -1980,8 +1979,7 @@ public class DaisyClass {
 				.evaluate(doc, XPathConstants.NODESET);
 			if (listAbs.getLength() != 0) {
 				for (int j = 0; j < listAbs.getLength(); j++)
-					absFormat.set(
-						j,
+					absFormat.add(
 						((NodeList)compileXPathExpression(
 							xpath,
 							"w:numFmt",
@@ -1991,6 +1989,7 @@ public class DaisyClass {
 						.getAttributes().getNamedItemNS(docNamespace, "val").getTextContent());
 			}
 		}
+		return absFormat;
 	}
 
 	public String IsList(String numId) {
@@ -2103,7 +2102,7 @@ public class DaisyClass {
 			text = text + " ";
 		} else {
 			text = lvlText.substring(index);
-			AbstractFormat(numId, xpath, docBuilder);
+			List<String> absFormat = AbstractFormat(numId, xpath, docBuilder);
 			int cntSymbol = 0;
 			for (int j = 0; j < text.length(); j++) {
 				if (text.charAt(j) == '%')
