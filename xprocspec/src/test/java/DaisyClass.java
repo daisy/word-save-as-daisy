@@ -941,22 +941,6 @@ public class DaisyClass {
 	}
 
 	/**
-	 * Function which gives the difference between Current level and Peek level of Stack
-	 */
-	public static boolean Difference(int close, int peekLevel) {
-		if (peekLevel - close > 1)
-			return true;
-		return false;
-	}
-
-	/**
-	 * Function which decrements the counter value
-	 */
-	public static int Decrement(int rec) {
-		return rec - 1;
-	}
-
-	/**
 	 * Function which increments the counter value
 	 */
 	public void Increment(int rec) {
@@ -1836,14 +1820,6 @@ public class DaisyClass {
 		return output;
 	}
 
-	public static int DiffLevel(int opLvl, int PeekLvl) {
-		return opLvl - PeekLvl;
-	}
-
-	public static int ReduceOne(int opLvl) {
-		return opLvl - 1;
-	}
-
 	/**
 	 * Function which increments the counter value
 	 */
@@ -2061,17 +2037,6 @@ public class DaisyClass {
 		return "1";
 	}
 
-	/**
-	 * Function which decrements the counter value
-	 */
-	public static int DecrementStart(int rec) {
-		rec = rec - 1;
-		return rec;
-	}
-
-	/**
-	 * Function which decrements the counter value
-	 */
 	public String StartString(int iLvl, String strtItem) {
 		startItem.set(iLvl, strtItem);
 		return "1";
