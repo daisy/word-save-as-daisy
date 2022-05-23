@@ -432,198 +432,204 @@
                 </xsl:when>
             </xsl:choose>
 
-        </xsl:variable>
-        <!--Variable holds the value of Image Id concatenated with some random number generated for Image Id-->
-        <xsl:variable name="imageId">
-            <xsl:choose>
-                <xsl:when  test="w:drawing/wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed">
-                    <xsl:value-of select="concat($Img_Id,d:GenerateImageId($myObj))"/>
-                </xsl:when>
-                <xsl:when test="w:drawing/wp:anchor/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed">
-                    <xsl:value-of select="concat($Img_Id,d:GenerateImageId($myObj))"/>
-                </xsl:when>
-                <xsl:when test="w:drawing/wp:inline/wp:docPr/@id">
-                    <xsl:variable name="id" select="../w:bookmarkStart[last()]/@w:name"/>
-                    <xsl:value-of select="d:CheckShapeId($myObj, $id)"/>
-                </xsl:when>
-                <xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Diagram')">
-                    <xsl:value-of select="d:CheckShapeId($myObj, concat('Shape',substring-after(../../../../@id,'s')))"/>
-                </xsl:when>
-                <xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
-                    <xsl:variable name="id" select="d:CheckShapeId($myObj, concat('Shape',../w:bookmarkStart[last()]/@w:name))"/>
-                </xsl:when>
-                <!--<xsl:when test="w:drawing/wp:anchor/wp:docPr/@id">
-                    <xsl:choose>
-                        <xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Chart')">
-                            <xsl:variable name="id" select="concat('Shape',w:drawing/wp:anchor/wp:docPr/@id)"/>
-                            <xsl:value-of select="d:CheckShapeId($myObj, $id)"/>
-                        </xsl:when>
-                        <xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Diagram')">
-                            <xsl:value-of select="d:CheckShapeId($myObj, concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
-                        </xsl:when>
-                        <xsl:otherwise>
-                            <xsl:value-of select="d:CheckShapeId($myObj, concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:when>-->
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="imageWidth">
-            <xsl:choose>
-                <xsl:when  test="w:drawing/wp:inline/wp:extent">
-                    <xsl:value-of select="w:drawing/wp:inline/wp:extent/@cx"/>
-                </xsl:when>
-                <xsl:when test="w:drawing/wp:anchor/wp:extent">
-                    <xsl:value-of select="w:drawing/wp:anchor/wp:extent/@cx"/>
-                </xsl:when>
-                <xsl:when test="w:drawing/wp:inline/wp:extent">
-                    <xsl:value-of select="w:drawing/wp:inline/wp:extent/@cx"/>
-                </xsl:when>
-                <xsl:when test="w:drawing/wp:anchor/wp:extent">
-                    <xsl:value-of select="w:drawing/wp:anchor/wp:extent/@cx"/>
-                </xsl:when>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="imageHeight">
-            <xsl:choose>
-                <xsl:when  test="w:drawing/wp:inline/wp:extent">
-                    <xsl:value-of select="w:drawing/wp:inline/wp:extent/@cy"/>
-                </xsl:when>
-                <xsl:when test="w:drawing/wp:anchor/wp:extent">
-                    <xsl:value-of select="w:drawing/wp:anchor/wp:extent/@cy"/>
-                </xsl:when>
-                <xsl:when test="w:drawing/wp:inline/wp:extent">
-                    <xsl:value-of select="w:drawing/wp:inline/wp:extent/@cy"/>
-                </xsl:when>
-                <xsl:when test="w:drawing/wp:anchor/wp:extent">
-                    <xsl:value-of select="w:drawing/wp:anchor/wp:extent/@cy"/>
-                </xsl:when>
-            </xsl:choose>
-        </xsl:variable>
-        <!--Checking if Img_Id variable contains any Image Id-->
-        <xsl:if test="string-length($Img_Id)>0">
-            <!--Checking if document is bidirectionally oriented-->
-            <xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
-                <xsl:variable name="quote">"</xsl:variable>
-                <!--Variable holds the value which indicates that the image is bidirectionally oriented-->
-                <xsl:variable name="imgBd">
-                    <!--calling the PictureLanguage template-->
-                    <xsl:call-template name="PictureLanguage">
-                        <xsl:with-param name="CheckLang" select="'picture'"/>
-                    </xsl:call-template>
-                </xsl:variable>
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote, ' xml:lang=',$quote,$imgBd,$quote,'&gt;')"/>
-            </xsl:if>
-            <xsl:variable name="imageTest">
-                <xsl:choose>
-                    <xsl:when test="contains($Img_Id,'rId') and ($imgOpt='resize')">
-                        <xsl:value-of select ="d:Image($myObj, $Img_Id,$imageName,'true')"/>
-                    </xsl:when>
-                    <xsl:when test="contains($Img_Id,'rId') and ($imgOpt='resample')">
-                        <xsl:value-of select ="d:ResampleImage($myObj, $Img_Id,$imageName,$dpi)"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:choose>
-                            <xsl:when test="contains($Img_Id,'rId')">
-                                <xsl:value-of select ="d:Image($myObj, $Img_Id,$imageName,'true')"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="concat($imageId,'.png')"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
+		</xsl:variable>
+		<!--Variable holds the value of Image Id concatenated with some random number generated for Image Id-->
+		<xsl:variable name="imageId">
+			<xsl:choose>
+				<xsl:when  test="w:drawing/wp:inline/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed">
+					<xsl:value-of select="concat($Img_Id,d:GenerateImageId($myObj))"/>
+				</xsl:when>
+				<xsl:when test="w:drawing/wp:anchor/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed">
+					<xsl:value-of select="concat($Img_Id,d:GenerateImageId($myObj))"/>
+				</xsl:when>
+				<xsl:when test="w:drawing/wp:inline/wp:docPr/@id">
+					<xsl:variable name="id" select="../w:bookmarkStart[last()]/@w:name"/>
+					<xsl:value-of select="d:CheckShapeId($myObj,$id)"/>
+				</xsl:when>
+				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Diagram')">
+					<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',substring-after(../../../../@id,'s')))"/>
+				</xsl:when>
+				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
+					<xsl:variable name="id" select="d:CheckShapeId($myObj,concat('Shape',../w:bookmarkStart[last()]/@w:name))"/>
+				</xsl:when>
+				<!--<xsl:when test="w:drawing/wp:anchor/wp:docPr/@id">
+					<xsl:choose>
+						<xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Chart')">
+							<xsl:variable name="id" select="concat('Shape',w:drawing/wp:anchor/wp:docPr/@id)"/>
+							<xsl:value-of select="d:CheckShapeId($myObj,$id)"/>
+						</xsl:when>
+						<xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Diagram')">
+							<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:anchor/wp:docPr/@id))"/>
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>-->
+			</xsl:choose>
+		</xsl:variable>
+		<!--
+			imageWidth and imageHeight are expressed in EMU
+			- 914400 EMU in an inch
+			- 9525 EMU in a pixel @ 96 dpi
+			- https://en.wikipedia.org/wiki/Office_Open_XML_file_formats#DrawingML
+		-->
+		<xsl:variable name="imageWidth">
+			<xsl:choose>
+				<xsl:when  test="w:drawing/wp:inline/wp:extent">
+					<xsl:value-of select="w:drawing/wp:inline/wp:extent/@cx"/>
+				</xsl:when>
+				<xsl:when test="w:drawing/wp:anchor/wp:extent">
+					<xsl:value-of select="w:drawing/wp:anchor/wp:extent/@cx"/>
+				</xsl:when>
+				<xsl:when test="w:drawing/wp:inline/wp:extent">
+					<xsl:value-of select="w:drawing/wp:inline/wp:extent/@cx"/>
+				</xsl:when>
+				<xsl:when test="w:drawing/wp:anchor/wp:extent">
+					<xsl:value-of select="w:drawing/wp:anchor/wp:extent/@cx"/>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="imageHeight">
+			<xsl:choose>
+				<xsl:when  test="w:drawing/wp:inline/wp:extent">
+					<xsl:value-of select="w:drawing/wp:inline/wp:extent/@cy"/>
+				</xsl:when>
+				<xsl:when test="w:drawing/wp:anchor/wp:extent">
+					<xsl:value-of select="w:drawing/wp:anchor/wp:extent/@cy"/>
+				</xsl:when>
+				<xsl:when test="w:drawing/wp:inline/wp:extent">
+					<xsl:value-of select="w:drawing/wp:inline/wp:extent/@cy"/>
+				</xsl:when>
+				<xsl:when test="w:drawing/wp:anchor/wp:extent">
+					<xsl:value-of select="w:drawing/wp:anchor/wp:extent/@cy"/>
+				</xsl:when>
+			</xsl:choose>
+		</xsl:variable>
+		<!--Checking if Img_Id variable contains any Image Id-->
+		<xsl:if test="string-length($Img_Id)>0">
+			<!--Checking if document is bidirectionally oriented-->
+			<xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
+				<xsl:variable name="quote">"</xsl:variable>
+				<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
+				<xsl:variable name="imgBd">
+					<!--calling the PictureLanguage template-->
+					<xsl:call-template name="PictureLanguage">
+						<xsl:with-param name="CheckLang" select="'picture'"/>
+					</xsl:call-template>
+				</xsl:variable>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote, ' xml:lang=',$quote,$imgBd,$quote,'&gt;')"/>
+			</xsl:if>
+			<xsl:variable name="imageTest">
+				<xsl:choose>
+					<xsl:when test="contains($Img_Id,'rId') and ($imgOpt='resize')">
+						<xsl:value-of select ="d:Image($myObj,$Img_Id,$imageName)"/>
+					</xsl:when>
+					<xsl:when test="contains($Img_Id,'rId') and ($imgOpt='resample')">
+						<xsl:value-of select ="d:ResampleImage($myObj,$Img_Id,$imageName,$dpi)"/>
+					</xsl:when>
+					<xsl:otherwise>
+						<xsl:choose>
+							<xsl:when test="contains($Img_Id,'rId')">
+								<xsl:value-of select ="d:Image($myObj,$Img_Id,$imageName)"/>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:value-of select="concat($imageId,'.png')"/>
+							</xsl:otherwise>
+						</xsl:choose>
 
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:variable>
-            <xsl:variable name="checkImage">
-                <xsl:value-of select="d:CheckImage($myObj, $imageTest)"/>
-            </xsl:variable>
-            <xsl:if test="$checkImage='1'">
-                <!--Creating Imagegroup element-->
-                <imggroup>
-                    <img>
-                        <!--attribute that holds the value of the Image ID-->
-                        <xsl:attribute name="id">
-                            <xsl:value-of select="$imageId"/>
-                        </xsl:attribute>
-                        <!--attribute that holds the filename of the image returned for C# Image function-->
-                        <xsl:choose>
-                            <xsl:when test="$imgOpt='resize' and contains($Img_Id,'rId')">
-                                <xsl:attribute name="src">
-                                    <xsl:value-of select ="$imageTest"/>
-                                </xsl:attribute>
-                                <!--attribute that holds the alternate text for the image-->
-                                <xsl:attribute name="alt">
-                                    <xsl:value-of select="$alttext"/>
-                                </xsl:attribute>
-                                <xsl:attribute name="width">
-                                    <xsl:value-of select="round(($imageWidth) div (9525))"/>
-                                </xsl:attribute>
-                                <xsl:attribute name="height">
-                                    <xsl:value-of select="round(($imageHeight) div (9525))"/>
-                                </xsl:attribute>
-                            </xsl:when>
-                            <xsl:when test="$imgOpt='resample'  and contains($Img_Id,'rId')">
-                                <xsl:attribute name="src">
-                                    <xsl:value-of select ="$imageTest"/>
-                                </xsl:attribute>
-                                <!--attribute that holds the alternate text for the image-->
-                                <xsl:attribute name="alt">
-                                    <xsl:value-of select="$alttext"/>
-                                </xsl:attribute>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:attribute name="src">
-                                    <xsl:choose>
-                                        <xsl:when test="contains($Img_Id,'rId')">
-                                            <xsl:value-of select ="$imageTest"/>
-                                        </xsl:when>
-                                        <xsl:otherwise>
-                                            <xsl:value-of select="$imageTest"/>
-                                        </xsl:otherwise>
-                                    </xsl:choose>
-                                </xsl:attribute>
-                                <xsl:attribute name="alt">
-                                    <xsl:value-of select="$alttext"/>
-                                </xsl:attribute>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </img>
-                    <!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
-                    <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY') or (../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                        <caption>
-                            <xsl:attribute name="imgref">
-                                <xsl:value-of select="$imageId"/>
-                            </xsl:attribute>
-                            <xsl:if test="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rFonts/@w:hint)">
-                                <xsl:attribute name="xml:lang">
-                                    <xsl:call-template name="PictureLanguage">
-                                        <xsl:with-param name="CheckLang" select="'picture'"/>
-                                    </xsl:call-template>
-                                </xsl:attribute>
-                            </xsl:if>
-                            <xsl:if test="(../following-sibling::w:p[1]/w:pPr/w:bidi) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rtl)">
-                                <xsl:variable name="quote">"</xsl:variable>
-                                <xsl:variable name="Bd">
-                                    <xsl:call-template name="PictureLanguage">
-                                        <xsl:with-param name="CheckLang" select="'picture'"/>
-                                    </xsl:call-template>
-                                </xsl:variable>
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-                            </xsl:if>
-                            <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
-                                <xsl:for-each select="../preceding-sibling::node()[1]/node()">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-                                    <!--Printing the Caption value-->
-                                    <xsl:if test="name()='w:r'">
-                                        <xsl:call-template name="TempCharacterStyle">
-                                            <xsl:with-param name="characterStyle" select="$characterStyle"/>
-                                        </xsl:call-template>
-                                    </xsl:if>
-                                    <xsl:if test="name()='w:fldSimple'">
-                                        <xsl:value-of select="w:r/w:t"/>
-                                    </xsl:if>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:variable>
+			<xsl:variable name="checkImage">
+				<xsl:value-of select="d:CheckImage($myObj,$imageTest)"/>
+			</xsl:variable>
+			<xsl:if test="$checkImage='1'">
+				<!--Creating Imagegroup element-->
+				<imggroup>
+					<img>
+						<!--attribute that holds the value of the Image ID-->
+						<xsl:attribute name="id">
+							<xsl:value-of select="$imageId"/>
+						</xsl:attribute>
+						<!--attribute that holds the filename of the image returned for d:Image()-->
+						<xsl:choose>
+							<xsl:when test="$imgOpt='resize' and contains($Img_Id,'rId')">
+								<xsl:attribute name="src">
+									<xsl:value-of select ="$imageTest"/>
+								</xsl:attribute>
+								<!--attribute that holds the alternate text for the image-->
+								<xsl:attribute name="alt">
+									<xsl:value-of select="$alttext"/>
+								</xsl:attribute>
+								<xsl:attribute name="width">
+									<xsl:value-of select="round(($imageWidth) div (9525))"/> <!-- assuming 96 dpi -->
+								</xsl:attribute>
+								<xsl:attribute name="height">
+									<xsl:value-of select="round(($imageHeight) div (9525))"/> <!-- assuming 96 dpi -->
+								</xsl:attribute>
+							</xsl:when>
+							<xsl:when test="$imgOpt='resample'  and contains($Img_Id,'rId')">
+								<xsl:attribute name="src">
+									<xsl:value-of select ="$imageTest"/>
+								</xsl:attribute>
+								<!--attribute that holds the alternate text for the image-->
+								<xsl:attribute name="alt">
+									<xsl:value-of select="$alttext"/>
+								</xsl:attribute>
+							</xsl:when>
+							<xsl:otherwise>
+								<xsl:attribute name="src">
+									<xsl:choose>
+										<xsl:when test="contains($Img_Id,'rId')">
+											<xsl:value-of select ="$imageTest"/>
+										</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="$imageTest"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<xsl:attribute name="alt">
+									<xsl:value-of select="$alttext"/>
+								</xsl:attribute>
+							</xsl:otherwise>
+						</xsl:choose>
+					</img>
+					<!--Handling Image-CaptionDAISY custom paragraph style applied above an image-->
+					<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY') or (../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+						<caption>
+							<xsl:attribute name="imgref">
+								<xsl:value-of select="$imageId"/>
+							</xsl:attribute>
+							<xsl:if test="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rFonts/@w:hint)">
+								<xsl:attribute name="xml:lang">
+									<xsl:call-template name="PictureLanguage">
+										<xsl:with-param name="CheckLang" select="'picture'"/>
+									</xsl:call-template>
+								</xsl:attribute>
+							</xsl:if>
+							<xsl:if test="(../following-sibling::w:p[1]/w:pPr/w:bidi) or (../following-sibling::w:p[1]/w:r/w:rPr/w:rtl)">
+								<xsl:variable name="quote">"</xsl:variable>
+								<xsl:variable name="Bd">
+									<xsl:call-template name="PictureLanguage">
+										<xsl:with-param name="CheckLang" select="'picture'"/>
+									</xsl:call-template>
+								</xsl:variable>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
+							</xsl:if>
+							<xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
+								<xsl:for-each select="../preceding-sibling::node()[1]/node()">
+									<xsl:message terminate="no">progress:parahandler</xsl:message>
+									<!--Printing the Caption value-->
+									<xsl:if test="name()='w:r'">
+										<xsl:call-template name ="TempCharacterStyle">
+											<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+										</xsl:call-template>
+									</xsl:if>
+									<xsl:if test="name()='w:fldSimple'">
+										<xsl:value-of select="w:r/w:t"/>
+									</xsl:if>
 
                                 </xsl:for-each>
                                 <xsl:text> </xsl:text>

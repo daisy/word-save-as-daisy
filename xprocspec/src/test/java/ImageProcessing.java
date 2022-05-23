@@ -10,8 +10,8 @@ import javax.imageio.ImageIO;
 public class ImageProcessing {
 
 	static BufferedImage ResampleImage(BufferedImage SrcImage, float resampleValue) {
-		float scaleFactorX = resampleValue / 96;
-		float scaleFactorY = resampleValue / 96;
+		float scaleFactorX = resampleValue / 96; // FIXME: assuming 96 dpi
+		float scaleFactorY = resampleValue / 96; // FIXME: assuming 96 dpi
 		int Width = (int)(SrcImage.getWidth() * scaleFactorX);
 		int Height = (int)(SrcImage.getHeight() * scaleFactorY);
 		BufferedImage bmPhoto = new BufferedImage(Width, Height, BufferedImage.TYPE_INT_RGB);
