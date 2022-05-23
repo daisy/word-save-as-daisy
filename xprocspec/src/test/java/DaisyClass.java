@@ -1326,16 +1326,13 @@ public class DaisyClass {
 	 * Function which returns whether the BookmarkEnd related to Abbreviation or Acronym in document.xml
 	 */
 	public String Book(String id) {
-		String indicator = "false";
-		if (!id.equals("")) {
-			if (id.startsWith("Abbreviations")) {
-				indicator = "AbbrTrue";
-			}
-			if (id.startsWith("Acronyms")) {
-				indicator = "AcrTrue";
-			}
+		if (id.startsWith("Abbreviations")) {
+			return "AbbrTrue";
+		} else if (id.startsWith("Acronyms")) {
+			return "AcrTrue";
+		} else {
+			return "false";
 		}
-		return indicator;
 	}
 
 	/**
@@ -1343,7 +1340,6 @@ public class DaisyClass {
 	 */
 	public String BookFootnote(String id, XPath xpath, DocumentBuilder docBuilder)
 			throws InvalidFormatException, SAXException, IOException, XPathExpressionException {
-		String indicator = "false";
 		NodeList node;
 		for (PackageRelationship searchRelation : pack.getRelationshipsByType(wordRelationshipType)) {
 			relationship = searchRelation;
@@ -1376,14 +1372,12 @@ public class DaisyClass {
 		}
 		if (node.getLength() != 0) {
 			if (node.item(0).getAttributes().getNamedItemNS(wordNamespace, "name").getTextContent().startsWith("Abbreviations")) {
-				indicator = "AbbrTrue";
+				return "AbbrTrue";
+			} else if (node.item(0).getAttributes().getNamedItemNS(wordNamespace, "name").getTextContent().startsWith("Acronyms")) {
+				return "AcrTrue";
 			}
-			if (node.item(0).getAttributes().getNamedItemNS(wordNamespace, "name").getTextContent().startsWith("Acronyms")) {
-				indicator = "AcrTrue";
-			}
-		} else
-			indicator = "false";
-		return indicator;
+		}
+		return "false";
 	}
 
 	/**
