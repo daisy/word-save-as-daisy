@@ -63,9 +63,11 @@ public class DaisyClass {
 	private static final String endRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes";
 	private static final String numberRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
 
+	/** Destination folder */
 	private final File outputFilename;
-	private File inputName;
 	private final File output_Pipeline;
+	/** Input file name without extension and without spaces */
+	private final String inputName;
 
 	private static final String wordNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 	private static final String CustomRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml";
@@ -196,7 +198,7 @@ public class DaisyClass {
 	                  Map<String,List<String>> listMathMl,
 	                  String output_Pipeline
 	) throws InvalidFormatException {
-		this.inputName = new File(URI.create(inputName));
+		this.inputName = GetFileNameWithoutExtension(new File(URI.create(inputName))).replace(" ", "_");
 		outputFilename = new File(URI.create(output));
 		outputFilename.mkdirs();
 		pack = OPCPackage.open(new File(URI.create(input)));
@@ -219,8 +221,7 @@ public class DaisyClass {
 	 *   exists in %APPDATA%/SaveAsDAISY, move the image to the output folder
 	 */
 	public String CheckShapeId(String id) throws IOException {
-		inputName = new File(inputName.getAbsolutePath().replace(" ", "_"));
-		id = GetFileNameWithoutExtension(inputName) + "-" + id;
+		id = inputName + "-" + id;
 		String fileName = id + ".png";
 		File shapesDirectory = System.getProperty("os.name").startsWith("Windows")
 			? new File(new File(System.getenv("APPDATA")), "SaveAsDAISY")
@@ -325,7 +326,7 @@ public class DaisyClass {
 			BufferedImage img = ImageIO.read(imgPartxml.getInputStream());
 			String strImgName = imgPartxml.getPartName().getURI().toString()
 			                              .substring(imgPartxml.getPartName().getURI().toString().lastIndexOf('/') + 1);
-			File f = new File(outputFilename, GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+			File f = new File(outputFilename, inputName + "-" + strImgName);
 			if (!GetExtension(f).equals(".jpeg")
 			    && !GetExtension(f).equals(".png")) {
 				ImageIO.write(
@@ -342,7 +343,7 @@ public class DaisyClass {
 			} else {
 				ImageIO.write(img, ImageFormat.Png.getFormatName(), f);
 			}
-			return ImageProcessing.UriEscape(GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+			return ImageProcessing.UriEscape(inputName + "-" + strImgName);
 		} catch (Throwable e) {
 			return "translation.oox2Daisy.ImageContent";
 		}
@@ -364,7 +365,7 @@ public class DaisyClass {
 			BufferedImage img = ImageIO.read(imgPartxml.getInputStream());
 			String strImgName = imgPartxml.getPartName().getURI().toString()
 			                              .substring(imgPartxml.getPartName().getURI().toString().lastIndexOf('/') + 1);
-			File f = new File(outputFilename, GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+			File f = new File(outputFilename, inputName + "-" + strImgName);
 			if (!GetExtension(f).equals(".jpeg")
 			    && !GetExtension(f).equals(".png")) {
 				ImageIO.write(
@@ -378,7 +379,7 @@ public class DaisyClass {
 					GetExtension(f).substring(1),
 					f);
 			}
-			return ImageProcessing.UriEscape(GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+			return ImageProcessing.UriEscape(inputName + "-" + strImgName);
 		} catch (Throwable e) {
 			return "translation.oox2Daisy.ImageContent";
 		}
@@ -404,8 +405,8 @@ public class DaisyClass {
 				String strImgName = imageName;
 				String retimg2007Name = ImageExt(
 					inNum,
-					new File(outputFilename, GetFileNameWithoutExtension(inputName) + "-" + strImgName),
-					GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+					new File(outputFilename, inputName + "-" + strImgName),
+					inputName + "-" + strImgName);
 				return ImageProcessing.UriEscape(retimg2007Name);
 			}
 			/* Checking if full filename (along with extn) of the image does not exist */
@@ -415,8 +416,8 @@ public class DaisyClass {
 				String img2007Name = imageName + "." + strImgName;
 				String retimg2007Name = ImageExt(
 					inNum,
-					new File(outputFilename, GetFileNameWithoutExtension(inputName) + "-" + img2007Name),
-					GetFileNameWithoutExtension(inputName) + "-" + img2007Name);
+					new File(outputFilename, inputName + "-" + img2007Name),
+					inputName + "-" + img2007Name);
 				return ImageProcessing.UriEscape(retimg2007Name);
 			}
 			/* Checking if entire filename of the image doesn't exist */
@@ -425,7 +426,7 @@ public class DaisyClass {
 					                          .substring(imgPartxml.getPartName().getURI().toString().lastIndexOf('/') + 1);
 				String retimg2007Name = ImageExt(
 					inNum,
-					new File(outputFilename, GetFileNameWithoutExtension(inputName) + "-" + strImgName),
+					new File(outputFilename, inputName + "-" + strImgName),
 					strImgName);
 				return ImageProcessing.UriEscape(retimg2007Name);
 			}
