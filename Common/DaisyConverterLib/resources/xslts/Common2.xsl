@@ -874,9 +874,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 		<!-- NP 20220503 : removing empty paragraphs for now-->
-		<!--<xsl:if test="(following-sibling::node()[1][self::w:sectPr]) or (following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,8,1)=$levelValue])">
-			<p></p>
-		</xsl:if>-->
 	</xsl:template>
 
 	<!--Template for Implementing Table-->
@@ -888,8 +885,16 @@
 		<xsl:message terminate="no">progress:Table found</xsl:message>
 		<xsl:if test="$custom='Automatic'">
 			<xsl:for-each select="w:tr/w:tc">
-				<xsl:if test="((w:p/w:r/w:lastRenderedPageBreak) or (w:p/w:r/w:br/@w:type='page'))">
-					<xsl:if test="not((../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:lastRenderedPageBreak) or (../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:br/@w:type='page') or (preceding-sibling::w:tc[1]/w:p/w:r/w:lastRenderedPageBreak) or (preceding-sibling::w:tc[1]/w:p/w:r/w:br/@w:type='page'))">
+				<xsl:if test="(
+					(w:p/w:r/w:lastRenderedPageBreak) 
+					or (w:p/w:r/w:br/@w:type='page')
+				)">
+					<xsl:if test="not(
+						(../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:lastRenderedPageBreak) 
+						or (../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:br/@w:type='page') 
+						or (preceding-sibling::w:tc[1]/w:p/w:r/w:lastRenderedPageBreak) 
+						or (preceding-sibling::w:tc[1]/w:p/w:r/w:br/@w:type='page')
+					)">
 						<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
 						<!--Calling SectionBreak template for getting the section page type information-->
 						<xsl:call-template name="SectionBreak">

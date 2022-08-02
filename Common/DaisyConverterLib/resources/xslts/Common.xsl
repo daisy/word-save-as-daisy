@@ -45,7 +45,6 @@
 
         <xsl:message terminate="no">progress:Building the frontmatter</xsl:message>
         <frontmatter>
-            <!-- $docPropsCoreXml is replacing document document( -->
             <doctitle>
                 <xsl:choose>
                     <!--Taking Document Title value from core.xml-->
@@ -160,18 +159,22 @@
         <xsl:param name="FootnotesLevel" as="xs:integer" />
         <xsl:message terminate="no">progress:Building the rearmatter</xsl:message>
         <rearmatter>
-            <xsl:if test="(
-                count($documentXml//w:document/w:body/w:p/w:r[
-                            ./w:rPr/w:rStyle[@w:val='EndnoteReference'] or ./w:endnoteReference
-                ])  &gt; 0
-            )">
+            <xsl:if test="count(
+                $documentXml//w:document/w:body/w:p/w:r[
+                    ./w:rPr/w:rStyle[@w:val='EndnoteReference'] 
+                    or ./w:endnoteReference
+                ]
+            )  &gt; 0">
                 <xsl:message terminate="no">progress:Inserting endnotes in the rearmatter</xsl:message>
                 <level1>
                     <!--Checking if any elements should be translated to the rearmatter-->
                     <!--Otherwise Traversing through document.xml file and passing the Endnote id to the Note template.-->
-                    <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:r[
-                                  ./w:rPr/w:rStyle[@w:val='EndnoteReference'] or ./w:endnoteReference
-                    ]">
+                    <xsl:for-each select="(
+                        $documentXml//w:document/w:body/w:p/w:r[
+                            ./w:rPr/w:rStyle[@w:val='EndnoteReference'] 
+                            or ./w:endnoteReference
+                        ]
+                    )">
                         <xsl:call-template name="InsertEndnotes">
                             <xsl:with-param name="endNoteId" select="./w:endnoteReference/@w:id"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -239,21 +242,13 @@
                 <xsl:sequence select="../@w:styleId"/>
             </xsl:for-each>
         </xsl:variable>
-        <xsl:variable name="var_heading" as="xs:string?" select="string-join($var_heading,'')[not(.='')]"/>
+        <xsl:variable name="heading1StyleId" as="xs:string?" select="string-join($heading1StyleId,'')[not(.='')]"/>
         <!--Looping through each hyperlink-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:hyperlink">
-            <xsl:message terminate="no">progress:Parse hyperlinks</xsl:message>
+            <xsl:message terminate="no">progress:Start parsing document for <xsl:value-of select="$matterType"/>  </xsl:message>
             <!--Calling d:AddHyperlink() for storing Anchor in Hyperlink-->
             <xsl:sequence select="d:sink(d:AddHyperlink($myObj,string(@w:anchor)))"/> <!-- empty -->
         </xsl:for-each>
-        <xsl:message terminate="no">progress:Start parsing document for <xsl:value-of select="$matterType"/>  </xsl:message>
-        
-
-=======
-            <!--Calling d:AddHyperlink() for storing Anchor in Hyperlink-->
-            <xsl:sequence select="d:sink(d:AddHyperlink($myObj,string(@w:anchor)))"/> <!-- empty -->
-        </xsl:for-each>
->>>>>>> b230cbb ([XSLT] Remove progress messages)
 
         <!--<xsl:if test="$matterType=''">-->
         <!--Checking the first paragraph of the document-->
@@ -284,24 +279,28 @@
             <xsl:if test="not($masterSub)">
                 <xsl:call-template name="SetCurrentMatterType" />
             </xsl:if>
-            <xsl:if test="d:GetCurrentMatterType()=$matterType">
+            <xsl:if test="d:GetCurrentMatterType($myObj)=$matterType">
                 <xsl:message terminate="no">progress:Found element <xsl:value-of select="name()"/> </xsl:message>
                 <xsl:choose>
                     <!--Checking for Praragraph element-->
-                    <xsl:when test="self::w:p
+                    <xsl:when test="(
+                        self::w:p
                         and not(
                             */w:pStyle[
                                 substring(@w:val, 1, 11)='Frontmatter'
                                 or substring(@w:val, 1, 10)='Bodymatter'
                                 or substring(@w:val, 1, 10)='Rearmatter'
                             ]
+                        )
                     )">
                         <!-- check if current level is 0 in the stack 
                             and if the paragraph is of not of heading type, make a level 1
                         -->
                         <xsl:variable name="paragraphStyleId" select="w:pPr/w:pStyle/@w:val"/>
-                        <xsl:variable name="paragraphStyleOutline" select="$stylesXml/w:styles/w:style[@w:styleId=$paragraphStyleId]/w:pPr/w:outlineLvl/@w:val"/>
-                        <xsl:variable name="currentLevel" select="d:PeekLevel()" />
+                        <xsl:variable name="paragraphStyleOutline" select="(
+                            $stylesXml/w:styles/w:style[@w:styleId=$paragraphStyleId]/w:pPr/w:outlineLvl/@w:val
+                        )"/>
+                        <xsl:variable name="currentLevel" select="d:PeekLevel($myObj)" />
                         <xsl:if test="$currentLevel=0 and not($paragraphStyleOutline)">
                             <xsl:call-template name="AddLevel">
                                 <xsl:with-param name="levelValue" select="1"/>
@@ -587,9 +586,9 @@
         <!--Calling Footnote template when the page break is encountered.-->
         <xsl:if test="(
             ( 
-                (w:r/w:lastRenderedPageBreak) 
+                w:r/w:lastRenderedPageBreak
                 or (w:r/w:br/@w:type='page')
-            ) and (not($flag='0'))
+            ) and not($flag='0')
         )">
             <!--If parent element is not table cell-->
             <xsl:if test="not(parent::w:tc)">
@@ -790,7 +789,7 @@
                         <!--If both id and anchor attribute is present in hyperlink-->
                         <xsl:when test="(@r:id) and (@w:anchor)">
                             <xsl:attribute name="href">
-                                <xsl:value-of select="concat(d:Anchor($myObj,@r:id, $flagNote),'#',@w:anchor)"/>
+                                <xsl:value-of select="concat(d:Anchor($myObj, @r:id, $flagNote),'#',@w:anchor)"/>
                             </xsl:attribute>
                             <xsl:attribute name="external">true</xsl:attribute>
                         </xsl:when>
@@ -800,7 +799,7 @@
                         </xsl:when>
                         <!--If only id for hyperlink is present-->
                         <xsl:when test="@r:id">
-                            <xsl:attribute name="href" select="d:Anchor($myObj,@r:id)"/>
+                            <xsl:attribute name="href" select="d:Anchor($myObj,@r:id,'')"/>
                             <xsl:attribute name="external">true</xsl:attribute>
                         </xsl:when>
                     </xsl:choose>
@@ -1303,13 +1302,18 @@
 
         <!--Checking for page breaks and populating page numbers.-->
         <!-- DB : if list skip this-->
-        <xsl:if test="((w:lastRenderedPageBreak) or (w:br/@w:type='page'))
-            and not($flag='0')
-            and ($custom='Automatic')
-            and not(((../w:pPr/w:numPr/w:ilvl)
-                and (../w:pPr/w:numPr/w:numId)
-                and not(../w:pPr/w:rPr/w:vanish))
-            and not(../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']))">
+        <xsl:if test="(
+            (w:lastRenderedPageBreak) or (w:br/@w:type='page')
+        ) and not($flag='0')
+        and ($custom='Automatic')
+            and not(
+                (
+                    (../w:pPr/w:numPr/w:ilvl)
+                    and (../w:pPr/w:numPr/w:numId)
+                    and not(../w:pPr/w:rPr/w:vanish)
+                )
+            and not(../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])
+        )">
             <xsl:if test="not($flag='2')">
                 <xsl:choose>
                     <xsl:when test="not(w:t) and (w:lastRenderedPageBreak) and (w:br/@w:type='page')">
@@ -1362,11 +1366,15 @@
                         </xsl:if>
                     </xsl:when>
                     <!--Checking for page breaks and populating page numbers.-->
-                    <xsl:when test="((w:br/@w:type='page')
-                            and not((../following-sibling::w:p[1]/w:pPr/w:sectPr)
-                                or (following-sibling::w:r[1]/w:lastRenderedPageBreak)
-                                or (../following-sibling::w:p[2]/w:r/w:lastRenderedPageBreak)
-                                or (../following-sibling::w:p[1]/w:r/w:lastRenderedPageBreak)))">
+                    <xsl:when test="(
+                        (w:br/@w:type='page')
+                        and not(
+                            (../following-sibling::w:p[1]/w:pPr/w:sectPr)
+                            or (following-sibling::w:r[1]/w:lastRenderedPageBreak)
+                            or (../following-sibling::w:p[2]/w:r/w:lastRenderedPageBreak)
+                            or (../following-sibling::w:p[1]/w:r/w:lastRenderedPageBreak)
+                        )
+                    )">
                         <!--Incrementing page numbers-->
                         <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
                         <!--Closing paragraph tag-->
@@ -1489,7 +1497,19 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:choose>
-                            <xsl:when test="not(w:pict/v:shape/v:textbox) and not(contains(w:pict/v:shape/@id,'i')) and(not(w:pict/v:rect/v:textbox/w:txbxContent)) and (not(($VERSION='11.0') or ($VERSION='10.0'))) ">
+                            <xsl:when test="(
+                                not(w:pict/v:shape/v:textbox) 
+                                and not(
+                                    contains(w:pict/v:shape/@id,'i')
+                                ) and (
+                                    not(w:pict/v:rect/v:textbox/w:txbxContent)
+                                ) and (
+                                    not(
+                                        ($VERSION='11.0') 
+                                        or ($VERSION='10.0')
+                                    )
+                                )
+                            )">
                                 <xsl:call-template name="tmpShape">
                                     <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
                                 </xsl:call-template>
@@ -1684,17 +1704,27 @@
                 </xsl:choose>
 
                 <!--Calling Custom styles template if not caption-->
-                <xsl:if test="not((((../w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
-                        or (../w:pPr/w:pStyle/@w:val='Caption'))
-                            and ((../following-sibling::node()[1][self::w:tbl])
-                        or (../preceding-sibling::node()[1][self::w:tbl])))
-                        or ((../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')
-                        and ((../following-sibling::node()[1]/w:r/w:drawing)
-                        or (../following-sibling::node()[1]/w:r/w:pict)
-                        or (../following-sibling::node()[1]/w:r/w:object)
-                        or (../w:r/w:drawing)
-                        or (../w:r/w:pict)
-                        or (../w:r/w:object))))">
+                <xsl:if test="not(
+                    (
+                        (
+                            (../w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
+                            or (../w:pPr/w:pStyle/@w:val='Caption')
+                        ) and (
+                            (../following-sibling::node()[1][self::w:tbl])
+                            or (../preceding-sibling::node()[1][self::w:tbl])
+                        )
+                    ) or (
+                        (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')
+                        and (
+                            (../following-sibling::node()[1]/w:r/w:drawing)
+                            or (../following-sibling::node()[1]/w:r/w:pict)
+                            or (../following-sibling::node()[1]/w:r/w:object)
+                            or (../w:r/w:drawing)
+                            or (../w:r/w:pict)
+                            or (../w:r/w:object)
+                        )
+                    )
+                )">
                     <xsl:choose>
                         <xsl:when test="d:ListFlag($myObj)=0">
                             <xsl:sequence select="d:sink(d:SetListFlag($myObj))"/> <!-- empty -->
@@ -2240,8 +2270,8 @@
     <!-- template to open a style tag (em,strong,sup or sub)-->
     <xsl:template name="OpenStyleTagIfNotOpened">
         <xsl:param name="styleTag"/>
-        <xsl:if test="not(myObj:HasCharacterStyle($styleTag))">
-            <xsl:if test="myObj:PushCharacterStyle($styleTag)" />
+        <xsl:if test="not(d:HasCharacterStyle($myObj, $styleTag))">
+            <xsl:if test="d:PushCharacterStyle($myObj, $styleTag)" />
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$styleTag,'&gt;')"/>
         </xsl:if>
     </xsl:template>
@@ -2250,8 +2280,8 @@
     <xsl:template name="CloseStyleTag">
         <xsl:param name="styleTag"/>
         
-        <xsl:if test="myObj:HasCharacterStyle($styleTag)">
-            <xsl:variable name="currentTagInStack" select="myObj:PopCharacterStyle()" />
+        <xsl:if test="d:HasCharacterStyle($myObj, $styleTag)">
+            <xsl:variable name="currentTagInStack" select="d:PopCharacterStyle($myObj)" />
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;/',$currentTagInStack,'&gt;')"/>
             <xsl:if test="not($currentTagInStack = $styleTag)">
                 <xsl:call-template name="CloseStyleTag">
@@ -2263,7 +2293,7 @@
     
     <!-- Recursively close all remaining style tag -->
     <xsl:template name="CloseAllStyleTag">
-        <xsl:variable name="currentTagInStack" select="myObj:PopCharacterStyle()" />
+        <xsl:variable name="currentTagInStack" select="d:PopCharacterStyle($myObj)" />
         <xsl:if test="$currentTagInStack">
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;/',$currentTagInStack,'&gt;')"/>
             <xsl:call-template name="CloseAllStyleTag" />
@@ -2629,14 +2659,15 @@
                     <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:when>
-
+            
             <xsl:when test="(
-                w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' 
-                or (
-                    exists($styleHeading) 
-                    and @w:val/d:CompareHeading(.,$styleHeading)=1)] 
-                    and not(parent::w:tc)
-                )
+                w:pPr/w:pStyle[
+                    substring(@w:val,1,7)='Heading' 
+                    or (
+                        exists($styleHeading) 
+                        and @w:val/d:CompareHeading(.,$styleHeading)=1
+                    )
+                ] and not(parent::w:tc)
             )">
                 <!--calling Close level template for closing all the higher levels-->
                 <xsl:if test="(
@@ -2645,7 +2676,7 @@
 						or (w:r/w:br/@w:type='page')
 					) and $FootnotesPosition='page'
                 )">
-                    <xsl:call-template name="InsertFootnotes">>
+                    <xsl:call-template name="InsertFootnotes">
                         <xsl:with-param name="verfoot" select="$VERSION"/>
                         <xsl:with-param name="sOperators" select="$sOperators"/>
                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -2874,10 +2905,13 @@
                         and (w:pPr/w:numPr/w:numId) 
                         and not(w:pPr/w:rPr/w:vanish)
                     ) and not(
-                        w:pPr/w:pStyle[substring(@w:val,1,7)='Heading' 
-                        or (
-                            exists($styleHeading) and @w:val/d:CompareHeading(.,$styleHeading)=1)]
-                        )
+                        w:pPr/w:pStyle[
+                            substring(@w:val,1,7)='Heading' 
+                            or (
+                                exists($styleHeading) 
+                                and @w:val/d:CompareHeading(.,$styleHeading)=1
+                            )
+                        ]
                     )">
                         <xsl:call-template name="List">
                             <xsl:with-param name="custom" select="$custom"/>

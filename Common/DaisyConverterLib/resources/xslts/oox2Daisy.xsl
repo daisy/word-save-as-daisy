@@ -16,10 +16,11 @@
                 xmlns:d="DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v  vt dcmitype d">
+	
 	<!--Imports all the XSLT-->
 	<xsl:import href="Common.xsl"/>
-  <!--Implements Table of Contents-->
-  <xsl:import href ="TOC.xsl"/>
+	<!--Implements Table of Contents-->
+	<xsl:import href ="TOC.xsl"/>
 	<!--Implements Table and Frontmatter-->
 	<xsl:import href ="Common2.xsl"/>
 	<!--Implements Lists and levels-->
@@ -38,19 +39,13 @@
 
 	<!--Implements Image,imagegroup,Note and Notereference-->
 	<!--Declaring Global paramaters-->
-	<xsl:param name="Title" as="xs:string"/>
-	<!--Holds Documents Title value-->
-	<xsl:param name="Creator" as="xs:string"/>
-	<!--Holds Documents creator value-->
-	<xsl:param name="Publisher" as="xs:string"/>
-	<!--Holds Documents Publisher value-->
-	<xsl:param name="UID" as="xs:string"/>
-	<!--Holds Document unique id value-->
-	<xsl:param name="Subject" as="xs:string"/>
-	<!--Holds Documents Subject value-->
+	<xsl:param name="Title" as="xs:string"/> <!--Holds Documents Title value-->
+	<xsl:param name="Creator" as="xs:string"/> <!--Holds Documents creator value-->
+	<xsl:param name="Publisher" as="xs:string"/> <!--Holds Documents Publisher value-->
+	<xsl:param name="UID" as="xs:string"/> <!--Holds Document unique id value-->
+	<xsl:param name="Subject" as="xs:string"/> <!--Holds Documents Subject value-->
 	<xsl:param name="prmTRACK" as="xs:string"/>
-	<xsl:param name="Version" as="xs:string"/>
-	<!--Holds Documents version value-->
+	<xsl:param name="Version" as="xs:string"/> <!--Holds Documents version value-->
 	<xsl:param name="Custom" as="xs:string"/> <!-- Automatic|Custom -->
 	<xsl:param name="MasterSub" as="xs:boolean"/>
 	<xsl:param name="ImageSizeOption" as="xs:string"/> <!-- resize|resample|original -->
@@ -58,8 +53,8 @@
 	<xsl:param name="CharacterStyles" as="xs:boolean"/>
 	<xsl:param name="MathML" as="map(xs:string,array(xs:string))"/>
 
-    <xsl:param name="FootnotesPosition"/>
-    <xsl:param name="FootnotesLevel"/>
+    <xsl:param name="FootnotesPosition" as="xs:string"/> <!-- page|end| -->
+    <xsl:param name="FootnotesLevel" as="xs:integer"/>
 
 	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)"/>
 	<xsl:variable name="documentXml"
