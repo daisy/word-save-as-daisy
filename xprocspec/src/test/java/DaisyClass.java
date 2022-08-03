@@ -8,15 +8,9 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Stack;
-import java.util.UUID;
 
 import javax.imageio.ImageIO;
 import javax.xml.namespace.NamespaceContext;
@@ -59,8 +53,8 @@ public class DaisyClass {
 	}
 
 	private static final String wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
-	private static final String footRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes";
-	private static final String endRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes";
+	private static final String footnotesRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes";
+	private static final String endnotesRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes";
 	private static final String numberRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
 
 	/** Destination folder */
@@ -268,6 +262,8 @@ public class DaisyClass {
 			return "2";
 	}
 
+	
+
 	/**
 	 * Retrieve the next mathml for a story type.
 	 *
@@ -316,7 +312,7 @@ public class DaisyClass {
 			}
 			PackagePart mainPartxml = pack.getPart(relationship);
 			PackageRelationship footrelationship = null;
-			for (PackageRelationship searchRelation : mainPartxml.getRelationshipsByType(footRelationshipType)) {
+			for (PackageRelationship searchRelation : mainPartxml.getRelationshipsByType(footnotesRelationshipType)) {
 				footrelationship = searchRelation;
 				break;
 			}
@@ -951,27 +947,60 @@ public class DaisyClass {
 	/**
 	 * Function returns the target string of an anchor
 	 */
-	public String Anchor(String inNum) {
-		PackageRelationship relationship = null;
+	public String Anchor(String inNum, String flagNote) {
+		PackageRelationship wordRelationship = null;
 		for (PackageRelationship searchRelation : pack.getRelationshipsByType(wordRelationshipType)) {
-			relationship = searchRelation;
+			wordRelationship = searchRelation;
 			break;
 		}
-		PackagePart mainPartxml = pack.getPart(relationship);
-		PackageRelationship imgRelationship = mainPartxml.getRelationship(inNum);
-		String uri = imgRelationship.getTargetURI().toString();
-		// don't encode apos
-		uri = uri.replaceAll("%27", "'");
-		// normalize: change hex values to lowercase
-		if (uri.contains("%")) {
-			Matcher m = Pattern.compile("%..").matcher(uri);
-			StringBuffer sb = new StringBuffer();
-			while (m.find())
-				m.appendReplacement(sb, m.group(0).toLowerCase());
-			m.appendTail(sb);
-			uri = sb.toString();
+		PackagePart mainPartxml = null;// = pack.getPart(relationship);
+		PackageRelationship anchorRelationshipFile = null;// = mainPartxml.getRelationship(inNum);
+		String uri;
+		switch (flagNote){
+			case "footnote":
+				mainPartxml = pack.getPart(wordRelationship);
+				try{
+					for (PackageRelationship searchRelation : mainPartxml.getRelationshipsByType(footnotesRelationshipType)) {
+						anchorRelationshipFile = searchRelation;
+						break;
+					}
+				} catch (Exception e){
+					return "";
+				}
+			case "endnote":
+				mainPartxml = pack.getPart(wordRelationship);
+				try{
+					for (PackageRelationship searchRelation : mainPartxml.getRelationshipsByType(endnotesRelationshipType)) {
+						anchorRelationshipFile = searchRelation;
+						break;
+					}
+				} catch (Exception e){
+					return "";
+				}
+			default:
+				anchorRelationshipFile = wordRelationship;
+				break;
 		}
-		return uri;
+
+		if(anchorRelationshipFile != null){
+			mainPartxml = pack.getPart(anchorRelationshipFile);
+			PackageRelationship anchorRelationship = mainPartxml.getRelationship(inNum);
+			uri = anchorRelationship.getTargetURI().toString();
+			// don't encode apos
+			uri = uri.replaceAll("%27", "'");
+			// normalize: change hex values to lowercase
+			if (uri.contains("%")) {
+				Matcher m = Pattern.compile("%..").matcher(uri);
+				StringBuffer sb = new StringBuffer();
+				while (m.find())
+					m.appendReplacement(sb, m.group(0).toLowerCase());
+				m.appendTail(sb);
+				uri = sb.toString();
+			}
+			return uri;
+		}
+		return "";
+
 	}
 
 	/**
@@ -1332,7 +1361,7 @@ public class DaisyClass {
 		}
 		PackagePart mainPartxml = pack.getPart(relationship);
 		PackageRelationship footrelationship = null;
-		for (PackageRelationship searchRelation : mainPartxml.getRelationshipsByType(footRelationshipType)) {
+		for (PackageRelationship searchRelation : mainPartxml.getRelationshipsByType(footnotesRelationshipType)) {
 			footrelationship = searchRelation;
 			break;
 		}
@@ -1345,7 +1374,7 @@ public class DaisyClass {
 			.evaluate(doc, XPathConstants.NODESET);
 		if (node.getLength() == 0) {
 			PackageRelationship endrelationship = null;
-			for (PackageRelationship searchRelation : mainPartxml.getRelationshipsByType(endRelationshipType)) {
+			for (PackageRelationship searchRelation : mainPartxml.getRelationshipsByType(endnotesRelationshipType)) {
 				endrelationship = searchRelation;
 				break;
 			}
@@ -2610,4 +2639,36 @@ public class DaisyClass {
 			xpath.setNamespaceContext(null);
 		return xpath.compile(expression);
 	}
+
+	
+        /**
+         * Stack of character style ti apply on a groupe of letter or text
+         * This is call by CustomCharStyle template to handle 
+         * italic (em), bold(strong), superscript(sup) and subscript(sub) groups of characters
+         */
+        Deque<String> characterStyle = new ArrayDeque<>();
+
+		/**
+		 */
+        public void PushCharacterStyle(String tag)
+        {
+            characterStyle.add(tag);
+        }
+
+		/**
+		 */
+        public boolean HasCharacterStyle(String tag)
+        {
+            return characterStyle.contains(tag);
+        }
+
+		/**
+		 */
+        public String PopCharacterStyle()
+        {
+            if(characterStyle.isEmpty())
+            {
+                return "";
+            } else return characterStyle.pop();
+        }
 }
