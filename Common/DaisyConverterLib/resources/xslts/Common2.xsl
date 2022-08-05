@@ -26,7 +26,7 @@
 		<xsl:param name="custom" as="xs:string"/>
 		<xsl:param name="mastersubhead" as="xs:boolean"/>
 		<xsl:param name="abValue" as="xs:string" select="''"/>
-		<xsl:param name="txt" as="xs:string"/>
+		<xsl:param name="headingFormatAndTextAndID" as="xs:string"/> <!-- Special string with expected format : numberFormat|levelText|numberId -->
 		<xsl:param name="lvlcharStyle" as="xs:boolean"/>
 		<xsl:param name="sOperators" as="xs:string"/>
 		<xsl:param name="sMinuses" as="xs:string"/>
@@ -35,9 +35,15 @@
 		<xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
 		<xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
 		<xsl:message terminate="no">progress:Adding level <xsl:value-of select="$levelValue"/></xsl:message>
+		
+		<xsl:variable name="numFormat" as="xs:string" select="substring-before($headingFormatAndTextAndID,'|')" />
+		<xsl:variable name="lvlText" as="xs:string" select="substring-before(substring-after($headingFormatAndTextAndID,'|'),'!')" />
+		<xsl:variable name="numId" as="xs:string" select="substring-after($headingFormatAndTextAndID,'!')" />
+
+		
 		<!--Pushing level into the stack-->
-		<xsl:sequence select="d:IncrementHeadingCounters($myObj,string($levelValue),substring-after($txt,'!'),$abValue)"/> <!-- empty -->
-		<xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,substring-after($txt,'!')))"/> <!-- empty -->
+		<xsl:sequence select="d:IncrementHeadingCounters($myObj,string($levelValue),$numId,$abValue)"/> <!-- empty -->
+		<xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$numId))"/> <!-- empty -->
 		<xsl:variable name="level" as="xs:integer" select="d:PushLevel($myObj,($levelValue,0)[1])"/>
 		<xsl:choose>
 			<!--Checking the level value-->
@@ -98,9 +104,9 @@
 						<xsl:with-param name="level" select="$level"/>
 						<xsl:with-param name="txt" as="xs:string" select="d:TextHeading(
 							$myObj,
-							substring-before($txt,'|'),
-							substring-before(substring-after($txt,'|'),'!'),
-							substring-after($txt,'!'),
+							$numFormat,
+							$lvlText,
+							$numId,
 							$level
 						)"/>
 						<xsl:with-param name="mastersubhead" select="$mastersubhead"/>
@@ -138,9 +144,9 @@
 					<xsl:with-param name="level" select="$level"/>
 					<xsl:with-param name="txt" as="xs:string" select="d:TextHeading(
 						$myObj,
-						substring-before($txt,'|'),
-						substring-before(substring-after($txt,'|'),'!'),
-						substring-after($txt,'!'),
+						$numFormat,
+						$lvlText,
+						$numId,
 						$level
 					)"/>
 					<xsl:with-param name="mastersubhead" select="$mastersubhead"/>
@@ -337,10 +343,10 @@
 		<!-- for Footnotes template -->
 		<xsl:param name="verfoot"/>
 		<xsl:param name="characterStyle"/>
-		<xsl:param name="sOperators"/>
-		<xsl:param name="sMinuses"/>
-		<xsl:param name="sNumbers"/>
-		<xsl:param name="sZeros"/>
+		<xsl:param name="sOperators" as="xs:string"/>
+		<xsl:param name="sMinuses" as="xs:string"/>
+		<xsl:param name="sNumbers" as="xs:string"/>
+		<xsl:param name="sZeros" as="xs:string"/>
 		
 		
 		<!--<xsl:value-of select="$CurrentLevel"/>-->
@@ -351,7 +357,7 @@
 		<xsl:choose>
 			<xsl:when test="$CurrentLevel &gt; 6 and $PeekLevel = 6 ">
 				
-				<xsl:variable name="PopLevel" as="xs:string" select="d:PoPLevel($myObj)"/>
+				<xsl:variable name="PopLevel" as="xs:integer" select="d:PoPLevel($myObj)"/>
 				<xsl:message terminate="no">
 					progress:Closing level <xsl:value-of select="$PopLevel"/>
 				</xsl:message>
@@ -389,7 +395,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:if test="$CurrentLevel &lt;=$PeekLevel and $PeekLevel !=0">
-					<xsl:variable name="PopLevel" as="xs:string" select="d:PoPLevel($myObj)"/>
+					<xsl:variable name="PopLevel" as="xs:integer" select="d:PoPLevel($myObj)"/>
 					<!--Close that level-->
 					<!-- NP 20220427 - removing empty paragraph -->
 					<!-- if footnotes position is set to be at the end of this level, insert footnotes here -->
@@ -397,7 +403,7 @@
 							number($FootnotesLevel) = 0
 							or (
 								number($FootnotesLevel) &gt; 0
-								and number($FootnotesLevel) &gt;= $PopLevel
+								and number($FootnotesLevel) &gt;= number($PopLevel)
 							)
 						 )">
 						<xsl:message terminate="no">progress:Trying to insert notes before closing level <xsl:value-of select="$PopLevel"/></xsl:message>

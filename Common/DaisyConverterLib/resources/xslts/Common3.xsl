@@ -57,7 +57,7 @@
 				<xsl:if test="(w:rPr/w:lang) or (w:rPr/w:rFonts/@w:hint)">
 					<xsl:attribute name="xml:lang">
 						<xsl:call-template name="Languages">
-							<xsl:with-param name="Attribute" select="'1'"/>
+							<xsl:with-param name="Attribute" select="true()"/>
 						</xsl:call-template>
 					</xsl:attribute>
 				</xsl:if>

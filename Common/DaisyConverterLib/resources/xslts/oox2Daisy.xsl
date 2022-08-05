@@ -50,11 +50,11 @@
 	<xsl:param name="MasterSub" as="xs:boolean"/>
 	<xsl:param name="ImageSizeOption" as="xs:string"/> <!-- resize|resample|original -->
 	<xsl:param name="DPI" as="xs:float"/>
-	<xsl:param name="CharacterStyles" as="xs:boolean"/>
+	<xsl:param name="CharacterStyles" as="xs:boolean"/> <!-- if true, also convert custom character styles to span with style attribute -->
 	<xsl:param name="MathML" as="map(xs:string,array(xs:string))"/>
 
-    <xsl:param name="FootnotesPosition" as="xs:string"/> <!-- page|end| -->
-    <xsl:param name="FootnotesLevel" as="xs:integer"/>
+    <xsl:param name="FootnotesPosition" as="xs:string" select="'end'"/> <!-- page|end| -->
+    <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
 
 	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)"/>
 	<xsl:variable name="documentXml"
@@ -370,17 +370,17 @@
                     <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
                     <xsl:with-param name="dpi" select="$DPI"/>
                     <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-                    <xsl:with-param name="FootnotesLevel" select="number($FootnotesLevel)"/>
+                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                     <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
                 </xsl:call-template>
 
                 <!--Calling Rearmatter template-->
                 <!--NP 20220427 - launch only if a Rearmatter daisy style is found to avoid empty rearmatter -->
                 <xsl:if test="(
-                        count(document('word/document.xml')//w:document/w:body/w:p/w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
-                        or count(document('word/document.xml')//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
-                        or count(document('word/document.xml')//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[@w:val='EndnoteReference']) &gt; 0
-                        or count(document('word/document.xml')//w:document/w:body/w:p/w:r/w:endnoteReference)  &gt; 0
+                        count($documentXml//w:document/w:body/w:p/w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
+                        or count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
+                        or count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[@w:val='EndnoteReference']) &gt; 0
+                        or count($documentXml//w:document/w:body/w:p/w:r/w:endnoteReference)  &gt; 0
                 )">
                         <xsl:call-template name="RearMatter">
                             <xsl:with-param name="prmTrack" select ="$prmTRACK"/>
@@ -394,7 +394,7 @@
                             <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
                             <xsl:with-param name="dpi" select="$DPI"/>
                             <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-                            <xsl:with-param name="FootnotesLevel" select="number($FootnotesLevel)"/>
+                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
                         </xsl:call-template>
                 </xsl:if>
