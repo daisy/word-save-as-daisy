@@ -560,8 +560,8 @@ public class DaisyClass {
 	/**
 	 * pop (retrieve and delete) the last level of the document from the stack
 	 */
-	public String PoPLevel() {
-		return "" + stackList.pop();
+	public int PoPLevel() {
+		return stackList.pop();
 	}
 
 	/**
@@ -2079,9 +2079,14 @@ public class DaisyClass {
 		return this.headingInfo;
 	}
 
-	public String TextHeading(String numFormat, String lvlText, String numId, int iLvl,
-	                          XPath xpath, DocumentBuilder docBuilder)
-			throws InvalidFormatException, XPathExpressionException, IOException, SAXException {
+	public String TextHeading(
+		String numFormat,
+		String lvlText,
+		String numId,
+		int iLvl,
+		XPath xpath,
+		DocumentBuilder docBuilder
+	) throws InvalidFormatException, XPathExpressionException, IOException, SAXException {
 		String text = "";
 		int index = lvlText.indexOf('%');
 		if (index < 0) {

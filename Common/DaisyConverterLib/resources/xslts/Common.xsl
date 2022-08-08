@@ -301,7 +301,7 @@
                             $stylesXml/w:styles/w:style[@w:styleId=$paragraphStyleId]/w:pPr/w:outlineLvl/@w:val
                         )"/>
                         <xsl:variable name="currentLevel" select="d:PeekLevel($myObj)" />
-                        <xsl:if test="$currentLevel=0 and not($paragraphStyleOutline)">
+                        <xsl:if test="$currentLevel=0 and $paragraphStyleOutline=''">
                             <xsl:call-template name="AddLevel">
                                 <xsl:with-param name="levelValue" select="1"/>
                                 <xsl:with-param name="check" select="false()"/>
