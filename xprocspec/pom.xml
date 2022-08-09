@@ -20,6 +20,18 @@
 			<version>2.1.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.osgi</groupId>
+			<artifactId>org.osgi.compendium</artifactId>
+			<version>5.0.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.daisy.pipeline</groupId>
+			<artifactId>ds-to-spi-runtime</artifactId>
+			<version>1.1.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.daisy.maven</groupId>
 			<artifactId>xproc-engine-daisy-pipeline</artifactId>
 			<version>1.14.1</version>
@@ -29,18 +41,6 @@
 			<groupId>org.daisy.pipeline</groupId>
 			<artifactId>calabash-adapter</artifactId>
 			<version>4.3.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.compendium</artifactId>
-			<version>5.0.0</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.daisy.pipeline</groupId>
-			<artifactId>ds-to-spi-runtime</artifactId>
-			<version>1.1.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -53,9 +53,9 @@
 				<version>1.1.2</version>
 				<executions>
 					<execution>
-						<phase>process-test-sources</phase>
+						<phase>process-sources</phase>
 						<goals>
-							<goal>generate-spi-test-classes</goal>
+							<goal>generate-spi-classes</goal>
 						</goals>
 						<configuration>
 							<includes>
@@ -71,9 +71,9 @@
 				<version>2.6</version>
 				<executions>
 					<execution>
-						<phase>process-test-resources</phase>
+						<phase>process-resources</phase>
 						<goals>
-							<goal>testResources</goal>
+							<goal>resources</goal>
 						</goals>
 					</execution>
 				</executions>
@@ -88,9 +88,9 @@
 				</configuration>
 				<executions>
 					<execution>
-						<phase>test-compile</phase>
+						<phase>compile</phase>
 						<goals>
-							<goal>testCompile</goal>
+							<goal>compile</goal>
 						</goals>
 					</execution>
 				</executions>
