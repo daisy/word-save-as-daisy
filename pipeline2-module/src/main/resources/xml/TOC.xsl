@@ -14,7 +14,7 @@
                 xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
                 xmlns:dcmitype="http://purl.org/dc/dcmitype/"
                 xmlns:o="urn:schemas-microsoft-com:office:office"
-                xmlns:d="DaisyClass"
+                xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
   <!--Parameter citation-->

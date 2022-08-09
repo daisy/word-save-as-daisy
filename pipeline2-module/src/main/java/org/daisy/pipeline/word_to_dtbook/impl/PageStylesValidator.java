@@ -1,3 +1,5 @@
+package org.daisy.pipeline.word_to_dtbook.impl;
+
 import java.util.List;
 
 public class PageStylesValidator {

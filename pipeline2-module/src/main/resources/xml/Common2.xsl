@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
-				xmlns:xs="http://www.w3.org/2001/XMLSchema"
-				xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
-				xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
-				xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
-				xmlns:dcterms="http://purl.org/dc/terms/"
-				xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-				xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
-				xmlns:dc="http://purl.org/dc/elements/1.1/"
-				xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-				xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
-				xmlns:v="urn:schemas-microsoft-com:vml"
-				xmlns:dcmitype="http://purl.org/dc/dcmitype/"
-				xmlns:d="DaisyClass"
-				xmlns="http://www.daisy.org/z3986/2005/dtbook/"
-				exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl">
+                xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+                xmlns:pic="http://schemas.openxmlformats.org/drawingml/2006/picture"
+                xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+                xmlns:dcterms="http://purl.org/dc/terms/"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                xmlns:dc="http://purl.org/dc/elements/1.1/"
+                xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
+                xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+                xmlns:v="urn:schemas-microsoft-com:vml"
+                xmlns:dcmitype="http://purl.org/dc/dcmitype/"
+                xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
+                xmlns="http://www.daisy.org/z3986/2005/dtbook/"
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl">
 
 	<!--Template for adding Levels-->
 	<xsl:template name="AddLevel">

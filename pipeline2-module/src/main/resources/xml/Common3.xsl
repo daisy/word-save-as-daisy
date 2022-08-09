@@ -14,7 +14,7 @@
                 xmlns:dcmitype="http://purl.org/dc/dcmitype/"
                 xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"
                 xmlns:o="urn:schemas-microsoft-com:office:office"
-                xmlns:d="DaisyClass"
+                xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
 	<!--Storing the default language of the document from styles.xml-->

@@ -1,3 +1,5 @@
+package org.daisy.pipeline.word_to_dtbook.impl;
+
 public class ValidationResult {
 
 	public final String ErrorMessage;

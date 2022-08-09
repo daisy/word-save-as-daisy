@@ -13,7 +13,7 @@
                 xmlns:v="urn:schemas-microsoft-com:vml"
                 xmlns:dcmitype="http://purl.org/dc/dcmitype/"
                 xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
-                xmlns:d="DaisyClass"
+                xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v  vt dcmitype d">
 	
