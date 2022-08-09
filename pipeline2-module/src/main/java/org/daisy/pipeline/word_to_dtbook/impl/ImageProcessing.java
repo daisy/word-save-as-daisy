@@ -1,3 +1,5 @@
+package org.daisy.pipeline.word_to_dtbook.impl;
+
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.RenderingHints;
