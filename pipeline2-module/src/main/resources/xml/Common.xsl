@@ -582,7 +582,6 @@
         <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
         <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
         <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
-        <xsl:message terminate="no">debug in ParaHandler</xsl:message>
         <!--Calling Footnote template when the page break is encountered.-->
         <xsl:if test="(
             ( 
@@ -1292,9 +1291,6 @@
         <xsl:param name="FootnotesPosition" as="xs:string"/>
         <xsl:param name="FootnotesLevel" as="xs:integer"/>
         
-        <!-- TODO add footnotes template required settings to allow inlined notes insertion-->
-        <xsl:message terminate="no">debug In TempParaHandler</xsl:message>
-
         <!--Checking for line breaks-->
         <xsl:if test="((w:br/@w:type='textWrapping') or (w:br)) and (not(w:br/@w:type='page'))">
             <br/>
@@ -1612,50 +1608,22 @@
                 </xsl:choose>
             </xsl:when>
 
-            <!--Checking for footnotes in word2003 and word2007-->
-            <xsl:when test="(w:rPr/w:rStyle[@w:val ='FootnoteReference']) or (w:footnoteReference)">
-                <xsl:choose>
-                    <xsl:when test="w:rPr/w:rStyle[@w:val ='FootnoteReference']">
-                        <xsl:variable name="class" as="xs:string" select="w:rPr/w:rStyle/@w:val"/>
-                        <xsl:variable name="footnoteid" as="xs:integer" select="w:footnoteReference/@w:id"/>
-                        <xsl:sequence select="d:sink(d:AddFootNote($myObj,$footnoteid))"/> <!-- empty -->
-                        <xsl:call-template name="NoteReference">
-                            <xsl:with-param name="noteID" select="$footnoteid"/>
-                            <xsl:with-param name="noteClass" select="$class"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <xsl:when test="w:footnoteReference">
-                        <xsl:variable name="class" as="xs:string" select="'FootnoteReference'"/>
-                        <xsl:variable name="footnoteid" as="xs:integer" select="w:footnoteReference/@w:id"/>
-                        <xsl:sequence select="d:sink(d:AddFootNote($myObj,$footnoteid))"/> <!-- empty -->
-                        <xsl:call-template name="NoteReference">
-                            <xsl:with-param name="noteID" select="$footnoteid"/>
-                            <xsl:with-param name="noteClass" select="$class"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                </xsl:choose>
+            <!--Checking for footnotes in word2003 and word2007 -->
+            <xsl:when test="w:footnoteReference">
+                <xsl:variable name="footnoteid" as="xs:integer" select="w:footnoteReference/@w:id"/>
+                <xsl:sequence select="d:sink(d:AddFootNote($myObj,$footnoteid))"/> <!-- empty -->
+                <xsl:call-template name="NoteReference">
+                    <xsl:with-param name="noteID" select="$footnoteid"/>
+                    <xsl:with-param name="noteClass" select="'FootnoteReference'"/>
+                </xsl:call-template>
             </xsl:when>
 
             <!--Checking for endnotes in word2003 and word2007-->
-            <xsl:when test="(w:rPr/w:rStyle[@w:val='EndnoteReference']) or (w:endnoteReference)">
-                <xsl:choose>
-                    <xsl:when test="w:rPr/w:rStyle[@w:val='EndnoteReference']">
-                        <xsl:variable name="class" as="xs:string" select="w:rPr/w:rStyle/@w:val"/>
-                        <xsl:variable name="endnoteid" as="xs:integer" select="w:endnoteReference/@w:id"/>
-                        <xsl:call-template name="NoteReference">
-                            <xsl:with-param name="noteID" select="$endnoteid"/>
-                            <xsl:with-param name="noteClass" select="$class"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                    <xsl:when test="w:endnoteReference">
-                        <xsl:variable name="class" as="xs:string" select="'EndnoteReference'"/>
-                        <xsl:variable name="endnoteid" as="xs:integer" select="w:endnoteReference/@w:id"/>
-                        <xsl:call-template name="NoteReference">
-                            <xsl:with-param name="noteID" select="$endnoteid"/>
-                            <xsl:with-param name="noteClass" select="$class"/>
-                        </xsl:call-template>
-                    </xsl:when>
-                </xsl:choose>
+            <xsl:when test="w:endnoteReference">
+                <xsl:call-template name="NoteReference">
+                    <xsl:with-param name="noteID" select="w:endnoteReference/@w:id"/>
+                    <xsl:with-param name="noteClass" select="'EndnoteReference'"/>
+                </xsl:call-template>
             </xsl:when>
 
             <xsl:otherwise>
@@ -1759,7 +1727,6 @@
 
     <!--Template for hyperlink-->
     <xsl:template name="hyperlink">
-        <xsl:message terminate="no">debug In hyperlink</xsl:message>
         <xsl:for-each select="w:r">
             <xsl:call-template name="RunTextHandler"/>
         </xsl:for-each>
@@ -1767,7 +1734,6 @@
 
     <!--Template for smartTag-->
     <xsl:template name="smartTag">
-        <xsl:message terminate="no">debug In smartTag</xsl:message>
         <xsl:for-each select="w:r">
             <xsl:value-of select="w:t"/>
         </xsl:for-each>
@@ -1780,7 +1746,6 @@
 
     <!--Template for fldSimple-->
     <xsl:template name="fldSimple">
-        <xsl:message terminate="no">debug in fldSimple</xsl:message>
         <xsl:for-each select="w:r">
             <xsl:value-of select="w:t"/>
         </xsl:for-each>
@@ -1788,7 +1753,6 @@
 
     <!--template for traping fidelity loss element structure document-->
     <xsl:template name="structuredocument">
-        <xsl:message terminate="no">debug in structuredocument</xsl:message>
         <xsl:if test="w:sdtPr/w:docPartObj/w:docPartGallery">
             <!--Displaying fidelity loss message-->
             <xsl:message terminate="no">
@@ -1802,7 +1766,6 @@
         <xsl:param name="supressAuthor" as="xs:boolean"/>
         <xsl:param name="supressTitle" as="xs:boolean"/>
         <xsl:param name="supressYear" as="xs:boolean"/>
-        <xsl:message terminate="no">debug in styleCitation</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
             <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
@@ -1904,7 +1867,6 @@
         <xsl:param name="supressAuthor" as="xs:boolean"/>
         <xsl:param name="supressTitle" as="xs:boolean"/>
         <xsl:param name="supressYear" as="xs:boolean"/>
-        <xsl:message terminate="no">debug in styleCitationMLA</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
             <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
@@ -1954,7 +1916,6 @@
         <xsl:param name="supressAuthor" as="xs:boolean"/>
         <xsl:param name="supressTitle" as="xs:boolean"/>
         <xsl:param name="supressYear" as="xs:boolean"/>
-        <xsl:message terminate="no">debug in styleCitationSIST02</xsl:message>
         <xsl:choose>
             <!--Checking condition for supressing Author,Title,Year-->
             <xsl:when test="$supressAuthor and $supressTitle and $supressYear">
@@ -2033,7 +1994,6 @@
 
     <!--Tmplate to capture section information-->
     <xsl:template name="SectionInfo">
-        <xsl:message terminate="no">debug in SectionInfo</xsl:message>
         <xsl:for-each select="following-sibling::*">
             <xsl:choose>
                 <!--Checking for section break-->
@@ -2271,7 +2231,7 @@
     <xsl:template name="OpenStyleTagIfNotOpened">
         <xsl:param name="styleTag"/>
         <xsl:if test="not(d:HasCharacterStyle($myObj, $styleTag))">
-            <xsl:if test="d:PushCharacterStyle($myObj, $styleTag)" />
+            <xsl:sequence select="d:PushCharacterStyle($myObj, $styleTag)" />
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$styleTag,'&gt;')"/>
         </xsl:if>
     </xsl:template>
@@ -2458,7 +2418,6 @@
     <xsl:template name="List">
         <xsl:param name="custom" as="xs:string" select="''"/>
         <xsl:param name="listcharStyle" as="xs:boolean"/>
-        <xsl:message terminate="no">debug in List</xsl:message>
         <!--variable checkilvl holds level(w:ilvl) value of the List-->
         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
         <xsl:variable name="checkilvl" as="xs:integer" select="d:GetCheckLvlInt($myObj,w:pPr/w:numPr/w:ilvl/@w:val)"/>
@@ -2607,7 +2566,6 @@
         <xsl:param name="characterStyle" as="xs:boolean"/>
         <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
         <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
-        <xsl:message terminate="no">debug In StyleContainer</xsl:message>
         <xsl:choose>
             <!--Checking for List in Blockquote-->
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,5)='Block']">
@@ -2960,7 +2918,6 @@
         <xsl:param name="checkilvl" as="xs:integer"/>
         <xsl:param name="checknumId" as="xs:string"/>
         <xsl:param name="checkCounter" as="xs:string"/>
-        <xsl:message terminate="no">debug In VanishTemplate</xsl:message>
         <xsl:variable name="val" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
         <xsl:variable name="lStartOverride" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
         <xsl:variable name="lStart" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
@@ -3970,7 +3927,6 @@
         <xsl:param name="txt" as="xs:string"/>
         <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
         <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
-        <xsl:message terminate="no">debug in Paracharacterstyle</xsl:message>
         <xsl:choose>
             <xsl:when test="$characterStyle">
                 <xsl:choose>

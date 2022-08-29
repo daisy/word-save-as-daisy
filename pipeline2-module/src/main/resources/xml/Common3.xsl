@@ -2121,16 +2121,17 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!--Template to implement Languages-->
+	<!--Template to implement Languages on paragraph
+	 NOTE NP 2022/08/26 : some errors due to wrong language count found here
+	 some fixes might be required for bidi and eastAsia cases -->
 	<xsl:template name="LanguagesPara">
 		<xsl:param name="Attribute" as="xs:boolean"/>
-		<xsl:param name ="level" as="xs:string"/>
-		<xsl:message terminate="no">debug in LanguagesPara</xsl:message>
+		<xsl:param name="level" as="xs:string"/>
+
 		<!--NOTE: Use w:r instead w:r[1]-->
-		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',w:r/w:rPr/w:lang/count(@*)),''))" />
+		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',count(distinct-values(w:r/w:rPr/w:lang/@w:val))),''))" />
 		<xsl:choose>
 			<!--Checking for language type CS-->
-
 			<xsl:when test="w:r/w:rPr/w:rFonts/@w:hint='cs'">
 				<xsl:choose>
 					<!--for bidirectional language-->
@@ -2202,29 +2203,22 @@
 							<xsl:when test="w:r/w:rPr/w:lang/@w:val">
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-
 									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p xml:lang=&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;&gt;')"/>
 									</xsl:when>
-									<!--Assingning language value-->
-
+									<!--Assigning language value, takes the first one by default -->
 									<xsl:otherwise>
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',distinct-values(w:r/w:rPr/w:lang/@w:val)[1],'&quot;&gt;')"/>
 									</xsl:otherwise>
-									<!--<xsl:otherwise>
-										<xsl:value-of select="w:r/w:rPr/w:lang/@w:val"/>
-									</xsl:otherwise>-->
 								</xsl:choose>
 							</xsl:when>
 							<xsl:otherwise>
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
-
 									<xsl:when test="not($Attribute)">
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p xml:lang=&quot;',$doclang,'&quot;&gt;')"/>
 									</xsl:when>
 									<!--Assingning default language value-->
-
 									<xsl:otherwise>
 										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',$doclang,'&quot;&gt;')"/>
 									</xsl:otherwise>
@@ -2238,12 +2232,11 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="not($Attribute)">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p xml:lang=&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p xml:lang=&quot;',distinct-values(w:r/w:rPr/w:lang/@w:val)[1],'&quot;&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
-
 									<xsl:otherwise>
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',w:r/w:rPr/w:lang/@w:val,'&quot;&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',distinct-values(w:r/w:rPr/w:lang/@w:val)[1],'&quot;&gt;')"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
@@ -2251,11 +2244,11 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="not($Attribute)">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p xml:lang=&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p xml:lang=&quot;',w:r/w:rPr/w:lang/@w:eastAsia[1],'&quot;&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',w:r/w:rPr/w:lang/@w:eastAsia,'&quot;&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',w:r/w:rPr/w:lang/@w:eastAsia[1],'&quot;&gt;')"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
@@ -2263,11 +2256,11 @@
 								<xsl:choose>
 									<!--Creating <p> element with xml:lang attribute-->
 									<xsl:when test="not($Attribute)">
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p xml:lang=&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;p xml:lang=&quot;',w:r/w:rPr/w:lang/@w:bidi[1],'&quot;&gt;')"/>
 									</xsl:when>
 									<!--Assingning language value-->
 									<xsl:otherwise>
-										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',w:r/w:rPr/w:lang/@w:bidi,'&quot;&gt;')"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=&quot;',w:r/w:rPr/w:lang/@w:bidi[1],'&quot;&gt;')"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:when>
