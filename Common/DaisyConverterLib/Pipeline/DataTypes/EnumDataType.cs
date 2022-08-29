@@ -21,9 +21,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             PopulateListFromNode(node);
 
             // select list node as default value if default  exists
-            if (p.ParameterValue != null && p.ParameterValue != ""
-                && m_ValueList.Contains(p.ParameterValue))
-                m_SelectedIndex = m_ValueList.BinarySearch(p.ParameterValue);
+            if (p.ParameterValue != null && p.ParameterValue.ToString() != ""
+                && m_ValueList.Contains(p.ParameterValue.ToString()))
+                m_SelectedIndex = m_ValueList.BinarySearch(p.ParameterValue.ToString());
         }
 
         public EnumDataType(Dictionary<string,string> itemsList, string defaultValue = "" ) : base() {
@@ -94,13 +94,19 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
+        public override object Value { 
+            get => SelectedItemValue; 
+            set {
+                SelectedItemNiceName = value.ToString();
+            } 
+        }
 
         private bool SetSelectedIndexAndUpdateScript(int Index)
         {
             if (Index > 0 && Index < m_ValueList.Count)
             {
                 m_SelectedIndex = Index;
-                m_Parameter.ParameterValue = SelectedItemValue;
+                UpdateScript(SelectedItemValue);
                 return true;
             }
             else

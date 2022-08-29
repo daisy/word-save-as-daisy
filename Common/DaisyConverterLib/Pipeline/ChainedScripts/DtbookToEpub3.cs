@@ -25,7 +25,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
 
             // Create a directory using the document name
             string finalOutput = Path.Combine(
-                Parameters["outputPath"].ParameterValue,
+                Parameters["outputPath"].ParameterValue.ToString(),
                 Path.GetFileNameWithoutExtension(inputPath)
                 ) ;
             // Remove and recreate result folder
@@ -64,7 +64,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             if(OnPipelineError != null) {
                 DaisyToEpub3.setPipelineErrorListener(OnPipelineError);
             }
-            DaisyToEpub3.ExecuteScript(DaisyToEpub3.Parameters["input"].ParameterValue);
+            DaisyToEpub3.ExecuteScript(DaisyToEpub3.Parameters["input"].ParameterValue.ToString());
 
             if (File.Exists(Path.Combine(finalOutput, "result.epub"))) {
                 if (this.OnPipelineProgress != null) {

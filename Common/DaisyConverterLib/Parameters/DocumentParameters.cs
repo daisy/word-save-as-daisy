@@ -23,8 +23,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public DocumentParameters(string inputPath) {
             this.InputPath = inputPath;
-            
-            ListMathMl = new Hashtable();
+
             ObjectShapes = new List<string>();
             ImageIds = new List<string>();
             InlineShapes = new List<string>();
@@ -71,9 +70,10 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public string OutputPath { get; set; }
 
         /// <summary>
-        /// If true, the input document is reopened in word after saving the copy used for conversion
+        /// If true, the input document is (re)opened in word during preprocessing, 
+        /// when preprocessing starts and after the copy used for conversion is saved
         /// </summary>
-        public bool ReopenInputDocument { get; set; } = true;
+        public bool ShowInputDocumentInWord { get; set; } = true;
 
         /// <summary>
         /// Pathes of the shapes images extracted during preprocessing
@@ -81,9 +81,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public List<string> ObjectShapes { get; set; }
 
         /// <summary>
-        /// hash of key => List of mathml equations (stored as string)
+        /// Dictionnary of key => List of mathml equations (stored as string)
         /// </summary>
-        public Hashtable ListMathMl { get; set; }
+        public Dictionary<string, List<string>> MathMLMap { get; set; } = new Dictionary<string, List<string>>()
+        {
+            {"wdTextFrameStory", new List<string>() },
+            {"wdFootnotesStory", new List<string>() },
+            {"wdMainTextStory", new List<string>() },
+        };
 
         /// <summary>
         /// Ids of the shapes extracted during preprocessing
@@ -177,9 +182,10 @@ namespace Daisy.SaveAsDAISY.Conversion {
             get {
                 Hashtable parameters = new Hashtable();
 
-                parameters.Add("TRACK", !HasRevisions ? "NoTrack" : (TrackChanges ? "Yes" : "No"));
-                parameters.Add("MasterSubFlag", !HasSubDocuments ? "NoMasterSub" : (SubDocumentsToConvert.Count > 0 ? "Yes" : "No"));
+                parameters.Add("prmTRACK", TrackChanges);
+                parameters.Add("MasterSub", (SubDocumentsToConvert != null && SubDocumentsToConvert.Count > 0) ? true : false);
                 
+
                 return parameters;
             }
         }
@@ -187,5 +193,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public string serialize() {
             return JsonConvert.SerializeObject(this);
         }
+
+        
+
     }
 }

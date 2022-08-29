@@ -20,7 +20,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         }
 
         private string m_Name;
-        private string m_Value;
+        private object m_Value;
         private string m_NiceName;
         private bool m_Required;
         private string m_Description;
@@ -35,7 +35,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             string name,
             string niceName,
             ParameterDataType dataType,
-            string initialValue, 
+            object initialValue, 
             bool required = false,
             string description = "",
             bool displayed = true,
@@ -164,20 +164,21 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public ParameterDataType ParameterDataType { get { return m_DataType; } }
 
-        public string ParameterValue
+        public object ParameterValue
         {
             get { return m_Value; }
             set
             {
-                if (value != null && value != "")
+                if (value != null)
                 {
                     m_Value = value;
                     m_Required = true;
                 }
-                else if (m_Required && (m_Value == null || m_Value == ""))
+                else if (m_Required && (m_Value == null))
                     m_Required = false;
             }
         }
+
     }
 
 }

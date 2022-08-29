@@ -35,8 +35,15 @@ namespace Daisy.SaveAsDAISY.Conversion {
             }
 
             IntPtr currentJob = Pipeline2.Instance.Start(
-                Name,
-                Parameters.ToDictionary(keyvalue => keyvalue.Value.Name, keyvalue => keyvalue.Value.ParameterValue)
+                NameOrURI,
+                Parameters.ToDictionary(
+                    keyvalue => keyvalue.Value.Name,
+                    keyvalue => {
+                        string val = keyvalue.Value.ParameterValue.ToString();
+                        // Fix for 
+                        return (false.ToString() == val || true.ToString() == val) ? val.ToLower() : val;
+                    }
+                )
             );
 
 
@@ -90,7 +97,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 #endif
                 }
             } else {
-                throw new Exception("An unknown error occured while launching the script " + this.Name + " with the parameters " +
+                throw new Exception("An unknown error occured while launching the script " + this.NameOrURI + " with the parameters " +
                     this.Parameters.Aggregate(
                         "",
                         (result, keyvalue) => result + keyvalue.Value.Name + "=" + keyvalue.Value.ParameterValue.ToString() +"\r\n"

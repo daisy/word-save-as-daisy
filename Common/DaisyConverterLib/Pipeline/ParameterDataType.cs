@@ -17,5 +17,19 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline {
         public ParameterDataType() {
         }
 
+        public abstract object Value { get; set; }
+
+        protected bool UpdateScript(string Val)
+        {
+            if (Val != null && m_Parameter != null)
+            {
+                m_Parameter.ParameterValue = Val;
+                return true;
+            }
+            else
+                return false;
+        }
+
+
     }
 }

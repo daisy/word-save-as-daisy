@@ -10,10 +10,10 @@ namespace Daisy.SaveAsDAISY.Conversion {
     public class ConverterSettings {
         #region Private and default fields
         private string imgoption;
-        private string resampleValue;
-        private string characterStyle;
+        private int resampleValue = 96;
+        private bool characterStyle = false;
         private string pagenumStyle;
-        private string footnotesLevel = "0"; // 0 mean current paragraphe, < 0 means parent level going upward, > 1 means absolute dtbook level
+        private int footnotesLevel = 0; // 0 mean current paragraphe, < 0 means parent level going upward, > 1 means absolute dtbook level
         private string footnotesPosition = "page" ; // Should be inline, end, after or page
         private string footnotesNumbering = "number"; // should be number or none (or empty, equals to none)
         private string footnotesStartValue = "1"; // can be a nummber to be used as starting number, or a character
@@ -55,16 +55,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
             XmlNode imgnodeOption = translationxml.SelectSingleNode("//Settings/ImageSizes[@value]");
             imgoption = imgnodeOption.Attributes[0].InnerXml;
             XmlNode imgResampleValue = translationxml.SelectSingleNode("//Settings/ImageSizes");
-            resampleValue = imgResampleValue.Attributes[1].Value;
+            resampleValue = Convert.ToInt32(imgResampleValue.Attributes[1].Value);
             XmlNode charstyleOption = translationxml.SelectSingleNode("//Settings/CharacterStyles[@value]");
-            characterStyle = charstyleOption.Attributes[0].InnerXml;
+            characterStyle = charstyleOption.Attributes[0].InnerXml == "True" ? true : false;
             XmlNode pagenumOption = translationxml.SelectSingleNode("//Settings/PageNumbers[@value]");
             pagenumStyle = pagenumOption.Attributes[0].InnerXml;
 
             XmlNode FootnotesSettings = translationxml.SelectSingleNode("//Settings/Footnotes");
-            footnotesLevel = (FootnotesSettings != null && FootnotesSettings.Attributes["level"] != null) 
+            footnotesLevel = Convert.ToInt32(
+                (FootnotesSettings != null && FootnotesSettings.Attributes["level"] != null) 
                 ? FootnotesSettings.Attributes["level"].InnerXml
-                : "0";
+                : "0"
+            );
 
             footnotesPosition = (FootnotesSettings != null && FootnotesSettings.Attributes["position"] != null)
                 ? FootnotesSettings.Attributes["position"].InnerXml
@@ -74,9 +76,9 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public string GetImageOption => imgoption;
 
-        public string GetResampleValue => resampleValue;
+        public int GetResampleValue => resampleValue;
 
-        public string GetCharacterStyle => characterStyle;
+        public bool GetCharacterStyle => characterStyle;
 
         public string GetPagenumStyle => pagenumStyle;
 
@@ -95,6 +97,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// - a negative value (-N) means it will placed relative to the Nth parent of the current bloc,<br/>
         /// - a positive value (N) means it will placed relatively to the current absolute N level
         /// </summary>
-        public string FootnotesLevel { get => footnotesLevel; set => footnotesLevel = value; }
+        public int FootnotesLevel { get => footnotesLevel; set => footnotesLevel = value; }
     }
 }

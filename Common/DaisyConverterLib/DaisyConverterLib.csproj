@@ -130,10 +130,13 @@
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
     <Compile Include="Parameters\PrepopulateDaisyXml.cs" />
     <Compile Include="Pipeline\ChainedScripts\DtbookToEpub3.cs" />
+    <Compile Include="Pipeline\DataTypes\MapDataType.cs" />
     <Compile Include="Pipeline\ParameterDataType.cs" />
     <Compile Include="Pipeline\Pipeline2\Pipeline2.cs" />
     <Compile Include="Pipeline\Pipeline2\Pipeline2Script.cs" />
+    <Compile Include="Pipeline\Pipeline2\Pipeline2Step.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\Daisy3ToEPUB3.cs" />
+    <Compile Include="Pipeline\Pipeline2\Scripts\WordToDTBook.cs" />
     <Compile Include="Pipeline\Script.cs" />
     <Compile Include="Preprocessing\FilenameValidator.cs" />
     <Compile Include="Preprocessing\IDocumentPreprocessor.cs" />
@@ -282,34 +285,8 @@
     <EmbeddedResource Include="resources\entities\mathml2-qname-1.mod">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="resources\xslts\Common.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="resources\xslts\Common2.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="resources\xslts\Common3.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="resources\xslts\OOML2MML.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="resources\xslts\oox2Daisy.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="resources\xslts\Schematron.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="resources\xslts\TOC.xsl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="JNET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=95283358f4f60f4e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\JNET.dll</HintPath>
-    </Reference>
     <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
     </Reference>
@@ -325,6 +302,12 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\jnet\JNET.csproj">
+      <Project>{941df07f-3ee8-4793-abba-659f2e0598c3}</Project>
+      <Name>JNET</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>

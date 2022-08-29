@@ -21,7 +21,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public PathDataType(ScriptParameter p, XmlNode DataTypeNode) : base(p)
         {
-            m_Path = p.ParameterValue;
+            m_Path = p.ParameterValue.ToString();
             XmlNode ChildNode = DataTypeNode.FirstChild;
 
         	if (ChildNode.Name == "file")
@@ -61,14 +61,14 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         public InputOrOutput isInputOrOutput { get { return m_InputOrOutput; } }
 
-        public string Value
+        public override object Value
         {
             get { return m_Path; }
             set
             {
-                if (Exists(value))
+                if (Exists((string)value))
                 {
-                    m_Path = value;
+                    m_Path = (string)value;
                     UpdateScript(m_Path);
                 }
                 else throw new System.Exception("No_Path");

@@ -8,7 +8,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
     public class Daisy3ToEPUB3 : Pipeline2Script {
 
         public Daisy3ToEPUB3() {
-            this.name = "daisy3-to-epub3";
+            this.nameOrURI = "daisy3-to-epub3";
+            this.niceName = "DAISY3 to EPUB3";
             _parameters = new Dictionary<string, ScriptParameter>();
             _parameters.Add(
                 "input",

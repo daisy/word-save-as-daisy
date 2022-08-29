@@ -26,7 +26,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             reader.Close();
 
             this.niceName = m_ScriptDocument.SelectSingleNode("/taskScript/nicename")?.InnerXml ?? string.Empty;
-            this.name = m_ScriptDocument.SelectSingleNode("/taskScript/@name")?.InnerXml ?? string.Empty;
+            this.nameOrURI = m_ScriptDocument.SelectSingleNode("/taskScript/@name")?.InnerXml ?? string.Empty;
             this.description = m_ScriptDocument.SelectSingleNode("/taskScript/description")?.InnerXml ?? string.Empty;
 
             //populate parameters list
@@ -61,7 +61,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 {
                     Param = Param + p.Name + "=" + p.ParameterValue + ",";
 					if(p.Name == "output" || p.Name == "outputPath")
-						output = p.ParameterValue;
+						output = p.ParameterValue.ToString();
 
                 }
             }

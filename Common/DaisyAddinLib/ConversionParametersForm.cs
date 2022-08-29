@@ -226,7 +226,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 					{
 						try
 						{
-							FileInfo outputFileInfo = new FileInfo(p.ParameterValue);
+							FileInfo outputFileInfo = new FileInfo(p.ParameterValue.ToString());
 							if (!string.IsNullOrEmpty(pathDataType.FileExtension) && !pathDataType.FileExtension.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
 							{
 								MessageBox.Show(string.Format("Please select {0} output file", pathDataType.FileExtension), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -246,7 +246,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 					}
 					else
 					{
-						strBrtextBox = p.ParameterValue;
+						strBrtextBox = p.ParameterValue.ToString();
 					}
 
 					//TODO:::

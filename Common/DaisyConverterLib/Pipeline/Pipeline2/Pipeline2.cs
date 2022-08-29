@@ -21,7 +21,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         private JavaNativeInterface jni;
-
         // Classes
         private IntPtr SimpleAPIClass,
             JobClass,
@@ -30,6 +29,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
             HashMapClass,
             JobStatusClass,
             MessageAccessorClass,
+            ArrayListClass,
+            JavaStringClass,
             BigDecimalClass;
 
         #region Singleton initialisation
@@ -49,7 +50,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
             string jvmDllPath = Path.Combine(
                 jrePath, "bin", "server", "jvm.dll"
             );
-            jni = new JavaNativeInterface(jvmDllPath);
+            
 
             List<string> options = new List<string>();
             options = JavaOptions
@@ -61,8 +62,9 @@ namespace Daisy.SaveAsDAISY.Conversion {
                             return opts;
                         })).ToList();
             options.Add("-Djava.class.path=" + ClassPath);
+
             // Load a new JVM
-            jni.LoadVM(options, false);
+            jni = new JavaNativeInterface(options, jvmDllPath, false);
 
             // Initialize runner in the JVM
             SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
@@ -73,6 +75,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
             JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
             MessageAccessorClass = jni.GetJavaClass("org/daisy/common/messaging/MessageAccessor");
             BigDecimalClass = jni.GetJavaClass("java/math/BigDecimal");
+            ArrayListClass = jni.GetJavaClass("java/util/ArrayList");
+            JavaStringClass = jni.GetJavaClass("java/lang/String");
         }
 
         private void Dispose() {
@@ -199,18 +203,9 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public IntPtr Start(string scriptName, Dictionary<string, string> options = null) {
 
             try {
-
-                IntPtr hashMap = jni.NewObject(HashMapClass);
-                if (options != null) foreach (KeyValuePair<string, string> option in options) {
-                        IntPtr temp = jni.CallMethod<IntPtr>(
-                            HashMapClass,
-                            hashMap,
-                            "put",
-                            "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;",
-                            option.Key,
-                            option.Value
-                        );
-                    }
+                IntPtr hashMap = jni.NewJavaWrapperObject(
+                    options != null ? options : new Dictionary<string, string>()
+                );
 
                 IntPtr job = jni.CallMethod<IntPtr>(
                     SimpleAPIClass,
@@ -234,6 +229,46 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 //return IntPtr.Zero;
             }
         }
+
+        public void runXprocStep(string stepURI,
+            Dictionary<string, string> inputs,
+            Dictionary<string, string> outputs,
+            Dictionary<string, object> options = null
+            )
+        {
+
+            try
+            {
+                IntPtr stepInputs = jni.NewJavaWrapperObject(inputs);
+                IntPtr stepOutputs = jni.NewJavaWrapperObject(outputs);
+                IntPtr stepOptions = jni.NewJavaWrapperObject(options != null ? options : new Dictionary<string, object>());
+                jni.CallVoidMethod(
+                    SimpleAPIClass,
+                    IntPtr.Zero,
+                    "runStep",
+                    "(Ljava/lang/String;Ljava/util/Map;Ljava/util/Map;Ljava/util/Map;)V",
+                    stepURI,
+                    stepInputs,
+                    stepOptions,
+                    stepOutputs
+                );
+            }
+            catch (Exception e)
+            {
+                if (OnPipelineError != null)
+                {
+                    OnPipelineError(e.Message);
+                    while (e.InnerException != null)
+                    {
+                        e = e.InnerException;
+                        OnPipelineError(" - Thrown by " + e.Message);
+                    }
+                }
+                throw;
+                //return IntPtr.Zero;
+            }
+        }
+
 
         /// <summary>
         /// Possible status for a pipeline job

@@ -54,7 +54,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Flag if sub documents should be parsed when found
         /// possible values are Yes, No or NoMasterFlag
         /// </summary>
-        public string ParseSubDocuments { get; set; }
+        public bool ParseSubDocuments { get; set; } = false;
 
         /// <summary>
         /// Request DTBook XML validation
@@ -144,7 +144,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 case "TrackChanges":
                     TrackChanges = (string)value; break;
                 case "ParseSubDocuments":
-                    ParseSubDocuments = (string)value; break;
+                    ParseSubDocuments = (bool)value; break;
                 case "Visible":
                     Visible = (bool)value; break;
                 default:
@@ -172,16 +172,15 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 // This two fields are stored in document parameters,
                 // but we let the conversion settings capable of overriding them just in case
                 if (TrackChanges != null) parameters.Add("TRACK", TrackChanges);
-                if (ParseSubDocuments != null) parameters.Add("MasterSub", ParseSubDocuments);
+                parameters.Add("MasterSub", ParseSubDocuments);
 
                 // also retrieve global settings
                 if (GlobalSettings.GetImageOption != " ") {
                     parameters.Add("ImageSizeOption", GlobalSettings.GetImageOption);
                     parameters.Add("DPI", GlobalSettings.GetResampleValue);
                 }
-                if (GlobalSettings.GetCharacterStyle != " ") {
-                    parameters.Add("CharacterStyles", GlobalSettings.GetCharacterStyle);
-                }
+                parameters.Add("CharacterStyles", GlobalSettings.GetCharacterStyle);
+
                 if (GlobalSettings.GetPagenumStyle != " ") {
                     parameters.Add("Custom", GlobalSettings.GetPagenumStyle);
                 }
@@ -193,10 +192,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 // value between -5 and 6, with negative value meaning parents level going upwards,
                 // 0 meaning in current level,
                 // positive value meaning absolute level value where to put the notes
-                if (GlobalSettings.FootnotesLevel != " ")
-                {
-                    parameters.Add("FootnotesLevel", GlobalSettings.FootnotesLevel);
-                }
+                parameters.Add("FootnotesLevel", GlobalSettings.FootnotesLevel);
+                
 
                 return parameters;
             }

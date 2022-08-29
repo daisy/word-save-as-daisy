@@ -110,15 +110,17 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		/// </summary>
 		/// <param name="inputPath"></param>
 		/// <param name="resourceId"></param>
+		/// <param name="withWordVisible">(defaults to true) Speicify if word must be visible or not during preprocessing</param>
 		/// <returns>A document ready for conversion or null if an error has occured or if the preprocess has been canceled</returns>
 		public DocumentParameters PreprocessDocument(string inputPath, string resourceId = null) {
 			EventsHandler.onDocumentPreprocessingStart(inputPath);
 			DocumentParameters result = new DocumentParameters(inputPath) {
 				CopyPath = ConverterHelper.GetTempPath(inputPath, ".docx"),
 				ResourceId = resourceId != null ? resourceId : null,
-				ReopenInputDocument = ConversionParameters.Visible
+				ShowInputDocumentInWord = ConversionParameters.Visible
 			};
 			// dot not make visible subdocuments (documents with resource Id assigned)
+			// Note : allow preprocessing to be "silent"
 			object preprocessedObject = DocumentPreprocessor.startPreprocessing(result, EventsHandler);
 			
 			try {
@@ -178,13 +180,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
 				if (subDocList.Errors.Count > 0) {
 					string errors = "Subdocuments convertion will be ignored due to the following errors found while extracting them:\r\n" + string.Join("\r\n", subDocList.Errors);
 					EventsHandler.onPreprocessingError(result.InputPath, errors);
-					ConversionParameters.ParseSubDocuments = "No";
+					ConversionParameters.ParseSubDocuments = false;
 				} else if (result.HasSubDocuments) {
-					ConversionParameters.ParseSubDocuments = "No";
+					ConversionParameters.ParseSubDocuments = false;
 					if (EventsHandler != null) {
-						ConversionParameters.ParseSubDocuments = EventsHandler.AskForTranslatingSubdocuments() ? "Yes" : "No";
+						ConversionParameters.ParseSubDocuments = EventsHandler.AskForTranslatingSubdocuments();
 					}
-					if (ConversionParameters.ParseSubDocuments == "Yes") {
+					if (ConversionParameters.ParseSubDocuments) {
 						foreach (SubdocumentInfo item in subDocList.Subdocuments) {
 							if (CurrentStatus != ConversionStatus.Canceled) {
 								DocumentParameters subDoc = null;
@@ -193,7 +195,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 								} catch (Exception e) {
 									string errors = "Subdocuments convertion will be ignored due to the following errors found while preprocessing "+ item.FileName  +":\r\n" + e.Message;
 									EventsHandler.onPreprocessingError(item.FileName, errors);
-									ConversionParameters.ParseSubDocuments = "No";
+									ConversionParameters.ParseSubDocuments = false;
 								}
 								if (subDoc != null) {
 									result.SubDocumentsToConvert.Add(subDoc);
@@ -210,7 +212,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
                         }
 					}
 				} else {
-					ConversionParameters.ParseSubDocuments = "NoMasterSub";
+					ConversionParameters.ParseSubDocuments = false;
 				}
 			}
 			CurrentStatus = ConversionStatus.PreprocessingSucceeded;
@@ -253,7 +255,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 			// Rebuild output path
 			document.OutputPath = Path.Combine(outputDirectory, sanitizedName);
 
-			if (document.SubDocumentsToConvert.Count > 0 && ConversionParameters.ParseSubDocuments.ToLower() == "yes") {
+			if (document.SubDocumentsToConvert.Count > 0 && ConversionParameters.ParseSubDocuments) {
                 List<DocumentParameters> flattenList = new List<DocumentParameters> {
                     document
                 };

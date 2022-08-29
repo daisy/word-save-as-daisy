@@ -62,13 +62,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
             get { return niceName; }
         }
 
-        protected string name = "";
+        protected string nameOrURI = "";
 
         /// <summary>
-        /// Name used in pipeline calls (_postprocess, or dtbook-to-daisy303)
+        /// Name or URI used for pipeline scripts calls 
+        /// (like _postprocess, or dtbook-to-daisy303, or "http://www.daisy.org/pipeline/modules/word-to-dtbook/oox2Daisy.xpl")
         /// </summary>
-        public string Name {
-            get { return name; }
+        public string NameOrURI {
+            get { return nameOrURI; }
         }
 
         protected string description = "";
@@ -78,7 +79,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         public string Description
         {
-            get { return name; }
+            get { return nameOrURI; }
         }
 
         /// <summary>

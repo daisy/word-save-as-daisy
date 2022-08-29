@@ -40,6 +40,7 @@ using System.IO.Packaging;
 using System.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -307,83 +308,113 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 			// temporary files in memory
 			string tempInputPath = Path.GetTempFileName();
-			string tempOutputPath =  Path.GetTempFileName();
+			
 
 			string conversionOutputDirectory = Directory.GetParent(document.OutputPath).FullName;
+			
+			string tempOutputPath = Path.GetTempFileName();
+
 			progressMessageIntercepted(this, new DaisyEventArgs("Transform " + document.CopyPath + " to DTBook XML "+ document.OutputPath));
 
 			try {
 				File.Copy(document.CopyPath, tempInputPath, true);
 				File.SetAttributes(tempInputPath, FileAttributes.Normal);
-
+				
 				XmlReader source = null;
 				XmlWriter writer = null;
 				ZipResolver zipResolver = null;
 
 				try
 				{
-					XslCompiledTransform xslt = this.Load(false);
-					zipResolver = new ZipResolver(tempInputPath);
+					Script wordToDTBook = new Pipeline.Pipeline2.Scripts.WordToDTBook();
+					wordToDTBook.Parameters["input"].ParameterValue = document.InputPath;
+					//wordToDTBook.Parameters["tempSource"].ParameterValue = tempInputPath;
+					wordToDTBook.Parameters["output"].ParameterValue = conversionOutputDirectory;
 
-					XsltArgumentList parameters = new XsltArgumentList();
-					parameters.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(onXSLTMessageEvent);
-					parameters.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(onXSLTProgressMessageEvent);
+					wordToDTBook.Parameters["pipeline-output"].ParameterValue = conversion.PipelineOutput;
+					//wordToDTBook.Parameters["MathML"].ParameterValue = document.MathMLMap;
 
-					DaisyClass extension = new DaisyClass(
-								document.InputPath,
-								tempInputPath,
-								conversionOutputDirectory,
-								document.ListMathMl,
-								zipResolver.Archive,
-								conversion.PipelineOutput);
-					parameters.AddExtensionObject(
-						"urn:Daisy", extension
-
-					);
-
-
-					parameters.AddParam("outputFile", "", tempOutputPath);
-					// Document specific settings
 					foreach (DictionaryEntry myEntry in document.ParametersHash)
 					{
-						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
-					}
-					// Conversion batch settings
-					foreach (DictionaryEntry myEntry in conversion.ParametersHash)
-					{
-						// We allow conversion settings to override document settings
-						// if wanted
-						if (parameters.GetParam(myEntry.Key.ToString(), "") != null)
-						{
-							parameters.RemoveParam(myEntry.Key.ToString(), "");
+                        if (wordToDTBook.Parameters.ContainsKey(myEntry.Key.ToString()))
+                        {
+							wordToDTBook.Parameters[myEntry.Key.ToString()].ParameterValue = myEntry.Value;
 						}
-						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
+					}
+                    foreach (DictionaryEntry myEntry in conversion.ParametersHash)
+                    {
+						if (wordToDTBook.Parameters.ContainsKey(myEntry.Key.ToString()))
+						{
+							wordToDTBook.Parameters[myEntry.Key.ToString()].ParameterValue = myEntry.Value;
+						}
 
 					}
+					wordToDTBook.ExecuteScript(tempInputPath);
 
 
-					// write result to conversion.TempOutputFile or a random temp output file
+					//					XslCompiledTransform xslt = this.Load(false);
+					//					zipResolver = new ZipResolver(tempInputPath);
 
-					XmlWriter finalWriter;
-#if DEBUG
-					StreamWriter streamWriter = new StreamWriter(
-						tempOutputPath,
-						true, System.Text.Encoding.UTF8
-					)
-					{ AutoFlush = true };
-					finalWriter = new XmlTextWriter(streamWriter);
+					//					XsltArgumentList parameters = new XsltArgumentList();
+					//					parameters.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(onXSLTMessageEvent);
+					//					parameters.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(onXSLTProgressMessageEvent);
 
-					Debug.WriteLine("OUTPUT FILE : '" + tempOutputPath + "'");
-#else
-					finalWriter = new XmlTextWriter(tempOutputPath, System.Text.Encoding.UTF8);
-#endif
-					writer = GetWriter(finalWriter);
+					//					DaisyClass extension = new DaisyClass(
+					//								document.InputPath,
+					//								tempInputPath,
+					//								conversionOutputDirectory,
+					//								document.MathMLMap,
+					//								zipResolver.Archive,
+					//								conversion.PipelineOutput);
+					//					parameters.AddExtensionObject(
+					//						"urn:Daisy", extension
+
+					//					);
 
 
-					source = this.Source;
-					// Apply the transformation
+					//					parameters.AddParam("outputFile", "", tempOutputPath);
+					//					// Document specific settings
+					//					foreach (DictionaryEntry myEntry in document.ParametersHash)
+					//					{
+					//						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
+					//					}
+					//					// Conversion batch settings
+					//					foreach (DictionaryEntry myEntry in conversion.ParametersHash)
+					//					{
+					//						// We allow conversion settings to override document settings
+					//						// if wanted
+					//						if (parameters.GetParam(myEntry.Key.ToString(), "") != null)
+					//						{
+					//							parameters.RemoveParam(myEntry.Key.ToString(), "");
+					//						}
+					//						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
 
-					xslt.Transform(source, parameters, writer, zipResolver);
+					//					}
+
+
+					//					// write result to conversion.TempOutputFile or a random temp output file
+
+					//					XmlWriter finalWriter;
+					//#if DEBUG
+					//					StreamWriter streamWriter = new StreamWriter(
+					//						tempOutputPath,
+					//						true, System.Text.Encoding.UTF8
+					//					)
+					//					{ AutoFlush = true };
+					//					finalWriter = new XmlTextWriter(streamWriter);
+
+					//					Debug.WriteLine("OUTPUT FILE : '" + tempOutputPath + "'");
+					//#else
+					//					finalWriter = new XmlTextWriter(tempOutputPath, System.Text.Encoding.UTF8);
+					//#endif
+					//					writer = GetWriter(finalWriter);
+
+
+					//					source = this.Source;
+					//					// Apply the transformation
+
+					//					xslt.Transform(source, parameters, writer, zipResolver);
+
 				}
 				catch (Exception ex)
 				{
