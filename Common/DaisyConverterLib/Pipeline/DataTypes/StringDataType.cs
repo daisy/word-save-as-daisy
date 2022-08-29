@@ -4,34 +4,37 @@ using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Windows.Forms;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-    public class StringDataType
-    {
-        public ScriptParameter m_Parameter;
-        private string m_Title;
-        private string m_strValue;
-        public StringDataType(ScriptParameter p, XmlNode DataTypeNode)
+    public class StringDataType : ParameterDataType {
+        protected string m_Value;
+        private string m_Regex;
+        public StringDataType(ScriptParameter p, XmlNode DataTypeNode) : base(p)
         {
-            m_Parameter = p;
-            m_Title = p.ParameterValue;
+            m_Value = p.ParameterValue.ToString();
             XmlNode ChildNode = DataTypeNode.FirstChild;
             if (ChildNode.Attributes.Count > 0)
             {
-                m_strValue = ChildNode.Attributes.GetNamedItem("regex").Value;
+                m_Regex = ChildNode.Attributes.GetNamedItem("regex").Value;
             }
         }
 
-        public string Value
+        public StringDataType(string defaultValue = "", string regex = "") : base() {
+            m_Value = defaultValue;
+            m_Regex = regex;
+        }
+
+        public override object Value
         {
-            get { return m_Title; }
+            get { return m_Value; }
             set
             {
                 if (value!=null)
                 {
-                    m_Title = value;
-                    UpdateScript(m_Title);
+                    m_Value = (string)value;
+                    UpdateScript(m_Value);
                 }
                 else throw new System.Exception("No_Title");
             }
@@ -39,7 +42,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private bool UpdateScript(string Val)
         {
-            if (Val != null)
+            if (Val != null && m_Parameter != null)
             {
                 m_Parameter.ParameterValue = Val;
                 return true;

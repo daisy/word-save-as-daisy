@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Xml;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-    public class PathDataType
+    public class PathDataType : ParameterDataType
     {
         private string m_Path;
-        private ScriptParameter m_Parameter;
 
         public enum InputOrOutput { input, output } ;
         private InputOrOutput m_InputOrOutput;
@@ -17,25 +17,38 @@ namespace Daisy.SaveAsDAISY.Conversion
         public enum FileOrDirectory { File, Directory }
         private FileOrDirectory m_FileOrDirectory;
 
-		public string FileExtenssion { get; private set; }
+		public string FileExtension { get; private set; }
 
-        public PathDataType(ScriptParameter p, XmlNode DataTypeNode)
+        public PathDataType(ScriptParameter p, XmlNode DataTypeNode) : base(p)
         {
-            m_Parameter = p;
-            m_Path = p.ParameterValue;
+            m_Path = p.ParameterValue.ToString();
             XmlNode ChildNode = DataTypeNode.FirstChild;
 
         	if (ChildNode.Name == "file")
         	{
         		m_FileOrDirectory = FileOrDirectory.File;
-        		FileExtenssion = GetFileExtensionFromFileNode(ChildNode);
-        	}
+                XmlAttribute fileTypeAttribute = ChildNode.Attributes["mime"];
+                string attributeValue = fileTypeAttribute == null ? string.Empty : fileTypeAttribute.Value;
+                FileExtension = GetFileExtensionFromMimeType(attributeValue);
+            }
         	else
         	{
         		m_FileOrDirectory = FileOrDirectory.Directory;
         	}
 
         	m_InputOrOutput = ChildNode.Attributes.GetNamedItem("type").Value == "input" ? InputOrOutput.input : InputOrOutput.output;
+        }
+
+        public PathDataType(
+            InputOrOutput portType = InputOrOutput.output,
+            FileOrDirectory pathType = FileOrDirectory.Directory,
+            string mimeType = "",
+            string initialPath = ""
+         ) : base() {
+            m_Path = initialPath;
+            m_FileOrDirectory = pathType;
+            m_InputOrOutput = portType;
+            FileExtension = GetFileExtensionFromMimeType(mimeType);
         }
 
         /// <summary>
@@ -48,14 +61,14 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         public InputOrOutput isInputOrOutput { get { return m_InputOrOutput; } }
 
-        public string Value
+        public override object Value
         {
             get { return m_Path; }
             set
             {
-                if (Exists(value))
+                if (Exists((string)value))
                 {
-                    m_Path = value;
+                    m_Path = (string)value;
                     UpdateScript(m_Path);
                 }
                 else throw new System.Exception("No_Path");
@@ -114,16 +127,15 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-		protected string GetFileExtensionFromFileNode(XmlNode fileNode)
+		protected string GetFileExtensionFromMimeType(string mimetype)
 		{
-			XmlAttribute fileTypeAttribute = fileNode.Attributes["mime"];
-			string attributeValue = fileTypeAttribute == null ? string.Empty : fileTypeAttribute.Value;
-			
-			switch (attributeValue)
+			switch (mimetype)
 			{
 				case "application/epub+zip":
 					return ".epub";
-				default:
+                case "application/oebps-package+xml":
+                    return ".opf";
+                default:
 					return string.Empty;
 			}
 		}

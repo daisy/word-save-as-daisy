@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
+using Newtonsoft.Json;
+
 namespace Daisy.SaveAsDAISY.Conversion {
     /// <summary>
     /// Input parameters for a conversion.
@@ -25,9 +27,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 
         public string ControlName { get; set; }
-		public string ScriptPath { get; set; }
-
-        public string TempOutputFile { get; set; }
         
 
         // From the "TranslationParametersBuilder" and PrepopulatedDaisyXml class
@@ -43,7 +42,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public FilenameValidator NameValidator { get; set; }
 
-        public ScriptParser PostProcessSettings { get; set; } = null;
+        public Script PostProcessor { get; set; } = null;
 
         /// <summary>
         /// Flag if changes should be tracked
@@ -55,13 +54,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Flag if sub documents should be parsed when found
         /// possible values are Yes, No or NoMasterFlag
         /// </summary>
-        public string ParseSubDocuments { get; set; }
+        public bool ParseSubDocuments { get; set; } = false;
 
         /// <summary>
         /// Request DTBook XML validation
         /// </summary>
         public bool Validate { get; set; }
 
+
+        /// <summary>
+        /// Keep word visible during conversion
+        /// </summary>
+        public bool Visible { get; set; } = true;
 
         /// <summary>
         /// 
@@ -71,11 +75,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="filenameValidator">File name validator with regex matcher. If null, will default to dtbook XML filename pattern
         /// (see the one declared in ConverterHelper)</param>
         /// <param name="mainDocument">Document to retrieve conversion parameters from (Creator, Title and Publisher) </param>
-        public ConversionParameters(string wordVersion = null, string pipelineScript = null, FilenameValidator filenameValidator = null, DocumentParameters mainDocument = null) {
+        public ConversionParameters(string wordVersion = null, Script pipelineScript = null, FilenameValidator filenameValidator = null, DocumentParameters mainDocument = null) {
             Version = wordVersion;
-            ScriptPath = pipelineScript;
+            //ScriptPath = pipelineScript;
             if (pipelineScript != null) {
-                PostProcessSettings = new ScriptParser(pipelineScript);
+                PostProcessor = pipelineScript;
             }
             if(filenameValidator != null) {
                 NameValidator = filenameValidator;
@@ -94,15 +98,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
             Creator = PackageUtilities.DocPropCreator(mainDocument.CopyPath ?? mainDocument.InputPath);
             Title = PackageUtilities.DocPropTitle(mainDocument.CopyPath ?? mainDocument.InputPath);
             Publisher = PackageUtilities.DocPropPublish(mainDocument.CopyPath ?? mainDocument.InputPath);
-            /*if(mainDocument.SubDocuments.Count > 0) {
-                if(eventsHandler != null) {
-                    ParseSubDocuments = eventsHandler.AskForTranslatingSubdocuments() ? "Yes" : "No";
-                } else {
-                    ParseSubDocuments = "No";
-                }
-            } else {
-                ParseSubDocuments = "NoMasterSub";
-            }*/
             return this;
         }
 
@@ -127,8 +122,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <returns>The converter itself</returns>
         public ConversionParameters withParameter(string name, object value) {
             switch (name) {
-                case "ScriptPath":
-                    ScriptPath = (string)value; break;
                 case "OutputFile":
                     OutputPath = (string)value; break;
                 case "Title":
@@ -145,13 +138,15 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     Version = (string)value; break;
                 case "PipelineOutput":
                     PipelineOutput = (string)value; break;
-                case "PostProcessSetting":
-                    PostProcessSettings = (ScriptParser)value; break;
+                case "PostProcessor":
+                    PostProcessor = (Script)value; break;
                 // Fields to be moved to document settings
                 case "TrackChanges":
                     TrackChanges = (string)value; break;
                 case "ParseSubDocuments":
-                    ParseSubDocuments = (string)value; break;
+                    ParseSubDocuments = (bool)value; break;
+                case "Visible":
+                    Visible = (bool)value; break;
                 default:
                     break;
             }
@@ -161,7 +156,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <summary>
         /// Get the conversion settings hashtable (to replace the TranslationParametersBuilder behavior)
         /// </summary>
-        public Hashtable ConversionParametersHash {
+        public Hashtable ParametersHash {
             get {
                 Hashtable parameters = new Hashtable();
                 
@@ -174,21 +169,31 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 // TO BE CHANGED if the value changes in xslts
                 if (OutputPath != null) parameters.Add("OutputFile", OutputPath);
                 
-                // This two should be moved to document parameters
+                // This two fields are stored in document parameters,
+                // but we let the conversion settings capable of overriding them just in case
                 if (TrackChanges != null) parameters.Add("TRACK", TrackChanges);
-                if (ParseSubDocuments != null) parameters.Add("MasterSub", ParseSubDocuments);
+                parameters.Add("MasterSub", ParseSubDocuments);
 
                 // also retrieve global settings
                 if (GlobalSettings.GetImageOption != " ") {
                     parameters.Add("ImageSizeOption", GlobalSettings.GetImageOption);
                     parameters.Add("DPI", GlobalSettings.GetResampleValue);
                 }
-                if (GlobalSettings.GetCharacterStyle != " ") {
-                    parameters.Add("CharacterStyles", GlobalSettings.GetCharacterStyle);
-                }
+                parameters.Add("CharacterStyles", GlobalSettings.GetCharacterStyle);
+
                 if (GlobalSettings.GetPagenumStyle != " ") {
                     parameters.Add("Custom", GlobalSettings.GetPagenumStyle);
                 }
+                // 20220402 : adding footnotes positioning settings
+                // might be "page", "inline", "end" or "after"
+                if (GlobalSettings.FootnotesPosition != " "){
+                    parameters.Add("FootnotesPosition", GlobalSettings.FootnotesPosition);
+                }
+                // value between -5 and 6, with negative value meaning parents level going upwards,
+                // 0 meaning in current level,
+                // positive value meaning absolute level value where to put the notes
+                parameters.Add("FootnotesLevel", GlobalSettings.FootnotesLevel);
+                
 
                 return parameters;
             }
@@ -221,6 +226,10 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 System.IO.Directory.CreateDirectory(ConverterHelper.AppDataSaveAsDAISYDirectory);
 
             document.Save(ConversionParametersXmlPath);
+        }
+
+        public string serialize() {
+            return JsonConvert.SerializeObject(this);
         }
     }
 }

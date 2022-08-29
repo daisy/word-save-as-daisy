@@ -1,7 +1,31 @@
+using System.Collections.Generic;
+
 namespace Daisy.SaveAsDAISY.Conversion
 {
     partial class ConverterSettingsForm
     {
+        readonly Dictionary<string, string> positionsMap = new Dictionary<string, string>() {
+            { "End of pages", "page"},
+            { "Inlined in levels", "inline"}, // TO BE ADDED
+            { "End of levels", "end"}
+
+        };
+
+        readonly Dictionary<string, string> levelsMap = new Dictionary<string, string>() {
+            //{ "Fifth or nearest parent", "-5" },
+            //{ "Fourth or nearest parent", "-4" },
+            //{ "Third or nearest parent", "-3" },
+            //{ "Second or nearest parent", "-2" },
+            //{ "First or nearest parent", "-1" },
+            { "Note reference level", "0" },
+            { "First or nearest level", "1" },
+            { "Second or nearest level", "2" },
+            { "Third or nearest level", "3" },
+            { "Fourth or nearest level", "4" },
+            { "Fifth or nearest level", "5" },
+            { "Sixth or nearest level", "6" }
+        };
+
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -41,9 +65,15 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.grpbox_charstyles = new System.Windows.Forms.GroupBox();
             this.grpbox_ImageSizes = new System.Windows.Forms.GroupBox();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.footnotesLevelSelector = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.footnotesPositionSelector = new System.Windows.Forms.ComboBox();
             this.grpbox_pgnum.SuspendLayout();
             this.grpbox_charstyles.SuspendLayout();
             this.grpbox_ImageSizes.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // radiobtn_custom
@@ -142,12 +172,59 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.button1_Click);
             // 
-            // DAISY_Settings
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.footnotesLevelSelector);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.footnotesPositionSelector);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.TabStop = false;
+            // 
+            // footNotesLevel
+            // 
+            this.footnotesLevelSelector.FormattingEnabled = true;
+            this.footnotesLevelSelector.Items.AddRange(new object[] {
+            resources.GetString("footNotesLevel.Items"),
+            resources.GetString("footNotesLevel.Items1"),
+            resources.GetString("footNotesLevel.Items2"),
+            resources.GetString("footNotesLevel.Items3"),
+            resources.GetString("footNotesLevel.Items4"),
+            resources.GetString("footNotesLevel.Items5"),
+            resources.GetString("footNotesLevel.Items6")});
+            resources.ApplyResources(this.footnotesLevelSelector, "footNotesLevel");
+            this.footnotesLevelSelector.Name = "footNotesLevel";
+            this.footnotesLevelSelector.SelectedIndexChanged += new System.EventHandler(this.footnotesLevelSelector_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // footNotesPosition
+            // 
+            this.footnotesPositionSelector.FormattingEnabled = true;
+            this.footnotesPositionSelector.Items.AddRange(new object[] {
+            resources.GetString("footNotesPosition.Items"),
+            resources.GetString("footNotesPosition.Items1"),
+            resources.GetString("footNotesPosition.Items2")});
+            resources.ApplyResources(this.footnotesPositionSelector, "footNotesPosition");
+            this.footnotesPositionSelector.Name = "footNotesPosition";
+            this.footnotesPositionSelector.SelectedIndexChanged += new System.EventHandler(this.footnotesPositionSelector_SelectedIndexChanged);
+            // 
+            // ConverterSettingsForm
             // 
             this.AcceptButton = this.btn_ok;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.grpbox_ImageSizes);
             this.Controls.Add(this.grpbox_charstyles);
@@ -155,7 +232,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.Controls.Add(this.btn_ok);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
-            this.Name = "DAISY_Settings";
+            this.Name = "ConverterSettingsForm";
             this.ShowIcon = false;
             this.Load += new System.EventHandler(this.Daisysettingsfrm_Load);
             this.grpbox_pgnum.ResumeLayout(false);
@@ -164,6 +241,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.grpbox_charstyles.PerformLayout();
             this.grpbox_ImageSizes.ResumeLayout(false);
             this.grpbox_ImageSizes.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -182,5 +261,10 @@ namespace Daisy.SaveAsDAISY.Conversion
         private System.Windows.Forms.GroupBox grpbox_charstyles;
         private System.Windows.Forms.GroupBox grpbox_ImageSizes;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.ComboBox footnotesPositionSelector;
+        private System.Windows.Forms.ComboBox footnotesLevelSelector;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
     }
 }

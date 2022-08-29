@@ -1,21 +1,8 @@
 using System;
 using System.IO;
 using System.Xml;
-using System.Data;
-using System.Text;
-using System.Xml.Xsl;
 using System.Windows.Forms;
-using System.Drawing;
-using System.Resources;
-using System.Xml.XPath;
-using System.Reflection;
-using System.Collections;
-using System.IO.Packaging;
-using System.ComponentModel;
-using System.IO.Compression;
-using System.Drawing.Imaging;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -23,6 +10,7 @@ namespace Daisy.SaveAsDAISY.Conversion
     {
         XmlDocument SettingsXml = new XmlDocument();
         String xmlfile_path;
+
 
         public ConverterSettingsForm()
         {
@@ -81,6 +69,39 @@ namespace Daisy.SaveAsDAISY.Conversion
                 this.combobox_resample.Text = imgnode.Attributes[1].InnerXml;
                 this.combobox_resample.Enabled = true;
             }
+
+
+            // NP 20220428 : Footnotes settings
+
+            XmlNode footnotesSettings = SettingsXml.SelectSingleNode("//Settings/Footnotes");
+
+            if(footnotesSettings != null)
+            {
+                if(footnotesSettings.Attributes["level"] != null)
+                {
+                    // Found back the key associated to the value
+                    foreach (var levelPair in levelsMap)
+                    {
+                        if (levelPair.Value == footnotesSettings.Attributes["level"].Value)
+                        {
+                            this.footnotesLevelSelector.SelectedItem = levelPair.Key;
+                        }
+                    }
+                }
+                if (footnotesSettings.Attributes["position"] != null)
+                {
+                    // Found back the key associated to the value
+                    foreach (var positionsPair in positionsMap)
+                    {
+                        if (positionsPair.Value == footnotesSettings.Attributes["position"].Value)
+                        {
+                            this.footnotesPositionSelector.SelectedItem = positionsPair.Key;
+                            // Disable level selection for end of pages value
+                            footnotesLevelSelector.Enabled = (positionsPair.Value != "page");
+                        }
+                    }
+                }
+            }
         }
 
         private void btn_ok_Click(object sender, EventArgs e)
@@ -134,6 +155,38 @@ namespace Daisy.SaveAsDAISY.Conversion
 
                 }
 
+                XmlNode FootnotesSettings = SettingsXml.SelectSingleNode("//Settings/Footnotes");
+                if(FootnotesSettings == null)
+                {
+                    FootnotesSettings = SettingsXml.SelectSingleNode("//Settings").AppendChild(
+                        SettingsXml.CreateNode(XmlNodeType.Element, "Footnotes", "")
+                    );
+                }
+                string selectedLevel = (string)footnotesLevelSelector.SelectedItem;
+                string levelValue;
+                if (!levelsMap.TryGetValue(selectedLevel, out levelValue))
+                {
+                    levelValue = "0";
+                }
+                if(FootnotesSettings.Attributes["level"] == null)
+                {
+                    FootnotesSettings.Attributes.Append(SettingsXml.CreateAttribute("level"));
+                }
+                FootnotesSettings.Attributes["level"].Value = levelValue;
+
+                string selectedPosition = (string)footnotesPositionSelector.SelectedItem;
+                string positionValue;
+                if (!positionsMap.TryGetValue(selectedPosition, out positionValue))
+                {
+                    positionValue = "page";
+                }
+                if (FootnotesSettings.Attributes["position"] == null)
+                {
+                    FootnotesSettings.Attributes.Append(SettingsXml.CreateAttribute("position"));
+                }
+                FootnotesSettings.Attributes["position"].Value = positionValue;
+
+
                 SettingsXml.Save(xmlfile_path + "\\DAISY_settingsVer21.xml");
                 this.Close();
             }
@@ -183,6 +236,31 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-       
+        
+
+        private void footnotesLevelSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            /*string selectedItem = (string)footNotesLevel.SelectedItem;
+
+            string value;
+            if(!level.TryGetValue(selectedItem, out value))
+            {
+                value = "0";
+            }*/
+
+        }
+
+        private void footnotesPositionSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            footnotesLevelSelector.Enabled = ((string)footnotesPositionSelector.SelectedItem != "End of pages");
+            
+           /* string selectedItem = (string)footNotesLevel.SelectedItem;
+
+            string value;
+            if (!level.TryGetValue(selectedItem, out value))
+            {
+                value = "page";
+            }*/
+        }
     }
 }

@@ -97,9 +97,15 @@ namespace DaisyInstaller
             string error = "";
             bool keepInstall = true;
             if (wordRoot == null) {
-                warning = "Microsoft Word was not found in your system registry.\r\nDo you want to continue anyway and install the addin for Office " + (installerIsForOffice32Bits ? "32Bits" : "64Bits") + "?" ;
-                warning += "\r\n\r\nPlease check your office \"bit\" version to ensure you have the correct installer (link is in your clipboard):\r\n https://support.microsoft.com/en-us/office/about-office-what-version-of-office-am-i-using-932788b8-a3ce-44bf-bb09-e334518b8b19";
-                Clipboard.SetText("https://support.microsoft.com/en-us/office/about-office-what-version-of-office-am-i-using-932788b8-a3ce-44bf-bb09-e334518b8b19");
+                InstallArchSelector userArchSelector = new InstallArchSelector();
+                if(userArchSelector.ShowDialog() == DialogResult.OK) {
+                    officeIs64bits = (userArchSelector.SelectedArchitecture == 64);
+                } else {
+                    return; // abort installation
+                }
+                //warning = "Microsoft Word was not found in your system registry.\r\nDo you want to continue anyway and install the addin for Office " + (installerIsForOffice32Bits ? "32Bits" : "64Bits") + "?" ;
+                //warning += "\r\n\r\nPlease check your office \"bit\" version to ensure you have the correct installer (link is in your clipboard):\r\n https://support.microsoft.com/en-us/office/about-office-what-version-of-office-am-i-using-932788b8-a3ce-44bf-bb09-e334518b8b19";
+                //Clipboard.SetText("https://support.microsoft.com/en-us/office/about-office-what-version-of-office-am-i-using-932788b8-a3ce-44bf-bb09-e334518b8b19");
             } 
             //else if (!(installerIsForOffice32Bits ^ officeIs64bits)) {
             //    error = "This installer is for Office " + (installerIsForOffice32Bits ? "32Bits" : "64Bits") + " while Office " + (officeIs64bits ? "64Bits" : "32Bits") + " was found on your system.\r\nPlease download the installer for Office " + (officeIs64bits ? "64Bits" : "32Bits") + ".";
@@ -134,19 +140,23 @@ namespace DaisyInstaller
                     // unpackage the msi needed for install
                     string daisySetupPath = Path.Combine(tempPath, "DaisyAddinForWordSetup.msi");
                     string pipelineCabPath = Path.Combine(tempPath, "pipeline.cab");
+                    string pipeline2CabPath = Path.Combine(tempPath, "pipeline2.cab");
                     if (File.Exists(daisySetupPath)) File.Delete(daisySetupPath);
                     if (File.Exists(pipelineCabPath)) File.Delete(pipelineCabPath);
 #if UNIFIED
                     File.WriteAllBytes(daisySetupPath, officeIs64bits ? 
-                        Properties.Resources.DaisyAddinForWordSetup_x64 :
-                        Properties.Resources.DaisyAddinForWordSetup_x86);
-                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
+                        DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x64 :
+                        DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x86);
+                    File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, DaisyInstaller.Properties.Resources.pipeline2_cab);
 #elif X64INSTALLER
-                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x64);
-                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(daisySetupPath, DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x64);
+                    File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, DaisyInstaller.Properties.Resources.pipeline2_cab);
 #else
-                    File.WriteAllBytes(daisySetupPath, Properties.Resources.DaisyAddinForWordSetup_x86);
-                    File.WriteAllBytes(pipelineCabPath, Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(daisySetupPath, DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x86);
+                    File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
+                    File.WriteAllBytes(pipeline2CabPath, DaisyInstaller.Properties.Resources.pipeline2_cab);
 #endif
 
                     // launch the msi

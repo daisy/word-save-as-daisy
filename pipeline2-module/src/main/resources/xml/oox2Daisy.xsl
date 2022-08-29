@@ -16,70 +16,70 @@
                 xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v  vt dcmitype d">
-	<!--Imports all the XSLT-->
-	<xsl:import href="Common.xsl"/>
-  <!--Implements Table of Contents-->
-  <xsl:import href ="TOC.xsl"/>
-	<!--Implements Table and Frontmatter-->
-	<xsl:import href ="Common2.xsl"/>
-	<!--Implements Lists and levels-->
-	<xsl:import href ="Common3.xsl"/>
-	<!--Implements Maths-->
-	<xsl:import href ="OOML2MML.xsl"/>
 
 	<!-- Original location of input .docx file (URI) -->
-	<xsl:param name="OriginalInputFile" as="xs:string"/>
-	<!-- Input .docx file (URI) (may or may not be the same as OriginalDocx; this one will be read) -->
-	<xsl:param name="InputFile" as="xs:string"/>
+	<xsl:param name="OriginalInputFile" as="xs:string" />
+	<!-- Input file (URI) (may or may not be the same as OriginalDocx; this one will be read) -->
+	<xsl:param name="InputFile" as="xs:string" />
 	<!-- Destination folder of .xml file (URI) -->
-	<xsl:param name="OutputDir" as="xs:string"/>
+	<xsl:param name="OutputDir" as="xs:string" />
 	<!-- Final destination folder (URI) -->
-	<xsl:param name="FinalOutputDir" as="xs:string"/>
+	<xsl:param name="FinalOutputDir" as="xs:string" />
 
 	<!--Implements Image,imagegroup,Note and Notereference-->
 	<!--Declaring Global paramaters-->
-	<xsl:param name="Title" as="xs:string"/>
-	<!--Holds Documents Title value-->
-	<xsl:param name="Creator" as="xs:string"/>
-	<!--Holds Documents creator value-->
-	<xsl:param name="Publisher" as="xs:string"/>
-	<!--Holds Documents Publisher value-->
-	<xsl:param name="UID" as="xs:string"/>
-	<!--Holds Document unique id value-->
-	<xsl:param name="Subject" as="xs:string"/>
-	<!--Holds Documents Subject value-->
-	<xsl:param name="prmTRACK" as="xs:string"/>
-	<xsl:param name="Version" as="xs:string"/>
-	<!--Holds Documents version value-->
-	<xsl:param name="Custom" as="xs:string"/> <!-- Automatic|Custom -->
-	<xsl:param name="MasterSub" as="xs:boolean"/>
-	<xsl:param name="ImageSizeOption" as="xs:string"/> <!-- resize|resample|original -->
-	<xsl:param name="DPI" as="xs:float"/>
-	<xsl:param name="CharacterStyles" as="xs:boolean"/>
-	<xsl:param name="MathML" as="map(xs:string,array(xs:string))"/>
+	<xsl:param name="Title" as="xs:string" /> <!--Holds Documents Title value-->
+	<xsl:param name="Creator" as="xs:string" /> <!--Holds Documents creator value-->
+	<xsl:param name="Publisher" as="xs:string" /> <!--Holds Documents Publisher value-->
+	<xsl:param name="UID" as="xs:string" /> <!--Holds Document unique id value-->
+	<xsl:param name="Subject" as="xs:string" /> <!--Holds Documents Subject value-->
+	<xsl:param name="prmTRACK" as="xs:string" />
+	<xsl:param name="Version" as="xs:string" /> <!--Holds Documents version value-->
+	<xsl:param name="Custom" as="xs:string" /> <!-- Automatic|Custom -->
+	<xsl:param name="MasterSub" as="xs:boolean" />
+	<xsl:param name="ImageSizeOption" as="xs:string" /> <!-- resize|resample|original -->
+	<xsl:param name="DPI" as="xs:float" />
+	<xsl:param name="CharacterStyles" as="xs:boolean" /> <!-- if true, also convert custom character styles to span with style attribute -->
+	<xsl:param name="MathML" as="map(xs:string,array(xs:string))" />
 
-	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)"/>
+    <xsl:param name="FootnotesPosition" as="xs:string" select="'end'" /> <!-- page|end| -->
+    <xsl:param name="FootnotesLevel" as="xs:integer" select="0" />
+
+	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)" />
+	<!-- Retrieve xml documents from the word file -->
+
 	<xsl:variable name="documentXml"
 	              as="document-node(element(w:document))"
-	              select="document(concat('jar:',$InputFile,'!/word/document.xml'))"/>
+				  select="document(concat('jar:',$InputFile,'!/word/document.xml'))" />
+	<xsl:variable name="docPropsCoreXml"
+				  as="document-node(element(cp:coreProperties))"
+				  select="document(concat('jar:',$InputFile,'!/docProps/core.xml'))" />
 	<xsl:variable name="stylesXml"
-	              as="document-node(element(w:styles))"
-	              select="document(concat('jar:',$InputFile,'!/word/styles.xml'))"/>
+	              as="document-node(element(w:styles))" 
+				  select="document(concat('jar:',$InputFile,'!/word/styles.xml'))" />
 	<xsl:variable name="numberingXml"
 	              as="document-node(element(w:numbering))?"
-	              select="document(concat('jar:',$InputFile,'!/word/numbering.xml'))"/>
+	              select="document(concat('jar:',$InputFile,'!/word/numbering.xml'))" />
 	<xsl:variable name="footnotesXml"
 	              as="document-node(element(w:footnotes))?"
-	              select="document(concat('jar:',$InputFile,'!/word/footnotes.xml'))"/>
+	              select="document(concat('jar:',$InputFile,'!/word/footnotes.xml'))" />
 	<xsl:variable name="endnotesXml"
 	              as="document-node(element(w:endnotes))?"
-	              select="document(concat('jar:',$InputFile,'!/word/endnotes.xml'))"/>
-	<xsl:variable name="docPropsCoreXml"
-	              as="document-node(element(cp:coreProperties))"
-	              select="document(concat('jar:',$InputFile,'!/docProps/core.xml'))"/>
+	              select="document(concat('jar:',$InputFile,'!/word/endnotes.xml'))" />
 
+	<!--Imports all the XSLT-->
+	<xsl:import href="Common.xsl" />
+	<!--Implements Table of Contents-->
+	<xsl:import href ="TOC.xsl" />
+	<!--Implements Table and Frontmatter-->
+	<xsl:import href ="Common2.xsl" />
+	<!--Implements Lists and levels-->
+	<xsl:import href ="Common3.xsl" />
+
+	<!--Implements Maths-->
+	<xsl:import href ="OOML2MML.xsl" />
 	<xsl:variable name="sOperators" as="xs:string"
-      select="concat(
+				  select="concat(
 					'&#x0021;&#x0022;&#x0028;&#x0029;&#x002B;&#x002C;&#x002D;&#x002F;&#x2AFE;&#x003A;&#x003B;&#x003C;',
 					'&#x003D;&#x003E;&#x003F;&#x005B;&#x005C;&#x005D;&#x007B;&#x007C;&#x007D;&#x00A1;&#x00AC;&#x00B1;',
 					'&#x00B7;&#x00BF;&#x00D7;&#x00F7;&#x2000;&#x2001;&#x2002;&#x2003;&#x2004;&#x2005;&#x2006;&#x2009;',
@@ -167,7 +167,7 @@
 		</xsl:call-template>
 	</xsl:variable>
 	<!-- Every single unicode character that is recognized by OMML as a number -->
-	<xsl:variable name="sNumbers" as="xs:string" select="'0123456789'"/>
+	<xsl:variable name="sNumbers" as="xs:string" select="'0123456789'" />
 	<!-- A string of '0's repeated exactly as many times as the list of numbers above -->
 	<xsl:variable name="sZeros" as="xs:string">
 		<xsl:call-template name="SRepeatChar">
@@ -175,10 +175,12 @@
 			<xsl:with-param name="ch" select="'0'" />
 		</xsl:call-template>
 	</xsl:variable>
+
+
 	<!--Extending the DTD to support MathML-->
 	<xsl:template name="main">
 		<xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet href="dtbookbasic.css" type="text/css"?&gt;</xsl:text>
-		<!--<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'</xsl:text>
+		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'</xsl:text>
 		<xsl:text disable-output-escaping="yes">[&lt;!ENTITY % MATHML.prefixed "INCLUDE" &gt;
       &lt;!ENTITY % MATHML.prefix "mml"&gt;
       &lt;!ENTITY % Schema.prefix "sch"&gt;
@@ -194,83 +196,82 @@
           xmlns:dtbook   CDATA       #FIXED
                   'http://www.daisy.org/z3986/2005/dtbook/'
           dtbook:smilref CDATA       #IMPLIED"&gt;
-      &lt;!ENTITY % mathML2 SYSTEM 'mathml2.dtd'&gt;
+      &lt;!ENTITY % mathML2 PUBLIC '-//W3C//DTD MathML 2.0//EN' 'http://www.w3.org/Math/DTD/mathml2/mathml2.dtd'&gt;
       %mathML2;
        &lt;!ENTITY % externalFlow "| mml:math"&gt;
        &lt;!ENTITY % externalNamespaces "xmlns:mml CDATA #FIXED 
                   'http://www.w3.org/1998/Math/MathML'" &gt;
 ] &gt;
-</xsl:text>-->
+</xsl:text>
 		<xsl:text>&#10;</xsl:text>
 		<!--This Xslt is Adding meta elements in Dtbook head element
     It is also calling templates Frontmatter, Bodymatter and Rearmatter-->
 		<!--Adding dtbook element-->
-		<dtbook version="2005-3"
-	  xmlns:mml="http://www.w3.org/1998/Math/MathML">
-			<xsl:variable name="doclang" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
-			<xsl:variable name="doclangbidi" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
-			<xsl:variable name="doclangeastAsia" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
+		<dtbook version="2005-3" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+			<xsl:variable name="doclang" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val" />
+			<xsl:variable name="doclangbidi" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi" />
+			<xsl:variable name="doclangeastAsia" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia" />
 			<xsl:attribute name="xml:lang">
-				<xsl:value-of select="$doclang"/>
+				<xsl:value-of select="$doclang" />
 			</xsl:attribute>
-			<xsl:variable name="documentDate" as="xs:string" select="$docPropsCoreXml//cp:coreProperties/dcterms:modified"/>
-			<xsl:variable name="documentSubject" as="xs:string" select="d:DocPropSubject($myObj)"/>
-			<xsl:variable name="documentDescription" as="xs:string" select="d:DocPropDescription($myObj)"/>
+			<xsl:variable name="documentDate" as="xs:string" select="$docPropsCoreXml//cp:coreProperties/dcterms:modified" />
+			<xsl:variable name="documentSubject" as="xs:string" select="d:DocPropSubject($myObj)" />
+			<xsl:variable name="documentDescription" as="xs:string" select="d:DocPropDescription($myObj)" />
 			<!--Adding head element-->
 			<head>
 				<!--Adding head element-->
 				<!--Auto variable holds autogenerated UID value-->
-				<xsl:variable name="Auto" as="xs:string" select="concat('AUTO-UID-',d:GenerateId())"/>
+				<xsl:variable name="Auto" as="xs:string" select="concat('AUTO-UID-',d:GenerateId())" />
 				<!--Choose block for checking whether user has entered the UID value or not-->
 				<xsl:choose>
 					<xsl:when test="string-length($UID) = 0">
-						<meta name="dtb:uid" content="{$Auto}"/>
+						<meta name="dtb:uid" content="{$Auto}" />
 					</xsl:when>
 					<xsl:otherwise>
-						<meta name="dtb:uid" content="{$UID}"/>
+						<meta name="dtb:uid" content="{$UID}" />
 					</xsl:otherwise>
 				</xsl:choose>
-				<meta name="dt:version" content="2.1.1.0"/>
+				<meta name="dt:version" content="2.1.1.0" />
 				<!--Choose block for checking whether user has entered the Title of the document or not-->
-				<meta name="dc:Title" content="{$Title}"/>
+				<meta name="dc:Title" content="{$Title}" />
 				<!--Choose block for checking whether user has entered the Creator of the document or not-->
 				<xsl:if test="string-length($Creator)!= 0">
-					<meta name="dc:Creator" content="{$Creator}"/>
+					<meta name="dc:Creator" content="{$Creator}" />
 				</xsl:if>
 				<!--Taking the value of dc:date from core.xml file-->
 				<xsl:if test="string-length($documentDate)!=0">
-					<meta name="dc:Date" content="{substring-before($documentDate,'T')}"/>
+					<meta name="dc:Date" content="{substring-before($documentDate,'T')}" />
 				</xsl:if>
 				<!--Choose block for checking whether user has entered the Publisher of the document or not-->
 				<xsl:if test="string-length($Publisher)!=0">
-					<meta name="dc:Publisher" content="{$Publisher}"/>
+					<meta name="dc:Publisher" content="{$Publisher}" />
 				</xsl:if>
 				<!--Taking the value of dc:subject from core.xml file-->
 				<xsl:choose>
 					<xsl:when test="string-length($Subject)!=0">
-						<meta name="dc:Subject" content="{$Subject}"/>
+						<meta name="dc:Subject" content="{$Subject}" />
 					</xsl:when>
 					<xsl:otherwise>
 						<xsl:if test="string-length($documentSubject)!=0">
-							<meta name="dc:Subject" content="{$documentSubject}"/>
+							<meta name="dc:Subject" content="{$documentSubject}" />
 						</xsl:if>
 					</xsl:otherwise>
 				</xsl:choose>
 				<!--Taking the value of dc:description from core.xml file-->
 				<xsl:if test="string-length($documentDescription)!=0">
-					<meta name="dc:Description" content="{$documentDescription}"/>
+					<meta name="dc:Description" content="{$documentDescription}" />
 				</xsl:if>
 				<!--Choose block for checking whether user has entered the UID value or not for implementing dc:identifier meta tag-->
 				<xsl:choose>
 					<xsl:when test="string-length($UID) = 0">
-						<meta name="dc:Identifier" content="{$Auto}"/>
+						<meta name="dc:Identifier" content="{$Auto}" />
 					</xsl:when>
 					<xsl:otherwise>
-						<meta name="dc:Identifier" content="{$UID}"/>
+						<meta name="dc:Identifier" content="{$UID}" />
 					</xsl:otherwise>
 				</xsl:choose>
-				<meta name="dc:Language" content="{$doclang}"/>
-				<xsl:sequence select="d:sink(d:AddLanguage($myObj,$doclang))"/> <!-- empty -->
+				<meta name="dc:Language" content="{$doclang}" />
+				<xsl:sequence select="d:sink(d:AddLanguage($myObj,$doclang))" /> <!-- empty -->
 				<xsl:for-each select="$documentXml//w:body/w:p/w:r/w:rPr">
 					<xsl:if test="w:lang">
 						<xsl:choose>
@@ -278,12 +279,12 @@
 								<xsl:choose>
 									<xsl:when test="w:lang/@w:bidi">
 										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:bidi)=1">
-											<meta name="dc:Language" content="{w:lang/@w:bidi}"/>
+											<meta name="dc:Language" content="{w:lang/@w:bidi}" />
 										</xsl:if>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:if test="d:AddLanguage($myObj,$doclangbidi)=1">
-											<meta name="dc:Language" content="{$doclangbidi}"/>
+											<meta name="dc:Language" content="{$doclangbidi}" />
 										</xsl:if>
 									</xsl:otherwise>
 								</xsl:choose>
@@ -292,12 +293,12 @@
 								<xsl:choose>
 									<xsl:when test="w:lang/@w:eastAsia">
 										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:eastAsia)=1">
-											<meta name="dc:Language" content="{w:lang/@w:eastAsia}"/>
+											<meta name="dc:Language" content="{w:lang/@w:eastAsia}" />
 										</xsl:if>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:if test="d:AddLanguage($myObj,$doclangeastAsia)=1">
-											<meta name="dc:Language" content="{$doclangeastAsia}"/>
+											<meta name="dc:Language" content="{$doclangeastAsia}" />
 										</xsl:if>
 									</xsl:otherwise>
 								</xsl:choose>
@@ -306,22 +307,22 @@
 								<xsl:choose>
 									<xsl:when test="w:lang/@w:val">
 										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:val)=1">
-											<meta name="dc:Language" content="{w:lang/@w:val}"/>
+											<meta name="dc:Language" content="{w:lang/@w:val}" />
 										</xsl:if>
 									</xsl:when>
 									<xsl:when test="w:lang/@w:eastAsia">
 										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:eastAsia)=1">
-											<meta name="dc:Language" content="{w:lang/@w:eastAsia}"/>
+											<meta name="dc:Language" content="{w:lang/@w:eastAsia}" />
 										</xsl:if>
 									</xsl:when>
 									<xsl:when test="w:lang/@w:bidi">
 										<xsl:if test="d:AddLanguage($myObj,w:lang/@w:bidi)=1">
-											<meta name="dc:Language" content="{w:lang/@w:bidi}"/>
+											<meta name="dc:Language" content="{w:lang/@w:bidi}" />
 										</xsl:if>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:if test="d:AddLanguage($myObj,$doclang)=1">
-											<meta name="dc:Language" content="{$doclang}"/>
+											<meta name="dc:Language" content="{$doclang}" />
 										</xsl:if>
 									</xsl:otherwise>
 								</xsl:choose>
@@ -339,67 +340,72 @@
 					</xsl:call-template>
 				</xsl:if>
 				
-						<!--Calling Frontmatter template and passing parameters Title and Creator
-            for doctitle and docpublisher-->
-            <frontmatter>
-						<xsl:call-template name="FrontMatter">
-							<xsl:with-param name="Title" select ="$Title"/>
-							<xsl:with-param name="Creator" select ="$Creator"/>
-              <xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-              <xsl:with-param name="version" select ="$Version"/>
-              <xsl:with-param name="custom" select="$Custom"/>
-              <xsl:with-param name="masterSub" select="$MasterSub"/>
-              <xsl:with-param name="sOperators" select="$sOperators"/>
-              <xsl:with-param name="sMinuses" select="$sMinuses"/>
-              <xsl:with-param name="sNumbers" select="$sNumbers"/>
-              <xsl:with-param name="sZeros" select="$sZeros"/>
-              <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
-              <xsl:with-param name="dpi" select="$DPI"/>
-              <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-						</xsl:call-template>
-            </frontmatter>
+				
+                    <!-- Calling Frontmatter template and passing parameters Title and Creator for doctitle and docpublisher-->
+                <xsl:call-template name="FrontMatter">
+                    <xsl:with-param name="Title" select ="$Title" />
+                    <xsl:with-param name="Creator" select ="$Creator" />
+                    <xsl:with-param name="prmTrack" select ="$prmTRACK" />
+                    <xsl:with-param name="version" select ="$Version" />
+                    <xsl:with-param name="custom" select="$Custom" />
+                    <xsl:with-param name="masterSub" select="$MasterSub" />
+                    <xsl:with-param name="sOperators" select="$sOperators" />
+                    <xsl:with-param name="sMinuses" select="$sMinuses" />
+                    <xsl:with-param name="sNumbers" select="$sNumbers" />
+                    <xsl:with-param name="sZeros" select="$sZeros" />
+                    <xsl:with-param name="imgOption" select="$ImageSizeOption" />
+                    <xsl:with-param name="dpi" select="$DPI" />
+                    <xsl:with-param name="charStyles" select="$CharacterStyles" />
+                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel" />
+                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition" />
+                </xsl:call-template>
 
-						<!--Calling Bodymatter template-->
-						<bodymatter id="bodymatter_0001">
-							<xsl:call-template name ="BodyMatter">
-								<xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-								<xsl:with-param name="version" select ="$Version"/>
-								<xsl:with-param name="custom" select="$Custom"/>
-								<xsl:with-param name="masterSub" select="$MasterSub"/>
-								<xsl:with-param name="sOperators" select="$sOperators"/>
-								<xsl:with-param name="sMinuses" select="$sMinuses"/>
-								<xsl:with-param name="sNumbers" select="$sNumbers"/>
-								<xsl:with-param name="sZeros" select="$sZeros"/>
-								<xsl:with-param name="imgOption" select="$ImageSizeOption"/>
-								<xsl:with-param name="dpi" select="$DPI"/>
-								<xsl:with-param name="charStyles" select="$CharacterStyles"/>
-							</xsl:call-template>
-						</bodymatter>
+                <!--Calling Bodymatter template-->
+                <xsl:call-template name="BodyMatter">
+                    <xsl:with-param name="prmTrack" select ="$prmTRACK" />
+                    <xsl:with-param name="version" select ="$Version" />
+                    <xsl:with-param name="custom" select="$Custom" />
+                    <xsl:with-param name="masterSub" select="$MasterSub" />
+                    <xsl:with-param name="sOperators" select="$sOperators" />
+                    <xsl:with-param name="sMinuses" select="$sMinuses" />
+                    <xsl:with-param name="sNumbers" select="$sNumbers" />
+                    <xsl:with-param name="sZeros" select="$sZeros" />
+                    <xsl:with-param name="imgOption" select="$ImageSizeOption" />
+                    <xsl:with-param name="dpi" select="$DPI" />
+                    <xsl:with-param name="charStyles" select="$CharacterStyles" />
+                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel" />
+                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition" />
+                </xsl:call-template>
 
-						<!--Calling Rearmatter template-->
-						<rearmatter>
-              <xsl:call-template name ="RearMatter">
-                <xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-                <xsl:with-param name="version" select ="$Version"/>
-                <xsl:with-param name="custom" select="$Custom"/>
-                <xsl:with-param name="masterSub" select="$MasterSub"/>
-                <xsl:with-param name="sOperators" select="$sOperators"/>
-                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                <xsl:with-param name="sZeros" select="$sZeros"/>
-                <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
-                <xsl:with-param name="dpi" select="$DPI"/>
-                <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-              </xsl:call-template>
-						</rearmatter>
-						
-					<!--</xsl:otherwise>
-				</xsl:choose>-->
-			</book>
-		</dtbook>
-	</xsl:template>
+                <!--Calling Rearmatter template-->
+                <!--NP 20220427 - launch only if a Rearmatter daisy style is found to avoid empty rearmatter -->
+                <xsl:if test="(
+                        count($documentXml//w:document/w:body/w:p/w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
+                        or count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
+                        or count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[@w:val='EndnoteReference']) &gt; 0
+                        or count($documentXml//w:document/w:body/w:p/w:r/w:endnoteReference)  &gt; 0
+                )">
+                        <xsl:call-template name="RearMatter">
+                            <xsl:with-param name="prmTrack" select ="$prmTRACK" />
+                            <xsl:with-param name="version" select ="$Version" />
+                            <xsl:with-param name="custom" select="$Custom" />
+                            <xsl:with-param name="masterSub" select="$MasterSub" />
+                            <xsl:with-param name="sOperators" select="$sOperators" />
+                            <xsl:with-param name="sMinuses" select="$sMinuses" />
+                            <xsl:with-param name="sNumbers" select="$sNumbers" />
+                            <xsl:with-param name="sZeros" select="$sZeros" />
+                            <xsl:with-param name="imgOption" select="$ImageSizeOption" />
+                            <xsl:with-param name="dpi" select="$DPI" />
+                            <xsl:with-param name="charStyles" select="$CharacterStyles" />
+                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel" />
+                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition" />
+                        </xsl:call-template>
+                </xsl:if>
+            </book>
+        </dtbook>
+    </xsl:template>
 
-	
+    
 
 
 

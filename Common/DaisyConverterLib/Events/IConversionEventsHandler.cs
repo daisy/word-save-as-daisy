@@ -13,9 +13,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
     public interface IConversionEventsHandler {
 
         void OnStop(string message);
-        bool AskForTranslatingSubdocuments();
-
-        bool AskForTrackConfirmation();
+        
         void OnError(string errorMessage);
         void OnStop(string message, string title);
 
@@ -27,6 +25,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         #region Preprocess events
         void onDocumentPreprocessingStart(string inputPath);
 
+        bool AskForTranslatingSubdocuments();
+
+        bool AskForTrackConfirmation();
+
         void onPreprocessingCancel();
 
         void onPreprocessingError(string inputPath, string errors);
@@ -35,6 +37,23 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         #endregion Preprocess events
 
         #region Conversion events from word to dtbook XML
+
+        /// <summary>
+        /// Raised when a named validation error has occured. <br/>
+        /// This should display a warning to the user telling what was wrong with the file naming.
+        /// This method should return Yes to let the user manually rename the file, No to go with the automatic process, or Cancel to abort the conversion
+        /// </summary>
+        /// <param name="authorizedNamePattern"></param>
+        /// <returns>should return either DialogResult.Yes, DialogResult.No or DialogResult.Cancel </returns>
+        DialogResult documentMustBeRenamed(FilenameValidator authorizedNamePattern);
+
+        /// <summary>
+        /// raised whem the user has choosen to rename the document manually
+        /// </summary>
+        /// <param name="preprocessedObject"> the current word document to be renamed</param>
+        /// <param name="wordInstance">the word application that could be used for dialogs interaction</param>
+        /// <returns>true if the user has renamed the document, false if it has aborted</returns>
+        bool userIsRenamingDocument(ref object preprocessedObject);
 
         /// <summary>
         /// Method called when the conversion of a list of document starts
@@ -66,8 +85,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// <param name="conversion"></param>
         void onDocumentConversionSuccess(DocumentParameters document, ConversionParameters conversion);
 
-
-        
 
         void onConversionCanceled();
 
@@ -125,7 +142,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         bool IsContinueDTBookGenerationOnLostElements();
 
 
-
         void OnMasterSubValidationError(string error);
 
         #endregion Conversion events from word to dtbook XML
@@ -142,6 +158,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// <param name="conversion"></param>
         void onPostProcessingSuccess(ConversionParameters conversion);
         #endregion Post processing events
+
 
     }
 

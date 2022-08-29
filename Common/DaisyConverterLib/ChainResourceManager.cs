@@ -22,23 +22,28 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// <summary>
 		/// Function which return value of a particular key
 		/// </summary>
-		/// <param name="key"></param>
+		/// <param name="name"></param>
 		/// <returns></returns>
-		public override string GetString(string key)
+		public override string GetString(string name)
 		{
 			for (int i = this.managers.Count - 1; i >= 0; i--)
 			{
 				System.Resources.ResourceManager manager = (System.Resources.ResourceManager)this.managers[i];
 				if (manager != null)
 				{
-					string value = manager.GetString(key);
-					if (value != null && value.Length > 0)
-					{
-						return value;
-					}
+                    try {
+						string value = manager.GetString(name);
+						if (value != null && value.Length > 0) {
+							return value;
+						}
+					} catch (System.Exception) {
+						// value not found in this manager
+                    }
+					
 				}
 			}
-			return null;
+			// string not found, avoid raising hidden exception by returning the key
+			return name;
 		}
 	}
 }

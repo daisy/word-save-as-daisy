@@ -54,7 +54,7 @@ namespace Daisy.SaveAsDAISY
             // Add a default resource managers (for common labels)
             this.resourceManager.Add(
                 new System.Resources.ResourceManager(
-                    "DaisyAddinLib.resources.Labels",
+                    "Daisy.SaveAsDAISY.Forms.Properties.Labels",
                     Assembly.GetExecutingAssembly()
                 )
             );
@@ -113,6 +113,8 @@ namespace Daisy.SaveAsDAISY
             }
             System.Drawing.Bitmap image = new System.Drawing.Bitmap(streamIcon);
             return AddinResources.ConvertImage.Convert(image);
+            //return image;
+
         }
 
         /// <summary>

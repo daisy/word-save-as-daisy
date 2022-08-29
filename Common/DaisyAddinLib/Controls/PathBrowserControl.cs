@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
@@ -154,8 +153,8 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
 
 		private void UpdatePathTextboxFromSaveFileDialog()
 		{
-			if (!string.IsNullOrEmpty(m_PathData.FileExtenssion))
-				saveFileDialog1.Filter = m_PathData.FileExtenssion + "|*" + m_PathData.FileExtenssion;
+			if (!string.IsNullOrEmpty(m_PathData.FileExtension))
+				saveFileDialog1.Filter = m_PathData.FileExtension + "|*" + m_PathData.FileExtension;
 
 			if (saveFileDialog1.ShowDialog() == DialogResult.OK)
 			{

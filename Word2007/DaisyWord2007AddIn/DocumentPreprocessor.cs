@@ -47,13 +47,17 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
             object tmpFileName = document.CopyPath;
+
             object originalPath = document.InputPath;
             // Save a copy to start working on
+            if (File.Exists((string)tmpFileName)) {
+                File.Delete((string)tmpFileName);
+            }
             currentDoc.SaveAs(ref tmpFileName, ref format, ref missing, ref missing, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
             currentDoc.Close();
-            
-            // only reopen the document if it is the main document
-            if(document.ResourceId == null) currentInstance.Documents.Open(ref originalPath);
+
+            // only reopen the document if it is the main document (and if we want it reopened)
+            if (document.ResourceId == null && document.ReopenInputDocument) currentInstance.Documents.Open(ref originalPath);
 
             // Open (or retrieve) the temp file if opened in word and use it for preprocessing (document is not visible in word)
             preprocessedObject = currentInstance.Documents.Open(ref tmpFileName, ref missing, ref notReadOnly, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref notVisible, ref missing, ref missing, ref missing, ref missing);
@@ -77,7 +81,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
 
             foreach (MSword.Range tmprng in currentDoc.StoryRanges) {
-                ArrayList listmathML = new ArrayList();
+                List<string> listmathML = new List<string>();
                 rng = tmprng;
                 storyName = rng.StoryType.ToString();
                 while (rng != null) {
@@ -159,6 +163,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus ProcessShapes(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            List<string> objectShapes = new List<string>();
+            List<string> imageIds = new List<string>();
+            List<string> inlineShapes = new List<string>();
+            List<string> inlineShapeIds = new List<string>();
             try {
                 Exception threadEx = null;
                 Thread staThread = new Thread(
@@ -190,9 +198,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                         image.Save(ms, ImageFormat.Png);
                                         Ret = ms.ToArray();
                                         FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
+                                        
                                         fs.Write(Ret, 0, Ret.Length);
                                         fs.Flush();
                                         fs.Dispose();
+                                        objectShapes.Add(pathShape);
+                                        imageIds.Add(item.ID.ToString());
                                     } catch (ClipboardDataException cde) {
                                         warnings.Add("- Shape " + item.ID.ToString() + ": " + cde.Message);
                                     } catch (Exception e) {
@@ -208,7 +219,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                 while (rng != null) {
                                     foreach (MSword.InlineShape item in rng.InlineShapes) {
                                         if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
-                                            string str = "Shapes_" + ConverterHelper.GenerateId().ToString();
+                                            string shapeId = ConverterHelper.GenerateId().ToString();
+                                            string str = "Shapes_" + shapeId;
+
                                             string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png");
                                             object range = item.Range;
                                             item.Range.Bookmarks.Add(str, ref range);
@@ -223,6 +236,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                                 fs.Write(Ret, 0, Ret.Length);
                                                 fs.Flush();
                                                 fs.Dispose();
+                                                inlineShapes.Add(shapeOutputPath);
+                                                inlineShapeIds.Add(shapeId);
                                             } catch (ClipboardDataException cde) {
                                                 warnings.Add("- InlineShape with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
                                             } catch (Exception e) {
@@ -253,6 +268,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 if (threadEx != null) {
                     throw threadEx;
                 }
+                document.ObjectShapes = objectShapes;
+                document.InlineShapes = inlineShapes;
+                document.ImageIds = imageIds;
+                document.InlineIds = inlineShapeIds;
             } catch (Exception e) {
                 eventsHandler?.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
                     "\r\n- " + e.Message +
@@ -275,26 +294,16 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             do {
                 bool docIsRenamed = false;
                 if (!authorizedNamePattern.AuthorisationPattern.IsMatch(currentDoc.Name)) { // check only name (i assume it may still lead to problem if path has commas)
-                    // TODO : replace the DialogResult by san IConversionEventsHandler action result
-                    string BoxText = authorizedNamePattern.UnauthorizedNameMessage +
-                        "\r\n" +
-                        "\r\nDo you want to save this document under a new name ?" +
-                        "\r\nThe document with the original name will not be deleted." +
-                        "\r\n" +
-                        "\r\n(Click Yes to save the document under a new name and use the new one, " +
-                            "No to continue with the current document, " +
-                            "or Cancel to abort the conversion)";
-                    DialogResult userAnswer = MessageBox.Show(BoxText, "Unauthorized characters in the document filename", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Warning);
-                    if (userAnswer == DialogResult.Yes) {
-                        MSword.Dialog dlg = WordInstance.Dialogs[MSword.WdWordDialog.wdDialogFileSaveAs];
-                        int saveResult = dlg.Show(ref missing);
-                        if (saveResult == -1) { // ok pressed, see https://docs.microsoft.com/fr-fr/dotnet/api/microsoft.office.interop.word.dialog.show?view=word-pia#Microsoft_Office_Interop_Word_Dialog_Show_System_Object__
-                            docIsRenamed = true;
-                        } else return ConversionStatus.Canceled;// PreprocessingData.Canceled("User canceled a renaming request for an invalid docx filename");
-                    } else if (userAnswer == DialogResult.Cancel) {
+
+                    DialogResult? userAnswer = eventsHandler?.documentMustBeRenamed(authorizedNamePattern);
+                    if (userAnswer.HasValue && userAnswer.Value == DialogResult.Yes) {
+                        docIsRenamed = eventsHandler.userIsRenamingDocument(ref preprocessedObject);
+                        if(!docIsRenamed) return ConversionStatus.Canceled;
+                    } else if (userAnswer.HasValue && userAnswer.Value == DialogResult.Cancel) {
                         return ConversionStatus.Canceled;// PreprocessingData.Canceled("User canceled a renaming request for an invalid docx filename");
                     }
-                    // else a sanitize path in the DaisyAddinLib will replace commas by underscore.
+                    // else the sanitize path in the DaisyAddinLib will replace commas by underscore.
+                    // this could be cleaner and done here instead of later to centralize file name related operations
                     // Other illegal characters regarding the conversion to DAISY book are replaced by underscore by the pipeline itself
                     // While image names seems to be sanitized in other process
                 }
@@ -560,7 +569,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         static private void storeMathMLEquation(
             ref Microsoft.Office.Interop.Word.InlineShape shape,
             int indexForVerb,
-            ArrayList listmathML
+            List<string> listmathML
         ) {
             IConnectDataObject mDataObject;
             if (shape != null) {
@@ -653,7 +662,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="listmathML">String array to store the mathml in</param>
         static private void WriteOutMathMLFromStgMedium(
             ref ConnectSTGMEDIUM oStgMedium,
-            ArrayList listmathML
+            List<string> listmathML
         ) {
             IntPtr ptr;
             byte[] rawArray = null;

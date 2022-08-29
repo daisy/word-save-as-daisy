@@ -2,13 +2,14 @@
 title: Download SaveAsDAISY Word Addin
 layout: my-default
 ---
-SaveAsDAISY is available for Windows only. We provide an installer for Microsoft Office 64-bit edition and an installer that detects the installed version of Office. Choose the latter if you don't know whether your Office is the 32 or 64-bit edition.
+SaveAsDAISY is available for Windows only. 
+We provide an unified installer that detects standard installations of Microsoft Office.
+If Office is not found by the installer (like preinstalled or windows store versions of MS Office), it will request which architecture (32bits or 64bits) you want the addin to be installed for.
 
 
-## Latest version: 2.6.1 beta - Minor update 2 (released on January 27, 2020)
+## Latest version: 2.7 beta (released on January, 2022)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.3-beta/SaveAsDAISYInstaller.exe)
-- [Download 64-bit installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.6.1.3-beta/SaveAsDAISYInstaller_Office64bits.exe)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7-beta/SaveAsDAISYInstaller.exe)
 
 ## Report issues
 
@@ -29,15 +30,33 @@ This issue is being investigated, but the following action has been tested and r
 
 The add-in should start repairing himself before reopening the word document.
 
-### Onedrive-hosted document raises an error
-
-This issue comes from onedrive document being Web hosted file URL and not pure system file.
-
-A fix for this issue is being worked on and should be available in the next release.
-
-In the meantime, it is recommended to save the document under a standard system location (that is not managed by onedrive) and to launch the conversion from the new copy. 
-
 # Changelog
+
+# 2.7 beta (January 2022)
+
+This major release starts the transition to the DAISY pipeline 2 as conversion engine.
+We now include the export to Epub3 (from a single docx file) as experimental functionnality under the SaveAsDAISY menu.
+
+Fixes and updates :
+- The installers are now completely unified to ease releases management : 
+User with "hidden" office installation (like office installed from the Microsoft Store) are now prompted with a version selector on launch, including a link
+to help them find the bit version of their office if needed.
+- Progression of the conversion is monitored through a progress bar and conversion messages to better visualize the state of the conversion
+- Fixed a mathml handling issue
+- Updated the pipeline 1 distribution to use 32bit java instead of 64bit :
+Users reported that voices provider are mainly distributing 32bits SAPI voices, thus requiring 32bit java for their launch.
+- Conversion controls are now disabled in protected view (that limits word actions including plugin ones on documents)
+
+# 2.6.1 beta - update 3 (September 2021)
+
+Minor behaviour updates including :
+- bugfix for [#6](https://github.com/daisy/word-save-as-daisy/issues/6)
+- bugfix for an issue regarding a PushLevel error message
+- Conversion progress bars are replaced by a Message dialog reporting more precisely the process status
+
+The code base is under a heavy rewrite process to optimize it and prepare the switch to pipeline 2 process,
+allowing to provide more outputed format and better support.
+
 
 # 2.6.1 beta - Minor update 2 (January 28, 2021)
 

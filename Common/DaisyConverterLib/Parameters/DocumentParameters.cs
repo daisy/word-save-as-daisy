@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Packaging;
-using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Daisy.SaveAsDAISY.Conversion {
@@ -23,8 +23,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public DocumentParameters(string inputPath) {
             this.InputPath = inputPath;
-            
-            ListMathMl = new Hashtable();
+
             ObjectShapes = new List<string>();
             ImageIds = new List<string>();
             InlineShapes = new List<string>();
@@ -70,16 +69,41 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         public string OutputPath { get; set; }
 
+        /// <summary>
+        /// If true, the input document is (re)opened in word during preprocessing, 
+        /// when preprocessing starts and after the copy used for conversion is saved
+        /// </summary>
+        public bool ShowInputDocumentInWord { get; set; } = true;
 
+        /// <summary>
+        /// Pathes of the shapes images extracted during preprocessing
+        /// </summary>
         public List<string> ObjectShapes { get; set; }
 
         /// <summary>
-        /// To be replaced by a list of string later on
-        /// (Needs to update the DaisyClass object for that)
+        /// Dictionnary of key => List of mathml equations (stored as string)
         /// </summary>
-        public Hashtable ListMathMl { get; set; }
+        public Dictionary<string, List<string>> MathMLMap { get; set; } = new Dictionary<string, List<string>>()
+        {
+            {"wdTextFrameStory", new List<string>() },
+            {"wdFootnotesStory", new List<string>() },
+            {"wdMainTextStory", new List<string>() },
+        };
+
+        /// <summary>
+        /// Ids of the shapes extracted during preprocessing
+        ///
+        /// </summary>
         public List<string> ImageIds { get; set; }
+
+        /// <summary>
+        /// Pathes of the inline shapes images extracted during preprocessing
+        /// </summary>
         public List<string> InlineShapes { get; set; }
+
+        /// <summary>
+        /// Ids of the inline shapes extracted during preprocessing
+        /// </summary>
         public List<string> InlineIds { get; set; }
 
 
@@ -151,17 +175,26 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         /// <summary>
-        /// Parameters 
+        /// Document parameters hash
+        /// (To be used for the Daisy class used in xslt)
         /// </summary>
         public Hashtable ParametersHash { 
             get {
                 Hashtable parameters = new Hashtable();
 
-                parameters.Add("TRACK", !HasRevisions ? "NoTrack" : (TrackChanges ? "Yes" : "No"));
-                parameters.Add("MasterSubFlag", !HasSubDocuments ? "NoMasterSub" : (SubDocumentsToConvert.Count > 0 ? "Yes" : "No"));
+                parameters.Add("prmTRACK", TrackChanges);
+                parameters.Add("MasterSub", (SubDocumentsToConvert != null && SubDocumentsToConvert.Count > 0) ? true : false);
                 
+
                 return parameters;
             }
         }
+
+        public string serialize() {
+            return JsonConvert.SerializeObject(this);
+        }
+
+        
+
     }
 }

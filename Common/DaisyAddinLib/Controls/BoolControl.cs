@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Daisy.SaveAsDAISY.Conversion;
@@ -26,7 +25,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
             checkBox1.Text = p.NiceName;
             m_Parameter = p;
             m_boolDataType = (BoolDataType)p.ParameterDataType;
-            checkBox1.Checked = m_boolDataType.Value;
+            checkBox1.Checked = (bool)m_boolDataType.Value;
             base.Size = this.Size;
         }
 

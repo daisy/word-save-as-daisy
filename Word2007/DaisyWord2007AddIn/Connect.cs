@@ -49,6 +49,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
     using Daisy.SaveAsDAISY.Conversion.Events;
     using System.Text.RegularExpressions;
     using Daisy.SaveAsDAISY.Forms;
+    using Script = Conversion.Script;
+    using Daisy.SaveAsDAISY.Conversion.Pipeline;
+    using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
+    using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
 
 
     #region Read me for Add-in installation and setup information.
@@ -71,7 +75,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
         PackageRelationship packRelationship = null;
         XmlDocument currentDocXml, validation_xml;
-        String docFile, path_For_Xml, path_For_Pipeline;
+        String docFile, path_For_Xml;
         public ArrayList docValidation = new ArrayList();
         private IRibbonUI daisyRibbon;
         private bool showValidateTabBool = false;
@@ -85,11 +89,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         private ArrayList footntRefrns;
         
 
-        private Pipeline _postprocessingPipeline = null;
-        public Pipeline PostprocessingPipeline {
+        private Pipeline1 _postprocessingPipeline = null;
+        public Pipeline1 PostprocessingPipeline {
             get {
                 if (ConverterHelper.PipelineIsInstalled() && _postprocessingPipeline == null)
-                    _postprocessingPipeline = new Pipeline();
+                    _postprocessingPipeline = Pipeline1.Instance;
                 return _postprocessingPipeline;
             }
             set => _postprocessingPipeline = value;
@@ -137,10 +141,24 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 //throw;
             }
         }
+
+        /// <summary>
+        /// Only activate the action controls on non-protected view
+        /// </summary>
+        /// <param name="control"></param>
+        /// <returns></returns>
+        public bool ribbonButtonsEnabled(IRibbonControl control) {
+            if(this.applicationObject.ActiveProtectedViewWindow != null) {
+                return false;
+            }
+            return true;
+        }
+        
         /// <summary>
         /// Function to do changes in Look and Feel of UI
         /// </summary>
         void applicationObject_DocumentChange() {
+            
             if(this.applicationObject.Documents.Count > 0) {
                 CheckforAttchments(this.applicationObject.ActiveDocument);
             }
@@ -294,8 +312,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="RibbonID"></param>
         /// <returns></returns>
         string IRibbonExtensibility.GetCustomUI(string RibbonID) {
-            path_For_Pipeline = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\pipeline-lite-ms";
-            if (Directory.Exists(path_For_Pipeline)) {
+            if (Directory.Exists(ConverterHelper.Pipeline1Path)) {
                 // Removing the validator button for office 2010 and later
                 // For office 2007, the old validation step remains necessary
                 if (this.applicationObject.Version == "12.0") {
@@ -335,6 +352,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             { "DaisyMenu", "speaker.jpg" },
             { "DaisySingle", "Singlexml.png" },
             { "DaisyDTBookSingle", "speaker.jpg" },
+            { "EpubSingle", "speaker.jpg" },
+            { "EpubTabSingle", "speaker.jpg" },
             { "DaisyMultiple", "Multiplexml.png" },
             { "DaisyDTBookMultiple", "subfolder.png" },
             { "DaisyMnu", "speaker.jpg" },
@@ -443,7 +462,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public bool getEnabled(IRibbonControl control) {
-            return !showViewTabBool;
+            return this.ribbonButtonsEnabled(control) && !showViewTabBool;
         }
         //Method for Disabling validate tab
         public bool buttonValidatePressed(IRibbonControl control) {
@@ -681,43 +700,102 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// UI Call : request conversion of the current active document to DTBook XML or DAISY book
         /// </summary>
         /// <param name="control"></param>
-        public void SaveAsDaisy(IRibbonControl control) {
+        public void SaveAsDaisy(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
-                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                FileInfo pipelineScript = this.PostprocessingPipeline?.ScriptsInfo[control.Tag];
+                IConversionEventsHandler eventsHandler = null;
+                Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
                 
-                ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript.FullName);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
-                DocumentParameters currentDocument = converter.preprocessDocument(this.applicationObject.ActiveDocument.FullName);
-                if(converter.requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
-                    ConversionResult result = converter.convert(currentDocument);
-                    /*if (!(result.Canceled || result.Succeeded)) {
-                        MessageBox.Show(result., "Conversion aborted");
-                    }*/
+                Converter converter = null;
+                if (conversionIntegrationTestSettings != null) {
+                    eventsHandler = new SilentEventsHandler();
+                    ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
+                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
+                } else {
+                    eventsHandler = new GraphicalEventsHandler();
+                    ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
+                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler) eventsHandler);
+                }
+
+                DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
+                if(conversionIntegrationTestSettings != null
+                        || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
+                    ConversionResult result = converter.Convert(currentDocument);
+                    
                 } else {
                     eventsHandler.onConversionCanceled();
                 }
                 
                 //applicationObject.ActiveDocument.Save();
             } catch (Exception e) {
-                ExceptionReport report = new ExceptionReport(e);
-                report.Show();
+                if(conversionIntegrationTestSettings != null) {
+
+                } else {
+                    ExceptionReport report = new ExceptionReport(e);
+                    report.Show();
+                }
+                
             }
             
         }
 
-        #endregion
-
-
-        #region Abbreviation and Acronyms
-
         /// <summary>
-        /// Core Function for Managing Abbreviation
+        /// Experimental conversion to epub3
         /// </summary>
         /// <param name="control"></param>
-        public void ManageAbbreviation(IRibbonControl control) {
+        /// <param name="conversionIntegrationTestSettings"></param>
+        public void SaveAsEPUB3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
+            try {
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                IConversionEventsHandler eventsHandler = null;
+
+                Script pipelineScript = new DtbookToEpub3();
+
+                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+                Converter converter = null;
+                if (conversionIntegrationTestSettings != null) {
+                    eventsHandler = new SilentEventsHandler();
+                    ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
+                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
+                } else {
+                    eventsHandler = new GraphicalEventsHandler();
+                    ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
+                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
+                }
+
+                DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
+                if (conversionIntegrationTestSettings != null
+                        || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
+                    ConversionResult result = converter.Convert(currentDocument);
+
+                } else {
+                    eventsHandler.onConversionCanceled();
+                }
+
+                //applicationObject.ActiveDocument.Save();
+            } catch (Exception e) {
+                if (conversionIntegrationTestSettings != null) {
+
+                } else {
+                    ExceptionReport report = new ExceptionReport(e);
+                    report.Show();
+                }
+
+            }
+
+        }
+
+            #endregion
+
+
+            #region Abbreviation and Acronyms
+
+            /// <summary>
+            /// Core Function for Managing Abbreviation
+            /// </summary>
+            /// <param name="control"></param>
+            public void ManageAbbreviation(IRibbonControl control) {
             try {
 
                 MSword.Document doc = this.applicationObject.ActiveDocument;
@@ -862,9 +940,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             try {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                FileInfo pipelineScript = this.PostprocessingPipeline?.ScriptsInfo[control.Tag];
+                Script pipelineScript = this.PostprocessingPipeline?.getScript(control.Tag);
 
-                ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript.FullName);
+                ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
                 GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
                 // Note : the current form for multiple also include conversion settings update
@@ -875,7 +953,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     foreach (string inputPath in documentsPathes) {
                         DocumentParameters subDoc = null;
                         try {
-                            subDoc = converter.preprocessDocument(inputPath);
+                            subDoc = converter.PreprocessDocument(inputPath);
                         } catch (Exception e) {
                             string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
                             eventsHandler.onPreprocessingError(inputPath, errors);
@@ -888,7 +966,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             break;
                         }
                     }
-                    if(documents.Count > 0) converter.convert(documents);
+                    if(documents.Count > 0) converter.Convert(documents);
                 }
 
                 applicationObject.ActiveDocument.Save();

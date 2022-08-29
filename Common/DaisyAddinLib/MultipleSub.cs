@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Xml;
 using System.Resources;
 using System.Drawing;
@@ -28,7 +27,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         int subCount = 0;
         int masterSubFlag = 0;
         string fileOutputPath, versionInfo = "";
-        private ScriptParser mParser = null;
+        private Script mParser = null;
         private bool useAScript = false;
         String input = "", uId = "";
         private string mProjectDirectory;
@@ -48,12 +47,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             btn_Delete.Enabled = false;
             btn_Populate.Enabled = false;
             this.versionInfo = UpdatedConversionParameters.Version;
-            useAScript = UpdatedConversionParameters.ScriptPath != null && UpdatedConversionParameters.ScriptPath.Length > 0;
+            useAScript = UpdatedConversionParameters.PostProcessor != null;
             if (useAScript) {
-                if(UpdatedConversionParameters.PostProcessSettings == null )
-                    UpdatedConversionParameters.PostProcessSettings = new ScriptParser(UpdatedConversionParameters.ScriptPath);
-                
-                this.Text = UpdatedConversionParameters.PostProcessSettings.NiceName;
+                this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
             }
             
         }
@@ -195,9 +191,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                     }
                 }
 
-				foreach (ScriptParameter p in UpdatedConversionParameters.PostProcessSettings.ParameterList)
-				{
-					if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
+                foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters) {
+                    ScriptParameter p = kv.Value;
+                    if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
 					{
 						PathDataType pathDataType = p.ParameterDataType as PathDataType;
 						if (pathDataType == null) continue;
@@ -206,11 +202,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 						{
 							try
 							{
-								FileInfo outputFileInfo = new FileInfo(p.ParameterValue);
-								if (!string.IsNullOrEmpty(pathDataType.FileExtenssion) &&
-								    !pathDataType.FileExtenssion.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
+								FileInfo outputFileInfo = new FileInfo(p.ParameterValue.ToString());
+								if (!string.IsNullOrEmpty(pathDataType.FileExtension) &&
+								    !pathDataType.FileExtension.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
 								{
-									MessageBox.Show(string.Format("Please select {0} output file", pathDataType.FileExtenssion), "Error",
+									MessageBox.Show(string.Format("Please select {0} output file", pathDataType.FileExtension), "Error",
 									                MessageBoxButtons.OK, MessageBoxIcon.Error);
 									mLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 									return;
@@ -229,7 +225,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 						}
 						else
 						{
-							strBrtextBox = p.ParameterValue;
+							strBrtextBox = p.ParameterValue.ToString();
 						}
 						break;
 
@@ -253,9 +249,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 					if (strBrtextBox != cleanUpDialog.OutputDir)
 					{
 						strBrtextBox = cleanUpDialog.OutputDir;
-						foreach (ScriptParameter p in UpdatedConversionParameters.PostProcessSettings.ParameterList)
-						{
-							if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
+                        foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters) {
+                            ScriptParameter p = kv.Value;
+                            if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
 							{
 								p.ParameterValue = cleanUpDialog.OutputDir;
 							}
@@ -523,7 +519,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             else
             {
-                this.Text = UpdatedConversionParameters.PostProcessSettings.NiceName;
+                this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
                 groupBoxXml.Visible = false;
                 btnShow.Visible = true;
                 btnHide.Visible = false;
@@ -546,8 +542,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                 oTableLayoutPannel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
                 //shaby (end)  : Implementing TableLayoutPannel
 
-                foreach (ScriptParameter p in UpdatedConversionParameters.PostProcessSettings.ParameterList)
+                foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters)
                 {
+                    ScriptParameter p = kv.Value;
                     if (p.Name != "input" && p.ParameterDataType is PathDataType && p.IsParameterRequired)
                     {
                         Control c = (Control)new PathBrowserControl(p, input, mProjectDirectory);
