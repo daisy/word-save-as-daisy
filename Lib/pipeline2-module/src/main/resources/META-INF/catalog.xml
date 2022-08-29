@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" xmlns:px="http://www.daisy.org/ns/pipeline">
-  <uri name="http://www.daisy.org/pipeline/modules/word-to-dtbook/oox2Daisy.xpl" uri="../xml/oox2Daisy.xpl"/>
-  <!-- <uri name="http://www.daisy.org/pipeline/modules/word-to-dtbook/dtbookbasic.css" uri="../css/dtbookbasic.css"/> -->
-  
-</catalog>

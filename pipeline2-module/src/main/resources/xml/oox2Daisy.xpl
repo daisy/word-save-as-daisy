@@ -7,6 +7,10 @@
 
 	<p:option name="source" required="true"/>
 	<p:option name="document-output-dir" required="true"/>
+	<p:option name="document-output-file" select="concat(
+		$document-output-dir,
+		replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1.xml'),',','_')
+	)"/>
 	<p:option name="tempSource" select="$source"/>
 	<p:option name="pipeline-output-dir" select="$document-output-dir"/>
 	<p:option name="Title" select="''"/>
@@ -58,11 +62,9 @@
 		<p:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 	</p:xslt>
 	<p:group>
-		<p:variable name="output-file"
-		            select="concat($document-output-dir,
-		                           replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1.xml'),',','_'))"/>
+		
 		<p:store name="store-xml">
-			<p:with-option name="href" select="$output-file"/>
+			<p:with-option name="href" select="$document-output-file"/>
 		</p:store>
 		<p:store name="store-css">
 			<p:input port="source">
@@ -71,7 +73,7 @@
 			<p:with-option name="href" select="concat($document-output-dir,'dtbookbasic.css')"/>
 		</p:store>
 		<p:load cx:depends-on="store-xml">
-			<p:with-option name="href" select="$output-file"/>
+			<p:with-option name="href" select="$document-output-file"/>
 		</p:load>
 		<p:identity cx:depends-on="store-css"/>
 	</p:group>

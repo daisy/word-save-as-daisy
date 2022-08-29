@@ -41,6 +41,7 @@ using System.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -320,21 +321,19 @@ namespace Daisy.SaveAsDAISY.Conversion
 				File.Copy(document.CopyPath, tempInputPath, true);
 				File.SetAttributes(tempInputPath, FileAttributes.Normal);
 				
-				XmlReader source = null;
-				XmlWriter writer = null;
-				ZipResolver zipResolver = null;
-
 				try
 				{
 					Script wordToDTBook = new Pipeline.Pipeline2.Scripts.WordToDTBook();
 					wordToDTBook.Parameters["input"].ParameterValue = document.InputPath;
 					//wordToDTBook.Parameters["tempSource"].ParameterValue = tempInputPath;
 					wordToDTBook.Parameters["output"].ParameterValue = conversionOutputDirectory;
+                    wordToDTBook.Parameters["output-file"].ParameterValue = tempOutputPath;
 
-					wordToDTBook.Parameters["pipeline-output"].ParameterValue = conversion.PipelineOutput;
-					//wordToDTBook.Parameters["MathML"].ParameterValue = document.MathMLMap;
+                    wordToDTBook.Parameters["pipeline-output"].ParameterValue = conversion.PipelineOutput;
+					
+                    //wordToDTBook.Parameters["MathML"].ParameterValue = document.MathMLMap;
 
-					foreach (DictionaryEntry myEntry in document.ParametersHash)
+                    foreach (DictionaryEntry myEntry in document.ParametersHash)
 					{
                         if (wordToDTBook.Parameters.ContainsKey(myEntry.Key.ToString()))
                         {
@@ -351,90 +350,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 					}
 					wordToDTBook.ExecuteScript(tempInputPath);
 
-
-					//					XslCompiledTransform xslt = this.Load(false);
-					//					zipResolver = new ZipResolver(tempInputPath);
-
-					//					XsltArgumentList parameters = new XsltArgumentList();
-					//					parameters.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(onXSLTMessageEvent);
-					//					parameters.XsltMessageEncountered += new XsltMessageEncounteredEventHandler(onXSLTProgressMessageEvent);
-
-					//					DaisyClass extension = new DaisyClass(
-					//								document.InputPath,
-					//								tempInputPath,
-					//								conversionOutputDirectory,
-					//								document.MathMLMap,
-					//								zipResolver.Archive,
-					//								conversion.PipelineOutput);
-					//					parameters.AddExtensionObject(
-					//						"urn:Daisy", extension
-
-					//					);
-
-
-					//					parameters.AddParam("outputFile", "", tempOutputPath);
-					//					// Document specific settings
-					//					foreach (DictionaryEntry myEntry in document.ParametersHash)
-					//					{
-					//						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
-					//					}
-					//					// Conversion batch settings
-					//					foreach (DictionaryEntry myEntry in conversion.ParametersHash)
-					//					{
-					//						// We allow conversion settings to override document settings
-					//						// if wanted
-					//						if (parameters.GetParam(myEntry.Key.ToString(), "") != null)
-					//						{
-					//							parameters.RemoveParam(myEntry.Key.ToString(), "");
-					//						}
-					//						parameters.AddParam(myEntry.Key.ToString(), "", myEntry.Value.ToString());
-
-					//					}
-
-
-					//					// write result to conversion.TempOutputFile or a random temp output file
-
-					//					XmlWriter finalWriter;
-					//#if DEBUG
-					//					StreamWriter streamWriter = new StreamWriter(
-					//						tempOutputPath,
-					//						true, System.Text.Encoding.UTF8
-					//					)
-					//					{ AutoFlush = true };
-					//					finalWriter = new XmlTextWriter(streamWriter);
-
-					//					Debug.WriteLine("OUTPUT FILE : '" + tempOutputPath + "'");
-					//#else
-					//					finalWriter = new XmlTextWriter(tempOutputPath, System.Text.Encoding.UTF8);
-					//#endif
-					//					writer = GetWriter(finalWriter);
-
-
-					//					source = this.Source;
-					//					// Apply the transformation
-
-					//					xslt.Transform(source, parameters, writer, zipResolver);
-
 				}
 				catch (Exception ex)
 				{
-					if (writer != null)
-						writer.Close();
-					if (source != null)
-						source.Close();
-					if (zipResolver != null)
-						zipResolver.Dispose();
 
 					throw ex;
-				}
-				finally
-				{
-					if (writer != null)
-						writer.Close();
-					if (source != null)
-						source.Close();
-					if (zipResolver != null)
-						zipResolver.Dispose();
 				}
 
 
@@ -449,17 +369,31 @@ namespace Daisy.SaveAsDAISY.Conversion
 					Int16 value = (Int16)document.OutputPath.LastIndexOf("\\");
 					String tempStr = document.OutputPath.Substring(0, value);
 					
-					CopyDTDToDestinationfolder(document.OutputPath);
-					CopyMATHToDestinationfolder(document.OutputPath);
+					// TODO : this is hardly ever used actually
 					if (conversion.Validate) {
-						validateXML(document.OutputPath);
-					}
-					// We need to change this method and the copy for validation : 
-					// it does not only delete the dtds files,
-					// it also updates the file dtds
-					DeleteDTD(tempStr + "\\" + "dtbook-2005-3.dtd", document.OutputPath, true);
-					DeleteMath(tempStr, true);
-				}
+                        CopyDTDToDestinationfolder(document.OutputPath);
+                        CopyMATHToDestinationfolder(document.OutputPath);
+                        validateXML(document.OutputPath);
+                        DeleteMath(tempStr, true);
+                        DeleteDTD(tempStr + "\\" + "dtbook-2005-3.dtd", document.OutputPath, true);
+                    }
+                    // Cleanup the conversion result : 
+                    StreamReader reader = new StreamReader(document.OutputPath);
+                    string data = reader.ReadToEnd();
+                    reader.Close();
+					// Remove the math part of the doctype if no math element is in the result
+                    StreamWriter writer = new StreamWriter(document.OutputPath);
+                    if (!data.Contains("</mml:math>"))
+					{
+						Regex doctypeFinder = new Regex(@"<!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'\[([^\]]+)\] >");
+                        data = doctypeFinder.Replace(data, @"<!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'[ ] >");
+                        data = data.Replace(Environment.NewLine + "<dtbook", "<dtbook");
+						data = data.Replace("xmlns:mml=\"http://www.w3.org/1998/Math/MathML\"", "");
+
+                    }
+                    writer.Write(data);
+                    writer.Close();
+                }
 			} finally {
 				if (File.Exists(tempInputPath)) {
 					try {

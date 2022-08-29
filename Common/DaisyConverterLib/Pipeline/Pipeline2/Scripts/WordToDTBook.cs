@@ -42,6 +42,20 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     "Ouput directory for the xml"
                 )
             );
+            _parameters.Add(
+                "output-file",
+                new ScriptParameter(
+                    "document-output-file",
+                    "XML output file path",
+                    new PathDataType(
+                        PathDataType.InputOrOutput.output,
+                        PathDataType.FileOrDirectory.File
+                    ),
+                    "",
+                    true,
+                    "Ouput file for the xml"
+                )
+            );
             //_parameters.Add(
             //    "tempSource",
             //    new ScriptParameter(

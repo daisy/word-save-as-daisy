@@ -180,7 +180,7 @@
 	<!--Extending the DTD to support MathML-->
 	<xsl:template name="main">
 		<xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet href="dtbookbasic.css" type="text/css"?&gt;</xsl:text>
-		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'</xsl:text>
+		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'</xsl:text>
 		<xsl:text disable-output-escaping="yes">[&lt;!ENTITY % MATHML.prefixed "INCLUDE" &gt;
       &lt;!ENTITY % MATHML.prefix "mml"&gt;
       &lt;!ENTITY % Schema.prefix "sch"&gt;
@@ -196,7 +196,7 @@
           xmlns:dtbook   CDATA       #FIXED
                   'http://www.daisy.org/z3986/2005/dtbook/'
           dtbook:smilref CDATA       #IMPLIED"&gt;
-      &lt;!ENTITY % mathML2 SYSTEM 'mathml2.dtd'&gt;
+      &lt;!ENTITY % mathML2 PUBLIC '-//W3C//DTD MathML 2.0//EN' 'http://www.w3.org/Math/DTD/mathml2/mathml2.dtd'&gt;
       %mathML2;
        &lt;!ENTITY % externalFlow "| mml:math"&gt;
        &lt;!ENTITY % externalNamespaces "xmlns:mml CDATA #FIXED 
