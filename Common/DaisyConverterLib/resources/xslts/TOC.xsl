@@ -17,12 +17,10 @@
   <!--Parameter citation-->
   <xsl:param name="Cite_style" select="myObj:Citation()"/>
   <xsl:output method="xml" indent="no" />
-
   <!--template for frontmatter elements-->
   <xsl:template name="TableOfContents">
     <xsl:param name="custom"/>
     <xsl:message terminate="no">progress:Handling table of content</xsl:message>
-
       <!--checking for Table of content Element-->
       <xsl:for-each select="document('word/document.xml')//w:document/w:body/node()">
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
@@ -83,7 +81,6 @@
       </xsl:if>
       <!-- Calling function to Reset the counter value -->
       <xsl:variable name="setlist" select="myObj:Get_Toc()"/>
-
       <!--checking for Table of content-->
       <xsl:for-each select="document('word/document.xml')//w:document/w:body/node()">
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
@@ -145,7 +142,6 @@
       </xsl:if>
       <!--Calling function which resets the counter value for TOC-->
       <xsl:variable name="set_li" select="myObj:Get_Toc()"/>
-
       <!--Checking for Table of content-->
       <xsl:for-each select="document('word/document.xml')//w:body/w:sdt">
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
@@ -224,8 +220,6 @@
           </level1>
         </xsl:if>
       </xsl:for-each>
-    
   </xsl:template>
-
 </xsl:stylesheet>
   

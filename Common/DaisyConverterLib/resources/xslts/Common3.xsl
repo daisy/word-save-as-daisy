@@ -21,7 +21,31 @@
     <xsl:variable name="doclang" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
     <xsl:variable name="doclangbidi" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
     <xsl:variable name="doclangeastAsia" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
-    <!--Template to create NoteReference for FootNote and EndNote
+	<xsl:param name="Title"/>
+	<!--Holds Documents Title value-->
+	<xsl:param name="Creator"/>
+	<!--Holds Documents creator value-->
+	<xsl:param name="Publisher"/>
+	<!--Holds Documents Publisher value-->
+	<xsl:param name="UID"/>
+	<!--Holds Document unique id value-->
+	<xsl:param name="Subject"/>
+	<!--Holds Documents Subject value-->
+	<xsl:param name="prmTRACK"/>
+	<xsl:param name="Version"/>
+	<!--Holds Documents version value-->
+	<xsl:param name="Custom"/>
+	<xsl:param name="MasterSub"/>
+	<xsl:param name="ImageSizeOption"/>
+	<xsl:param name="DPI"/>
+	<xsl:param name="CharacterStyles"/>
+    <xsl:param name="FootnotesPosition"/>
+	<xsl:param name="FootnotesLevel"/>
+	<xsl:param name="FootnotesNumbering" />
+	<xsl:param name="FootnotesStartValue" />
+	<xsl:param name="FootnotesNumberingPrefix" />
+	<xsl:param name="FootnotesNumberingSuffix" />
+	<!--Template to create NoteReference for FootNote and EndNote
   It is taking two parameters noteID and noteClass. noteID 
   will contain the Reference id of either Footnote or Endnote.-->
     <xsl:template name="NoteReference">
@@ -66,7 +90,6 @@
             </noteref>
         </xsl:if>
     </xsl:template>
-
     <!--Template to add EndNote-->
     <xsl:template name="InsertEndnotes">
         <xsl:param name="endNoteId"/>
@@ -116,7 +139,6 @@
             </note>
         </xsl:if>
     </xsl:template>
-
     <!--Template for Adding footnote-->
     <xsl:template name="InsertFootnotes">
         <xsl:param name="verfoot"/>
@@ -146,7 +168,13 @@
                                     <!--Checking for MathImage in Word2003/xp  footnotes-->
                                     <xsl:when test="(w:r/w:object/v:shape/v:imagedata/@r:id) and (not(w:r/w:object/o:OLEObject[@ProgID='Equation.DSMT4']))" >
                                         <p>
-                                            <xsl:value-of select="$checkid + 1"/>
+											<xsl:value-of select="$FootnotesNumberingPrefix"/>
+											<xsl:choose>
+												<xsl:when test="$FootnotesNumbering = 'number'">
+													<xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+												</xsl:when>
+											</xsl:choose>
+                                            <xsl:value-of select="$FootnotesNumberingSuffix"/>
                                             <imggroup>
                                                 <img>
                                                     <!--Variable to hold r:id from document.xml-->
@@ -236,10 +264,9 @@
                 <xsl:with-param name="sMinuses" select="$sMinuses"/>
                 <xsl:with-param name="sNumbers" select="$sNumbers"/>
                 <xsl:with-param name="sZeros" select="$sZeros"/>
-            </xsl:call-template>
+			</xsl:call-template>
         </xsl:if>
     </xsl:template>
-
     <!--Template for handling multiple Prodnotes and Captions applied to an image-->
     <xsl:template name="ProcessCaptionProdNote">
         <xsl:param name="followingnodes"/>
@@ -287,7 +314,6 @@
                         <xsl:if test="name()='w:fldSimple'">
                             <xsl:value-of select="w:r/w:t"/>
                         </xsl:if>
-
                     </xsl:for-each>
                     <!--Checking if image is bidirectionally oriented-->
                     <xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
@@ -385,7 +411,6 @@
         </xsl:choose>
         <xsl:variable name="tmpcount" select="myObj:ResetCaptionsProdnotes()"/>
     </xsl:template>
-
     <!--Template for implementing Simple Images i.e, ungrouped images-->
     <xsl:template name="PictureHandler">
         <xsl:param name="imgOpt"/>
@@ -422,7 +447,6 @@
                     <xsl:value-of select="w:drawing/wp:anchor/a:graphic/a:graphicData/pic:pic/pic:nvPicPr/pic:cNvPr/@name"/>
                 </xsl:when>
             </xsl:choose>
-
         </xsl:variable>
         <!--Variable holds the value of Image Id concatenated with some random number generated for Image Id-->
         <xsl:variable name="imageId">
@@ -522,7 +546,6 @@
                                 <xsl:value-of select="concat($imageId,'.png')"/>
                             </xsl:otherwise>
                         </xsl:choose>
-
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:variable>
@@ -615,7 +638,6 @@
                                     <xsl:if test="name()='w:fldSimple'">
                                         <xsl:value-of select="w:r/w:t"/>
                                     </xsl:if>
-
                                 </xsl:for-each>
                                 <xsl:text> </xsl:text>
                             </xsl:if>
@@ -631,7 +653,6 @@
                                     <xsl:if test="name()='w:fldSimple'">
                                         <xsl:value-of select="w:r/w:t"/>
                                     </xsl:if>
-
                                 </xsl:for-each>
                                 <xsl:text> </xsl:text>
                             </xsl:if>
@@ -662,7 +683,6 @@
             <!--Checking if Img_Id contains null value and returns the fidelity loss message-->
         </xsl:if>
     </xsl:template>
-
     <!--Template for handling multiple Prodnotes and Captions applied for grouped images-->
     <xsl:template name="ProcessProdNoteImggroups">
         <xsl:param name="followingnodes"/>
@@ -712,7 +732,6 @@
                         <xsl:if test="name()='w:fldSimple'">
                             <xsl:value-of select="w:r/w:t"/>
                         </xsl:if>
-
                     </xsl:for-each>
                     <!--Checking for image is bidirectionally oriented-->
                     <xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
@@ -816,7 +835,6 @@
         </xsl:choose>
         <xsl:variable name="tmpcount" select="myObj:ResetCaptionsProdnotes()"/>
     </xsl:template>
-
     <!--Template for Implementing grouped images-->
     <xsl:template name="Imagegroups">
         <xsl:param name="characterStyle"/>
@@ -834,13 +852,11 @@
                     <xsl:if test="name()='w:fldSimple'">
                         <xsl:value-of select="w:r/w:t"/>
                     </xsl:if>
-
                 </xsl:for-each>
             </xsl:variable>
             <xsl:variable name="InsertedCaption" select="myObj:InsertCaption($caption)"/>
         </xsl:if>
         <!--Looping through each pict element and storing the caption value in the caption variable-->
-
         <xsl:if test="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:pPr/w:pStyle[@w:val='Caption']">
             <xsl:variable name="caption">
                 <xsl:for-each select="../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/node()">
@@ -853,7 +869,6 @@
                     <xsl:if test="name()='w:fldSimple'">
                         <xsl:value-of select="w:r/w:t"/>
                     </xsl:if>
-
                 </xsl:for-each>
             </xsl:variable>
             <!--Inserting the caption value in the Arraylist through insertcaption C# function-->
@@ -882,7 +897,6 @@
                         <xsl:value-of select ="concat($Imageid,'.png')"/>
                     </xsl:attribute>
                 </img>
-
                 <!--Variable holds the caption value returned form C# function returncaption-->
                 <xsl:variable name="checkcaption">
                     <xsl:value-of select="myObj:ReturnCaption()"/>
@@ -932,7 +946,6 @@
             <xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
         </xsl:if>
     </xsl:template>
-
     <xsl:template name="Imagegroup2003">
         <xsl:param name="characterStyle"/>
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
@@ -1012,7 +1025,6 @@
                                 <xsl:if test="name()='w:fldSimple'">
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:if>
-
                             </xsl:for-each>
                             <xsl:text> </xsl:text>
                         </xsl:if>
@@ -1028,7 +1040,6 @@
                                 <xsl:if test="name()='w:fldSimple'">
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:if>
-
                             </xsl:for-each>
                             <xsl:text> </xsl:text>
                         </xsl:if>
@@ -1058,8 +1069,6 @@
             <xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
         </xsl:if>
     </xsl:template>
-
-
     <xsl:template name="Object">
         <xsl:param name="characterStyle"/>
         <xsl:if test="not(contains(w:object/o:OLEObject/@ProgID,'Equation'))">
@@ -1089,7 +1098,6 @@
                                     <xsl:value-of select="w:object/o:OLEObject/@ProgID"/>
                                 </xsl:otherwise>
                             </xsl:choose>
-
                         </xsl:attribute>
                         <xsl:attribute name="src">
                             <xsl:value-of select="$ImageName"/>
@@ -1128,7 +1136,6 @@
                                     <xsl:if test="name()='w:fldSimple'">
                                         <xsl:value-of select="w:r/w:t"/>
                                     </xsl:if>
-
                                 </xsl:for-each>
                             </xsl:if>
                             <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
@@ -1143,7 +1150,6 @@
                                     <xsl:if test="name()='w:fldSimple'">
                                         <xsl:value-of select="w:r/w:t"/>
                                     </xsl:if>
-
                                 </xsl:for-each>
                                 <xsl:text> </xsl:text>
                             </xsl:if>
@@ -1159,7 +1165,6 @@
                         <xsl:with-param name="imageId" select="$ImageId"/>
                         <xsl:with-param name="characterStyle" select="$characterStyle"/>
                     </xsl:call-template>
-
                 </imggroup>
                 <xsl:if test="(../w:pPr/w:bidi) or (../w:pPr/w:jc/@w:val='right')">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
@@ -1173,7 +1178,6 @@
             </xsl:if>
         </xsl:if>
     </xsl:template>
-
     <xsl:template name="tmpShape">
         <xsl:param name="characterStyle"/>
         <xsl:variable name="imageId">
@@ -1205,7 +1209,6 @@
                         <xsl:value-of select="w:pict/v:shape/@alt"/>
                     </xsl:attribute>
                 </img>
-
                 <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY') or (../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                     <caption>
                         <xsl:attribute name="imgref">
@@ -1231,9 +1234,7 @@
                         <xsl:if test="(../preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                             <xsl:for-each select="../preceding-sibling::node()[1]/node()">
                              <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-
                                 <!--Printing the Caption value-->
-
                                 <xsl:if test="name()='w:r'">
                                     <xsl:call-template name="TempCharacterStyle">
                                         <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -1242,17 +1243,13 @@
                                 <xsl:if test="name()='w:fldSimple'">
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:if>
-
                             </xsl:for-each>
                             <xsl:text> </xsl:text>
                         </xsl:if>
                         <xsl:if test="(../w:pPr/w:pStyle/@w:val='Caption') or (../w:pPr/w:pStyle/@w:val='Image-CaptionDAISY')">
                             <xsl:for-each select="../node()">
                              <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-
                                 <!--Printing the Caption value-->
-
-
                                 <xsl:if test="name()='w:r'">
                                     <xsl:call-template name="TempCharacterStyle">
                                         <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -1261,7 +1258,6 @@
                                 <xsl:if test="name()='w:fldSimple'">
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:if>
-
                             </xsl:for-each>
                             <xsl:text> </xsl:text>
                         </xsl:if>
@@ -1289,7 +1285,6 @@
             <xsl:message terminate="no">translation.oox2Daisy.Image</xsl:message>
         </xsl:if>
     </xsl:template>
-
     <!--Template for checking section breaks for page numbers-->
     <xsl:template name="SectionBreak">
         <xsl:param name="count"/>
@@ -1308,7 +1303,6 @@
                     <xsl:choose>
                         <!--Checking for paragraph section break-->
                         <xsl:when test="w:pPr/w:sectPr">
-
                             <xsl:if test="myObj:CheckSectionBody()=1">
                                 <xsl:choose>
                                     <!--Checking if page start and page format is present-->
@@ -1749,7 +1743,6 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-
     <!--Template for counting number of pages before TOC-->
     <xsl:template name="countpageTOC">
         <xsl:message terminate="no">debug in countpageTOC</xsl:message>
@@ -1785,7 +1778,6 @@
             <xsl:with-param name="node" select="'front'"/>
         </xsl:call-template>
     </xsl:template>
-
     <!--Template to translate page number information-->
     <xsl:template name="PageNumber">
         <xsl:param name="pagetype"/>
@@ -1850,7 +1842,6 @@
                     </xsl:choose>
                 </xsl:if>
             </xsl:when>
-      
             <xsl:when test="myObj:GetCurrentMatterType()='Bodymatter'">
                 <xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
                     <xsl:variable name="count" select="myObj:IncrementPageNo()-1"/>
@@ -1908,7 +1899,6 @@
           </xsl:choose>
                 </xsl:if>
             </xsl:when>
-
             <xsl:when test="myObj:GetCurrentMatterType()='Reartmatter'">
                 <xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
                     <xsl:variable name="count" select="myObj:IncrementPageNo()-1"/>
@@ -1966,7 +1956,6 @@
                     </xsl:choose>
                 </xsl:if>
             </xsl:when>
-      
             <!--Frontmatter page number-->
             <xsl:when test="$matter='front'">
                 <xsl:if test="myObj:GetSectionFront()=1">
@@ -2015,7 +2004,6 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
-      
             <!--Bodymatter page number-->
             <xsl:when test="($matter='body') or ($matter='bodysection') or ($matter='Para')">
                 <xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
@@ -2076,7 +2064,6 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-
     <!--Template to implement Languages-->
     <xsl:template name="Languages">
         <xsl:param name="Attribute"/>
@@ -2208,7 +2195,6 @@
                                 <xsl:choose>
                                     <!--Creating <p> element with xml:lang attribute-->
                                     <xsl:when test="$Attribute='0'">
-
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:bidi,$quote,'&gt;')"/>
                                     </xsl:when>
                                     <!--Assingning language value-->
@@ -2248,7 +2234,6 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
     <!--Template to implement Languages-->
     <xsl:template name="LanguagesPara">
         <xsl:param name="Attribute"/>
@@ -2263,7 +2248,6 @@
         </xsl:variable>
         <xsl:choose>
             <!--Checking for language type CS-->
-
             <xsl:when test="w:r/w:rPr/w:rFonts/@w:hint='cs'">
                 <xsl:choose>
                     <!--for bidirectional language-->
@@ -2282,12 +2266,10 @@
                     <xsl:otherwise>
                         <xsl:choose>
                             <!--Creating <p> element with xml:lang attribute-->
-
                             <xsl:when test="$Attribute='0'">
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclangbidi,$quote,'&gt;')"/>
                             </xsl:when>
                             <!--Creating <level> element with xml:lang attribute-->
-
                             <xsl:otherwise>
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,$doclangbidi,$quote,'&gt;')"/>
                             </xsl:otherwise>
@@ -2296,7 +2278,6 @@
                 </xsl:choose>
             </xsl:when>
             <!--Checking for language type eastAsia-->
-
             <xsl:when test="w:r/w:rPr/w:rFonts/@w:hint='eastAsia'">
                 <xsl:choose>
                     <xsl:when test="w:r/w:rPr/w:lang/@w:eastAsia">
@@ -2306,7 +2287,6 @@
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
                             </xsl:when>
                             <!--Creating <level> element with xml:lang attribute-->
-
                             <xsl:otherwise>
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:eastAsia,$quote,'&gt;')"/>
                             </xsl:otherwise>
@@ -2315,12 +2295,10 @@
                     <xsl:otherwise>
                         <xsl:choose>
                             <!--Creating <p> element with xml:lang attribute-->
-
                             <xsl:when test="$Attribute='0'">
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclangeastAsia,$quote,'&gt;')"/>
                             </xsl:when>
                             <!--Creating <level> element with xml:lang attribute-->
-
                             <xsl:otherwise>
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,$doclangeastAsia,$quote,'&gt;')"/>
                             </xsl:otherwise>
@@ -2335,12 +2313,10 @@
                             <xsl:when test="w:r/w:rPr/w:lang/@w:val">
                                 <xsl:choose>
                                     <!--Creating <p> element with xml:lang attribute-->
-
                                     <xsl:when test="$Attribute='0'">
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
                                     </xsl:when>
                                     <!--Assingning language value-->
-
                                     <xsl:otherwise>
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
                                     </xsl:otherwise>
@@ -2352,12 +2328,10 @@
                             <xsl:otherwise>
                                 <xsl:choose>
                                     <!--Creating <p> element with xml:lang attribute-->
-
                                     <xsl:when test="$Attribute='0'">
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,$doclang,$quote,'&gt;')"/>
                                     </xsl:when>
                                     <!--Assingning default language value-->
-
                                     <xsl:otherwise>
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,$doclang,$quote,'&gt;')"/>
                                         <!--<xsl:value-of select="$doclang"/>-->
@@ -2375,7 +2349,6 @@
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p ','xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
                                     </xsl:when>
                                     <!--Assingning language value-->
-
                                     <xsl:otherwise>
                                         <!--<xsl:value-of select="w:r/w:rPr/w:lang/@w:val"/>-->
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,' xml:lang=',$quote,w:r/w:rPr/w:lang/@w:val,$quote,'&gt;')"/>
@@ -2438,7 +2411,6 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
     <!--Template to implement Languages-->
     <xsl:template name="PictureLanguage">
         <xsl:param name="CheckLang"/>
@@ -2590,12 +2562,10 @@
                     <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:rFonts/@w:hint='eastAsia'">
                         <xsl:choose>
                             <!--Getting value from eastasia attribute in lang tag-->
-
                             <xsl:when test="preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia">
                                 <xsl:value-of select="(preceding-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia)"/>
                             </xsl:when>
                             <!--Assinging default eastAsia language-->
-
                             <xsl:otherwise>
                                 <xsl:value-of select="$doclangeastAsia"/>
                             </xsl:otherwise>
@@ -2649,7 +2619,6 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-
     <!--Template for taking language for bdo Tag-->
     <xsl:template name="BdoLanguages">
         <xsl:message terminate="no">debug in BdoLanguages</xsl:message>
@@ -2790,7 +2759,6 @@
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="../w:pPr/w:ind[@w:left] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
                         <xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
                         <xsl:variable name="val_left" select="($val div 1440)"/>
@@ -2799,7 +2767,6 @@
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
                         <xsl:variable name="val" select="../w:pPr/w:ind/@w:right"/>
                         <xsl:variable name="val_right" select="($val div 1440)"/>
@@ -2808,7 +2775,6 @@
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="../w:pPr/w:jc and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
                         <xsl:variable name="val" select="../w:pPr/w:jc/@w:val"/>
                         <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
@@ -2816,15 +2782,12 @@
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="w:rPr/w:u and w:rPr/w:strike and w:rPr/w:caps and w:rPr/w:color and w:t">
                         <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
                         <span class="{concat('text:Underline line-through;color:#',$val_color,';text-transform:uppercase')}">
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
-
                     <xsl:when test="../w:pPr/w:ind[@w:left] and ../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
                         <xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
                         <xsl:variable name="val_left" select="($val div 1440)"/>
@@ -2835,7 +2798,6 @@
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="../w:pPr/w:ind[@w:left] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
                         <xsl:variable name="val" select="../w:pPr/w:ind/@w:left"/>
                         <xsl:variable name="val_left" select="($val div 1440)"/>
@@ -2844,7 +2806,6 @@
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="../w:pPr/w:ind[@w:right] and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
                         <xsl:variable name="val" select="../w:pPr/w:ind/@w:right"/>
                         <xsl:variable name="val_right" select="($val div 1440)"/>
@@ -2853,7 +2814,6 @@
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="../w:pPr/w:jc and w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
                         <xsl:variable name="val" select="../w:pPr/w:jc/@w:val"/>
                         <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
@@ -2861,14 +2821,12 @@
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="w:rPr/w:u and w:rPr/w:strike and w:rPr/w:smallCaps and w:rPr/w:color and w:t">
                         <xsl:variable name="val_color" select="w:rPr/w:color/@w:val"/>
                         <span class="{concat('text:Underline line-through;color:#',$val_color,';font-variant:small-caps')}">
                             <xsl:value-of select="w:t"/>
                         </span>
                     </xsl:when>
-
                     <xsl:when test="w:rPr/w:u and w:t">
                         <span class="text-decoration: underline">
                             <xsl:value-of disable-output-escaping="yes" select="w:t"/>
@@ -2889,5 +2847,4 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
 </xsl:stylesheet>

@@ -297,6 +297,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="resources\xslts\oox2Daisy.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\xslts\Schematron.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

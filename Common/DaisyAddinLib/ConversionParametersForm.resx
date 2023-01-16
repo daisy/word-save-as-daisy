@@ -126,10 +126,14 @@
     <value>Segoe UI, 14.25pt</value>
   </data>
   <data name="label_paneltitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>145, -9</value>
+    <value>193, -12</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label_paneltitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_paneltitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 25</value>
+    <value>0, 32</value>
   </data>
   <data name="label_paneltitle.TabIndex" type="System.Int32, mscorlib">
     <value>74</value>
@@ -153,14 +157,16 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Browse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>70, 3</value>
+    <value>93, 4</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="tBx_Browse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
   <data name="tBx_Browse.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
     <value>Horizontal</value>
   </data>
   <data name="tBx_Browse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>192, 23</value>
+    <value>255, 27</value>
   </data>
   <data name="tBx_Browse.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -190,7 +196,7 @@
     <value>TopDown</value>
   </data>
   <data name="mLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 33</value>
+    <value>5, 42</value>
   </data>
   <data name="mLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -226,10 +232,13 @@
     <value>Calibri, 9pt</value>
   </data>
   <data name="tBx_Uid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 86</value>
+    <value>96, 111</value>
+  </data>
+  <data name="tBx_Uid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Uid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 22</value>
+    <value>324, 26</value>
   </data>
   <data name="tBx_Uid.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -256,10 +265,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Publisher.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 58</value>
+    <value>96, 75</value>
+  </data>
+  <data name="tBx_Publisher.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Publisher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 23</value>
+    <value>324, 27</value>
   </data>
   <data name="tBx_Publisher.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -286,10 +298,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Creator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 31</value>
+    <value>96, 40</value>
+  </data>
+  <data name="tBx_Creator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Creator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 23</value>
+    <value>324, 27</value>
   </data>
   <data name="tBx_Creator.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -316,10 +331,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Title.Location" type="System.Drawing.Point, System.Drawing">
-    <value>72, 3</value>
+    <value>96, 4</value>
+  </data>
+  <data name="tBx_Title.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Title.Size" type="System.Drawing.Size, System.Drawing">
-    <value>243, 23</value>
+    <value>324, 27</value>
   </data>
   <data name="tBx_Title.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -343,10 +361,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_HideDetail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 299</value>
+    <value>5, 384</value>
+  </data>
+  <data name="btn_HideDetail.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_HideDetail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 23</value>
+    <value>164, 30</value>
   </data>
   <data name="btn_HideDetail.TabIndex" type="System.Int32, mscorlib">
     <value>104</value>
@@ -379,10 +400,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Browse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>264, 3</value>
+    <value>352, 4</value>
+  </data>
+  <data name="btn_Browse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Browse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>60, 23</value>
+    <value>80, 30</value>
   </data>
   <data name="btn_Browse.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -412,10 +436,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Folder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 6</value>
+    <value>5, 9</value>
+  </data>
+  <data name="label_Folder.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_Folder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>70, 15</value>
+    <value>88, 20</value>
   </data>
   <data name="label_Folder.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -436,13 +463,13 @@
     <value>2</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>4, 4</value>
   </data>
   <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 3, 3, 3</value>
+    <value>0, 4, 4, 4</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>327, 29</value>
+    <value>436, 38</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>79</value>
@@ -475,10 +502,13 @@
     <value>71, 26</value>
   </data>
   <data name="AccessibilityCheckerLink.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 131</value>
+    <value>4, 168</value>
+  </data>
+  <data name="AccessibilityCheckerLink.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="AccessibilityCheckerLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>269, 34</value>
+    <value>336, 42</value>
   </data>
   <data name="AccessibilityCheckerLink.TabIndex" type="System.Int32, mscorlib">
     <value>97</value>
@@ -516,10 +546,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 34</value>
+    <value>4, 43</value>
+  </data>
+  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 15</value>
+    <value>61, 20</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -549,10 +582,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Title.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 6</value>
+    <value>4, 8</value>
+  </data>
+  <data name="label_Title.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_Title.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 15</value>
+    <value>41, 20</value>
   </data>
   <data name="label_Title.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -582,10 +618,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Unique.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 90</value>
+    <value>4, 115</value>
+  </data>
+  <data name="label_Unique.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_Unique.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 15</value>
+    <value>35, 20</value>
   </data>
   <data name="label_Unique.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -615,10 +654,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Publisher.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 61</value>
+    <value>4, 79</value>
+  </data>
+  <data name="label_Publisher.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_Publisher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 15</value>
+    <value>72, 20</value>
   </data>
   <data name="label_Publisher.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -639,7 +681,7 @@ your document with the Word Accessibility Checker.
     <value>7</value>
   </data>
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 15</value>
+    <value>1, 19</value>
   </data>
   <data name="tableLayoutPanel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -648,7 +690,7 @@ your document with the Word Accessibility Checker.
     <value>4</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>318, 112</value>
+    <value>424, 144</value>
   </data>
   <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>96</value>
@@ -666,13 +708,13 @@ your document with the Word Accessibility Checker.
     <value>1</value>
   </data>
   <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tBx_Uid" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Publisher" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Creator" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Title" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Title" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label_Unique" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label_Publisher" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,69,Percent,100" /&gt;&lt;Rows Styles="Percent,50,9434,Percent,49,0566,Absolute,28,Absolute,28" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tBx_Uid" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Publisher" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Creator" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Title" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Title" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label_Unique" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label_Publisher" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,92,Percent,100" /&gt;&lt;Rows Styles="Percent,50,9434,Percent,49,0566,Absolute,36,Absolute,36" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="grpBox_Properties.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>
   </data>
   <data name="grpBox_Properties.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 33</value>
+    <value>5, 42</value>
   </data>
   <data name="grpBox_Properties.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -681,7 +723,7 @@ your document with the Word Accessibility Checker.
     <value>0, 0, 0, 0</value>
   </data>
   <data name="grpBox_Properties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>319, 180</value>
+    <value>425, 229</value>
   </data>
   <data name="grpBox_Properties.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
@@ -705,10 +747,13 @@ your document with the Word Accessibility Checker.
     <value>GrowAndShrink</value>
   </data>
   <data name="oLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 258</value>
+    <value>5, 332</value>
+  </data>
+  <data name="oLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="oLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>320, 35</value>
+    <value>426, 44</value>
   </data>
   <data name="oLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>88</value>
@@ -729,10 +774,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_OpenDetail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 224</value>
+    <value>5, 288</value>
+  </data>
+  <data name="btn_OpenDetail.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_OpenDetail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 23</value>
+    <value>164, 30</value>
   </data>
   <data name="btn_OpenDetail.TabIndex" type="System.Int32, mscorlib">
     <value>92</value>
@@ -765,10 +813,10 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Creator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 22</value>
+    <value>3, 20</value>
   </data>
   <data name="label_Creator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 15</value>
+    <value>94, 20</value>
   </data>
   <data name="label_Creator.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -819,10 +867,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_OK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>130, 224</value>
+    <value>173, 288</value>
+  </data>
+  <data name="btn_OK.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_OK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>69, 23</value>
+    <value>92, 30</value>
   </data>
   <data name="btn_OK.TabIndex" type="System.Int32, mscorlib">
     <value>105</value>
@@ -852,10 +903,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Reset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>202, 224</value>
+    <value>269, 288</value>
+  </data>
+  <data name="btn_Reset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Reset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 23</value>
+    <value>85, 30</value>
   </data>
   <data name="btn_Reset.TabIndex" type="System.Int32, mscorlib">
     <value>106</value>
@@ -882,10 +936,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Cancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>268, 224</value>
+    <value>357, 288</value>
+  </data>
+  <data name="btn_Cancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Cancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>64, 23</value>
+    <value>85, 30</value>
   </data>
   <data name="btn_Cancel.TabIndex" type="System.Int32, mscorlib">
     <value>107</value>
@@ -912,7 +969,7 @@ your document with the Word Accessibility Checker.
     <value>36</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 14</value>
+    <value>8, 18</value>
   </data>
   <data name="$this.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -921,10 +978,13 @@ your document with the Word Accessibility Checker.
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>337, 328</value>
+    <value>449, 422</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Calibri, 9pt</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

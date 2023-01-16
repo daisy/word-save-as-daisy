@@ -14,7 +14,30 @@ xmlns:v="urn:schemas-microsoft-com:vml"
     <xsl:param name="sNumbers"/>
     <xsl:param name="sZeros"/>-->
     <xsl:output method="xml" indent="no" />
-
+	<xsl:param name="Title"/>
+	<!--Holds Documents Title value-->
+	<xsl:param name="Creator"/>
+	<!--Holds Documents creator value-->
+	<xsl:param name="Publisher"/>
+	<!--Holds Documents Publisher value-->
+	<xsl:param name="UID"/>
+	<!--Holds Document unique id value-->
+	<xsl:param name="Subject"/>
+	<!--Holds Documents Subject value-->
+	<xsl:param name="prmTRACK"/>
+	<xsl:param name="Version"/>
+	<!--Holds Documents version value-->
+	<xsl:param name="Custom"/>
+	<xsl:param name="MasterSub"/>
+	<xsl:param name="ImageSizeOption"/>
+	<xsl:param name="DPI"/>
+	<xsl:param name="CharacterStyles"/>
+	<xsl:param name="FootnotesPosition"/>
+	<xsl:param name="FootnotesLevel"/>
+	<xsl:param name="FootnotesNumbering" />
+	<xsl:param name="FootnotesStartValue" />
+	<xsl:param name="FootnotesNumberingPrefix" />
+	<xsl:param name="FootnotesNumberingSuffix" />
     <!--Template for adding Levels-->
     <xsl:template name="AddLevel">
         <!--Parameter levelValue holds the value of the current level -->
@@ -31,18 +54,13 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:param name="sMinuses"/>
         <xsl:param name="sNumbers"/>
         <xsl:param name="sZeros"/>
-        <xsl:param name="FootnotesLevel" select="0"/>
-        <xsl:param name="FootnotesPosition" select="'page'"/>
-        
         <xsl:message terminate="no">progress:Adding level <xsl:value-of select="$levelValue"/></xsl:message>
         <!--Pushing level into the stack-->
         <xsl:variable name="headingIncrementCounters" select="myObj:IncrementHeadingCounters($levelValue,substring-after($txt,'!'),$abValue)"/>
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:variable name="copyCounter" select="myObj:CopyToBaseCounter(substring-after($txt,'!'))"/>
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-        
         <xsl:variable name="level" select="myObj:PushLevel($levelValue)"/>
-        
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:choose>
             <!--Checking the level value-->
@@ -85,7 +103,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                         </xsl:choose>
                     </xsl:if>
                     <!--Calling tmpHeading template for adding Levels-->
-
                     <!-- DB :  Check if PageNumberDAISY style is applied to skip heading styles in output file when this style is applied.  -->
                     <xsl:variable name="IsPageNumberDAISYApplied">
                         <xsl:choose>
@@ -97,14 +114,12 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:variable>
-
                     <!-- DB : write header in output when PageNumberDAISY is not applied  -->
                     <xsl:if test="not($IsPageNumberDAISYApplied='true')">
                         <xsl:call-template name="openHeading">
                             <xsl:with-param name="level" select="$level"/>
                         </xsl:call-template>
                     </xsl:if>
-
                     <!--Calling ParaHandler template for heading text-->
                     <xsl:call-template name="TempLevelSpan">
                         <xsl:with-param name="verhead" select="$verhead"/>
@@ -117,11 +132,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
                         <xsl:with-param name="sNumbers" select="$sNumbers"/>
                         <xsl:with-param name="sZeros" select="$sZeros"/>
-                        <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                        <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                     </xsl:call-template>
-
-
                     <!-- DB : write header in output when PageNumberDAISY is not applied  -->
                     <xsl:if test="not($IsPageNumberDAISYApplied='true')">
                         <!--Calling tmpAbbrAcrHeading template setting AbbrAcr flag and closing heading tag-->
@@ -130,9 +141,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             <xsl:with-param name="levelValue" select="$levelValue"/>
                         </xsl:call-template>
                     </xsl:if>
-
-					
-
                 </xsl:if>
             </xsl:when>
             <!--Levels above 6-->
@@ -154,11 +162,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
                     <xsl:with-param name="sZeros" select="$sZeros"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                </xsl:call-template>
-
-
+				</xsl:call-template>
                 <!--Calling tmpAbbrAcrHeading template setting AbbrAcr flag and closing heading tag-->
                 <xsl:call-template name="closeHeading">
                     <xsl:with-param name="level" select="$level"/>
@@ -181,11 +185,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('h',$level),'&gt;')"/>
 			</xsl:otherwise>
 		</xsl:choose>
-
 	</xsl:template>
-
-	
-
     <xsl:template name="TempLevelSpan">
         <xsl:param name="verhead"/>
         <xsl:param name="custom"/>
@@ -197,8 +197,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:param name="sMinuses"/>
         <xsl:param name="sNumbers"/>
         <xsl:param name="sZeros"/>
-        <xsl:param name="FootnotesLevel" select="0"/>
-        <xsl:param name="FootnotesPosition" select="'page'"/>
         <xsl:message terminate="no">debug In TempLevelSpan</xsl:message>
         <xsl:choose>
             <xsl:when test="$lvlcharStyle='True'">
@@ -221,9 +219,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                 <xsl:with-param name="sZeros" select="$sZeros"/>
                                 <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                            </xsl:call-template>
+							</xsl:call-template>
                         </span>
                     </xsl:when>
                     <xsl:when test="w:pPr/w:ind[@w:left] and  w:pPr/w:jc">
@@ -243,9 +239,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                 <xsl:with-param name="sZeros" select="$sZeros"/>
                                 <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                            </xsl:call-template>
+							</xsl:call-template>
                         </span>
                     </xsl:when>
                     <xsl:when test="w:pPr/w:ind[@w:left]">
@@ -264,11 +258,8 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                 <xsl:with-param name="sZeros" select="$sZeros"/>
                                 <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                            </xsl:call-template>
+							</xsl:call-template>
                         </span>
-
                     </xsl:when>
                     <xsl:when test="w:pPr/w:ind[@w:right]">
                         <xsl:variable name="val" select="w:pPr/w:ind/@w:right"/>
@@ -286,9 +277,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                 <xsl:with-param name="sZeros" select="$sZeros"/>
                                 <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                            </xsl:call-template>
+							</xsl:call-template>
                         </span>
                     </xsl:when>
                     <xsl:when test="w:pPr/w:jc">
@@ -306,9 +295,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                 <xsl:with-param name="sZeros" select="$sZeros"/>
                                 <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                            </xsl:call-template>
+							</xsl:call-template>
                         </span>
                     </xsl:when>
                     <xsl:otherwise>
@@ -324,9 +311,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             <xsl:with-param name="sZeros" select="$sZeros"/>
                             <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
                             <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                        </xsl:call-template>
+						</xsl:call-template>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
@@ -343,15 +328,10 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     <xsl:with-param name="sZeros" select="$sZeros"/>
                     <xsl:with-param name="mastersubpara" select="$mastersubhead"/>
                     <xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                </xsl:call-template>
+				</xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>
-
     </xsl:template>
-
-
 	<xsl:template name="closeHeading">
 		<xsl:param name="level"/>
 		<xsl:param name="levelValue"/>
@@ -386,13 +366,10 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             <p></p>
         </xsl:if>-->
 	</xsl:template>
-	
     <!--Template to Close Levels-->
     <xsl:template name="CloseLevel">
         <xsl:param name="CurrentLevel"/>
         <!-- for Footnotes positioning -->
-        <xsl:param name="FootnotesPosition" select="'page'"/>
-        <xsl:param name="FootnotesLevel" select="0"/>
         <!-- for Footnotes template -->
         <xsl:param name="verfoot"/>
         <xsl:param name="characterStyle"/>
@@ -400,8 +377,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:param name="sMinuses"/>
         <xsl:param name="sNumbers"/>
         <xsl:param name="sZeros"/>
-        
-        
         <!--<xsl:value-of select="$CurrentLevel"/>-->
         <!--Peeking the top value of the stack-->
         <xsl:variable name="PeekLevel" select="myObj:PeekLevel()"/>
@@ -409,7 +384,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <!--If top level is less than or equal to current level then PoP the Stack and close that level-->
         <xsl:choose>
             <xsl:when test="$CurrentLevel &gt; 6 and $PeekLevel = 6 ">
-                
                 <xsl:variable name="PopLevel" select="myObj:PoPLevel()"/>
                 <xsl:message terminate="no">
                     progress:Closing level <xsl:value-of select="$PopLevel"/>
@@ -498,18 +472,14 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
                         <xsl:with-param name="sNumbers" select="$sNumbers"/>
                         <xsl:with-param name="sZeros" select="$sZeros"/>
-                        <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                        <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                    </xsl:call-template>
+					</xsl:call-template>
                 </xsl:if>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
   <!--Insert page break in list-->
   <xsl:template name="PageInList">
     <xsl:param name="custom"/>
-    
     <xsl:for-each select ="./node()">
       <xsl:if test="name()='w:r'">
         <xsl:if test="((w:lastRenderedPageBreak) or (w:br/@w:type='page'))
@@ -561,7 +531,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
-
     <!--Template to Add List-->
     <xsl:template name="addlist">
         <xsl:param name="openId"/>
@@ -574,14 +543,12 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:message terminate="no">progress:addlist</xsl:message>
         <!--Pushes the current level into the stack-->
         <xsl:variable name="PeekLevel" select="myObj:ListPeekLevel()"/>
-
         <!--Checking the current level with the PeekLevel in the stack-->
         <xsl:if test="$PeekLevel=$openlvl">
             <xsl:variable name="PeekLevel1" select="myObj:ListPush($openlvl)"/>
             <xsl:variable name="IncListCounter" select="myObj:IncrementListCounters($openlvl,$openId)"/>
             <xsl:variable name="txt" select="myObj:TextList($numFmt,$lText,$openId,$openlvl)"/>
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
-
             <xsl:choose>
                 <xsl:when  test="($numFmt='lowerLetter')
                       or ($numFmt='lowerRoman')
@@ -603,9 +570,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     </xsl:call-template>
                 </xsl:otherwise>
             </xsl:choose>
-
         </xsl:if>
-    
         <!--Checking the current level with the PeekLevel in the stack-->
         <xsl:if test="$openlvl &gt; $PeekLevel">
             <xsl:variable name="diffLevel" select="myObj:DiffLevel($openlvl,$PeekLevel)"/>
@@ -615,7 +580,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     <xsl:variable name="IncListCounter" select="myObj:IncrementListCounters($openlvl,$openId)"/>
                     <xsl:variable name="txt" select="myObj:TextList($numFmt,$lText,$openId,$openlvl)"/>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
-
                     <xsl:choose>
                         <xsl:when  test="($numFmt='lowerLetter')
                           or ($numFmt='lowerRoman')
@@ -636,7 +600,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             </xsl:call-template>
                         </xsl:otherwise>
                     </xsl:choose>
-
                 </xsl:when>
                 <xsl:otherwise>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
@@ -646,7 +609,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     </xsl:call-template>
                     <xsl:value-of select="myObj:Increment($openlvl,$PeekLevel,$openId)"/>
                     <xsl:variable name="txt" select="myObj:TextList($numFmt,$lText,$openId,$openlvl)"/>
-
                     <xsl:choose>
                         <xsl:when  test="($numFmt='lowerLetter')
                           or ($numFmt='lowerRoman')
@@ -667,13 +629,10 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             </xsl:call-template>
                         </xsl:otherwise>
                     </xsl:choose>
-
                 </xsl:otherwise>
             </xsl:choose>
         </xsl:if>
-
     </xsl:template>
-
     <!--Template to close the List-->
     <xsl:template name="closelist">
         <xsl:param name="close"/>
@@ -695,7 +654,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:call-template>
         </xsl:if>
     </xsl:template>
-
     <xsl:template name="recursive">
         <xsl:param name="rec"/>
         <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
@@ -709,7 +667,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:call-template>
         </xsl:if>
     </xsl:template>
-
     <xsl:template name="recStart">
         <xsl:param name="abstLevel"/>
         <xsl:param name="level"/>
@@ -748,7 +705,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-
     <!--Template to Close Complex List-->
     <xsl:template name="ComplexListClose">
         <xsl:param name="close"/>
@@ -767,7 +723,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:call-template>
         </xsl:if>
     </xsl:template>
-
     <!--Template to Close All nested List-->
     <xsl:template name="CloseLastlist">
         <xsl:param name="close"/>
@@ -790,7 +745,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:if>
         </xsl:if>
     </xsl:template>
-
     <!--Template for default Page number-->
     <xsl:template name="DefaultPageNum">
         <xsl:message terminate="no">debug in DefaultPageNum</xsl:message>
@@ -892,9 +846,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:variable name="reSetConPageBreak" select="myObj:ResetSetConPageBreak()"/>
         <xsl:variable name="initialize" select="myObj:InitalizeCheckSection()"/>
     </xsl:template>
-
-    
-
     <!--Template for Implementing Table-->
     <xsl:template name="TableHandler">
         <xsl:param name="parmVerTable"/>
@@ -940,7 +891,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p  ','xml:lang=',$quote,$varBdo,$quote,'&gt;')"/>
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$varBdo,$quote,'&gt;')"/>
                     </xsl:if>
-
                     <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
                         <xsl:for-each select="preceding-sibling::node()[1]/node()">
                             <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
@@ -1033,8 +983,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                             <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>-->
                     </xsl:if>
                 </caption>
@@ -1216,5 +1164,4 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             <!--Closing Table-->
         </table>
     </xsl:template>
-
 </xsl:stylesheet>

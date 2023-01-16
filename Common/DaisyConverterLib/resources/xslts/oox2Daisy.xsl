@@ -46,7 +46,11 @@
     <xsl:param name="DPI"/>
     <xsl:param name="CharacterStyles"/>
     <xsl:param name="FootnotesPosition"/>
-    <xsl:param name="FootnotesLevel"/>
+	<xsl:param name="FootnotesLevel"/>
+	<xsl:param name="FootnotesNumbering" />
+	<xsl:param name="FootnotesStartValue" />
+	<xsl:param name="FootnotesNumberingPrefix" />
+	<xsl:param name="FootnotesNumberingSuffix" />
     <xsl:output method="xml" indent="no" />
     <xsl:variable name="sOperators"
       select="concat(
@@ -370,7 +374,6 @@
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>-->
-                
                 <!-- Calling Frontmatter template and passing parameters Title and Creator for doctitle and docpublisher-->
                 <xsl:call-template name="FrontMatter">
                     <xsl:with-param name="Title" select ="$Title"/>
@@ -386,10 +389,7 @@
                     <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
                     <xsl:with-param name="dpi" select="$DPI"/>
                     <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                </xsl:call-template>
-
+				</xsl:call-template>
                 <!--Calling Bodymatter template-->
                 <xsl:call-template name="BodyMatter">
                     <xsl:with-param name="prmTrack" select ="$prmTRACK"/>
@@ -403,10 +403,7 @@
                     <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
                     <xsl:with-param name="dpi" select="$DPI"/>
                     <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-                    <xsl:with-param name="FootnotesLevel" select="number($FootnotesLevel)"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                </xsl:call-template>
-
+				</xsl:call-template>
                 <!--Calling Rearmatter template-->
                 <!--NP 20220427 - launch only if a Rearmatter daisy style is found to avoid empty rearmatter -->
                 <xsl:if test="(
@@ -427,20 +424,11 @@
                             <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
                             <xsl:with-param name="dpi" select="$DPI"/>
                             <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-                            <xsl:with-param name="FootnotesLevel" select="number($FootnotesLevel)"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                        </xsl:call-template>
+						</xsl:call-template>
                 </xsl:if>
-                
-
                 <!--</xsl:otherwise>
                 </xsl:choose>-->
             </book>
         </dtbook>
     </xsl:template>
-
-    
-
-
-
 </xsl:stylesheet>
