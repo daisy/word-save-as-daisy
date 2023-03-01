@@ -85,7 +85,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 if (numberingPair.Value == GlobaleSettings.FootnotesNumbering)
                 {
-                    this.notesPositionSelector.SelectedItem = numberingPair.Key;
+                    this.notesNumberingSelector.SelectedItem = numberingPair.Key;
+                    // Disable note numbering start value field if numbering scheme is not set to "Number"
                     this.notesNumberingStartValue.Enabled = numberingPair.Value == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
                     // Disable level selection for end of pages value
                     //footnotesLevelSelector.Enabled = (numberingPair.Value != ConverterSettings.FootnotesPositionChoice.Enum.Page);
@@ -94,7 +95,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             notesNumberingStartValue.Text = GlobaleSettings.FootnotesStartValue.ToString();
             notesNumberPrefixValue.Text = GlobaleSettings.FootnotesNumberingPrefix;
             notesNumberSuffixValue.Text = GlobaleSettings.FootnotesNumberingSuffix;
-            
+
+            this.notesNumberingStartValue.Enabled = notesNumberingMap[(string)notesNumberingSelector.SelectedItem] == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
+
         }
 
         private void btn_ok_Click(object sender, EventArgs e)
