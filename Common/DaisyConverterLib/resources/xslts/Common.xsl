@@ -761,35 +761,38 @@
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
                     <xsl:variable name="setBookmark" select="myObj:SetBookmark()"/>
                 </xsl:if>
-                <a>
-                    <xsl:choose>
-                        <!--If both id and anchor attribute is present in hyperlink-->
-                        <xsl:when test="(@r:id) and (@w:anchor)">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="concat(myObj:Anchor(@r:id, $flagNote),'#',@w:anchor)"/>
-                            </xsl:attribute>
-                            <xsl:attribute name="external">true</xsl:attribute>
-                        </xsl:when>
-                        <!--If only anchor for hyperlink is present-->
-                        <xsl:when test="@w:anchor">
-                            <xsl:attribute name="href">
-                                <xsl:text>#</xsl:text>
-                                <xsl:value-of select="myObj:EscapeSpecial(@w:anchor)"/>
-                            </xsl:attribute>
-                        </xsl:when>
-                        <!--If only id for hyperlink is present-->
-                        <xsl:when test="@r:id">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="myObj:Anchor(@r:id,$flagNote)"/>
-                            </xsl:attribute>
-                            <xsl:attribute name="external">true</xsl:attribute>
-                        </xsl:when>
-                    </xsl:choose>
-                    <!--Calling hyperlink template for hyperlink text-->
-                    <xsl:call-template name="hyperlink">
-                        <xsl:with-param name="verhyp" select="$VERSION"/>
-                    </xsl:call-template>
-                </a>
+				<xsl:variable name="href">
+					<xsl:choose>
+						<!--If both id and anchor attribute is present in hyperlink-->
+						<xsl:when test="(@r:id) and (@w:anchor)">
+							<xsl:value-of select="concat(myObj:Anchor(@r:id, $flagNote),'#',@w:anchor)"/>
+						</xsl:when>
+						<!--If only anchor for hyperlink is present-->
+						<xsl:when test="@w:anchor">
+							<xsl:text>#</xsl:text>
+							<xsl:value-of select="myObj:EscapeSpecial(@w:anchor)"/>
+						</xsl:when>
+						<!--If only id for hyperlink is present-->
+						<xsl:when test="@r:id">
+							<xsl:value-of select="myObj:Anchor(@r:id,$flagNote)"/>
+						</xsl:when>
+					</xsl:choose>
+				</xsl:variable>
+                <!--Calling CustomCharStyle template with flagNote for hyperlink text-->
+				<xsl:for-each select="w:r">
+					<xsl:call-template name="CustomCharStyle">
+						<xsl:with-param name="attributes">
+							<xsl:if test="$href">
+								<xsl:text>href="</xsl:text>
+								<xsl:value-of select="$href"/>
+								<xsl:text>" </xsl:text>
+							</xsl:if>
+							<xsl:if test="@r:id">
+								<xsl:text>external="true" </xsl:text>
+							</xsl:if>
+						</xsl:with-param>
+					</xsl:call-template>
+				</xsl:for-each>
             </xsl:if>
             <!--Checking for BookMarkStart-->
             <xsl:if test="name()='w:bookmarkStart'">
@@ -1682,14 +1685,8 @@
             <xsl:variable name="getHyper" select="myObj:GetHyperLink()"/>
         </xsl:if>
     </xsl:template>
-    <!--Template for hyperlink-->
-    <xsl:template name="hyperlink">
-        <xsl:param name="verhyp"/>
-        <xsl:message terminate="no">debug In hyperlink</xsl:message>
-        <xsl:for-each select="w:r">
-            <xsl:call-template name="CustomCharStyle"/>
-        </xsl:for-each>
-    </xsl:template>
+
+	
     <!--Template for smartTag-->
     <xsl:template name="smartTag">
         <xsl:message terminate="no">debug In smartTag</xsl:message>
@@ -2201,9 +2198,11 @@
     <!-- template to open a style tag (em,strong,sup or sub)-->
     <xsl:template name="OpenStyleTagIfNotOpened">
         <xsl:param name="styleTag"/>
+		<xsl:param name="attributes" select="''"/>
         <xsl:if test="not(myObj:HasCharacterStyle($styleTag))">
             <xsl:if test="myObj:PushCharacterStyle($styleTag)" />
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$styleTag,'&gt;')"/>
+            <xsl:value-of disable-output-escaping="yes"
+						  select="concat('&lt;', $styleTag, ' ', $attributes, '&gt;')"/>
         </xsl:if>
     </xsl:template>
     <!-- template to close a style tag (and its children if needed recursively) -->
@@ -2232,6 +2231,7 @@
      - Merge emphasis/strong block : use a flag system to create start and closing tag for text decoration -->
     <xsl:template name="CustomCharStyle">
         <xsl:param name="characterStyle"/>
+		<xsl:param name="attributes" select="''" /> <!-- To handle hyperlinks --> 
         <xsl:param name="txt"/>
         <!-- Compute character group status -->
         <!-- Group of bold = strong characters -->
@@ -2244,12 +2244,19 @@
                       or (w:rPr/w:rStyle[@w:val ='EndnoteReference']) 
                       or (w:footnoteReference) 
                       or (w:endnoteReference) " />
+
+		<xsl:variable name="isHyperlink" select="parent::w:hyperlink" />
         <!-- Group of subscript = sub characters -->
         <xsl:variable name="isSubscript" select="w:rPr/w:vertAlign[@w:val='subscript']" />
         <!-- Group of superscript = sup characters -->
         <xsl:variable name="isSuperscript" select="w:rPr/w:vertAlign[@w:val='superscript']" />
         <xsl:variable name="lastGroup" select="not(following-sibling::w:r)" />
         <!-- Close removed status -->
+		<xsl:if test="not($isHyperlink)">
+			<xsl:call-template name="CloseStyleTag">
+				<xsl:with-param name="styleTag" select="'a'"/>
+			</xsl:call-template>
+		</xsl:if>
         <xsl:if test="not($isEmp)">
             <xsl:call-template name="CloseStyleTag">
                 <xsl:with-param name="styleTag" select="'em'"/>
@@ -2294,6 +2301,12 @@
                         <xsl:with-param name="styleTag" select="'em'"/>
                     </xsl:call-template>
                 </xsl:if>
+				<xsl:if test="$isHyperlink">
+					<xsl:call-template name="OpenStyleTagIfNotOpened">
+						<xsl:with-param name="styleTag" select="'a'"/>
+						<xsl:with-param name="attributes" select="$attributes" />
+					</xsl:call-template>
+				</xsl:if>
                 <xsl:call-template name="CharacterStyles">
                     <xsl:with-param name="characterStyle" select="$characterStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
