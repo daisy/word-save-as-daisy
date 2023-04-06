@@ -92,7 +92,7 @@
 
 					<!-- DB : write header in output when PageNumberDAISY is not applied  -->
 					<xsl:if test="not($IsPageNumberDAISYApplied)">
-						<xsl:call-template name="tmpHeading">
+						<xsl:call-template name="openHeading">
 							<xsl:with-param name="level" select="string($level)"/>
 						</xsl:call-template>
 					</xsl:if>
@@ -122,7 +122,7 @@
 					<!-- DB : write header in output when PageNumberDAISY is not applied  -->
 					<xsl:if test="not($IsPageNumberDAISYApplied)">
 						<!--Calling tmpAbbrAcrHeading template setting AbbrAcr flag and closing heading tag-->
-						<xsl:call-template name="tmpAbbrAcrHeading">
+						<xsl:call-template name="closeHeading">
 							<xsl:with-param name="level" select="string($level)"/>
 							<xsl:with-param name="levelValue" select="$levelValue"/>
 						</xsl:call-template>
@@ -134,7 +134,7 @@
 			<xsl:when test="$level &gt; 6">
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;level',6,'&gt;')"/>
 				<!--Calling tmpHeading template for adding Levels-->
-				<xsl:call-template name="tmpHeading">
+				<xsl:call-template name="openHeading">
 					<xsl:with-param name="level" select="'6'"/>
 				</xsl:call-template>
 				<!--Calling ParaHandler template for heading text-->
@@ -161,12 +161,29 @@
 
 
 				<!--Calling tmpAbbrAcrHeading template setting AbbrAcr flag and closing heading tag-->
-				<xsl:call-template name="tmpAbbrAcrHeading">
+				<xsl:call-template name="closeHeading">
 					<xsl:with-param name="level" select="string($level)"/>
 					<xsl:with-param name="levelValue" select="$levelValue"/>
 				</xsl:call-template>
 			</xsl:when>
 		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="openHeading">
+		<xsl:param name="level"/>
+		<xsl:message terminate="no">debug in openHeading</xsl:message>
+		<xsl:choose>
+			<xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
+				<xsl:call-template name="LanguagesPara">
+					<xsl:with-param name="Attribute" select="'1'"/>
+					<xsl:with-param name="level" select="concat('h',$level)"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('h',$level),'&gt;')"/>
+			</xsl:otherwise>
+		</xsl:choose>
+
 	</xsl:template>
 
 	<xsl:template name ="TempLevelSpan">
@@ -332,6 +349,40 @@
 			</xsl:otherwise>
 		</xsl:choose>
 
+	</xsl:template>
+
+	<xsl:template name="closeHeading">
+		<xsl:param name="level"/>
+		<xsl:param name="levelValue"/>
+		<xsl:choose>
+			<!-- Special case : abbreviation flag is set, we keep the closing tag in a stack  -->
+			<xsl:when test="(d:AbbrAcrFlag()='1') and not(w:r/w:pict/v:shape/v:textbox)">
+				<xsl:variable name="abbrpara" select="d:PushAbrAcrhead(concat('&lt;',concat('/h',$level),'&gt;'))"/>
+				<xsl:if test="d:ListMasterSubFlag()='1'">
+					<xsl:variable name="curLevel" select="d:PeekLevel()"/>
+					<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($curLevel)"/>
+					<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc()"/>
+					<xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag()"/>
+					<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($curLevel)"/>
+				</xsl:if>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
+				<xsl:if test="not(w:r/w:pict/v:shape/v:textbox)">
+					<xsl:if test="d:ListMasterSubFlag()='1'">
+						<xsl:variable name="curLevel" select="d:PeekLevel()"/>
+						<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($curLevel)"/>
+						<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc()"/>
+						<xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag()"/>
+						<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($curLevel)"/>
+					</xsl:if>
+				</xsl:if>
+			</xsl:otherwise>
+		</xsl:choose>
+		<!-- NP 20220503 : removing empty paragraphs for now-->
+		<!--<xsl:if test="(following-sibling::node()[1][name()='w:sectPr']) or (following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,8,1)=$levelValue])">
+            <p></p>
+        </xsl:if>-->
 	</xsl:template>
 
 	<!--Template to Close Levels-->
@@ -829,57 +880,6 @@
 		</xsl:for-each>
 		<xsl:sequence select="d:sink(d:ResetSetConPageBreak($myObj))"/> <!-- empty -->
 		<xsl:sequence select="d:sink(d:InitalizeCheckSection($myObj))"/> <!-- empty -->
-	</xsl:template>
-
-	<xsl:template name="tmpHeading">
-		<xsl:param name="level" as="xs:string"/>
-		<xsl:message terminate="no">debug in tmpHeading</xsl:message>
-		<xsl:choose>
-			<xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
-				<xsl:call-template name="LanguagesPara">
-					<xsl:with-param name="Attribute" select="true()"/>
-					<xsl:with-param name="level" select="concat('h',$level)"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;h',$level,'&gt;')"/>
-			</xsl:otherwise>
-		</xsl:choose>
-
-	</xsl:template>
-
-	<xsl:template name="tmpAbbrAcrHeading">
-		<xsl:param name="level" as="xs:string"/>
-		<xsl:param name="levelValue" as="xs:integer?" required="yes"/>
-		<xsl:message terminate="no">debug in tmpAbbrAcrHeading</xsl:message>
-		<xsl:choose>
-			<xsl:when test="(d:AbbrAcrFlag($myObj)=1) and not(w:r/w:pict/v:shape/v:textbox)">
-				<xsl:variable name="temp" as="xs:string">
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;/h',$level,'&gt;')"/>
-				</xsl:variable>
-				<xsl:sequence select="d:sink(d:PushAbrAcrhead($myObj,$temp))"/> <!-- empty -->
-				<xsl:if test="d:ListMasterSubFlag($myObj)=1">
-					<xsl:variable name ="curLevel" as="xs:integer" select="d:PeekLevel($myObj)"/>
-					<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj,$curLevel)"/>
-					<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
-					<xsl:sequence select="d:sink(d:MasterSubResetFlag($myObj))"/> <!-- empty -->
-					<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj,$curLevel)"/>
-				</xsl:if>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:if test="not(w:r/w:pict/v:shape/v:textbox)">
-					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;/h',$level,'&gt;')"/>
-					<xsl:if test="d:ListMasterSubFlag($myObj)=1">
-						<xsl:variable name ="curLevel" as="xs:integer" select="d:PeekLevel($myObj)"/>
-						<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj,$curLevel)"/>
-						<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
-						<xsl:sequence select="d:sink(d:MasterSubResetFlag($myObj))"/> <!-- empty -->
-						<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj,$curLevel)"/>
-					</xsl:if>
-				</xsl:if>
-			</xsl:otherwise>
-		</xsl:choose>
-		<!-- NP 20220503 : removing empty paragraphs for now-->
 	</xsl:template>
 
 	<!--Template for Implementing Table-->
