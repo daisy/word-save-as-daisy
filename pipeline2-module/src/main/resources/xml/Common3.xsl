@@ -21,6 +21,30 @@
 	<xsl:variable name="doclang" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
 	<xsl:variable name="doclangbidi" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
 	<xsl:variable name="doclangeastAsia" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
+	<xsl:param name="Title"/>
+	<!--Holds Documents Title value-->
+	<xsl:param name="Creator"/>
+	<!--Holds Documents creator value-->
+	<xsl:param name="Publisher"/>
+	<!--Holds Documents Publisher value-->
+	<xsl:param name="UID"/>
+	<!--Holds Document unique id value-->
+	<xsl:param name="Subject"/>
+	<!--Holds Documents Subject value-->
+	<xsl:param name="prmTRACK"/>
+	<xsl:param name="Version"/>
+	<!--Holds Documents version value-->
+	<xsl:param name="Custom"/>
+	<xsl:param name="MasterSub"/>
+	<xsl:param name="ImageSizeOption"/>
+	<xsl:param name="DPI"/>
+	<xsl:param name="CharacterStyles"/>
+	<xsl:param name="FootnotesPosition"/>
+	<xsl:param name="FootnotesLevel"/>
+	<xsl:param name="FootnotesNumbering" />
+	<xsl:param name="FootnotesStartValue" />
+	<xsl:param name="FootnotesNumberingPrefix" />
+	<xsl:param name="FootnotesNumberingSuffix" />
 	<!--Template to create NoteReference for FootNote and EndNote
   It is taking two parameters varFootnote_Id and varNote_Class. varFootnote_Id 
   will contain the Reference id of either Footnote or Endnote.-->
@@ -141,7 +165,13 @@
 									<!--Checking for MathImage in Word2003/xp  footnotes-->
 									<xsl:when test="(w:r/w:object/v:shape/v:imagedata/@r:id) and (not(w:r/w:object/o:OLEObject[@ProgID='Equation.DSMT4']))" >
 										<p>
-											<xsl:value-of select="$checkid + 1"/>
+											<xsl:value-of select="$FootnotesNumberingPrefix"/>
+											<xsl:choose>
+												<xsl:when test="$FootnotesNumbering = 'number'">
+													<xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+												</xsl:when>
+											</xsl:choose>
+											<xsl:value-of select="$FootnotesNumberingSuffix"/>
 											<imggroup>
 												<img>
 													<!--Variable to hold r:id from document.xml-->
@@ -363,7 +393,7 @@
 		<xsl:param name="dpi" as="xs:float?"/>
 		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:message terminate="no">debug in PictureHandler</xsl:message>
-		<xsl:variable name="alttext" as="xs:string" select="w:drawing/wp:inline/wp:docPr/@descr"/>
+		<xsl:variable name="alttext" as="xs:string?" select="w:drawing/wp:inline/wp:docPr/@descr"/>
 		<!--Variable holds the value of Image Id-->
 		<xsl:variable name="Img_Id" as="xs:string?">
 			<xsl:choose>
@@ -964,7 +994,10 @@
 				or contains(w:object/o:OLEObject/@ProgID,'PowerPoint')
 			)">
 				<xsl:variable name="href" as="xs:string" select="d:Object($myObj,w:object/o:OLEObject/@r:id)"/>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;a href=&quot;',$href,'&quot; external=&quot;true&quot;&gt;')"/>
+				<xsl:text disable-output-escaping="yes">&lt;a href=&quot;</xsl:text>
+				<xsl:value-of select="$href"/>
+				<xsl:text disable-output-escaping="yes">&quot; external=&quot;true&quot;&gt;</xsl:text>
+				<!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;a href=&quot;',$href,'&quot; external=&quot;true&quot;&gt;')"/>-->
 			</xsl:if>
 			<xsl:variable name="ImageName" as="xs:string" select="d:MathImage($myObj,w:object/v:shape/v:imagedata/@r:id)"/>
 			<xsl:variable name ="id" as="xs:string" select="d:GenerateObjectId($myObj)"/>
@@ -2164,7 +2197,6 @@
 				</xsl:choose>
 			</xsl:when>
 			<!--Checking for language type eastAsia-->
-
 			<xsl:when test="w:r/w:rPr/w:rFonts/@w:hint='eastAsia'">
 				<xsl:choose>
 					<xsl:when test="w:r/w:rPr/w:lang/@w:eastAsia">
@@ -2272,7 +2304,7 @@
 									</xsl:when>
 									<!--Assingning default language value-->
 									<xsl:otherwise>
-										<xsl:value-of select="$doclang"/>
+										<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,'&gt;')"/>
 									</xsl:otherwise>
 								</xsl:choose>
 							</xsl:otherwise>
@@ -2286,7 +2318,7 @@
 							</xsl:when>
 							<!--Assingning default language value-->
 							<xsl:otherwise>
-								<xsl:value-of select="$doclang"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$level,'&gt;')"/>
 							</xsl:otherwise>
 						</xsl:choose>
 					</xsl:otherwise>

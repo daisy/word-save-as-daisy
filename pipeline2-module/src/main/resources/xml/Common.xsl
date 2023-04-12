@@ -19,6 +19,30 @@
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
     <!--Parameter citation-->
     <xsl:param name="Cite_style" as="xs:string" select="d:Citation($myObj)"/>
+    <xsl:param name="Title"/>
+    <!--Holds Documents Title value-->
+    <xsl:param name="Creator"/>
+    <!--Holds Documents creator value-->
+    <xsl:param name="Publisher"/>
+    <!--Holds Documents Publisher value-->
+    <xsl:param name="UID"/>
+    <!--Holds Document unique id value-->
+    <xsl:param name="Subject"/>
+    <!--Holds Documents Subject value-->
+    <xsl:param name="prmTRACK"/>
+    <xsl:param name="Version"/>
+    <!--Holds Documents version value-->
+    <xsl:param name="Custom"/>
+    <xsl:param name="MasterSub"/>
+    <xsl:param name="ImageSizeOption"/>
+    <xsl:param name="DPI"/>
+    <xsl:param name="CharacterStyles"/>
+    <xsl:param name="FootnotesPosition"/>
+    <xsl:param name="FootnotesLevel"/>
+    <xsl:param name="FootnotesNumbering" />
+    <xsl:param name="FootnotesStartValue" />
+    <xsl:param name="FootnotesNumberingPrefix" />
+    <xsl:param name="FootnotesNumberingSuffix" />
 
     <!--template for frontmatter elements-->
     <xsl:template name="FrontMatter">
@@ -40,8 +64,6 @@
         <xsl:param name="imgOption" as="xs:string"/>
         <xsl:param name="dpi" as="xs:float"/>
         <xsl:param name="charStyles" as="xs:boolean"/>
-        <xsl:param name="FootnotesPosition" as="xs:string"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer"/>
 
         <xsl:message terminate="no">progress:Building the frontmatter</xsl:message>
         <frontmatter>
@@ -88,9 +110,6 @@
                     <xsl:with-param name="dpi" select="$dpi"/>
                     <xsl:with-param name="charStyles" select="$charStyles"/>
                     <xsl:with-param name="matterType" select="'Frontmatter'" />
-
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:if>
         </frontmatter>
@@ -114,8 +133,6 @@
         <xsl:param name="imgOption" as="xs:string"/>
         <xsl:param name="dpi" as="xs:float"/>
         <xsl:param name="charStyles" as="xs:boolean"/>
-        <xsl:param name="FootnotesPosition" as="xs:string"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer"/>
         <xsl:message terminate="no">progress:Building the bodymatter</xsl:message>
         <bodymatter id="bodymatter_0001">
             <xsl:call-template name="Matter">
@@ -131,8 +148,6 @@
                 <xsl:with-param name="dpi" select="$dpi"/>
                 <xsl:with-param name="charStyles" select="$charStyles"/>
                 <xsl:with-param name="matterType" select="'Bodymatter'" />
-                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
             </xsl:call-template>
         </bodymatter>
     </xsl:template>
@@ -155,8 +170,6 @@
         <xsl:param name="imgOption" as="xs:string"/>
         <xsl:param name="dpi" as="xs:float"/>
         <xsl:param name="charStyles" as="xs:boolean"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" />
-        <xsl:param name="FootnotesLevel" as="xs:integer" />
         <xsl:message terminate="no">progress:Building the rearmatter</xsl:message>
         <rearmatter>
             <xsl:if test="count(
@@ -200,8 +213,6 @@
                 <xsl:with-param name="dpi" select="$dpi"/>
                 <xsl:with-param name="charStyles" select="$charStyles"/>
                 <xsl:with-param name="matterType" select="'Rearmatter'" />
-                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
             </xsl:call-template>
         </rearmatter>
     </xsl:template>
@@ -224,8 +235,6 @@
         <xsl:param name="dpi" as="xs:float"/>
         <xsl:param name="charStyles" as="xs:boolean"/>
         <xsl:param name="matterType" as="xs:string"/> <!-- Frontmatter|Bodymatter|Readmatter -->
-        <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
         
         <!--Variable external images-->
         <xsl:variable name="external" as="xs:string" select="d:ExternalImage($myObj)">
@@ -314,8 +323,6 @@
                                 <xsl:with-param name="mastersubhead" select="$masterSub"/>
                                 <xsl:with-param name="headingFormatAndTextAndID" select="'0'"/>
                                 <xsl:with-param name="lvlcharStyle" select="$charStyles"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </xsl:if>
                         <xsl:sequence select="d:sink(d:CheckCaverPage($myObj))"/> <!-- empty -->
@@ -328,8 +335,6 @@
                             <xsl:with-param name="imgOptionStyle" select="$imgOption"/>
                             <xsl:with-param name="dpiStyle" select="$dpi"/>
                             <xsl:with-param name="characterStyle" select="$charStyles"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
                     </xsl:when>
                     <!--Checking for Table element-->
@@ -371,8 +376,6 @@
                                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
                                     <xsl:with-param name="sZeros" select="$sZeros"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                                 <!--Calling Template to add Table Of Contents-->
                                 <xsl:call-template name="TableOfContents">
@@ -391,8 +394,6 @@
                                     <xsl:with-param name="mastersubhead" select="$masterSub"/>
                                     <xsl:with-param name="headingFormatAndTextAndID" select="'0'"/>
                                     <xsl:with-param name="lvlcharStyle" select="$charStyles"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                             </xsl:when>
                             <xsl:otherwise>
@@ -520,6 +521,7 @@
                             <xsl:if test="d:CountAbrAcrpara($myObj) &gt; 0">
                                 <xsl:value-of disable-output-escaping="yes" select="d:PeekAbrAcrpara($myObj)"/>
                             </xsl:if>
+                            <!-- FIXME NP : This might lead to an error as the heading is already closed-->
                             <xsl:if test="d:CountAbrAcrhead($myObj) &gt; 0">
                                 <xsl:value-of disable-output-escaping="yes" select="d:PeekAbrAcrhead($myObj)"/>
                             </xsl:if>
@@ -555,8 +557,6 @@
             <xsl:with-param name="sMinuses" select="$sMinuses"/>
             <xsl:with-param name="sNumbers" select="$sNumbers"/>
             <xsl:with-param name="sZeros" select="$sZeros"/>
-            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
         </xsl:call-template>
     </xsl:template>
 
@@ -580,8 +580,6 @@
         <xsl:param name="imgOptionPara" as="xs:string" select="''"/>
         <xsl:param name="dpiPara" as="xs:float?"/>
         <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
         <!--Calling Footnote template when the page break is encountered.-->
         <xsl:if test="(
             ( 
@@ -655,8 +653,6 @@
                     <xsl:with-param name="charparahandlerStyle" select="$charparahandlerStyle"/>
                     <xsl:with-param name="mastersubpara" select="$mastersubpara"/>
                     <xsl:with-param name="level" select="$level"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:if>
         </xsl:if>
@@ -672,8 +668,6 @@
                     <xsl:with-param name="charparahandlerStyle" select="$charparahandlerStyle"/>
                     <xsl:with-param name="mastersubpara" select="$mastersubpara"/>
                     <xsl:with-param name="level" select="$level"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:if>
         </xsl:if>
@@ -699,7 +693,13 @@
             <!--Adding Note index-->
             <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                 <xsl:if test="d:NoteFlag($myObj)=1">
-                    <xsl:value-of select="$checkid - 1"/>
+                    <xsl:value-of select="$FootnotesNumberingPrefix"/>
+                    <xsl:choose>
+                        <xsl:when test="$FootnotesNumbering = 'number'">
+                            <xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+                        </xsl:when>
+                    </xsl:choose>
+                    <xsl:value-of select="$FootnotesNumberingSuffix"/>
                 </xsl:if>
             </xsl:if>
         </xsl:if>
@@ -783,28 +783,38 @@
                     <xsl:value-of disable-output-escaping="yes" select="'&lt;/a&gt;'"/>
                     <xsl:sequence select="d:sink(d:SetBookmark($myObj))"/> <!-- empty -->
                 </xsl:if>
-                <a>
+                <xsl:variable name="href">
                     <xsl:choose>
                         <!--If both id and anchor attribute is present in hyperlink-->
                         <xsl:when test="(@r:id) and (@w:anchor)">
-                            <xsl:attribute name="href">
-                                <xsl:value-of select="concat(d:Anchor($myObj, @r:id, $flagNote),'#',@w:anchor)"/>
-                            </xsl:attribute>
-                            <xsl:attribute name="external">true</xsl:attribute>
+                            <xsl:value-of select="concat(d:Anchor($myObj, @r:id, $flagNote),'#',@w:anchor)"/>
                         </xsl:when>
                         <!--If only anchor for hyperlink is present-->
                         <xsl:when test="@w:anchor">
-                            <xsl:attribute name="href" select="concat('#',d:EscapeSpecial(@w:anchor))"/>
+                            <xsl:text>#</xsl:text>
+                            <xsl:value-of select="d:EscapeSpecial(@w:anchor)"/>
                         </xsl:when>
                         <!--If only id for hyperlink is present-->
                         <xsl:when test="@r:id">
-                            <xsl:attribute name="href" select="d:Anchor($myObj,@r:id,'')"/>
-                            <xsl:attribute name="external">true</xsl:attribute>
+                            <xsl:value-of select="d:Anchor($myObj, @r:id,$flagNote)"/>
                         </xsl:when>
                     </xsl:choose>
-                    <!--Calling hyperlink template for hyperlink text-->
-                    <xsl:call-template name="hyperlink"/>
-                </a>
+                </xsl:variable>
+                <!--Calling CustomCharStyle template with flagNote for hyperlink text-->
+                <xsl:for-each select="w:r">
+                    <xsl:call-template name="CustomCharStyle">
+                        <xsl:with-param name="attributes">
+                            <xsl:if test="$href">
+                                <xsl:text>href="</xsl:text>
+                                <xsl:value-of select="$href"/>
+                                <xsl:text>" </xsl:text>
+                            </xsl:if>
+                            <xsl:if test="@r:id">
+                                <xsl:text>external="true" </xsl:text>
+                            </xsl:if>
+                        </xsl:with-param>
+                    </xsl:call-template>
+                </xsl:for-each>
             </xsl:if>
 
             <!--Checking for BookMarkStart-->
@@ -1104,8 +1114,6 @@
                     <xsl:with-param name="txt" select="$txt"/>
                     <xsl:with-param name="charparahandlerStyle" select="$charparahandlerStyle"/>
                     <xsl:with-param name="VERSION" select="$VERSION"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                     <xsl:with-param name="sOperators" select="$sOperators"/>
                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -1146,8 +1154,6 @@
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                             <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
@@ -1160,8 +1166,6 @@
                                 <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                 <xsl:with-param name="sNumbers" select="$sNumbers"/>
                                 <xsl:with-param name="sZeros" select="$sZeros"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </xsl:if>
                     </xsl:otherwise>
@@ -1197,8 +1201,6 @@
         <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
         <xsl:param name="mastersubpara" as="xs:boolean"/>
         <xsl:param name="level" as="xs:integer"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
         <xsl:message terminate="no">progress:Creating sidebar</xsl:message>
 
         <xsl:if test="$flag='0'">
@@ -1217,8 +1219,6 @@
                                     <xsl:with-param name="txt" select="$txt"/>
                                     <xsl:with-param name="custom" select="$custom"/>
                                     <xsl:with-param name="charparahandlerStyle" select="$charparahandlerStyle"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                             </hd>
                         </xsl:when>
@@ -1288,8 +1288,6 @@
         <xsl:param name="sMinuses" as="xs:string"/>
         <xsl:param name="sNumbers" as="xs:string"/>
         <xsl:param name="sZeros" as="xs:string"/>
-        <xsl:param name="FootnotesPosition" as="xs:string"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer"/>
         
         <!--Checking for line breaks-->
         <xsl:if test="((w:br/@w:type='textWrapping') or (w:br)) and (not(w:br/@w:type='page'))">
@@ -1329,8 +1327,6 @@
                                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
                                     <xsl:with-param name="sZeros" select="$sZeros"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                                 <xsl:if test="$flag='3'">
                                     <!--Closing paragraph tag-->
@@ -1356,8 +1352,6 @@
                                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                         <xsl:with-param name="sNumbers" select="$sNumbers"/>
                                         <xsl:with-param name="sZeros" select="$sZeros"/>
-                                        <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                        <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                     </xsl:call-template>
                                 </xsl:if>
                                 <!--Opening paragraph tag-->
@@ -1387,8 +1381,6 @@
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                             <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
                         <xsl:if test="$flag='3'">
                             <!--Opening paragraph tag-->
@@ -1409,8 +1401,6 @@
                                 <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                 <xsl:with-param name="sNumbers" select="$sNumbers"/>
                                 <xsl:with-param name="sZeros" select="$sZeros"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </xsl:if>
                         <!--Opening paragraph tag-->
@@ -1431,8 +1421,6 @@
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                             <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
                         <xsl:if test="$flag='3'">
                             <!--Opening paragraph tag-->
@@ -1453,8 +1441,6 @@
                                 <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                 <xsl:with-param name="sNumbers" select="$sNumbers"/>
                                 <xsl:with-param name="sZeros" select="$sZeros"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </xsl:if>
                         <!--Opening paragraph tag-->
@@ -1723,13 +1709,6 @@
             <xsl:sequence select="d:sink(d:GetHyperLink($myObj))"/> <!-- empty -->
         </xsl:if>
 
-    </xsl:template>
-
-    <!--Template for hyperlink-->
-    <xsl:template name="hyperlink">
-        <xsl:for-each select="w:r">
-            <xsl:call-template name="RunTextHandler"/>
-        </xsl:for-each>
     </xsl:template>
 
     <!--Template for smartTag-->
@@ -2017,8 +1996,6 @@
     <xsl:template name="Blocklist">
         <xsl:param name="custom" as="xs:string"/>
         <xsl:param name="blkcharstyle" as="xs:boolean"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
         <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,5)='Block'])=0">
             <xsl:value-of disable-output-escaping="yes" select="'&lt;blockquote &gt;'"/>
         </xsl:if>
@@ -2030,8 +2007,6 @@
                         <xsl:with-param name="flag" select="'0'"/>
                         <xsl:with-param name="custom" select="$custom"/>
                         <xsl:with-param name="charparahandlerStyle" select="$blkcharstyle"/>
-                        <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                        <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                     </xsl:call-template>
                 </author>
             </xsl:when>
@@ -2069,7 +2044,7 @@
             <xsl:when test="($customTag='SampleDAISY') or ($customTag='HTMLSample')" >
                 <samp>
                     <xsl:attribute name="xml:space">preserve</xsl:attribute>
-                    <xsl:call-template name="RunTextHandler">
+                    <xsl:call-template name="CustomCharStyle">
                         <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                     </xsl:call-template>
@@ -2078,7 +2053,7 @@
             <!--Checking for QuotationDAISY custom character style-->
             <xsl:when test="$customTag='QuotationDAISY'" >
                 <q>
-                    <xsl:call-template name="RunTextHandler">
+                    <xsl:call-template name="CustomCharStyle">
                         <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                     </xsl:call-template>
@@ -2090,7 +2065,7 @@
                     <xsl:value-of disable-output-escaping="yes" select="'&lt;code xml:space=&quot;preserve&quot;&gt;'"/>
                     <xsl:sequence select="d:sink(d:CodeFlag($myObj))"/> <!-- empty -->
                 </xsl:if>
-                <xsl:call-template name="RunTextHandler">
+                <xsl:call-template name="CustomCharStyle">
                     <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
                 </xsl:call-template>
@@ -2104,7 +2079,7 @@
                 <xsl:if test="count(preceding-sibling::w:r[1]/w:rPr/w:rStyle[contains(@w:val,'Sent')])=0">
                     <xsl:value-of disable-output-escaping="yes" select="'&lt;sent&gt;'"/>
                 </xsl:if>
-                <xsl:call-template name="RunTextHandler">
+                <xsl:call-template name="CustomCharStyle">
                     <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
                 </xsl:call-template>
@@ -2117,7 +2092,7 @@
                 <xsl:if test="count(preceding-sibling::w:r[1]/w:rPr/w:rStyle[contains(@w:val,'Span')])=0">
                     <xsl:value-of disable-output-escaping="yes" select="'&lt;span&gt;'"/>
                 </xsl:if>
-                <xsl:call-template name="RunTextHandler">
+                <xsl:call-template name="CustomCharStyle">
                     <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
                 </xsl:call-template>
@@ -2128,7 +2103,7 @@
             <!--Checking for DefinitionDAISY/HTMLDefinition custom character style-->
             <xsl:when test="($customTag='DefinitionDAISY') or ($customTag='HTMLDefinition')">
                 <dfn>
-                    <xsl:call-template name="RunTextHandler">
+                    <xsl:call-template name="CustomCharStyle">
                         <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                     </xsl:call-template>
@@ -2137,7 +2112,7 @@
             <!--Checking for CitationDAISY/HTMLCite custom character style-->
             <xsl:when test="($customTag='CitationDAISY')or ($customTag='HTMLCite')">
                 <cite>
-                    <xsl:call-template name="RunTextHandler">
+                    <xsl:call-template name="CustomCharStyle">
                         <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                     </xsl:call-template>
@@ -2146,7 +2121,7 @@
             <!--Checking for KeyboardInputDAISY/HTMLKeyboard custom character style-->
             <xsl:when test="($customTag='KeyboardInputDAISY') or ($customTag='HTMLKeyboard')">
                 <kbd>
-                    <xsl:call-template name="RunTextHandler">
+                    <xsl:call-template name="CustomCharStyle">
                         <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                     </xsl:call-template>
@@ -2169,7 +2144,7 @@
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;pagenum page=&quot;',$page,'&quot; id=&quot;page',d:GeneratePageId($myObj),'&quot;&gt;')"/>
                 </xsl:if>
                 <!--Calling template for page number text-->
-                <xsl:call-template name="RunTextHandler">
+                <xsl:call-template name="CustomCharStyle">
                     <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
                 </xsl:call-template>
@@ -2181,7 +2156,7 @@
                 <xsl:choose>
                     <xsl:when test="(../w:pPr/w:pStyle[@w:val='PoemDAISY']) or (../w:pPr/w:pStyle[@w:val='AddressDAISY'])">
                         <linenum>
-                            <xsl:call-template name="RunTextHandler">
+                            <xsl:call-template name="CustomCharStyle">
                                 <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                             </xsl:call-template>
@@ -2190,7 +2165,7 @@
                     <xsl:when test="(../w:pPr/w:pStyle[@w:val='DefinitionDataDAISY'])">
                         <line>
                             <linenum>
-                                <xsl:call-template name="RunTextHandler">
+                                <xsl:call-template name="CustomCharStyle">
                                     <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                                     <xsl:with-param name="txt" select="$txt"/>
                                 </xsl:call-template>
@@ -2201,7 +2176,7 @@
                         <xsl:value-of disable-output-escaping="yes" select="'&lt;/p&gt;'"/>
                         <line>
                             <linenum>
-                                <xsl:call-template name="RunTextHandler">
+                                <xsl:call-template name="CustomCharStyle">
                                     <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                                     <xsl:with-param name="txt" select="$txt"/>
                                 </xsl:call-template>
@@ -2219,7 +2194,7 @@
                 </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:call-template name="RunTextHandler">
+                <xsl:call-template name="CustomCharStyle">
                     <xsl:with-param name="characterStyle" select="$customcharStyle"/>
                     <xsl:with-param name="txt" select="$txt"/>
                 </xsl:call-template>
@@ -2230,9 +2205,18 @@
     <!-- template to open a style tag (em,strong,sup or sub)-->
     <xsl:template name="OpenStyleTagIfNotOpened">
         <xsl:param name="styleTag"/>
+        <xsl:param name="attributes" select="''"/>
         <xsl:if test="not(d:HasCharacterStyle($myObj, $styleTag))">
             <xsl:sequence select="d:PushCharacterStyle($myObj, $styleTag)" />
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',$styleTag,'&gt;')"/>
+            <xsl:text disable-output-escaping="yes">&lt;</xsl:text>
+            <xsl:value-of select="$styleTag"/>
+            <xsl:if test="$attributes">
+                <xsl:text> </xsl:text>
+                <xsl:value-of select="$attributes"/>
+            </xsl:if>
+            <xsl:text disable-output-escaping="yes">&gt;</xsl:text>
+            <!--<xsl:value-of disable-output-escaping="yes"
+                          select="concat('&lt;', $styleTag, ' ', $attributes, '&gt;')"/>-->
         </xsl:if>
     </xsl:template>
     
@@ -2261,8 +2245,9 @@
     </xsl:template>
 
     <!--Template for inbuilt character styles applied on a block of letter (w:r) -->
-    <xsl:template name="RunTextHandler">
+    <xsl:template name="CustomCharStyle">
         <xsl:param name="characterStyle" as="xs:boolean" select="false()"/>
+        <xsl:param name="attributes" select="''" /> <!-- To handle hyperlinks -->
         <xsl:param name="txt" as="xs:string" select="''"/>
         
         <!-- Compute character group status -->
@@ -2278,14 +2263,20 @@
                       or (w:rPr/w:rStyle[@w:val ='EndnoteReference']) 
                       or (w:footnoteReference) 
                       or (w:endnoteReference) " />
+
+        <xsl:variable name="isHyperlink" select="parent::w:hyperlink" />
         <!-- Group of subscript = sub characters -->
         <xsl:variable name="isSubscript" select="w:rPr/w:vertAlign[@w:val='subscript']" />
         <!-- Group of superscript = sup characters -->
         <xsl:variable name="isSuperscript" select="w:rPr/w:vertAlign[@w:val='superscript']" />
         <xsl:variable name="lastGroup" select="not(following-sibling::w:r)" />
 
-        
         <!-- Close removed status -->
+        <xsl:if test="not($isHyperlink)">
+            <xsl:call-template name="CloseStyleTag">
+                <xsl:with-param name="styleTag" select="'a'"/>
+            </xsl:call-template>
+        </xsl:if>
         <xsl:if test="not($isEmp)">
             <xsl:call-template name="CloseStyleTag">
                 <xsl:with-param name="styleTag" select="'em'"/>
@@ -2329,6 +2320,12 @@
                 <xsl:if test="$isEmp">
                     <xsl:call-template name="OpenStyleTagIfNotOpened">
                         <xsl:with-param name="styleTag" select="'em'"/>
+                    </xsl:call-template>
+                </xsl:if>
+                <xsl:if test="$isHyperlink">
+                    <xsl:call-template name="OpenStyleTagIfNotOpened">
+                        <xsl:with-param name="styleTag" select="'a'"/>
+                        <xsl:with-param name="attributes" select="$attributes" />
                     </xsl:call-template>
                 </xsl:if>
                 <!--  -->
@@ -2564,8 +2561,6 @@
         <xsl:param name="imgOptionStyle" as="xs:string" select="''"/>
         <xsl:param name="dpiStyle" as="xs:float?"/>
         <xsl:param name="characterStyle" as="xs:boolean"/>
-        <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
         <xsl:choose>
             <!--Checking for List in Blockquote-->
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,5)='Block']">
@@ -2573,8 +2568,6 @@
                 <xsl:call-template name="Blocklist">
                     <xsl:with-param name="custom" select="$custom"/>
                     <xsl:with-param name="blkcharstyle" select="$characterStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:when>
             <!-- TOC starting paragraphe -->
@@ -2593,8 +2586,6 @@
                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
                     <xsl:with-param name="sZeros" select="$sZeros"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
                 <!--Calling Template to add Table Of Contents-->
                 <xsl:call-template name="TableOfContents">
@@ -2613,8 +2604,6 @@
                     <xsl:with-param name="mastersubhead" select="$mastersubstyle"/>
                     <xsl:with-param name="headingFormatAndTextAndID" select="'0'"/>
                     <xsl:with-param name="lvlcharStyle" select="$characterStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:when>
             
@@ -2675,8 +2664,6 @@
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                             <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
 
                         <!--calling AddLevel template for adding the levels-->
@@ -2694,8 +2681,6 @@
                             <xsl:with-param name="abValue" select="$absValue"/>
                             <xsl:with-param name="headingFormatAndTextAndID" select="concat($text_heading,'!',w:pPr/w:numPr/w:numId/@w:val)"/>
                             <xsl:with-param name="lvlcharStyle" select="$characterStyle"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
@@ -2768,8 +2753,6 @@
                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
                             <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
 
                         <xsl:call-template name="AddLevel">
@@ -2785,8 +2768,6 @@
                             <xsl:with-param name="abValue" select="$absValue"/>
                             <xsl:with-param name="headingFormatAndTextAndID" select="$text_heading"/>
                             <xsl:with-param name="lvlcharStyle" select="$characterStyle"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
 
                     </xsl:otherwise>
@@ -2804,8 +2785,6 @@
                         <xsl:with-param name="dpiPara" select="$dpiStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                         <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
-                        <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                        <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                     </xsl:call-template>
                 </bridgehead>
             </xsl:when>
@@ -2823,8 +2802,6 @@
                                 <xsl:with-param name="dpiPara" select="$dpiStyle"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
                                 <xsl:with-param name="txt" select="$txt"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                             <xsl:text disable-output-escaping="yes">&lt;/hd&gt;</xsl:text>
                         </xsl:variable>
@@ -2904,8 +2881,6 @@
                                 <xsl:with-param name="dpiPara" select="$dpiStyle"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="characterparaStyle" select="$characterStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </xsl:if>
                     </xsl:otherwise>
@@ -3297,8 +3272,6 @@
         <xsl:param name="imgOptionPara" as="xs:string" select="''"/>
         <xsl:param name="dpiPara" as="xs:float?"/>
         <xsl:param name="characterparaStyle" as="xs:boolean"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
 
         <xsl:variable name="checkImageposition" as="xs:integer" select="d:GetCaptionsProdnotes($myObj)"/>
         <xsl:choose>
@@ -3316,8 +3289,6 @@
                     <xsl:with-param name="custom" select="$custom"/>
                     <xsl:with-param name="txt" select="$txt"/>
                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
                 <xsl:value-of disable-output-escaping="yes" select="'&lt;/doctitle&gt;'"/>
             </xsl:when>
@@ -3332,7 +3303,13 @@
                 <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
-                            <xsl:value-of select="$checkid - 1"/>
+                            <xsl:value-of select="$FootnotesNumberingPrefix"/>
+                            <xsl:choose>
+                                <xsl:when test="$FootnotesNumbering = 'number'">
+                                    <xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+                                </xsl:when>
+                            </xsl:choose>
+                            <xsl:value-of select="$FootnotesNumberingSuffix"/>
                         </p>
                     </xsl:if>
                 </xsl:if>
@@ -3363,7 +3340,13 @@
                 <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
-                            <xsl:value-of select="$checkid - 1"/>
+                            <xsl:value-of select="$FootnotesNumberingPrefix"/>
+                            <xsl:choose>
+                                <xsl:when test="$FootnotesNumbering = 'number'">
+                                    <xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+                                </xsl:when>
+                            </xsl:choose>
+                            <xsl:value-of select="$FootnotesNumberingSuffix"/>
                         </p>
                     </xsl:if>
                 </xsl:if>
@@ -3385,7 +3368,13 @@
                 <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
-                            <xsl:value-of select="$checkid - 1"/>
+                            <xsl:value-of select="$FootnotesNumberingPrefix"/>
+                            <xsl:choose>
+                                <xsl:when test="$FootnotesNumbering = 'number'">
+                                    <xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+                                </xsl:when>
+                            </xsl:choose>
+                            <xsl:value-of select="$FootnotesNumberingSuffix"/>
                         </p>
                     </xsl:if>
                 </xsl:if>
@@ -3449,7 +3438,13 @@
                 <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
-                            <xsl:value-of select="$checkid - 1"/>
+                            <xsl:value-of select="$FootnotesNumberingPrefix"/>
+                            <xsl:choose>
+                                <xsl:when test="$FootnotesNumbering = 'number'">
+                                    <xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+                                </xsl:when>
+                            </xsl:choose>
+                            <xsl:value-of select="$FootnotesNumberingSuffix"/>
                         </p>
                     </xsl:if>
                 </xsl:if>
@@ -3545,7 +3540,13 @@
                 <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
                     <xsl:if test="d:NoteFlag($myObj)=1">
                         <p>
-                            <xsl:value-of select="$checkid - 1"/>
+                            <xsl:value-of select="$FootnotesNumberingPrefix"/>
+                            <xsl:choose>
+                                <xsl:when test="$FootnotesNumbering = 'number'">
+                                    <xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+                                </xsl:when>
+                            </xsl:choose>
+                            <xsl:value-of select="$FootnotesNumberingSuffix"/>
                         </p>
                     </xsl:if>
                 </xsl:if>
@@ -3619,8 +3620,6 @@
                     <xsl:with-param name="txt" select="$txt"/>
                     <xsl:with-param name="mastersubpara" select="$masterparastyle"/>
                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:when>
 
@@ -3678,8 +3677,6 @@
                                     <xsl:with-param name="custom" select="$custom"/>
                                     <xsl:with-param name="txt" select="$txt"/>
                                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                             </span>
                         </p>
@@ -3696,8 +3693,6 @@
                                     <xsl:with-param name="custom" select="$custom"/>
                                     <xsl:with-param name="txt" select="$txt"/>
                                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                             </span>
                         </p>
@@ -3712,8 +3707,6 @@
                                     <xsl:with-param name="VERSION" select="$VERSION"/>
                                     <xsl:with-param name="custom" select="$custom"/>
                                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                             </span>
                         </p>
@@ -3729,8 +3722,6 @@
                                     <xsl:with-param name="custom" select="$custom"/>
                                     <xsl:with-param name="txt" select="$txt"/>
                                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                             </span>
                         </p>
@@ -3745,8 +3736,6 @@
                                     <xsl:with-param name="custom" select="$custom"/>
                                     <xsl:with-param name="txt" select="$txt"/>
                                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                                 </xsl:call-template>
                             </span>
                         </p>
@@ -3764,8 +3753,6 @@
                             <xsl:with-param name="dpiPara" select="$dpiPara"/>
                             <xsl:with-param name="txt" select="$txt"/>
                             <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -3785,8 +3772,6 @@
                     <xsl:with-param name="txt" select="$txt"/>
                     <xsl:with-param name="mastersubpara" select="$masterparastyle"/>
                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:when>
             <!--Checking for DefinitionTermDAISY custom character style and DefinitionDataDAISY    custom paragraph style-->
@@ -3847,8 +3832,6 @@
                     <xsl:with-param name="mastersubpara" select="$masterparastyle"/>
                     <xsl:with-param name="custom" select="$custom"/>
                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                     <xsl:with-param name="sOperators" select="$sOperators"/>
                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -3889,8 +3872,6 @@
                     <xsl:with-param name="dpiPara" select="$dpiPara"/>
                     <xsl:with-param name="txt" select="$txt"/>
                     <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                     <xsl:with-param name="sOperators" select="$sOperators"/>
                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -3925,8 +3906,6 @@
         <xsl:param name="characterStyle" as="xs:boolean"/>
         <xsl:param name="flag" as="xs:string"/>
         <xsl:param name="txt" as="xs:string"/>
-        <xsl:param name="FootnotesLevel" as="xs:integer" select="0"/>
-        <xsl:param name="FootnotesPosition" as="xs:string" select="'page'"/>
         <xsl:choose>
             <xsl:when test="$characterStyle">
                 <xsl:choose>
@@ -3942,8 +3921,6 @@
                                 <xsl:with-param name="custom" select="$custom"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </span>
                     </xsl:when>
@@ -3958,8 +3935,6 @@
                                 <xsl:with-param name="custom" select="$custom"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </span>
                     </xsl:when>
@@ -3973,8 +3948,6 @@
                                 <xsl:with-param name="custom" select="$custom"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </span>
                     </xsl:when>
@@ -3988,8 +3961,6 @@
                                 <xsl:with-param name="custom" select="$custom"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </span>
                     </xsl:when>
@@ -4002,8 +3973,6 @@
                                 <xsl:with-param name="custom" select="$custom"/>
                                 <xsl:with-param name="txt" select="$txt"/>
                                 <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
-                                <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                                <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                             </xsl:call-template>
                         </span>
                     </xsl:when>
@@ -4014,8 +3983,6 @@
                             <xsl:with-param name="custom" select="$custom"/>
                             <xsl:with-param name="txt" select="$txt"/>
                             <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                         </xsl:call-template>
                     </xsl:otherwise>
                 </xsl:choose>
@@ -4027,8 +3994,6 @@
                     <xsl:with-param name="custom" select="$custom"/>
                     <xsl:with-param name="txt" select="$txt"/>
                     <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
                 </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>

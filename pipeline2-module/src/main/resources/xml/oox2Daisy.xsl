@@ -44,6 +44,10 @@
 
     <xsl:param name="FootnotesPosition" as="xs:string" select="'end'" /> <!-- page|end| -->
     <xsl:param name="FootnotesLevel" as="xs:integer" select="0" />
+	<xsl:param name="FootnotesNumbering" as="xs:string" select="'none'"  />
+	<xsl:param name="FootnotesStartValue" as="xs:integer" select="1" />
+	<xsl:param name="FootnotesNumberingPrefix" as="xs:string?" />
+	<xsl:param name="FootnotesNumberingSuffix" as="xs:string?"/>
 
 	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)" />
 	<!-- Retrieve xml documents from the word file -->
@@ -356,8 +360,6 @@
                     <xsl:with-param name="imgOption" select="$ImageSizeOption" />
                     <xsl:with-param name="dpi" select="$DPI" />
                     <xsl:with-param name="charStyles" select="$CharacterStyles" />
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel" />
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition" />
                 </xsl:call-template>
 
                 <!--Calling Bodymatter template-->
@@ -373,8 +375,6 @@
                     <xsl:with-param name="imgOption" select="$ImageSizeOption" />
                     <xsl:with-param name="dpi" select="$DPI" />
                     <xsl:with-param name="charStyles" select="$CharacterStyles" />
-                    <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel" />
-                    <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition" />
                 </xsl:call-template>
 
                 <!--Calling Rearmatter template-->
@@ -397,16 +397,9 @@
                             <xsl:with-param name="imgOption" select="$ImageSizeOption" />
                             <xsl:with-param name="dpi" select="$DPI" />
                             <xsl:with-param name="charStyles" select="$CharacterStyles" />
-                            <xsl:with-param name="FootnotesLevel" select="$FootnotesLevel" />
-                            <xsl:with-param name="FootnotesPosition" select="$FootnotesPosition" />
                         </xsl:call-template>
                 </xsl:if>
             </book>
         </dtbook>
     </xsl:template>
-
-    
-
-
-
 </xsl:stylesheet>

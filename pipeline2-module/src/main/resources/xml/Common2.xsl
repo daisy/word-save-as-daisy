@@ -16,6 +16,31 @@
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
                 exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl">
 
+	<xsl:param name="Title"/>
+	<!--Holds Documents Title value-->
+	<xsl:param name="Creator"/>
+	<!--Holds Documents creator value-->
+	<xsl:param name="Publisher"/>
+	<!--Holds Documents Publisher value-->
+	<xsl:param name="UID"/>
+	<!--Holds Document unique id value-->
+	<xsl:param name="Subject"/>
+	<!--Holds Documents Subject value-->
+	<xsl:param name="prmTRACK"/>
+	<xsl:param name="Version"/>
+	<!--Holds Documents version value-->
+	<xsl:param name="Custom"/>
+	<xsl:param name="MasterSub"/>
+	<xsl:param name="ImageSizeOption"/>
+	<xsl:param name="DPI"/>
+	<xsl:param name="CharacterStyles"/>
+	<xsl:param name="FootnotesPosition"/>
+	<xsl:param name="FootnotesLevel"/>
+	<xsl:param name="FootnotesNumbering" />
+	<xsl:param name="FootnotesStartValue" />
+	<xsl:param name="FootnotesNumberingPrefix" />
+	<xsl:param name="FootnotesNumberingSuffix" />
+
 	<!--Template for adding Levels-->
 	<xsl:template name="AddLevel">
 		<!--Parameter levelValue holds the value of the current level -->
@@ -32,8 +57,6 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:param name="FootnotesLevel" as="xs:integer?" select="0"/>
-		<xsl:param name="FootnotesPosition" as="xs:string?" select="'page'"/>
 		<xsl:message terminate="no">progress:Adding level <xsl:value-of select="$levelValue"/></xsl:message>
 		
 		<xsl:variable name="numFormat" as="xs:string" select="substring-before($headingFormatAndTextAndID,'|')" />
@@ -115,8 +138,6 @@
 						<xsl:with-param name="sMinuses" select="$sMinuses"/>
 						<xsl:with-param name="sNumbers" select="$sNumbers"/>
 						<xsl:with-param name="sZeros" select="$sZeros"/>
-						<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-						<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 					</xsl:call-template>
 
 					<!-- DB : write header in output when PageNumberDAISY is not applied  -->
@@ -155,8 +176,6 @@
 					<xsl:with-param name="sMinuses" select="$sMinuses"/>
 					<xsl:with-param name="sNumbers" select="$sNumbers"/>
 					<xsl:with-param name="sZeros" select="$sZeros"/>
-					<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-					<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 				</xsl:call-template>
 
 
@@ -175,7 +194,7 @@
 		<xsl:choose>
 			<xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
 				<xsl:call-template name="LanguagesPara">
-					<xsl:with-param name="Attribute" select="'1'"/>
+					<xsl:with-param name="Attribute" select="true()"/>
 					<xsl:with-param name="level" select="concat('h',$level)"/>
 				</xsl:call-template>
 			</xsl:when>
@@ -197,8 +216,6 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:param name="FootnotesLevel" select="0"/>
-		<xsl:param name="FootnotesPosition" select="'page'"/>
 		<xsl:message terminate="no">debug In TempLevelSpan</xsl:message>
 		<xsl:choose>
 			<xsl:when test="$lvlcharStyle">
@@ -221,8 +238,6 @@
 								<xsl:with-param name="sZeros" select="$sZeros"/>
 								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
 								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-								<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-								<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 							</xsl:call-template>
 						</span>
 					</xsl:when>
@@ -243,8 +258,6 @@
 								<xsl:with-param name="sZeros" select="$sZeros"/>
 								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
 								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-								<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-								<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 							</xsl:call-template>
 						</span>
 					</xsl:when>
@@ -264,8 +277,6 @@
 								<xsl:with-param name="sZeros" select="$sZeros"/>
 								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
 								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-								<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-								<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 							</xsl:call-template>
 						</span>
 
@@ -286,8 +297,6 @@
 								<xsl:with-param name="sZeros" select="$sZeros"/>
 								<xsl:with-param name="mastersubpara" select="$mastersubhead"/>
 								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-								<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-								<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 							</xsl:call-template>
 						</span>
 					</xsl:when>
@@ -306,8 +315,6 @@
 								<xsl:with-param name="sZeros" select="$sZeros"/>
 								<xsl:with-param name="mastersubpara" select="$mastersubhead"/>
 								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-								<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-								<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 							</xsl:call-template>
 						</span>
 					</xsl:when>
@@ -324,8 +331,6 @@
 							<xsl:with-param name="sZeros" select="$sZeros"/>
 							<xsl:with-param name="mastersubpara" select="$mastersubhead"/>
 							<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-							<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-							<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 						</xsl:call-template>
 					</xsl:otherwise>
 				</xsl:choose>
@@ -343,8 +348,6 @@
 					<xsl:with-param name="sZeros" select="$sZeros"/>
 					<xsl:with-param name="mastersubpara" select="$mastersubhead"/>
 					<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
-					<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-					<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 				</xsl:call-template>
 			</xsl:otherwise>
 		</xsl:choose>
@@ -356,25 +359,25 @@
 		<xsl:param name="levelValue"/>
 		<xsl:choose>
 			<!-- Special case : abbreviation flag is set, we keep the closing tag in a stack  -->
-			<xsl:when test="(d:AbbrAcrFlag()='1') and not(w:r/w:pict/v:shape/v:textbox)">
-				<xsl:variable name="abbrpara" select="d:PushAbrAcrhead(concat('&lt;',concat('/h',$level),'&gt;'))"/>
-				<xsl:if test="d:ListMasterSubFlag()='1'">
-					<xsl:variable name="curLevel" select="d:PeekLevel()"/>
-					<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($curLevel)"/>
-					<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc()"/>
-					<xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag()"/>
-					<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($curLevel)"/>
+			<xsl:when test="(d:AbbrAcrFlag($myObj) = 1) and not(w:r/w:pict/v:shape/v:textbox)">
+				<xsl:variable name="abbrpara" select="d:PushAbrAcrhead($myObj, concat('&lt;',concat('/h',$level),'&gt;'))"/>
+				<xsl:if test="d:ListMasterSubFlag($myObj) = 1">
+					<xsl:variable name="curLevel" select="d:PeekLevel($myObj)"/>
+					<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj,$curLevel)"/>
+					<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
+					<xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag($myObj)"/>
+					<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj, $curLevel)"/>
 				</xsl:if>
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
 				<xsl:if test="not(w:r/w:pict/v:shape/v:textbox)">
-					<xsl:if test="d:ListMasterSubFlag()='1'">
-						<xsl:variable name="curLevel" select="d:PeekLevel()"/>
-						<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($curLevel)"/>
-						<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc()"/>
-						<xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag()"/>
-						<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($curLevel)"/>
+					<xsl:if test="d:ListMasterSubFlag($myObj) = 1">
+						<xsl:variable name="curLevel" select="d:PeekLevel($myObj)"/>
+						<xsl:value-of disable-output-escaping="yes" select="d:ClosingMasterSub($myObj, $curLevel)"/>
+						<xsl:value-of disable-output-escaping="yes" select="d:PeekMasterSubdoc($myObj)"/>
+						<xsl:variable name="masterSubReSet" select="d:MasterSubResetFlag($myObj)"/>
+						<xsl:value-of disable-output-escaping="yes" select="d:OpenMasterSub($myObj, $curLevel)"/>
 					</xsl:if>
 				</xsl:if>
 			</xsl:otherwise>
@@ -389,8 +392,6 @@
 	<xsl:template name="CloseLevel">
 		<xsl:param name="CurrentLevel" as="xs:double"/> <!-- xs:integer|NaN -->
 		<!-- for Footnotes positioning -->
-		<xsl:param name="FootnotesPosition" select="'page'"/>
-		<xsl:param name="FootnotesLevel" select="0"/>
 		<!-- for Footnotes template -->
 		<xsl:param name="verfoot"/>
 		<xsl:param name="characterStyle"/>
@@ -496,8 +497,6 @@
 						<xsl:with-param name="sMinuses" select="$sMinuses"/>
 						<xsl:with-param name="sNumbers" select="$sNumbers"/>
 						<xsl:with-param name="sZeros" select="$sZeros"/>
-						<xsl:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-						<xsl:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 					</xsl:call-template>
 				</xsl:if>
 			</xsl:otherwise>
@@ -1096,7 +1095,7 @@
 				<!--Looping through each row of the table-->
 				<xsl:for-each select="w:tr">
 					<!--Checking if the row is not header row-->
-					<xsl:if test="not(w:trPr/w:tblHeader) and not(w:trPr/w:cnfStyle)">
+					<xsl:if test="not(w:trPr/w:tblHeader)">
 						<tr>
 							<!--Looping through each cell of the table-->
 							<xsl:for-each select="w:tc">
