@@ -24,9 +24,17 @@
 			<artifactId>saxon-adapter</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.osgi</groupId>
-			<artifactId>org.osgi.compendium</artifactId>
-			<scope>provided</scope>
+			<groupId>org.daisy.pipeline.modules</groupId>
+			<artifactId>dtbook-break-detection</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.daisy.pipeline</groupId>
+			<artifactId>calabash-adapter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.daisy.libs</groupId>
+			<artifactId>com.xmlcalabash</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.daisy.pipeline</groupId>
@@ -39,16 +47,19 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.daisy.pipeline</groupId>
-			<artifactId>calabash-adapter</artifactId>
+			<groupId>org.daisy.pipeline.modules</groupId>
+			<artifactId>nlp-omnilang-lexer</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+
 	</dependencies>
 
 	<properties>
 		<expose-services>
 			org.daisy.pipeline.modules.impl.Module_word_to_dtbook,
-			org.daisy.pipeline.word_to_dtbook.impl.DaisyClass$Provider
+			org.daisy.pipeline.word_to_dtbook.impl.DaisyClass$Provider,
+			org.daisy.pipeline.word_to_dtbook.impl.Pipeline1Library$Provider
 		</expose-services>
 	</properties>
 

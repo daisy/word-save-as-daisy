@@ -183,9 +183,11 @@
 
 	<!--Extending the DTD to support MathML-->
 	<xsl:template name="main">
+		<!-- moved the doctype generation to the dtbook-fix/xsl/export-doctype.xsl
 		<xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet href="dtbookbasic.css" type="text/css"?&gt;</xsl:text>
 		<xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'</xsl:text>
-		<xsl:text disable-output-escaping="yes">[&lt;!ENTITY % MATHML.prefixed "INCLUDE" &gt;
+		<xsl:text disable-output-escaping="yes">[
+      &lt;!ENTITY % MATHML.prefixed "INCLUDE" &gt;
       &lt;!ENTITY % MATHML.prefix "mml"&gt;
       &lt;!ENTITY % Schema.prefix "sch"&gt;
       &lt;!ENTITY % XLINK.prefix "xlp"&gt;
@@ -203,11 +205,11 @@
       &lt;!ENTITY % mathML2 PUBLIC '-//W3C//DTD MathML 2.0//EN' 'http://www.w3.org/Math/DTD/mathml2/mathml2.dtd'&gt;
       %mathML2;
        &lt;!ENTITY % externalFlow "| mml:math"&gt;
-       &lt;!ENTITY % externalNamespaces "xmlns:mml CDATA #FIXED 
+       &lt;!ENTITY % externalNamespaces "xmlns:mml CDATA #FIXED
                   'http://www.w3.org/1998/Math/MathML'" &gt;
 ] &gt;
 </xsl:text>
-		<xsl:text>&#10;</xsl:text>
+		<xsl:text>&#10;</xsl:text>-->
 		<!--This Xslt is Adding meta elements in Dtbook head element
     It is also calling templates Frontmatter, Bodymatter and Rearmatter-->
 		<!--Adding dtbook element-->

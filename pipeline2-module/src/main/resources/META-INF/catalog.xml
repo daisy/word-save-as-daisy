@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" xmlns:px="http://www.daisy.org/ns/pipeline">
+
+  <uri name="http://www.daisy.org/pipeline/modules/word-to-dtbook/dtbook-fix/tidy.xpl" uri="../xml/dtbook-fix/tidy.xpl"/>
+  <uri name="http://www.daisy.org/pipeline/modules/word-to-dtbook/dtbook-fix/repair.xpl" uri="../xml/dtbook-fix/repair.xpl"/>
+  <uri name="http://www.daisy.org/pipeline/modules/word-to-dtbook/dtbook-fix/narrator.xpl" uri="../xml/dtbook-fix/narrator.xpl"/>
+
   <uri name="http://www.daisy.org/pipeline/modules/word-to-dtbook/oox2Daisy.xpl" uri="../xml/oox2Daisy.xpl"/>
   
   <uri name="http://www.daisy.org/pipeline/modules/word-to-dtbook/dtd/dtbook-2005-3.dtd" uri="../dtd/dtbook-2005-3.dtd"/>
@@ -9,5 +14,7 @@
   <uri name="http://www.w3.org/Math/DTD/mathml2/mathml2.dtd" uri="../dtd/mathml2.dtd"/>
   
   <!-- <uri name="http://www.daisy.org/pipeline/modules/word-to-dtbook/dtbookbasic.css" uri="../css/dtbookbasic.css"/> -->
+
+  <nextCatalog catalog="org:daisy:pipeline:modules:dtbook-break-detection"/>
   
 </catalog>

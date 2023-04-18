@@ -5,11 +5,28 @@
 				xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 type="px:oox2Daisy" name="main">
 
+	<p:import href="dtbook-fix/tidy.xpl" />
+	<p:import href="dtbook-fix/repair.xpl" />
+	<p:import href="dtbook-fix/narrator.xpl" />
+
+	<p:import href="http://www.daisy.org/pipeline/modules/dtbook-break-detection/library.xpl">
+		<p:documentation>
+			px:dtbook-break-detect
+			px:dtbook-unwrap-words
+		</p:documentation>
+	</p:import>
+	<!--<p:import href="dtbook-fix/repair.xpl" />
+	<p:import href="dtbook-fix/narrator.xpl" />
+-->
 	<p:option name="source" required="true"/>
 	<p:option name="document-output-dir" required="true"/>
 	<p:option name="document-output-file" select="concat(
 		$document-output-dir,
 		replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1.xml'),',','_')
+	)"/>
+	<p:option name="document-output-test" select="concat(
+		$document-output-dir,
+		replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1_test.xml'),',','_')
 	)"/>
 	<p:option name="tempSource" select="$source"/>
 	<p:option name="pipeline-output-dir" select="$document-output-dir"/>
@@ -32,37 +49,62 @@
 	<!-- cx:as="map(xs:string,xs:string*)" -->
 	<p:option name="FootnotesPosition" select="'end'"/>
 	<p:option name="FootnotesLevel" select="0" cx:as="xs:integer" />
-	<p:output port="result"/>
+	<p:option name="FootnotesNumbering" cx:as="xs:string" select="'none'"  />
+	<p:option name="FootnotesStartValue" cx:as="xs:integer" select="1" />
+	<p:option name="FootnotesNumberingPrefix" cx:as="xs:string?" select="''"/>
+	<p:option name="FootnotesNumberingSuffix" cx:as="xs:string?" select="''"/>
 
-	<p:xslt template-name="main" cx:serialize="true">
-		<p:input port="source">
-			<p:empty/>
-		</p:input>
-		<p:input port="stylesheet">
-			<p:document href="oox2Daisy.xsl"/>
-		</p:input>
-		<p:with-param name="OriginalInputFile" select="$source"/>
-		<p:with-param name="InputFile" select="$tempSource"/>
-		<p:with-param name="OutputDir" select="$document-output-dir"/>
-		<p:with-param name="FinalOutputDir" select="$pipeline-output-dir"/>
-		<p:with-param name="Title" select="$Title"/>
-		<p:with-param name="Creator" select="$Creator"/>
-		<p:with-param name="Publisher" select="$Publisher"/>
-		<p:with-param name="UID" select="$UID"/>
-		<p:with-param name="Subject" select="$Subject"/>
-		<p:with-param name="prmTRACK" select="$prmTRACK"/>
-		<p:with-param name="Version" select="$Version"/>
-		<p:with-param name="Custom" select="$Custom"/>
-		<p:with-param name="MasterSub" select="$MasterSub"/>
-		<p:with-param name="ImageSizeOption" select="$ImageSizeOption"/>
-		<p:with-param name="DPI" select="$DPI"/>
-		<p:with-param name="CharacterStyles" select="$CharacterStyles"/>
-		<p:with-param name="MathML" select="$MathML"/>
-		<p:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
-		<p:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
-	</p:xslt>
-	<p:group>
-		
+	<p:option name="ApplyDtbookFixRoutine" cx:as="xs:boolean" select="false()"/>
+	<p:option name="ApplySentenceDetection" cx:as="xs:boolean" select="false()"/>
+
+	<p:output port="result" sequence="true"/>
+
+
+	<p:group name="convert-to-dtbook" >
+		<p:xslt template-name="main" cx:serialize="true">
+			<p:input port="source">
+				<p:empty/>
+			</p:input>
+			<p:input port="stylesheet">
+				<p:document href="oox2Daisy.xsl"/>
+			</p:input>
+			<p:with-param name="OriginalInputFile" select="$source"/>
+			<p:with-param name="InputFile" select="$tempSource"/>
+			<p:with-param name="OutputDir" select="$document-output-dir"/>
+			<p:with-param name="FinalOutputDir" select="$pipeline-output-dir"/>
+			<p:with-param name="Title" select="$Title"/>
+			<p:with-param name="Creator" select="$Creator"/>
+			<p:with-param name="Publisher" select="$Publisher"/>
+			<p:with-param name="UID" select="$UID"/>
+			<p:with-param name="Subject" select="$Subject"/>
+			<p:with-param name="prmTRACK" select="$prmTRACK"/>
+			<p:with-param name="Version" select="$Version"/>
+			<p:with-param name="Custom" select="$Custom"/>
+			<p:with-param name="MasterSub" select="$MasterSub"/>
+			<p:with-param name="ImageSizeOption" select="$ImageSizeOption"/>
+			<p:with-param name="DPI" select="$DPI"/>
+			<p:with-param name="CharacterStyles" select="$CharacterStyles"/>
+			<p:with-param name="MathML" select="$MathML"/>
+			<p:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
+			<p:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
+			<p:with-param name="FootnotesNumbering" select="$FootnotesNumbering"/>
+			<p:with-param name="FootnotesStartValue" select="$FootnotesStartValue"/>
+			<p:with-param name="FootnotesNumberingPrefix" select="$FootnotesNumberingPrefix"/>
+			<p:with-param name="FootnotesNumberingSuffix" select="$FootnotesNumberingSuffix"/>
+		</p:xslt>
+		<!--<p:store name="store-dtbook">
+			<p:with-option name="href" select="$document-output-file"/>
+		</p:store>
+		<p:load>
+			<p:with-option name="href" select="$document-output-file"/>
+		</p:load>-->
+		<!--<p:identity>
+			<p:log port="result" />
+		</p:identity>-->
+	</p:group>
+
+
+	<p:group name="save-on-disk">
 		<p:store name="store-xml">
 			<p:with-option name="href" select="$document-output-file"/>
 		</p:store>
@@ -75,7 +117,44 @@
 		<p:load cx:depends-on="store-xml">
 			<p:with-option name="href" select="$document-output-file"/>
 		</p:load>
-		<p:identity cx:depends-on="store-css"/>
+		<!--<p:choose>
+			<p:when test="$ApplyDtbookFixRoutine">
+				<px:dtbook-tidy name="tidy"/>
+				<px:dtbook-repair name="repair"/>
+				<px:dtbook-narrator name="narrator">
+					<p:with-option name="publisher" select="$Publisher"/>
+				</px:dtbook-narrator>
+			</p:when>
+			<p:otherwise>
+				<p:identity/>
+			</p:otherwise>
+		</p:choose>
+
+		<p:choose>
+			<p:when test="$ApplySentenceDetection">
+				<px:dtbook-break-detect />
+				<px:dtbook-unwrap-words/>
+			</p:when>
+			<p:otherwise>
+				<p:identity/>
+			</p:otherwise>
+		</p:choose>
+
+		-->
+		<p:xslt cx:serialize="true">
+			<p:input port="stylesheet">
+				<p:document href="dtbook-fix/xsl/export-doctype.xsl"/>
+			</p:input>
+			<p:with-param name="css" select="'dtbookbasic.css'"/>
+		</p:xslt>
+		<p:store name="store-xml2">
+			<p:with-option name="href" select="$document-output-file"/>
+		</p:store>
+		<p:load cx:depends-on="store-xml2">
+			<p:with-option name="href" select="$document-output-file"/>
+		</p:load>
 	</p:group>
+
+
 
 </p:declare-step>
