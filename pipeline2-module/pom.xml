@@ -13,6 +13,13 @@
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>bundle</packaging>
 
+	<repositories>
+		<repository>
+			<id>sonatype-nexus-daisy</id> <!-- defined in org.daisy:daisy -->
+			<url>https://oss.sonatype.org/content/repositories/orgdaisy-2139/</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
@@ -32,14 +39,18 @@
 			<groupId>org.daisy.pipeline</groupId>
 			<artifactId>calabash-adapter</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.daisy.libs</groupId>
-			<artifactId>com.xmlcalabash</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>org.daisy.pipeline</groupId>
 			<artifactId>ds-to-spi-runtime</artifactId>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.daisy.libs</groupId>
+			<artifactId>com.xmlcalabash</artifactId>
+			<version>1.1.20-p12-98</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.daisy.maven</groupId>
