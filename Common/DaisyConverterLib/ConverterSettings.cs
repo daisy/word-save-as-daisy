@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -7,80 +8,207 @@ namespace Daisy.SaveAsDAISY.Conversion {
     /// Global settings of the converter, controled by "ConverterSettingsForm" class.<br/>
     /// Those settings are usually stored in a "DAISY_settingsVer21.xml" file in the application APPDATA directory
     /// </summary>
-    public class ConverterSettings {
-        #region Private and default fields
-        private string imgoption;
-        private int resampleValue = 96;
-        private bool characterStyle = false;
-        private string pagenumStyle;
-        private int footnotesLevel = 0; // 0 mean current paragraphe, < 0 means parent level going upward, > 1 means absolute dtbook level
-        private string footnotesPosition = "page" ; // Should be inline, end, after or page
-        private string footnotesNumbering = "number"; // should be number or none (or empty, equals to none)
-        private string footnotesStartValue = "1"; // can be a nummber to be used as starting number, or a character
-        private string footnotesTextPrefix = " "; // prefix to be added between the numbering and the text (default to a simple space)
+    public sealed class ConverterSettings {
 
-        private const string DefaultSettings = "" +
-            "<Settings>" +
-                "<PageNumbers  value=\"Custom\"/>" +
-                "<CharacterStyles value=\"False\" />" +
-                "<ImageSizes value=\"original\" samplingvalue=\"96\"/>" +
-                "<Footnotes " +
-                    "level=\"0\" " +
-                    "position=\"page\" " +
-                    "numbering=\"number\" " +
-                    "startValue=\"1\" " +
-                    "textPrefix=\"\"" +
-            "/>" +
-            "</Settings>";
+        public static string ApplicationDataFolder = Path.GetFullPath(
+            Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "SaveAsDAISY"
+            )
+        );
 
-        private const string SettingsFileName = "\\DAISY_settingsVer21.xml";
+        private static string ConverterSettingsFile = Path.Combine(ApplicationDataFolder, "DAISY_settingsVer21.xml");
+
+        #region Singleton definition
+        private static readonly Lazy<ConverterSettings> lazy  = new Lazy<ConverterSettings>(() => new ConverterSettings());
+
+        public static ConverterSettings Instance => lazy.Value;
+        #endregion
+        /// <summary>
+        /// @see FootnotesNumberingChoice.Enum
+        /// </summary>
+        public static class FootnotesPositionChoice
+        {
+            /// <summary>
+            /// Possible type of note numbering outputed
+            /// </summary>
+            public enum Enum
+            {
+                /// <summary>
+                /// Inline note in content (after the paragraph containing its first reference)
+                /// </summary>
+                Inline,
+                /// <summary>
+                /// Put notes at the end of a level defined in settings
+                /// </summary>
+                End,
+                /// <summary>
+                /// Put the notes near the word pagebreak
+                /// </summary>
+                Page
+            }
+            public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
+            {
+                { Enum.Inline, "inline" },
+                { Enum.End, "end" },
+                { Enum.Page, "page" },
+            };
+            public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
+            {
+                { "inline", Enum.Inline },
+                { "end", Enum.End },
+                { "page", Enum.Page},
+            };
+        }
+
+        /// <summary>
+        /// @see FootnotesNumberingChoice.Enum
+        /// </summary>
+        public static class FootnotesNumberingChoice
+        {
+            /// <summary>
+            /// Possible type of note numbering outputed
+            /// </summary>
+            public enum Enum
+            {
+                /// <summary>
+                /// Use original word numbering
+                /// </summary>
+                Word,
+                /// <summary>
+                /// Use custom numbering, starting from the settings start value
+                /// </summary>
+                Number,
+                /// <summary>
+                /// Disable note numbering in output
+                /// </summary>
+                None
+            }
+            public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
+            {
+                { Enum.Word, "word" },
+                { Enum.Number, "number" },
+                { Enum.None, "none" },
+            };
+            public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
+            {
+                { "word", Enum.Word },
+                { "number", Enum.Number },
+                { "none", Enum.None},
+            };
+        }
+
+        #region Private fields with default values
+        
+        private string imgoption = "original";
+        private string resampleValue = "96";
+        private string characterStyle = "False";
+        private string pagenumStyle = "Custom";
+        private string footnotesLevel = "0"; // 0 mean current paragraphe, < 0 means parent level going upward, > 1 means absolute dtbook level
+        private string footnotesPosition = "page" ; // Should be inline, end, or page
+        private string footnotesNumbering = "number"; // should be number, none, or word (to reuse word 
+        private string footnotesStartValue = "1"; // number to be used
+        private string footnotesNumberingPrefix = ""; // prefix to be added before the numbering
+        private string footnotesNumberingSuffix = " "; // suffix to be added between the number and the text (default to a space to reproduce the plugin original behaviour)
+
+
+        private string SettingsXml { get => 
+                $"<Settings>" +
+                    $"<PageNumbers  value=\"{pagenumStyle}\" />" +
+                    $"<CharacterStyles value=\"{characterStyle}\" />" +
+                    $"<ImageSizes value=\"{imgoption}\" samplingvalue=\"{resampleValue}\" />" +
+                    $"<Footnotes level=\"{footnotesLevel}\" " +
+                        $"position=\"{footnotesPosition}\" " +
+                        $"numbering=\"{footnotesNumbering}\" " +
+                        $"startValue=\"{footnotesStartValue}\" " +
+                        $"numberPrefix=\"{footnotesNumberingPrefix}\" " +
+                        $"numberSuffix=\"{footnotesNumberingSuffix}\" />" +
+                $"</Settings>";
+            
+        }
+
+
         #endregion
 
-        public static void CreateDefaultSettings(string settingsFolder) {
-            using (StreamWriter writer = new StreamWriter(File.Create(settingsFolder + SettingsFileName))) {
-                writer.Write(DefaultSettings);
+        public void CreateDefaultSettings() {
+            if (!Directory.Exists(ApplicationDataFolder))
+            {
+                Directory.CreateDirectory(ApplicationDataFolder);
+            }
+            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile))) {
+                writer.Write(SettingsXml);
                 writer.Flush();
             }
         }
 
-        public ConverterSettings() {
-            //String xmlfile_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            String xmlfile_path = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY");
-            XmlDocument translationxml = new XmlDocument();
-            if (!File.Exists(xmlfile_path + SettingsFileName)) {
-                CreateDefaultSettings(xmlfile_path);
+
+
+        private ConverterSettings() {
+            XmlDocument settingsDocument = new XmlDocument();
+            if (!File.Exists(ConverterSettingsFile)) {
+                // Save the default settings
+                save();
             }
 
-            translationxml.Load(xmlfile_path + SettingsFileName);
-            XmlNode imgnodeOption = translationxml.SelectSingleNode("//Settings/ImageSizes[@value]");
-            imgoption = imgnodeOption.Attributes[0].InnerXml;
-            XmlNode imgResampleValue = translationxml.SelectSingleNode("//Settings/ImageSizes");
-            resampleValue = Convert.ToInt32(imgResampleValue.Attributes[1].Value);
-            XmlNode charstyleOption = translationxml.SelectSingleNode("//Settings/CharacterStyles[@value]");
-            characterStyle = charstyleOption.Attributes[0].InnerXml == "True" ? true : false;
-            XmlNode pagenumOption = translationxml.SelectSingleNode("//Settings/PageNumbers[@value]");
-            pagenumStyle = pagenumOption.Attributes[0].InnerXml;
+            settingsDocument.Load(ConverterSettingsFile);
+            XmlNode ImageSizesNode = settingsDocument.SelectSingleNode("//Settings/ImageSizes");
+            if(ImageSizesNode != null)
+            {
+                imgoption = (ImageSizesNode.Attributes["value"]?.InnerXml) ?? imgoption;
+                resampleValue = (ImageSizesNode.Attributes["samplingvalue"]?.InnerXml) ?? imgoption;
+            }
 
-            XmlNode FootnotesSettings = translationxml.SelectSingleNode("//Settings/Footnotes");
-            footnotesLevel = Convert.ToInt32(
-                (FootnotesSettings != null && FootnotesSettings.Attributes["level"] != null) 
-                ? FootnotesSettings.Attributes["level"].InnerXml
-                : "0"
-            );
+            XmlNode CharacterStylesNode = settingsDocument.SelectSingleNode("//Settings/CharacterStyles");
+            if(CharacterStylesNode != null)
+            {
+                characterStyle = (CharacterStylesNode.Attributes["value"]?.InnerXml) ?? characterStyle;
+            }
 
-            footnotesPosition = (FootnotesSettings != null && FootnotesSettings.Attributes["position"] != null)
-                ? FootnotesSettings.Attributes["position"].InnerXml
-                : "page";
+            XmlNode PageNumbersNode = settingsDocument.SelectSingleNode("//Settings/PageNumbers");
+            if(PageNumbersNode != null)
+            {
+                pagenumStyle = (PageNumbersNode.Attributes["value"]?.InnerXml) ?? pagenumStyle;
+            }
+
+            XmlNode FootnotesSettings = settingsDocument.SelectSingleNode("//Settings/Footnotes");
+            if(FootnotesSettings != null)
+            {
+                footnotesLevel = (FootnotesSettings.Attributes["level"].InnerXml) ?? footnotesLevel;
+                footnotesPosition = (FootnotesSettings.Attributes["position"]?.InnerXml) ?? footnotesPosition;
+                footnotesNumbering = (FootnotesSettings.Attributes["numbering"]?.InnerXml) ?? footnotesNumbering;
+                footnotesStartValue = (FootnotesSettings.Attributes["startValue"]?.InnerXml) ?? footnotesStartValue;
+                footnotesNumberingPrefix = (FootnotesSettings.Attributes["numberPrefix"]?.InnerXml) ?? footnotesNumberingPrefix;
+                footnotesNumberingSuffix = (FootnotesSettings.Attributes["numberSuffix"]?.InnerXml) ?? footnotesNumberingSuffix;
+            }
+            
 
         }
+        
+        /// <summary>
+        /// Save the converter settings to an xml file on disk
+        /// </summary>
+        public void save()
+        {
+            if (!Directory.Exists(ApplicationDataFolder))
+            {
+                Directory.CreateDirectory(ApplicationDataFolder);
+            }
+            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
+            {
+                writer.Write(SettingsXml);
+                writer.Flush();
+            }
+        }
 
-        public string GetImageOption => imgoption;
 
-        public int GetResampleValue => resampleValue;
 
-        public bool GetCharacterStyle => characterStyle;
+        public string ImageOption { get => imgoption; set => imgoption = value; }
 
-        public string GetPagenumStyle => pagenumStyle;
+        public string ImageResamplingValue { get => resampleValue; set => resampleValue = value; }
+
+        public string CharacterStyle { get => characterStyle; set => characterStyle = value; }
+
+        public string PagenumStyle { get => pagenumStyle; set => pagenumStyle = value; }
 
         /// <summary>
         /// Position of the notes relatively to the selected level <br/>
@@ -89,7 +217,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// - end means it will placed before the end tag of the selected level <br/>
         /// - after means it will placed right after the closing tag of the selected level <br/>
         /// </summary>
-        public string FootnotesPosition { get => footnotesPosition; set => footnotesPosition = value; }
+        public FootnotesPositionChoice.Enum FootnotesPosition { get => FootnotesPositionChoice.Keys[footnotesPosition]; set => footnotesPosition = FootnotesPositionChoice.Values[value]; }
 
         /// <summary>
         /// Level where the footnote must be placed relatively to its first reference call.<br/>
@@ -97,6 +225,16 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// - a negative value (-N) means it will placed relative to the Nth parent of the current bloc,<br/>
         /// - a positive value (N) means it will placed relatively to the current absolute N level
         /// </summary>
-        public int FootnotesLevel { get => footnotesLevel; set => footnotesLevel = value; }
+        public int FootnotesLevel { get => int.Parse(footnotesLevel); set => footnotesLevel = value.ToString(); }
+
+        public FootnotesNumberingChoice.Enum FootnotesNumbering { get => FootnotesNumberingChoice.Keys[footnotesNumbering]; set => footnotesNumbering = FootnotesNumberingChoice.Values[value]; }
+
+        public int FootnotesStartValue { get => int.Parse(footnotesStartValue); set => footnotesStartValue = value.ToString(); }
+
+        public string FootnotesNumberingPrefix { get => footnotesNumberingPrefix; set => footnotesNumberingPrefix = value; }
+
+        public string FootnotesNumberingSuffix { get => footnotesNumberingSuffix; set => footnotesNumberingSuffix = value; }
+
+
     }
 }

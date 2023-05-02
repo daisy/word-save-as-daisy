@@ -7,9 +7,9 @@ We provide an unified installer that detects standard installations of Microsoft
 If Office is not found by the installer (like preinstalled or windows store versions of MS Office), it will request which architecture (32bits or 64bits) you want the addin to be installed for.
 
 
-## Latest version: 2.7 beta (released on January, 2022)
+## Latest version: 2.7.2 beta (released on September, 2022)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7-beta/SaveAsDAISYInstaller.exe)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
 
 ## Report issues
 
@@ -31,6 +31,18 @@ This issue is being investigated, but the following action has been tested and r
 The add-in should start repairing himself before reopening the word document.
 
 # Changelog
+
+# 2.7.2 beta (September 2022)
+
+This minor release adds the following changes to the addin : 
+- feature [#19](https://github.com/daisy/word-save-as-daisy/issues/19) : Adding notes positionning options in settings
+  - Notes can be positionning at the end of pages, inlined after or at the end of the level of the paragraph holding the noteref
+  - An insertion level can be selected for inlining notes in level or at the end of level
+- Fixed [#18](https://github.com/daisy/word-save-as-daisy/issues/13) : Consecutive texts in italic, strong or exponent are now merged into one text block
+- Fixed [#13](https://github.com/daisy/word-save-as-daisy/issues/13) : hyperlink targets in notes are now correctly retrieved
+- Changed the installer to allow install in user-space for windows 10
+  - User without administrator privileges will need to contact their IT administrator to update the program the first time and switch to user-space installation if they are allowed to
+
 
 # 2.7 beta (January 2022)
 

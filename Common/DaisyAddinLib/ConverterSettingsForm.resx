@@ -334,7 +334,7 @@
     <value>3</value>
   </data>
   <data name="btn_ok.Location" type="System.Drawing.Point, System.Drawing">
-    <value>160, 384</value>
+    <value>159, 483</value>
   </data>
   <data name="btn_ok.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -451,7 +451,7 @@
     <value>2</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>268, 384</value>
+    <value>267, 483</value>
   </data>
   <data name="btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -477,163 +477,376 @@
   <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="footNotesLevel.Items" xml:space="preserve">
-    <value>Note reference level</value>
-  </data>
-  <data name="footNotesLevel.Items1" xml:space="preserve">
-    <value>First or nearest level</value>
-  </data>
-  <data name="footNotesLevel.Items2" xml:space="preserve">
-    <value>Second or nearest level</value>
-  </data>
-  <data name="footNotesLevel.Items3" xml:space="preserve">
-    <value>Third or nearest level</value>
-  </data>
-  <data name="footNotesLevel.Items4" xml:space="preserve">
-    <value>Fourth or nearest level</value>
-  </data>
-  <data name="footNotesLevel.Items5" xml:space="preserve">
-    <value>Fifth or nearest level</value>
-  </data>
-  <data name="footNotesLevel.Items6" xml:space="preserve">
-    <value>Sixth or nearest level</value>
-  </data>
-  <data name="footNotesLevel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 54</value>
-  </data>
-  <data name="footNotesLevel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>245, 24</value>
-  </data>
-  <data name="footNotesLevel.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="footNotesLevel.Text" xml:space="preserve">
-    <value>Note reference level</value>
-  </data>
-  <data name="&gt;&gt;footNotesLevel.Name" xml:space="preserve">
-    <value>footNotesLevel</value>
-  </data>
-  <data name="&gt;&gt;footNotesLevel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;footNotesLevel.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;footNotesLevel.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label2.AutoSize" type="System.Boolean, mscorlib">
+  <data name="notesPositionLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label2.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
-  </data>
-  <data name="label2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 57</value>
-  </data>
-  <data name="label2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 16</value>
-  </data>
-  <data name="label2.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
-  </data>
-  <data name="label2.Text" xml:space="preserve">
-    <value>Notes level</value>
-  </data>
-  <data name="&gt;&gt;label2.Name" xml:space="preserve">
-    <value>label2</value>
-  </data>
-  <data name="&gt;&gt;label2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label2.Parent" xml:space="preserve">
-    <value>groupBox1</value>
-  </data>
-  <data name="&gt;&gt;label2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="notesPositionLabel.Location" type="System.Drawing.Point, System.Drawing">
     <value>5, 24</value>
   </data>
-  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="notesPositionLabel.Size" type="System.Drawing.Size, System.Drawing">
     <value>93, 16</value>
   </data>
-  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+  <data name="notesPositionLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
-  <data name="label1.Text" xml:space="preserve">
+  <data name="notesPositionLabel.Text" xml:space="preserve">
     <value>Notes position</value>
   </data>
-  <data name="&gt;&gt;label1.Name" xml:space="preserve">
-    <value>label1</value>
+  <data name="&gt;&gt;notesPositionLabel.Name" xml:space="preserve">
+    <value>notesPositionLabel</value>
   </data>
-  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+  <data name="&gt;&gt;notesPositionLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;notesPositionLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
   </data>
-  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="footNotesPosition.Items" xml:space="preserve">
-    <value>End of pages</value>
-  </data>
-  <data name="footNotesPosition.Items1" xml:space="preserve">
-    <value>Inlined in levels</value>
-  </data>
-  <data name="footNotesPosition.Items2" xml:space="preserve">
-    <value>End of levels</value>
-  </data>
-  <data name="footNotesPosition.Location" type="System.Drawing.Point, System.Drawing">
-    <value>108, 21</value>
-  </data>
-  <data name="footNotesPosition.Size" type="System.Drawing.Size, System.Drawing">
-    <value>245, 24</value>
-  </data>
-  <data name="footNotesPosition.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;notesPositionLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="footNotesPosition.Text" xml:space="preserve">
+  <data name="notesPositionSelector.Items" xml:space="preserve">
     <value>End of pages</value>
   </data>
-  <data name="&gt;&gt;footNotesPosition.Name" xml:space="preserve">
-    <value>footNotesPosition</value>
+  <data name="notesPositionSelector.Items1" xml:space="preserve">
+    <value>Inlined in levels</value>
   </data>
-  <data name="&gt;&gt;footNotesPosition.Type" xml:space="preserve">
+  <data name="notesPositionSelector.Items2" xml:space="preserve">
+    <value>End of levels</value>
+  </data>
+  <data name="notesPositionSelector.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 21</value>
+  </data>
+  <data name="notesPositionSelector.Size" type="System.Drawing.Size, System.Drawing">
+    <value>245, 24</value>
+  </data>
+  <data name="notesPositionSelector.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="notesPositionSelector.Text" xml:space="preserve">
+    <value>End of pages</value>
+  </data>
+  <data name="&gt;&gt;notesPositionSelector.Name" xml:space="preserve">
+    <value>notesPositionSelector</value>
+  </data>
+  <data name="&gt;&gt;notesPositionSelector.Type" xml:space="preserve">
     <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;footNotesPosition.Parent" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;notesPositionSelector.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
   </data>
-  <data name="&gt;&gt;footNotesPosition.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;notesPositionSelector.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="notesLevelLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="notesLevelLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="notesLevelLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 54</value>
+  </data>
+  <data name="notesLevelLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>75, 16</value>
+  </data>
+  <data name="notesLevelLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="notesLevelLabel.Text" xml:space="preserve">
+    <value>Notes level</value>
+  </data>
+  <data name="&gt;&gt;notesLevelLabel.Name" xml:space="preserve">
+    <value>notesLevelLabel</value>
+  </data>
+  <data name="&gt;&gt;notesLevelLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesLevelLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesLevelLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="notesLevelSelector.Items" xml:space="preserve">
+    <value>Note reference level</value>
+  </data>
+  <data name="notesLevelSelector.Items1" xml:space="preserve">
+    <value>First or nearest level</value>
+  </data>
+  <data name="notesLevelSelector.Items2" xml:space="preserve">
+    <value>Second or nearest level</value>
+  </data>
+  <data name="notesLevelSelector.Items3" xml:space="preserve">
+    <value>Third or nearest level</value>
+  </data>
+  <data name="notesLevelSelector.Items4" xml:space="preserve">
+    <value>Fourth or nearest level</value>
+  </data>
+  <data name="notesLevelSelector.Items5" xml:space="preserve">
+    <value>Fifth or nearest level</value>
+  </data>
+  <data name="notesLevelSelector.Items6" xml:space="preserve">
+    <value>Sixth or nearest level</value>
+  </data>
+  <data name="notesLevelSelector.Location" type="System.Drawing.Point, System.Drawing">
+    <value>110, 51</value>
+  </data>
+  <data name="notesLevelSelector.Size" type="System.Drawing.Size, System.Drawing">
+    <value>245, 24</value>
+  </data>
+  <data name="notesLevelSelector.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
   </data>
-  <data name="groupBox1.Location" type="System.Drawing.Point, System.Drawing">
+  <data name="notesLevelSelector.Text" xml:space="preserve">
+    <value>Note reference level</value>
+  </data>
+  <data name="&gt;&gt;notesLevelSelector.Name" xml:space="preserve">
+    <value>notesLevelSelector</value>
+  </data>
+  <data name="&gt;&gt;notesLevelSelector.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesLevelSelector.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesLevelSelector.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="notesNumberingLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="notesNumberingLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="notesNumberingLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 84</value>
+  </data>
+  <data name="notesNumberingLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>109, 16</value>
+  </data>
+  <data name="notesNumberingLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="notesNumberingLabel.Text" xml:space="preserve">
+    <value>Notes numbering</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingLabel.Name" xml:space="preserve">
+    <value>notesNumberingLabel</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingLabel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="notesNumberingSelector.Items" xml:space="preserve">
+    <value>Don't add a numeric prefix</value>
+  </data>
+  <data name="notesNumberingSelector.Items1" xml:space="preserve">
+    <value>Recompute a numeric prefix</value>
+  </data>
+  <data name="notesNumberingSelector.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 81</value>
+  </data>
+  <data name="notesNumberingSelector.Size" type="System.Drawing.Size, System.Drawing">
+    <value>227, 24</value>
+  </data>
+  <data name="notesNumberingSelector.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="notesNumberingSelector.Text" xml:space="preserve">
+    <value>Don't add a numeric prefix</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingSelector.Name" xml:space="preserve">
+    <value>notesNumberingSelector</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingSelector.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingSelector.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingSelector.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="notesNumberingStartLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="notesNumberingStartLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="notesNumberingStartLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 114</value>
+  </data>
+  <data name="notesNumberingStartLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>100, 16</value>
+  </data>
+  <data name="notesNumberingStartLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>10</value>
+  </data>
+  <data name="notesNumberingStartLabel.Text" xml:space="preserve">
+    <value>Starting number</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartLabel.Name" xml:space="preserve">
+    <value>notesNumberingStartLabel</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="notesNumberingStartValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 111</value>
+  </data>
+  <data name="notesNumberingStartValue.Mask" xml:space="preserve">
+    <value>000</value>
+  </data>
+  <data name="notesNumberingStartValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>227, 22</value>
+  </data>
+  <data name="notesNumberingStartValue.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartValue.Name" xml:space="preserve">
+    <value>notesNumberingStartValue</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartValue.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartValue.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="notesNumberPrefixLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="notesNumberPrefixLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 142</value>
+  </data>
+  <data name="notesNumberPrefixLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 16</value>
+  </data>
+  <data name="notesNumberPrefixLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="notesNumberPrefixLabel.Text" xml:space="preserve">
+    <value>Number prefix</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixLabel.Name" xml:space="preserve">
+    <value>notesNumberPrefixLabel</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixLabel.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="notesNumberPrefixValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 139</value>
+  </data>
+  <data name="notesNumberPrefixValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>227, 22</value>
+  </data>
+  <data name="notesNumberPrefixValue.TabIndex" type="System.Int32, mscorlib">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixValue.Name" xml:space="preserve">
+    <value>notesNumberPrefixValue</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixValue.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixValue.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="notesNumberSuffixLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="notesNumberSuffixLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="notesNumberSuffixLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 172</value>
+  </data>
+  <data name="notesNumberSuffixLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>101, 16</value>
+  </data>
+  <data name="notesNumberSuffixLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="notesNumberSuffixLabel.Text" xml:space="preserve">
+    <value>Notes text prefix</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixLabel.Name" xml:space="preserve">
+    <value>notesNumberSuffixLabel</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixLabel.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="notesNumberSuffixValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>128, 169</value>
+  </data>
+  <data name="notesNumberSuffixValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>227, 22</value>
+  </data>
+  <data name="notesNumberSuffixValue.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixValue.Name" xml:space="preserve">
+    <value>notesNumberSuffixValue</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixValue.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixValue.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="FootnotesBox.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 277</value>
   </data>
-  <data name="groupBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>361, 91</value>
+  <data name="FootnotesBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>361, 199</value>
   </data>
-  <data name="groupBox1.TabIndex" type="System.Int32, mscorlib">
+  <data name="FootnotesBox.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
   </data>
-  <data name="groupBox1.Text" xml:space="preserve">
-    <value>Footnotes options</value>
+  <data name="FootnotesBox.Text" xml:space="preserve">
+    <value>Footnotes customization</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Name" xml:space="preserve">
-    <value>groupBox1</value>
+  <data name="&gt;&gt;FootnotesBox.Name" xml:space="preserve">
+    <value>FootnotesBox</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Type" xml:space="preserve">
+  <data name="&gt;&gt;FootnotesBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;groupBox1.Parent" xml:space="preserve">
+  <data name="&gt;&gt;FootnotesBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;groupBox1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;FootnotesBox.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -643,13 +856,13 @@
     <value>8, 16</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>372, 420</value>
+    <value>380, 516</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.MaximumSize" type="System.Drawing.Size, System.Drawing">
-    <value>661, 505</value>
+    <value>661, 800</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>127, 112</value>

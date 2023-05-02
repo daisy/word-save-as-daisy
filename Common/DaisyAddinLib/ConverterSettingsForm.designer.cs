@@ -1,30 +1,40 @@
 using System.Collections.Generic;
+using System.Linq;
+using static Daisy.SaveAsDAISY.Conversion.ConverterSettings;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
     partial class ConverterSettingsForm
     {
-        readonly Dictionary<string, string> positionsMap = new Dictionary<string, string>() {
-            { "End of pages", "page"},
-            { "Inlined in levels", "inline"}, // TO BE ADDED
-            { "End of levels", "end"}
-
+        readonly Dictionary<string, FootnotesPositionChoice.Enum> positionsMap = new Dictionary<string, FootnotesPositionChoice.Enum>() {
+            { "End of pages", FootnotesPositionChoice.Enum.Page},
+            { "Inlined in levels", FootnotesPositionChoice.Enum.Inline},
+            { "End of levels", FootnotesPositionChoice.Enum.End},
         };
 
-        readonly Dictionary<string, string> levelsMap = new Dictionary<string, string>() {
+        readonly Dictionary<string, int> levelsMap = new Dictionary<string, int>() {
             //{ "Fifth or nearest parent", "-5" },
             //{ "Fourth or nearest parent", "-4" },
             //{ "Third or nearest parent", "-3" },
             //{ "Second or nearest parent", "-2" },
             //{ "First or nearest parent", "-1" },
-            { "Note reference level", "0" },
-            { "First or nearest level", "1" },
-            { "Second or nearest level", "2" },
-            { "Third or nearest level", "3" },
-            { "Fourth or nearest level", "4" },
-            { "Fifth or nearest level", "5" },
-            { "Sixth or nearest level", "6" }
+            { "Note reference level", 0 },
+            { "First or nearest level", 1 },
+            { "Second or nearest level", 2 },
+            { "Third or nearest level", 3 },
+            { "Fourth or nearest level", 4 },
+            { "Fifth or nearest level", 5 },
+            { "Sixth or nearest level", 6 }
         };
+
+
+        readonly Dictionary<string, FootnotesNumberingChoice.Enum> notesNumberingMap = new Dictionary<string, FootnotesNumberingChoice.Enum>() {
+            { "Don't add a numeric prefix", FootnotesNumberingChoice.Enum.None},
+            { "Recompute a numeric prefix", FootnotesNumberingChoice.Enum.Number}, 
+           // { "Use word computed note number", FootnotesNumberingChoice.Enum.Word}// TO BE ADDED
+        };
+
+
 
         /// <summary>
         /// Required designer variable.
@@ -65,15 +75,23 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.grpbox_charstyles = new System.Windows.Forms.GroupBox();
             this.grpbox_ImageSizes = new System.Windows.Forms.GroupBox();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.footnotesLevelSelector = new System.Windows.Forms.ComboBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.footnotesPositionSelector = new System.Windows.Forms.ComboBox();
+            this.FootnotesBox = new System.Windows.Forms.GroupBox();
+            this.notesPositionLabel = new System.Windows.Forms.Label();
+            this.notesPositionSelector = new System.Windows.Forms.ComboBox();
+            this.notesLevelLabel = new System.Windows.Forms.Label();
+            this.notesLevelSelector = new System.Windows.Forms.ComboBox();
+            this.notesNumberingLabel = new System.Windows.Forms.Label();
+            this.notesNumberingSelector = new System.Windows.Forms.ComboBox();
+            this.notesNumberingStartLabel = new System.Windows.Forms.Label();
+            this.notesNumberingStartValue = new System.Windows.Forms.MaskedTextBox();
+            this.notesNumberPrefixLabel = new System.Windows.Forms.Label();
+            this.notesNumberPrefixValue = new System.Windows.Forms.TextBox();
+            this.notesNumberSuffixLabel = new System.Windows.Forms.Label();
+            this.notesNumberSuffixValue = new System.Windows.Forms.TextBox();
             this.grpbox_pgnum.SuspendLayout();
             this.grpbox_charstyles.SuspendLayout();
             this.grpbox_ImageSizes.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.FootnotesBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // radiobtn_custom
@@ -172,51 +190,104 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.button1_Click);
             // 
-            // groupBox1
+            // FootnotesBox
             // 
-            this.groupBox1.Controls.Add(this.footnotesLevelSelector);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.footnotesPositionSelector);
-            resources.ApplyResources(this.groupBox1, "groupBox1");
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.TabStop = false;
+            this.FootnotesBox.Controls.Add(this.notesPositionLabel);
+            this.FootnotesBox.Controls.Add(this.notesPositionSelector);
+            this.FootnotesBox.Controls.Add(this.notesLevelLabel);
+            this.FootnotesBox.Controls.Add(this.notesLevelSelector);
+            this.FootnotesBox.Controls.Add(this.notesNumberingLabel);
+            this.FootnotesBox.Controls.Add(this.notesNumberingSelector);
+            this.FootnotesBox.Controls.Add(this.notesNumberingStartLabel);
+            this.FootnotesBox.Controls.Add(this.notesNumberingStartValue);
+            this.FootnotesBox.Controls.Add(this.notesNumberPrefixLabel);
+            this.FootnotesBox.Controls.Add(this.notesNumberPrefixValue);
+            this.FootnotesBox.Controls.Add(this.notesNumberSuffixLabel);
+            this.FootnotesBox.Controls.Add(this.notesNumberSuffixValue);
+            resources.ApplyResources(this.FootnotesBox, "FootnotesBox");
+            this.FootnotesBox.Name = "FootnotesBox";
+            this.FootnotesBox.TabStop = false;
             // 
-            // footNotesLevel
+            // notesPositionLabel
             // 
-            this.footnotesLevelSelector.FormattingEnabled = true;
-            this.footnotesLevelSelector.Items.AddRange(new object[] {
-            resources.GetString("footNotesLevel.Items"),
-            resources.GetString("footNotesLevel.Items1"),
-            resources.GetString("footNotesLevel.Items2"),
-            resources.GetString("footNotesLevel.Items3"),
-            resources.GetString("footNotesLevel.Items4"),
-            resources.GetString("footNotesLevel.Items5"),
-            resources.GetString("footNotesLevel.Items6")});
-            resources.ApplyResources(this.footnotesLevelSelector, "footNotesLevel");
-            this.footnotesLevelSelector.Name = "footNotesLevel";
-            this.footnotesLevelSelector.SelectedIndexChanged += new System.EventHandler(this.footnotesLevelSelector_SelectedIndexChanged);
+            resources.ApplyResources(this.notesPositionLabel, "notesPositionLabel");
+            this.notesPositionLabel.Name = "notesPositionLabel";
             // 
-            // label2
+            // notesPositionSelector
             // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
+            this.notesPositionSelector.FormattingEnabled = true;
+            this.notesPositionSelector.Items.AddRange(new object[] {
+            resources.GetString("notesPositionSelector.Items"),
+            resources.GetString("notesPositionSelector.Items1"),
+            resources.GetString("notesPositionSelector.Items2")});
+            resources.ApplyResources(this.notesPositionSelector, "notesPositionSelector");
+            this.notesPositionSelector.Name = "notesPositionSelector";
+            this.notesPositionSelector.SelectedIndexChanged += new System.EventHandler(this.footnotesPositionSelector_SelectedIndexChanged);
             // 
-            // label1
+            // notesLevelLabel
             // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
+            resources.ApplyResources(this.notesLevelLabel, "notesLevelLabel");
+            this.notesLevelLabel.Name = "notesLevelLabel";
             // 
-            // footNotesPosition
+            // notesLevelSelector
             // 
-            this.footnotesPositionSelector.FormattingEnabled = true;
-            this.footnotesPositionSelector.Items.AddRange(new object[] {
-            resources.GetString("footNotesPosition.Items"),
-            resources.GetString("footNotesPosition.Items1"),
-            resources.GetString("footNotesPosition.Items2")});
-            resources.ApplyResources(this.footnotesPositionSelector, "footNotesPosition");
-            this.footnotesPositionSelector.Name = "footNotesPosition";
-            this.footnotesPositionSelector.SelectedIndexChanged += new System.EventHandler(this.footnotesPositionSelector_SelectedIndexChanged);
+            this.notesLevelSelector.FormattingEnabled = true;
+            this.notesLevelSelector.Items.AddRange(new object[] {
+            resources.GetString("notesLevelSelector.Items"),
+            resources.GetString("notesLevelSelector.Items1"),
+            resources.GetString("notesLevelSelector.Items2"),
+            resources.GetString("notesLevelSelector.Items3"),
+            resources.GetString("notesLevelSelector.Items4"),
+            resources.GetString("notesLevelSelector.Items5"),
+            resources.GetString("notesLevelSelector.Items6")});
+            resources.ApplyResources(this.notesLevelSelector, "notesLevelSelector");
+            this.notesLevelSelector.Name = "notesLevelSelector";
+            this.notesLevelSelector.SelectedIndexChanged += new System.EventHandler(this.footnotesLevelSelector_SelectedIndexChanged);
+            // 
+            // notesNumberingLabel
+            // 
+            resources.ApplyResources(this.notesNumberingLabel, "notesNumberingLabel");
+            this.notesNumberingLabel.Name = "notesNumberingLabel";
+            // 
+            // notesNumberingSelector
+            // 
+            this.notesNumberingSelector.FormattingEnabled = true;
+            this.notesNumberingSelector.Items.AddRange(new object[] {
+            resources.GetString("notesNumberingSelector.Items"),
+            resources.GetString("notesNumberingSelector.Items1")});
+            resources.ApplyResources(this.notesNumberingSelector, "notesNumberingSelector");
+            this.notesNumberingSelector.Name = "notesNumberingSelector";
+            this.notesNumberingSelector.SelectedIndexChanged += new System.EventHandler(this.notesNumberingSelector_SelectedIndexChanged);
+            // 
+            // notesNumberingStartLabel
+            // 
+            resources.ApplyResources(this.notesNumberingStartLabel, "notesNumberingStartLabel");
+            this.notesNumberingStartLabel.Name = "notesNumberingStartLabel";
+            // 
+            // notesNumberingStartValue
+            // 
+            resources.ApplyResources(this.notesNumberingStartValue, "notesNumberingStartValue");
+            this.notesNumberingStartValue.Name = "notesNumberingStartValue";
+            // 
+            // notesNumberPrefixLabel
+            // 
+            resources.ApplyResources(this.notesNumberPrefixLabel, "notesNumberPrefixLabel");
+            this.notesNumberPrefixLabel.Name = "notesNumberPrefixLabel";
+            // 
+            // notesNumberPrefixValue
+            // 
+            resources.ApplyResources(this.notesNumberPrefixValue, "notesNumberPrefixValue");
+            this.notesNumberPrefixValue.Name = "notesNumberPrefixValue";
+            // 
+            // notesNumberSuffixLabel
+            // 
+            resources.ApplyResources(this.notesNumberSuffixLabel, "notesNumberSuffixLabel");
+            this.notesNumberSuffixLabel.Name = "notesNumberSuffixLabel";
+            // 
+            // notesNumberSuffixValue
+            // 
+            resources.ApplyResources(this.notesNumberSuffixValue, "notesNumberSuffixValue");
+            this.notesNumberSuffixValue.Name = "notesNumberSuffixValue";
             // 
             // ConverterSettingsForm
             // 
@@ -224,7 +295,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.FootnotesBox);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.grpbox_ImageSizes);
             this.Controls.Add(this.grpbox_charstyles);
@@ -241,8 +312,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.grpbox_charstyles.PerformLayout();
             this.grpbox_ImageSizes.ResumeLayout(false);
             this.grpbox_ImageSizes.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.FootnotesBox.ResumeLayout(false);
+            this.FootnotesBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -261,10 +332,18 @@ namespace Daisy.SaveAsDAISY.Conversion
         private System.Windows.Forms.GroupBox grpbox_charstyles;
         private System.Windows.Forms.GroupBox grpbox_ImageSizes;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.ComboBox footnotesPositionSelector;
-        private System.Windows.Forms.ComboBox footnotesLevelSelector;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.GroupBox FootnotesBox;
+        private System.Windows.Forms.ComboBox notesPositionSelector;
+        private System.Windows.Forms.ComboBox notesLevelSelector;
+        private System.Windows.Forms.Label notesLevelLabel;
+        private System.Windows.Forms.Label notesPositionLabel;
+        private System.Windows.Forms.ComboBox notesNumberingSelector;
+        private System.Windows.Forms.Label notesNumberingLabel;
+        private System.Windows.Forms.Label notesNumberPrefixLabel;
+        private System.Windows.Forms.Label notesNumberSuffixLabel;
+        private System.Windows.Forms.TextBox notesNumberSuffixValue;
+        private System.Windows.Forms.TextBox notesNumberPrefixValue;
+        private System.Windows.Forms.Label notesNumberingStartLabel;
+        private System.Windows.Forms.MaskedTextBox notesNumberingStartValue;
     }
 }

@@ -190,6 +190,6 @@
     <value>StrUserControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Daisy.DaisyConverter.DaisyConverterLib.BaseUserControl, DaisyAddinLib, Version=2.7.1.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
+    <value>Daisy.DaisyConverter.DaisyConverterLib.BaseUserControl, DaisyAddinLib, Version=2.7.2.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
   </data>
 </root>

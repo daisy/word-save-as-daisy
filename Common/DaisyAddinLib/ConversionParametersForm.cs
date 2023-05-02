@@ -646,8 +646,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 			}
 			catch (Exception ex)
 			{
-				AddinLogger.Error(ex);
-				MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message);
+                AddinLogger.Error(ex);
 			}
 		}
 

@@ -6,6 +6,7 @@ using System.IO;
 using System.Xml;
 
 using Newtonsoft.Json;
+using static Daisy.SaveAsDAISY.Conversion.ConverterSettings;
 
 namespace Daisy.SaveAsDAISY.Conversion {
     /// <summary>
@@ -16,7 +17,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
     /// </summary>
     public class ConversionParameters
     {
-        public ConverterSettings GlobalSettings = new ConverterSettings();
+        public ConverterSettings GlobalSettings = Instance;
 
         /// <summary>
 		/// Path for prepopulated_daisy xml file (conversion parameters cache file)
@@ -175,25 +176,31 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 parameters.Add("MasterSub", ParseSubDocuments);
 
                 // also retrieve global settings
-                if (GlobalSettings.GetImageOption != " ") {
-                    parameters.Add("ImageSizeOption", GlobalSettings.GetImageOption);
-                    parameters.Add("DPI", GlobalSettings.GetResampleValue);
+                if (GlobalSettings.ImageOption != " ") {
+                    parameters.Add("ImageSizeOption", GlobalSettings.ImageOption);
+                    parameters.Add("DPI", GlobalSettings.ImageResamplingValue);
                 }
-                parameters.Add("CharacterStyles", GlobalSettings.GetCharacterStyle);
-
-                if (GlobalSettings.GetPagenumStyle != " ") {
-                    parameters.Add("Custom", GlobalSettings.GetPagenumStyle);
+                if (GlobalSettings.CharacterStyle != " ") {
+                    parameters.Add("CharacterStyles", GlobalSettings.CharacterStyle);
+                }
+                if (GlobalSettings.PagenumStyle != " ") {
+                    parameters.Add("Custom", GlobalSettings.PagenumStyle);
                 }
                 // 20220402 : adding footnotes positioning settings
                 // might be "page", "inline", "end" or "after"
-                if (GlobalSettings.FootnotesPosition != " "){
-                    parameters.Add("FootnotesPosition", GlobalSettings.FootnotesPosition);
-                }
+                parameters.Add("FootnotesPosition", FootnotesPositionChoice.Values[GlobalSettings.FootnotesPosition]);
+                
                 // value between -5 and 6, with negative value meaning parents level going upwards,
                 // 0 meaning in current level,
                 // positive value meaning absolute level value where to put the notes
                 parameters.Add("FootnotesLevel", GlobalSettings.FootnotesLevel);
-                
+
+                // 20230113 : adding footnotes numbering customization
+                parameters.Add("FootnotesNumbering", FootnotesNumberingChoice.Values[GlobalSettings.FootnotesNumbering]);
+                parameters.Add("FootnotesStartValue", GlobalSettings.FootnotesStartValue);
+                parameters.Add("FootnotesNumberingPrefix", GlobalSettings.FootnotesNumberingPrefix);
+                parameters.Add("FootnotesNumberingSuffix", GlobalSettings.FootnotesNumberingSuffix);
+
 
                 return parameters;
             }

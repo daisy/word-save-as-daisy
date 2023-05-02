@@ -8,8 +8,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 {
     public partial class ConverterSettingsForm : Form
     {
-        XmlDocument SettingsXml = new XmlDocument();
-        String xmlfile_path;
+        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
 
         public ConverterSettingsForm()
@@ -21,17 +20,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private void Daisysettingsfrm_Load(object sender, EventArgs e)
         {
-            xmlfile_path = Path.GetFullPath(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\SaveAsDAISY");
-
-            if (!File.Exists(xmlfile_path + "\\DAISY_settingsVer21.xml"))
-            {
-            	ConverterSettings.CreateDefaultSettings(xmlfile_path);
-            }
-
-			SettingsXml.Load(xmlfile_path + "\\DAISY_settingsVer21.xml");
-            XmlNode node = SettingsXml.SelectSingleNode("//Settings/PageNumbers[@value]");
-
-            if (node.Attributes[0].Value == "Custom")
+            notesNumberingStartValue.Mask = "000";
+            
+            if (GlobaleSettings.PagenumStyle == "Custom")
             {
                 this.radiobtn_custom.Checked = true;
             }
@@ -40,8 +31,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 this.radiobtn_auto.Checked = true;
             }
 
-            XmlNode charnode = SettingsXml.SelectSingleNode("//Settings/CharacterStyles[@value]");
-            if (charnode.Attributes[0].Value == "True")
+            if (GlobaleSettings.CharacterStyle == "True")
             {
                 this.checkbox_translate.Checked = true;
             }
@@ -49,145 +39,125 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 this.checkbox_translate.Checked = false;
             }
-            XmlNode imgnode = SettingsXml.LastChild["ImageSizes"];
-            if (imgnode.Attributes[0].Value == "original")
+
+            if (GlobaleSettings.ImageOption == "original")
             {
 
                 this.radiobtn_originalimage.Checked = true;
                 this.combobox_resample.Enabled = false;
 
             }
-            else if (imgnode.Attributes[0].Value == "resize")
+            else if (GlobaleSettings.ImageOption == "resize")
             {
 
                 this.radiobtn_resize.Checked = true;
                 this.combobox_resample.Enabled = false;
             }
-            else if (imgnode.Attributes[0].Value == "resample")
+            else if (GlobaleSettings.ImageOption == "resample")
             {
                 this.radiobtn_resample.Checked = true;
-                this.combobox_resample.Text = imgnode.Attributes[1].InnerXml;
+                this.combobox_resample.Text = GlobaleSettings.ImageResamplingValue;
                 this.combobox_resample.Enabled = true;
             }
 
 
             // NP 20220428 : Footnotes settings
-
-            XmlNode footnotesSettings = SettingsXml.SelectSingleNode("//Settings/Footnotes");
-
-            if(footnotesSettings != null)
+            // Found back the key associated to the value
+            foreach (var levelPair in levelsMap)
             {
-                if(footnotesSettings.Attributes["level"] != null)
+                if (levelPair.Value == GlobaleSettings.FootnotesLevel)
                 {
-                    // Found back the key associated to the value
-                    foreach (var levelPair in levelsMap)
-                    {
-                        if (levelPair.Value == footnotesSettings.Attributes["level"].Value)
-                        {
-                            this.footnotesLevelSelector.SelectedItem = levelPair.Key;
-                        }
-                    }
-                }
-                if (footnotesSettings.Attributes["position"] != null)
-                {
-                    // Found back the key associated to the value
-                    foreach (var positionsPair in positionsMap)
-                    {
-                        if (positionsPair.Value == footnotesSettings.Attributes["position"].Value)
-                        {
-                            this.footnotesPositionSelector.SelectedItem = positionsPair.Key;
-                            // Disable level selection for end of pages value
-                            footnotesLevelSelector.Enabled = (positionsPair.Value != "page");
-                        }
-                    }
+                    this.notesLevelSelector.SelectedItem = levelPair.Key;
                 }
             }
+            // Found back the key associated to the value
+            foreach (var positionsPair in positionsMap)
+            {
+                if (positionsPair.Value == GlobaleSettings.FootnotesPosition)
+                {
+                    this.notesPositionSelector.SelectedItem = positionsPair.Key;
+                    // Disable level selection for end of pages value
+                    notesLevelSelector.Enabled = (positionsPair.Value != ConverterSettings.FootnotesPositionChoice.Enum.Page);
+                }
+            }
+            // Found back the key associated to the value
+            foreach (var numberingPair in notesNumberingMap)
+            {
+                if (numberingPair.Value == GlobaleSettings.FootnotesNumbering)
+                {
+                    this.notesNumberingSelector.SelectedItem = numberingPair.Key;
+                    // Disable note numbering start value field if numbering scheme is not set to "Number"
+                    this.notesNumberingStartValue.Enabled = numberingPair.Value == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
+                    // Disable level selection for end of pages value
+                    //footnotesLevelSelector.Enabled = (numberingPair.Value != ConverterSettings.FootnotesPositionChoice.Enum.Page);
+                }
+            }
+            notesNumberingStartValue.Text = GlobaleSettings.FootnotesStartValue.ToString();
+            notesNumberPrefixValue.Text = GlobaleSettings.FootnotesNumberingPrefix;
+            notesNumberSuffixValue.Text = GlobaleSettings.FootnotesNumberingSuffix;
+
+            this.notesNumberingStartValue.Enabled = notesNumberingMap[(string)notesNumberingSelector.SelectedItem] == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
+
         }
 
         private void btn_ok_Click(object sender, EventArgs e)
         {
-            try
-            {
-				if (!File.Exists(xmlfile_path + "\\DAISY_settingsVer21.xml"))
-				{
-					ConverterSettings.CreateDefaultSettings(xmlfile_path);
-				}
-
-				SettingsXml.Load(xmlfile_path + "\\DAISY_settingsVer21.xml");
-
-                XmlNode node = SettingsXml.SelectSingleNode("//Settings/PageNumbers[@value]");
-
-                if (this.radiobtn_custom.Checked == true)
-                {
-                    node.Attributes[0].Value = "Custom";
-                }
-                else
-                {
-                    node.Attributes[0].Value = "Automatic";
-                }
-                XmlNode charnode = SettingsXml.SelectSingleNode("//Settings/CharacterStyles[@value]");
-                if (this.checkbox_translate.Checked == true)
-                {
-                    charnode.Attributes[0].Value = "True";
-
-                }
-                else
-                {
-                    charnode.Attributes[0].Value = "False";
-                }
-                XmlNode imgnode = SettingsXml.LastChild["ImageSizes"];
+            try {
+                // Update fields
+                GlobaleSettings.PagenumStyle = this.radiobtn_custom.Checked ? "Custom" : "Automatic";
+                GlobaleSettings.CharacterStyle = this.checkbox_translate.Checked ? "True" : "False";
+                GlobaleSettings.CharacterStyle = this.checkbox_translate.Checked ? "True" : "False";
 
                 if (this.radiobtn_originalimage.Checked == true)
                 {
-                    imgnode.Attributes[0].Value = "original";
+                    GlobaleSettings.ImageOption = "original";
 
                 }
                 else if (this.radiobtn_resize.Checked == true)
                 {
-                    imgnode.Attributes[0].Value = "resize";
+                    GlobaleSettings.ImageOption = "resize";
 
                 }
                 else if (this.radiobtn_resample.Checked == true)
                 {
 
-                    imgnode.Attributes[0].Value = "resample";
-                    imgnode.Attributes[1].Value = this.combobox_resample.SelectedItem.ToString();
+                    GlobaleSettings.ImageOption = "resample";
+                    GlobaleSettings.ImageResamplingValue = this.combobox_resample.SelectedItem.ToString();
 
                 }
 
-                XmlNode FootnotesSettings = SettingsXml.SelectSingleNode("//Settings/Footnotes");
-                if(FootnotesSettings == null)
-                {
-                    FootnotesSettings = SettingsXml.SelectSingleNode("//Settings").AppendChild(
-                        SettingsXml.CreateNode(XmlNodeType.Element, "Footnotes", "")
-                    );
-                }
-                string selectedLevel = (string)footnotesLevelSelector.SelectedItem;
-                string levelValue;
-                if (!levelsMap.TryGetValue(selectedLevel, out levelValue))
-                {
-                    levelValue = "0";
-                }
-                if(FootnotesSettings.Attributes["level"] == null)
-                {
-                    FootnotesSettings.Attributes.Append(SettingsXml.CreateAttribute("level"));
-                }
-                FootnotesSettings.Attributes["level"].Value = levelValue;
 
-                string selectedPosition = (string)footnotesPositionSelector.SelectedItem;
-                string positionValue;
+                string selectedPosition = (string)notesPositionSelector.SelectedItem;
+                ConverterSettings.FootnotesPositionChoice.Enum positionValue;
                 if (!positionsMap.TryGetValue(selectedPosition, out positionValue))
                 {
-                    positionValue = "page";
+                    positionValue = ConverterSettings.FootnotesPositionChoice.Enum.Page;
                 }
-                if (FootnotesSettings.Attributes["position"] == null)
+                GlobaleSettings.FootnotesPosition = positionValue;
+
+
+                string selectedLevel = (string)notesLevelSelector.SelectedItem;
+                int levelValue;
+                if (!levelsMap.TryGetValue(selectedLevel, out levelValue))
                 {
-                    FootnotesSettings.Attributes.Append(SettingsXml.CreateAttribute("position"));
+                    levelValue = 0;
                 }
-                FootnotesSettings.Attributes["position"].Value = positionValue;
+                GlobaleSettings.FootnotesLevel = levelValue;
+
+                string selectedNumbering = (string)notesNumberingSelector.SelectedItem;
+                ConverterSettings.FootnotesNumberingChoice.Enum numberingValue;
+                if (!notesNumberingMap.TryGetValue(selectedNumbering, out numberingValue))
+                {
+                    numberingValue = ConverterSettings.FootnotesNumberingChoice.Enum.None;
+                }
+                GlobaleSettings.FootnotesNumbering = numberingValue;
+                GlobaleSettings.FootnotesStartValue = int.Parse(notesNumberingStartValue.Text);
+                GlobaleSettings.FootnotesNumberingPrefix = notesNumberPrefixValue.Text;
+                GlobaleSettings.FootnotesNumberingSuffix = notesNumberSuffixValue.Text;
 
 
-                SettingsXml.Save(xmlfile_path + "\\DAISY_settingsVer21.xml");
+                // Save
+                GlobaleSettings.save();
                 this.Close();
             }
             catch (Exception ex)
@@ -252,7 +222,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private void footnotesPositionSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-            footnotesLevelSelector.Enabled = ((string)footnotesPositionSelector.SelectedItem != "End of pages");
+            notesLevelSelector.Enabled = ((string)notesPositionSelector.SelectedItem != "End of pages");
             
            /* string selectedItem = (string)footNotesLevel.SelectedItem;
 
@@ -262,5 +232,11 @@ namespace Daisy.SaveAsDAISY.Conversion
                 value = "page";
             }*/
         }
+
+        private void notesNumberingSelector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.notesNumberingStartValue.Enabled = notesNumberingMap[(string)notesNumberingSelector.SelectedItem] == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
+        }
+
     }
 }
