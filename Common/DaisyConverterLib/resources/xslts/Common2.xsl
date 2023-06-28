@@ -1069,7 +1069,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                 <xsl:for-each select="w:tr">
                     <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <!--Checking if the row is not header row-->
-                    <xsl:if test="not(w:trPr/w:tblHeader) and not(w:trPr/w:cnfStyle)">
+                    <xsl:if test="not(w:trPr/w:tblHeader)">
                         <tr>
                             <!--Looping through each cell of the table-->
                             <xsl:for-each select="w:tc">

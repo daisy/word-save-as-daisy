@@ -299,6 +299,22 @@
                     <!--Checking for Table element-->
                     <xsl:when test="name()='w:tbl'">
                         <!--If exists then calling TableHandler-->
+						<xsl:variable name="currentLevel" select="myObj:PeekLevel()" />
+						<xsl:if test="$currentLevel=0">
+							<xsl:call-template name="AddLevel">
+								<xsl:with-param name="levelValue" select="1"/>
+								<xsl:with-param name="check" select="0"/>
+								<xsl:with-param name="verhead" select="$version"/>
+								<xsl:with-param name="custom" select="$custom"/>
+								<xsl:with-param name="sOperators" select="$sOperators"/>
+								<xsl:with-param name="sMinuses" select="$sMinuses"/>
+								<xsl:with-param name="sNumbers" select="$sNumbers"/>
+								<xsl:with-param name="sZeros" select="$sZeros"/>
+								<xsl:with-param name="mastersubhead" select="$masterSub"/>
+								<xsl:with-param name="txt" select="'0'"/>
+								<xsl:with-param name="lvlcharStyle" select="$charStyles"/>
+							</xsl:call-template>
+						</xsl:if>
                         <xsl:variable name="checkCoverpage" select="myObj:CheckCoverPage()"/>
                         <xsl:call-template name="TableHandler">
                             <xsl:with-param name="parmVerTable" select="$version"/>
