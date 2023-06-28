@@ -45,7 +45,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// </summary>
         /// <param name="authorizedNamePattern"></param>
         /// <returns>should return either DialogResult.Yes, DialogResult.No or DialogResult.Cancel </returns>
-        DialogResult documentMustBeRenamed(FilenameValidator authorizedNamePattern);
+        DialogResult documentMustBeRenamed(StringValidator authorizedNamePattern);
 
         /// <summary>
         /// raised whem the user has choosen to rename the document manually

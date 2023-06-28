@@ -8,7 +8,8 @@ using System.Xml;
 using Newtonsoft.Json;
 using static Daisy.SaveAsDAISY.Conversion.ConverterSettings;
 
-namespace Daisy.SaveAsDAISY.Conversion {
+namespace Daisy.SaveAsDAISY.Conversion
+{
     /// <summary>
     /// Input parameters for a conversion.
     /// 
@@ -22,13 +23,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <summary>
 		/// Path for prepopulated_daisy xml file (conversion parameters cache file)
 		/// </summary>
-		private string ConversionParametersXmlPath {
+		private string ConversionParametersXmlPath
+        {
             get { return ConverterHelper.AppDataSaveAsDAISYDirectory + "\\prepopulated_daisy.xml"; }
         }
 
 
         public string ControlName { get; set; }
-        
+
 
         // From the "TranslationParametersBuilder" and PrepopulatedDaisyXml class
         public string OutputPath { get; set; }
@@ -37,11 +39,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public string Creator { get; set; }
         public string Publisher { get; set; }
         public string UID { get; set; }
-        
+
         public string Subject { get; set; }
         public string Version { get; set; }
 
-        public FilenameValidator NameValidator { get; set; }
+        public StringValidator NameValidator { get; set; }
 
         public Script PostProcessor { get; set; } = null;
 
@@ -55,7 +57,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Flag if sub documents should be parsed when found
         /// possible values are Yes, No or NoMasterFlag
         /// </summary>
-        public string ParseSubDocuments { get; set; }
+        public bool ParseSubDocuments { get; set; } = false;
 
         /// <summary>
         /// Request DTBook XML validation
@@ -76,33 +78,43 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="filenameValidator">File name validator with regex matcher. If null, will default to dtbook XML filename pattern
         /// (see the one declared in ConverterHelper)</param>
         /// <param name="mainDocument">Document to retrieve conversion parameters from (Creator, Title and Publisher) </param>
-        public ConversionParameters(string wordVersion = null, Script pipelineScript = null, FilenameValidator filenameValidator = null, DocumentParameters mainDocument = null) {
+        public ConversionParameters(string wordVersion = null, Script pipelineScript = null, StringValidator filenameValidator = null, DocumentParameters mainDocument = null)
+        {
             Version = wordVersion;
             //ScriptPath = pipelineScript;
-            if (pipelineScript != null) {
+            if (pipelineScript != null)
+            {
                 PostProcessor = pipelineScript;
             }
-            if(filenameValidator != null) {
+            if (filenameValidator != null)
+            {
                 NameValidator = filenameValidator;
-            } else {
-                // Default to dtbook validator
-                NameValidator = ConverterHelper.DTBookXMLFileNameFormat;
             }
-            if (mainDocument != null) {
+            else
+            {
+                // Default to dtbook validator
+                NameValidator = StringValidator.DTBookXMLFileNameFormat;
+            }
+            if (mainDocument != null)
+            {
                 this.usingMainDocument(mainDocument);
-            } else if (File.Exists(ConversionParametersXmlPath)) { // Retrieve previous settings
+            }
+            else if (File.Exists(ConversionParametersXmlPath))
+            { // Retrieve previous settings
                 this.usingCachedSettings();
             }
         }
 
-        public ConversionParameters usingMainDocument(DocumentParameters mainDocument) {
+        public ConversionParameters usingMainDocument(DocumentParameters mainDocument)
+        {
             Creator = PackageUtilities.DocPropCreator(mainDocument.CopyPath ?? mainDocument.InputPath);
             Title = PackageUtilities.DocPropTitle(mainDocument.CopyPath ?? mainDocument.InputPath);
             Publisher = PackageUtilities.DocPropPublish(mainDocument.CopyPath ?? mainDocument.InputPath);
             return this;
         }
 
-        public ConversionParameters usingCachedSettings() {
+        public ConversionParameters usingCachedSettings()
+        {
             XmlDocument document = new XmlDocument();
             document.Load(ConversionParametersXmlPath);
             Creator = document.FirstChild.ChildNodes[0].InnerText;
@@ -121,8 +133,10 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="name">Name of the Class field to set</param>
         /// <param name="value">Object to assign to the field (this object will type casted to the targeted parameter type) </param>
         /// <returns>The converter itself</returns>
-        public ConversionParameters withParameter(string name, object value) {
-            switch (name) {
+        public ConversionParameters withParameter(string name, object value)
+        {
+            switch (name)
+            {
                 case "OutputFile":
                     OutputPath = (string)value; break;
                 case "Title":
@@ -145,7 +159,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 case "TrackChanges":
                     TrackChanges = (string)value; break;
                 case "ParseSubDocuments":
-                    ParseSubDocuments = (string)value; break;
+                    ParseSubDocuments = (bool)value; break;
                 case "Visible":
                     Visible = (bool)value; break;
                 default:
@@ -157,10 +171,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <summary>
         /// Get the conversion settings hashtable (to replace the TranslationParametersBuilder behavior)
         /// </summary>
-        public Hashtable ParametersHash {
-            get {
+        public Hashtable ParametersHash
+        {
+            get
+            {
                 Hashtable parameters = new Hashtable();
-                
+
                 if (Title != null) parameters.Add("Title", Title);
                 if (Creator != null) parameters.Add("Creator", Creator);
                 if (Publisher != null) parameters.Add("Publisher", Publisher);
@@ -169,27 +185,26 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 if (Version != null) parameters.Add("Version", Version);
                 // TO BE CHANGED if the value changes in xslts
                 if (OutputPath != null) parameters.Add("OutputFile", OutputPath);
-                
+
                 // This two fields are stored in document parameters,
                 // but we let the conversion settings capable of overriding them just in case
                 if (TrackChanges != null) parameters.Add("TRACK", TrackChanges);
-                if (ParseSubDocuments != null) parameters.Add("MasterSub", ParseSubDocuments);
+                parameters.Add("MasterSub", ParseSubDocuments);
 
                 // also retrieve global settings
-                if (GlobalSettings.ImageOption != " ") {
-                    parameters.Add("ImageSizeOption", GlobalSettings.ImageOption);
-                    parameters.Add("DPI", GlobalSettings.ImageResamplingValue);
-                }
-                if (GlobalSettings.CharacterStyle != " ") {
-                    parameters.Add("CharacterStyles", GlobalSettings.CharacterStyle);
-                }
-                if (GlobalSettings.PagenumStyle != " ") {
+                parameters.Add("ImageSizeOption", GlobalSettings.ImageOption);
+                parameters.Add("DPI", GlobalSettings.ImageResamplingValue);
+
+                parameters.Add("CharacterStyles", GlobalSettings.CharacterStyle);
+
+                if (GlobalSettings.PagenumStyle != " ")
+                {
                     parameters.Add("Custom", GlobalSettings.PagenumStyle);
                 }
                 // 20220402 : adding footnotes positioning settings
                 // might be "page", "inline", "end" or "after"
                 parameters.Add("FootnotesPosition", FootnotesPositionChoice.Values[GlobalSettings.FootnotesPosition]);
-                
+
                 // value between -5 and 6, with negative value meaning parents level going upwards,
                 // 0 meaning in current level,
                 // positive value meaning absolute level value where to put the notes
@@ -209,7 +224,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <summary>
 		/// Save current publisher/title/creator values to xml file.
 		/// </summary>
-		public void Save() {
+		public void Save()
+        {
             XmlDocument document = new XmlDocument();
 
             XmlElement elmtDaisy = document.CreateElement("Daisy");
@@ -228,14 +244,15 @@ namespace Daisy.SaveAsDAISY.Conversion {
             elmtPublisher = document.CreateElement("Publisher");
             elmtDaisy.AppendChild(elmtPublisher);
             elmtPublisher.InnerText = Publisher;
-            
+
             if (!System.IO.Directory.Exists(ConverterHelper.AppDataSaveAsDAISYDirectory))
                 System.IO.Directory.CreateDirectory(ConverterHelper.AppDataSaveAsDAISYDirectory);
 
             document.Save(ConversionParametersXmlPath);
         }
 
-        public string serialize() {
+        public string serialize()
+        {
             return JsonConvert.SerializeObject(this);
         }
     }

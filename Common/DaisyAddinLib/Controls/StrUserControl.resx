@@ -112,84 +112,111 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_StrNiceLbl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <metadata name="descriptionTooltip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="parameterNiceName.Location" type="System.Drawing.Point, System.Drawing">
+    <value>2, 0</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="m_StrNiceLbl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="parameterNiceName.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>2, 0, 2, 0</value>
   </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="m_StrNiceLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>304, 2</value>
+  <data name="&gt;&gt;parameterNiceName.Name" xml:space="preserve">
+    <value>parameterNiceName</value>
   </data>
-  <data name="m_StrNiceLbl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>34, 15</value>
+  <data name="&gt;&gt;parameterNiceName.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="m_StrNiceLbl.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="m_StrNiceLbl.Text" xml:space="preserve">
-    <value>Nice:</value>
-  </data>
-  <data name="&gt;&gt;m_StrNiceLbl.Name" xml:space="preserve">
-    <value>m_StrNiceLbl</value>
-  </data>
-  <data name="&gt;&gt;m_StrNiceLbl.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;m_StrNiceLbl.Parent" xml:space="preserve">
+  <data name="&gt;&gt;parameterNiceName.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_StrNiceLbl.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;parameterNiceName.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="m_StrTxtBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Right</value>
+  <data name="parameterInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
   </data>
-  <data name="m_StrTxtBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>345, 0</value>
+  <data name="parameterInput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 2</value>
   </data>
-  <data name="m_StrTxtBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>215, 23</value>
+  <data name="parameterInput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>359, 27</value>
   </data>
-  <data name="m_StrTxtBox.TabIndex" type="System.Int32, mscorlib">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="parameterInput.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
-  <data name="&gt;&gt;m_StrTxtBox.Name" xml:space="preserve">
-    <value>m_StrTxtBox</value>
+  <data name="&gt;&gt;parameterInput.Name" xml:space="preserve">
+    <value>parameterInput</value>
   </data>
-  <data name="&gt;&gt;m_StrTxtBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;parameterInput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;m_StrTxtBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;parameterInput.Parent" xml:space="preserve">
+    <value>InputPanel</value>
+  </data>
+  <data name="&gt;&gt;parameterInput.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="InputPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="InputPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 21</value>
+  </data>
+  <data name="InputPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>3, 0, 3, 0</value>
+  </data>
+  <data name="InputPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>360, 31</value>
+  </data>
+  <data name="InputPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;InputPanel.Name" xml:space="preserve">
+    <value>InputPanel</value>
+  </data>
+  <data name="&gt;&gt;InputPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;InputPanel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;m_StrTxtBox.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;InputPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
-  <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>7, 15</value>
+  <data name="$this.AutoSize" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 5, 3, 5</value>
+    <value>0, 0, 0, 0</value>
   </data>
   <data name="$this.Size" type="System.Drawing.Size, System.Drawing">
-    <value>561, 25</value>
+    <value>366, 56</value>
+  </data>
+  <data name="&gt;&gt;descriptionTooltip.Name" xml:space="preserve">
+    <value>descriptionTooltip</value>
+  </data>
+  <data name="&gt;&gt;descriptionTooltip.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolTip, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>StrUserControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Daisy.DaisyConverter.DaisyConverterLib.BaseUserControl, DaisyAddinLib, Version=2.7.2.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
+    <value>Daisy.SaveAsDAISY.Forms.Controls.BaseUserControl, DaisyAddinLib, Version=2.7.2.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
   </data>
 </root>

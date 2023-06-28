@@ -13,14 +13,15 @@ namespace Daisy.SaveAsDAISY.Conversion
     public class ScriptParameter
     {
 
-        public enum ParameterDirection {
+        public enum ParameterDirection
+        {
             Input,
             Output,
             Option
         }
 
         private string m_Name;
-        private string m_Value;
+        private object m_Value;
         private string m_NiceName;
         private bool m_Required;
         private string m_Description;
@@ -35,12 +36,13 @@ namespace Daisy.SaveAsDAISY.Conversion
             string name,
             string niceName,
             ParameterDataType dataType,
-            string initialValue, 
+            object initialValue,
             bool required = false,
             string description = "",
             bool displayed = true,
             ParameterDirection directon = ParameterDirection.Option
-        ) {
+        )
+        {
             m_Name = name;
             m_NiceName = niceName;
             m_DataType = dataType;
@@ -68,7 +70,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             // Get attribute  information of ScriptParameter
             for (int AttrIndex = 0; AttrIndex < node.Attributes.Count; AttrIndex++)
             {
-                
+
                 switch (node.Attributes[AttrIndex].Name)
                 {
                     case "name":
@@ -112,7 +114,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                         break;
                 }
 
-                ChildNode =  ChildNode.NextSibling;
+                ChildNode = ChildNode.NextSibling;
             }
 
         }
@@ -164,20 +166,21 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public ParameterDataType ParameterDataType { get { return m_DataType; } }
 
-        public string ParameterValue
+        public object ParameterValue
         {
             get { return m_Value; }
             set
             {
-                if (value != null && value != "")
+                if (value != null)
                 {
                     m_Value = value;
                     m_Required = true;
                 }
-                else if (m_Required && (m_Value == null || m_Value == ""))
+                else if (m_Required && (m_Value == null))
                     m_Required = false;
             }
         }
+
     }
 
 }

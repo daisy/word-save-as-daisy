@@ -115,7 +115,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
             return true;
         }
 
-        public DialogResult documentMustBeRenamed(FilenameValidator authorizedNamePattern) {
+        public DialogResult documentMustBeRenamed(StringValidator authorizedNamePattern) {
             // renamed automatically for silent mode, see the interface reference
             return DialogResult.No;
         }

@@ -198,11 +198,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 						PathDataType pathDataType = p.ParameterDataType as PathDataType;
 						if (pathDataType == null) continue;
 
-						if (pathDataType.IsFileOrDirectory == PathDataType.FileOrDirectory.File)
+						if (pathDataType.IsFile)
 						{
 							try
 							{
-								FileInfo outputFileInfo = new FileInfo(p.ParameterValue);
+								FileInfo outputFileInfo = new FileInfo(p.ParameterValue.ToString());
 								if (!string.IsNullOrEmpty(pathDataType.FileExtension) &&
 								    !pathDataType.FileExtension.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
 								{
@@ -225,7 +225,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 						}
 						else
 						{
-							strBrtextBox = p.ParameterValue;
+							strBrtextBox = p.ParameterValue.ToString();
 						}
 						break;
 
@@ -547,7 +547,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     ScriptParameter p = kv.Value;
                     if (p.Name != "input" && p.ParameterDataType is PathDataType && p.IsParameterRequired)
                     {
-                        Control c = (Control)new PathBrowserControl(p, input, mProjectDirectory);
+                        Control c = (Control)new PathControl(p);
                         c.Anchor = AnchorStyles.Right;
                         c.Anchor = AnchorStyles.Top;
                         mLayoutPanel.Controls.Add(c);

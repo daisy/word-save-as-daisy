@@ -13,7 +13,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         object startPreprocessing(DocumentParameters document, Events.IConversionEventsHandler eventsHandler = null);
 
-        ConversionStatus ValidateName(ref object preprocessedObject, FilenameValidator authorizedNamePattern, Events.IConversionEventsHandler eventsHandler = null);
+        ConversionStatus ValidateName(ref object preprocessedObject, StringValidator authorizedNamePattern, Events.IConversionEventsHandler eventsHandler = null);
 
         ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref DocumentParameters document, Events.IConversionEventsHandler eventsHandler = null);
 

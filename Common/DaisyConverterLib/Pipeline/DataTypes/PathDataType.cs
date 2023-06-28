@@ -9,34 +9,44 @@ namespace Daisy.SaveAsDAISY.Conversion
 {
     public class PathDataType : ParameterDataType
     {
-        private string m_Path;
+        private string path;
 
-        public enum InputOrOutput { input, output } ;
-        private InputOrOutput m_InputOrOutput;
+        //TODO : This can be replaced by a simple boolean IsOutput or IsInput
+
+        public enum InputOrOutput { input, output };
+        private InputOrOutput inputOrInput;
+        public bool IsInput { get { return inputOrInput == InputOrOutput.input; } }
+        public bool IsOutput { get { return inputOrInput == InputOrOutput.output; } }
+
+        // TODO : this can be replace by a simple IsFile or IsDirectory boolean
 
         public enum FileOrDirectory { File, Directory }
-        private FileOrDirectory m_FileOrDirectory;
+        private FileOrDirectory fileOrDirectory;
+        public bool IsFile { get { return fileOrDirectory == FileOrDirectory.File; } }
+        public bool IsDirectory { get { return fileOrDirectory == FileOrDirectory.Directory; } }
 
-		public string FileExtension { get; private set; }
+
+
+        public string FileExtension { get; private set; }
 
         public PathDataType(ScriptParameter p, XmlNode DataTypeNode) : base(p)
         {
-            m_Path = p.ParameterValue;
+            path = p.ParameterValue.ToString();
             XmlNode ChildNode = DataTypeNode.FirstChild;
 
-        	if (ChildNode.Name == "file")
-        	{
-        		m_FileOrDirectory = FileOrDirectory.File;
+            if (ChildNode.Name == "file")
+            {
+                fileOrDirectory = FileOrDirectory.File;
                 XmlAttribute fileTypeAttribute = ChildNode.Attributes["mime"];
                 string attributeValue = fileTypeAttribute == null ? string.Empty : fileTypeAttribute.Value;
                 FileExtension = GetFileExtensionFromMimeType(attributeValue);
             }
-        	else
-        	{
-        		m_FileOrDirectory = FileOrDirectory.Directory;
-        	}
+            else
+            {
+                fileOrDirectory = FileOrDirectory.Directory;
+            }
 
-        	m_InputOrOutput = ChildNode.Attributes.GetNamedItem("type").Value == "input" ? InputOrOutput.input : InputOrOutput.output;
+            inputOrInput = ChildNode.Attributes.GetNamedItem("type").Value == "input" ? InputOrOutput.input : InputOrOutput.output;
         }
 
         public PathDataType(
@@ -44,32 +54,24 @@ namespace Daisy.SaveAsDAISY.Conversion
             FileOrDirectory pathType = FileOrDirectory.Directory,
             string mimeType = "",
             string initialPath = ""
-         ) : base() {
-            m_Path = initialPath;
-            m_FileOrDirectory = pathType;
-            m_InputOrOutput = portType;
+         ) : base()
+        {
+            path = initialPath;
+            fileOrDirectory = pathType;
+            inputOrInput = portType;
             FileExtension = GetFileExtensionFromMimeType(mimeType);
         }
 
-        /// <summary>
-        ///  The path is of a file or a directory
-        /// </summary>
-        public FileOrDirectory IsFileOrDirectory { get { return m_FileOrDirectory; } }
 
-        /// <summary>
-        /// Is it a path for input file/directory or for output file/directory
-        /// </summary>
-        public InputOrOutput isInputOrOutput { get { return m_InputOrOutput; } }
-
-        public string Value
+        public override object Value
         {
-            get { return m_Path; }
+            get { return path; }
             set
             {
-                if (Exists(value))
+                if (Exists((string)value))
                 {
-                    m_Path = value;
-                    UpdateScript(m_Path);
+                    path = (string)value;
+                    UpdateScript(path);
                 }
                 else throw new System.Exception("No_Path");
             }
@@ -81,12 +83,12 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <returns></returns>
         public bool Exists(string PathValue)
         {
-            if (m_FileOrDirectory == FileOrDirectory.File)
+            if (IsFile)
             {
                 if (File.Exists(PathValue))
                     return true;
             }
-            else if (m_FileOrDirectory == FileOrDirectory.Directory)
+            else
             {
                 if (Directory.Exists(PathValue))
                     return true;
@@ -94,7 +96,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             return false;
         }
 
-        private bool UpdateScript(string Val)
+        private new bool UpdateScript(string Val)
         {
             if (Val != null)
             {
@@ -107,14 +109,14 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public bool Create(string pathValue)
         {
-            if (m_InputOrOutput == InputOrOutput.output)
+            if (inputOrInput == InputOrOutput.output)
             {
-                if (m_FileOrDirectory == FileOrDirectory.File)
+                if (fileOrDirectory == FileOrDirectory.File)
                 {
                     File.CreateText(pathValue);
                     return true;
                 }
-                else if (m_FileOrDirectory == FileOrDirectory.Directory)
+                else if (fileOrDirectory == FileOrDirectory.Directory)
                 {
                     Directory.CreateDirectory(pathValue);
                     return true;
@@ -127,18 +129,18 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-		protected string GetFileExtensionFromMimeType(string mimetype)
-		{
-			switch (mimetype)
-			{
-				case "application/epub+zip":
-					return ".epub";
+        protected string GetFileExtensionFromMimeType(string mimetype)
+        {
+            switch (mimetype)
+            {
+                case "application/epub+zip":
+                    return ".epub";
                 case "application/oebps-package+xml":
                     return ".opf";
                 default:
-					return string.Empty;
-			}
-		}
+                    return string.Empty;
+            }
+        }
 
     }
 

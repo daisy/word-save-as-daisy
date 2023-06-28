@@ -6,25 +6,28 @@ using System.IO;
 using System.IO.Packaging;
 using System.Xml;
 
-namespace Daisy.SaveAsDAISY.Conversion {
+namespace Daisy.SaveAsDAISY.Conversion
+{
 
     /// <summary>
     /// Document specific parameters
     /// 
     /// </summary>
-    public class DocumentParameters {
+    public class DocumentParameters
+    {
 
-        public enum DocType {
+        public enum DocType
+        {
             Simple,
             Master,
             Sub
         }
 
 
-        public DocumentParameters(string inputPath) {
+        public DocumentParameters(string inputPath)
+        {
             this.InputPath = inputPath;
-            
-            ListMathMl = new Hashtable();
+
             ObjectShapes = new List<string>();
             ImageIds = new List<string>();
             InlineShapes = new List<string>();
@@ -43,13 +46,19 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// - SubDocument will have a resource ID <br/>
         /// - Simple will have neither
         /// </summary>
-        public DocType Type {
-            get {
-                if(this.ResourceId != null) {
+        public DocType Type
+        {
+            get
+            {
+                if (this.ResourceId != null)
+                {
                     return DocType.Sub;
-                } else if (this.SubDocumentsToConvert.Count > 0) {
+                }
+                else if (this.SubDocumentsToConvert.Count > 0)
+                {
                     return DocType.Master;
-                } else return  DocType.Simple;
+                }
+                else return DocType.Simple;
             }
         }
 
@@ -57,6 +66,31 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Original path/URL of the input
         /// </summary>
         public string InputPath { get; set; }
+
+        public string Creator
+        {
+            get
+            {
+                return PackageUtilities.DocPropCreator(CopyPath ?? InputPath);
+            }
+        }
+
+        public string Title
+        {
+            get
+            {
+                return PackageUtilities.DocPropTitle(CopyPath ?? InputPath);
+            }
+        }
+
+        public string Publisher
+        {
+            get
+            {
+                return PackageUtilities.DocPropPublish(CopyPath ?? InputPath);
+            }
+        }
+
 
         /// <summary>
         /// Document copy to use for processing
@@ -71,9 +105,10 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public string OutputPath { get; set; }
 
         /// <summary>
-        /// If true, the input document is reopened in word after saving the copy used for conversion
+        /// If true, the input document is (re)opened in word during preprocessing, 
+        /// when preprocessing starts and after the copy used for conversion is saved
         /// </summary>
-        public bool ReopenInputDocument { get; set; } = true;
+        public bool ShowInputDocumentInWord { get; set; } = true;
 
         /// <summary>
         /// Pathes of the shapes images extracted during preprocessing
@@ -81,9 +116,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public List<string> ObjectShapes { get; set; }
 
         /// <summary>
-        /// hash of key => List of mathml equations (stored as string)
+        /// Dictionnary of key => List of mathml equations (stored as string)
         /// </summary>
-        public Hashtable ListMathMl { get; set; }
+        public Dictionary<string, List<string>> MathMLMap { get; set; } = new Dictionary<string, List<string>>()
+        {
+            {"wdTextFrameStory", new List<string>() },
+            {"wdFootnotesStory", new List<string>() },
+            {"wdMainTextStory", new List<string>() },
+        };
 
         /// <summary>
         /// Ids of the shapes extracted during preprocessing
@@ -102,20 +142,25 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public List<string> InlineIds { get; set; }
 
 
-        
+
 
         private bool? _hasRevisions = null;
 
         /// <summary>
         /// Check if the current document as unaccepted revisions
         /// </summary>
-        public bool HasRevisions { get {
-                if(!_hasRevisions.HasValue) {
+        public bool HasRevisions
+        {
+            get
+            {
+                if (!_hasRevisions.HasValue)
+                {
                     const string docNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
                     const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
                     Package pack = Package.Open(this.CopyPath ?? this.InputPath, FileMode.Open, FileAccess.ReadWrite);
                     PackageRelationship packRelationship = null;
-                    foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType)) {
+                    foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType))
+                    {
                         packRelationship = searchRelation;
                         break;
                     }
@@ -137,7 +182,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     _hasRevisions = listDel.Count > 0 || listIns.Count > 0;
                 }
                 return _hasRevisions.Value;
-            } }
+            }
+        }
 
 
         public bool TrackChanges = false;
@@ -153,16 +199,22 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         public string ResourceId { get; set; }
 
-        public string GetInputFileNameWithoutExtension {
-            get {
+        public string GetInputFileNameWithoutExtension
+        {
+            get
+            {
                 int lastSeparatorIndex = InputPath.LastIndexOf('\\');
                 // Special case : onedrive documents uses https based URL format with '/' as separator
-                if (lastSeparatorIndex < 0) {
+                if (lastSeparatorIndex < 0)
+                {
                     lastSeparatorIndex = InputPath.LastIndexOf('/');
                 }
-                if (lastSeparatorIndex < 0) { // no path separator found
+                if (lastSeparatorIndex < 0)
+                { // no path separator found
                     return InputPath.Remove(InputPath.LastIndexOf('.'));
-                } else {
+                }
+                else
+                {
                     string tempInput = InputPath.Substring(lastSeparatorIndex);
                     return tempInput.Remove(tempInput.LastIndexOf('.'));
                 }
@@ -173,19 +225,26 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Document parameters hash
         /// (To be used for the Daisy class used in xslt)
         /// </summary>
-        public Hashtable ParametersHash { 
-            get {
+        public Hashtable ParametersHash
+        {
+            get
+            {
                 Hashtable parameters = new Hashtable();
 
-                parameters.Add("TRACK", !HasRevisions ? "NoTrack" : (TrackChanges ? "Yes" : "No"));
-                parameters.Add("MasterSubFlag", !HasSubDocuments ? "NoMasterSub" : (SubDocumentsToConvert.Count > 0 ? "Yes" : "No"));
-                
+                parameters.Add("TRACK", TrackChanges);
+                parameters.Add("MasterSubFlag", (SubDocumentsToConvert != null && SubDocumentsToConvert.Count > 0) ? true : false);
+
+
                 return parameters;
             }
         }
 
-        public string serialize() {
+        public string serialize()
+        {
             return JsonConvert.SerializeObject(this);
         }
+
+
+
     }
 }

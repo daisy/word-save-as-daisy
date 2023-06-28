@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29326.143
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{8BC2F418-26E0-454F-94D1-D32EB2212FCB}"
 EndProject
@@ -77,6 +77,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLineTool", "CommandLineTool\CommandLineTool.csproj", "{289C4B72-B929-4E3D-808F-F622E275AC70}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegressionTests", "Tests\RegressionTests\RegressionTests.csproj", "{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddinLibrariesDebug", "Tests\AddinLibrariesDebug\AddinLibrariesDebug.csproj", "{09C28099-D606-40F9-A8E1-86ABB512CF0A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -390,6 +392,30 @@ Global
 		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|x64.Build.0 = Release|Any CPU
 		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|x86.ActiveCfg = Release|Any CPU
 		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664}.Release|x86.Build.0 = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Debug|x64.ActiveCfg = Debug|x64
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Debug|x64.Build.0 = Debug|x64
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Debug|x86.Build.0 = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.DebugWord2003|Any CPU.ActiveCfg = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.DebugWord2003|Any CPU.Build.0 = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.DebugWord2003|x64.ActiveCfg = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.DebugWord2003|x64.Build.0 = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.DebugWord2003|x86.ActiveCfg = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.DebugWord2003|x86.Build.0 = Debug|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release to Client(signed)|Any CPU.ActiveCfg = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release to Client(signed)|Any CPU.Build.0 = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release to Client(signed)|x64.ActiveCfg = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release to Client(signed)|x64.Build.0 = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release to Client(signed)|x86.ActiveCfg = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release to Client(signed)|x86.Build.0 = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|x64.ActiveCfg = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|x64.Build.0 = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|x86.ActiveCfg = Release|Any CPU
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -412,9 +438,10 @@ Global
 		{4CCBD86A-2B28-4881-BA85-83D0B086E6D2} = {4AF3E01B-91B1-4AE4-9316-11289EFA7B5D}
 		{289C4B72-B929-4E3D-808F-F622E275AC70} = {7641489B-0771-46A1-9E5E-034ABD60FEB0}
 		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664} = {4AD4C33A-090C-4026-9FD0-80AD773D5665}
+		{09C28099-D606-40F9-A8E1-86ABB512CF0A} = {4AD4C33A-090C-4026-9FD0-80AD773D5665}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		VisualSVNWorkingCopyRoot = .
 		SolutionGuid = {8119EA58-6294-4AAF-B5CC-0C335A9409AB}
+		VisualSVNWorkingCopyRoot = .
 	EndGlobalSection
 EndGlobal

@@ -8,41 +8,43 @@ using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-    public class StringDataType : ParameterDataType {
-        private string m_Title;
-        private string m_strValue;
+    public class StringDataType : ParameterDataType
+    {
+        protected string m_Value;
+        private string m_Regex;
         public StringDataType(ScriptParameter p, XmlNode DataTypeNode) : base(p)
         {
-            m_Title = p.ParameterValue;
+            m_Value = p.ParameterValue.ToString();
             XmlNode ChildNode = DataTypeNode.FirstChild;
             if (ChildNode.Attributes.Count > 0)
             {
-                m_strValue = ChildNode.Attributes.GetNamedItem("regex").Value;
+                m_Regex = ChildNode.Attributes.GetNamedItem("regex").Value;
             }
         }
 
-        public StringDataType(string title, string regex = "") : base() {
-            m_Title = title;
-            m_strValue = regex;
+        public StringDataType(string defaultValue = "", string regex = "") : base()
+        {
+            m_Value = defaultValue;
+            m_Regex = regex;
         }
 
-        public string Value
+        public override object Value
         {
-            get { return m_Title; }
+            get { return m_Value; }
             set
             {
-                if (value!=null)
+                if (value != null)
                 {
-                    m_Title = value;
-                    UpdateScript(m_Title);
+                    m_Value = (string)value;
+                    UpdateScript(m_Value);
                 }
                 else throw new System.Exception("No_Title");
             }
         }
 
-        private bool UpdateScript(string Val)
+        private new bool UpdateScript(string Val)
         {
-            if (Val != null)
+            if (Val != null && m_Parameter != null)
             {
                 m_Parameter.ParameterValue = Val;
                 return true;

@@ -57,7 +57,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             currentDoc.Close();
 
             // only reopen the document if it is the main document (and if we want it reopened)
-            if (document.ResourceId == null && document.ReopenInputDocument) currentInstance.Documents.Open(ref originalPath);
+            if (document.ResourceId == null && document.ShowInputDocumentInWord) currentInstance.Documents.Open(ref originalPath);
 
             // Open (or retrieve) the temp file if opened in word and use it for preprocessing (document is not visible in word)
             preprocessedObject = currentInstance.Documents.Open(ref tmpFileName, ref missing, ref notReadOnly, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref notVisible, ref missing, ref missing, ref missing, ref missing);
@@ -151,7 +151,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     }
                     rng = rng.NextStoryRange;
                 }
-                document.ListMathMl.Add(storyName, listmathML);
+                document.MathMLMap[storyName] = listmathML;
             }
             if (showMsg == 1) {
                 string message =
@@ -287,7 +287,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             return currentInstance.Documents.Open(ref path, ref missing, ref missing, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref visible);
         }
 
-        public ConversionStatus ValidateName(ref object preprocessedObject, FilenameValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
+        public ConversionStatus ValidateName(ref object preprocessedObject, StringValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
             MSword.Application WordInstance = currentDoc.Application;
             bool nameIsValid = false;
@@ -347,7 +347,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
         #endregion
 
-        #region MathML parsing requirements
+        #region MathType parsing requirements
         static private bool GetFinalCLSID(ref string ProgID, out Guid finalCLSID) {
             bool bRetVal = false;
             Guid oGuid;

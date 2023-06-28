@@ -5,13 +5,16 @@ using System.Xml;
 using System.Xml.XPath;
 using System.IO;
 using System.Diagnostics;
-
+using System.Windows.Forms;
+using Daisy.SaveAsDAISY.Conversion.Events;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
     public class Pipeline1Script : Script
     {
         private string m_ScriptFilePath;
+
+        public Pipeline1Script(IConversionEventsHandler e = null) : base(e) { }
  
         public Pipeline1Script(string ScriptPath)
         {
@@ -61,7 +64,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 {
                     Param = Param + p.Name + "=" + p.ParameterValue + ",";
 					if(p.Name == "output" || p.Name == "outputPath")
-						output = p.ParameterValue;
+						output = p.ParameterValue.ToString();
 
                 }
             }
@@ -77,29 +80,40 @@ namespace Daisy.SaveAsDAISY.Conversion
             PipelineProcess.StartInfo.UseShellExecute = displayOutputWindow;
             PipelineProcess.StartInfo.ErrorDialog = true;
 
-            if(this.OnPipelineError != null) {
-                // redirect pipeline error
-                PipelineProcess.StartInfo.RedirectStandardError = true;
-                PipelineProcess.ErrorDataReceived += (sender, args) => {
-                    this.OnPipelineError(args.Data);
-                };
-                
-            }
+            PipelineProcess.StartInfo.RedirectStandardError = true;
+            PipelineProcess.ErrorDataReceived += (sender, args) => {
+                this.EventsHandler.OnError(args.Data);
+                //this.OnPipelineError(this, new DaisyEventArgs(args.Data)); 
+            };
+            PipelineProcess.StartInfo.RedirectStandardOutput = true;
+            PipelineProcess.OutputDataReceived += (sender, args) => {
+                this.EventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs(args.Data));
+            };
 
-            if (this.OnPipelineOutput != null) {
-                // Redirect pipeline output
-                PipelineProcess.StartInfo.RedirectStandardOutput = true;
-                PipelineProcess.OutputDataReceived += (sender, args) => {
-                    this.OnPipelineOutput(args.Data);
-                };
-            }
+            //if (this.OnPipelineError != null) {
+            //    // redirect pipeline error
+            //    PipelineProcess.StartInfo.RedirectStandardError = true;
+            //    PipelineProcess.ErrorDataReceived += (sender, args) => {
+            //        this.EventsHandler.OnError(args.Data);
+            //        //this.OnPipelineError(this, new DaisyEventArgs(args.Data)); 
+            //    };
+
+            //}
+
+            //if (this.OnPipelineOutput != null) {
+            //    // Redirect pipeline output
+            //    PipelineProcess.StartInfo.RedirectStandardOutput = true;
+            //    PipelineProcess.OutputDataReceived += (sender, args) => {
+            //        this.OnPipelineOutput(this, new DaisyEventArgs(args.Data));
+            //    };
+            //}
 
 
             PipelineProcess.StartInfo.FileName = PipelineFilePath;
             PipelineProcess.StartInfo.Arguments = (isQuite ? "--quit " : string.Empty) + "--execute --script \"" + m_ScriptFilePath + "\" --params " + str2;
 #if DEBUG
             if(this.OnPipelineOutput != null) {
-                this.OnPipelineOutput("Launching " + PipelineProcess.StartInfo.FileName + " " + PipelineProcess.StartInfo.Arguments);
+                this.OnPipelineOutput(this, new DaisyEventArgs("Launching " + PipelineProcess.StartInfo.FileName + " " + PipelineProcess.StartInfo.Arguments));
             }
 #endif
             PipelineProcess.StartInfo.WorkingDirectory = Directory.GetParent(Directory.GetParent(m_ScriptFilePath).FullName).FullName;

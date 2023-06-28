@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using Daisy.SaveAsDAISY.Conversion.Events;
 using org.daisy.jnet;
 
 namespace Daisy.SaveAsDAISY.Conversion {
@@ -12,49 +12,62 @@ namespace Daisy.SaveAsDAISY.Conversion {
     /// </summary>
     public abstract class Pipeline2Script : Script {
 
+        protected Pipeline2Script(IConversionEventsHandler e) : base(e) { }
+
         //IntPtr currentJob = IntPtr.Zero;
 
         /// <summary>
         /// executes script using jnet bridge
         /// </summary>
-        /// <param name="inputPath">not used for pipeline 2 script : input is a script parameter</param>
+        /// <param name="inputPath">path to use for script main input</param>
         /// <param name="isQuite"></param>
         public override void ExecuteScript(string inputPath, bool isQuite) {
 
             Pipeline2 pipeline = Pipeline2.Instance;
-            // convert parameters list to options dictionnary
-            if (this.OnPipelineError != null) {
-                Pipeline2.Instance.SetPipelineErrorListener((message) => {
-                    this.OnPipelineError(message);
-                });
+            Pipeline2.Instance.SetPipelineErrorListener((message) => {
+                this.EventsHandler.OnError(message);
+            });
+            Pipeline2.Instance.SetPipelineOutputListener((message) => {
+                this.EventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs(message));
+                this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs(message));
+            });
+            if (Parameters.ContainsKey("input") && (string)Parameters["input"].ParameterValue == "")
+            {
+                Parameters["input"].ParameterValue = inputPath;
             }
-            if (this.OnPipelineOutput != null) {
-                Pipeline2.Instance.SetPipelineOutputListener((message) => {
-                    this.OnPipelineOutput(message);
-                });
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            foreach(KeyValuePair<string, ScriptParameter> v in Parameters)
+            {
+                // avoid passing empty values
+                if(
+                    !v.Value.IsParameterRequired &&
+                    (
+                        v.Value.ParameterDataType is StringDataType
+                        || v.Value.ParameterDataType is PathDataType
+                    ) &&
+                    "" == (string)v.Value.ParameterValue
+                ) {
+                    continue;
+                }
+                parameters[v.Value.Name] = v.Value.ParameterValue;
             }
-
             IntPtr currentJob = Pipeline2.Instance.Start(
                 Name,
-                Parameters.ToDictionary(keyvalue => keyvalue.Value.Name, keyvalue => keyvalue.Value.ParameterValue)
+                parameters
             );
 
-
-
             if (currentJob != IntPtr.Zero) {
-                IntPtr context = pipeline.getContext(currentJob);
-                IntPtr monitor = pipeline.getMonitor(context);
+                //IntPtr context = pipeline.getContext(currentJob);
+                IntPtr monitor = pipeline.getMonitor(currentJob);
                 IntPtr messages = pipeline.getMessageAccessor(monitor);
                 bool checkStatus = true;
+                List<string> errors;
                 while (checkStatus) {
-                    if(this.OnPipelineOutput != null) {
-                        foreach (string message in pipeline.getNewMessages()) {
-                            this.OnPipelineOutput(message);
-                        }
-                        
+                    foreach (string message in pipeline.getNewMessages()) {
+                        this.EventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs(message));
                     }
                     //Console.WriteLine(pipeline.getProgress(messages));
-                    
+                    // TODO need to get jobs log
                     //Console.WriteLine("checking status");
                     switch (pipeline.getStatus(currentJob)) {
                         case Pipeline2.JobStatus.IDLE:
@@ -65,11 +78,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
                             checkStatus = false;
                             break;
                         case Pipeline2.JobStatus.ERROR:
-                            checkStatus = false;
-                            break;
+                            errors = pipeline.getErros(currentJob);
+                            throw new Exception("The conversion job has raised an error :\r\n" + string.Join("\r\n", errors));
                         case Pipeline2.JobStatus.FAIL:
-                            checkStatus = false;
-                            break;
+                            // open jobs folder
+                            errors = pipeline.getErros(currentJob);
+                            throw new Exception(
+                                "The conversion job failed :\r\n" + string.Join("\r\n",errors)
+                            );
                         default:
                             break;
                     }
@@ -79,9 +95,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 try {
                     //Pipeline2.KillInstance();
                 } catch (Exception e) {
-                    if (this.OnPipelineError != null) {
-                        this.OnPipelineError(e.Message);
-                    }
+                    this.EventsHandler.OnError(e.Message);
                 }
                 //
 #else

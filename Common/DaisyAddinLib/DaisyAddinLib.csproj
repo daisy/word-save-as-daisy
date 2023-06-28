@@ -129,8 +129,8 @@
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\BoolControl.cs">
-      <SubType>UserControl</SubType>
       <CustomToolNamespace>Daisy.SaveAsDAISY.Forms.Controls</CustomToolNamespace>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\BoolControl.Designer.cs">
       <DependentUpon>BoolControl.cs</DependentUpon>
@@ -147,6 +147,12 @@
     </Compile>
     <Compile Include="CleanOutputDirDlg.Designer.cs">
       <DependentUpon>CleanOutputDirDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PathControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\PathControl.Designer.cs">
+      <DependentUpon>PathControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ConversionProgress.cs">
       <SubType>Form</SubType>
@@ -208,12 +214,6 @@
       <DependentUpon>MultipleSub.cs</DependentUpon>
     </Compile>
     <Compile Include="OoxPageStylesValidator.cs" />
-    <Compile Include="Controls\PathBrowserControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\PathBrowserControl.Designer.cs">
-      <DependentUpon>PathBrowserControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="ProgressValidation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -244,6 +244,12 @@
       <DependentUpon>Validation.cs</DependentUpon>
     </Compile>
     <Compile Include="WindowHandle.cs" />
+    <EmbeddedResource Include="Controls\BaseUserControl.resx">
+      <DependentUpon>BaseUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\PathControl.resx">
+      <DependentUpon>PathControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ConversionProgress.resx">
       <DependentUpon>ConversionProgress.cs</DependentUpon>
     </EmbeddedResource>
@@ -407,10 +413,6 @@
       <SubType>Designer</SubType>
       <DependentUpon>EnumControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PathBrowserControl.resx">
-      <SubType>Designer</SubType>
-      <DependentUpon>PathBrowserControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -506,10 +508,6 @@
       <DependentUpon>MultipleSub.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\PathBrowserControl.ja-JP.resx">
-      <DependentUpon>PathBrowserControl.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="ProgressValidation.ja-JP.resx">
       <DependentUpon>ProgressValidation.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -567,6 +565,7 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />

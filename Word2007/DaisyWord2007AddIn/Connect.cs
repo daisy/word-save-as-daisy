@@ -87,17 +87,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         ToolStripMenuItem PipelineMenuItem = null;
         private ArrayList footntRefrns;
-        
-
-        private Pipeline1 _postprocessingPipeline = null;
-        public Pipeline1 PostprocessingPipeline {
-            get {
-                if (ConverterHelper.PipelineIsInstalled() && _postprocessingPipeline == null)
-                    _postprocessingPipeline = Pipeline1.Instance;
-                return _postprocessingPipeline;
-            }
-            set => _postprocessingPipeline = value;
-        }
 
 
         /// <summary>
@@ -312,15 +301,21 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="RibbonID"></param>
         /// <returns></returns>
         string IRibbonExtensibility.GetCustomUI(string RibbonID) {
-            if (Directory.Exists(ConverterHelper.Pipeline1Path)) {
+            if (Directory.Exists(ConverterHelper.Pipeline2Path))
+            {
                 // Removing the validator button for office 2010 and later
                 // For office 2007, the old validation step remains necessary
-                if (this.applicationObject.Version == "12.0") {
+                if (this.applicationObject.Version == "12.0")
+                {
                     return GetResource("customUI2007.xml");
-                } else return GetResource("customUI.xml");
-            } else {
+                }
+                else return GetResource("customUI.xml");
+            }
+            else
+            {
                 return GetResource("customUIOld.xml");
             }
+
         }
 
         /// <summary>
@@ -350,17 +345,19 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         private static readonly Dictionary<string, string> controlsIconNames = new Dictionary<string, string> () {
             { "Daisy", "speaker.jpg" },
             { "DaisyMenu", "speaker.jpg" },
+            { "DtbookSingle", "Singlexml.png" },
             { "DaisySingle", "Singlexml.png" },
             { "DaisyDTBookSingle", "speaker.jpg" },
             { "EpubSingle", "speaker.jpg" },
-            { "EpubTabSingle", "speaker.jpg" },
             { "DaisyMultiple", "Multiplexml.png" },
             { "DaisyDTBookMultiple", "subfolder.png" },
             { "DaisyMnu", "speaker.jpg" },
-            { "DaisyTabSingle", "Singlexml.png" },
-            { "DaisyTabDTBookSingle", "speaker.jpg" },
+            { "DtbookTabSingle", "Singlexml.png" },
+            { "DaisyTabSingle", "speaker.jpg" },
+            { "EpubTabSingle", "speaker.jpg" },
+            { "DtbookTabMultiple", "Multiplexml.png" },
             { "DaisyTabMultiple", "Multiplexml.png" },
-            { "DaisyTabDTBookMultiple", "subfolder.png" },
+            { "EpubTabMultiple", "subfolder.png" },
             { "Button1", "speaker.jpg" },
             { "Button2", "subfolder.png" },
             { "Button3", "ABBR.png" },
@@ -696,24 +693,84 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         #region Single document conversion
 
+        public void SaveAsDTBookXML(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null)
+        {
+            try
+            {
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null 
+                    ? (IConversionEventsHandler) new GraphicalEventsHandler() 
+                    : new SilentEventsHandler();
+                
+                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path) 
+                    ? new DtbookCleaner(eventsHandler) : 
+                    null;
+
+                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+                Converter converter = null;
+                if (conversionIntegrationTestSettings != null)
+                {
+                    ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
+                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
+                }
+                else
+                {
+                    ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
+                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
+                }
+
+                DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
+                if (conversionIntegrationTestSettings != null
+                        || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion)
+                {
+                    ConversionResult result = converter.Convert(currentDocument);
+
+                }
+                else
+                {
+                    eventsHandler.onConversionCanceled();
+                }
+
+                //applicationObject.ActiveDocument.Save();
+            }
+            catch (Exception e)
+            {
+                if (conversionIntegrationTestSettings != null)
+                {
+
+                }
+                else
+                {
+                    ExceptionReport report = new ExceptionReport(e);
+                    report.Show();
+                }
+
+            }
+        }
+
         /// <summary>
-        /// UI Call : request conversion of the current active document to DTBook XML or DAISY book
+        /// UI Call : request conversion of the current active document to DAISY book
         /// </summary>
         /// <param name="control"></param>
-        public void SaveAsDaisy(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
+        public void SaveAsDAISY3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = null;
-                Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
                 
+                Script pipelineScript = new CleanedDtbookToDaisy3(eventsHandler);
+               
+                
+                if (pipelineScript != null)
+                {
+                    pipelineScript.EventsHandler = eventsHandler;
+                }
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
                 Converter converter = null;
                 if (conversionIntegrationTestSettings != null) {
-                    eventsHandler = new SilentEventsHandler();
                     ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
                     converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
                 } else {
-                    eventsHandler = new GraphicalEventsHandler();
                     ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
                     converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler) eventsHandler);
                 }
@@ -747,19 +804,18 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="conversionIntegrationTestSettings"></param>
         public void SaveAsEPUB3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
-                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = null;
 
-                Script pipelineScript = new DtbookToEpub3();
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+
+                Script pipelineScript = new CleanedDtbookToEpub3(eventsHandler);
 
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
                 Converter converter = null;
                 if (conversionIntegrationTestSettings != null) {
-                    eventsHandler = new SilentEventsHandler();
                     ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
                     converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
                 } else {
-                    eventsHandler = new GraphicalEventsHandler();
                     ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
                     converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
                 }
@@ -788,159 +844,17 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
             #endregion
 
-
-            #region Abbreviation and Acronyms
-
-            /// <summary>
-            /// Core Function for Managing Abbreviation
-            /// </summary>
-            /// <param name="control"></param>
-            public void ManageAbbreviation(IRibbonControl control) {
-            try {
-
-                MSword.Document doc = this.applicationObject.ActiveDocument;
-                if (doc.ProtectionType == Microsoft.Office.Interop.Word.WdProtectionType.wdNoProtection) {
-                    Abbreviation form = new Abbreviation(doc, true);
-                    form.ShowDialog();
-                } else {
-                    MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            } catch (Exception ex) {
-                MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        /// <summary>
-        /// Core Function for Managing Abbreviations
-        /// </summary>
-        /// <param name="control"></param>
-        public void ManageAcronym(IRibbonControl control) {
-            try {
-                MSword.Document doc = this.applicationObject.ActiveDocument;
-                if (doc.ProtectionType == Microsoft.Office.Interop.Word.WdProtectionType.wdNoProtection) {
-                    Abbreviation form = new Abbreviation(doc, false);
-                    form.ShowDialog();
-                } else {
-                    MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            } catch (Exception ex) {
-                MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        /// <summary>
-        /// Core function to Mark Abbreviations
-        /// </summary>
-        /// <param name="control"></param>
-        public void MarkAsAbbreviationUI(IRibbonControl control) {
-            MSword.Document doc = this.applicationObject.ActiveDocument;
-
-            if ((this.applicationObject.Selection.Start == this.applicationObject.Selection.End) || this.applicationObject.Selection.Text.Equals("\r")) {
-                MessageBox.Show(addinLib.GetString("AbbreviationText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else if (validateSpace(this.applicationObject.Selection.Text.Trim())) {
-                MessageBox.Show(addinLib.GetString("AbbreviationproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else if (ValidateWord(this.applicationObject.Selection)) {
-                MessageBox.Show(addinLib.GetString("AbbreviationproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else if (ValidateBookMark(this.applicationObject.Selection) == "Abbrtrue") {
-                MessageBox.Show(addinLib.GetString("AbbreviationAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else if (ValidateBookMark(this.applicationObject.Selection) == "Acrtrue") {
-                MessageBox.Show(addinLib.GetString("AcronymAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else {
-                Mark mrkForm = new Mark(doc, true);
-                mrkForm.ShowDialog();
-            }
-        }
-
-        /// <summary>
-        /// Function to check whether the selected Bookmark is Abbreviation\Acronym
-        /// </summary>
-        /// <param name="select">Range of text</param>
-        /// <returns></returns>
-        public String ValidateBookMark(MSword.Selection select) {
-            MSword.Document currentDoc = this.applicationObject.ActiveDocument;
-            String bkmrkValue = "Nobookmarks";
-
-            if (this.applicationObject.Selection.Bookmarks.Count > 0) {
-
-                foreach (object item in currentDoc.Bookmarks) {
-                    if (((MSword.Bookmark)item).Range.Text.Trim() == this.applicationObject.Selection.Text.Trim()) {
-                        if (((MSword.Bookmark)item).Name.StartsWith("Abbreviations", StringComparison.CurrentCulture))
-                            bkmrkValue = "Abbrtrue";
-                        if (((MSword.Bookmark)item).Name.StartsWith("Acronyms", StringComparison.CurrentCulture))
-                            bkmrkValue = "Acrtrue";
-                    }
-                }
-            }
-
-            return bkmrkValue;
-        }
-
-        /// <summary>
-        /// Function to check the selected Text is valid for Abbreviation\Acronym or not
-        /// </summary>
-        /// <param name="select">Range of text</param>
-        /// <returns></returns>
-        public bool ValidateWord(MSword.Selection select) {
-            bool flag = false;
-            MSword.Document doc = this.applicationObject.ActiveDocument;
-
-            if (select.Words.Count == 1) {
-                if (this.applicationObject.Selection.Words.Last.Text.Trim() != this.applicationObject.Selection.Text.Trim())
-                    flag = true;
-            }
-            return flag;
-        }
-
-        /// <summary>
-        /// Core Function for Managing Acronyms
-        /// </summary>
-        /// <param name="control"></param>
-        public void MarkAsAcronymUI(IRibbonControl control) {
-            MSword.Document doc = this.applicationObject.ActiveDocument;
-
-            if (this.applicationObject.Selection.Start == this.applicationObject.Selection.End || this.applicationObject.Selection.Text.Equals("\r")) {
-                MessageBox.Show(addinLib.GetString("AcronymText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else if (validateSpace(this.applicationObject.Selection.Text.Trim())) {
-                MessageBox.Show(addinLib.GetString("AcronymproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else if (ValidateWord(this.applicationObject.Selection)) {
-                MessageBox.Show(addinLib.GetString("AcronymproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else if (ValidateBookMark(this.applicationObject.Selection) == "Acrtrue") {
-                MessageBox.Show(addinLib.GetString("AcronymAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else if (ValidateBookMark(this.applicationObject.Selection) == "Abbrtrue") {
-                MessageBox.Show(addinLib.GetString("AbbreviationAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-            } else {
-                Mark mrkForm = new Mark(doc, false);
-                mrkForm.ShowDialog();
-            }
-        }
-
-        /// <summary>
-        /// Functio to check the selected Text is valid for Abbreviation\Acronym or not
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public bool validateSpace(String text) {
-            if (text.Contains(" "))
-                return true;
-            else if (text == "")
-                return true;
-            else
-                return false;
-        }
-
-        #endregion
-
         #region Multiple documents conversion
         
         /// <summary>
         /// UI Call : requesting the conversion of a list of documents into a single DTBook XML or DAISY book
         /// </summary>
         /// <param name="control"></param>
-        public void Mutiple(IRibbonControl control) {
+        public void MutipleWordToDTBookXML(IRibbonControl control) {
             try {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                Script pipelineScript = this.PostprocessingPipeline?.getScript(control.Tag);
+                Script pipelineScript = new DtbookCleaner(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
@@ -974,7 +888,110 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 ExceptionReport report = new ExceptionReport(e);
                 report.Show();
             }
+        }
 
+        public void MutipleWordToDAISY3(IRibbonControl control)
+        {
+            try
+            {
+                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                Script pipelineScript = new CleanedDtbookToDaisy3(eventsHandler);
+
+                ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
+                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                // Note : the current form for multiple also include conversion settings update
+                List<string> documentsPathes = converter.requestUserDocumentsList();
+                if (documentsPathes != null && documentsPathes.Count > 0)
+                {
+                    List<DocumentParameters> documents = new List<DocumentParameters>();
+
+                    foreach (string inputPath in documentsPathes)
+                    {
+                        DocumentParameters subDoc = null;
+                        try
+                        {
+                            subDoc = converter.PreprocessDocument(inputPath);
+                        }
+                        catch (Exception e)
+                        {
+                            string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
+                            eventsHandler.onPreprocessingError(inputPath, errors);
+                        }
+                        if (subDoc != null)
+                        {
+                            documents.Add(subDoc);
+                        }
+                        else
+                        {
+                            // abort documents conversion
+                            documents.Clear();
+                            break;
+                        }
+                    }
+                    if (documents.Count > 0) converter.Convert(documents);
+                }
+
+                applicationObject.ActiveDocument.Save();
+            }
+            catch (Exception e)
+            {
+                ExceptionReport report = new ExceptionReport(e);
+                report.Show();
+            }
+        }
+
+        public void MutipleWordToEPUB3(IRibbonControl control)
+        {
+            try
+            {
+                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                Script pipelineScript = new CleanedDtbookToDaisy3(eventsHandler);
+
+                ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
+                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                // Note : the current form for multiple also include conversion settings update
+                List<string> documentsPathes = converter.requestUserDocumentsList();
+                if (documentsPathes != null && documentsPathes.Count > 0)
+                {
+                    List<DocumentParameters> documents = new List<DocumentParameters>();
+
+                    foreach (string inputPath in documentsPathes)
+                    {
+                        DocumentParameters subDoc = null;
+                        try
+                        {
+                            subDoc = converter.PreprocessDocument(inputPath);
+                        }
+                        catch (Exception e)
+                        {
+                            string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
+                            eventsHandler.onPreprocessingError(inputPath, errors);
+                        }
+                        if (subDoc != null)
+                        {
+                            documents.Add(subDoc);
+                        }
+                        else
+                        {
+                            // abort documents conversion
+                            documents.Clear();
+                            break;
+                        }
+                    }
+                    if (documents.Count > 0) converter.Convert(documents);
+                }
+
+                applicationObject.ActiveDocument.Save();
+            }
+            catch (Exception e)
+            {
+                ExceptionReport report = new ExceptionReport(e);
+                report.Show();
+            }
         }
 
         #endregion
@@ -999,25 +1016,211 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
          * Dynamic conversion menus construction (called in the UI xml)
          * Note that the "_postprocess" script is excluded and reserved to dtbook post process when exporting the document
          */
-        public string GetDTbook(IRibbonControl control) {
-            StringBuilder MyStringBuilder = new StringBuilder(@"<menu xmlns=""http://schemas.microsoft.com/office/2006/01/customui"" >");
-            string action = (
-                    control.Id == "DaisyDTBookSingle" || control.Id == "DaisyTabDTBookSingle"
-                ) ? "SaveAsDaisy" : "Mutiple";
-            foreach (KeyValuePair<string, FileInfo> k in PostprocessingPipeline.ScriptsInfo) if (!k.Key.Equals("_postprocess")) {
-                    PipelineMenuItem = new ToolStripMenuItem();
-                    PipelineMenuItem.Text = k.Key;
-                    PipelineMenuItem.AccessibleName = k.Key;
-                    String quote = "<button id=\"" + k.Key.Replace(" ", "_") + 
-                        "\" tag=\"" + PipelineMenuItem.Text + 
-                        "\" label=\"" + "&amp;" + PipelineMenuItem.Text + 
-                        "\" onAction=\"" + action + "\"/>";
-                    MyStringBuilder.Append(quote);
-                }
-            MyStringBuilder.Append(@"</menu>");
+        //public string GetDTbook(IRibbonControl control) {
+        //    StringBuilder MyStringBuilder = new StringBuilder(@"<menu xmlns=""http://schemas.microsoft.com/office/2006/01/customui"" >");
+        //    string action = (
+        //            control.Id == "DaisyDTBookSingle" || control.Id == "DaisyTabDTBookSingle"
+        //        ) ? "SaveAsDaisy" : "Mutiple";
+        //    foreach (KeyValuePair<string, FileInfo> k in PostprocessingPipeline.ScriptsInfo) if (!k.Key.Equals("_postprocess")) {
+        //            PipelineMenuItem = new ToolStripMenuItem();
+        //            PipelineMenuItem.Text = k.Key;
+        //            PipelineMenuItem.AccessibleName = k.Key;
+        //            String quote = "<button id=\"" + k.Key.Replace(" ", "_") + 
+        //                "\" tag=\"" + PipelineMenuItem.Text + 
+        //                "\" label=\"" + "&amp;" + PipelineMenuItem.Text + 
+        //                "\" onAction=\"" + action + "\"/>";
+        //            MyStringBuilder.Append(quote);
+        //        }
+        //    MyStringBuilder.Append(@"</menu>");
             
-            return MyStringBuilder.ToString();
+        //    return MyStringBuilder.ToString();
+        //}
+        #endregion
+
+        #region Abbreviation and Acronyms
+
+        /// <summary>
+        /// Core Function for Managing Abbreviation
+        /// </summary>
+        /// <param name="control"></param>
+        public void ManageAbbreviation(IRibbonControl control)
+        {
+            try
+            {
+
+                MSword.Document doc = this.applicationObject.ActiveDocument;
+                if (doc.ProtectionType == Microsoft.Office.Interop.Word.WdProtectionType.wdNoProtection)
+                {
+                    Abbreviation form = new Abbreviation(doc, true);
+                    form.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
+
+        /// <summary>
+        /// Core Function for Managing Abbreviations
+        /// </summary>
+        /// <param name="control"></param>
+        public void ManageAcronym(IRibbonControl control)
+        {
+            try
+            {
+                MSword.Document doc = this.applicationObject.ActiveDocument;
+                if (doc.ProtectionType == Microsoft.Office.Interop.Word.WdProtectionType.wdNoProtection)
+                {
+                    Abbreviation form = new Abbreviation(doc, false);
+                    form.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("The current document is locked for editing. Please unprotect the document.", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        /// <summary>
+        /// Core function to Mark Abbreviations
+        /// </summary>
+        /// <param name="control"></param>
+        public void MarkAsAbbreviationUI(IRibbonControl control)
+        {
+            MSword.Document doc = this.applicationObject.ActiveDocument;
+
+            if ((this.applicationObject.Selection.Start == this.applicationObject.Selection.End) || this.applicationObject.Selection.Text.Equals("\r"))
+            {
+                MessageBox.Show(addinLib.GetString("AbbreviationText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (validateSpace(this.applicationObject.Selection.Text.Trim()))
+            {
+                MessageBox.Show(addinLib.GetString("AbbreviationproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (ValidateWord(this.applicationObject.Selection))
+            {
+                MessageBox.Show(addinLib.GetString("AbbreviationproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (ValidateBookMark(this.applicationObject.Selection) == "Abbrtrue")
+            {
+                MessageBox.Show(addinLib.GetString("AbbreviationAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (ValidateBookMark(this.applicationObject.Selection) == "Acrtrue")
+            {
+                MessageBox.Show(addinLib.GetString("AcronymAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                Mark mrkForm = new Mark(doc, true);
+                mrkForm.ShowDialog();
+            }
+        }
+
+        /// <summary>
+        /// Function to check whether the selected Bookmark is Abbreviation\Acronym
+        /// </summary>
+        /// <param name="select">Range of text</param>
+        /// <returns></returns>
+        public String ValidateBookMark(MSword.Selection select)
+        {
+            MSword.Document currentDoc = this.applicationObject.ActiveDocument;
+            String bkmrkValue = "Nobookmarks";
+
+            if (this.applicationObject.Selection.Bookmarks.Count > 0)
+            {
+
+                foreach (object item in currentDoc.Bookmarks)
+                {
+                    if (((MSword.Bookmark)item).Range.Text.Trim() == this.applicationObject.Selection.Text.Trim())
+                    {
+                        if (((MSword.Bookmark)item).Name.StartsWith("Abbreviations", StringComparison.CurrentCulture))
+                            bkmrkValue = "Abbrtrue";
+                        if (((MSword.Bookmark)item).Name.StartsWith("Acronyms", StringComparison.CurrentCulture))
+                            bkmrkValue = "Acrtrue";
+                    }
+                }
+            }
+
+            return bkmrkValue;
+        }
+
+        /// <summary>
+        /// Function to check the selected Text is valid for Abbreviation\Acronym or not
+        /// </summary>
+        /// <param name="select">Range of text</param>
+        /// <returns></returns>
+        public bool ValidateWord(MSword.Selection select)
+        {
+            bool flag = false;
+            MSword.Document doc = this.applicationObject.ActiveDocument;
+
+            if (select.Words.Count == 1)
+            {
+                if (this.applicationObject.Selection.Words.Last.Text.Trim() != this.applicationObject.Selection.Text.Trim())
+                    flag = true;
+            }
+            return flag;
+        }
+
+        /// <summary>
+        /// Core Function for Managing Acronyms
+        /// </summary>
+        /// <param name="control"></param>
+        public void MarkAsAcronymUI(IRibbonControl control)
+        {
+            MSword.Document doc = this.applicationObject.ActiveDocument;
+
+            if (this.applicationObject.Selection.Start == this.applicationObject.Selection.End || this.applicationObject.Selection.Text.Equals("\r"))
+            {
+                MessageBox.Show(addinLib.GetString("AcronymText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (validateSpace(this.applicationObject.Selection.Text.Trim()))
+            {
+                MessageBox.Show(addinLib.GetString("AcronymproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (ValidateWord(this.applicationObject.Selection))
+            {
+                MessageBox.Show(addinLib.GetString("AcronymproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (ValidateBookMark(this.applicationObject.Selection) == "Acrtrue")
+            {
+                MessageBox.Show(addinLib.GetString("AcronymAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (ValidateBookMark(this.applicationObject.Selection) == "Abbrtrue")
+            {
+                MessageBox.Show(addinLib.GetString("AbbreviationAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                Mark mrkForm = new Mark(doc, false);
+                mrkForm.ShowDialog();
+            }
+        }
+
+        /// <summary>
+        /// Functio to check the selected Text is valid for Abbreviation\Acronym or not
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public bool validateSpace(String text)
+        {
+            if (text.Contains(" "))
+                return true;
+            else if (text == "")
+                return true;
+            else
+                return false;
+        }
+
         #endregion
 
         #region FootNote actions

@@ -7,8 +7,13 @@
         <tabs>
             <tab id="CustomTab" label="Accessibility">
                 <group id="SampleGroup" label="Save As Daisy">
-                    <button id="Button1" tag="_postprocess" label="Single Document" size="large" onAction="SaveAsDaisy" getImage="iconSelector" keytip="Y"/>
-                    <button id="Button2" tag="_postprocess" label="&amp;Multiple Document" size="large" onAction="Mutiple" getImage="iconSelector"/>
+					<button id="DtbookTabSingle"
+						        label="DAISY &amp;XML"
+						        onAction="SaveAsDTBookXML"
+						        getEnabled="ribbonButtonsEnabled"
+						        getImage="iconSelector"
+						        screentip="Export the document as DAISY XML (dtbook dtd)"
+						        description="Export the document as DAISY XML (dtbook dtd)"/>
                 </group >
                 <group id="SampleGroup2" label="Abbreviations">
                     <button id="Button3"  label="Mark As A&amp;bbreviation" size="large" onAction="MarkAsAbbreviationUI" getImage="iconSelector"/>

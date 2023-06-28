@@ -187,7 +187,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
             customRelationship = null, 
             footRelationship = null, 
             endRelationship = null;
-        Hashtable listMathMl;
+        Dictionary<string, List<string>> listMathMl;
         int footNoteFlag = 0, sidebarFlag = 0, mainFlag = 0, img_Flag = 0;
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="listMathMl"></param>
         /// <param name="packInput">Input package</param>
         /// <param name="output_Pipeline">Output folder</param>
-        public DaisyClass(String inputName, String input, String output, Hashtable listMathMl, Package packInput, string output_Pipeline) {
+        public DaisyClass(String inputName, String input, String output, Dictionary<string, List<string>> listMathMl, Package packInput, string output_Pipeline) {
             this.inputName = inputName;
             inputFilename = input;
             outputFilename = output;

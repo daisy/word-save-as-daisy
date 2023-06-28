@@ -333,7 +333,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 								document.InputPath,
 								tempInputPath,
 								conversionOutputDirectory,
-								document.ListMathMl,
+								document.MathMLMap,
 								zipResolver.Archive,
 								conversion.PipelineOutput);
 					parameters.AddExtensionObject(
@@ -441,6 +441,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 			return this.MergeDocumentInTarget(document, mergeTarget);
 		}
 
+		
+
 		/// <summary>
 		/// This function does the following action on the "filename" file : 
 		/// - replace the system local dtbook-2005-3.dtd by the public one
@@ -467,16 +469,26 @@ namespace Daisy.SaveAsDAISY.Conversion
 			StreamWriter writer = new StreamWriter(fileName);
 			if (switchToPublicDtd)
 			{
+				
 				data = data.Replace("<!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'", "<!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'");
 				data = data.Replace("<dtbook version=\"" + "2005-3\"", "<dtbook xmlns=\"http://www.daisy.org/z3986/2005/dtbook/\" version=\"2005-3\"");
 				if (!data.Contains("</mml:math>"))
 				{
-					data = data.Remove(203, 917);
+					int doctypeStart = data.IndexOf("<!DOCTYPE ");
+                    // i don't know why but cursor is not correctly reset after first indexof ...
+                    int doctypeEnd = data.IndexOf("<dtbook ") - doctypeStart; 
+                    data = data.Replace(
+                        data.Substring(doctypeStart, doctypeEnd),
+						"<!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd' [] >\n");
 					data = data.Replace(Environment.NewLine + "<dtbook", "<dtbook");
 					data = data.Replace("xmlns:mml=\"http://www.w3.org/1998/Math/MathML\"", "");
-				}
-				data = data.Replace("<!ENTITY % mathML2 SYSTEM 'mathml2.dtd'>", "<!ENTITY % mathML2 PUBLIC \"-//W3C//DTD MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/mathml2.dtd\">");
-			}
+				} else {
+					// replace mathml system by public dtd
+                    data = data.Replace(
+						"<!ENTITY % mathML2 SYSTEM 'mathml2.dtd'>",
+						"<!ENTITY % mathML2 PUBLIC \"-//W3C//DTD MathML 2.0//EN\" \"http://www.w3.org/Math/DTD/mathml2/mathml2.dtd\">");
+                }
+            }
 			writer.Write(data);
 			writer.Close();
 

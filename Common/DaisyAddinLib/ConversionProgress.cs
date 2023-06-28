@@ -21,17 +21,22 @@ namespace Daisy.SaveAsDAISY {
             if (this.InvokeRequired) {
                 this.Invoke(new DelegatedAddMessage(AddMessage), message, isProgress);
             } else {
-                if (isProgress)
+                string[] lines = message.Split(new char[] {'\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string line in lines)
                 {
-                    CurrentProgressMessage = message;
-                    LastMessage.Text = CurrentProgressMessage;
-                    ConversionProgressBar.PerformStep();
+                    if (isProgress)
+                    {
+                        CurrentProgressMessage = line;
+                        LastMessage.Text = CurrentProgressMessage;
+                        ConversionProgressBar.PerformStep();
+                    }
+                    else
+                    {
+                        LastMessage.Text = CurrentProgressMessage + " - " + line;
+                    }
+                    this.MessageTextArea.Text += line + "\r\n";
                 }
-                else
-                {
-                    LastMessage.Text = CurrentProgressMessage + " - " + message;
-                }
-                this.MessageTextArea.Text += (message.EndsWith("\n") ? message : message + "\r\n");
+                
             }
             
         }

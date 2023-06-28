@@ -21,7 +21,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         private void Daisysettingsfrm_Load(object sender, EventArgs e)
         {
             notesNumberingStartValue.Mask = "000";
-            
+
             if (GlobaleSettings.PagenumStyle == "Custom")
             {
                 this.radiobtn_custom.Checked = true;
@@ -31,7 +31,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 this.radiobtn_auto.Checked = true;
             }
 
-            if (GlobaleSettings.CharacterStyle == "True")
+            if (GlobaleSettings.CharacterStyle)
             {
                 this.checkbox_translate.Checked = true;
             }
@@ -40,23 +40,23 @@ namespace Daisy.SaveAsDAISY.Conversion
                 this.checkbox_translate.Checked = false;
             }
 
-            if (GlobaleSettings.ImageOption == "original")
+            if (GlobaleSettings.ImageOption == ConverterSettings.ImageOptionChoice.Enum.Original)
             {
 
                 this.radiobtn_originalimage.Checked = true;
                 this.combobox_resample.Enabled = false;
 
             }
-            else if (GlobaleSettings.ImageOption == "resize")
+            else if (GlobaleSettings.ImageOption == ConverterSettings.ImageOptionChoice.Enum.Resize)
             {
 
                 this.radiobtn_resize.Checked = true;
                 this.combobox_resample.Enabled = false;
             }
-            else if (GlobaleSettings.ImageOption == "resample")
+            else if (GlobaleSettings.ImageOption == ConverterSettings.ImageOptionChoice.Enum.Resample)
             {
                 this.radiobtn_resample.Checked = true;
-                this.combobox_resample.Text = GlobaleSettings.ImageResamplingValue;
+                this.combobox_resample.Text = GlobaleSettings.ImageResamplingValue.ToString();
                 this.combobox_resample.Enabled = true;
             }
 
@@ -102,27 +102,27 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private void btn_ok_Click(object sender, EventArgs e)
         {
-            try {
+            try
+            {
                 // Update fields
                 GlobaleSettings.PagenumStyle = this.radiobtn_custom.Checked ? "Custom" : "Automatic";
-                GlobaleSettings.CharacterStyle = this.checkbox_translate.Checked ? "True" : "False";
-                GlobaleSettings.CharacterStyle = this.checkbox_translate.Checked ? "True" : "False";
+                GlobaleSettings.CharacterStyle = this.checkbox_translate.Checked;
 
                 if (this.radiobtn_originalimage.Checked == true)
                 {
-                    GlobaleSettings.ImageOption = "original";
+                    GlobaleSettings.ImageOption = ConverterSettings.ImageOptionChoice.Enum.Original;
 
                 }
                 else if (this.radiobtn_resize.Checked == true)
                 {
-                    GlobaleSettings.ImageOption = "resize";
+                    GlobaleSettings.ImageOption = ConverterSettings.ImageOptionChoice.Enum.Resize;
 
                 }
                 else if (this.radiobtn_resample.Checked == true)
                 {
 
-                    GlobaleSettings.ImageOption = "resample";
-                    GlobaleSettings.ImageResamplingValue = this.combobox_resample.SelectedItem.ToString();
+                    GlobaleSettings.ImageOption = ConverterSettings.ImageOptionChoice.Enum.Resample;
+                    GlobaleSettings.ImageResamplingValue = int.Parse(this.combobox_resample.SelectedItem.ToString());
 
                 }
 
@@ -206,7 +206,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-        
+
 
         private void footnotesLevelSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -223,14 +223,14 @@ namespace Daisy.SaveAsDAISY.Conversion
         private void footnotesPositionSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
             notesLevelSelector.Enabled = ((string)notesPositionSelector.SelectedItem != "End of pages");
-            
-           /* string selectedItem = (string)footNotesLevel.SelectedItem;
 
-            string value;
-            if (!level.TryGetValue(selectedItem, out value))
-            {
-                value = "page";
-            }*/
+            /* string selectedItem = (string)footNotesLevel.SelectedItem;
+
+             string value;
+             if (!level.TryGetValue(selectedItem, out value))
+             {
+                 value = "page";
+             }*/
         }
 
         private void notesNumberingSelector_SelectedIndexChanged(object sender, EventArgs e)

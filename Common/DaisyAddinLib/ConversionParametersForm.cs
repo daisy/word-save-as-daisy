@@ -65,23 +65,49 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 		public ConversionParameters UpdatedConversionParameters { get; private set; }
 
+        BaseUserControl convertScriptParameterToControl(ScriptParameter param)
+        {
+            Type paramType = param.ParameterDataType.GetType();
+            if (paramType == typeof(BoolDataType))
+            {
+                return new BoolControl(param);
+            }
+            else if (paramType == typeof(EnumDataType))
+            {
+                return new EnumControl(param);
+            }
+            else if (paramType == typeof(IntegerDataType))
+            {
+                return new IntUserControl(param);
+            }
+            else if (paramType == typeof(PathDataType))
+            {
+                return new PathControl(param);
+            }
+            else if (paramType == typeof(StringDataType))
+            {
+                return new StrUserControl(param);
+            }
+            return null;
+        }
 
-		/// <summary>
-		/// Returns Hash Table having information about Title,Creator,Publisher,UID
-		/// </summary>
-		public Hashtable ParametersHash { get { return parametersHash; } }
+
+        /// <summary>
+        /// Returns Hash Table having information about Title,Creator,Publisher,UID
+        /// </summary>
+        public Hashtable ParametersHash { get { return parametersHash; } }
 
 		/// <summary>
 		/// Return Title information 
 		/// </summary>
-		public string GetTitle { get { return tBx_Title.Text; } }
+		public string GetTitle { get { return TitleInput.Text; } }
 
 		public Script getParser { get { return UpdatedConversionParameters.PostProcessor; } }
 
 		/// <summary>
 		/// Return Creator information 
 		/// </summary>
-		public string GetCreator { get { return tBx_Creator.Text; } }
+		public string GetCreator { get { return CreatorInput.Text; } }
 
 		/// <summary>
 		/// Returns the value whether to translate the current document
@@ -99,7 +125,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 
 		/// <summary>
-		/// Default form for converting a word file to DTbook XML
+		/// Default form for converting a word file
 		/// </summary>
 		/// <param name="conversion"></param>
 		/// <param name="labelsManager"></param>
@@ -129,24 +155,6 @@ namespace Daisy.SaveAsDAISY.Conversion
 		}
 
 		/// <summary>
-		/// Function to select Output folder 
-		/// </summary>
-		/// <returns>Output filename chosen by the user</returns>
-		private string GetPhysicalPath()
-		{
-			FolderBrowserDialog fbd = new FolderBrowserDialog();
-			fbd.Description = labels.GetString("Destination");
-			if (tBx_Browse.Text != "")
-				fbd.SelectedPath = tBx_Browse.Text;
-			else
-				fbd.SelectedPath = Path.GetDirectoryName(inputFileName);
-
-			fbd.ShowDialog();
-			return fbd.SelectedPath;
-			// return the path in which the user wants to create the file
-		}
-
-		/// <summary>
 		/// Function to Get the data of a particular file
 		/// </summary>
 		/// <param name="fileName">File name </param>
@@ -159,10 +167,6 @@ namespace Daisy.SaveAsDAISY.Conversion
 			return Assembly.GetExecutingAssembly().GetManifestResourceStream(final);
 		}
 
-		/*private bool IsTranslateToSingleDaisy
-		{
-			get { return AddInHelper.buttonIsSingleWordToXMLConversion(btnID) || !ConverterHelper.PipelineIsInstalled(); }
-		}*/
 
 		public void Translate()
 		{
@@ -172,9 +176,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 			if (isValidInputs)
 			{
-				if (!useAScript) outputFilePath = tBx_Browse.Text;
+				if (!useAScript) outputFilePath = DestinationControl.SelectedPath;
 
-				UpdatePopulateOutputXml(!useAScript ? tBx_Browse.Text : strBrtextBox);
+				UpdatePopulateOutputXml(DestinationControl.SelectedPath);
 
 				parametersHash = updateParametersHash();
 
@@ -186,33 +190,29 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 		private bool ValidateForFullDaisyTranslate()
 		{
+			
 			string fileName = Path.GetFileNameWithoutExtension(mInputPath);
 			string otpfileName = fileName + ".xml";
-			tBx_Browse.Text = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\";
-			if (tBx_Title.Text.TrimEnd() == "")
+            DestinationControl.UpdateScriptParameterValue();
+            //DestinationControl.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\";
+			if (TitleInput.Text.TrimEnd() == "")
 			{
 				MessageBox.Show(labels.GetString("Title"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-				tBx_Title.Focus();
+				TitleInput.Focus();
 				return false;
 			}
 
-			for (int i = 0; i < mLayoutPanel.Controls.Count; i++)
+
+            for (int i = 0; i < AdvancedSettingsPanel.Controls.Count; i++)
 			{
-				if (mLayoutPanel.Controls[i] is BaseUserControl)
+				if (AdvancedSettingsPanel.Controls[i] is BaseUserControl)
 				{
 
-					((BaseUserControl)mLayoutPanel.Controls[i]).UpdateScriptParameterValue();
+					((BaseUserControl)AdvancedSettingsPanel.Controls[i]).UpdateScriptParameterValue();
 
 				}
 			}
 
-			for (int i = 0; i < oTableLayoutPannel.Controls.Count; i++)
-			{
-                if (oTableLayoutPannel.Controls[i] is BaseUserControl)
-				{
-                    ((BaseUserControl)oTableLayoutPannel.Controls[i]).UpdateScriptParameterValue();
-				}
-			}
 
 			foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters)
 			{
@@ -222,15 +222,15 @@ namespace Daisy.SaveAsDAISY.Conversion
 					PathDataType pathDataType = p.ParameterDataType as PathDataType;
 					if (pathDataType == null) continue;
 
-					if (pathDataType.IsFileOrDirectory == PathDataType.FileOrDirectory.File)
+					if (pathDataType.IsFile)
 					{
 						try
 						{
-							FileInfo outputFileInfo = new FileInfo(p.ParameterValue);
+							FileInfo outputFileInfo = new FileInfo(p.ParameterValue.ToString());
 							if (!string.IsNullOrEmpty(pathDataType.FileExtension) && !pathDataType.FileExtension.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
 							{
 								MessageBox.Show(string.Format("Please select {0} output file", pathDataType.FileExtension), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-								mLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
+								//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 								return false;
 							}
 							strBrtextBox = outputFileInfo.DirectoryName;
@@ -239,28 +239,33 @@ namespace Daisy.SaveAsDAISY.Conversion
 						{
 							AddinLogger.Error(ex);
 							MessageBox.Show("Please select output file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-							mLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
+							//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 							return false;
 						}
 
 					}
 					else
 					{
-						strBrtextBox = p.ParameterValue;
-					}
+						strBrtextBox = p.ParameterValue.ToString();
+						if(Directory.Exists(strBrtextBox) && Directory.GetFiles(strBrtextBox).Length > 0)
+						{
+                            MessageBox.Show(string.Format("{0} is not empty, please empty the directory or select an other empty folder.", strBrtextBox), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return false;
+                        }
+                    }
 
 					//TODO:::
 					if (string.IsNullOrEmpty(strBrtextBox.TrimEnd()))
 					{
 						MessageBox.Show("Please select the Destination folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-						mLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
+						//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 						return false;
 					}
 
 					CleanOutputDirDlg cleanOutputDirDlg = new CleanOutputDirDlg(strBrtextBox, otpfileName);
 					if (cleanOutputDirDlg.Clean(this) == DialogResult.Cancel)
 					{
-						mLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
+						//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 						return false;
 					}
 					if (strBrtextBox != cleanOutputDirDlg.OutputDir)
@@ -295,33 +300,33 @@ namespace Daisy.SaveAsDAISY.Conversion
 			string fileName = Path.GetFileNameWithoutExtension(inputFileName);
 			string otpfileName = fileName + ".xml";
 
-			if (string.IsNullOrEmpty(tBx_Browse.Text.TrimEnd()))
+			if (string.IsNullOrEmpty(DestinationControl.SelectedPath.TrimEnd()))
 			{
 				MessageBox.Show(labels.GetString("ChoseDestination"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-				tBx_Browse.Focus();
+                DestinationControl.Focus();
 				return false;
 			}
 
-			if (Directory.Exists(tBx_Browse.Text) == false)
+			if (Directory.Exists(DestinationControl.SelectedPath) == false)
 			{
-				MessageBox.Show(string.Concat(tBx_Browse.Text, " ", "does not exist"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(string.Concat(DestinationControl.SelectedPath, " ", "does not exist"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return false;
 			}
 
-			if (tBx_Title.Text.TrimEnd() == "")
+			if (TitleInput.Text.TrimEnd() == "")
 			{
 				MessageBox.Show(labels.GetString("Title"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
-				tBx_Title.Focus();
+				TitleInput.Focus();
 				return false;
 			}
 
-			if (File.Exists(tBx_Browse.Text + "\\" + otpfileName))
+			if (File.Exists(DestinationControl.SelectedPath + "\\" + otpfileName))
 			{
 				DialogResult objResult;
 				objResult = MessageBox.Show(otpfileName + " already exists in the destination folder. Do you want to overwrite?", "Confirm File Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 				if (objResult != DialogResult.Yes)
 				{
-					tBx_Browse.Focus();
+                    DestinationControl.Focus();
 					return false;
 				}
 			}
@@ -332,11 +337,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 		private Hashtable updateParametersHash()
 		{
 
-			UpdatedConversionParameters = UpdatedConversionParameters.withParameter("OutputFile", !useAScript ? tBx_Browse.Text : strBrtextBox)
-				.withParameter("Title", tBx_Title.Text)
-				.withParameter("Creator", tBx_Creator.Text)
-				.withParameter("Publisher", tBx_Publisher.Text)
-				.withParameter("UID", uId == tBx_Uid.Text ? "AUTO-UID-" + tBx_Uid.Text : tBx_Uid.Text)
+			UpdatedConversionParameters = UpdatedConversionParameters.withParameter("OutputFile", DestinationControl.SelectedPath)
+				.withParameter("Title", TitleInput.Text)
+				.withParameter("Creator", CreatorInput.Text)
+				.withParameter("Publisher", PublisherInput.Text)
+				.withParameter("UID", uId == UIDTextBox.Text ? "AUTO-UID-" + UIDTextBox.Text : UIDTextBox.Text)
 				.withParameter("Subject", string.Empty)
 				.withParameter("PipelineOutput", PipeOutput);
 
@@ -470,125 +475,76 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// <param name="e"></param>
 		private void ConversionParametersFrom_Load(object sender, EventArgs e)
 		{
-			tBx_Uid.Text = GenerateId().ToString();
-			uId = tBx_Uid.Text;
+			UIDTextBox.Text = GenerateId().ToString();
+			uId = UIDTextBox.Text;
 
-			tBx_Creator.Text = UpdatedConversionParameters.Creator;
-			tBx_Title.Text = UpdatedConversionParameters.Title;
-			tBx_Publisher.Text = UpdatedConversionParameters.Publisher;
+			CreatorInput.Text = UpdatedConversionParameters.Creator;
+			TitleInput.Text = UpdatedConversionParameters.Title;
+			PublisherInput.Text = UpdatedConversionParameters.Publisher;
 
-			if (!useAScript)
+            DestinationControl.Width = this.Width - 10;
+
+            //Point temp = AdvancedSettingsPanel.Location;
+            //BottomPanel.Location = temp;
+            //this.Height = this.Height - AdvancedSettingsPanel.Height;
+            AdvancedSettingsPanel.Visible = false;
+            SwitchAdvancedSettingsButton.Visible = false;
+            if (!useAScript)
 			{
 				PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
-
-				tBx_Browse.Text = prepopulateDaisyOutput != null
+				
+				DestinationControl.SelectedPath = prepopulateDaisyOutput != null
 									  ? prepopulateDaisyOutput.OutputPath
 									  : Path.GetDirectoryName(inputFileName);
-				tBx_Browse.SelectionStart = 0;
-
-				mLayoutPanel.Visible = false;
-				oLayoutPanel.Visible = false;
-				btn_OpenDetail.Visible = false;
-
-				btn_OK.Location = new Point(grpBox_Properties.Width - 220, grpBox_Properties.Location.Y + grpBox_Properties.Height + 3);
-				btn_Reset.Location = new Point(btn_OK.Location.X + btn_OK.Width + 7, btn_OK.Location.Y);
-				btn_Cancel.Location = new Point(btn_Reset.Location.X + btn_Reset.Width + 7, btn_OK.Location.Y);
+				
 			}
 			else
 			{
-				this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
-				panel1.Visible = false;
-				oLayoutPanel.Visible = false;
-				mLayoutPanel.Location = new Point(panel1.Location.X, panel1.Location.Y);
-				grpBox_Properties.Location = new Point(mLayoutPanel.Location.X, mLayoutPanel.Location.Y + 30);
+                SwitchAdvancedSettingsButton.Visible = true;
+                this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
 
-				this.Height = this.Height - panel1.Height - oLayoutPanel.Height - btn_HideDetail.Height - 130 ;
+                // Link the original destination selection to the output script parameter
+                PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
+                ScriptParameter outputParameter = UpdatedConversionParameters.PostProcessor.Parameters["output"];
+                outputParameter.ParameterValue = prepopulateDaisyOutput != null
+                                       ? prepopulateDaisyOutput.OutputPath
+                                       : string.Empty;
+			    DestinationControl.setLinkedParameter(outputParameter);
+				
+
+                // Build AdvancedSettingsPanel
+                AdvancedSettingsPanel.Visible = false;
 				int tabIndex = 0;
-				int w = 0;
-				int h = 0;
+				int h = 5; // Starting height
+                strBrtextBox = prepopulateDaisyOutput != null
+                                       ? prepopulateDaisyOutput.OutputPath
+                                       : string.Empty;
 
-				//shaby (begin): Implementing TableLayoutPannel
-				int oTableLayoutCurrentRow = 0;
-				int oTableLayoutCurrentColumn = 0;
-				oTableLayoutPannel.Visible = false;
-				oTableLayoutPannel.Name = "oTableLayoutPannel";
-				oTableLayoutPannel.AutoSize = true;
-				oTableLayoutPannel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-				//oTableLayoutPannel.CellBorderStyle = TableLayoutPanelCellBorderStyle.Single;
-				oTableLayoutPannel.TabIndex = btn_OpenDetail.TabIndex + 1;
-				oTableLayoutPannel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-				//shaby (end)  : Implementing TableLayoutPannel
-
-				foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters)
+                foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters)
 				{
-					ScriptParameter p = kv.Value;
-					PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
+                    ScriptParameter p = kv.Value;
 
-					strBrtextBox = prepopulateDaisyOutput != null
-									   ? prepopulateDaisyOutput.OutputPath
-									   : string.Empty;
 
-					if (p.Name != "input" && p.ParameterDataType is PathDataType && p.IsParameterRequired)
+                    // output is put in the dedicated output panel
+                    if (kv.Key == "output" || kv.Key == "input" || p.Name == "input") continue;
+
+					if (p.IsParameterRequired || p.IsParameterDisplayed)
 					{
-						Control c = (Control)new PathBrowserControl(p, inputFileName, strBrtextBox);
-						c.Anchor = AnchorStyles.Right;
-						mLayoutPanel.Controls.Add(c);
-						mLayoutPanel.SetFlowBreak(c, true);
-						c.TabIndex = tabIndex++;
-						if (w < c.Width + c.Margin.Horizontal) w = c.Width + c.Margin.Horizontal;
-						h += c.Height + c.Margin.Vertical;
-
-					}
-					else if (!p.IsParameterRequired)
-					{
-						//TODO: added to work epub not. Should add correct procesing of this parameter. 
-						if (p.ParameterDataType is PathDataType)
-							continue;
-
-						Control c =
-							p.ParameterDataType is BoolDataType ? new BoolControl(p)
-								: p.ParameterDataType is EnumDataType ? new EnumControl(p)
-								: p.ParameterDataType is StringDataType ? new StrUserControl(p)
-								: (Control)new IntUserControl(p);
-
-						c.Anchor = AnchorStyles.Right;
-						oTableLayoutPannel.Controls.Add(c, oTableLayoutCurrentColumn, oTableLayoutCurrentRow);
-						this.Controls.Add(oTableLayoutPannel);
-						oTableLayoutCurrentRow++;
-
+						Control c = convertScriptParameterToControl(p);
+                        AdvancedSettingsPanel.Controls.Add(c);
+                        c.Location = new Point(5, h);
+						c.Width = AdvancedSettingsPanel.Width - 15;
+						c.Anchor = AnchorStyles.Top;
+                        //RequiredSettingsPanel.Controls.Add(c);
+                        c.TabIndex = tabIndex++;
+						h += c.Height;
 					}
 				}
-				oTableLayoutPannel.Location = new Point(btn_OpenDetail.Location.X, btn_OpenDetail.Location.Y + 5);
-
-				if (oTableLayoutPannel.Width > mLayoutPanel.Width)
-				{
-					mLayoutPanel.Controls[0].Width = oTableLayoutPannel.Width - 3;
-					tableLayoutPanel2.Width = oTableLayoutPannel.Width - 4;
-
-				}
-				else
-				{
-					oTableLayoutPannel.Controls[0].Width = mLayoutPanel.Width - 3;
-					tableLayoutPanel2.Width = mLayoutPanel.Width - 4;
-				}
-
-				btn_OK.Location = new Point(oTableLayoutPannel.Width - 220, btn_OpenDetail.Location.Y);
-				btn_Reset.Location = new Point(btn_OK.Location.X + btn_OK.Width + 7, btn_OpenDetail.Location.Y);
-				btn_Cancel.Location = new Point(btn_Reset.Location.X + btn_Reset.Width + 7, btn_OpenDetail.Location.Y);
+                this.AdvancedSettingsPanel.AutoScroll = true;
+                this.AdvancedSettingsPanel.Height = h + 5;
 			}
 		}
 
-		/// <summary>
-		/// Function to show the Browse for Folder Dialog box
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void btn_Browse_Click(object sender, EventArgs e)
-		{
-			String path = GetPhysicalPath();
-			if (path != "")
-				tBx_Browse.Text = path;
-		}
 
         private void AccessibilityCheckerLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
 			Process.Start("https://support.microsoft.com/en-us/office/improve-accessibility-with-the-accessibility-checker-a16f6de0-2f39-4a2b-8bd8-5ad801426c7f#bkmk_use");
@@ -604,15 +560,16 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <param name="e"></param>
         private void btn_Reset_Click(object sender, EventArgs e)
 		{
-			tBx_Browse.Text = "";
-			tBx_Title.Text = "";
-			tBx_Creator.Text = "";
-			tBx_Publisher.Text = "";
-			tBx_Uid.Text = "";
+			DestinationControl.SelectedPath = "";
+			TitleInput.Text = "";
+			CreatorInput.Text = "";
+			PublisherInput.Text = "";
+			UIDTextBox.Text = "";
 			int counter = 0;
-			if (ConverterHelper.PipelineIsInstalled() && useAScript)
+			if (useAScript)
 			{
-				mLayoutPanel.Controls[0].Controls[0].Controls[1].Text = "";
+
+				//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Text = "";
 				foreach (Control c in oTableLayoutPannel.Controls)
 				{
 					if (oTableLayoutPannel.Controls[counter].Name == "EnumControl")
@@ -637,12 +594,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		public void btn_OK_Click(object sender, EventArgs e)
+		public void onClickTranslateButton(object sender, EventArgs e)
 		{
 			try
 			{
 				Translate();
-				
 			}
 			catch (Exception ex)
 			{
@@ -651,20 +607,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			}
 		}
 
-		private void btn_HideDetail_Click(object sender, EventArgs e)
-		{
-
-			btn_OpenDetail.Visible = true;
-			btn_HideDetail.Visible = false;
-			oTableLayoutPannel.Visible = false;
-
-			//panelButton.Location = new System.Drawing.Point(oTableLayoutPannel.Width - 220, btn_OpenDetail.Location.Y - 3);
-			btn_OK.Location = new Point(oTableLayoutPannel.Width - 220, btn_OpenDetail.Location.Y);
-			btn_Reset.Location = new Point(btn_OK.Location.X + btn_OK.Width + 7, btn_OpenDetail.Location.Y);
-			btn_Cancel.Location = new Point(btn_Reset.Location.X + btn_Reset.Width + 7, btn_OpenDetail.Location.Y);
-		}
-
-		private void btn_Cancel_Click(object sender, EventArgs e)
+		private void onClickCancelButton(object sender, EventArgs e)
 		{
 			string[] files = Directory.GetFiles(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\");
 			foreach (string file in files)
@@ -677,30 +620,19 @@ namespace Daisy.SaveAsDAISY.Conversion
 			this.Close();
 		}
 
-		private void btn_OpenDetail_Click_1(object sender, EventArgs e)
+		private void OnClickSwitchAdvandedSettingsButton(object sender, EventArgs e)
 		{
-			btn_OpenDetail.Visible = false;
-			btn_HideDetail.Visible = true;
-			oTableLayoutPannel.Visible = true;
-
-			//dynamically setting tab index for the usercontrols based on the order it is placed
-			int oTableLayoutPannelTabIndex = oTableLayoutPannel.TabIndex;
-			foreach (Control ctrl in oTableLayoutPannel.Controls)
+			
+			if(AdvancedSettingsPanel.Visible) // Visible, hide the panel
 			{
-				if (ctrl.Name == "EnumControl")
-					ctrl.Controls[1].TabIndex = ++oTableLayoutPannelTabIndex;
-				else if (ctrl.Name == "BoolControl")
-					ctrl.Controls[0].TabIndex = ++oTableLayoutPannelTabIndex;
-			}
-			oTableLayoutPannel.Controls[0].Focus();
+				SwitchAdvancedSettingsButton.Text = "Show Advanced <<";
+				AdvancedSettingsPanel.Visible = false;
 
-
-			btn_HideDetail.Location = new Point(oTableLayoutPannel.Location.X, oTableLayoutPannel.Location.Y + oTableLayoutPannel.Height + 2);
-
-			//panelButton.Location = new System.Drawing.Point(oTableLayoutPannel.Width - 220, btn_HideDetail.Location.Y -3);
-			btn_OK.Location = new Point(oTableLayoutPannel.Width - 220, btn_HideDetail.Location.Y);
-			btn_Reset.Location = new Point(btn_OK.Location.X + btn_OK.Width + 7, btn_HideDetail.Location.Y);
-			btn_Cancel.Location = new Point(btn_Reset.Location.X + btn_Reset.Width + 7, btn_HideDetail.Location.Y);
+            } else // not visible, show the panel
+			{
+				AdvancedSettingsPanel.Visible = true;
+                SwitchAdvancedSettingsButton.Text = "Hide Advanced <<";
+            }
 		}
 
 		#endregion

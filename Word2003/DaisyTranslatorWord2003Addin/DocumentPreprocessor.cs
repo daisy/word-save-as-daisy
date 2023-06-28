@@ -287,7 +287,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2003 {
             return currentInstance.Documents.Open(ref path, ref missing, ref missing, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref visible);
         }
 
-        public ConversionStatus ValidateName(ref object preprocessedObject, FilenameValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
+        public ConversionStatus ValidateName(ref object preprocessedObject, StringValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
             MSword.Application WordInstance = currentDoc.Application;
             bool nameIsValid = false;

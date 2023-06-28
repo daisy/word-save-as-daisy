@@ -89,8 +89,8 @@ namespace Daisy.SaveAsDAISY {
             return MessageBox.Show(Labels.GetString("TrackConfirmation"), "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
         }
 
-        public DialogResult documentMustBeRenamed(FilenameValidator authorizedNamePattern) {
-            string BoxText = authorizedNamePattern.UnauthorizedNameMessage +
+        public DialogResult documentMustBeRenamed(StringValidator authorizedNamePattern) {
+            string BoxText = authorizedNamePattern.UnauthorizedValueMessage +
                        "\r\n" +
                        "\r\nDo you want to save this document under a new name ?" +
                        "\r\nThe document with the original name will not be deleted." +
@@ -121,6 +121,7 @@ namespace Daisy.SaveAsDAISY {
 
 		public void OnError(string errorMessage)
 		{
+            TryShowMessage("An error occured during conversion : \r\n" + errorMessage, true);
             TryClosingDialog();
             MessageBox.Show(errorMessage, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
@@ -164,21 +165,21 @@ namespace Daisy.SaveAsDAISY {
             if (ProgressDialog != null) {
                 ProgressDialog.InitializeProgress("Starting pipeline processing", conversion.PostProcessor.StepsCount + 1);
             }
-            conversion.PostProcessor.setPipelineErrorListener((string message) => {
-                if (message != null) {
-                    ProgressDialog.AddMessage(message, true);
-                }
-            });
-            conversion.PostProcessor.setPipelineOutputListener((string message) => {
-                if (message != null) {
-                    ProgressDialog.AddMessage(message,false);
-                }
-            });
-            conversion.PostProcessor.setPipelineProgressListener((string message) => {
-                if (message != null) {
-                    ProgressDialog.AddMessage(message, true);
-                }
-            });
+            //conversion.PostProcessor.setPipelineErrorListener((string message) => {
+            //    if (message != null) {
+            //        ProgressDialog.AddMessage(message, true);
+            //    }
+            //});
+            //conversion.PostProcessor.setPipelineOutputListener((string message) => {
+            //    if (message != null) {
+            //        ProgressDialog.AddMessage(message,false);
+            //    }
+            //});
+            //conversion.PostProcessor.setPipelineProgressListener((string message) => {
+            //    if (message != null) {
+            //        ProgressDialog.AddMessage(message, true);
+            //    }
+            //});
         }
 
         
