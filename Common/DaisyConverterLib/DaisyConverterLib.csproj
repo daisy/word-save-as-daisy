@@ -184,7 +184,7 @@
     <EmbeddedResource Include="resources\dtds\dtbook-2005-3.dtd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="resources\dtds\mathml2.DTD">
+    <EmbeddedResource Include="resources\dtds\mathml2.dtd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\entities\isoamsa.ent">

@@ -33,6 +33,7 @@ using System.Text;
 using System.Reflection;
 using System.Xml;
 using System.Windows.Forms;
+using System.Collections.Generic;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -50,6 +51,37 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string defaultNamespace;
 		private bool isDirectTransform;
         private string resourceLocation;
+
+        // URI resolver mapper to avoid http calls that could trigger proxy errors
+        private Dictionary<string, string> dtdMapper = new Dictionary<string, string>()
+        {
+            // dtds
+            { "-//NISO//DTD dtbook 2005-3//EN", "dtbook-2005-3.dtd" },
+            { "-//W3C//DTD MathML 2.0//EN", "mathml2.dtd" },
+            // entities
+            { "-//W3C//ENTITIES MathML 2.0 Qualified Names 1.0//EN", "mathml2-qname-1.mod" },
+            { "-//W3C//ENTITIES Added Math Symbols: Arrow Relations for MathML 2.0//EN", "isoamsa.ent" },
+            { "-//W3C//ENTITIES Added Math Symbols: Binary Operators for MathML 2.0//EN", "isoamsb.ent" },
+            { "-//W3C//ENTITIES Added Math Symbols: Delimiters for MathML 2.0//EN", "isoamsc.ent" },
+            { "-//W3C//ENTITIES Added Math Symbols: Negated Relations for MathML 2.0//EN", "isoamsn.ent" },
+            { "-//W3C//ENTITIES Added Math Symbols: Ordinary for MathML 2.0//EN", "isoamso.ent" },
+            { "-//W3C//ENTITIES Added Math Symbols: Relations for MathML 2.0//EN", "isoamsr.ent" },
+            { "-//W3C//ENTITIES Greek Symbols for MathML 2.0//EN", "isogrk3.ent" },
+            { "-//W3C//ENTITIES Math Alphabets: Fraktur for MathML 2.0//EN", "isomfrk.ent" },
+            { "-//W3C//ENTITIES Math Alphabets: Open Face for MathML 2.0//EN", "isomopf.ent" },
+            { "-//W3C//ENTITIES Math Alphabets: Script for MathML 2.0//EN", "isomscr.ent" },
+            { "-//W3C//ENTITIES General Technical for MathML 2.0//EN", "isotech.ent" },
+            { "-//W3C//ENTITIES Box and Line Drawing for MathML 2.0//EN", "isobox.ent" },
+            { "-//W3C//ENTITIES Russian Cyrillic for MathML 2.0//EN", "isocyr1.ent" },
+            { "-//W3C//ENTITIES Non-Russian Cyrillic for MathML 2.0//EN", "isocyr2.ent" },
+            { "-//W3C//ENTITIES Diacritical Marks for MathML 2.0//EN", "isodia.ent" },
+            { "-//W3C//ENTITIES Added Latin 1 for MathML 2.0//EN", "isolat1.ent" },
+            { "-//W3C//ENTITIES Added Latin 2 for MathML 2.0//EN", "isolat2.ent" },
+            { "-//W3C//ENTITIES Numeric and Special Graphic for MathML 2.0//EN", "isonum.ent" },
+            { "-//W3C//ENTITIES Publishing for MathML 2.0//EN", "isopub.ent" },
+            { "-//W3C//ENTITIES Extra for MathML 2.0//EN", "mmlextra.ent" },
+            { "-//W3C//ENTITIES Aliases for MathML 2.0//EN", "mmlalias.ent" },
+        };
 		
 		/// <summary>
 		/// Constructor
@@ -88,11 +120,22 @@ namespace Daisy.SaveAsDAISY.Conversion
 		{
 			if (baseUri == null && !relativeUri.Contains("://"))
             {
-                return new Uri(ASSEMBLY_URI_SCHEME + "://" + ASSEMBLY_URI_HOST + "/" + relativeUri);
+                if (File.Exists(relativeUri)) // pointing to an existing path on system and not a relative
+                {
+                    return base.ResolveUri(baseUri, relativeUri);
+                } else return new Uri(ASSEMBLY_URI_SCHEME + "://" + ASSEMBLY_URI_HOST + "/" + relativeUri);
             }
-            else if (relativeUri.Contains("DTD"))
+            else if (relativeUri.EndsWith(".ent", StringComparison.OrdinalIgnoreCase)
+                || relativeUri.EndsWith(".dtd", StringComparison.OrdinalIgnoreCase)
+                || relativeUri.EndsWith(".mod", StringComparison.OrdinalIgnoreCase)
+                || relativeUri.EndsWith(".css", StringComparison.OrdinalIgnoreCase)
+            )
             {
-                return new Uri(ASSEMBLY_URI_SCHEME + "://" + ASSEMBLY_URI_HOST + "/dummy.dtd");
+                string file = Path.GetFileName(relativeUri);
+                return new Uri(ASSEMBLY_URI_SCHEME + "://" + ASSEMBLY_URI_HOST + "/" + file);
+            } else if (dtdMapper.ContainsKey(relativeUri))
+            {
+                return new Uri(ASSEMBLY_URI_SCHEME + "://" + ASSEMBLY_URI_HOST + "/" + dtdMapper[relativeUri]);
             }
             else
             {

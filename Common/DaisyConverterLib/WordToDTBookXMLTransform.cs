@@ -709,8 +709,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 				Path.GetDirectoryName(outputFile) + "\\mathml2-qname-1.mod",
 				"mathml2-qname-1.mod");
 			CopyingAssemblyFile(
-				Path.GetDirectoryName(outputFile) + "\\mathml2.DTD",
-				"mathml2.DTD");
+				Path.GetDirectoryName(outputFile) + "\\mathml2.dtd",
+				"mathml2.dtd");
 
 			for (int i = 0; i < MathEntities8879.Count; i++)
 			{
@@ -947,8 +947,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 			if (mergeTarget != null) { // An existing merge target (empty or not) is requested
 				ReplaceData(documentToMerge.OutputPath, out cutData);
 			}
-			
-			tempDoc.Load(documentToMerge.OutputPath);
+			tempDoc.XmlResolver = this.ResourceResolver;
+
+            tempDoc.Load(documentToMerge.OutputPath);
 			if (mergeTarget == null || mergeTarget.ChildNodes.Count == 0) {
 				// No (or empty) merge target,
 				// Prepare document merging data 
