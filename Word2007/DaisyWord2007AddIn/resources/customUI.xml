@@ -101,7 +101,7 @@
 					        getEnabled="getEnabled"
 					        getImage="iconSelector"/>
 				</group>
-				<group id="SampleGroup9"
+				<!--<group id="SampleGroup9"
 				       label="AddFootnote">
 					<button id="Button11"
 					        label="Add&amp;Footnote"
@@ -109,7 +109,7 @@
 					        onAction="AddFotenote"
 					        getImage="iconSelector"
 					        getEnabled="ribbonButtonsEnabled"/>
-				</group>
+				</group>-->
 				<group id="SampleGroup10"
 				       label="Language">
 					<button id="Button12"
