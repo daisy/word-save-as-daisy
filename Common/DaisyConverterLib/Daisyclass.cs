@@ -36,7 +36,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         const String headingZeroLvl = "0";
         const String headingOneLvl = "1";
         const String headingSixLvl = "6";
-        const String version2010 = "14.0", version2007 = "12.0", version2003 = "11.0", versionXP = "10.0";
+        const String version2003 = "11.0", versionXP = "10.0";
         Package pack;
 
         /// <summary>
@@ -1829,45 +1829,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public String FullAbbr(String abbrName, String version) {
             String indicator = "";
             wordRelationship = null;
-            if (IsOffice2007Or2010(version)) {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
-                    wordRelationship = searchRelation;
-                    break;
-                }
-
-                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
-                PackagePart mainPartxml = pack.GetPart(partUri);
-
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
-
-                    customRelationship = searchRelation;
-
-                    Uri CustomUri = PackUriHelper.ResolvePartUri(customRelationship.SourceUri, customRelationship.TargetUri);
-                    PackagePart customPartxml = pack.GetPart(CustomUri);
-
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(customPartxml.GetStream());
-
-                    if (doc.DocumentElement.NamespaceURI == "http://Daisy-OpenXML/customxml") {
-                        NameTable nt = new NameTable();
-
-                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                        nsManager.AddNamespace("a", "http://Daisy-OpenXML/customxml");
-
-                        XmlNodeList node = doc.SelectNodes("//a:Item[@AbbreviationName='" + abbrName + "']", nsManager);
-
-                        if (node != null) {
-                            if (node.Count != 0) {
-                                if (node.Item(0).Attributes.Item(1).Value != "")
-                                    indicator = node.Item(0).Attributes.Item(1).Value;
-                            } else
-                                indicator = "";
-                            break;
-                        }
-                    }
-                }
-            }
-
             if (version == version2003 || version == versionXP) {
                 foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(customPropRelationshipType)) {
                     wordRelationship = searchRelation;
@@ -1897,6 +1858,50 @@ namespace Daisy.SaveAsDAISY.Conversion {
                         }
                     }
                 }
+            } else
+            {
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType))
+                {
+                    wordRelationship = searchRelation;
+                    break;
+                }
+
+                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                PackagePart mainPartxml = pack.GetPart(partUri);
+
+                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType))
+                {
+
+                    customRelationship = searchRelation;
+
+                    Uri CustomUri = PackUriHelper.ResolvePartUri(customRelationship.SourceUri, customRelationship.TargetUri);
+                    PackagePart customPartxml = pack.GetPart(CustomUri);
+
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(customPartxml.GetStream());
+
+                    if (doc.DocumentElement.NamespaceURI == "http://Daisy-OpenXML/customxml")
+                    {
+                        NameTable nt = new NameTable();
+
+                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
+                        nsManager.AddNamespace("a", "http://Daisy-OpenXML/customxml");
+
+                        XmlNodeList node = doc.SelectNodes("//a:Item[@AbbreviationName='" + abbrName + "']", nsManager);
+
+                        if (node != null)
+                        {
+                            if (node.Count != 0)
+                            {
+                                if (node.Item(0).Attributes.Item(1).Value != "")
+                                    indicator = node.Item(0).Attributes.Item(1).Value;
+                            }
+                            else
+                                indicator = "";
+                            break;
+                        }
+                    }
+                }
             }
             return indicator;
         }
@@ -1911,43 +1916,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public String FullAcr(String acrName, String version) {
             String indicator = "";
             wordRelationship = null;
-            if (IsOffice2007Or2010(version)) {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
-                    wordRelationship = searchRelation;
-                    break;
-                }
-
-                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
-                PackagePart mainPartxml = pack.GetPart(partUri);
-
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
-                    customRelationship = searchRelation;
-
-
-                    Uri CustomUri = PackUriHelper.ResolvePartUri(customRelationship.SourceUri, customRelationship.TargetUri);
-                    PackagePart customPartxml = pack.GetPart(CustomUri);
-
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(customPartxml.GetStream());
-
-                    if (doc.DocumentElement.NamespaceURI == "http://Daisy-OpenXML/customxml") {
-                        NameTable nt = new NameTable();
-
-                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                        nsManager.AddNamespace("a", "http://Daisy-OpenXML/customxml");
-
-                        XmlNodeList node = doc.SelectNodes("//a:Item[@AcronymName='" + acrName + "']", nsManager);
-
-                        if (node.Count != 0) {
-                            if (node.Item(0).Attributes.Item(1).Value != "")
-                                indicator = node.Item(0).Attributes.Item(1).Value;
-                        } else
-                            indicator = "";
-                        break;
-                    }
-
-                }
-            }
+            
 
             if (version == version2003 || version == versionXP) {
                 foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(customPropRelationshipType)) {
@@ -1976,6 +1945,48 @@ namespace Daisy.SaveAsDAISY.Conversion {
                             }
                         }
                     }
+                }
+            } else
+            {
+                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType))
+                {
+                    wordRelationship = searchRelation;
+                    break;
+                }
+
+                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                PackagePart mainPartxml = pack.GetPart(partUri);
+
+                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType))
+                {
+                    customRelationship = searchRelation;
+
+
+                    Uri CustomUri = PackUriHelper.ResolvePartUri(customRelationship.SourceUri, customRelationship.TargetUri);
+                    PackagePart customPartxml = pack.GetPart(CustomUri);
+
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(customPartxml.GetStream());
+
+                    if (doc.DocumentElement.NamespaceURI == "http://Daisy-OpenXML/customxml")
+                    {
+                        NameTable nt = new NameTable();
+
+                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
+                        nsManager.AddNamespace("a", "http://Daisy-OpenXML/customxml");
+
+                        XmlNodeList node = doc.SelectNodes("//a:Item[@AcronymName='" + acrName + "']", nsManager);
+
+                        if (node.Count != 0)
+                        {
+                            if (node.Item(0).Attributes.Item(1).Value != "")
+                                indicator = node.Item(0).Attributes.Item(1).Value;
+                        }
+                        else
+                            indicator = "";
+                        break;
+                    }
+
                 }
             }
             return indicator;
@@ -3246,10 +3257,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         #region help methods
-
-        private bool IsOffice2007Or2010(string version) {
-            return version == version2007 || version == version2010;
-        }
 
         #endregion
 
