@@ -75,7 +75,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
         PackageRelationship packRelationship = null;
         XmlDocument currentDocXml, validation_xml;
-        String docFile, path_For_Xml;
+        string docFile, path_For_Xml;
         public ArrayList docValidation = new ArrayList();
         private IRibbonUI daisyRibbon;
         private bool showValidateTabBool = false;
@@ -85,7 +85,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         private MSword.Application applicationObject;
         private AddinResources addinLib;
 
-        ToolStripMenuItem PipelineMenuItem = null;
         private ArrayList footntRefrns;
 
 

@@ -160,7 +160,6 @@
     <None Include="README.md" />
     <None Include="Resources\DaisyAddinForWordSetup_x64" />
     <None Include="Resources\DaisyAddinForWordSetup_x86" />
-    <None Include="Resources\pipeline2_cab" />
     <None Include="Resources\pipeline_cab" />
     <None Include="SelfSignedCertificate.pfx" />
   </ItemGroup>

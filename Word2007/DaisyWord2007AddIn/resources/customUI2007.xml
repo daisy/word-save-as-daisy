@@ -1,14 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="OnLoad">
     <ribbon>
-        <officeMenu>
-            <menu id="DaisyMenu" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" itemSize="large" getImage="iconSelector">
-                <button id="DaisySingle" tag="_postprocess" label="DAISY XML (from &amp;Single docx)"  onAction="SaveAsDaisy"  enabled="true" getImage="iconSelector" keytip="s" getDescription="GetDescriptionSingle"/>
-                <dynamicMenu id="DaisyDTBookSingle" label="Full D&amp;AISY (from single docx)"  getContent="GetDTbook" getImage="iconSelector" getDescription="GetDescriptionSingleDTBook"/>
-                <button id="DaisyMultiple" tag="_postprocess" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="iconSelector" keytip="m" getDescription="GetDescriptionMultiple"/>
-                <dynamicMenu id="DaisyDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="iconSelector" getDescription="GetDescriptionMultipleDTBook"/>
-            </menu>
-        </officeMenu>
+		<officeMenu>
+			<menu id="DaisyMenu" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" itemSize="large" getImage="iconSelector">
+				<button id="DtbookSingle"
+						label="DAISY &amp;XML"
+						onAction="SaveAsDTBookXML"
+						getEnabled="ribbonButtonsEnabled"
+						getImage="iconSelector"
+						screentip="Export the document as DAISY XML (dtbook dtd)"
+						description="Export the document as DAISY XML (dtbook dtd)"/>
+				<button id="DaisySingle"
+						label="&amp;DAISY3"
+						onAction="SaveAsDAISY3"
+						getEnabled="ribbonButtonsEnabled"
+						getImage="iconSelector"
+						description="DAISY3 book with text and/or audio"
+						screentip="DAISY3 book with text and/or audio"/>
+				<button id="EpubSingle"
+						label="&amp;EPUB3 (experimental)"
+						onAction="SaveAsEPUB3"
+						getEnabled="ribbonButtonsEnabled"
+						getImage="iconSelector"
+						description="EPUB3 book"
+						screentip="EPUB3 book"/>
+			</menu>
+		</officeMenu>
         <tabs>
             <tab id="CustomTab" label="Accessibility">
                 <group id="SampleGroup" label="Save As DAISY">

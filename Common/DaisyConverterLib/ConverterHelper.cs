@@ -10,14 +10,6 @@ using System.Text.RegularExpressions;
 namespace Daisy.SaveAsDAISY.Conversion {
     public static class ConverterHelper {
 
-
-		/// <summary>
-		/// Gets path to pipeline root directory.
-		/// </summary>
-		public static string Pipeline1Path {
-			get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\pipeline-lite-ms"; }
-		}
-
 		/// <summary>
 		/// Get the pipeline 2 root directory
 		/// </summary>
@@ -30,7 +22,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		/// </summary>
 		/// <returns></returns>
 		public static bool PipelineIsInstalled() {
-			return Directory.Exists(Pipeline1Path);
+			return Directory.Exists(Pipeline2Path);
 		}
 
 		/// <summary>

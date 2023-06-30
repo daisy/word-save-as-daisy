@@ -308,35 +308,20 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>REM - Copy resources needed for debugging
-
 REM --- XSLTs for word to dtbook conversion
+
 
 IF EXIST "$(TargetDir)resources" rd /S /Q "$(TargetDir)resources"
 
+
 xcopy /E /Y "$(SolutionDir)Converter\bin\$(ConfigurationName)\resources"  "$(TargetDir)resources\"
 
+
 REM --- pipeline for dtbook to daisy
-
-REM IF EXIST "$(TargetDir)pipeline-lite-ms" rd /S /Q "$(TargetDir)pipeline-lite-ms"
-
-REM xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"
 IF EXIST "$(TargetDir)daisy-pipeline" rd /S /Q "$(TargetDir)daisy-pipeline"
 
+
 xcopy /E  "$(SolutionDir)Lib\daisy-pipeline"  "$(TargetDir)daisy-pipeline\"
-
-REM --- Common resources from Lib folder
-
-REM xcopy /Y  "$(SolutionDir)Lib\template2007.dotx"  "$(TargetDir)"
-
-REM xcopy /Y  "$(SolutionDir)Lib\Help.chm"  "$(TargetDir)"
-
-REM xcopy /Y  "$(SolutionDir)Lib\Save As Daisy Getting Started.docx"  "$(TargetDir)"
-
-REM xcopy /Y  "$(SolutionDir)Lib\Save-as-instruction-manual.zip"  "$(TargetDir)"
-
-REM xcopy /Y  "$(SolutionDir)Lib\Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx"  "$(TargetDir)"
-
-
 </PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>

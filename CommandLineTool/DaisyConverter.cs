@@ -47,6 +47,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using Daisy.SaveAsDAISY.Addins.Word2007;
 using Daisy.SaveAsDAISY.Forms;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
 
 namespace Daisy.SaveAsDAISY.CommandLineTool {
     enum ControlType : int {
@@ -114,15 +115,6 @@ namespace Daisy.SaveAsDAISY.CommandLineTool {
         String errorText = "";
         const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
         
-        private Pipeline1 _postprocessingPipeline = null;
-        public Pipeline1 PostprocessingPipeline {
-            get {
-                if (ConverterHelper.PipelineIsInstalled() && _postprocessingPipeline == null)
-                    _postprocessingPipeline = Pipeline1.Instance;
-                return _postprocessingPipeline;
-            }
-            set => _postprocessingPipeline = value;
-        }
 
 
 #if MONO
@@ -437,7 +429,7 @@ namespace Daisy.SaveAsDAISY.CommandLineTool {
 
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(app);
-                Conversion.Script pipelineScript = this.PostprocessingPipeline?.getScript("_postprocess");
+                Conversion.Script pipelineScript = new DtbookCleaner(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(app.Version, pipelineScript);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
@@ -532,7 +524,7 @@ namespace Daisy.SaveAsDAISY.CommandLineTool {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(app);
 
-                Conversion.Script pipelineScript = this.PostprocessingPipeline?.getScript("_postprocess");
+                Conversion.Script pipelineScript = new DtbookCleaner(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(app.Version, pipelineScript);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();

@@ -19,7 +19,7 @@
 						description="DAISY3 book with text and/or audio"
 						screentip="DAISY3 book with text and/or audio"/>
 				<button id="EpubSingle"
-						label="&amp;EPUB3 (from Single docx, experimental)"
+						label="&amp;EPUB3 (experimental)"
 						onAction="SaveAsEPUB3"
 						getEnabled="ribbonButtonsEnabled"
 						getImage="iconSelector"
@@ -51,7 +51,7 @@
 						        description="DAISY3 book with text and/or audio"
 						        screentip="DAISY3 book with text and/or audio"/>
 						<button id="EpubTabSingle"
-						        label="&amp;EPUB3 (from Single docx, experimental)"
+						        label="&amp;EPUB3 (experimental)"
 						        onAction="SaveAsEPUB3"
 						        getEnabled="ribbonButtonsEnabled"
 						        getImage="iconSelector"

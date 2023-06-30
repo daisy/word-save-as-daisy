@@ -822,7 +822,7 @@ your document with the Word Accessibility Checker.
     <value>DestinationControl</value>
   </data>
   <data name="&gt;&gt;DestinationControl.Type" xml:space="preserve">
-    <value>Daisy.SaveAsDAISY.Forms.Controls.PathControl, DaisyAddinLib, Version=2.7.2.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
+    <value>Daisy.SaveAsDAISY.Forms.Controls.PathControl, DaisyAddinLib, Version=2.8.0.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
   </data>
   <data name="&gt;&gt;DestinationControl.Parent" xml:space="preserve">
     <value>$this</value>
