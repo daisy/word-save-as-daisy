@@ -1050,7 +1050,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 MSword.Document doc = this.applicationObject.ActiveDocument;
                 if (doc.ProtectionType == Microsoft.Office.Interop.Word.WdProtectionType.wdNoProtection)
                 {
-                    Abbreviation form = new Abbreviation(doc, true);
+                    AliasesManagement form = new AliasesManagement(doc, AliasesManagement.AliasType.Abbreviation);
                     form.ShowDialog();
                 }
                 else
@@ -1075,7 +1075,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 MSword.Document doc = this.applicationObject.ActiveDocument;
                 if (doc.ProtectionType == Microsoft.Office.Interop.Word.WdProtectionType.wdNoProtection)
                 {
-                    Abbreviation form = new Abbreviation(doc, false);
+                    AliasesManagement form = new AliasesManagement(doc, AliasesManagement.AliasType.Acronym);
                     form.ShowDialog();
                 }
                 else
@@ -1119,7 +1119,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
             else
             {
-                Mark mrkForm = new Mark(doc, true);
+                Mark mrkForm = new Mark(doc, AliasesManagement.AliasType.Abbreviation);
                 mrkForm.ShowDialog();
             }
         }
@@ -1200,7 +1200,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
             else
             {
-                Mark mrkForm = new Mark(doc, false);
+                Mark mrkForm = new Mark(doc, AliasesManagement.AliasType.Acronym);
                 mrkForm.ShowDialog();
             }
         }

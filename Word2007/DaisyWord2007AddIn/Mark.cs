@@ -26,11 +26,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// Constructor which loads different UI for Abbreviations/Acronyms
         /// </summary>
         /// <param name="doc">Word Document</param>
-        /// <param name="value">Whether call is from Abbreviation Button or Acronym Button</param>
-        public Mark(MSword.Document doc, bool valueAbbrAcr) {
+        /// <param name="value">Whether call is from Abbreviation Button or Acronym Button (true for abbreviation)</param>
+        public Mark(MSword.Document doc, AliasesManagement.AliasType type) {
             InitializeComponent();
             currentDoc = doc;
-            checkAbbrAcr = valueAbbrAcr;
+            checkAbbrAcr = type == AliasesManagement.AliasType.Abbreviation;
             this.addinLib = new Daisy.SaveAsDAISY.AddinResources();
 
             //Checking whether call is from Abbreviation button or Acronym button

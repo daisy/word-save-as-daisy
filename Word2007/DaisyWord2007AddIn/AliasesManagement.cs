@@ -11,22 +11,29 @@ using Microsoft.Office.Core;
 using MSword = Microsoft.Office.Interop.Word;
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
-    public partial class Abbreviation : Form {
+    public partial class AliasesManagement : Form {
+
+        public enum AliasType
+        {
+            Abbreviation,
+            Acronym
+        }
+
         MSword.Document pdoc;
         ArrayList lostElements = new ArrayList();
-        bool seperate;
+        bool isAbbreviation;
         Int16 exists = 0;
         XmlDocument dc = new XmlDocument();
 
         /*Constructor which loads differently for Abbreviations/Acronyms*/
-        public Abbreviation(MSword.Document doc, bool value) {
+        public AliasesManagement(MSword.Document doc, AliasType type) {
             InitializeComponent();
             pdoc = doc;
-            seperate = value;
+            isAbbreviation = type == AliasType.Abbreviation;
 
             CustomXMLParts xmlparts = pdoc.CustomXMLParts;
 
-            if (seperate) {
+            if (isAbbreviation) {
                 for (int p = 1; p <= xmlparts.Count; p++) {
                     if (xmlparts[p].NamespaceURI == "http://Daisy-OpenXML/customxml") {
                         String partxml = xmlparts[p].XML;
@@ -94,8 +101,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 }
 
 
-                this.Text = "Manage Abbreviation";
-                this.label1.Text = "&List of Abbreviations:";
+                this.Text = "Manage abbreviations";
+                this.label1.Text = "&List of abbreviations:";
 
 
                 for (int p = 1; p <= xmlparts.Count; p++) {
@@ -193,8 +200,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
 
 
-                this.Text = "Manage Acronym";
-                this.label1.Text = "&List of Acronyms:";
+                this.Text = "Manage acronyms";
+                this.label1.Text = "&List of acronyms:";
 
                 for (int p = 1; p <= xmlparts.Count; p++) {
                     if (xmlparts[p].NamespaceURI == "http://Daisy-OpenXML/customxml") {
@@ -238,7 +245,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         private void btn_Unmark_Click(object sender, EventArgs e) {
             CustomXMLParts xmlparts = pdoc.CustomXMLParts;
 
-            if (seperate) {
+            if (isAbbreviation) {
                 DialogResult dr = MessageBox.Show("Do you want to unmark this abbreviation?", "SaveAsDAISY - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                 if (dr == DialogResult.Yes) {
@@ -270,7 +277,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     lBx_Abbreviation.Refresh();
                 }
             } else {
-                DialogResult dr = MessageBox.Show("Do you want to unmark this Acronym?", "SaveAsDAISY - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+                DialogResult dr = MessageBox.Show("Do you want to unmark this acronym?", "SaveAsDAISY - Information", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
                 if (dr == DialogResult.Yes) {
                     String input = lBx_Abbreviation.SelectedItem.ToString();
@@ -307,7 +314,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 String input = lBx_Abbreviation.SelectedValue.ToString();
                 String[] strKey = input.Split('-');
 
-                if (seperate) {
+                if (isAbbreviation) {
                     for (int p = 1; p <= xmlparts.Count; p++) {
                         if (xmlparts[p].NamespaceURI == "http://Daisy-OpenXML/customxml") {
                             String partxml = xmlparts[p].XML;
