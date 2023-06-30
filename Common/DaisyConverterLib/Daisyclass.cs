@@ -1018,13 +1018,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public String FootNoteId(int i) {
+        public int FootNoteId(int i) {
             if (arrListNote.Count > 0) {
                 String s1 = arrListNote[i].ToString();
                 arrListNote.RemoveAt(i);
-                return s1;
+                return Int32.Parse(s1);
             } else {
-                return ("0");
+                return 0;
             }
 
         }

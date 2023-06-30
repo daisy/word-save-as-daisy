@@ -695,7 +695,7 @@
                     <xsl:value-of select="$FootnotesNumberingPrefix"/>
                     <xsl:choose>
                         <xsl:when test="$FootnotesNumbering = 'number'">
-                            <xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+                            <xsl:value-of select="$checkid + number($FootnotesStartValue - 1)"/>
                         </xsl:when>
                     </xsl:choose>
                     <xsl:value-of select="$FootnotesNumberingSuffix"/>
@@ -3287,7 +3287,7 @@
 							<xsl:value-of select="$FootnotesNumberingPrefix"/>
 							<xsl:choose>
 								<xsl:when test="$FootnotesNumbering = 'number'">
-									<xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+									<xsl:value-of select="$checkid + number($FootnotesStartValue - 1)"/>
 								</xsl:when>
 							</xsl:choose>
                             <xsl:value-of select="$FootnotesNumberingSuffix"/>
@@ -3324,7 +3324,7 @@
 							<xsl:value-of select="$FootnotesNumberingPrefix"/>
 							<xsl:choose>
 								<xsl:when test="$FootnotesNumbering = 'number'">
-									<xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+									<xsl:value-of select="$checkid + number($FootnotesStartValue - 1)"/>
 								</xsl:when>
 							</xsl:choose>
                             <xsl:value-of select="$FootnotesNumberingSuffix"/>
@@ -3352,7 +3352,7 @@
 							<xsl:value-of select="$FootnotesNumberingPrefix"/>
 							<xsl:choose>
 								<xsl:when test="$FootnotesNumbering = 'number'">
-									<xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+									<xsl:value-of select="$checkid + number($FootnotesStartValue - 1)"/>
 								</xsl:when>
 							</xsl:choose>
                             <xsl:value-of select="$FootnotesNumberingSuffix"/>
@@ -3418,7 +3418,7 @@
 							<xsl:value-of select="$FootnotesNumberingPrefix"/>
 							<xsl:choose>
 								<xsl:when test="$FootnotesNumbering = 'number'">
-									<xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+									<xsl:value-of select="$checkid + number($FootnotesStartValue - 1)"/>
 								</xsl:when>
 							</xsl:choose>
                             <xsl:value-of select="$FootnotesNumberingSuffix"/>
@@ -3520,7 +3520,7 @@
                             <xsl:value-of select="$FootnotesNumberingPrefix"/>
 							<xsl:choose>
 								<xsl:when test="$FootnotesNumbering = 'number'">
-									<xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+									<xsl:value-of select="$checkid + number($FootnotesStartValue - 1)"/>
 								</xsl:when>
 							</xsl:choose>
                             <xsl:value-of select="$FootnotesNumberingSuffix"/>

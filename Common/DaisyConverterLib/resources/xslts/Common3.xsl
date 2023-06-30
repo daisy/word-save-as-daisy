@@ -124,7 +124,7 @@
                                 <xsl:call-template name="ParagraphStyle">
                                     <xsl:with-param name="VERSION" select="$vernote"/>
                                     <xsl:with-param name="flagNote" select="'endnote'"/>
-                                    <xsl:with-param name="checkid" select="$endNoteId + 1"/>
+                                    <xsl:with-param name="checkid" select="$endNoteId"/>
                                     <xsl:with-param name="sOperators" select="$sOperators"/>
                                     <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                     <xsl:with-param name="sNumbers" select="$sNumbers"/>
@@ -155,7 +155,7 @@
             <!--Traversing through each footnote element in footnotes.xml file-->
             <xsl:for-each select="document('word/footnotes.xml')//w:footnotes/w:footnote">
                 <!--Checking if Id returned from C# is equal to the footnote Id in footnotes.xml file-->
-                <xsl:if test="@w:id=$checkid">
+                <xsl:if test="number(@w:id)=$checkid">
                     <xsl:message terminate="no">progress:Insert footnote <xsl:value-of select="$checkid"/></xsl:message>
                     <!--Creating note element and it's attribute values-->
                     <note id="{concat('footnote-',$checkid)}" class="Footnote">
@@ -171,7 +171,7 @@
 											<xsl:value-of select="$FootnotesNumberingPrefix"/>
 											<xsl:choose>
 												<xsl:when test="$FootnotesNumbering = 'number'">
-													<xsl:value-of select="$checkid + number($FootnotesStartValue)"/>
+													<xsl:value-of select="$checkid + number($FootnotesStartValue  - 1)"/>
 												</xsl:when>
 											</xsl:choose>
                                             <xsl:value-of select="$FootnotesNumberingSuffix"/>
@@ -241,7 +241,7 @@
                                         <xsl:call-template name="ParagraphStyle">
                                             <xsl:with-param name="VERSION" select="$verfoot"/>
                                             <xsl:with-param name="flagNote" select="'footnote'"/>
-                                            <xsl:with-param name="checkid" select="$checkid + 1"/>
+                                            <xsl:with-param name="checkid" select="$checkid"/>
                                             <xsl:with-param name="sOperators" select="$sOperators"/>
                                             <xsl:with-param name="sMinuses" select="$sMinuses"/>
                                             <xsl:with-param name="sNumbers" select="$sNumbers"/>
