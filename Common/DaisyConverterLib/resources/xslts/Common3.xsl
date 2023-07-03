@@ -458,15 +458,26 @@
                     <xsl:value-of select="concat($Img_Id,myObj:GenerateImageId())"/>
                 </xsl:when>
                 <xsl:when test="w:drawing/wp:inline/wp:docPr/@id">
-                    <xsl:variable name="id" select="../w:bookmarkStart[last()]/@w:name"/>
-                    <xsl:value-of select="myObj:CheckShapeId($id)"/>
+                    <xsl:variable name="id" select="w:drawing/wp:inline/wp:docPr/@id"/>
+					<xsl:choose>
+						<xsl:when test="(
+								w:drawing/wp:inline/a:graphic/a:graphicData/@uri = 'http://schemas.openxmlformats.org/drawingml/2006/diagram'
+						) or (
+								w:drawing/wp:inline/a:graphic/a:graphicData/@uri = 'http://schemas.openxmlformats.org/drawingml/2006/chart'
+						)">
+							<xsl:value-of select="myObj:CheckShapeId(concat('Shape',$id))"/>
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:value-of select="myObj:CheckShapeId($id)"/>
+						</xsl:otherwise>
+					</xsl:choose>
                 </xsl:when>
-                <xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Diagram')">
+                <!--<xsl:when test="w:drawing/wp:inline/a:graphic/a:graphicData/@uri = 'http://schemas.openxmlformats.org/drawingml/2006/diagram'">
                     <xsl:value-of select="myObj:CheckShapeId(concat('Shape',substring-after(../../../../@id,'s')))"/>
                 </xsl:when>
-                <xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
+				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
                     <xsl:variable name="id" select="myObj:CheckShapeId(concat('Shape',../w:bookmarkStart[last()]/@w:name))"/>
-                </xsl:when>
+                </xsl:when>-->
                 <!--<xsl:when test="w:drawing/wp:anchor/wp:docPr/@id">
                     <xsl:choose>
                         <xsl:when test="contains(w:drawing/wp:anchor/wp:docPr/@name,'Chart')">
