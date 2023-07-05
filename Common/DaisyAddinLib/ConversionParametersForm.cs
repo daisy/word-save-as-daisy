@@ -625,13 +625,13 @@ namespace Daisy.SaveAsDAISY.Conversion
 			
 			if(AdvancedSettingsPanel.Visible) // Visible, hide the panel
 			{
-				SwitchAdvancedSettingsButton.Text = "Show Advanced <<";
+				SwitchAdvancedSettingsButton.Text = "Show Ad&vanced <<";
 				AdvancedSettingsPanel.Visible = false;
 
             } else // not visible, show the panel
 			{
 				AdvancedSettingsPanel.Visible = true;
-                SwitchAdvancedSettingsButton.Text = "Hide Advanced <<";
+                SwitchAdvancedSettingsButton.Text = "Hide Ad&vanced <<";
             }
 		}
 

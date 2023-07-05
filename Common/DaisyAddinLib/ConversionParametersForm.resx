@@ -268,7 +268,7 @@
     <value>NoControl</value>
   </data>
   <data name="AccessibilityCheckerLink.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
-    <value>71, 26</value>
+    <value>70, 26</value>
   </data>
   <data name="AccessibilityCheckerLink.Location" type="System.Drawing.Point, System.Drawing">
     <value>4, 168</value>
@@ -277,7 +277,7 @@
     <value>4, 0, 4, 0</value>
   </data>
   <data name="AccessibilityCheckerLink.Size" type="System.Drawing.Size, System.Drawing">
-    <value>336, 42</value>
+    <value>420, 53</value>
   </data>
   <data name="AccessibilityCheckerLink.TabIndex" type="System.Int32, mscorlib">
     <value>97</value>
@@ -813,7 +813,7 @@ your document with the Word Accessibility Checker.
     <value>5, 4, 5, 4</value>
   </data>
   <data name="DestinationControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>858, 68</value>
+    <value>858, 67</value>
   </data>
   <data name="DestinationControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -850,9 +850,6 @@ your document with the Word Accessibility Checker.
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Calibri, 9pt</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
