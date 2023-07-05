@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using static Daisy.SaveAsDAISY.ConversionProgress;
 using MSword = Microsoft.Office.Interop.Word;
 
 namespace Daisy.SaveAsDAISY {
@@ -25,14 +26,43 @@ namespace Daisy.SaveAsDAISY {
         public ConversionProgress ProgressDialog { get; set; }
         public Thread DialogThread { get; set; } = null;
 
+        public void TryInitializeProgress(string message, int maximum = 1, int step = 1)
+        {
+            if(ProgressDialog != null)
+            {
+                if ((DialogThread == null || !DialogThread.IsAlive))
+                {
+                    DialogThread = new Thread(
+                        () => {
+                            ProgressDialog.ShowDialog();
+                            ProgressDialog.InitializeProgress(message, maximum, step);
+                        });
+                    DialogThread.Start();
+                    while (!ProgressDialog.Visible) ;
+                }
+                else
+                {
+                    ProgressDialog.InitializeProgress(message, maximum, step);
+                }
+            }
+            
+        }
+
         private void TryShowMessage(string message, bool isProgress = false) {
             if((DialogThread == null || !DialogThread.IsAlive) && ProgressDialog != null) {
-                DialogThread = new Thread(() => ProgressDialog.ShowDialog());
+                DialogThread = new Thread(
+                    () => {
+                        ProgressDialog.ShowDialog();
+                        ProgressDialog.AddMessage(message, isProgress);
+                        if (isProgress) ProgressDialog.Progress();
+                    });
                 DialogThread.Start();
+                while (!ProgressDialog.Visible);
+            } else // Is already started and dialog is visible
+            {
+                ProgressDialog.AddMessage(message, isProgress);
+                if (isProgress) ProgressDialog.Progress();
             }
-            ProgressDialog.AddMessage(message, isProgress);
-            if (isProgress) ProgressDialog.Progress();
-
         }
 
         private void TryClosingDialog() {
@@ -64,10 +94,8 @@ namespace Daisy.SaveAsDAISY {
 
         #region Preprocessing
         public void onDocumentPreprocessingStart(string inputPath) {
-            if (ProgressDialog != null) {
-                // Intialize progress bar for preprocessing (7 steps)
-                this.ProgressDialog.InitializeProgress("Preprocessing " + inputPath, 7);
-            }
+            // Intialize progress bar for preprocessing (7 steps)
+            TryInitializeProgress("Preprocessing " + inputPath, 7);
 
         }
 
@@ -134,18 +162,12 @@ namespace Daisy.SaveAsDAISY {
 
         #region Conversion to dtbook
         public void onDocumentListConversionStart(List<DocumentParameters> documentLists, ConversionParameters conversion) {
-            if(ProgressDialog != null) {
-                // Intialize progress bar
-                this.ProgressDialog.InitializeProgress("Starting documents list conversion", documentLists.Count + (conversion.PostProcessor != null ? 1 : 0));
-            }
+            TryInitializeProgress("Starting documents list conversion", documentLists.Count + (conversion.PostProcessor != null ? 1 : 0));
+            
         }
 
         public void onDocumentConversionStart(DocumentParameters document, ConversionParameters conversion) {
-            if (ProgressDialog != null) {
-                // Intialize progress bar
-                // FIXME : maybe better precompute the number of "global steps" of a conversion
-                this.ProgressDialog.InitializeProgress("Converting document " + document.InputPath, conversion.PostProcessor != null ? 2 : 1);
-            }
+            TryInitializeProgress("Converting document " + document.InputPath, conversion.PostProcessor != null ? 2 : 1);
 
         }
 
@@ -162,9 +184,8 @@ namespace Daisy.SaveAsDAISY {
 
         #region Post processing
         public void onPostProcessingStart(ConversionParameters conversion) {
-            if (ProgressDialog != null) {
-                ProgressDialog.InitializeProgress("Starting pipeline processing", conversion.PostProcessor.StepsCount + 1);
-            }
+            TryInitializeProgress("Starting pipeline processing", conversion.PostProcessor.StepsCount + 1);
+            
             //conversion.PostProcessor.setPipelineErrorListener((string message) => {
             //    if (message != null) {
             //        ProgressDialog.AddMessage(message, true);

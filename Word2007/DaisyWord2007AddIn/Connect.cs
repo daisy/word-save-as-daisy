@@ -53,6 +53,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
     using Daisy.SaveAsDAISY.Conversion.Pipeline;
     using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
     using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
+    using System.Diagnostics;
 
 
     #region Read me for Add-in installation and setup information.
@@ -723,6 +724,13 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion)
                 {
                     ConversionResult result = converter.Convert(currentDocument);
+                    if(result != null && result.Succeeded) {
+                        Process.Start(
+                            Directory.Exists(converter.ConversionParameters.OutputPath) 
+                            ? converter.ConversionParameters.OutputPath 
+                            : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
+                        );
+                    }
 
                 }
                 else
@@ -778,7 +786,14 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 if(conversionIntegrationTestSettings != null
                         || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
                     ConversionResult result = converter.Convert(currentDocument);
-                    
+                    if (result != null && result.Succeeded)
+                    {
+                        Process.Start(
+                            Directory.Exists(converter.ConversionParameters.OutputPath)
+                            ? converter.ConversionParameters.OutputPath
+                            : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
+                        );
+                    }
                 } else {
                     eventsHandler.onConversionCanceled();
                 }
@@ -823,7 +838,14 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 if (conversionIntegrationTestSettings != null
                         || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
                     ConversionResult result = converter.Convert(currentDocument);
-
+                    if (result != null && result.Succeeded)
+                    {
+                        Process.Start(
+                            Directory.Exists(converter.ConversionParameters.OutputPath)
+                            ? converter.ConversionParameters.OutputPath
+                            : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
+                        );
+                    }
                 } else {
                     eventsHandler.onConversionCanceled();
                 }

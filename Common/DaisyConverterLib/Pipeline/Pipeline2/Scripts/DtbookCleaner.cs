@@ -35,7 +35,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     "output",
                     new ScriptParameter(
                         "result",
-                        "DTBook file(s)",
+                        "DTBook XML output folder",
                         new PathDataType(
                             PathDataType.InputOrOutput.output,
                             PathDataType.FileOrDirectory.Directory,
