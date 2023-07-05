@@ -28,7 +28,7 @@ namespace Daisy.SaveAsDAISY {
 
         public void TryInitializeProgress(string message, int maximum = 1, int step = 1)
         {
-            if(ProgressDialog != null)
+            if(ProgressDialog != null && !ProgressDialog.IsDisposed)
             {
                 if ((DialogThread == null || !DialogThread.IsAlive))
                 {
@@ -49,20 +49,27 @@ namespace Daisy.SaveAsDAISY {
         }
 
         private void TryShowMessage(string message, bool isProgress = false) {
-            if((DialogThread == null || !DialogThread.IsAlive) && ProgressDialog != null) {
-                DialogThread = new Thread(
-                    () => {
-                        ProgressDialog.ShowDialog();
-                        ProgressDialog.AddMessage(message, isProgress);
-                        if (isProgress) ProgressDialog.Progress();
-                    });
-                DialogThread.Start();
-                while (!ProgressDialog.Visible);
-            } else // Is already started and dialog is visible
+            if(ProgressDialog != null && !ProgressDialog.IsDisposed)
             {
-                ProgressDialog.AddMessage(message, isProgress);
-                if (isProgress) ProgressDialog.Progress();
+                if ((DialogThread == null || !DialogThread.IsAlive))
+                {
+                    DialogThread = new Thread(
+                        () => {
+                            ProgressDialog.ShowDialog();
+                            ProgressDialog.AddMessage(message, isProgress);
+                            if (isProgress) ProgressDialog.Progress();
+                        });
+                    DialogThread.Start();
+                    while (!ProgressDialog.Visible) ;
+                }
+                else // Is already started and dialog is visible
+                {
+                    ProgressDialog.AddMessage(message, isProgress);
+                    if (isProgress) ProgressDialog.Progress();
+                }
+
             }
+            
         }
 
         private void TryClosingDialog() {
