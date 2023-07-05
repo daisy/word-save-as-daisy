@@ -79,12 +79,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
                             break;
                         case Pipeline2.JobStatus.ERROR:
                             errors = pipeline.getErros(currentJob);
-                            throw new Exception("The conversion job has raised an error :\r\n" + string.Join("\r\n", errors));
+                            throw new Exception(this.NiceName + " conversion job has finished in error :\r\n" + string.Join("\r\n", errors));
                         case Pipeline2.JobStatus.FAIL:
                             // open jobs folder
                             errors = pipeline.getErros(currentJob);
                             throw new Exception(
-                                "The conversion job failed :\r\n" + string.Join("\r\n",errors)
+                               this.NiceName + " conversion job failed :\r\n" + string.Join("\r\n",errors)
                             );
                         default:
                             break;

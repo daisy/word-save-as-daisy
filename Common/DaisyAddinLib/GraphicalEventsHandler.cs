@@ -158,7 +158,7 @@ namespace Daisy.SaveAsDAISY {
 		{
             TryShowMessage("An error occured during conversion : \r\n" + errorMessage, true);
             TryClosingDialog();
-            MessageBox.Show(errorMessage, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(errorMessage, "An error occured during conversion", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		public void OnStop(string message, string title)

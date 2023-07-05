@@ -368,7 +368,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 catch (Exception e)
                 {
                     CurrentStatus = ConversionStatus.Error;
-                    this.EventsHandler.OnUnknownError(e.Message);
+                    this.EventsHandler.OnError(e.Message);
                     return ConversionResult.Failed(e.Message);
                 }
                 this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
