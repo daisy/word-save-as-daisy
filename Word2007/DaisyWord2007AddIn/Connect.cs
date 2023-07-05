@@ -669,7 +669,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public void ShowWordManual(IRibbonControl control) {
-            System.Diagnostics.Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + "SaveAsDAISY_Instruction_Manual_Jan_2021.docx");
+            System.Diagnostics.Process.Start(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\" + "SaveAsDAISY_Instruction_Manual_July_2023.docx");
         }
 
         public void ShowAuthoringGuidelines(IRibbonControl control) {

@@ -7,15 +7,15 @@ We provide an unified installer that detects standard installations of Microsoft
 If Office is not found by the installer (like preinstalled or windows store versions of MS Office), it will request which architecture (32bits or 64bits) you want the addin to be installed for.
 
 
-## Latest version: 2.7.2 beta (released on September, 2022)
+## Latest version: 2.8.0 beta (released on July, 2023)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.8.0-beta/SaveAsDAISYInstaller.exe)
 
 ## Report issues
 
 If you have an issue with the installers or with the add-in, please contact the development team by mail to [daisy-pipeline@mail.daisy.org](mailto:daisy-pipeline@mail.daisy.org).
 
-Any construcive feedback is also welcome to help us improve the add-in :)
+Any constructive feedbacks are also welcome to help us improve the add-in :)
 
 ## Feedbacks / Known issues
 
@@ -31,6 +31,39 @@ This issue is being investigated, but the following action has been tested and r
 The add-in should start repairing himself before reopening the word document.
 
 # Changelog
+
+# 2.8.0 beta (July 2023)
+
+This major release marks a change in the underlying conversion process 
+to dtbook XML and packaged format,
+as DAISY Pipeline 1 is completely replaced by DAISY Pipeline 2.
+The following features that are either reported unused or that are available 
+through standard Microsoft Word actions are removed from the addin :
+
+- The "from multiple documents" exports actions are removed : 
+As it was not a batch conversion of documents but a conversion and merging 
+feature of multiple word document into a single Dtbook XML or DAISY book, 
+testers reported the feature as unused in its current state.
+For users needing a similar action, it is recommended to either use 
+a master document referencing the documents to merge, or manually 
+construct a new Word document from the documents to merge.
+- The "Add footnotes" button is removed from the ribbon :
+it is recommended to use Microsoft Word notes management 
+in the "References" ribbon's tab.
+
+Various fixes and changes are included in the release :
+- Fixed [#25](https://github.com/daisy/word-save-as-daisy/issues/25)
+by caching dtbook and mathml dtds and entities in the assembly,
+- New conversion form "advanced settings" panel to better display settings
+for each export format based on DAISY pipeline 2 settings
+- Fixed conversion progress dialog text area behavior
+- Fixed inline shapes export that could raise a clipboard issue
+- Fixed a bug in acronyms and abbreviations conversions
+- New update checking mecanism in the "About" dialog that 
+looks at the daisy github repository of the addin.
+- Issue [#25](https://github.com/daisy/word-save-as-daisy/issues/25) is fixed by
+the removal of pipeline 1 that is vulnerable to attacks through its version of log4j
+
 
 # 2.7.2 beta (September 2022)
 

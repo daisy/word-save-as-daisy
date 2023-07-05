@@ -37,7 +37,7 @@
                 </group>
                 <group id="SampleGroup9" label="AddFootnote">
                     <button id="Button11" label="Add&amp;Footnote" size="large" onAction="AddFotenote" getImage="iconSelector"/>
-                </group >
+                </group>
                 <group id="SampleGroup10" label ="Language">
                     <button id="Button12" label="&amp;Language" size="large" onAction="GetlanguageSettings" getImage="iconSelector"/>
                 </group>
