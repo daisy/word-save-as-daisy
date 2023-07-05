@@ -61,7 +61,7 @@ for each export format based on DAISY pipeline 2 settings
 - Fixed a bug in acronyms and abbreviations conversions
 - New update checking mecanism in the "About" dialog that 
 looks at the daisy github repository of the addin.
-- Issue [#25](https://github.com/daisy/word-save-as-daisy/issues/25) is fixed by
+- Issue [#26](https://github.com/daisy/word-save-as-daisy/issues/26) is fixed by
 the removal of pipeline 1 that is vulnerable to attacks through its version of log4j
 
 
