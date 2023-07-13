@@ -56,7 +56,17 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
 
                 string sourceURL = "https://github.com/daisy/word-save-as-daisy/releases/latest";
+                // from https://stackoverflow.com/questions/10822509/the-request-was-aborted-could-not-create-ssl-tls-secure-channel
+                
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                    | SecurityProtocolType.Tls11
+                    | SecurityProtocolType.Tls12
+                    | SecurityProtocolType.Ssl3;
+                // allows for validation of SSL conversations
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(sourceURL);
+                request.AllowAutoRedirect = true;
                 request.Proxy.Credentials = CredentialCache.DefaultCredentials;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 string lastTag = response.ResponseUri.ToString().Split('/').Last();
