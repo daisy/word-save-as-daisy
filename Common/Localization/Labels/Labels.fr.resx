@@ -121,10 +121,10 @@
     <value>Le texte sélectionné est déjà marqué comme Abréviation.</value>
   </data>
   <data name="AbbreviationproperText" xml:space="preserve">
-    <value>Le texte sélectionné n'est pas valide pour le marquage en tant qu'abréviation. Veuillez sélectionner un mot.</value>
+    <value>Le texte sélectionné n'est pas valide pour le marquage en tant qu'abréviation. Veuillez sélectionner un mot</value>
   </data>
   <data name="AbbreviationText" xml:space="preserve">
-    <value>Veuillez sélectionner un mot à marquer comme abréviation.</value>
+    <value>Veuillez sélectionner un mot à marquer comme abréviation</value>
   </data>
   <data name="AcronymAlready" xml:space="preserve">
     <value>Le texte sélectionné est déjà marqué comme acronyme.</value>
@@ -133,16 +133,16 @@
     <value>Voulez-vous que le lecteur prononce l'acronyme? </value>
   </data>
   <data name="AcronymproperText" xml:space="preserve">
-    <value>Le texte sélectionné n'est pas valide pour le marquage en tant qu'acronyme. Veuillez sélectionner un mot.</value>
+    <value>Le texte sélectionné n'est pas valide pour le marquage en tant qu'acronyme. Veuillez sélectionner un mot</value>
   </data>
   <data name="AcronymText" xml:space="preserve">
-    <value>Veuillez sélectionner le texte à marquer comme acronyme.</value>
+    <value>Veuillez sélectionner le texte à marquer comme acronyme</value>
   </data>
   <data name="AddSimpleMasterSub" xml:space="preserve">
-    <value>Certains des documents ajoutés sont des documents maitres. Veuillez ajouter des documents simples.</value>
+    <value>Certains des documents ajoutés sont des documents MasterSub. Veuillez ajouter des documents simples.</value>
   </data>
   <data name="AllOccurences" xml:space="preserve">
-    <value>Voulez-vous appliquer ce marquage à toutes les occurrences de ce mot?</value>
+    <value>Voulez-vous appliquer pour toutes les occurrences de ce mot?</value>
   </data>
   <data name="Caption above the Image is not translated" xml:space="preserve">
     <value>Images</value>
@@ -151,13 +151,13 @@
     <value>Tables</value>
   </data>
   <data name="Check for updates" xml:space="preserve">
-    <value>Recherche de mise à jour</value>
+    <value>Rechercher les mises à jour</value>
   </data>
   <data name="ChoseDestination" xml:space="preserve">
     <value>Sélectionnez le dossier de destination</value>
   </data>
   <data name="ChoseDestinationFile" xml:space="preserve">
-    <value>Veuillez sélectionner le fichier de sortie.</value>
+    <value>Veuillez sélectionner le fichier de sortie</value>
   </data>
   <data name="Comment Reference is not translated" xml:space="preserve">
     <value>Suivre les modifications</value>
@@ -168,35 +168,29 @@
   <data name="DaisyImportLabel" xml:space="preserve">
     <value>Enregistrer sous DAIS&amp;Y</value>
   </data>
-  <data name="DaisyMultiple" xml:space="preserve">
-    <value>DAISY XML (à partir de &amp;Multiple docx)</value>
-  </data>
-  <data name="DaisyMultipleDtbook" xml:space="preserve">
-    <value>F&amp;ull DAISY (à partir de Multiple docx)</value>
-  </data>
   <data name="DaisyOutputFolder" xml:space="preserve">
-    <value>Veuillez sélectionner le dossier de destination.</value>
+    <value>Veuillez sélectionner un dossier de destination</value>
   </data>
   <data name="DaisySaveASDescription" xml:space="preserve">
-    <value>Enregistre ce fichier au format DAISY</value>
+    <value>Enregistre ce fichier aux formats DAISY</value>
   </data>
   <data name="DaisySaveASLabel" xml:space="preserve">
     <value>Enregistrer sous DAISY</value>
   </data>
   <data name="DaisySaveDocumentBeforeExport" xml:space="preserve">
-    <value>Veuillez sauvegarder le document avant de le convertir.</value>
+    <value>Veuillez sauvegarder le document avant de le traduire en DAISY</value>
   </data>
   <data name="DaisySaveDocumentBeforelanguage" xml:space="preserve">
-    <value>Veuillez enregistrer le document avant de mettre à jour la langue.</value>
+    <value>Veuillez enregistrer le document avant de mettre à jour les détails de la langue</value>
   </data>
   <data name="DaisySaveDocumentBeforeValidate" xml:space="preserve">
-    <value>Veuillez enregistrer le document avant de valider.</value>
+    <value>Veuillez enregistrer le document avant de valider</value>
   </data>
   <data name="DaisySaveDocumentin2007" xml:space="preserve">
-    <value>Veuillez enregistrer le document au format docx.</value>
+    <value>Veuillez enregistrer le document au format word2007</value>
   </data>
   <data name="DaisySingle" xml:space="preserve">
-    <value>DAISY XML (à partir de &amp;Single docx)</value>
+    <value>DAISY &amp;XML</value>
   </data>
   <data name="DaisyUnexpectedError" xml:space="preserve">
     <value>Une erreur inattendue s'est produite. N'hésitez pas à remplir un rapport de bogue sur le site web du projet (https://www.github.com/daisy/word-save-as-daisy/) avec votre fichier joint.</value>
@@ -206,6 +200,9 @@
   </data>
   <data name="Destination" xml:space="preserve">
     <value>Sélectionnez le dossier de destination </value>
+  </data>
+  <data name="DestinationDoesNotExists" xml:space="preserve">
+    <value>{0} n'existe pas.</value>
   </data>
   <data name="EnterTitle" xml:space="preserve">
     <value>Veuillez saisir un titre.</value>
@@ -283,10 +280,19 @@
     <value>Un problème est survenu dans les données de </value>
   </data>
   <data name="QuitConfirmation" xml:space="preserve">
-    <value>Voulez-vous annuler la conversion ?</value>
+    <value>Voulez-vous annuler la traduction?</value>
+  </data>
+  <data name="RequestFileReplace" xml:space="preserve">
+    <value>{0} existe déjà dans le dossier de destination. Voulez-vous l'écraser?</value>
+  </data>
+  <data name="RequestFileReplaceDialogTitle" xml:space="preserve">
+    <value>Confirmer le remplacement du fichier</value>
+  </data>
+  <data name="SelectEmptyFolder" xml:space="preserve">
+    <value>{0} n'est pas vide, veuillez vider le répertoire ou sélectionner un autre dossier vide.</value>
   </data>
   <data name="SelectTypedOutputFile" xml:space="preserve">
-    <value>Veuillez sélectionner un fichier {0}</value>
+    <value>Veuillez sélectionner un fichier de sortie {0}</value>
   </data>
   <data name="Shapes are not translated" xml:space="preserve">
     <value>Images</value>
@@ -298,7 +304,10 @@
     <value>Traduction réussie du document. </value>
   </data>
   <data name="TOC is not translated" xml:space="preserve">
-    <value>Table des matières non convertie.</value>
+    <value>OOXML</value>
+  </data>
+  <data name="TocBodymatterValidationMessage" xml:space="preserve">
+    <value>Si le document contient une table des matières, il doit contenir le style BODYMATTER après la table des matières.</value>
   </data>
   <data name="TrackConfirmation" xml:space="preserve">
     <value>Le suivi des modifications est défini pour ce document. Voulez-vous accepter toutes les modifications ? </value>
@@ -315,8 +324,26 @@
   <data name="translation.oox2Daisy.Image" xml:space="preserve">
     <value>Les images ne sont pas traduites</value>
   </data>
-  <data name="UnableToCreateOutputLabel" xml:space="preserve">
-    <value>Impossible de créer le fichier cible</value>
+  <data name="translation.oox2Daisy.ImageCaption" xml:space="preserve">
+    <value>La légende au-dessus de l'image n'est pas traduite</value>
+  </data>
+  <data name="translation.oox2Daisy.ImageContent" xml:space="preserve">
+    <value>L'image est corrompue</value>
+  </data>
+  <data name="translation.oox2Daisy.object" xml:space="preserve">
+    <value>L'objet n'est pas traduit</value>
+  </data>
+  <data name="translation.oox2Daisy.sdtElement" xml:space="preserve">
+    <value> n'est pas traduit</value>
+  </data>
+  <data name="translation.oox2Daisy.shapeElement" xml:space="preserve">
+    <value>Les formes ne sont pas traduites</value>
+  </data>
+  <data name="translation.oox2Daisy.TableCaption" xml:space="preserve">
+    <value>La légende sous le tableau n'est pas traduite</value>
+  </data>
+  <data name="translation.oox2Daisy.UncoveredElement" xml:space="preserve">
+    <value> n'est pas traduit</value>
   </data>
   <data name="WellDaisyFormat" xml:space="preserve">
     <value>Erreur de validation détectée lors de la traduction des documents suivants.</value>

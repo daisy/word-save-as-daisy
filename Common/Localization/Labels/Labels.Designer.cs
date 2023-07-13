@@ -745,8 +745,7 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Validation error found while translating the following documents.
-        ///.
+        ///   Recherche une chaîne localisée semblable à Validation error found while translating the following documents..
         /// </summary>
         public static string WellDaisyFormat {
             get {

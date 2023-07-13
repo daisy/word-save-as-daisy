@@ -357,7 +357,6 @@
     <value>Track changes is set for this document.Do you want to accept all changes? </value>
   </data>
   <data name="WellDaisyFormat" xml:space="preserve">
-    <value>Validation error found while translating the following documents.
-</value>
+    <value>Validation error found while translating the following documents.</value>
   </data>
 </root>
