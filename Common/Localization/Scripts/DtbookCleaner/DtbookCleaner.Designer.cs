@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Daisy.SaveAsDAISY.Forms.Properties {
+namespace Daisy.SaveAsDAISY.Scripts.DtbookCleaner {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class DtbookCleaner {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
+        internal DtbookCleaner() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Daisy.SaveAsDAISY.Forms.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Daisy.SaveAsDAISY.Scripts.DtbookCleaner.DtbookCleaner", typeof(DtbookCleaner).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,15 +57,6 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
             }
             set {
                 resourceCulture = value;
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à If document contains Table of Contents it must contain BODYMATTER style after the Table of Contents..
-        /// </summary>
-        internal static string TocBodymatterValidationMessage {
-            get {
-                return ResourceManager.GetString("TocBodymatterValidationMessage", resourceCulture);
             }
         }
     }

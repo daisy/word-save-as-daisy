@@ -118,76 +118,19 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DaisySaveASDescription" xml:space="preserve">
-    <value>Saves this file in DAISY Format</value>
-  </data>
-  <data name="DaisySaveDocumentBeforeExport" xml:space="preserve">
-    <value>Please save the document before Translating to DAISY</value>
+    <value>Saves this file in DAISY Formats</value>
   </data>
   <data name="DaisySaveASLabel" xml:space="preserve">
     <value>Save As DAISY</value>
   </data>
-  <data name="DaisyOutput Folder" xml:space="preserve">
-    <value>Please select the Destination Folder</value>
-  </data>
-  <data name="FeedbackLabel" xml:space="preserve">
-    <value>The following elements are lost during translation.</value>
-  </data>
-  <data name="SucessLabel" xml:space="preserve">
-    <value>Successfully Translated the document. </value>
-  </data>
-  <data name="FailedLabel" xml:space="preserve">
-    <value>Translation failed, and translated document is invalid.</value>
-  </data>
-  <data name="DaisySaveDocumentin2007" xml:space="preserve">
-    <value>Please save the document in word2007 format</value>
-  </data>
   <data name="DaisyImportLabel" xml:space="preserve">
     <value>Save As DAIS&amp;Y</value>
-  </data>
-  <data name="DaisyUnexpectedError" xml:space="preserve">
-    <value>An unexpected error occured. Please feel free to fill a bug report on the project web site (http://openxml-daisy.sourceforge.net) with your file attached.</value>
-  </data>
-  <data name="UnableToCreateOutputLabel" xml:space="preserve">
-    <value>Unable to create target file</value>
-  </data>
-  <data name="Destination" xml:space="preserve">
-    <value>Select the destination folder </value>
-  </data>
-  <data name="ChoseDestination" xml:space="preserve">
-    <value>Select the destination folder</value>
   </data>
   <data name="Error" xml:space="preserve">
     <value>SaveAsDAISY - Error Message</value>
   </data>
-  <data name="TrackConfirmation" xml:space="preserve">
-    <value>Track changes is set for this document.Do you want to accept all changes? </value>
-  </data>
-  <data name="QuitConfirmation" xml:space="preserve">
-    <value>Do you want to cancel the translation?</value>
-  </data>
-  <data name="AbbreviationText" xml:space="preserve">
-    <value>Please select a word to mark as Abbreviation</value>
-  </data>
   <data name="NullAbbrException" xml:space="preserve">
     <value>Cannot mark up for this text</value>
-  </data>
-  <data name="AcronymText" xml:space="preserve">
-    <value>Please select text to mark as Acronym</value>
-  </data>
-  <data name="AcronymproperText" xml:space="preserve">
-    <value>Selected text is not valid for marking as an Acronym. Please select a word</value>
-  </data>
-  <data name="AbbreviationproperText" xml:space="preserve">
-    <value>Selected text is not valid for marking as an Abbreviation. Please select a word</value>
-  </data>
-  <data name="AcronymConfirmation" xml:space="preserve">
-    <value>Do you want the reader to pronounce the acronym? </value>
-  </data>
-  <data name="AbbreviationAlready" xml:space="preserve">
-    <value>Selected text is already marked as Abbreviation.</value>
-  </data>
-  <data name="AcronymAlready" xml:space="preserve">
-    <value>Selected text is already marked as Acronym.</value>
   </data>
   <data name="FullAbbr" xml:space="preserve">
     <value>Full form of Abbreviation:</value>
@@ -203,21 +146,6 @@
   </data>
   <data name="MarkAcr" xml:space="preserve">
     <value>Manage Acronym</value>
-  </data>
-  <data name="AllOccurences" xml:space="preserve">
-    <value>Do you want to apply for all occurences of this word?</value>
-  </data>
-  <data name="MarkSaveDocumentAbbr" xml:space="preserve">
-    <value>Please save the document before marking abbreviation</value>
-  </data>
-  <data name="MarkSaveDocumentAcr" xml:space="preserve">
-    <value>Please save the document before marking acronym</value>
-  </data>
-  <data name="ManageSaveDocumentAbbr" xml:space="preserve">
-    <value>Please save the document before managing abbreviations</value>
-  </data>
-  <data name="ManageSaveDocumentAcr" xml:space="preserve">
-    <value>Please save the document before managing acronyms</value>
   </data>
   <data name="Comment Reference is not translated" xml:space="preserve">
     <value>Track Changes</value>
@@ -243,15 +171,6 @@
   <data name="Caption below the Table is not translated" xml:space="preserve">
     <value>Tables</value>
   </data>
-  <data name="Title" xml:space="preserve">
-    <value>Please enter the Title</value>
-  </data>
-  <data name="AddSimpleMasterSub" xml:space="preserve">
-    <value>Some of the added documents are MasterSub documents.Please add simple documents.</value>
-  </data>
-  <data name="MasterSubConfirmation" xml:space="preserve">
-    <value>Do you want to translate the current document along with sub documents?</value>
-  </data>
   <data name="ProblemMasterSub" xml:space="preserve">
     <value>Some Problem in Sub documents</value>
   </data>
@@ -261,51 +180,20 @@
   <data name="InvalidMaster" xml:space="preserve">
     <value>Translated document is invalid.</value>
   </data>
-  <data name="OPenState" xml:space="preserve">
-    <value>Following documents are opened. Please close the following documents before translation:</value>
-  </data>
   <data name="ProblemOccur" xml:space="preserve">
     <value>Some problem occured in the data of </value>
-  </data>
-  <data name="WellDaisyFormat" xml:space="preserve">
-    <value>Validation error found while translating the following documents.
-</value>
-  </data>
-  <data name="OpenSubOwn" xml:space="preserve">
-    <value>Some Sub documents are in open state. Please close all the Sub documents before Translation:</value>
-  </data>
-  <data name="Populateopen" xml:space="preserve">
-    <value>Please close the selected document and click on "Update" button. </value>
-  </data>
-  <data name="DaisySaveDocumentBeforeValidate" xml:space="preserve">
-    <value>Please save the document before Validating</value>
-  </data>
-  <data name="TranslationFailed" xml:space="preserve">
-    <value>Translation failed.</value>
   </data>
   <data name="TOC is not translated" xml:space="preserve">
     <value>OOXML</value>
   </data>
-  <data name="ChoseDestinationFile" xml:space="preserve">
-    <value>Please select the output file</value>
-  </data>
   <data name="DaisyDtbook" xml:space="preserve">
     <value>Full D&amp;AISY (from single docx)</value>
   </data>
-  <data name="DaisyMultiple" xml:space="preserve">
-    <value>DAISY XML (from &amp;Multiple docx)</value>
-  </data>
-  <data name="DaisyMultipleDtbook" xml:space="preserve">
-    <value>F&amp;ull DAISY (from Multiple docx)</value>
-  </data>
   <data name="DaisySingle" xml:space="preserve">
-    <value>DAISY XML (from &amp;Single docx)</value>
+    <value>DAISY &amp;XML</value>
   </data>
   <data name="DaisyXml" xml:space="preserve">
     <value>Full D&amp;AISY (from single docx)</value>
-  </data>
-  <data name="DaisySaveDocumentBeforelanguage" xml:space="preserve">
-    <value>Please save the document before updating the Language details</value>
   </data>
   <data name="translation.oox2Daisy.commentReference" xml:space="preserve">
     <value>Comment Reference is not translated</value>
@@ -350,5 +238,126 @@
   <data name="translation.oox2Daisy.UncoveredElement" xml:space="preserve">
     <value> is not translated</value>
     <comment>(From Addin project)</comment>
+  </data>
+  <data name="AbbreviationAlready" xml:space="preserve">
+    <value>Selected text is already marked as Abbreviation.</value>
+  </data>
+  <data name="AbbreviationproperText" xml:space="preserve">
+    <value>Selected text is not valid for marking as an Abbreviation. Please select a word</value>
+  </data>
+  <data name="AbbreviationText" xml:space="preserve">
+    <value>Please select a word to mark as Abbreviation</value>
+  </data>
+  <data name="AcronymAlready" xml:space="preserve">
+    <value>Selected text is already marked as Acronym.</value>
+  </data>
+  <data name="AcronymConfirmation" xml:space="preserve">
+    <value>Do you want the reader to pronounce the acronym? </value>
+  </data>
+  <data name="AcronymproperText" xml:space="preserve">
+    <value>Selected text is not valid for marking as an Acronym. Please select a word</value>
+  </data>
+  <data name="AcronymText" xml:space="preserve">
+    <value>Please select text to mark as Acronym</value>
+  </data>
+  <data name="AddSimpleMasterSub" xml:space="preserve">
+    <value>Some of the added documents are MasterSub documents.Please add simple documents.</value>
+  </data>
+  <data name="AllOccurences" xml:space="preserve">
+    <value>Do you want to apply for all occurences of this word?</value>
+  </data>
+  <data name="Check for updates" xml:space="preserve">
+    <value>Check for updates</value>
+  </data>
+  <data name="ChoseDestination" xml:space="preserve">
+    <value>Select the destination folder</value>
+  </data>
+  <data name="ChoseDestinationFile" xml:space="preserve">
+    <value>Please select the output file</value>
+  </data>
+  <data name="DaisyOutputFolder" xml:space="preserve">
+    <value>Please select a destination Folder</value>
+  </data>
+  <data name="DaisySaveDocumentBeforeExport" xml:space="preserve">
+    <value>Please save the document before Translating to DAISY</value>
+  </data>
+  <data name="DaisySaveDocumentBeforelanguage" xml:space="preserve">
+    <value>Please save the document before updating the Language details</value>
+  </data>
+  <data name="DaisySaveDocumentBeforeValidate" xml:space="preserve">
+    <value>Please save the document before Validating</value>
+  </data>
+  <data name="DaisySaveDocumentin2007" xml:space="preserve">
+    <value>Please save the document in word2007 format</value>
+  </data>
+  <data name="DaisyUnexpectedError" xml:space="preserve">
+    <value>An unexpected error occured. Please feel free to fill a bug report on the project web site (https://www.github.com/daisy/word-save-as-daisy/) with your file attached.</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Select the destination folder </value>
+  </data>
+  <data name="DestinationDoesNotExists" xml:space="preserve">
+    <value>{0} does not exists.</value>
+  </data>
+  <data name="EnterTitle" xml:space="preserve">
+    <value>Please enter a title.</value>
+  </data>
+  <data name="FailedLabel" xml:space="preserve">
+    <value>Translation failed, and translated document is invalid.</value>
+  </data>
+  <data name="FeedbackLabel" xml:space="preserve">
+    <value>The following elements are lost during translation.</value>
+  </data>
+  <data name="ManageSaveDocumentAbbr" xml:space="preserve">
+    <value>Please save the document before managing abbreviations</value>
+  </data>
+  <data name="ManageSaveDocumentAcr" xml:space="preserve">
+    <value>Please save the document before managing acronyms</value>
+  </data>
+  <data name="MarkSaveDocumentAbbr" xml:space="preserve">
+    <value>Please save the document before marking abbreviation</value>
+  </data>
+  <data name="MarkSaveDocumentAcr" xml:space="preserve">
+    <value>Please save the document before marking acronym</value>
+  </data>
+  <data name="MasterSubConfirmation" xml:space="preserve">
+    <value>Do you want to translate the current document along with sub documents?</value>
+  </data>
+  <data name="OPenState" xml:space="preserve">
+    <value>Following documents are opened. Please close the following documents before translation:</value>
+  </data>
+  <data name="OpenSubOwn" xml:space="preserve">
+    <value>Some Sub documents are in open state. Please close all the Sub documents before Translation:</value>
+  </data>
+  <data name="Populateopen" xml:space="preserve">
+    <value>Please close the selected document and click on "Update" button. </value>
+  </data>
+  <data name="QuitConfirmation" xml:space="preserve">
+    <value>Do you want to cancel the translation?</value>
+  </data>
+  <data name="RequestFileReplace" xml:space="preserve">
+    <value>{0} already exists in the destination folder. Do you want to overwrite it?</value>
+  </data>
+  <data name="RequestFileReplaceDialogTitle" xml:space="preserve">
+    <value>Confirm file replace</value>
+  </data>
+  <data name="SelectEmptyFolder" xml:space="preserve">
+    <value>"{0} is not empty, please empty the directory or select an other empty folder."</value>
+  </data>
+  <data name="SelectTypedOutputFile" xml:space="preserve">
+    <value>Please select a {0} output file</value>
+  </data>
+  <data name="SucessLabel" xml:space="preserve">
+    <value>Successfully Translated the document. </value>
+  </data>
+  <data name="TocBodymatterValidationMessage" xml:space="preserve">
+    <value>If document contains Table of Contents it must contain BODYMATTER style after the Table of Contents.</value>
+  </data>
+  <data name="TrackConfirmation" xml:space="preserve">
+    <value>Track changes is set for this document.Do you want to accept all changes? </value>
+  </data>
+  <data name="WellDaisyFormat" xml:space="preserve">
+    <value>Validation error found while translating the following documents.
+</value>
   </data>
 </root>

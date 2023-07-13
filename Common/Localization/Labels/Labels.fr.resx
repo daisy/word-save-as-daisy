@@ -1,0 +1,324 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbbreviationAlready" xml:space="preserve">
+    <value>Le texte sélectionné est déjà marqué comme Abréviation.</value>
+  </data>
+  <data name="AbbreviationproperText" xml:space="preserve">
+    <value>Le texte sélectionné n'est pas valide pour le marquage en tant qu'abréviation. Veuillez sélectionner un mot.</value>
+  </data>
+  <data name="AbbreviationText" xml:space="preserve">
+    <value>Veuillez sélectionner un mot à marquer comme abréviation.</value>
+  </data>
+  <data name="AcronymAlready" xml:space="preserve">
+    <value>Le texte sélectionné est déjà marqué comme acronyme.</value>
+  </data>
+  <data name="AcronymConfirmation" xml:space="preserve">
+    <value>Voulez-vous que le lecteur prononce l'acronyme? </value>
+  </data>
+  <data name="AcronymproperText" xml:space="preserve">
+    <value>Le texte sélectionné n'est pas valide pour le marquage en tant qu'acronyme. Veuillez sélectionner un mot.</value>
+  </data>
+  <data name="AcronymText" xml:space="preserve">
+    <value>Veuillez sélectionner le texte à marquer comme acronyme.</value>
+  </data>
+  <data name="AddSimpleMasterSub" xml:space="preserve">
+    <value>Certains des documents ajoutés sont des documents maitres. Veuillez ajouter des documents simples.</value>
+  </data>
+  <data name="AllOccurences" xml:space="preserve">
+    <value>Voulez-vous appliquer ce marquage à toutes les occurrences de ce mot?</value>
+  </data>
+  <data name="Caption above the Image is not translated" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="Caption below the Table is not translated" xml:space="preserve">
+    <value>Tables</value>
+  </data>
+  <data name="Check for updates" xml:space="preserve">
+    <value>Recherche de mise à jour</value>
+  </data>
+  <data name="ChoseDestination" xml:space="preserve">
+    <value>Sélectionnez le dossier de destination</value>
+  </data>
+  <data name="ChoseDestinationFile" xml:space="preserve">
+    <value>Veuillez sélectionner le fichier de sortie.</value>
+  </data>
+  <data name="Comment Reference is not translated" xml:space="preserve">
+    <value>Suivre les modifications</value>
+  </data>
+  <data name="DaisyDtbook" xml:space="preserve">
+    <value>D&amp;AISY complet (à partir d'un seul docx)</value>
+  </data>
+  <data name="DaisyImportLabel" xml:space="preserve">
+    <value>Enregistrer sous DAIS&amp;Y</value>
+  </data>
+  <data name="DaisyMultiple" xml:space="preserve">
+    <value>DAISY XML (à partir de &amp;Multiple docx)</value>
+  </data>
+  <data name="DaisyMultipleDtbook" xml:space="preserve">
+    <value>F&amp;ull DAISY (à partir de Multiple docx)</value>
+  </data>
+  <data name="DaisyOutput Folder" xml:space="preserve">
+    <value>Veuillez sélectionner le dossier de destination.</value>
+  </data>
+  <data name="DaisySaveASDescription" xml:space="preserve">
+    <value>Enregistre ce fichier au format DAISY</value>
+  </data>
+  <data name="DaisySaveASLabel" xml:space="preserve">
+    <value>Enregistrer sous DAISY</value>
+  </data>
+  <data name="DaisySaveDocumentBeforeExport" xml:space="preserve">
+    <value>Veuillez sauvegarder le document avant de le convertir.</value>
+  </data>
+  <data name="DaisySaveDocumentBeforelanguage" xml:space="preserve">
+    <value>Veuillez enregistrer le document avant de mettre à jour la langue.</value>
+  </data>
+  <data name="DaisySaveDocumentBeforeValidate" xml:space="preserve">
+    <value>Veuillez enregistrer le document avant de valider.</value>
+  </data>
+  <data name="DaisySaveDocumentin2007" xml:space="preserve">
+    <value>Veuillez enregistrer le document au format docx.</value>
+  </data>
+  <data name="DaisySingle" xml:space="preserve">
+    <value>DAISY XML (à partir de &amp;Single docx)</value>
+  </data>
+  <data name="DaisyUnexpectedError" xml:space="preserve">
+    <value>Une erreur inattendue s'est produite. N'hésitez pas à remplir un rapport de bogue sur le site web du projet (https://www.github.com/daisy/word-save-as-daisy/) avec votre fichier joint.</value>
+  </data>
+  <data name="DaisyXml" xml:space="preserve">
+    <value>D&amp;AISY complet (à partir d'un seul docx)</value>
+  </data>
+  <data name="Destination" xml:space="preserve">
+    <value>Sélectionnez le dossier de destination </value>
+  </data>
+  <data name="EnterTitle" xml:space="preserve">
+    <value>Veuillez saisir un titre.</value>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>SaveAsDAISY - Message d'erreur</value>
+  </data>
+  <data name="External Images are not translated" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="FailedLabel" xml:space="preserve">
+    <value>La traduction a échoué et le document traduit n'est pas valide.</value>
+  </data>
+  <data name="FeedbackLabel" xml:space="preserve">
+    <value>Les éléments suivants sont perdus lors de la traduction.</value>
+  </data>
+  <data name="FullAbbr" xml:space="preserve">
+    <value>Forme complète de l'abréviation :</value>
+  </data>
+  <data name="FullAcr" xml:space="preserve">
+    <value>Forme complète de l'acronyme:</value>
+  </data>
+  <data name="Geometric shapes are not translated" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="Image is Corrupted" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="Information" xml:space="preserve">
+    <value>SaveAsDAISY - Informations</value>
+  </data>
+  <data name="InvalidMaster" xml:space="preserve">
+    <value>Le document traduit n'est pas valide.</value>
+  </data>
+  <data name="ManageSaveDocumentAbbr" xml:space="preserve">
+    <value>Veuillez enregistrer le document avant de gérer les abréviations</value>
+  </data>
+  <data name="ManageSaveDocumentAcr" xml:space="preserve">
+    <value>Veuillez enregistrer le document avant de gérer les acronymes</value>
+  </data>
+  <data name="MarkAbbr" xml:space="preserve">
+    <value>Abréviation de Mark</value>
+  </data>
+  <data name="MarkAcr" xml:space="preserve">
+    <value>Gérer l'acronyme</value>
+  </data>
+  <data name="MarkSaveDocumentAbbr" xml:space="preserve">
+    <value>Veuillez sauvegarder le document avant de marquer l'abréviation</value>
+  </data>
+  <data name="MarkSaveDocumentAcr" xml:space="preserve">
+    <value>Veuillez sauvegarder le document avant de marquer l'acronyme</value>
+  </data>
+  <data name="MasterSubConfirmation" xml:space="preserve">
+    <value>Voulez-vous traduire le document actuel avec les sous-documents?</value>
+  </data>
+  <data name="NullAbbrException" xml:space="preserve">
+    <value>Impossible de baliser ce texte</value>
+  </data>
+  <data name="Object is not translated" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="OPenState" xml:space="preserve">
+    <value>Les documents suivants sont ouverts. Veuillez fermer les documents suivants avant la traduction :</value>
+  </data>
+  <data name="OpenSubOwn" xml:space="preserve">
+    <value>Certains sous-documents sont à l'état ouvert. Veuillez fermer tous les sous-documents avant la traduction :</value>
+  </data>
+  <data name="Populateopen" xml:space="preserve">
+    <value>Veuillez fermer le document sélectionné et cliquer sur le bouton « Mettre à jour ». </value>
+  </data>
+  <data name="ProblemMasterSub" xml:space="preserve">
+    <value>Un problème dans les sous-documents</value>
+  </data>
+  <data name="ProblemOccur" xml:space="preserve">
+    <value>Un problème est survenu dans les données de </value>
+  </data>
+  <data name="QuitConfirmation" xml:space="preserve">
+    <value>Voulez-vous annuler la conversion ?</value>
+  </data>
+  <data name="SelectTypedOutputFile" xml:space="preserve">
+    <value>Veuillez sélectionner un fichier {0}</value>
+  </data>
+  <data name="Shapes are not translated" xml:space="preserve">
+    <value>Images</value>
+  </data>
+  <data name="SubdocsError" xml:space="preserve">
+    <value>Veuillez sélectionner les documents</value>
+  </data>
+  <data name="SucessLabel" xml:space="preserve">
+    <value>Traduction réussie du document. </value>
+  </data>
+  <data name="TOC is not translated" xml:space="preserve">
+    <value>Table des matières non convertie.</value>
+  </data>
+  <data name="TrackConfirmation" xml:space="preserve">
+    <value>Le suivi des modifications est défini pour ce document. Voulez-vous accepter toutes les modifications ? </value>
+  </data>
+  <data name="translation.oox2Daisy.commentReference" xml:space="preserve">
+    <value>La référence de commentaire n'est pas traduite</value>
+  </data>
+  <data name="translation.oox2Daisy.ExternalImage" xml:space="preserve">
+    <value>Les images externes ne sont pas traduites</value>
+  </data>
+  <data name="translation.oox2Daisy.GeometricShapeElement" xml:space="preserve">
+    <value>Les formes géométriques ne sont pas traduites</value>
+  </data>
+  <data name="translation.oox2Daisy.Image" xml:space="preserve">
+    <value>Les images ne sont pas traduites</value>
+  </data>
+  <data name="UnableToCreateOutputLabel" xml:space="preserve">
+    <value>Impossible de créer le fichier cible</value>
+  </data>
+  <data name="WellDaisyFormat" xml:space="preserve">
+    <value>Erreur de validation détectée lors de la traduction des documents suivants.</value>
+  </data>
+</root>

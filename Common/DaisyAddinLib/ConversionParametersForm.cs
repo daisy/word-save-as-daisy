@@ -37,8 +37,8 @@ using System.IO.Packaging;
 using System.Windows.Forms;
 using Daisy.SaveAsDAISY.Conversion;
 using System.Diagnostics;
-using Daisy.SaveAsDAISY.Forms;
 using Daisy.SaveAsDAISY.Forms.Controls;
+using System.Globalization;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -49,18 +49,17 @@ namespace Daisy.SaveAsDAISY.Conversion
 	{
 		int translateFlag = 0;
 		XmlDocument XmlPackage;
-		private ResourceManager labels;
 		Hashtable parametersHash = new Hashtable();
 		string officeVersion = "";
 		PackageRelationship packRelationship = null;
 		string inputFileName, embedFilePath, tempInput, trackChangeFlag, outputFilePath, masterSubFlag;
 		const string docNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 		const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
-		String uId = "";
+		string uId = "";
 		string btnID = "";
 		private string mInputPath;
 		private bool useAScript = false;
-		String strBrtextBox = "";
+		string outputFileOrFolder = "";
 		TableLayoutPanel oTableLayoutPannel = new TableLayoutPanel();
 
 		public ConversionParameters UpdatedConversionParameters { get; private set; }
@@ -121,7 +120,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// </summary>
 		public string OutputFilepath { get { return outputFilePath; } }
 
-		public string PipeOutput { get { return strBrtextBox; } }
+		public string PipeOutput { get { return outputFileOrFolder; } }
 
 
 		/// <summary>
@@ -129,16 +128,13 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// </summary>
 		/// <param name="conversion"></param>
 		/// <param name="labelsManager"></param>
-		public ConversionParametersForm(DocumentParameters document, ConversionParameters conversion, ResourceManager labelsManager = null) {
-			// Copy current conversion settings
-			UpdatedConversionParameters = conversion.usingMainDocument(document);
-
-			btnID = conversion.ControlName;
+		public ConversionParametersForm(DocumentParameters document, ConversionParameters conversion) {
+            // Copy current conversion settings
+            UpdatedConversionParameters = conversion.usingMainDocument(document);
+            
+            btnID = conversion.ControlName;
 			tempInput = document.CopyPath ?? document.InputPath;
-			this.labels = labelsManager ?? new ResourceManager(
-					"DaisyAddinLib.resources.Labels",
-					Assembly.GetExecutingAssembly()
-				);
+            
 			//this.officeVersion = conversion.Version;
 			//this.masterSubFlag = conversion.ParseSubDocuments;
 
@@ -197,7 +193,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             //DestinationControl.SelectedPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY\";
 			if (TitleInput.Text.TrimEnd() == "")
 			{
-				MessageBox.Show(labels.GetString("Title"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(Labels.EnterTitle,Labels.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				TitleInput.Focus();
 				return false;
 			}
@@ -229,48 +225,61 @@ namespace Daisy.SaveAsDAISY.Conversion
 							FileInfo outputFileInfo = new FileInfo(p.ParameterValue.ToString());
 							if (!string.IsNullOrEmpty(pathDataType.FileExtension) && !pathDataType.FileExtension.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
 							{
-								MessageBox.Show(string.Format("Please select {0} output file", pathDataType.FileExtension), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+								MessageBox.Show(string.Format(Labels.SelectTypedOutputFile, pathDataType.FileExtension), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 								//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 								return false;
 							}
-							strBrtextBox = outputFileInfo.DirectoryName;
+							outputFileOrFolder = outputFileInfo.DirectoryName;
 						}
-						catch (ArgumentException ex)
-						{
-							AddinLogger.Error(ex);
-							MessageBox.Show("Please select output file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-							//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
-							return false;
-						}
-
-					}
-					else
-					{
-						strBrtextBox = p.ParameterValue.ToString();
-						if(Directory.Exists(strBrtextBox) && Directory.GetFiles(strBrtextBox).Length > 0)
-						{
-                            MessageBox.Show(string.Format("{0} is not empty, please empty the directory or select an other empty folder.", strBrtextBox), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        catch (ArgumentException ex)
+                        {
+                            AddinLogger.Error(ex);
+                            MessageBox.Show("Please select output file", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
                             return false;
                         }
+
+                    }
+					else
+					{
+						try
+						{
+                            DirectoryInfo outputFolderInfo = new DirectoryInfo(p.ParameterValue.ToString());
+                            //outputFileOrFolder = p.ParameterValue.ToString();
+                            if (outputFolderInfo.Exists && outputFolderInfo.GetFiles().Length > 0)
+                            {
+                                MessageBox.Show(string.Format(Labels.SelectEmptyFolder, outputFileOrFolder), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return false;
+                            }
+                            outputFileOrFolder = outputFolderInfo.FullName;
+                        }
+                        catch (ArgumentException ex)
+                        {
+                            AddinLogger.Error(ex);
+                            MessageBox.Show("Please select an output folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
+                            return false;
+                        }
+
                     }
 
 					//TODO:::
-					if (string.IsNullOrEmpty(strBrtextBox.TrimEnd()))
+					if (string.IsNullOrEmpty(outputFileOrFolder.TrimEnd()))
 					{
-						MessageBox.Show("Please select the Destination folder", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+						MessageBox.Show(Labels.DaisyOutputFolder, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 						//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 						return false;
 					}
 
-					CleanOutputDirDlg cleanOutputDirDlg = new CleanOutputDirDlg(strBrtextBox, otpfileName);
+					CleanOutputDirDlg cleanOutputDirDlg = new CleanOutputDirDlg(outputFileOrFolder, otpfileName);
 					if (cleanOutputDirDlg.Clean(this) == DialogResult.Cancel)
 					{
 						//AdancedSettingsLayoutPanel.Controls[0].Controls[0].Controls[1].Focus();
 						return false;
 					}
-					if (strBrtextBox != cleanOutputDirDlg.OutputDir)
+					if (outputFileOrFolder != cleanOutputDirDlg.OutputDir)
 					{
-						strBrtextBox = cleanOutputDirDlg.OutputDir;
+						outputFileOrFolder = cleanOutputDirDlg.OutputDir;
 						p.ParameterValue = cleanOutputDirDlg.OutputDir;
 					}
 
@@ -302,20 +311,25 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 			if (string.IsNullOrEmpty(DestinationControl.SelectedPath.TrimEnd()))
 			{
-				MessageBox.Show(labels.GetString("ChoseDestination"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(Labels.ChoseDestination, Labels.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 DestinationControl.Focus();
 				return false;
 			}
 
 			if (Directory.Exists(DestinationControl.SelectedPath) == false)
 			{
-				MessageBox.Show(string.Concat(DestinationControl.SelectedPath, " ", "does not exist"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(
+					string.Format(Labels.DestinationDoesNotExists, DestinationControl.SelectedPath),
+					Labels.Error,
+					MessageBoxButtons.OK,
+					MessageBoxIcon.Error
+				);
 				return false;
 			}
 
 			if (TitleInput.Text.TrimEnd() == "")
 			{
-				MessageBox.Show(labels.GetString("Title"), labels.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+				MessageBox.Show(Labels.EnterTitle, Labels.Error, MessageBoxButtons.OK, MessageBoxIcon.Error);
 				TitleInput.Focus();
 				return false;
 			}
@@ -323,7 +337,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			if (File.Exists(DestinationControl.SelectedPath + "\\" + otpfileName))
 			{
 				DialogResult objResult;
-				objResult = MessageBox.Show(otpfileName + " already exists in the destination folder. Do you want to overwrite?", "Confirm File Replace", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				objResult = MessageBox.Show(string.Format(Labels.RequestFileReplace, otpfileName), Labels.RequestFileReplaceDialogTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 				if (objResult != DialogResult.Yes)
 				{
                     DestinationControl.Focus();
@@ -407,7 +421,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 			if (listDel.Count > 0 || listIns.Count > 0)
 			{
-				DialogResult dr = MessageBox.Show(labels.GetString("TrackConfirmation"), "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				DialogResult dr = MessageBox.Show(Labels.TrackConfirmation, "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
 				if (dr == DialogResult.Yes)
 					trackChangeFlag = "Yes";
@@ -453,7 +467,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 			if (cnt > 0)
 			{
-				DialogResult dr = MessageBox.Show(labels.GetString("MasterSubConfirmation"), "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
+				DialogResult dr = MessageBox.Show(Labels.MasterSubConfirmation, "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
 
 				if (dr == DialogResult.Yes)
 					masterSubFlag = "Yes";
@@ -516,7 +530,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 AdvancedSettingsPanel.Visible = false;
 				int tabIndex = 0;
 				int h = 5; // Starting height
-                strBrtextBox = prepopulateDaisyOutput != null
+                outputFileOrFolder = prepopulateDaisyOutput != null
                                        ? prepopulateDaisyOutput.OutputPath
                                        : string.Empty;
 

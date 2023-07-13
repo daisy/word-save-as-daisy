@@ -112,12 +112,27 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="TocBodymatterValidationMessage" xml:space="preserve">
-    <value>If document contains Table of Contents it must contain BODYMATTER style after the Table of Contents.</value>
+  <data name="ExportGroup" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportMenuButton" xml:space="preserve">
+    <value>Export to</value>
+  </data>
+  <data name="ManageAbreviationButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MarkAbbreviationButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MarkAcronymButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="RibbonTabName" xml:space="preserve">
+    <value>SaveAsDAISY</value>
   </data>
 </root>

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Daisy.SaveAsDAISY.Forms.Properties {
+namespace Daisy.SaveAsDAISY {
     using System;
     
     
@@ -22,7 +22,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Labels {
+    public class Labels {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,10 +36,10 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         ///   Retourne l'instance ResourceManager mise en cache utilisée par cette classe.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Daisy.SaveAsDAISY.Forms.Properties.Labels", typeof(Labels).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Daisy.SaveAsDAISY.Labels.Labels", typeof(Labels).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -51,7 +51,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         ///   les recherches de ressources à l'aide de cette classe de ressource fortement typée.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Selected text is already marked as Abbreviation..
         /// </summary>
-        internal static string AbbreviationAlready {
+        public static string AbbreviationAlready {
             get {
                 return ResourceManager.GetString("AbbreviationAlready", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Selected text is not valid for marking as an Abbreviation. Please select a word.
         /// </summary>
-        internal static string AbbreviationproperText {
+        public static string AbbreviationproperText {
             get {
                 return ResourceManager.GetString("AbbreviationproperText", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please select a word to mark as Abbreviation.
         /// </summary>
-        internal static string AbbreviationText {
+        public static string AbbreviationText {
             get {
                 return ResourceManager.GetString("AbbreviationText", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Selected text is already marked as Acronym..
         /// </summary>
-        internal static string AcronymAlready {
+        public static string AcronymAlready {
             get {
                 return ResourceManager.GetString("AcronymAlready", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Do you want the reader to pronounce the acronym? .
         /// </summary>
-        internal static string AcronymConfirmation {
+        public static string AcronymConfirmation {
             get {
                 return ResourceManager.GetString("AcronymConfirmation", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Selected text is not valid for marking as an Acronym. Please select a word.
         /// </summary>
-        internal static string AcronymproperText {
+        public static string AcronymproperText {
             get {
                 return ResourceManager.GetString("AcronymproperText", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please select text to mark as Acronym.
         /// </summary>
-        internal static string AcronymText {
+        public static string AcronymText {
             get {
                 return ResourceManager.GetString("AcronymText", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Some of the added documents are MasterSub documents.Please add simple documents..
         /// </summary>
-        internal static string AddSimpleMasterSub {
+        public static string AddSimpleMasterSub {
             get {
                 return ResourceManager.GetString("AddSimpleMasterSub", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Do you want to apply for all occurences of this word?.
         /// </summary>
-        internal static string AllOccurences {
+        public static string AllOccurences {
             get {
                 return ResourceManager.GetString("AllOccurences", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Images.
         /// </summary>
-        internal static string Caption_above_the_Image_is_not_translated {
+        public static string Caption_above_the_Image_is_not_translated {
             get {
                 return ResourceManager.GetString("Caption above the Image is not translated", resourceCulture);
             }
@@ -153,16 +153,25 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Tables.
         /// </summary>
-        internal static string Caption_below_the_Table_is_not_translated {
+        public static string Caption_below_the_Table_is_not_translated {
             get {
                 return ResourceManager.GetString("Caption below the Table is not translated", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Check for updates.
+        /// </summary>
+        public static string Check_for_updates {
+            get {
+                return ResourceManager.GetString("Check for updates", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Select the destination folder.
         /// </summary>
-        internal static string ChoseDestination {
+        public static string ChoseDestination {
             get {
                 return ResourceManager.GetString("ChoseDestination", resourceCulture);
             }
@@ -171,7 +180,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please select the output file.
         /// </summary>
-        internal static string ChoseDestinationFile {
+        public static string ChoseDestinationFile {
             get {
                 return ResourceManager.GetString("ChoseDestinationFile", resourceCulture);
             }
@@ -180,7 +189,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Track Changes.
         /// </summary>
-        internal static string Comment_Reference_is_not_translated {
+        public static string Comment_Reference_is_not_translated {
             get {
                 return ResourceManager.GetString("Comment Reference is not translated", resourceCulture);
             }
@@ -189,7 +198,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Full D&amp;AISY (from single docx).
         /// </summary>
-        internal static string DaisyDtbook {
+        public static string DaisyDtbook {
             get {
                 return ResourceManager.GetString("DaisyDtbook", resourceCulture);
             }
@@ -198,43 +207,25 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Save As DAIS&amp;Y.
         /// </summary>
-        internal static string DaisyImportLabel {
+        public static string DaisyImportLabel {
             get {
                 return ResourceManager.GetString("DaisyImportLabel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à DAISY XML (from &amp;Multiple docx).
+        ///   Recherche une chaîne localisée semblable à Please select a destination Folder.
         /// </summary>
-        internal static string DaisyMultiple {
+        public static string DaisyOutputFolder {
             get {
-                return ResourceManager.GetString("DaisyMultiple", resourceCulture);
+                return ResourceManager.GetString("DaisyOutputFolder", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à F&amp;ull DAISY (from Multiple docx).
+        ///   Recherche une chaîne localisée semblable à Saves this file in DAISY Formats.
         /// </summary>
-        internal static string DaisyMultipleDtbook {
-            get {
-                return ResourceManager.GetString("DaisyMultipleDtbook", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Please select the Destination Folder.
-        /// </summary>
-        internal static string DaisyOutput_Folder {
-            get {
-                return ResourceManager.GetString("DaisyOutput Folder", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Saves this file in DAISY Format.
-        /// </summary>
-        internal static string DaisySaveASDescription {
+        public static string DaisySaveASDescription {
             get {
                 return ResourceManager.GetString("DaisySaveASDescription", resourceCulture);
             }
@@ -243,7 +234,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Save As DAISY.
         /// </summary>
-        internal static string DaisySaveASLabel {
+        public static string DaisySaveASLabel {
             get {
                 return ResourceManager.GetString("DaisySaveASLabel", resourceCulture);
             }
@@ -252,7 +243,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please save the document before Translating to DAISY.
         /// </summary>
-        internal static string DaisySaveDocumentBeforeExport {
+        public static string DaisySaveDocumentBeforeExport {
             get {
                 return ResourceManager.GetString("DaisySaveDocumentBeforeExport", resourceCulture);
             }
@@ -261,7 +252,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please save the document before updating the Language details.
         /// </summary>
-        internal static string DaisySaveDocumentBeforelanguage {
+        public static string DaisySaveDocumentBeforelanguage {
             get {
                 return ResourceManager.GetString("DaisySaveDocumentBeforelanguage", resourceCulture);
             }
@@ -270,7 +261,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please save the document before Validating.
         /// </summary>
-        internal static string DaisySaveDocumentBeforeValidate {
+        public static string DaisySaveDocumentBeforeValidate {
             get {
                 return ResourceManager.GetString("DaisySaveDocumentBeforeValidate", resourceCulture);
             }
@@ -279,25 +270,25 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please save the document in word2007 format.
         /// </summary>
-        internal static string DaisySaveDocumentin2007 {
+        public static string DaisySaveDocumentin2007 {
             get {
                 return ResourceManager.GetString("DaisySaveDocumentin2007", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à DAISY XML (from &amp;Single docx).
+        ///   Recherche une chaîne localisée semblable à DAISY &amp;XML.
         /// </summary>
-        internal static string DaisySingle {
+        public static string DaisySingle {
             get {
                 return ResourceManager.GetString("DaisySingle", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à An unexpected error occured. Please feel free to fill a bug report on the project web site (http://openxml-daisy.sourceforge.net) with your file attached..
+        ///   Recherche une chaîne localisée semblable à An unexpected error occured. Please feel free to fill a bug report on the project web site (https://www.github.com/daisy/word-save-as-daisy/) with your file attached..
         /// </summary>
-        internal static string DaisyUnexpectedError {
+        public static string DaisyUnexpectedError {
             get {
                 return ResourceManager.GetString("DaisyUnexpectedError", resourceCulture);
             }
@@ -306,7 +297,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Full D&amp;AISY (from single docx).
         /// </summary>
-        internal static string DaisyXml {
+        public static string DaisyXml {
             get {
                 return ResourceManager.GetString("DaisyXml", resourceCulture);
             }
@@ -315,16 +306,34 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Select the destination folder .
         /// </summary>
-        internal static string Destination {
+        public static string Destination {
             get {
                 return ResourceManager.GetString("Destination", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} does not exists..
+        /// </summary>
+        public static string DestinationDoesNotExists {
+            get {
+                return ResourceManager.GetString("DestinationDoesNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please enter a title..
+        /// </summary>
+        public static string EnterTitle {
+            get {
+                return ResourceManager.GetString("EnterTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à SaveAsDAISY - Error Message.
         /// </summary>
-        internal static string Error {
+        public static string Error {
             get {
                 return ResourceManager.GetString("Error", resourceCulture);
             }
@@ -333,7 +342,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Images.
         /// </summary>
-        internal static string External_Images_are_not_translated {
+        public static string External_Images_are_not_translated {
             get {
                 return ResourceManager.GetString("External Images are not translated", resourceCulture);
             }
@@ -342,7 +351,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Translation failed, and translated document is invalid..
         /// </summary>
-        internal static string FailedLabel {
+        public static string FailedLabel {
             get {
                 return ResourceManager.GetString("FailedLabel", resourceCulture);
             }
@@ -351,7 +360,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à The following elements are lost during translation..
         /// </summary>
-        internal static string FeedbackLabel {
+        public static string FeedbackLabel {
             get {
                 return ResourceManager.GetString("FeedbackLabel", resourceCulture);
             }
@@ -360,7 +369,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Full form of Abbreviation:.
         /// </summary>
-        internal static string FullAbbr {
+        public static string FullAbbr {
             get {
                 return ResourceManager.GetString("FullAbbr", resourceCulture);
             }
@@ -369,7 +378,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Full form of Acronym:.
         /// </summary>
-        internal static string FullAcr {
+        public static string FullAcr {
             get {
                 return ResourceManager.GetString("FullAcr", resourceCulture);
             }
@@ -378,7 +387,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Images.
         /// </summary>
-        internal static string Geometric_shapes_are_not_translated {
+        public static string Geometric_shapes_are_not_translated {
             get {
                 return ResourceManager.GetString("Geometric shapes are not translated", resourceCulture);
             }
@@ -387,7 +396,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Images.
         /// </summary>
-        internal static string Image_is_Corrupted {
+        public static string Image_is_Corrupted {
             get {
                 return ResourceManager.GetString("Image is Corrupted", resourceCulture);
             }
@@ -396,7 +405,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à SaveAsDAISY - Information.
         /// </summary>
-        internal static string Information {
+        public static string Information {
             get {
                 return ResourceManager.GetString("Information", resourceCulture);
             }
@@ -405,7 +414,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Translated document is invalid..
         /// </summary>
-        internal static string InvalidMaster {
+        public static string InvalidMaster {
             get {
                 return ResourceManager.GetString("InvalidMaster", resourceCulture);
             }
@@ -414,7 +423,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please save the document before managing abbreviations.
         /// </summary>
-        internal static string ManageSaveDocumentAbbr {
+        public static string ManageSaveDocumentAbbr {
             get {
                 return ResourceManager.GetString("ManageSaveDocumentAbbr", resourceCulture);
             }
@@ -423,7 +432,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please save the document before managing acronyms.
         /// </summary>
-        internal static string ManageSaveDocumentAcr {
+        public static string ManageSaveDocumentAcr {
             get {
                 return ResourceManager.GetString("ManageSaveDocumentAcr", resourceCulture);
             }
@@ -432,7 +441,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Mark Abbreviation.
         /// </summary>
-        internal static string MarkAbbr {
+        public static string MarkAbbr {
             get {
                 return ResourceManager.GetString("MarkAbbr", resourceCulture);
             }
@@ -441,7 +450,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Manage Acronym.
         /// </summary>
-        internal static string MarkAcr {
+        public static string MarkAcr {
             get {
                 return ResourceManager.GetString("MarkAcr", resourceCulture);
             }
@@ -450,7 +459,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please save the document before marking abbreviation.
         /// </summary>
-        internal static string MarkSaveDocumentAbbr {
+        public static string MarkSaveDocumentAbbr {
             get {
                 return ResourceManager.GetString("MarkSaveDocumentAbbr", resourceCulture);
             }
@@ -459,7 +468,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please save the document before marking acronym.
         /// </summary>
-        internal static string MarkSaveDocumentAcr {
+        public static string MarkSaveDocumentAcr {
             get {
                 return ResourceManager.GetString("MarkSaveDocumentAcr", resourceCulture);
             }
@@ -468,7 +477,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Do you want to translate the current document along with sub documents?.
         /// </summary>
-        internal static string MasterSubConfirmation {
+        public static string MasterSubConfirmation {
             get {
                 return ResourceManager.GetString("MasterSubConfirmation", resourceCulture);
             }
@@ -477,7 +486,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Cannot mark up for this text.
         /// </summary>
-        internal static string NullAbbrException {
+        public static string NullAbbrException {
             get {
                 return ResourceManager.GetString("NullAbbrException", resourceCulture);
             }
@@ -486,7 +495,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Images.
         /// </summary>
-        internal static string Object_is_not_translated {
+        public static string Object_is_not_translated {
             get {
                 return ResourceManager.GetString("Object is not translated", resourceCulture);
             }
@@ -495,7 +504,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Following documents are opened. Please close the following documents before translation:.
         /// </summary>
-        internal static string OPenState {
+        public static string OPenState {
             get {
                 return ResourceManager.GetString("OPenState", resourceCulture);
             }
@@ -504,7 +513,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Some Sub documents are in open state. Please close all the Sub documents before Translation:.
         /// </summary>
-        internal static string OpenSubOwn {
+        public static string OpenSubOwn {
             get {
                 return ResourceManager.GetString("OpenSubOwn", resourceCulture);
             }
@@ -513,7 +522,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please close the selected document and click on &quot;Update&quot; button. .
         /// </summary>
-        internal static string Populateopen {
+        public static string Populateopen {
             get {
                 return ResourceManager.GetString("Populateopen", resourceCulture);
             }
@@ -522,7 +531,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Some Problem in Sub documents.
         /// </summary>
-        internal static string ProblemMasterSub {
+        public static string ProblemMasterSub {
             get {
                 return ResourceManager.GetString("ProblemMasterSub", resourceCulture);
             }
@@ -531,7 +540,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Some problem occured in the data of .
         /// </summary>
-        internal static string ProblemOccur {
+        public static string ProblemOccur {
             get {
                 return ResourceManager.GetString("ProblemOccur", resourceCulture);
             }
@@ -540,16 +549,52 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Do you want to cancel the translation?.
         /// </summary>
-        internal static string QuitConfirmation {
+        public static string QuitConfirmation {
             get {
                 return ResourceManager.GetString("QuitConfirmation", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à {0} already exists in the destination folder. Do you want to overwrite it?.
+        /// </summary>
+        public static string RequestFileReplace {
+            get {
+                return ResourceManager.GetString("RequestFileReplace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Confirm file replace.
+        /// </summary>
+        public static string RequestFileReplaceDialogTitle {
+            get {
+                return ResourceManager.GetString("RequestFileReplaceDialogTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à &quot;{0} is not empty, please empty the directory or select an other empty folder.&quot;.
+        /// </summary>
+        public static string SelectEmptyFolder {
+            get {
+                return ResourceManager.GetString("SelectEmptyFolder", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Please select a {0} output file.
+        /// </summary>
+        public static string SelectTypedOutputFile {
+            get {
+                return ResourceManager.GetString("SelectTypedOutputFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Images.
         /// </summary>
-        internal static string Shapes_are_not_translated {
+        public static string Shapes_are_not_translated {
             get {
                 return ResourceManager.GetString("Shapes are not translated", resourceCulture);
             }
@@ -558,7 +603,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Please select documents.
         /// </summary>
-        internal static string SubdocsError {
+        public static string SubdocsError {
             get {
                 return ResourceManager.GetString("SubdocsError", resourceCulture);
             }
@@ -567,34 +612,34 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Successfully Translated the document. .
         /// </summary>
-        internal static string SucessLabel {
+        public static string SucessLabel {
             get {
                 return ResourceManager.GetString("SucessLabel", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Please enter the Title.
-        /// </summary>
-        internal static string Title {
-            get {
-                return ResourceManager.GetString("Title", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Recherche une chaîne localisée semblable à OOXML.
         /// </summary>
-        internal static string TOC_is_not_translated {
+        public static string TOC_is_not_translated {
             get {
                 return ResourceManager.GetString("TOC is not translated", resourceCulture);
             }
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à If document contains Table of Contents it must contain BODYMATTER style after the Table of Contents..
+        /// </summary>
+        public static string TocBodymatterValidationMessage {
+            get {
+                return ResourceManager.GetString("TocBodymatterValidationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Track changes is set for this document.Do you want to accept all changes? .
         /// </summary>
-        internal static string TrackConfirmation {
+        public static string TrackConfirmation {
             get {
                 return ResourceManager.GetString("TrackConfirmation", resourceCulture);
             }
@@ -603,7 +648,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Comment Reference is not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_commentReference {
+        public static string translation_oox2Daisy_commentReference {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.commentReference", resourceCulture);
             }
@@ -612,7 +657,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à External Images are not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_ExternalImage {
+        public static string translation_oox2Daisy_ExternalImage {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.ExternalImage", resourceCulture);
             }
@@ -621,7 +666,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Geometric shapes are not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_GeometricShapeElement {
+        public static string translation_oox2Daisy_GeometricShapeElement {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.GeometricShapeElement", resourceCulture);
             }
@@ -630,7 +675,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Images are not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_Image {
+        public static string translation_oox2Daisy_Image {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.Image", resourceCulture);
             }
@@ -639,7 +684,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Caption above the Image is not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_ImageCaption {
+        public static string translation_oox2Daisy_ImageCaption {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.ImageCaption", resourceCulture);
             }
@@ -648,7 +693,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Image is Corrupted.
         /// </summary>
-        internal static string translation_oox2Daisy_ImageContent {
+        public static string translation_oox2Daisy_ImageContent {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.ImageContent", resourceCulture);
             }
@@ -657,7 +702,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Object is not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_object {
+        public static string translation_oox2Daisy_object {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.object", resourceCulture);
             }
@@ -666,7 +711,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à  is not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_sdtElement {
+        public static string translation_oox2Daisy_sdtElement {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.sdtElement", resourceCulture);
             }
@@ -675,7 +720,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Shapes are not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_shapeElement {
+        public static string translation_oox2Daisy_shapeElement {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.shapeElement", resourceCulture);
             }
@@ -684,7 +729,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Caption below the Table is not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_TableCaption {
+        public static string translation_oox2Daisy_TableCaption {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.TableCaption", resourceCulture);
             }
@@ -693,27 +738,9 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à  is not translated.
         /// </summary>
-        internal static string translation_oox2Daisy_UncoveredElement {
+        public static string translation_oox2Daisy_UncoveredElement {
             get {
                 return ResourceManager.GetString("translation.oox2Daisy.UncoveredElement", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Translation failed..
-        /// </summary>
-        internal static string TranslationFailed {
-            get {
-                return ResourceManager.GetString("TranslationFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Unable to create target file.
-        /// </summary>
-        internal static string UnableToCreateOutputLabel {
-            get {
-                return ResourceManager.GetString("UnableToCreateOutputLabel", resourceCulture);
             }
         }
         
@@ -721,7 +748,7 @@ namespace Daisy.SaveAsDAISY.Forms.Properties {
         ///   Recherche une chaîne localisée semblable à Validation error found while translating the following documents.
         ///.
         /// </summary>
-        internal static string WellDaisyFormat {
+        public static string WellDaisyFormat {
             get {
                 return ResourceManager.GetString("WellDaisyFormat", resourceCulture);
             }

@@ -1,5 +1,6 @@
 using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Forms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,11 +17,6 @@ namespace Daisy.SaveAsDAISY {
     /// </summary>
 	public class GraphicalEventsHandler : IConversionEventsHandler
 	{
-
-        private System.Resources.ResourceManager resourceManager = new System.Resources.ResourceManager(
-                    "DaisyAddinLib.resources.Labels",
-                    Assembly.GetExecutingAssembly()
-            );
 
         #region Conversion progress dialog
         public ConversionProgress ProgressDialog { get; set; }
@@ -95,10 +91,6 @@ namespace Daisy.SaveAsDAISY {
 
 
 
-        public System.Resources.ResourceManager Labels {
-            get { return this.resourceManager; }
-        }
-
         #region Preprocessing
         public void onDocumentPreprocessingStart(string inputPath) {
             // Intialize progress bar for preprocessing (7 steps)
@@ -121,7 +113,7 @@ namespace Daisy.SaveAsDAISY {
         }
 
         public bool AskForTrackConfirmation() {
-            return MessageBox.Show(Labels.GetString("TrackConfirmation"), "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
+            return MessageBox.Show(Labels.TrackConfirmation, "SaveAsDAISY", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes;
         }
 
         public DialogResult documentMustBeRenamed(StringValidator authorizedNamePattern) {
@@ -249,25 +241,27 @@ namespace Daisy.SaveAsDAISY {
 
         public void OnUnknownError(string title, string details) {
             TryClosingDialog();
-            InfoBox infoBox = new InfoBox(title, details, Labels);
+            InfoBox infoBox = new InfoBox(title, details, Labels.ResourceManager);
             infoBox.ShowDialog();
         }
 
         public void OnValidationErrors(List<ValidationError> errors, string outputFile) {
             Validation validationDialog = new Validation(
-                "FailedLabel",
+                Labels.FailedLabel,
                 string.Join(
                         "\r\n",
                         errors.Select(
                             error => error.ToString()
                         ).ToArray()
-                    ), outputFile, 
-                Labels);
+                    ),
+                outputFile,
+                Labels.ResourceManager
+            );
             validationDialog.ShowDialog();
         }
 
         public void OnLostElements(string outputFile, ArrayList elements) {
-            Fidility fidilityDialog = new Fidility("FeedbackLabel", elements, outputFile, Labels);
+            Fidility fidilityDialog = new Fidility(Labels.FeedbackLabel, elements, outputFile, Labels.ResourceManager);
             fidilityDialog.ShowDialog();
         }
 
@@ -278,7 +272,7 @@ namespace Daisy.SaveAsDAISY {
 
         public void OnSuccess() {
             TryClosingDialog();
-            MessageBox.Show(Labels.GetString("SucessLabel"), "SaveAsDAISY - Success", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
+            MessageBox.Show(Labels.SucessLabel, "SaveAsDAISY - Success", System.Windows.Forms.MessageBoxButtons.OK, System.Windows.Forms.MessageBoxIcon.Information);
         }
 
         public void OnMasterSubValidationError(string error) {
