@@ -174,7 +174,7 @@
   <data name="DaisyMultipleDtbook" xml:space="preserve">
     <value>F&amp;ull DAISY (à partir de Multiple docx)</value>
   </data>
-  <data name="DaisyOutput Folder" xml:space="preserve">
+  <data name="DaisyOutputFolder" xml:space="preserve">
     <value>Veuillez sélectionner le dossier de destination.</value>
   </data>
   <data name="DaisySaveASDescription" xml:space="preserve">

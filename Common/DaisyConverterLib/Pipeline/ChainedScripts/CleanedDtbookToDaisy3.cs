@@ -137,8 +137,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             // Create a directory using the document name
             string finalOutput = Path.Combine(
                 Parameters["output"].ParameterValue.ToString(),
-                Path.GetFileNameWithoutExtension(inputPath)
-                ) ;
+                string.Format(
+                    "{0}_DAISY3_{1}",
+                    Path.GetFileNameWithoutExtension(inputPath),
+                    DateTime.Now.ToString("yyyyMMddHHmmssffff")
+                )
+            ) ;
             // Remove and recreate result folder
             // Since the DaisyToEpub3 requires output folder to be empty
             if (Directory.Exists(finalOutput)) {
@@ -167,9 +171,19 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 }
             }
             // rebind input and output
-            dtbookToDaisy3.Parameters["input"].ParameterValue = Directory.GetFiles(tempDir.FullName, "*.xml")[0];
+            try
+            {
+                dtbookToDaisy3.Parameters["input"].ParameterValue = Directory.GetFiles(tempDir.FullName, "*.xml", SearchOption.AllDirectories)[0];
+            } catch
+            {
+                throw new FileNotFoundException("Could not find result of cleaning process in result folder", tempDir.FullName);
+            }
+            
             dtbookToDaisy3.Parameters["output"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "DAISY3")).FullName;
-            dtbookToDaisy3.Parameters["tts-log"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "tts-log")).FullName;
+            if ((bool)dtbookToDaisy3.Parameters["include-tts-log"].ParameterValue == true)
+            {
+                dtbookToDaisy3.Parameters["tts-log"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "tts-log")).FullName;
+            }
 #if DEBUG
             this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Converting " + dtbookToDaisy3.Parameters["input"].ParameterValue + " dtbook XML to DAISY3 in " + dtbookToDaisy3.Parameters["output"].ParameterValue));
 #else
@@ -178,16 +192,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
 
             dtbookToDaisy3.ExecuteScript(dtbookToDaisy3.Parameters["input"].ParameterValue.ToString());
 
-            //if (File.Exists(Path.Combine(finalOutput, "result.epub"))) {
-            //    this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Moving result.epub to " + Path.Combine(finalOutput, Path.GetFileNameWithoutExtension(inputPath) + ".epub")));
-                
-            //    File.Move(
-            //        Path.Combine(finalOutput, "result.epub"),
-            //        Path.Combine(finalOutput, Path.GetFileNameWithoutExtension(inputPath) + ".epub")
-            //    );
-            //    this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Successfully converted the document to " + Path.Combine(finalOutput, Path.GetFileNameWithoutExtension(inputPath) + ".epub")));
-
-            //}
         }
     }
 }

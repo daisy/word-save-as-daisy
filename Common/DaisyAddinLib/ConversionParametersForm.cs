@@ -246,11 +246,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 						{
                             DirectoryInfo outputFolderInfo = new DirectoryInfo(p.ParameterValue.ToString());
                             //outputFileOrFolder = p.ParameterValue.ToString();
-                            if (outputFolderInfo.Exists && outputFolderInfo.GetFiles().Length > 0)
-                            {
-                                MessageBox.Show(string.Format(Labels.SelectEmptyFolder, outputFileOrFolder), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                return false;
-                            }
+                            //if (outputFolderInfo.Exists && outputFolderInfo.GetFiles().Length > 0)
+                            //{
+                            //    MessageBox.Show(string.Format(Labels.SelectEmptyFolder, outputFolderInfo.FullName), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            //    return false;
+                            //}
                             outputFileOrFolder = outputFolderInfo.FullName;
                         }
                         catch (ArgumentException ex)

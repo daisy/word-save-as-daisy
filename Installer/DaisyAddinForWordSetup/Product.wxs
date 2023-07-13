@@ -93,6 +93,9 @@
             <Component Id="JNET.dll" Guid="3D17ECD0-DE44-4753-973A-0E4FBADD6AFB">
                 <File Id="JNET.dll" Name="JNET.dll" Source="$(var.SolutionDir)Lib\JNET.dll" DiskId="1" KeyPath="yes" />
             </Component>
+			<Component Id="Localization.dll" Guid="A0430D6D-800F-4D97-9541-0A8F2BC1797A">
+				<File Id="Localization.dll.file" Source="$(var.Localization.TargetPath)" DiskId="1" KeyPath="yes"/>
+			</Component>
         </ComponentGroup>
         <!-- resources for foreign languages (seems to be generated with newer version of msbuild/visual studio, at least on my vs2019) 
             Those resources are searched while loading the vsto file -->
@@ -112,6 +115,11 @@
                 <File Id="ru.DaisyWord2007AddIn.resources.dll.file" Name="DaisyWord2007AddIn.resources.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)ru-RU\DaisyWord2007AddIn.resources.dll" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
         </ComponentGroup>
+		<ComponentGroup Id="FrenchResources" Directory="FrenchResourcesFolder">
+			<Component Id="fr.Localization.resources.dll" Win64="$(var.Win64)">
+				<File Id="fr.Localization.resources.dll.file" Name="Localization.resources.dll" Source="$(var.Localization.TargetDir)fr\Localization.resources.dll" DiskId="1" KeyPath="yes" Checksum="yes" />
+			</Component>
+		</ComponentGroup>
 
         <!--Directory and sections-->
         <Directory Id="TARGETDIR" Name="SourceDir">
@@ -149,6 +157,7 @@
                         </Directory>
                         <Directory Id="JapanResourcesFolder" Name="ja-JP" />
                         <Directory Id="RussianResourcesFolder" Name="ru-RU" />
+						<Directory Id="FrenchResourcesFolder" Name="fr" />
 
                         <Component Id="Help.chm" Guid="D8C0BEAD-7D7E-4D2C-A180-7967AFB0B36F">
                             <File Id="Help.chm" Name="Help.chm" Source="$(var.SolutionDir)Lib\Help.chm" DiskId="1" KeyPath="yes" />
@@ -1095,9 +1104,11 @@
 
             <ComponentGroupRef Id="JapanResources"/>
             <ComponentGroupRef Id="RussianResources"/>
+			<ComponentGroupRef Id="FrenchResources"/>
             
             <ComponentGroupRef Id="SharedLibraries"/>
             <ComponentRef Id="DaisyAddinLib.dll" />
+			<ComponentRef Id="Localization.dll" />
             <ComponentRef Id="DaisyConverterLib.dll" />
             <ComponentRef Id="WindowsBase.dll" />
             <ComponentRef Id="JNET.dll" />

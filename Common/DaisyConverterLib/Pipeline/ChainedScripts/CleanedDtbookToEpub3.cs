@@ -41,20 +41,16 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                         ScriptParameter.ParameterDirection.Input
                     )
                 },
-                //{"tts-log", new ScriptParameter(
-                //        "tts-log",
-                //        "TTS log output directory",
-                //        new PathDataType(
-                //            PathDataType.InputOrOutput.output,
-                //            PathDataType.FileOrDirectory.Directory
-                //        ),
-                //        "",
-                //        false,
-                //        "TTS log output directory",
-                //         true,
-                //        ScriptParameter.ParameterDirection.Output
-                //    )
-                //},
+                {"include-tts-log", new ScriptParameter(
+                        "include-tts-log",
+                        "include-tts-log",
+                        new BoolDataType(),
+                        false,
+                        false,
+                        "Include tts log with the result",
+                        true
+                    )
+                },
                 {"language", new ScriptParameter(
                         "language",
                         "Language code",
@@ -154,8 +150,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             // Create a directory using the document name
             string finalOutput = Path.Combine(
                 Parameters["output"].ParameterValue.ToString(),
-                Path.GetFileNameWithoutExtension(inputPath)
-                ) ;
+                string.Format(
+                    "{0}_EPUB3_{1}",
+                    Path.GetFileNameWithoutExtension(inputPath),
+                    DateTime.Now.ToString("yyyyMMddHHmmssffff")
+                )
+            ) ;
             // Remove and recreate result folder
             // Since the DaisyToEpub3 requires output folder to be empty
             if (Directory.Exists(finalOutput)) {
@@ -183,9 +183,23 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 }
             }
             // rebind input and output
-            dtbookToEpub3.Parameters["input"].ParameterValue = Directory.GetFiles(tempDir.FullName, "*.xml")[0];
+            try
+            {
+                dtbookToEpub3.Parameters["input"].ParameterValue = Directory.GetFiles(tempDir.FullName, "*.xml", SearchOption.AllDirectories)[0];
+            }
+            catch
+            {
+                throw new FileNotFoundException("Could not find result of cleaning process in result folder", tempDir.FullName);
+            }
             dtbookToEpub3.Parameters["output"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "EPUB3")).FullName;
-            dtbookToEpub3.Parameters["validation-report"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "report")).FullName;
+            if ((string)dtbookToEpub3.Parameters["validation"].ParameterValue == "report")
+            {
+                dtbookToEpub3.Parameters["validation-report"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "report")).FullName;
+            }
+            if ((bool)this.Parameters["include-tts-log"].ParameterValue == true) // include tts log not present in default script
+            {
+                dtbookToEpub3.Parameters["tts-log"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "tts-log")).FullName;
+            }
             dtbookToEpub3.Parameters["tts-log"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "tts-log")).FullName;
 #if DEBUG
             this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Converting " + dtbookToEpub3.Parameters["input"].ParameterValue + " dtbook XML to EPUB3 in " + dtbookToEpub3.Parameters["output"].ParameterValue));

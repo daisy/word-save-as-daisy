@@ -65,6 +65,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Labels.fr.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Daisy.SaveAsDAISY</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Labels\Labels.resx">
       <CustomToolNamespace>Daisy.SaveAsDAISY</CustomToolNamespace>

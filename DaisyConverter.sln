@@ -74,6 +74,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RegressionTests", "Tests\Re
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddinLibrariesDebug", "Tests\AddinLibrariesDebug\AddinLibrariesDebug.csproj", "{09C28099-D606-40F9-A8E1-86ABB512CF0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Localization", "Common\Localization\Localization.csproj", "{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -373,6 +375,30 @@ Global
 		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|x64.Build.0 = Release|Any CPU
 		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|x86.ActiveCfg = Release|Any CPU
 		{09C28099-D606-40F9-A8E1-86ABB512CF0A}.Release|x86.Build.0 = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Debug|x64.Build.0 = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Debug|x86.Build.0 = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.DebugWord2003|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.DebugWord2003|Any CPU.Build.0 = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.DebugWord2003|x64.ActiveCfg = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.DebugWord2003|x64.Build.0 = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.DebugWord2003|x86.ActiveCfg = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.DebugWord2003|x86.Build.0 = Debug|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release to Client(signed)|Any CPU.ActiveCfg = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release to Client(signed)|Any CPU.Build.0 = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release to Client(signed)|x64.ActiveCfg = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release to Client(signed)|x64.Build.0 = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release to Client(signed)|x86.ActiveCfg = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release to Client(signed)|x86.Build.0 = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release|x64.ActiveCfg = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release|x64.Build.0 = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release|x86.ActiveCfg = Release|Any CPU
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -393,6 +419,7 @@ Global
 		{289C4B72-B929-4E3D-808F-F622E275AC70} = {7641489B-0771-46A1-9E5E-034ABD60FEB0}
 		{930CDF13-7B1E-4CFF-A64F-297F9DC5B664} = {4AD4C33A-090C-4026-9FD0-80AD773D5665}
 		{09C28099-D606-40F9-A8E1-86ABB512CF0A} = {4AD4C33A-090C-4026-9FD0-80AD773D5665}
+		{2D39282D-07B3-49CD-8CF6-EBFB4BAE83D9} = {8BC2F418-26E0-454F-94D1-D32EB2212FCB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8119EA58-6294-4AAF-B5CC-0C335A9409AB}
