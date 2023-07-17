@@ -129,7 +129,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
             
 
-            string systemOut = Path.Combine(LogsFolder, "sysOut.log");
+            string systemOut = Path.Combine(LogsFolder, "sysOut.log");     
             string systemErr = Path.Combine(LogsFolder, "sysErr.log");
 
             IntPtr JavaSystem = jni.GetJavaClass("java/lang/System");
@@ -206,12 +206,27 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public static string AppDataFolder
         {
-            get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\DAISY Pipeline 2"; }
+            get { 
+                return Directory.CreateDirectory(
+                    Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                        "DAISY Pipeline 2"
+                    )
+                ).FullName; 
+            }
         }
 
         public static string LogsFolder
         {
-            get { return Path.Combine(AppDataFolder, @"log"); }
+            get
+            {
+                return Directory.CreateDirectory(
+                    Path.Combine(
+                        AppDataFolder,
+                        "log"
+                    )
+                ).FullName;
+            }
         }
 
         private static List<string> ClassFolders = new List<string> {
