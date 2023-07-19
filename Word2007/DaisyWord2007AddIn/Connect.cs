@@ -28,34 +28,33 @@
 
 
 using Microsoft.Office.Interop.Word;
+using System;
+using System.IO;
+using System.Text;
+using System.Xml;
+using Extensibility;
+using System.Reflection;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO.Packaging;
+using System.Windows.Forms;
+using Microsoft.Office.Core;
+using System.Runtime.InteropServices;
+using MSword = Microsoft.Office.Interop.Word;
+using Daisy.SaveAsDAISY;
+using Daisy.SaveAsDAISY.Conversion;
+using System.Globalization;
+using Daisy.SaveAsDAISY.Conversion.Events;
+using System.Text.RegularExpressions;
+using Daisy.SaveAsDAISY.Forms;
+using Script = Daisy.SaveAsDAISY.Conversion.Script;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
+using System.Diagnostics;
+
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
-    using System;
-    using System.IO;
-    using System.Text;
-    using System.Xml;
-    using Extensibility;
-    using System.Reflection;
-    using System.Collections;
-    using System.Collections.Generic;
-    using System.IO.Packaging;
-    using System.Windows.Forms;
-    using Microsoft.Office.Core;
-    using System.Runtime.InteropServices;
-    using MSword = Microsoft.Office.Interop.Word;
-    using Daisy.SaveAsDAISY;
-    using Daisy.SaveAsDAISY.Conversion;
-    using System.Globalization;
-    using Daisy.SaveAsDAISY.Conversion.Events;
-    using System.Text.RegularExpressions;
-    using Daisy.SaveAsDAISY.Forms;
-    using Script = Conversion.Script;
-    using Daisy.SaveAsDAISY.Conversion.Pipeline;
-    using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
-    using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
-    using System.Diagnostics;
-
-
     #region Read me for Add-in installation and setup information.
     // When run, the Add-in wizard prepared the registry for the Add-in.
     // At a later time, if the Add-in becomes unavailable for reasons such as:
@@ -82,7 +81,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         private bool showValidateTabBool = false;
         frmValidate2007 validateInput;
 
-
         private MSword.Application applicationObject;
         private AddinResources addinLib;
 
@@ -94,9 +92,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         ///	Place your initialization code within this method.
         /// </summary>
         public Connect() {
+            AddinLogger.Info("Initialize addin");
             try {
                 this.addinLib = new AddinResources();
             } catch (Exception e) {
+                AddinLogger.Error(e);
                 MessageBox.Show(e.Message);
                 //throw;
             }
@@ -126,6 +126,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 this.applicationObject.DocumentBeforeClose += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeCloseEventHandler(applicationObject_DocumentBeforeClose);
                 this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);              
             } catch (Exception e) {
+                AddinLogger.Error(e);
                 MessageBox.Show(e.Message);
                 //throw;
             }
@@ -152,7 +153,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 CheckforAttchments(this.applicationObject.ActiveDocument);
             }
             showValidateTabBool = false;
-            if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
+            if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidateTabButton");
 
         }
         //Envent handling deactivation of word document
@@ -181,7 +182,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 }
             }
             showViewTabBool = objArray.Count == AddInHelper.DaisyStylesCount;
-            if (daisyRibbon != null) daisyRibbon.InvalidateControl("Button7");
+            if (daisyRibbon != null) daisyRibbon.InvalidateControl("ImportDaisyStylesTabButton");
         }
 
         /// <summary>
@@ -267,7 +268,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// </param>
         /// <seealso class='IDTExtensibility2' />
         public void OnAddInsUpdate(ref System.Array custom) {
-
         }
 
         /// <summary>
@@ -279,7 +279,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// </param>
         /// <seealso class='IDTExtensibility2' />
         public void OnStartupComplete(ref System.Array custom) {
-            //MessageBox.Show("Starting addin");
         }
 
         /// <summary>
@@ -291,7 +290,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// </param>
         /// <seealso class='IDTExtensibility2' />
         public void OnBeginShutdown(ref System.Array custom) {
-
         }
 
         /// <summary>
@@ -301,22 +299,30 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="RibbonID"></param>
         /// <returns></returns>
         string IRibbonExtensibility.GetCustomUI(string RibbonID) {
-            if (Directory.Exists(ConverterHelper.Pipeline2Path))
+            try
             {
-                // Removing the validator button for office 2010 and later
-                // For office 2007, the old validation step remains necessary
-                if (this.applicationObject.Version == "12.0")
+                if (Directory.Exists(ConverterHelper.Pipeline2Path))
                 {
-                    return GetResource("customUI2007.xml");
+                    // Removing the validator button for office 2010 and later
+                    // For office 2007, the old validation step remains necessary
+                    if (this.applicationObject.Version == "12.0")
+                    {
+                        return GetResource("customUI2007.xml");
+                    }
+                    else return GetResource("customUI.xml");
                 }
-                else return GetResource("customUI.xml");
-            }
-            else
+                else
+                {
+                    return GetResource("customUIOld.xml");
+                }
+            } catch (Exception e)
             {
-                return GetResource("customUIOld.xml");
+                AddinLogger.Error(e);
             }
-
+            return null;
         }
+
+        
 
         /// <summary>
         /// Retrieve the content of a textual resource from the assembly manifest
@@ -344,50 +350,75 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// </summary>
         private static readonly Dictionary<string, string> controlsIconNames = new Dictionary<string, string> () {
             { "Daisy", "speaker.jpg" },
-            { "DaisyMenu", "speaker.jpg" },
-            { "DtbookSingle", "Singlexml.png" },
-            { "DaisySingle", "Singlexml.png" },
-            { "DaisyDTBookSingle", "speaker.jpg" },
-            { "EpubSingle", "speaker.jpg" },
+            { "SaveAsDaisyOfficeMenu", "speaker.jpg" },
+            { "ExportToXMLOfficeButton", "Singlexml.png" },
+            { "ExportToDaisy3OfficeButton", "Singlexml.png" },
+            { "ExportToEpub3OfficeButton", "speaker.jpg" },
             { "DaisyMultiple", "Multiplexml.png" },
             { "DaisyDTBookMultiple", "subfolder.png" },
-            { "DaisyMnu", "speaker.jpg" },
-            { "DtbookTabSingle", "Singlexml.png" },
-            { "DaisyTabSingle", "speaker.jpg" },
-            { "EpubTabSingle", "speaker.jpg" },
+            { "ExportTabMenu", "speaker.jpg" },
+            { "ExportToXMLTabButton", "Singlexml.png" },
+            { "ExportToDaisy3TabButton", "speaker.jpg" },
+            { "ExportToEpub3TabButton", "speaker.jpg" },
             { "DtbookTabMultiple", "Multiplexml.png" },
             { "DaisyTabMultiple", "Multiplexml.png" },
             { "EpubTabMultiple", "subfolder.png" },
             { "Button1", "speaker.jpg" },
             { "Button2", "subfolder.png" },
-            { "Button3", "ABBR.png" },
-            { "Button4", "ABBR2.png" },
-            { "Button5", "ACR.png" },
-            { "Button6", "ACR2.png" },
-            { "toggleValidate", "validate.png" },
-            { "Button7", "import.png" },
-            { "Button11", "footnotes.png" },
-            { "Button12", "Language.png" },
-            { "Button10", "gear.png" },
-            { "Button8", "version.png" },
-            { "Button9", "help.png" },
-            { "DaisyHelpMnu", "speaker.jpg" }
+            { "MarkAbbreviationTabButton", "ABBR.png" },
+            { "ManageAbbreviationsTabButton", "ABBR2.png" },
+            { "MarkAcronymTabButton", "ACR.png" },
+            { "ManageAcronymsTabButton", "ACR2.png" },
+            { "toggleValidateTabButton", "validate.png" },
+            { "ImportDaisyStylesTabButton", "import.png" },
+            { "AddFootnotesTabButton", "footnotes.png" },
+            { "DocumentLanguageTabButton", "Language.png" },
+            { "SettingsTabButton", "gear.png" },
+            { "VersionDetailsTabButton", "version.png" },
+            { "OpenManualTabButton", "help.png" },
+            { "DocumentationTabMenu", "speaker.jpg" }
         };
         public stdole.IPictureDisp iconSelector(IRibbonControl control) {
-            return this.addinLib.GetLogo(controlsIconNames[control.Id]);
+            try
+            {
+                return this.addinLib.GetLogo(controlsIconNames[control.Id]);
+            } catch (Exception e)
+            {
+                AddinLogger.Error(e);
+                throw e;
+            }
+            
         }
 
         #endregion Icons
 
         #region Labels and Descriptions
+        public string getRibbonLabel(IRibbonControl control)
+        {
+            try
+            {
+                return RibbonLabels.ResourceManager.GetString(control.Id);
+            }
+            catch (Exception e)
+            {
+                AddinLogger.Error(e);
+                throw e;
+            }
 
-        /*Function to get label in the Word2007 Ribbon*/
-        public string GetLabel(IRibbonControl control) {
-            return this.addinLib.GetString(control.Id + "Label");
         }
-        /*Function to get the description for a label*/
-        public string GetDescription(IRibbonControl control) {
-            return this.addinLib.GetString(control.Id + "Description");
+
+        public string getRibbonDescription(IRibbonControl control)
+        {
+            try
+            {
+                return RibbonDescriptions.ResourceManager.GetString(control.Id);
+            }
+            catch (Exception e)
+            {
+                AddinLogger.Error(e.Message);
+                throw e;
+            }
+
         }
 
         #endregion Labels and Descriptions
@@ -446,7 +477,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 }
 
                 showViewTabBool = true;
-                if (daisyRibbon != null) daisyRibbon.InvalidateControl("Button7");
+                if (daisyRibbon != null) daisyRibbon.InvalidateControl("ImportDaisyStylesTabButton");
 
             } catch (Exception ex) {
                 string stre = ex.Message;
@@ -485,7 +516,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     else if (officeVersion == 15.0) SendKeys.SendWait("%fxxa"); // open the checker through the File > info > Check for issues > check accessibility button
                     else SendKeys.SendWait("%fxta"); // open the checker through the File > info > Check for issues > check accessibility button
                 }
-                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
+                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidateTabButton");
             } else try {
                 docValidation = new ArrayList();
                 int ind;
@@ -498,7 +529,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                                          System.Windows.Forms.MessageBoxButtons.OK,
                                                          System.Windows.Forms.MessageBoxIcon.Stop);
                     showValidateTabBool = false;
-                    if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
+                    if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidateTabButton");
                 }
                 //if saved
                 else if (doc.Saved) {
@@ -510,7 +541,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                                              System.Windows.Forms.MessageBoxButtons.OK,
                                                              System.Windows.Forms.MessageBoxIcon.Stop);
                         showValidateTabBool = false;
-                        if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
+                        if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidateTabButton");
                         return;
                     }
                     //if docx format
@@ -604,7 +635,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                                     System.Windows.Forms.MessageBoxIcon.Information);
                                     //Enabling Validate tab
                                     showValidateTabBool = false;
-                                    if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
+                                    if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidateTabButton");
                                 }
                             }
                             //Progress bar canceled
@@ -612,7 +643,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                 MessageBox.Show("Validation stopped", "Quit validation", System.Windows.Forms.MessageBoxButtons.OK,
                                                 System.Windows.Forms.MessageBoxIcon.Stop);
                                 showValidateTabBool = false;
-                                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
+                                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidateTabButton");
                             }
 
                         }
@@ -634,7 +665,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             try {
                 DeleteBookMark(this.applicationObject.ActiveDocument);
                 showValidateTabBool = false;
-                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidate");
+                if (daisyRibbon != null) daisyRibbon.InvalidateControl("toggleValidateTabButton");
                 this.applicationObject.ActiveDocument.Save();
             } catch {
 
@@ -656,6 +687,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 //Saving the active word document
                 doc.Save();
             } catch (Exception ex) {
+                AddinLogger.Error(ex);
                 MessageBox.Show(ex.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
@@ -742,6 +774,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
             catch (Exception e)
             {
+                AddinLogger.Error(e);
                 if (conversionIntegrationTestSettings != null)
                 {
 
@@ -800,7 +833,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 
                 //applicationObject.ActiveDocument.Save();
             } catch (Exception e) {
-                if(conversionIntegrationTestSettings != null) {
+                AddinLogger.Error(e);
+                if (conversionIntegrationTestSettings != null) {
 
                 } else {
                     ExceptionReport report = new ExceptionReport(e);
@@ -852,6 +886,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
                 //applicationObject.ActiveDocument.Save();
             } catch (Exception e) {
+                AddinLogger.Error(e);
                 if (conversionIntegrationTestSettings != null) {
 
                 } else {
@@ -1033,29 +1068,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             return "Full text and full audio in MP3";
         }
 
-        /**
-         * Dynamic conversion menus construction (called in the UI xml)
-         * Note that the "_postprocess" script is excluded and reserved to dtbook post process when exporting the document
-         */
-        //public string GetDTbook(IRibbonControl control) {
-        //    StringBuilder MyStringBuilder = new StringBuilder(@"<menu xmlns=""http://schemas.microsoft.com/office/2006/01/customui"" >");
-        //    string action = (
-        //            control.Id == "DaisyDTBookSingle" || control.Id == "DaisyTabDTBookSingle"
-        //        ) ? "SaveAsDaisy" : "Mutiple";
-        //    foreach (KeyValuePair<string, FileInfo> k in PostprocessingPipeline.ScriptsInfo) if (!k.Key.Equals("_postprocess")) {
-        //            PipelineMenuItem = new ToolStripMenuItem();
-        //            PipelineMenuItem.Text = k.Key;
-        //            PipelineMenuItem.AccessibleName = k.Key;
-        //            String quote = "<button id=\"" + k.Key.Replace(" ", "_") + 
-        //                "\" tag=\"" + PipelineMenuItem.Text + 
-        //                "\" label=\"" + "&amp;" + PipelineMenuItem.Text + 
-        //                "\" onAction=\"" + action + "\"/>";
-        //            MyStringBuilder.Append(quote);
-        //        }
-        //    MyStringBuilder.Append(@"</menu>");
-            
-        //    return MyStringBuilder.ToString();
-        //}
         #endregion
 
         #region Abbreviation and Acronyms

@@ -29,7 +29,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		/// Gets path to the addin directory in AppData.
 		/// </summary>
 		public static string AppDataSaveAsDAISYDirectory {
-			get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY"; }
+			get { return Directory.CreateDirectory(
+				Path.Combine(
+					Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+					"SaveAsDAISY"
+				)).FullName; }
 		}
 
         

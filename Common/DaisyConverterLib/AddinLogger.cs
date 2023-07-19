@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using log4net;
 using log4net.Appender;
 using log4net.Config;
@@ -26,10 +27,19 @@ namespace Daisy.SaveAsDAISY.Conversion
 			                              		ConversionPattern =
 			                              			"%date{yyyy-MM-dd HH:mm:ss}  %-5level - %message%newline%newline"
 			                              	};
+			
 			RollingFileAppender appender = new RollingFileAppender
 			                               	{
 			                               		AppendToFile = true,
-			                               		File = ConverterHelper.AppDataSaveAsDAISYDirectory + @"logs\addin.log",
+			                               		File = Path.Combine(
+													Directory.CreateDirectory(
+														Path.Combine(
+															ConverterHelper.AppDataSaveAsDAISYDirectory,
+															"logs"
+														)
+													).FullName,
+													"addin.log"
+												),
 			                               		ImmediateFlush = true,
 			                               		Name = "AddinFileAppender",
 			                               		RollingStyle = RollingFileAppender.RollingMode.Size,

@@ -83,9 +83,24 @@
       <LastGenOutput>Messages.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Daisy.SaveAsDAISY</CustomToolNamespace>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon\Ribbon.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Ribbon.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="Ribbon\Descriptions\RibbonDescriptions.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RibbonDescriptions.fr.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Daisy.SaveAsDAISY</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\Descriptions\RibbonDescriptions.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RibbonDescriptions.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Daisy.SaveAsDAISY</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\Labels\RibbonLabels.fr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RibbonLabels.fr.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Daisy.SaveAsDAISY</CustomToolNamespace>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Ribbon\Labels\RibbonLabels.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>RibbonLabels.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Daisy.SaveAsDAISY</CustomToolNamespace>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\DtbookCleaner\DtbookCleaner.resx">
@@ -115,10 +130,25 @@
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Ribbon\Ribbon.Designer.cs">
+    <Compile Include="Ribbon\Descriptions\RibbonDescriptions.fr.Designer.cs">
+      <DependentUpon>RibbonDescriptions.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Ribbon.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Ribbon\Descriptions\RibbonDescriptions.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RibbonDescriptions.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Ribbon\Labels\RibbonLabels.fr.Designer.cs">
+      <DependentUpon>RibbonLabels.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Ribbon\Labels\RibbonLabels.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RibbonLabels.resx</DependentUpon>
     </Compile>
     <Compile Include="Scripts\DtbookCleaner\DtbookCleaner.Designer.cs">
       <AutoGen>True</AutoGen>

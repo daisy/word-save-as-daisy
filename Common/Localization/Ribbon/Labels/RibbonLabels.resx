@@ -117,22 +117,97 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AbbreviationsGroup" xml:space="preserve">
+    <value>Abbreviations</value>
+  </data>
+  <data name="AcronymsGroup" xml:space="preserve">
+    <value>Acronyms</value>
+  </data>
+  <data name="AddFootnotesTabButton" xml:space="preserve">
+    <value>Add &amp;footnotes</value>
+  </data>
+  <data name="DaisyStylesGroup" xml:space="preserve">
+    <value>DAISY Styles</value>
+  </data>
+  <data name="DocumentationTabMenu" xml:space="preserve">
+    <value>&amp;Documentation</value>
+  </data>
+  <data name="DocumentLanguageTabButton" xml:space="preserve">
+    <value>&amp;Language</value>
+  </data>
   <data name="ExportGroup" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="ExportMenuButton" xml:space="preserve">
-    <value>Export to</value>
+  <data name="ExportTabMenu" xml:space="preserve">
+    <value>S&amp;ave as DAISY</value>
   </data>
-  <data name="ManageAbreviationButton" xml:space="preserve">
-    <value />
+  <data name="ExportToDaisy3OfficeButton" xml:space="preserve">
+    <value>&amp;DAISY3</value>
   </data>
-  <data name="MarkAbbreviationButton" xml:space="preserve">
-    <value />
+  <data name="ExportToDaisy3TabButton" xml:space="preserve">
+    <value>&amp;DAISY3</value>
   </data>
-  <data name="MarkAcronymButton" xml:space="preserve">
-    <value />
+  <data name="ExportToEpub3OfficeButton" xml:space="preserve">
+    <value>&amp;EPUB3 (experimental)</value>
   </data>
-  <data name="RibbonTabName" xml:space="preserve">
-    <value>SaveAsDAISY</value>
+  <data name="ExportToEpub3TabButton" xml:space="preserve">
+    <value>&amp;EPUB3 (experimental)</value>
+  </data>
+  <data name="ExportToXMLOfficeButton" xml:space="preserve">
+    <value>DAISY &amp;XML</value>
+  </data>
+  <data name="ExportToXMLTabButton" xml:space="preserve">
+    <value>DAISY &amp;XML</value>
+  </data>
+  <data name="FootnotesGroup" xml:space="preserve">
+    <value>Footnotes</value>
+  </data>
+  <data name="HelpGroup" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="ImportDaisyStylesTabButton" xml:space="preserve">
+    <value>&amp;Import</value>
+  </data>
+  <data name="LanguageGroup" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="ManageAbbreviationsTabButton" xml:space="preserve">
+    <value>Ma&amp;nage abbreviations</value>
+  </data>
+  <data name="ManageAcronymsTabButton" xml:space="preserve">
+    <value>Mana&amp;ge acronyms</value>
+  </data>
+  <data name="MarkAbbreviationTabButton" xml:space="preserve">
+    <value>Mark as a&amp;bbreviation</value>
+  </data>
+  <data name="MarkAcronymTabButton" xml:space="preserve">
+    <value>Mark as a&amp;cronym</value>
+  </data>
+  <data name="OpenGuidelinesTabButton" xml:space="preserve">
+    <value>Authoring guidelines</value>
+  </data>
+  <data name="OpenManualTabButton" xml:space="preserve">
+    <value>Instruction manual</value>
+  </data>
+  <data name="SaveAsDaisyOfficeMenu" xml:space="preserve">
+    <value>Save As DAIS&amp;Y</value>
+  </data>
+  <data name="SaveAsDAISYTab" xml:space="preserve">
+    <value>Accessibility</value>
+  </data>
+  <data name="SettingsGroup" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="SettingsTabButton" xml:space="preserve">
+    <value>&amp;Settings</value>
+  </data>
+  <data name="toggleValidateTabButton" xml:space="preserve">
+    <value>Validate</value>
+  </data>
+  <data name="ValidateGroup" xml:space="preserve">
+    <value>Validation</value>
+  </data>
+  <data name="VersionDetailsTabButton" xml:space="preserve">
+    <value>&amp;Version details</value>
   </data>
 </root>
