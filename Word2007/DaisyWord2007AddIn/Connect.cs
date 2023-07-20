@@ -469,7 +469,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 }
                 object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
                 docTemplate.Close(ref saveChanges, ref missing, ref missing);
-
+                docTemplate = null;
                 this.applicationObject.NormalTemplate.Save();
 
                 if (File.Exists(copyTempName.ToString())) {
@@ -483,8 +483,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 string stre = ex.Message;
                 MessageBox.Show(ex.Message.ToString(), "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Error);
             } finally {
-                object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
-                docTemplate.Close(ref saveChanges, ref missing, ref missing);
+                if(docTemplate != null)
+                {
+                    object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
+                    docTemplate.Close(ref saveChanges, ref missing, ref missing);
+                }
             }
 
         }
