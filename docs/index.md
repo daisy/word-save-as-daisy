@@ -7,9 +7,9 @@ We provide an unified installer that detects standard installations of Microsoft
 If Office is not found by the installer (like preinstalled or windows store versions of MS Office), it will request which architecture (32bits or 64bits) you want the addin to be installed for.
 
 
-## Latest version: 2.8.0 beta (released on July, 2023)
+## Latest version: 2.7.2 beta (released on September, 2022)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.8.0-beta/SaveAsDAISYInstaller.exe)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
 
 ## Report issues
 
@@ -20,6 +20,27 @@ Any constructive feedbacks are also welcome to help us improve the add-in :)
 ## Feedbacks / Known issues
 
 ### The accessibility ribbon does not appear after successfull installation
+
+#### Addin is reported unloaded due to an error
+
+The addin assumes you have a recent version of .NET Framework (4+) available on your system.
+You can check if you have the required .NET Framework by checking if folders "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"  and/or "C:\Windows\Microsoft.NET\Framework\v4.0.30319" exists.
+
+It is also possible that the wrong bit-version of the addin is installed : 
+this might have been the case if your office version has been installed through Microsoft Store, which makes office undetectable from our install process, and you selected the wrong bit-version.
+If this is the case, please check your office bit-version in Word in the "Account" page by opening "About Word" dialog.
+The bit-version is displayed at the end of the first line of the dialog.
+
+Lastly, it has been reported for other addin that this can occured if you run word on an account with administrator privileges with UAC deactivated.
+In this case, you need to do the following actions : 
+- uninstall the addin
+- Launch the addin installed as administrator
+- When accepting the software licence, click on the "Advanced" button
+- Select "Install for all users of this machine" and click "Next"
+- Change the installation folder if you need and click "Next'
+- The addin should then continue the install process as usual
+
+#### Addin is deactived after installation
 
 A user reported the addin to be deactivated after installation : 
 In Word, under the **File** / **Options** / **Add-ins** category, **Save As Daisy** appeared under the **Inactive applications** section.
@@ -33,6 +54,8 @@ The add-in should start repairing himself before reopening the word document.
 # Changelog
 
 # 2.8.0 beta (July 2023)
+
+(This version is under test phase and is not released yet)
 
 This major release marks a change in the underlying conversion process 
 to dtbook XML and packaged format,
@@ -50,6 +73,11 @@ construct a new Word document from the documents to merge.
 - The "Add footnotes" button is removed from the ribbon :
 it is recommended to use Microsoft Word notes management 
 in the "References" ribbon's tab.
+- It is no longer required to select an empty folder as export destination :
+For a given export to a selected format, a new folder taking the name of 
+the converted file name followed by the selected format and a timestamp suffix
+will be created inside the selected destination folder and will contain
+the result of the conversion.
 
 Various fixes and changes are included in the release :
 - Fixed [#25](https://github.com/daisy/word-save-as-daisy/issues/25)
