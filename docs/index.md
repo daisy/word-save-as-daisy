@@ -10,6 +10,7 @@ If Office is not found by the installer (like preinstalled or windows store vers
 ## Latest version: 2.7.2 beta (released on September, 2022)
 
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
+- Or access to the [last release page](https://github.com/daisy/word-save-as-daisy/releases/latest)
 
 ## Report issues
 
