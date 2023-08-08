@@ -76,7 +76,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 // available in config-logback.xml and felix.properties
                 // note that config-logback.xml is the only place where ${org.daisy.pipeline.mode} is used
                 { "-Dorg.daisy.pipeline.data", AppDataFolder },
-                { "-Dorg.daisy.pipeline.logdir", "\"" + LogsFolder + "\"" },
+                { "-Dorg.daisy.pipeline.logdir", LogsFolder.Replace("\\","/") },
                 { "-Dorg.daisy.pipeline.mode", "cli" }
             };
             
