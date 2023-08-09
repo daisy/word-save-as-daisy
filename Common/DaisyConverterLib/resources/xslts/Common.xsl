@@ -2251,9 +2251,9 @@
         <xsl:param name="txt"/>
         <!-- Compute character group status -->
         <!-- Group of bold = strong characters -->
-        <xsl:variable name="isStrong" select="w:rPr/w:b or w:rPr/w:rStyle[@w:val='Strong']"/>
+        <xsl:variable name="isStrong" select="w:rPr/w:b or w:rPr/w:bCs or w:rPr/w:rStyle[@w:val='Strong']"/>
         <!-- Group of italic = em characters -->
-        <xsl:variable name="isEmp" select="w:rPr/w:i or w:rPr/w:rStyle[@w:val='Emphasis']"/>
+        <xsl:variable name="isEmp" select="w:rPr/w:i or w:rPr/w:iCs or w:rPr/w:rStyle[@w:val='Emphasis']"/>
         <!-- Group is a note reference -->
         <xsl:variable name="isNote" select="
                       (w:rPr/w:rStyle[@w:val ='FootnoteReference'])
