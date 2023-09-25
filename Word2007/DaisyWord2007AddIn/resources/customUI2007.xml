@@ -32,6 +32,13 @@
 				        getDescription="getRibbonDescription"
 				        getScreentip="getRibbonDescription"
 						/>
+				<button id="ExportToMP33OfficeButton"
+				        getLabel="getRibbonLabel"
+				        onAction="SaveAsMP3"
+				        getEnabled="ribbonButtonsEnabled"
+				        getImage="iconSelector"
+				        getDescription="getRibbonDescription"
+				        getScreentip="getRibbonDescription"/>
 			</menu>
 		</officeMenu>
 		<tabs>
@@ -67,6 +74,13 @@
 						        getDescription="getRibbonDescription"
 						        getScreentip="getRibbonDescription"
 								/>
+						<button id="ExportToMP3TabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="SaveAsMP3"
+						        getEnabled="ribbonButtonsEnabled"
+						        getImage="iconSelector"
+						        getDescription="getRibbonDescription"
+						        getScreentip="getRibbonDescription"/>
 					</menu>
 				</group>
 				<group id="AbbreviationsGroup"

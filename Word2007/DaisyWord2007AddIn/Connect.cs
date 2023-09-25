@@ -354,12 +354,14 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             { "ExportToXMLOfficeButton", "Singlexml.png" },
             { "ExportToDaisy3OfficeButton", "Singlexml.png" },
             { "ExportToEpub3OfficeButton", "speaker.jpg" },
+            { "ExportToMP3OfficeButton", "speaker.jpg" },
             { "DaisyMultiple", "Multiplexml.png" },
             { "DaisyDTBookMultiple", "subfolder.png" },
             { "ExportTabMenu", "speaker.jpg" },
             { "ExportToXMLTabButton", "Singlexml.png" },
             { "ExportToDaisy3TabButton", "speaker.jpg" },
             { "ExportToEpub3TabButton", "speaker.jpg" },
+            { "ExportToMP3TabButton", "speaker.jpg" },
             { "DtbookTabMultiple", "Multiplexml.png" },
             { "DaisyTabMultiple", "Multiplexml.png" },
             { "EpubTabMultiple", "subfolder.png" },
@@ -728,19 +730,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         #region Single document conversion
 
-        public void SaveAsDTBookXML(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null)
+        public void ApplyScript(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
         {
             try
             {
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null 
-                    ? (IConversionEventsHandler) new GraphicalEventsHandler() 
-                    : new SilentEventsHandler();
-                
-                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path) 
-                    ? new DtbookCleaner(eventsHandler) : 
-                    null;
-
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
                 Converter converter = null;
                 if (conversionIntegrationTestSettings != null)
@@ -759,10 +753,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion)
                 {
                     ConversionResult result = converter.Convert(currentDocument);
-                    if(result != null && result.Succeeded) {
+                    if (result != null && result.Succeeded)
+                    {
                         Process.Start(
-                            Directory.Exists(converter.ConversionParameters.OutputPath) 
-                            ? converter.ConversionParameters.OutputPath 
+                            Directory.Exists(converter.ConversionParameters.OutputPath)
+                            ? converter.ConversionParameters.OutputPath
                             : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
                         );
                     }
@@ -791,6 +786,39 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
         }
 
+        public void SaveAsDTBookXML(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null)
+        {
+            try
+            {
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null 
+                    ? (IConversionEventsHandler) new GraphicalEventsHandler() 
+                    : new SilentEventsHandler();
+                
+                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path) 
+                    ? new DtbookCleaner(eventsHandler) : 
+                    null;
+                if (pipelineScript != null)
+                {
+                    pipelineScript.EventsHandler = eventsHandler;
+                }
+                ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
+            }
+            catch (Exception e)
+            {
+                AddinLogger.Error(e);
+                if (conversionIntegrationTestSettings != null)
+                {
+
+                }
+                else
+                {
+                    ExceptionReport report = new ExceptionReport(e);
+                    report.Show();
+                }
+
+            }
+        }
+
         /// <summary>
         /// UI Call : request conversion of the current active document to DAISY book
         /// </summary>
@@ -801,40 +829,16 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
                 
-                Script pipelineScript = new CleanedDtbookToDaisy3(eventsHandler);
+                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
+                    ? new CleanedDtbookToDaisy3(eventsHandler) :
+                    null;
                
                 
                 if (pipelineScript != null)
                 {
                     pipelineScript.EventsHandler = eventsHandler;
                 }
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                Converter converter = null;
-                if (conversionIntegrationTestSettings != null) {
-                    ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
-                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
-                } else {
-                    ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler) eventsHandler);
-                }
-
-                DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
-                if(conversionIntegrationTestSettings != null
-                        || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
-                    ConversionResult result = converter.Convert(currentDocument);
-                    if (result != null && result.Succeeded)
-                    {
-                        Process.Start(
-                            Directory.Exists(converter.ConversionParameters.OutputPath)
-                            ? converter.ConversionParameters.OutputPath
-                            : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
-                        );
-                    }
-                } else {
-                    eventsHandler.onConversionCanceled();
-                }
-                
-                //applicationObject.ActiveDocument.Save();
+                ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
             } catch (Exception e) {
                 AddinLogger.Error(e);
                 if (conversionIntegrationTestSettings != null) {
@@ -861,33 +865,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
                 Script pipelineScript = new CleanedDtbookToEpub3(eventsHandler);
 
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                Converter converter = null;
-                if (conversionIntegrationTestSettings != null) {
-                    ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
-                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
-                } else {
-                    ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
+                if (pipelineScript != null)
+                {
+                    pipelineScript.EventsHandler = eventsHandler;
                 }
-
-                DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
-                if (conversionIntegrationTestSettings != null
-                        || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
-                    ConversionResult result = converter.Convert(currentDocument);
-                    if (result != null && result.Succeeded)
-                    {
-                        Process.Start(
-                            Directory.Exists(converter.ConversionParameters.OutputPath)
-                            ? converter.ConversionParameters.OutputPath
-                            : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
-                        );
-                    }
-                } else {
-                    eventsHandler.onConversionCanceled();
-                }
-
-                //applicationObject.ActiveDocument.Save();
+                ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
             } catch (Exception e) {
                 AddinLogger.Error(e);
                 if (conversionIntegrationTestSettings != null) {
@@ -901,10 +883,48 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         }
 
-            #endregion
+        /// <summary>
+        /// Experimental conversion to epub3
+        /// </summary>
+        /// <param name="control"></param>
+        /// <param name="conversionIntegrationTestSettings"></param>
+        public void SaveAsMP3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null)
+        {
+            try
+            {
+
+                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+
+                Script pipelineScript = new CleanedDtbookToMp3(eventsHandler);
+
+                if (pipelineScript != null)
+                {
+                    pipelineScript.EventsHandler = eventsHandler;
+                }
+                ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
+            }
+            catch (Exception e)
+            {
+                AddinLogger.Error(e);
+                if (conversionIntegrationTestSettings != null)
+                {
+
+                }
+                else
+                {
+                    ExceptionReport report = new ExceptionReport(e);
+                    report.Show();
+                }
+
+            }
+
+        }
+
+        #endregion
 
         #region Multiple documents conversion
-        
+
         /// <summary>
         /// UI Call : requesting the conversion of a list of documents into a single DTBook XML or DAISY book
         /// </summary>

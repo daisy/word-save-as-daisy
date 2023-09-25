@@ -169,6 +169,24 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à &amp;Megavoice MP3 (experimental).
+        /// </summary>
+        public static string ExportToMP3OfficeButton {
+            get {
+                return ResourceManager.GetString("ExportToMP3OfficeButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à &amp;Megavoice MP3 (experimental).
+        /// </summary>
+        public static string ExportToMP3TabButton {
+            get {
+                return ResourceManager.GetString("ExportToMP3TabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à DAISY &amp;XML.
         /// </summary>
         public static string ExportToXMLOfficeButton {

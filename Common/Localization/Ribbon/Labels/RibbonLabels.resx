@@ -153,6 +153,12 @@
   <data name="ExportToEpub3TabButton" xml:space="preserve">
     <value>&amp;EPUB3 (experimental)</value>
   </data>
+  <data name="ExportToMP3OfficeButton" xml:space="preserve">
+    <value>&amp;Megavoice MP3 (experimental)</value>
+  </data>
+  <data name="ExportToMP3TabButton" xml:space="preserve">
+    <value>&amp;Megavoice MP3 (experimental)</value>
+  </data>
   <data name="ExportToXMLOfficeButton" xml:space="preserve">
     <value>DAISY &amp;XML</value>
   </data>

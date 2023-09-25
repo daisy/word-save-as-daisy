@@ -102,6 +102,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>RibbonLabels.Designer.cs</LastGenOutput>
       <CustomToolNamespace>Daisy.SaveAsDAISY</CustomToolNamespace>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Scripts\DtbookCleaner\DtbookCleaner.resx">
       <Generator>ResXFileCodeGenerator</Generator>

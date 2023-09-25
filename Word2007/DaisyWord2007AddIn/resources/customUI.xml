@@ -29,6 +29,13 @@
 				        getImage="iconSelector"
 				        getDescription="getRibbonDescription"
 				        getScreentip="getRibbonDescription"/>
+				<button id="ExportToMP33OfficeButton"
+				        getLabel="getRibbonLabel"
+				        onAction="SaveAsMP3"
+				        getEnabled="ribbonButtonsEnabled"
+				        getImage="iconSelector"
+				        getDescription="getRibbonDescription"
+				        getScreentip="getRibbonDescription"/>
 			</menu>
 		</officeMenu>
 		<tabs>
@@ -57,6 +64,13 @@
 						<button id="ExportToEpub3TabButton"
 						        getLabel="getRibbonLabel"
 						        onAction="SaveAsEPUB3"
+						        getEnabled="ribbonButtonsEnabled"
+						        getImage="iconSelector"
+						        getDescription="getRibbonDescription"
+						        getScreentip="getRibbonDescription"/>
+						<button id="ExportToMP3TabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="SaveAsMP3"
 						        getEnabled="ribbonButtonsEnabled"
 						        getImage="iconSelector"
 						        getDescription="getRibbonDescription"
