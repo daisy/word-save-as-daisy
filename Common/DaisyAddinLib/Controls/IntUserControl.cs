@@ -35,9 +35,10 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
 
             IntegerDataType IntData = (IntegerDataType)p.ParameterDataType;
 
-            List<string> intList = IntData.GetValues;
-            mListBokBox.Minimum = Convert.ToInt32(intList[0]);
-            mListBokBox.Maximum = Convert.ToInt32(intList[1]);
+            mListBokBox.Minimum = IntData.Min;
+            mListBokBox.Maximum = IntData.Max;
+            mListBokBox.Value = (int)IntData.Value;
+
             base.Size = this.Size;
         }
 
@@ -46,7 +47,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
         {
             try
             {
-                m_IntDataType.SelectedIndex = Convert.ToInt32(mListBokBox.Value);
+                m_IntDataType.Value = Convert.ToInt32(mListBokBox.Value);
 
             }
             catch (System.Exception ex)
