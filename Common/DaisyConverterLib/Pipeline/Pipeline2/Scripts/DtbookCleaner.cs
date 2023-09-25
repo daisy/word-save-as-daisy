@@ -57,19 +57,20 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     ""
                   )
                 },
-                {
-                  "fixCharset",
-                  new ScriptParameter(
-                    "fixCharset",
-                    "Repair - Fix Charset",
-                    new BoolDataType(false),
-                    false,
-                    false,
-                    "",
-                    false
+                // Hidden for now, as not implemented in pipeline 2 script
+                //{
+                //  "fixCharset",
+                //  new ScriptParameter(
+                //    "fixCharset",
+                //    "Repair - Fix Charset",
+                //    new BoolDataType(false),
+                //    false,
+                //    false,
+                //    "",
+                //    false
 
-                  )
-                },
+                //  )
+                //},
                 {
                   "tidy",
                   new ScriptParameter(

@@ -109,7 +109,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             // Note : beware that the module jdk.jdwp.agent must be included in
             // the jre build with jlink in the assembly process
             options.Add("-Xdebug");
-            options.Add("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005");
+            //options.Add("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005");
             options.Add("-XX:+CreateMinidumpOnCrash");
 #endif
 
