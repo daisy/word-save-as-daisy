@@ -191,7 +191,22 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
 #endif
 
             dtbookToDaisy3.ExecuteScript(dtbookToDaisy3.Parameters["input"].ParameterValue.ToString());
-
+            // Post processing :
+            // NP 2023/09/27 : I don't know why yet, but pipeline 2 w/ simpleAPI export images with their uri encoded names
+            // While pipeline 2 app and pipeline 2 internal job folder has the correct file names 
+            string[] outputFiles = Directory.GetFiles((string)dtbookToDaisy3.Parameters["output"].ParameterValue, "*", SearchOption.AllDirectories);
+            foreach (var file in outputFiles)
+            {
+                string actualName = Path.GetFileName(file);
+                string expectedFile = Path.Combine(
+                    Path.GetDirectoryName(file),
+                    Uri.UnescapeDataString(actualName)
+                );
+                if (!File.Exists(expectedFile))
+                {
+                    File.Move(file, expectedFile);
+                }
+            }
         }
     }
 }

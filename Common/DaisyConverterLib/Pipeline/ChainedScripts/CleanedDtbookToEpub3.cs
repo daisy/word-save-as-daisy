@@ -209,16 +209,23 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
 
             dtbookToEpub3.ExecuteScript(dtbookToEpub3.Parameters["input"].ParameterValue.ToString());
 
-            //if (File.Exists(Path.Combine(finalOutput, "result.epub"))) {
-            //    this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Moving result.epub to " + Path.Combine(finalOutput, Path.GetFileNameWithoutExtension(inputPath) + ".epub")));
+            // Post processing :
+            // i don't know why yet, but pipeline 2 w/ simpleAPI export images with their uri encoded names
+            // need to take all images and decode back their names
+            string[] outputFiles = Directory.GetFiles((string)dtbookToEpub3.Parameters["output"].ParameterValue, "*", SearchOption.AllDirectories);
+            foreach (var file in outputFiles)
+            {
+                string actualName = Path.GetFileName(file);
+                string expectedFile = Path.Combine(
+                    Path.GetDirectoryName(file),
+                    Uri.UnescapeDataString(actualName)
+                );
+                if (!File.Exists(expectedFile))
+                {
+                    File.Move(file, expectedFile);
+                }
                 
-            //    File.Move(
-            //        Path.Combine(finalOutput, "result.epub"),
-            //        Path.Combine(finalOutput, Path.GetFileNameWithoutExtension(inputPath) + ".epub")
-            //    );
-            //    this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Successfully converted the document to " + Path.Combine(finalOutput, Path.GetFileNameWithoutExtension(inputPath) + ".epub")));
-
-            //}
+            }
         }
     }
 }
