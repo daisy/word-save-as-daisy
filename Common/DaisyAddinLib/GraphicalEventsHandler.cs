@@ -1,6 +1,7 @@
 using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
 using Daisy.SaveAsDAISY.Forms;
+using Microsoft.Office.Interop.Word;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -69,15 +70,12 @@ namespace Daisy.SaveAsDAISY {
         }
 
         private void TryClosingDialog() {
-#if DEBUG
-            // keep open the dialog for debugging purpose
-#else
-            if(DialogThread != null && DialogThread.IsAlive) {
+            if (DialogThread != null && DialogThread.IsAlive)
+            {
                 Thread.Sleep(2000);
                 ProgressDialog.Close();
                 DialogThread.Join();
             }
-#endif
         }
         #endregion
 
@@ -104,7 +102,7 @@ namespace Daisy.SaveAsDAISY {
         }
 
         public void onPreprocessingError(string inputPath, string errors) {
-            TryClosingDialog();
+            TryShowMessage("Some errors were reported during preprocessing: \r\n" + errors);
             MessageBox.Show(errors, "Preprocessing errors", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
@@ -148,14 +146,13 @@ namespace Daisy.SaveAsDAISY {
 
 		public void OnError(string errorMessage)
 		{
-            TryShowMessage("An error occured during conversion : \r\n" + errorMessage, true);
-            TryClosingDialog();
+            TryShowMessage("An error occured during conversion: \r\n" + errorMessage);
             MessageBox.Show(errorMessage, "An error occured during conversion", MessageBoxButtons.OK, MessageBoxIcon.Error);
 		}
 
 		public void OnStop(string message, string title)
 		{
-            TryClosingDialog();
+            TryShowMessage(title + ": \r\n" + message);
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Stop);
 		}
 
@@ -205,8 +202,7 @@ namespace Daisy.SaveAsDAISY {
         
 
         public void onPostProcessingSuccess(ConversionParameters conversion) {
-            TryShowMessage("Successfully processed or converted dtbook, result stored in " + conversion.OutputPath, true);
-            
+            TryShowMessage("Successfully processed or converted dtbook, result stored in " + conversion.OutputPath, true); 
             TryClosingDialog();
         }
 
@@ -235,12 +231,11 @@ namespace Daisy.SaveAsDAISY {
         }
 
         public void OnUnknownError(string error) {
-            TryClosingDialog();
+            TryShowMessage("An error occured during conversion: \r\n" + error);
             MessageBox.Show(error, "Unknown error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         public void OnUnknownError(string title, string details) {
-            TryClosingDialog();
             InfoBox infoBox = new InfoBox(title, details, Labels.ResourceManager);
             infoBox.ShowDialog();
         }
