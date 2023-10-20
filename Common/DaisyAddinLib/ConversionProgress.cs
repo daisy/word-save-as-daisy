@@ -56,15 +56,11 @@ namespace Daisy.SaveAsDAISY {
             if (this.InvokeRequired) {
                 this.Invoke(new DelegatedInitializeProgress(InitializeProgress), message, maximum, step);
             } else {
-                if(!this.IsDisposed)
+                if(this.Created)
                 {
                     CurrentProgressMessage = message;
                     LastMessage.Text = CurrentProgressMessage;
-                    this.MessageTextArea.BeginInvoke(
-                        (MethodInvoker)delegate {
-                            this.MessageTextArea.AppendText((message.EndsWith("\n") ? message : message + "\r\n"));
-                        }
-                    );
+                    this.MessageTextArea.AppendText((message.EndsWith("\n") ? message : message + "\r\n"));
                     ConversionProgressBar.Maximum = maximum;
                     ConversionProgressBar.Step = step;
                     ConversionProgressBar.Value = 0;
