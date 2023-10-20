@@ -10,13 +10,95 @@ namespace Daisy.SaveAsDAISY.Conversion
     {
         private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
-
         public ConverterSettingsForm()
         {
             InitializeComponent();
         }
 
-
+        private static readonly Dictionary<string, string> AzureRegionDictionnary = new Dictionary<string, string>()
+        {
+            {"","" },
+            {"East US", "eastus"},
+            {"East US 2", "eastus2"},
+            {"South Central US", "southcentralus"},
+            {"West US 2", "westus2"},
+            {"West US 3", "westus3"},
+            {"Australia East", "australiaeast"},
+            {"Southeast Asia", "southeastasia"},
+            {"North Europe", "northeurope"},
+            {"Sweden Central", "swedencentral"},
+            {"UK South", "uksouth"},
+            {"West Europe", "westeurope"},
+            {"Central US", "centralus"},
+            {"South Africa North", "southafricanorth"},
+            {"Central India", "centralindia"},
+            {"East Asia", "eastasia"},
+            {"Japan East", "japaneast"},
+            {"Korea Central", "koreacentral"},
+            {"Canada Central", "canadacentral"},
+            {"France Central", "francecentral"},
+            {"Germany West Central", "germanywestcentral"},
+            {"Norway East", "norwayeast"},
+            {"Switzerland North", "switzerlandnorth"},
+            {"UAE North", "uaenorth"},
+            {"Brazil South", "brazilsouth"},
+            {"Central US EUAP", "centraluseuap"},
+            {"East US 2 EUAP", "eastus2euap"},
+            {"Qatar Central", "qatarcentral"},
+            {"Central US (Stage)", "centralusstage"},
+            {"East US (Stage)", "eastusstage"},
+            {"East US 2 (Stage)", "eastus2stage"},
+            {"North Central US (Stage)", "northcentralusstage"},
+            {"South Central US (Stage)", "southcentralusstage"},
+            {"West US (Stage)", "westusstage"},
+            {"West US 2 (Stage)", "westus2stage"},
+            {"Asia", "asia"},
+            {"Asia Pacific", "asiapacific"},
+            {"Australia", "australia"},
+            {"Brazil", "brazil"},
+            {"Canada", "canada"},
+            {"Europe", "europe"},
+            {"France", "france"},
+            {"Germany", "germany"},
+            {"Global", "global"},
+            {"India", "india"},
+            {"Japan", "japan"},
+            {"Korea", "korea"},
+            {"Norway", "norway"},
+            {"Singapore", "singapore"},
+            {"South Africa", "southafrica"},
+            {"Switzerland", "switzerland"},
+            {"United Arab Emirates", "uae"},
+            {"United Kingdom", "uk"},
+            {"United States", "unitedstates"},
+            {"United States EUAP", "unitedstateseuap"},
+            {"East Asia (Stage)", "eastasiastage"},
+            {"Southeast Asia (Stage)", "southeastasiastage"},
+            {"Brazil US", "brazilus"},
+            {"East US STG", "eastusstg"},
+            {"North Central US", "northcentralus"},
+            {"West US", "westus"},
+            {"Jio India West", "jioindiawest"},
+            {"devfabric", "devfabric"},
+            {"West Central US", "westcentralus"},
+            {"South Africa West", "southafricawest"},
+            {"Australia Central", "australiacentral"},
+            {"Australia Central 2", "australiacentral2"},
+            {"Australia Southeast", "australiasoutheast"},
+            {"Japan West", "japanwest"},
+            {"Jio India Central", "jioindiacentral"},
+            {"Korea South", "koreasouth"},
+            {"South India", "southindia"},
+            {"West India", "westindia"},
+            {"Canada East", "canadaeast"},
+            {"France South", "francesouth"},
+            {"Germany North", "germanynorth"},
+            {"Norway West", "norwaywest"},
+            {"Switzerland West", "switzerlandwest"},
+            {"UK West", "ukwest"},
+            {"UAE Central", "uaecentral"},
+            {"Brazil Southeast", "brazilsoutheast"},
+        };
 
         private void Daisysettingsfrm_Load(object sender, EventArgs e)
         {
@@ -154,7 +236,10 @@ namespace Daisy.SaveAsDAISY.Conversion
                 GlobaleSettings.FootnotesStartValue = int.Parse(notesNumberingStartValue.Text);
                 GlobaleSettings.FootnotesNumberingPrefix = notesNumberPrefixValue.Text;
                 GlobaleSettings.FootnotesNumberingSuffix = notesNumberSuffixValue.Text;
-
+                
+                GlobaleSettings.TTSConfigFile = TTSConfigFilePath.Text;
+                GlobaleSettings.AzureSpeechKey = AzureKeyValue.Text;
+                GlobaleSettings.AzureSpeechRegion = AzureRegionDictionnary[(string)(AzureRegionValue.SelectedItem ?? "")];
 
                 // Save
                 GlobaleSettings.save();

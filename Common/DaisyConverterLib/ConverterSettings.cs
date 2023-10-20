@@ -149,8 +149,9 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string footnotesStartValue = "1"; // number to be used
         private string footnotesNumberingPrefix = ""; // prefix to be added before the numbering
         private string footnotesNumberingSuffix = " "; // suffix to be added between the number and the text (default to a space to reproduce the plugin original behaviour)
-
-
+        private string azureSpeechRegion = ""; // region defined in the Azure console for the speech service
+        private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
+        private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
         private string SettingsXml
         {
             get =>
@@ -164,6 +165,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                         $"startValue=\"{footnotesStartValue}\" " +
                         $"numberPrefix=\"{footnotesNumberingPrefix}\" " +
                         $"numberSuffix=\"{footnotesNumberingSuffix}\" />" +
+                    $"<Azure region=\"{azureSpeechRegion}\" " +
+                            $"key=\"{azureSpeechKey}\" />" +
+                    $"<TTSConfig file=\"{ttsConfigFile}\" />" +
                 $"</Settings>";
 
         }
@@ -226,6 +230,19 @@ namespace Daisy.SaveAsDAISY.Conversion
                 footnotesNumberingSuffix = (FootnotesSettings.Attributes["numberSuffix"]?.InnerXml) ?? footnotesNumberingSuffix;
             }
 
+            XmlNode AzureSettings = settingsDocument.SelectSingleNode("//Settings/Azure");
+            if(AzureSettings != null)
+            {
+                azureSpeechRegion = (AzureSettings.Attributes["region"].InnerXml) ?? azureSpeechRegion;
+                azureSpeechKey = (AzureSettings.Attributes["key"].InnerXml) ?? azureSpeechKey;
+            }
+            XmlNode TTSConfigSettings = settingsDocument.SelectSingleNode("//Settings/TTSConfig");
+            if (TTSConfigSettings != null)
+            {
+                ttsConfigFile = (TTSConfigSettings.Attributes["file"].InnerXml) ?? ttsConfigFile;
+            }
+
+
 
         }
 
@@ -279,6 +296,12 @@ namespace Daisy.SaveAsDAISY.Conversion
         public string FootnotesNumberingPrefix { get => footnotesNumberingPrefix; set => footnotesNumberingPrefix = value; }
 
         public string FootnotesNumberingSuffix { get => footnotesNumberingSuffix; set => footnotesNumberingSuffix = value; }
+
+        public string AzureSpeechRegion { get => azureSpeechRegion; set => azureSpeechRegion = value; }
+
+        public string AzureSpeechKey { get => azureSpeechKey; set => azureSpeechKey = value; }
+
+        public string TTSConfigFile { get => ttsConfigFile; set => ttsConfigFile = value; }
 
 
     }
