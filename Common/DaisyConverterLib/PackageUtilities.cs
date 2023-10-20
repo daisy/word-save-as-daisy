@@ -117,7 +117,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
             nsManager.AddNamespace("vt", appNamespace);
 
             XmlNodeList node = doc.GetElementsByTagName("Company");
-            if (node != null)
+            if (node != null && node.Count > 0)
                 return node.Item(0).InnerText;
             else
                 return "";
