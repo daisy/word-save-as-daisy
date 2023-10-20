@@ -20,6 +20,8 @@ using System.IO;
 using System.Threading;
 using System.Drawing.Imaging;
 using System.Drawing;
+using Microsoft.Office.Core;
+using System.Windows.Input;
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
@@ -159,18 +161,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
         }
 
-        object missing = Type.Missing;
-
-        // to duplicate the current doc and use the copy
-        object doNotAddToRecentFiles = false;
-        object notReadOnly = false;
-
-        // visibility
-        // object visible = true;
-        object notVisible = false;
-        object originalFormat = MSword.WdOriginalFormat.wdOriginalDocumentFormat;
-        object format = MSword.WdSaveFormat.wdFormatXMLDocument;
-
         protected MSword.Application currentInstance;
         public DocumentPreprocessor(MSword.Application WordInstance) {
             currentInstance = WordInstance;
@@ -180,19 +170,72 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
             object tmpFileName = document.CopyPath;
 
-            object originalPath = document.InputPath;
-            // Save a copy to start working on
             if (File.Exists((string)tmpFileName)) {
                 File.Delete((string)tmpFileName);
             }
-            currentDoc.SaveAs(ref tmpFileName, ref format, ref missing, ref missing, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
-            currentDoc.Close();
+            // Create an empty document to start the copy
+            MSword.Document copy = currentInstance.Documents.Add(
+                Visible: false
+            );
+            try {
+                
+                // Copy styles
+                foreach (MSword.Style style in currentDoc.Styles) {
+                    try {
+                        currentInstance.OrganizerCopy(currentDoc.FullName, copy.FullName, style.NameLocal, MSword.WdOrganizerObject.wdOrganizerObjectStyles);
+                    }
+                    catch (Exception ex) {
+                        AddinLogger.Warning("Non-critical exception raised while copying style " + style.NameLocal, ex);
+                    }
 
-            // only reopen the document if it is the main document (and if we want it reopened)
-            if (document.ResourceId == null && document.ShowInputDocumentInWord) currentInstance.Documents.Open(ref originalPath);
+                }
 
-            // Open (or retrieve) the temp file if opened in word and use it for preprocessing (document is not visible in word)
-            preprocessedObject = currentInstance.Documents.Open(ref tmpFileName, ref missing, ref notReadOnly, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref notVisible, ref missing, ref missing, ref missing, ref missing);
+                // Copy properties
+                DocumentProperties currentDocProps = (DocumentProperties)currentDoc.BuiltInDocumentProperties;
+                DocumentProperties copyProps = (DocumentProperties)copy.BuiltInDocumentProperties;
+                foreach (var key in Enum.GetValues(typeof(MSword.WdBuiltInProperty))) {
+                    try {
+                        copyProps[key].Value = currentDocProps[key].Value;
+                    }
+                    catch (Exception ex) {
+                        // exception trigger on undefined property
+                        AddinLogger.Warning("Non-critical exception raised copying built-in property " + key.ToString(), ex);
+                    }
+
+                }
+                // Copy custom properties
+                DocumentProperties currentDocCustomProps = (DocumentProperties)currentDoc.CustomDocumentProperties;
+                DocumentProperties copyCustomProps = (DocumentProperties)copy.CustomDocumentProperties;
+                foreach (DocumentProperty prop in currentDocCustomProps) {
+                    try {
+                        copyCustomProps.Add(prop.Name, prop.LinkToContent, prop.Type, prop.Value, prop.LinkSource);
+                    }
+                    catch (Exception ex) {
+                        // exception trigger on undefined property
+                        AddinLogger.Warning("Non-critical exception raised copying custom property " + prop.Name, ex);
+                    }
+                }
+
+                // Copy content
+                currentDoc.Content.Copy();
+                copy.Content.Paste();
+                Clipboard.Clear();
+
+                // Save new document on disk
+                copy.SaveAs2(
+                    FileName: tmpFileName,
+                    FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument,
+                    AddToRecentFiles: false
+                );
+                // use it as proprecessed document
+                preprocessedObject = copy;
+            } catch {
+                // On error, close copy and forward exception
+                copy.Close(SaveChanges: false);
+                throw;
+            }
+
+            
 
             return ConversionStatus.CreatedWorkingCopy;
 
@@ -200,8 +243,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus endPreprocessing(ref object preprocessedObject, IConversionEventsHandler eventsHandler = null) {
             MSword.Document preprocessingDocument = (MSword.Document)preprocessedObject;
-            object dontSaveChanges = MSword.WdSaveOptions.wdDoNotSaveChanges;
-            preprocessingDocument.Close(ref dontSaveChanges, ref originalFormat, ref missing);
+            preprocessingDocument.Close(
+                SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
+                OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
+            );
             return ConversionStatus.PreprocessingSucceeded;
         }
 
@@ -416,10 +461,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public object startPreprocessing(DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
-            object path = (object)document.InputPath;
             // reset the focus on the document (or open it as visible) in the word app if it is not a subdoc
-            object visible = document.ResourceId == null;
-            return currentInstance.Documents.Open(ref path, ref missing, ref missing, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref visible);
+            return currentInstance.Documents.Open(
+                FileName: document.InputPath,
+                AddToRecentFiles: false,
+                Visible: document.ResourceId == null
+            );
         }
 
         public ConversionStatus ValidateName(ref object preprocessedObject, StringValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {

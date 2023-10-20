@@ -71,5 +71,15 @@ namespace Daisy.SaveAsDAISY.Conversion
 		{
 			_log.Info(messsage);
 		}
-	}
+
+        public static void Warning(string messsage)
+        {
+            _log.Warn(messsage);
+        }
+
+        public static void Warning(string messsage, Exception ex)
+        {
+            _log.Warn(messsage, ex);
+        }
+    }
 }
