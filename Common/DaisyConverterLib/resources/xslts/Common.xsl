@@ -92,7 +92,7 @@
                     count(document('word/document.xml')//w:document/w:body/w:p[position() &gt; 1]/w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
                     or count(document('word/document.xml')//w:document/w:body/w:p/w:r[position() &gt; 1]/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
             ">
-                <xsl:message terminate="no">progress:Adding frontmatter content found in the document</xsl:message>
+                <xsl:message terminate="no">progress:Adding Frontmatter content found in the document</xsl:message>
                 <xsl:call-template name="Matter">
                     <xsl:with-param name="prmTrack" select="$prmTrack"/>
                     <xsl:with-param name="version" select="$version"/>
@@ -187,7 +187,7 @@
                     </xsl:for-each>
                 </level1>
             </xsl:if>
-            <xsl:message terminate="no">progress:Adding any rearmatter content found in the document</xsl:message>
+            <xsl:message terminate="no">progress:Adding Rearmatter content found in the document</xsl:message>
             <xsl:call-template name="Matter">
                 <xsl:with-param name="prmTrack" select="$prmTrack"/>
                 <xsl:with-param name="version" select="$version"/>
@@ -238,11 +238,12 @@
         </xsl:variable>
         <!--Looping through each hyperlink-->
         <xsl:for-each select="document('word/document.xml')//w:document/w:body/w:p/w:hyperlink">
-            <xsl:message terminate="no">progress:Parse hyperlinks</xsl:message>
+            <xsl:message terminate="no">progress:Hyperlink found - <xsl:value-of select="@w:anchor"/></xsl:message>
             <!--Calling c# method for storing Anchor in Hyperlink-->
             <xsl:variable name="insertName" select="myObj:AddHyperlink(@w:anchor)"/>
         </xsl:for-each>
-        <xsl:message terminate="no">progress:Start parsing document for <xsl:value-of select="$matterType"/>  </xsl:message>
+        <xsl:message terminate="no">progress:Start adding content in <xsl:value-of select="$matterType"/>  </xsl:message>
+		<xsl:variable name="ElementCountToConvert" select="count(document('word/document.xml')//w:body/*)" />
         <xsl:if test="myObj:ResetCurrentMatterType()"/>
         <xsl:if test="myObj:ResetIsFirstParagraph()" />
         <!--Traversing through each elements of the document's body (avoid empty text nodes)-->
@@ -251,7 +252,7 @@
                 <xsl:call-template name="SetCurrentMatterType" />
             </xsl:if>
             <xsl:if test="myObj:GetCurrentMatterType()=$matterType">
-                <xsl:message terminate="no">progress:Found element <xsl:value-of select="name()"/> </xsl:message>
+				<xsl:message terminate="no">progress:Converting element <xsl:value-of select="position()"/> / <xsl:value-of select="$ElementCountToConvert"/></xsl:message>
                 <xsl:choose>
                     <!--Checking for Praragraph element-->
                     <xsl:when test="name()='w:p'
@@ -355,6 +356,7 @@
                                     <xsl:with-param name="sZeros" select="$sZeros"/>
 								</xsl:call-template>
                                 <!--Calling Template to add Table Of Contents-->
+								<xsl:message terminate="no">debug:Converting table of content</xsl:message>
                                 <xsl:call-template name="TableOfContents">
                                     <xsl:with-param name="custom" select="$custom"/>
                                 </xsl:call-template>
@@ -535,9 +537,7 @@
                     <!--Checking for Pagebreaks and calling footnote template for displaying footnote text at the end of the page-->
                     <xsl:otherwise>
                         <!--Implementing fidelity loss for unhandled elements-->
-                        <xsl:message terminate="no">
-                            <xsl:value-of select="concat('translation.oox2Daisy.UncoveredElement|',name())"/>
-                        </xsl:message>
+                        <xsl:message terminate="no"><xsl:value-of select="concat('translation.oox2Daisy.UncoveredElement|',name())"/></xsl:message>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:if>
@@ -574,9 +574,7 @@
         <xsl:param name="charparahandlerStyle"/>
         <xsl:message terminate="no">debug in ParaHandler</xsl:message>
         <xsl:variable name="quote">"</xsl:variable>
-        <xsl:message terminate="no">
-            test <xsl:value-of select="$FootnotesPosition"/>
-        </xsl:message>
+        
         <!--Calling Footnote template when the page break is encountered.-->
         <xsl:if test="(
                     (w:r/w:lastRenderedPageBreak) 
@@ -1197,11 +1195,9 @@
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('/h',$level),'&gt;')"/>
         </xsl:if>
         <xsl:for-each select="w:r/w:pict//v:textbox/w:txbxContent">
-            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
             <sidebar>
                 <xsl:attribute    name="render">required</xsl:attribute>
                 <xsl:for-each select="./node()">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:choose>
                         <!--Checking for Headings in sidebar-->
                         <xsl:when test="(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or (w:pPr/w:pStyle/@w:val='BridgeheadDAISY')">
@@ -1720,7 +1716,6 @@
         <xsl:param name="characterStyle"/>
         <xsl:message terminate="no">debug in fldSimple</xsl:message>
         <xsl:for-each select="w:r">
-            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
             <xsl:value-of select="w:t"/>
         </xsl:for-each>
     </xsl:template>
@@ -1894,7 +1889,6 @@
             <!--Checking condition for supressing Author,Title,Year-->
             <xsl:when test="($supressAuthor='true')and ($supressTitle='true') and($supressYear='true')">
                 <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:value-of select="w:t"/>
                 </xsl:for-each>
             </xsl:when>
@@ -1935,13 +1929,11 @@
                 <xsl:choose>
                     <xsl:when test="myObj:GetAuthor()=''">
                         <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:value-of select="w:t"/>
                         </xsl:for-each>
                     </xsl:when>
                     <xsl:when test="(myObj:GetAuthor()='') and (myObj:GetTitle()='') and (myObj:GetYear()='')">
                         <xsl:for-each select="./w:sdtContent/w:fldSimple/w:r">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:value-of select="w:t"/>
                         </xsl:for-each>
                     </xsl:when>
@@ -2375,7 +2367,6 @@
                         <xsl:with-param name="characterStyle" select="$characterStyle"/>
                         <xsl:with-param name="txt" select="$txt"/>
                     </xsl:call-template>
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <xsl:choose>
                         <xsl:when test="name()='w:commentReference'">
                             <!--Capturing fidility loss-->
@@ -2602,6 +2593,7 @@
                     <xsl:with-param name="sZeros" select="$sZeros"/>
 				</xsl:call-template>
                 <!--Calling Template to add Table Of Contents-->
+				<xsl:message terminate="no">debug:Converting table of content</xsl:message>
                 <xsl:call-template name="TableOfContents">
                     <xsl:with-param name="custom" select="$custom"/>
                 </xsl:call-template>
@@ -2696,7 +2688,6 @@
                         <xsl:variable name="text_heading">
                             <xsl:variable name="nameHeading" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="document('word/styles.xml')//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:choose>
                                     <xsl:when test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
@@ -2722,7 +2713,6 @@
                         <xsl:variable name="absValue">
                             <xsl:variable name="nameHeading" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="document('word/styles.xml')//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:if test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                     <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
                                     <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(./w:pPr/w:outlineLvl/@w:val)"/>
@@ -2734,7 +2724,6 @@
                         <xsl:variable name="ilvl">
                             <xsl:variable name="nameHeading" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="document('word/styles.xml')//w:styles/w:style[@w:styleId=$nameHeading]">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:choose>
                                     <xsl:when test="(./w:pPr/w:outlineLvl) and (./w:pPr/w:numPr/w:numId)">
                                         <xsl:value-of  select="./w:pPr/w:outlineLvl/@w:val"/>
@@ -2936,7 +2925,6 @@
         <xsl:param name="checkilvl"/>
         <xsl:param name="checknumId"/>
         <xsl:param name="doc"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:variable name="val">
             <xsl:value-of select="document('word/numbering.xml')//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
         </xsl:variable>
@@ -2992,7 +2980,6 @@
     <xsl:template name="CharacterStyles">
         <xsl:param name="characterStyle"/>
         <xsl:param name="txt"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:choose>
             <xsl:when test="$characterStyle='True'">
                 <xsl:choose>
@@ -3253,7 +3240,6 @@
         <xsl:param name="dpiPara"/>
         <xsl:param name="characterparaStyle"/>
         <xsl:variable name="aquote">"</xsl:variable>
-        <xsl:message terminate="no">progress:ParagraphStyle</xsl:message>
         <xsl:variable name="checkImageposition" select="myObj:GetCaptionsProdnotes()"/>
         <xsl:choose>
             <!--Checking for Title/Subtitle paragraph style-->
@@ -3943,7 +3929,7 @@
         </xsl:choose>
     </xsl:template>
     <xsl:template name="CheckPageStyles">
-        <xsl:message terminate="no">progress:Checking for page styles</xsl:message>
+        <xsl:message terminate="no">debug:Checking for page styles</xsl:message>
         <xsl:for-each select="document('word/document.xml')//w:document/w:body/node()">
             <xsl:if test="name()='w:p'">
                 <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter']">
@@ -3983,21 +3969,21 @@
                         count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1
                         or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1
                 )">
-                    <xsl:message terminate="no">progress:SetCurrentMatterType - Found Frontmatter</xsl:message>
+                    <xsl:message terminate="no">debug:SetCurrentMatterType - Found Frontmatter</xsl:message>
                     <xsl:if test="myObj:SetCurrentMatterType('Frontmatter')"/>
                 </xsl:when>
                 <xsl:when test="(
                         count(w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
                         or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
                 )">
-                    <xsl:message terminate="no">progress:SetCurrentMatterType - Found Bodymatter</xsl:message>
+                    <xsl:message terminate="no">debug:SetCurrentMatterType - Found Bodymatter</xsl:message>
                     <xsl:if test="myObj:SetCurrentMatterType('Bodymatter')"/>
                 </xsl:when>
                 <xsl:when test="(
                         count(w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
                         or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
                 )">
-                    <xsl:message terminate="no">progress:SetCurrentMatterType - Found Rearmatter</xsl:message>
+                    <xsl:message terminate="no">debug:SetCurrentMatterType - Found Rearmatter</xsl:message>
                     <xsl:if test="myObj:SetCurrentMatterType('Rearmatter')"/>
                 </xsl:when>
             </xsl:choose>

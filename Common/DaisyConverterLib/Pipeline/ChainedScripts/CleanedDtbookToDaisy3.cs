@@ -9,6 +9,8 @@ using System.Text;
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
     public class CleanedDtbookToDaisy3 : Script {
 
+        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
+
         Script dtbookCleaner;
         Script dtbookToDaisy3;
 
@@ -91,8 +93,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
-                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File),
-                        "",
+                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File, "", GlobaleSettings.TTSConfigFile ?? ""),
+                        GlobaleSettings.TTSConfigFile ?? "",
                         false,
                         "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
                         true,
@@ -191,22 +193,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
 #endif
 
             dtbookToDaisy3.ExecuteScript(dtbookToDaisy3.Parameters["input"].ParameterValue.ToString());
-            // Post processing :
-            // NP 2023/09/27 : I don't know why yet, but pipeline 2 w/ simpleAPI export images with their uri encoded names
-            // While pipeline 2 app and pipeline 2 internal job folder has the correct file names 
-            string[] outputFiles = Directory.GetFiles((string)dtbookToDaisy3.Parameters["output"].ParameterValue, "*", SearchOption.AllDirectories);
-            foreach (var file in outputFiles)
-            {
-                string actualName = Path.GetFileName(file);
-                string expectedFile = Path.Combine(
-                    Path.GetDirectoryName(file),
-                    Uri.UnescapeDataString(actualName)
-                );
-                if (!File.Exists(expectedFile))
-                {
-                    File.Move(file, expectedFile);
-                }
-            }
         }
     }
 }

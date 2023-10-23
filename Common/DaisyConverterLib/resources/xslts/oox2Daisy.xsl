@@ -151,9 +151,7 @@
     </xsl:variable>
     <!--Extending the DTD to support MathML-->
     <xsl:template match="/">
-        <xsl:message terminate="no">
-            progress:Creating the dtbook document
-        </xsl:message>
+        <xsl:message terminate="no">progress:Creating the dtbook base document</xsl:message>
         <xsl:text disable-output-escaping="yes">&lt;?xml version='1.0' encoding='UTF-8'?&gt;</xsl:text>
         <xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet href="dtbookbasic.css" type="text/css"?&gt;</xsl:text>
         <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook SYSTEM 'dtbook-2005-3.dtd'</xsl:text>
@@ -374,6 +372,7 @@
                         </xsl:if>
                     </xsl:when>
                     <xsl:otherwise>-->
+				<xsl:message terminate="no">progress:Starting conversion of <xsl:value-of select="count(document('word/document.xml')//w:body/*)"/> elements</xsl:message>
                 <!-- Calling Frontmatter template and passing parameters Title and Creator for doctitle and docpublisher-->
                 <xsl:call-template name="FrontMatter">
                     <xsl:with-param name="Title" select ="$Title"/>

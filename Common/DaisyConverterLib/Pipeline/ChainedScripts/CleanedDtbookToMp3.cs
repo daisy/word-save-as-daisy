@@ -9,6 +9,8 @@ using System.Text;
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
     public class CleanedDtbookToMp3 : Script {
 
+        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
+
         Script dtbookCleaner;
         Script dtbookToDaisy3;
         Script daisy3ToMp3;
@@ -94,8 +96,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
-                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File),
-                        "",
+                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File, "", GlobaleSettings.TTSConfigFile ?? ""),
+                        GlobaleSettings.TTSConfigFile ?? "",
                         false,
                         "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
                         true,
@@ -219,7 +221,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             }
             daisy3ToMp3.Parameters["output"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "MP3 files")).FullName;
             daisy3ToMp3.ExecuteScript((string)daisy3ToMp3.Parameters["input"].ParameterValue, true);
-
         }
     }
 }

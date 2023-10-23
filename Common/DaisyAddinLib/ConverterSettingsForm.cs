@@ -100,6 +100,90 @@ namespace Daisy.SaveAsDAISY.Conversion
             {"Brazil Southeast", "brazilsoutheast"},
         };
 
+        private static readonly Dictionary<string, string> AzureRegionRevertDictionnary = new Dictionary<string, string>() {
+            {"" , ""},
+            {"eastus", "East US"},
+            {"eastus2", "East US 2"},
+            {"southcentralus", "South Central US"},
+            {"westus2", "West US 2"},
+            {"westus3", "West US 3"},
+            {"australiaeast", "Australia East"},
+            {"southeastasia", "Southeast Asia"},
+            {"northeurope", "North Europe"},
+            {"swedencentral", "Sweden Central"},
+            {"uksouth", "UK South"},
+            {"westeurope", "West Europe"},
+            {"centralus", "Central US"},
+            {"southafricanorth", "South Africa North"},
+            {"centralindia", "Central India"},
+            {"eastasia", "East Asia"},
+            {"japaneast", "Japan East"},
+            {"koreacentral", "Korea Central"},
+            {"canadacentral", "Canada Central"},
+            {"francecentral", "France Central"},
+            {"germanywestcentral", "Germany West Central"},
+            {"norwayeast", "Norway East"},
+            {"switzerlandnorth", "Switzerland North"},
+            {"uaenorth", "UAE North"},
+            {"brazilsouth", "Brazil South"},
+            {"centraluseuap", "Central US EUAP"},
+            {"eastus2euap", "East US 2 EUAP"},
+            {"qatarcentral", "Qatar Central"},
+            {"centralusstage", "Central US (Stage)"},
+            {"eastusstage", "East US (Stage)"},
+            {"eastus2stage", "East US 2 (Stage)"},
+            {"northcentralusstage", "North Central US (Stage)"},
+            {"southcentralusstage", "South Central US (Stage)"},
+            {"westusstage", "West US (Stage)"},
+            {"westus2stage", "West US 2 (Stage)"},
+            {"asia", "Asia"},
+            {"asiapacific", "Asia Pacific"},
+            {"australia", "Australia"},
+            {"brazil", "Brazil"},
+            {"canada", "Canada"},
+            {"europe", "Europe"},
+            {"france", "France"},
+            {"germany", "Germany"},
+            {"global", "Global"},
+            {"india", "India"},
+            {"japan", "Japan"},
+            {"korea", "Korea"},
+            {"norway", "Norway"},
+            {"singapore", "Singapore"},
+            {"southafrica", "South Africa"},
+            {"switzerland", "Switzerland"},
+            {"uae", "United Arab Emirates"},
+            {"uk", "United Kingdom"},
+            {"unitedstates", "United States"},
+            {"unitedstateseuap", "United States EUAP"},
+            {"eastasiastage", "East Asia (Stage)"},
+            {"southeastasiastage", "Southeast Asia (Stage)"},
+            {"brazilus", "Brazil US"},
+            {"eastusstg", "East US STG"},
+            {"northcentralus", "North Central US"},
+            {"westus", "West US"},
+            {"jioindiawest", "Jio India West"},
+            {"devfabric", "devfabric"},
+            {"westcentralus", "West Central US"},
+            {"southafricawest", "South Africa West"},
+            {"australiacentral", "Australia Central"},
+            {"australiacentral2", "Australia Central 2"},
+            {"australiasoutheast", "Australia Southeast"},
+            {"japanwest", "Japan West"},
+            {"jioindiacentral", "Jio India Central"},
+            {"koreasouth", "Korea South"},
+            {"southindia", "South India"},
+            {"westindia", "West India"},
+            {"canadaeast", "Canada East"},
+            {"francesouth", "France South"},
+            {"germanynorth", "Germany North"},
+            {"norwaywest", "Norway West"},
+            {"switzerlandwest", "Switzerland West"},
+            {"ukwest", "UK West"},
+            {"uaecentral", "UAE Central"},
+            {"brazilsoutheast", "Brazil Southeast"},
+        };
+
         private void Daisysettingsfrm_Load(object sender, EventArgs e)
         {
             notesNumberingStartValue.Mask = "000";
@@ -177,6 +261,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             notesNumberingStartValue.Text = GlobaleSettings.FootnotesStartValue.ToString();
             notesNumberPrefixValue.Text = GlobaleSettings.FootnotesNumberingPrefix;
             notesNumberSuffixValue.Text = GlobaleSettings.FootnotesNumberingSuffix;
+            TTSConfigFilePath.Text = GlobaleSettings.TTSConfigFile;
+            AzureKeyValue.Text = GlobaleSettings.AzureSpeechKey;
+            AzureRegionValue.SelectedItem = AzureRegionRevertDictionnary[GlobaleSettings.AzureSpeechRegion ?? ""];
 
             this.notesNumberingStartValue.Enabled = notesNumberingMap[(string)notesNumberingSelector.SelectedItem] == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
 
@@ -323,5 +410,13 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.notesNumberingStartValue.Enabled = notesNumberingMap[(string)notesNumberingSelector.SelectedItem] == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
         }
 
+        private void TTSConfigFileBrowse_Click(object sender, EventArgs e)
+        {
+            if (TTSConfigFileSelect.ShowDialog(this) == DialogResult.OK) {
+                if(TTSConfigFileSelect.FileName.Length > 0) {
+                    GlobaleSettings.TTSConfigFile = TTSConfigFilePath.Text = TTSConfigFileSelect.FileName;
+                }
+            };
+        }
     }
 }

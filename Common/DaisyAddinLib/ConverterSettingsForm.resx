@@ -337,7 +337,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="btn_ok.Location" type="System.Drawing.Point, System.Drawing">
-    <value>422, 613</value>
+    <value>531, 636</value>
   </data>
   <data name="btn_ok.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -376,7 +376,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="grpbox_pgnum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>623, 59</value>
+    <value>747, 74</value>
   </data>
   <data name="grpbox_pgnum.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -394,7 +394,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpbox_pgnum.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="grpbox_charstyles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -409,7 +409,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="grpbox_charstyles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>623, 58</value>
+    <value>747, 73</value>
   </data>
   <data name="grpbox_charstyles.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -427,7 +427,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpbox_charstyles.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="grpbox_ImageSizes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -442,7 +442,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="grpbox_ImageSizes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>623, 124</value>
+    <value>747, 155</value>
   </data>
   <data name="grpbox_ImageSizes.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -460,13 +460,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpbox_ImageSizes.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>531, 613</value>
+    <value>423, 636</value>
   </data>
   <data name="btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -490,7 +490,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>5</value>
   </data>
   <data name="FootnotesBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
@@ -643,7 +643,7 @@
     <value>7, 277</value>
   </data>
   <data name="FootnotesBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>623, 199</value>
+    <value>639, 199</value>
   </data>
   <data name="FootnotesBox.TabIndex" type="System.Int32, mscorlib">
     <value>15</value>
@@ -706,7 +706,7 @@
     <value>110, 21</value>
   </data>
   <data name="notesPositionSelector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>500, 24</value>
+    <value>514, 24</value>
   </data>
   <data name="notesPositionSelector.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -784,7 +784,7 @@
     <value>110, 51</value>
   </data>
   <data name="notesLevelSelector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>500, 24</value>
+    <value>514, 24</value>
   </data>
   <data name="notesLevelSelector.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -847,7 +847,7 @@
     <value>128, 81</value>
   </data>
   <data name="notesNumberingSelector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>482, 24</value>
+    <value>496, 24</value>
   </data>
   <data name="notesNumberingSelector.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -907,7 +907,7 @@
     <value>000</value>
   </data>
   <data name="notesNumberingStartValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>482, 22</value>
+    <value>496, 22</value>
   </data>
   <data name="notesNumberingStartValue.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -958,7 +958,7 @@
     <value>128, 139</value>
   </data>
   <data name="notesNumberPrefixValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>482, 22</value>
+    <value>496, 22</value>
   </data>
   <data name="notesNumberPrefixValue.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -1012,7 +1012,7 @@
     <value>128, 169</value>
   </data>
   <data name="notesNumberSuffixValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>482, 22</value>
+    <value>496, 22</value>
   </data>
   <data name="notesNumberSuffixValue.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -1048,7 +1048,7 @@
     <value>*</value>
   </data>
   <data name="AzureKeyValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>470, 22</value>
+    <value>471, 22</value>
   </data>
   <data name="AzureKeyValue.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -1078,7 +1078,7 @@
     <value>5, 88</value>
   </data>
   <data name="AzureKeyLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 20</value>
+    <value>96, 16</value>
   </data>
   <data name="AzureKeyLabel.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -1111,250 +1111,250 @@
     <value />
   </data>
   <data name="AzureRegionValue.Items1" xml:space="preserve">
-    <value>East US</value>
+    <value>Asia</value>
   </data>
   <data name="AzureRegionValue.Items2" xml:space="preserve">
-    <value>East US 2</value>
+    <value>Asia Pacific</value>
   </data>
   <data name="AzureRegionValue.Items3" xml:space="preserve">
-    <value>South Central US</value>
+    <value>Australia</value>
   </data>
   <data name="AzureRegionValue.Items4" xml:space="preserve">
-    <value>West US 2</value>
+    <value>Australia Central</value>
   </data>
   <data name="AzureRegionValue.Items5" xml:space="preserve">
-    <value>West US 3</value>
+    <value>Australia Central 2</value>
   </data>
   <data name="AzureRegionValue.Items6" xml:space="preserve">
     <value>Australia East</value>
   </data>
   <data name="AzureRegionValue.Items7" xml:space="preserve">
-    <value>Southeast Asia</value>
+    <value>Australia Southeast</value>
   </data>
   <data name="AzureRegionValue.Items8" xml:space="preserve">
-    <value>North Europe</value>
+    <value>Brazil</value>
   </data>
   <data name="AzureRegionValue.Items9" xml:space="preserve">
-    <value>Sweden Central</value>
-  </data>
-  <data name="AzureRegionValue.Items10" xml:space="preserve">
-    <value>UK South</value>
-  </data>
-  <data name="AzureRegionValue.Items11" xml:space="preserve">
-    <value>West Europe</value>
-  </data>
-  <data name="AzureRegionValue.Items12" xml:space="preserve">
-    <value>Central US</value>
-  </data>
-  <data name="AzureRegionValue.Items13" xml:space="preserve">
-    <value>South Africa North</value>
-  </data>
-  <data name="AzureRegionValue.Items14" xml:space="preserve">
-    <value>Central India</value>
-  </data>
-  <data name="AzureRegionValue.Items15" xml:space="preserve">
-    <value>East Asia</value>
-  </data>
-  <data name="AzureRegionValue.Items16" xml:space="preserve">
-    <value>Japan East</value>
-  </data>
-  <data name="AzureRegionValue.Items17" xml:space="preserve">
-    <value>Korea Central</value>
-  </data>
-  <data name="AzureRegionValue.Items18" xml:space="preserve">
-    <value>Canada Central</value>
-  </data>
-  <data name="AzureRegionValue.Items19" xml:space="preserve">
-    <value>France Central</value>
-  </data>
-  <data name="AzureRegionValue.Items20" xml:space="preserve">
-    <value>Germany West Central</value>
-  </data>
-  <data name="AzureRegionValue.Items21" xml:space="preserve">
-    <value>Norway East</value>
-  </data>
-  <data name="AzureRegionValue.Items22" xml:space="preserve">
-    <value>Switzerland North</value>
-  </data>
-  <data name="AzureRegionValue.Items23" xml:space="preserve">
-    <value>UAE North</value>
-  </data>
-  <data name="AzureRegionValue.Items24" xml:space="preserve">
     <value>Brazil South</value>
   </data>
-  <data name="AzureRegionValue.Items25" xml:space="preserve">
+  <data name="AzureRegionValue.Items10" xml:space="preserve">
+    <value>Brazil Southeast</value>
+  </data>
+  <data name="AzureRegionValue.Items11" xml:space="preserve">
+    <value>Brazil US</value>
+  </data>
+  <data name="AzureRegionValue.Items12" xml:space="preserve">
+    <value>Canada</value>
+  </data>
+  <data name="AzureRegionValue.Items13" xml:space="preserve">
+    <value>Canada Central</value>
+  </data>
+  <data name="AzureRegionValue.Items14" xml:space="preserve">
+    <value>Canada East</value>
+  </data>
+  <data name="AzureRegionValue.Items15" xml:space="preserve">
+    <value>Central India</value>
+  </data>
+  <data name="AzureRegionValue.Items16" xml:space="preserve">
+    <value>Central US</value>
+  </data>
+  <data name="AzureRegionValue.Items17" xml:space="preserve">
+    <value>Central US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items18" xml:space="preserve">
     <value>Central US EUAP</value>
+  </data>
+  <data name="AzureRegionValue.Items19" xml:space="preserve">
+    <value>devfabric</value>
+  </data>
+  <data name="AzureRegionValue.Items20" xml:space="preserve">
+    <value>East Asia</value>
+  </data>
+  <data name="AzureRegionValue.Items21" xml:space="preserve">
+    <value>East Asia (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items22" xml:space="preserve">
+    <value>East US</value>
+  </data>
+  <data name="AzureRegionValue.Items23" xml:space="preserve">
+    <value>East US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items24" xml:space="preserve">
+    <value>East US 2</value>
+  </data>
+  <data name="AzureRegionValue.Items25" xml:space="preserve">
+    <value>East US 2 (Stage)</value>
   </data>
   <data name="AzureRegionValue.Items26" xml:space="preserve">
     <value>East US 2 EUAP</value>
   </data>
   <data name="AzureRegionValue.Items27" xml:space="preserve">
-    <value>Qatar Central</value>
-  </data>
-  <data name="AzureRegionValue.Items28" xml:space="preserve">
-    <value>Central US (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items29" xml:space="preserve">
-    <value>East US (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items30" xml:space="preserve">
-    <value>East US 2 (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items31" xml:space="preserve">
-    <value>North Central US (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items32" xml:space="preserve">
-    <value>South Central US (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items33" xml:space="preserve">
-    <value>West US (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items34" xml:space="preserve">
-    <value>West US 2 (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items35" xml:space="preserve">
-    <value>Asia</value>
-  </data>
-  <data name="AzureRegionValue.Items36" xml:space="preserve">
-    <value>Asia Pacific</value>
-  </data>
-  <data name="AzureRegionValue.Items37" xml:space="preserve">
-    <value>Australia</value>
-  </data>
-  <data name="AzureRegionValue.Items38" xml:space="preserve">
-    <value>Brazil</value>
-  </data>
-  <data name="AzureRegionValue.Items39" xml:space="preserve">
-    <value>Canada</value>
-  </data>
-  <data name="AzureRegionValue.Items40" xml:space="preserve">
-    <value>Europe</value>
-  </data>
-  <data name="AzureRegionValue.Items41" xml:space="preserve">
-    <value>France</value>
-  </data>
-  <data name="AzureRegionValue.Items42" xml:space="preserve">
-    <value>Germany</value>
-  </data>
-  <data name="AzureRegionValue.Items43" xml:space="preserve">
-    <value>Global</value>
-  </data>
-  <data name="AzureRegionValue.Items44" xml:space="preserve">
-    <value>India</value>
-  </data>
-  <data name="AzureRegionValue.Items45" xml:space="preserve">
-    <value>Japan</value>
-  </data>
-  <data name="AzureRegionValue.Items46" xml:space="preserve">
-    <value>Korea</value>
-  </data>
-  <data name="AzureRegionValue.Items47" xml:space="preserve">
-    <value>Norway</value>
-  </data>
-  <data name="AzureRegionValue.Items48" xml:space="preserve">
-    <value>Singapore</value>
-  </data>
-  <data name="AzureRegionValue.Items49" xml:space="preserve">
-    <value>South Africa</value>
-  </data>
-  <data name="AzureRegionValue.Items50" xml:space="preserve">
-    <value>Switzerland</value>
-  </data>
-  <data name="AzureRegionValue.Items51" xml:space="preserve">
-    <value>United Arab Emirates</value>
-  </data>
-  <data name="AzureRegionValue.Items52" xml:space="preserve">
-    <value>United Kingdom</value>
-  </data>
-  <data name="AzureRegionValue.Items53" xml:space="preserve">
-    <value>United States</value>
-  </data>
-  <data name="AzureRegionValue.Items54" xml:space="preserve">
-    <value>United States EUAP</value>
-  </data>
-  <data name="AzureRegionValue.Items55" xml:space="preserve">
-    <value>East Asia (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items56" xml:space="preserve">
-    <value>Southeast Asia (Stage)</value>
-  </data>
-  <data name="AzureRegionValue.Items57" xml:space="preserve">
-    <value>Brazil US</value>
-  </data>
-  <data name="AzureRegionValue.Items58" xml:space="preserve">
     <value>East US STG</value>
   </data>
-  <data name="AzureRegionValue.Items59" xml:space="preserve">
-    <value>North Central US</value>
+  <data name="AzureRegionValue.Items28" xml:space="preserve">
+    <value>Europe</value>
   </data>
-  <data name="AzureRegionValue.Items60" xml:space="preserve">
-    <value>West US</value>
+  <data name="AzureRegionValue.Items29" xml:space="preserve">
+    <value>France</value>
   </data>
-  <data name="AzureRegionValue.Items61" xml:space="preserve">
-    <value>Jio India West</value>
+  <data name="AzureRegionValue.Items30" xml:space="preserve">
+    <value>France Central</value>
   </data>
-  <data name="AzureRegionValue.Items62" xml:space="preserve">
-    <value>devfabric</value>
-  </data>
-  <data name="AzureRegionValue.Items63" xml:space="preserve">
-    <value>West Central US</value>
-  </data>
-  <data name="AzureRegionValue.Items64" xml:space="preserve">
-    <value>South Africa West</value>
-  </data>
-  <data name="AzureRegionValue.Items65" xml:space="preserve">
-    <value>Australia Central</value>
-  </data>
-  <data name="AzureRegionValue.Items66" xml:space="preserve">
-    <value>Australia Central 2</value>
-  </data>
-  <data name="AzureRegionValue.Items67" xml:space="preserve">
-    <value>Australia Southeast</value>
-  </data>
-  <data name="AzureRegionValue.Items68" xml:space="preserve">
-    <value>Japan West</value>
-  </data>
-  <data name="AzureRegionValue.Items69" xml:space="preserve">
-    <value>Jio India Central</value>
-  </data>
-  <data name="AzureRegionValue.Items70" xml:space="preserve">
-    <value>Korea South</value>
-  </data>
-  <data name="AzureRegionValue.Items71" xml:space="preserve">
-    <value>South India</value>
-  </data>
-  <data name="AzureRegionValue.Items72" xml:space="preserve">
-    <value>West India</value>
-  </data>
-  <data name="AzureRegionValue.Items73" xml:space="preserve">
-    <value>Canada East</value>
-  </data>
-  <data name="AzureRegionValue.Items74" xml:space="preserve">
+  <data name="AzureRegionValue.Items31" xml:space="preserve">
     <value>France South</value>
   </data>
-  <data name="AzureRegionValue.Items75" xml:space="preserve">
+  <data name="AzureRegionValue.Items32" xml:space="preserve">
+    <value>Germany</value>
+  </data>
+  <data name="AzureRegionValue.Items33" xml:space="preserve">
     <value>Germany North</value>
   </data>
-  <data name="AzureRegionValue.Items76" xml:space="preserve">
+  <data name="AzureRegionValue.Items34" xml:space="preserve">
+    <value>Germany West Central</value>
+  </data>
+  <data name="AzureRegionValue.Items35" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="AzureRegionValue.Items36" xml:space="preserve">
+    <value>India</value>
+  </data>
+  <data name="AzureRegionValue.Items37" xml:space="preserve">
+    <value>Japan</value>
+  </data>
+  <data name="AzureRegionValue.Items38" xml:space="preserve">
+    <value>Japan East</value>
+  </data>
+  <data name="AzureRegionValue.Items39" xml:space="preserve">
+    <value>Japan West</value>
+  </data>
+  <data name="AzureRegionValue.Items40" xml:space="preserve">
+    <value>Jio India Central</value>
+  </data>
+  <data name="AzureRegionValue.Items41" xml:space="preserve">
+    <value>Jio India West</value>
+  </data>
+  <data name="AzureRegionValue.Items42" xml:space="preserve">
+    <value>Korea</value>
+  </data>
+  <data name="AzureRegionValue.Items43" xml:space="preserve">
+    <value>Korea Central</value>
+  </data>
+  <data name="AzureRegionValue.Items44" xml:space="preserve">
+    <value>Korea South</value>
+  </data>
+  <data name="AzureRegionValue.Items45" xml:space="preserve">
+    <value>North Central US</value>
+  </data>
+  <data name="AzureRegionValue.Items46" xml:space="preserve">
+    <value>North Central US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items47" xml:space="preserve">
+    <value>North Europe</value>
+  </data>
+  <data name="AzureRegionValue.Items48" xml:space="preserve">
+    <value>Norway</value>
+  </data>
+  <data name="AzureRegionValue.Items49" xml:space="preserve">
+    <value>Norway East</value>
+  </data>
+  <data name="AzureRegionValue.Items50" xml:space="preserve">
     <value>Norway West</value>
   </data>
-  <data name="AzureRegionValue.Items77" xml:space="preserve">
+  <data name="AzureRegionValue.Items51" xml:space="preserve">
+    <value>Qatar Central</value>
+  </data>
+  <data name="AzureRegionValue.Items52" xml:space="preserve">
+    <value>Singapore</value>
+  </data>
+  <data name="AzureRegionValue.Items53" xml:space="preserve">
+    <value>South Africa</value>
+  </data>
+  <data name="AzureRegionValue.Items54" xml:space="preserve">
+    <value>South Africa North</value>
+  </data>
+  <data name="AzureRegionValue.Items55" xml:space="preserve">
+    <value>South Africa West</value>
+  </data>
+  <data name="AzureRegionValue.Items56" xml:space="preserve">
+    <value>South Central US</value>
+  </data>
+  <data name="AzureRegionValue.Items57" xml:space="preserve">
+    <value>South Central US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items58" xml:space="preserve">
+    <value>South India</value>
+  </data>
+  <data name="AzureRegionValue.Items59" xml:space="preserve">
+    <value>Southeast Asia</value>
+  </data>
+  <data name="AzureRegionValue.Items60" xml:space="preserve">
+    <value>Southeast Asia (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items61" xml:space="preserve">
+    <value>Sweden Central</value>
+  </data>
+  <data name="AzureRegionValue.Items62" xml:space="preserve">
+    <value>Switzerland</value>
+  </data>
+  <data name="AzureRegionValue.Items63" xml:space="preserve">
+    <value>Switzerland North</value>
+  </data>
+  <data name="AzureRegionValue.Items64" xml:space="preserve">
     <value>Switzerland West</value>
   </data>
-  <data name="AzureRegionValue.Items78" xml:space="preserve">
-    <value>UK West</value>
-  </data>
-  <data name="AzureRegionValue.Items79" xml:space="preserve">
+  <data name="AzureRegionValue.Items65" xml:space="preserve">
     <value>UAE Central</value>
   </data>
+  <data name="AzureRegionValue.Items66" xml:space="preserve">
+    <value>UAE North</value>
+  </data>
+  <data name="AzureRegionValue.Items67" xml:space="preserve">
+    <value>UK South</value>
+  </data>
+  <data name="AzureRegionValue.Items68" xml:space="preserve">
+    <value>UK West</value>
+  </data>
+  <data name="AzureRegionValue.Items69" xml:space="preserve">
+    <value>United Arab Emirates</value>
+  </data>
+  <data name="AzureRegionValue.Items70" xml:space="preserve">
+    <value>United Kingdom</value>
+  </data>
+  <data name="AzureRegionValue.Items71" xml:space="preserve">
+    <value>United States</value>
+  </data>
+  <data name="AzureRegionValue.Items72" xml:space="preserve">
+    <value>United States EUAP</value>
+  </data>
+  <data name="AzureRegionValue.Items73" xml:space="preserve">
+    <value>West Central US</value>
+  </data>
+  <data name="AzureRegionValue.Items74" xml:space="preserve">
+    <value>West Europe</value>
+  </data>
+  <data name="AzureRegionValue.Items75" xml:space="preserve">
+    <value>West India</value>
+  </data>
+  <data name="AzureRegionValue.Items76" xml:space="preserve">
+    <value>West US</value>
+  </data>
+  <data name="AzureRegionValue.Items77" xml:space="preserve">
+    <value>West US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items78" xml:space="preserve">
+    <value>West US 2</value>
+  </data>
+  <data name="AzureRegionValue.Items79" xml:space="preserve">
+    <value>West US 2 (Stage)</value>
+  </data>
   <data name="AzureRegionValue.Items80" xml:space="preserve">
-    <value>Brazil Southeast</value>
+    <value>West US 3</value>
   </data>
   <data name="AzureRegionValue.Location" type="System.Drawing.Point, System.Drawing">
     <value>140, 53</value>
   </data>
   <data name="AzureRegionValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>470, 24</value>
+    <value>471, 24</value>
   </data>
   <data name="AzureRegionValue.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -1402,7 +1402,7 @@
     <value>Top, Right</value>
   </data>
   <data name="TTSConfigFileBrowse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>521, 24</value>
+    <value>522, 24</value>
   </data>
   <data name="TTSConfigFileBrowse.Size" type="System.Drawing.Size, System.Drawing">
     <value>89, 23</value>
@@ -1432,7 +1432,7 @@
     <value>140, 25</value>
   </data>
   <data name="TTSConfigFilePath.Size" type="System.Drawing.Size, System.Drawing">
-    <value>375, 22</value>
+    <value>376, 22</value>
   </data>
   <data name="TTSConfigFilePath.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1486,7 +1486,7 @@
     <value>7, 482</value>
   </data>
   <data name="TextToSpeechBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>623, 121</value>
+    <value>624, 121</value>
   </data>
   <data name="TextToSpeechBox.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -1504,7 +1504,16 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;TextToSpeechBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
+  </data>
+  <metadata name="TTSConfigFileSelect.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="TTSConfigFileSelect.Filter" xml:space="preserve">
+    <value>TTS config (*.xml)|*.xml</value>
+  </data>
+  <data name="TTSConfigFileSelect.Title" xml:space="preserve">
+    <value>Select a TTS configuration file</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -1513,7 +1522,7 @@
     <value>8, 16</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>643, 654</value>
+    <value>643, 677</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -1529,6 +1538,12 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>SaveAsDAISY Settings</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileSelect.Name" xml:space="preserve">
+    <value>TTSConfigFileSelect</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileSelect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConverterSettingsForm</value>

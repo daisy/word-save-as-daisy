@@ -89,13 +89,14 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.notesNumberSuffixLabel = new System.Windows.Forms.Label();
             this.notesNumberSuffixValue = new System.Windows.Forms.TextBox();
             this.TextToSpeechBox = new System.Windows.Forms.GroupBox();
-            this.TTSConfigFileLabel = new System.Windows.Forms.Label();
-            this.TTSConfigFilePath = new System.Windows.Forms.TextBox();
-            this.TTSConfigFileBrowse = new System.Windows.Forms.Button();
-            this.AzureRegionLabel = new System.Windows.Forms.Label();
-            this.AzureRegionValue = new System.Windows.Forms.ComboBox();
-            this.AzureKeyLabel = new System.Windows.Forms.Label();
             this.AzureKeyValue = new System.Windows.Forms.TextBox();
+            this.AzureKeyLabel = new System.Windows.Forms.Label();
+            this.AzureRegionValue = new System.Windows.Forms.ComboBox();
+            this.AzureRegionLabel = new System.Windows.Forms.Label();
+            this.TTSConfigFileBrowse = new System.Windows.Forms.Button();
+            this.TTSConfigFilePath = new System.Windows.Forms.TextBox();
+            this.TTSConfigFileLabel = new System.Windows.Forms.Label();
+            this.TTSConfigFileSelect = new System.Windows.Forms.OpenFileDialog();
             this.grpbox_pgnum.SuspendLayout();
             this.grpbox_charstyles.SuspendLayout();
             this.grpbox_ImageSizes.SuspendLayout();
@@ -311,26 +312,15 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.TextToSpeechBox.Name = "TextToSpeechBox";
             this.TextToSpeechBox.TabStop = false;
             // 
-            // TTSConfigFileLabel
+            // AzureKeyValue
             // 
-            resources.ApplyResources(this.TTSConfigFileLabel, "TTSConfigFileLabel");
-            this.TTSConfigFileLabel.Name = "TTSConfigFileLabel";
+            resources.ApplyResources(this.AzureKeyValue, "AzureKeyValue");
+            this.AzureKeyValue.Name = "AzureKeyValue";
             // 
-            // TTSConfigFilePath
+            // AzureKeyLabel
             // 
-            resources.ApplyResources(this.TTSConfigFilePath, "TTSConfigFilePath");
-            this.TTSConfigFilePath.Name = "TTSConfigFilePath";
-            // 
-            // TTSConfigFileBrowse
-            // 
-            resources.ApplyResources(this.TTSConfigFileBrowse, "TTSConfigFileBrowse");
-            this.TTSConfigFileBrowse.Name = "TTSConfigFileBrowse";
-            this.TTSConfigFileBrowse.UseVisualStyleBackColor = true;
-            // 
-            // AzureRegionLabel
-            // 
-            resources.ApplyResources(this.AzureRegionLabel, "AzureRegionLabel");
-            this.AzureRegionLabel.Name = "AzureRegionLabel";
+            resources.ApplyResources(this.AzureKeyLabel, "AzureKeyLabel");
+            this.AzureKeyLabel.Name = "AzureKeyLabel";
             // 
             // AzureRegionValue
             // 
@@ -421,15 +411,32 @@ namespace Daisy.SaveAsDAISY.Conversion
             resources.GetString("AzureRegionValue.Items80")});
             this.AzureRegionValue.Name = "AzureRegionValue";
             // 
-            // AzureKeyLabel
+            // AzureRegionLabel
             // 
-            resources.ApplyResources(this.AzureKeyLabel, "AzureKeyLabel");
-            this.AzureKeyLabel.Name = "AzureKeyLabel";
+            resources.ApplyResources(this.AzureRegionLabel, "AzureRegionLabel");
+            this.AzureRegionLabel.Name = "AzureRegionLabel";
             // 
-            // AzureKeyValue
+            // TTSConfigFileBrowse
             // 
-            resources.ApplyResources(this.AzureKeyValue, "AzureKeyValue");
-            this.AzureKeyValue.Name = "AzureKeyValue";
+            resources.ApplyResources(this.TTSConfigFileBrowse, "TTSConfigFileBrowse");
+            this.TTSConfigFileBrowse.Name = "TTSConfigFileBrowse";
+            this.TTSConfigFileBrowse.UseVisualStyleBackColor = true;
+            this.TTSConfigFileBrowse.Click += new System.EventHandler(this.TTSConfigFileBrowse_Click);
+            // 
+            // TTSConfigFilePath
+            // 
+            resources.ApplyResources(this.TTSConfigFilePath, "TTSConfigFilePath");
+            this.TTSConfigFilePath.Name = "TTSConfigFilePath";
+            // 
+            // TTSConfigFileLabel
+            // 
+            resources.ApplyResources(this.TTSConfigFileLabel, "TTSConfigFileLabel");
+            this.TTSConfigFileLabel.Name = "TTSConfigFileLabel";
+            // 
+            // TTSConfigFileSelect
+            // 
+            this.TTSConfigFileSelect.FileName = "SelectedTTSConfigFile";
+            resources.ApplyResources(this.TTSConfigFileSelect, "TTSConfigFileSelect");
             // 
             // ConverterSettingsForm
             // 
@@ -438,11 +445,11 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
             this.Controls.Add(this.FootnotesBox);
-            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.grpbox_ImageSizes);
             this.Controls.Add(this.grpbox_charstyles);
             this.Controls.Add(this.grpbox_pgnum);
             this.Controls.Add(this.TextToSpeechBox);
+            this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btn_ok);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -498,5 +505,6 @@ namespace Daisy.SaveAsDAISY.Conversion
         private System.Windows.Forms.ComboBox AzureRegionValue;
         private System.Windows.Forms.Label AzureKeyLabel;
         private System.Windows.Forms.TextBox AzureKeyValue;
+        private System.Windows.Forms.OpenFileDialog TTSConfigFileSelect;
     }
 }

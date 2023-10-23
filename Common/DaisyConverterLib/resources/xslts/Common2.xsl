@@ -54,15 +54,11 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:param name="sMinuses"/>
         <xsl:param name="sNumbers"/>
         <xsl:param name="sZeros"/>
-        <xsl:message terminate="no">progress:Adding level <xsl:value-of select="$levelValue"/></xsl:message>
+        <xsl:message terminate="no">debug:Adding level <xsl:value-of select="$levelValue"/></xsl:message>
         <!--Pushing level into the stack-->
         <xsl:variable name="headingIncrementCounters" select="myObj:IncrementHeadingCounters($levelValue,substring-after($txt,'!'),$abValue)"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:variable name="copyCounter" select="myObj:CopyToBaseCounter(substring-after($txt,'!'))"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-        <xsl:variable name="level" select="myObj:PushLevel($levelValue)"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
-        <xsl:choose>
+        <xsl:variable name="level" select="myObj:PushLevel($levelValue)"/>        <xsl:choose>
             <!--Checking the level value-->
             <xsl:when test="$level &lt; 7">
                 <!--Levels upto 6-->
@@ -385,9 +381,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:choose>
             <xsl:when test="$CurrentLevel &gt; 6 and $PeekLevel = 6 ">
                 <xsl:variable name="PopLevel" select="myObj:PoPLevel()"/>
-                <xsl:message terminate="no">
-                    progress:Closing level <xsl:value-of select="$PopLevel"/>
-                </xsl:message>
+                <xsl:message terminate="no">debug:Closing level <xsl:value-of select="$PopLevel"/></xsl:message>
                 <!--Close that level-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level',$PopLevel,'&gt;')"/>
                 <!-- TODO : if footnotes position is set to be after this level, insert footnotes here -->
@@ -395,9 +389,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:when>
             <!-- NP 20220503 : using CloseLevel to also close paragraph -->
             <xsl:when test="$CurrentLevel = -1">
-                <xsl:message terminate="no">
-                    progress:Closing paragraph
-                </xsl:message>
+                <xsl:message terminate="no">debug:Closing paragraph</xsl:message>
                 <!--Close that level-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                 <!--  insert footnotes after the paragraph if inlined footnotes in the current level is requested
@@ -433,7 +425,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                 and number($FootnotesLevel) &gt;= $PopLevel
                             )
                          )">
-                        <xsl:message terminate="no">progress:Trying to insert notes before closing level <xsl:value-of select="$PopLevel"/></xsl:message>
+                        <xsl:message terminate="no">debug Trying to insert notes before closing level <xsl:value-of select="$PopLevel"/></xsl:message>
                         <xsl:call-template name="InsertFootnotes">
                             <xsl:with-param name="verfoot" select="$verfoot"/>
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
@@ -443,7 +435,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             <xsl:with-param name="sZeros" select="$sZeros"/>
                         </xsl:call-template>
                     </xsl:if>
-                    <xsl:message terminate="no">progress:Closing level <xsl:value-of select="$PopLevel"/></xsl:message>
+                    <xsl:message terminate="no">debug Closing level <xsl:value-of select="$PopLevel"/></xsl:message>
                     <!-- Close the level tag-->
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level',$PopLevel,'&gt;')"/>
                     <!-- TODO : if footnotes are requested to be inlined in the  $PopLevel - 1 level, insert the notes here 
@@ -540,7 +532,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:param name="numFmt"/>
         <xsl:param name="lText"/>
         <xsl:param name="lstcharStyle"/>
-        <xsl:message terminate="no">progress:addlist</xsl:message>
+        <xsl:message terminate="no">debug addlist</xsl:message>
         <!--Pushes the current level into the stack-->
         <xsl:variable name="PeekLevel" select="myObj:ListPeekLevel()"/>
         <!--Checking the current level with the PeekLevel in the stack-->
@@ -636,7 +628,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
     <!--Template to close the List-->
     <xsl:template name="closelist">
         <xsl:param name="close"/>
-        <xsl:message terminate="no">progress:closelist</xsl:message>
+        <xsl:message terminate="no">debug closelist</xsl:message>
         <!--Gets the current level of the stack  -->
         <xsl:variable name="PeekLevel" select="myObj:ListPeekLevel()"/>
         <!--Checking the current level with the PeekLevel in the stack-->
@@ -656,7 +648,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
     </xsl:template>
     <xsl:template name="recursive">
         <xsl:param name="rec"/>
-        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
         <xsl:variable name="aquote">"</xsl:variable>
         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','list ','type=',$aquote,'ol',$aquote,'&gt;')"/>
         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','li','&gt;')"/>
@@ -708,7 +699,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
     <!--Template to Close Complex List-->
     <xsl:template name="ComplexListClose">
         <xsl:param name="close"/>
-        <xsl:message terminate="no">progress:closelist</xsl:message>
+        <xsl:message terminate="no">debug closelist</xsl:message>
         <!--Gets the current level of the stack  -->
         <xsl:variable name="PeekLevel" select="myObj:ListPeekLevel()"/>
         <!--Checking the current level with the PeekLevel in the stack-->
@@ -727,7 +718,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
     <xsl:template name="CloseLastlist">
         <xsl:param name="close"/>
     <xsl:param name="custom"/>
-        <xsl:message terminate="no">progress:closelist</xsl:message>
+        <xsl:message terminate="no">debug:closelist</xsl:message>
         <!--Gets the current level of the stack  -->
         <xsl:variable name="PeekLevel" select="myObj:ListPeekLevel()"/>
         <!--Checking the current level with the PeekLevel in the stack-->
@@ -853,10 +844,9 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <xsl:param name="mastersubtbl"/>
         <xsl:param name="characterStyle"/>
         <xsl:variable name="quote">"</xsl:variable>
-        <xsl:message terminate="no">progress:Table found</xsl:message>
+        <xsl:message terminate="no">debug:Table found</xsl:message>
         <xsl:if test="$custom='Automatic'">
             <xsl:for-each select="w:tr/w:tc">
-                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                 <xsl:if test="((w:p/w:r/w:lastRenderedPageBreak) or (w:p/w:r/w:br/@w:type='page'))">
                     <xsl:if test="not((../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:lastRenderedPageBreak) or (../preceding-sibling::w:tr[1]/w:tc/w:p/w:r/w:br/@w:type='page') or (preceding-sibling::w:tc[1]/w:p/w:r/w:lastRenderedPageBreak) or (preceding-sibling::w:tc[1]/w:p/w:r/w:br/@w:type='page'))">
                         <xsl:variable name="increment" select="myObj:IncrementPage()"/>
@@ -893,10 +883,8 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     </xsl:if>
                     <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Caption')">
                         <xsl:for-each select="preceding-sibling::node()[1]/node()">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:if test="name()='w:r'">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
                                         <xsl:when test="w:noBreakHyphen">
                                             <xsl:text>-</xsl:text>
@@ -911,7 +899,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             </xsl:if>
                             <xsl:if test="name()='w:fldSimple'">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:for-each>
                             </xsl:if>
@@ -919,10 +906,8 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     </xsl:if>
                     <xsl:if test="(preceding-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
                         <xsl:for-each select="preceding-sibling::node()[1]/node()">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:if test="name()='w:r'">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
                                         <xsl:when test="w:noBreakHyphen">
                                             <xsl:text>-</xsl:text>
@@ -937,7 +922,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             </xsl:if>
                             <xsl:if test="name()='w:fldSimple'">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:for-each>
                             </xsl:if>
@@ -945,10 +929,8 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     </xsl:if>
                     <xsl:if test="(following-sibling::node()[1]/w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')">
                         <xsl:for-each select="following-sibling::node()[1]/node()">
-                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                             <xsl:if test="name()='w:r'">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:choose>
                                         <xsl:when test="w:noBreakHyphen">
                                             <xsl:text>-</xsl:text>
@@ -963,7 +945,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                             </xsl:if>
                             <xsl:if test="name()='w:fldSimple'">
                                 <xsl:for-each select=".">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:value-of select="w:r/w:t"/>
                                 </xsl:for-each>
                             </xsl:if>
@@ -1010,14 +991,12 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                 <thead>
                     <!--Looping through each row of the table-->
                     <xsl:for-each select="w:tr">
-                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                         <!--Checking for table header-->
                         <xsl:if test="w:trPr/w:tblHeader">
                             <!--Looping through each row of the table-->
                             <tr>
                                 <!--Looping through each cell of the table-->
                                 <xsl:for-each select="w:tc/w:p">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <th>
                                         <!--Assinging value as Table head-->
                                         <xsl:call-template name="ParagraphStyle">
@@ -1037,17 +1016,14 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                 <tfoot>
                     <!--Looping through each row of the table-->
                     <xsl:for-each select="w:tr">
-                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                         <xsl:if test="position()=last()">
                             <tr>
                                 <!--Looping through each cell of the table-->
                                 <xsl:for-each select="w:tc">
-                                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                     <xsl:if test="(w:p) and (not((following-sibling::w:p[1]/w:pPr/w:pStyle[@w:val='DefinitionDataDAISY']) or (following-sibling::w:p[1]/w:r/w:rPr/w:rStyle[@w:val='DefinitionTermDAISY'])))">
                                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','th','&gt;')"/>
                                     </xsl:if>
                                     <xsl:for-each select="w:p">
-                                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                         <xsl:call-template name="ParagraphStyle">
                                             <xsl:with-param name="custom" select="$custom"/>
                                             <xsl:with-param name="VERSION" select="$parmVerTable"/>
@@ -1067,17 +1043,14 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                 <!--Counting each paragraph element for counting the number of rows spaned-->
                 <!--Looping through each row of the table-->
                 <xsl:for-each select="w:tr">
-                    <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                     <!--Checking if the row is not header row-->
                     <xsl:if test="not(w:trPr/w:tblHeader)">
                         <tr>
                             <!--Looping through each cell of the table-->
                             <xsl:for-each select="w:tc">
-                                <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                 <xsl:if test="w:tcPr/w:vMerge[@w:val='restart']">
                                     <xsl:variable name="columnPosition" select="position()"/>
                                     <xsl:for-each select="../following-sibling::w:tr/w:tc[$columnPosition]/w:tcPr">
-                                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                         <xsl:if test="myObj:ReturnFlagRowspan()=0">
                                             <xsl:if test="(w:vMerge) and not(w:vMerge/@w:val='restart')">
                                                 <xsl:variable name="rowspan" select="myObj:Rowspan()"/>
@@ -1120,13 +1093,11 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                     </xsl:choose>
                                     <xsl:variable name="var_heading">
                                         <xsl:for-each select="document('word/styles.xml')//w:styles/w:style/w:name[@w:val='heading 1']">
-                                            <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                             <xsl:value-of select="../@w:styleId"/>
                                         </xsl:for-each>
                                     </xsl:variable>
                                     <xsl:variable name="setRowspan" select="myObj:SetRowspan()"/>
                                     <xsl:for-each select="w:p">
-                                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                         <!--Calling paragraph template whenever w:p element is encountered.-->
                                         <xsl:call-template name="StyleContainer">
                                             <xsl:with-param name="VERSION" select="$parmVerTable"/>
@@ -1138,7 +1109,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                     </xsl:for-each>
                                     <!--Checking for nested table-->
                                     <xsl:for-each select="child::w:tbl">
-                                        <!--<xsl:message terminate="no">progress:parahandler</xsl:message>-->
                                         <!--Calling template Tablehandler for nested tables-->
                                         <xsl:call-template name="TableHandler">
                                             <xsl:with-param name="parmVerTable" select="$parmVerTable"/>
