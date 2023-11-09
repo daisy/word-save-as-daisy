@@ -234,8 +234,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 copy.Close(SaveChanges: false);
                 throw;
             }
-
-            
+            // Calling save to avoid word asking to save after coping data from the document
+            currentDoc.Save();
 
             return ConversionStatus.CreatedWorkingCopy;
 
