@@ -65,15 +65,19 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public override object Value
         {
-            get { return path; }
+            get {
+                if (ShouldExists(path)) {
+                    return path;
+                } else throw new System.Exception(path + " does not exist");
+            }
             set
             {
-                if (Exists((string)value))
+                if (ShouldExists((string)value))
                 {
                     path = (string)value;
                     UpdateScript(path);
                 }
-                else throw new System.Exception("No_Path");
+                //else throw new System.Exception("No_Path");
             }
         }
         /// <summary>
@@ -81,17 +85,16 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         /// <param name="PathValue"></param>
         /// <returns></returns>
-        public bool Exists(string PathValue)
+        public bool ShouldExists(string PathValue)
         {
-            if (IsFile)
-            {
-                if (File.Exists(PathValue))
+            if (IsInput) {
+                if (IsFile && File.Exists(PathValue)) {
                     return true;
-            }
-            else
-            {
-                if (Directory.Exists(PathValue))
+                } else if (Directory.Exists(PathValue)) {
                     return true;
+                }
+            } else if (IsOutput) {
+                return true;
             }
             return false;
         }

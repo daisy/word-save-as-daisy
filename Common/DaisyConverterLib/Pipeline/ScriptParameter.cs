@@ -46,8 +46,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             m_Name = name;
             m_NiceName = niceName;
             m_DataType = dataType;
-            m_DataType.LinkedParameter = this;
             m_Value = initialValue;
+            m_DataType.LinkedParameter = this;
             m_Description = description;
             m_Required = required;
             m_Displayed = displayed;

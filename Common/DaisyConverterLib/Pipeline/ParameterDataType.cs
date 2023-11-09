@@ -10,7 +10,14 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
 
         protected ScriptParameter m_Parameter;
 
-        public ScriptParameter LinkedParameter { get => m_Parameter; set => m_Parameter = value; }
+        public ScriptParameter LinkedParameter { get => m_Parameter; set
+            {
+                // Reference the script parameter
+                m_Parameter = value;
+                // Get its value
+                Value = m_Parameter.ParameterValue;
+            }
+        }
 
         public ParameterDataType(ScriptParameter param)
         {
