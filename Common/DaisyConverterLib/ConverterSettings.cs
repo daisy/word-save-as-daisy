@@ -32,20 +32,20 @@ namespace Daisy.SaveAsDAISY.Conversion
         public static class ImageOptionChoice
         {
             /// <summary>
-            /// Possible type of note numbering outputed
+            /// Image resizing
             /// </summary>
             public enum Enum
             {
                 /// <summary>
-                /// Inline note in content (after the paragraph containing its first reference)
+                /// Keep original image
                 /// </summary>
                 Original,
                 /// <summary>
-                /// Put notes at the end of a level defined in settings
+                /// Resize image
                 /// </summary>
                 Resize,
                 /// <summary>
-                /// Put the notes near the word pagebreak
+                /// Resample the image
                 /// </summary>
                 Resample
             }
