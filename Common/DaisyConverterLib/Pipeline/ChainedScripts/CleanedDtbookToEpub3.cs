@@ -63,7 +63,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                     )
                 },
                 {"output", new ScriptParameter(
-                        "output-dir",
+                        "result",
                         "EPUB output directory",
                         new PathDataType(
                             PathDataType.InputOrOutput.output,
