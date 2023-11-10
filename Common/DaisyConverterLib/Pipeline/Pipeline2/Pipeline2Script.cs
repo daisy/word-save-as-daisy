@@ -133,11 +133,21 @@ namespace Daisy.SaveAsDAISY.Conversion
                 // NP 2023/09/27 : I don't know why yet, but pipeline 2 w/ simpleAPI export files with their uri encoded names
                 // While pipeline 2 app and pipeline 2 internal job folder has the correct file names 
                 if (Parameters.ContainsKey("output")) {
+                    string[] outputDirectories = Directory.GetDirectories((string)this.Parameters["output"].ParameterValue, "*", SearchOption.AllDirectories);
+                    foreach (var folder in outputDirectories) {
+                        string actualName = folder;
+                        string expectedFolder = Uri.UnescapeDataString(folder);
+                        if (!Directory.Exists(expectedFolder)) {
+                            Directory.CreateDirectory(Path.GetDirectoryName(expectedFolder));
+                            Directory.Move(folder, expectedFolder);
+                        }
+                    }
                     string[] outputFiles = Directory.GetFiles((string)this.Parameters["output"].ParameterValue, "*", SearchOption.AllDirectories);
+
                     foreach (var file in outputFiles) {
                         string actualName = Path.GetFileName(file);
                         string expectedFile = Path.Combine(
-                            Path.GetDirectoryName(file),
+                            Uri.UnescapeDataString(Path.GetDirectoryName(file)),
                             Uri.UnescapeDataString(actualName)
                         );
                         if (!File.Exists(expectedFile)) {
