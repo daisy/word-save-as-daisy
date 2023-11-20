@@ -337,7 +337,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="btn_ok.Location" type="System.Drawing.Point, System.Drawing">
-    <value>531, 636</value>
+    <value>531, 495</value>
   </data>
   <data name="btn_ok.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -466,7 +466,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 636</value>
+    <value>423, 495</value>
   </data>
   <data name="btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -1030,7 +1030,7 @@
     <value>11</value>
   </data>
   <data name="TextToSpeechBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Bottom, Left, Right</value>
   </data>
   <data name="AzureKeyValue.AccessibleDescription" xml:space="preserve">
     <value>One of the two keys provided in your Azure Speech Service resource panel</value>
@@ -1483,7 +1483,7 @@
     <value>6</value>
   </data>
   <data name="TextToSpeechBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 482</value>
+    <value>7, 351</value>
   </data>
   <data name="TextToSpeechBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>624, 121</value>
@@ -1493,6 +1493,9 @@
   </data>
   <data name="TextToSpeechBox.Text" xml:space="preserve">
     <value>Speech synthesis</value>
+  </data>
+  <data name="TextToSpeechBox.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;TextToSpeechBox.Name" xml:space="preserve">
     <value>TextToSpeechBox</value>
@@ -1522,7 +1525,7 @@
     <value>8, 16</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>643, 677</value>
+    <value>643, 536</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
