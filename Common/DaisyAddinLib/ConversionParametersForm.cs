@@ -148,7 +148,73 @@ namespace Daisy.SaveAsDAISY.Conversion
 			}
 			
 			InitializeComponent();
-		}
+
+            UIDTextBox.Text = GenerateId().ToString();
+            uId = UIDTextBox.Text;
+
+            CreatorInput.Text = UpdatedConversionParameters.Creator;
+            TitleInput.Text = UpdatedConversionParameters.Title;
+            PublisherInput.Text = UpdatedConversionParameters.Publisher;
+
+            DestinationControl.Width = this.Width - 10;
+
+            //Point temp = AdvancedSettingsPanel.Location;
+            //BottomPanel.Location = temp;
+            //this.Height = this.Height - AdvancedSettingsPanel.Height;
+            AdvancedSettingsGroup.Visible = false;
+            //SwitchAdvancedSettingsButton.Visible = false;
+            if (!useAScript) {
+                AdvancedSettingsGroup.Visible = false;
+                PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
+
+                DestinationControl.SelectedPath = prepopulateDaisyOutput != null
+                                      ? prepopulateDaisyOutput.OutputPath
+                                      : Path.GetDirectoryName(inputFileName);
+
+            } else {
+                //SwitchAdvancedSettingsButton.Visible = false;
+                this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
+
+                // Link the original destination selection to the output script parameter
+                PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
+                ScriptParameter outputParameter = UpdatedConversionParameters.PostProcessor.Parameters["output"];
+                outputParameter.ParameterValue = prepopulateDaisyOutput != null
+                                       ? prepopulateDaisyOutput.OutputPath
+                                       : string.Empty;
+                DestinationControl.setLinkedParameter(outputParameter);
+
+
+                // Build AdvancedSettingsPanel
+                AdvancedSettingsGroup.Visible = true;
+                int tabIndex = 0;
+                int h = 15; // Starting height
+                outputFileOrFolder = prepopulateDaisyOutput != null
+                                       ? prepopulateDaisyOutput.OutputPath
+                                       : string.Empty;
+
+                foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters) {
+                    ScriptParameter p = kv.Value;
+
+
+                    // output is put in the dedicated output panel
+                    if (kv.Key == "output" || kv.Key == "input" || p.Name == "input") continue;
+
+                    if (p.IsParameterRequired || p.IsParameterDisplayed) {
+                        Control c = convertScriptParameterToControl(p);
+                        AdvancedSettingsPanel.Controls.Add(c);
+                        c.Location = new Point(10, h);
+                        c.Width = AdvancedSettingsPanel.Width - 20;
+                        c.Anchor = AnchorStyles.Top;
+                        //RequiredSettingsPanel.Controls.Add(c);
+                        c.TabIndex = tabIndex++;
+                        h += c.Height;
+                    }
+                }
+                AdvancedSettingsPanel.Size = new Size(AdvancedSettingsPanel.Size.Width, h + 5);
+                //BottomPanel.Location = new Point(BottomPanel.Location.X, AdvancedSettingsPanel.Location.Y + h + 5);
+                //Size = new Size(Size.Width, BottomPanel.Location.Y + BottomPanel.Size.Height);
+            }
+        }
 
 		/// <summary>
 		/// Function to Get the data of a particular file
@@ -199,12 +265,12 @@ namespace Daisy.SaveAsDAISY.Conversion
 			}
 
 
-            for (int i = 0; i < AdvancedSettingsPanel.Controls.Count; i++)
+            for (int i = 0; i < AdvancedSettingsGroup.Controls.Count; i++)
 			{
-				if (AdvancedSettingsPanel.Controls[i] is BaseUserControl)
+				if (AdvancedSettingsGroup.Controls[i] is BaseUserControl)
 				{
 
-					((BaseUserControl)AdvancedSettingsPanel.Controls[i]).UpdateScriptParameterValue();
+					((BaseUserControl)AdvancedSettingsGroup.Controls[i]).UpdateScriptParameterValue();
 
 				}
 			}
@@ -489,6 +555,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// <param name="e"></param>
 		private void ConversionParametersFrom_Load(object sender, EventArgs e)
 		{
+			/*
 			UIDTextBox.Text = GenerateId().ToString();
 			uId = UIDTextBox.Text;
 
@@ -502,7 +569,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             //BottomPanel.Location = temp;
             //this.Height = this.Height - AdvancedSettingsPanel.Height;
             AdvancedSettingsPanel.Visible = false;
-            SwitchAdvancedSettingsButton.Visible = false;
+            //SwitchAdvancedSettingsButton.Visible = false;
             if (!useAScript)
 			{
 				PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
@@ -514,7 +581,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			}
 			else
 			{
-                SwitchAdvancedSettingsButton.Visible = true;
+                //SwitchAdvancedSettingsButton.Visible = false;
                 this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
 
                 // Link the original destination selection to the output script parameter
@@ -527,9 +594,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 				
 
                 // Build AdvancedSettingsPanel
-                AdvancedSettingsPanel.Visible = false;
+                AdvancedSettingsPanel.Visible = true;
 				int tabIndex = 0;
-				int h = 5; // Starting height
+				int h = 15; // Starting height
                 outputFileOrFolder = prepopulateDaisyOutput != null
                                        ? prepopulateDaisyOutput.OutputPath
                                        : string.Empty;
@@ -554,12 +621,12 @@ namespace Daisy.SaveAsDAISY.Conversion
 						h += c.Height;
 					}
 				}
-                this.AdvancedSettingsPanel.AutoScroll = true;
-                this.AdvancedSettingsPanel.Height = h + 5;
-			}
+                AdvancedSettingsPanel.Size = new Size(AdvancedSettingsPanel.Size.Width, h + 5);
+                BottomPanel.Location = new Point(BottomPanel.Location.X, AdvancedSettingsPanel.Location.Y + h + 5);
+				Size = new Size(Size.Width, BottomPanel.Location.Y + BottomPanel.Size.Height);
+            }
+			*/
 		}
-
-
         private void AccessibilityCheckerLink_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e) {
 			Process.Start("https://support.microsoft.com/en-us/office/improve-accessibility-with-the-accessibility-checker-a16f6de0-2f39-4a2b-8bd8-5ad801426c7f#bkmk_use");
 		}
@@ -637,14 +704,14 @@ namespace Daisy.SaveAsDAISY.Conversion
 		private void OnClickSwitchAdvandedSettingsButton(object sender, EventArgs e)
 		{
 			
-			if(AdvancedSettingsPanel.Visible) // Visible, hide the panel
+			if(AdvancedSettingsGroup.Visible) // Visible, hide the panel
 			{
 				SwitchAdvancedSettingsButton.Text = "Show Ad&vanced <<";
-				AdvancedSettingsPanel.Visible = false;
+				AdvancedSettingsGroup.Visible = false;
 
             } else // not visible, show the panel
 			{
-				AdvancedSettingsPanel.Visible = true;
+				AdvancedSettingsGroup.Visible = true;
                 SwitchAdvancedSettingsButton.Text = "Hide Ad&vanced <<";
             }
 		}

@@ -50,7 +50,7 @@
             // browseButton
             // 
             this.browseButton.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.browseButton.Location = new System.Drawing.Point(239, 2);
+            this.browseButton.Location = new System.Drawing.Point(515, 2);
             this.browseButton.Name = "browseButton";
             this.browseButton.Size = new System.Drawing.Size(73, 27);
             this.browseButton.TabIndex = 3;
@@ -64,7 +64,7 @@
             this.parameterValue.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.parameterValue.Location = new System.Drawing.Point(3, 2);
             this.parameterValue.Name = "parameterValue";
-            this.parameterValue.Size = new System.Drawing.Size(233, 27);
+            this.parameterValue.Size = new System.Drawing.Size(509, 27);
             this.parameterValue.TabIndex = 2;
             // 
             // InputPanel
@@ -72,19 +72,18 @@
             this.InputPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.InputPanel.Controls.Add(this.parameterValue);
             this.InputPanel.Controls.Add(this.browseButton);
-            this.InputPanel.Location = new System.Drawing.Point(3, 20);
+            this.InputPanel.Location = new System.Drawing.Point(3, 23);
             this.InputPanel.Name = "InputPanel";
-            this.InputPanel.Size = new System.Drawing.Size(315, 31);
+            this.InputPanel.Size = new System.Drawing.Size(591, 31);
             this.InputPanel.TabIndex = 4;
             // 
             // PathControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowOnly;
             this.Controls.Add(this.InputPanel);
             this.Margin = new System.Windows.Forms.Padding(5, 4, 5, 4);
             this.Name = "PathControl";
-            this.Size = new System.Drawing.Size(327, 55);
+            this.Size = new System.Drawing.Size(603, 61);
             this.Controls.SetChildIndex(this.parameterNiceName, 0);
             this.Controls.SetChildIndex(this.InputPanel, 0);
             this.InputPanel.ResumeLayout(false);

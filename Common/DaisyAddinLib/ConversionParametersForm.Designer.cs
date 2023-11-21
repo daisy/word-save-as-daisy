@@ -49,12 +49,14 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.ResetButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
             this.BottomPanel = new System.Windows.Forms.Panel();
+            this.AdvancedSettingsGroup = new System.Windows.Forms.GroupBox();
             this.AdvancedSettingsPanel = new System.Windows.Forms.Panel();
             this.DestinationControl = new Daisy.SaveAsDAISY.Forms.Controls.PathControl();
             this.DocumentPropertiesGroup.SuspendLayout();
             this.DocumentPropertiesTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.BottomPanel.SuspendLayout();
+            this.AdvancedSettingsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // UIDTextBox
@@ -199,10 +201,16 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.BottomPanel.Controls.Add(this.ResetButton);
             this.BottomPanel.Name = "BottomPanel";
             // 
+            // AdvancedSettingsGroup
+            // 
+            resources.ApplyResources(this.AdvancedSettingsGroup, "AdvancedSettingsGroup");
+            this.AdvancedSettingsGroup.Controls.Add(this.AdvancedSettingsPanel);
+            this.AdvancedSettingsGroup.Name = "AdvancedSettingsGroup";
+            this.AdvancedSettingsGroup.TabStop = false;
+            // 
             // AdvancedSettingsPanel
             // 
             resources.ApplyResources(this.AdvancedSettingsPanel, "AdvancedSettingsPanel");
-            this.AdvancedSettingsPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AdvancedSettingsPanel.Name = "AdvancedSettingsPanel";
             // 
             // DestinationControl
@@ -220,8 +228,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.AdvancedSettingsGroup);
             this.Controls.Add(this.BottomPanel);
-            this.Controls.Add(this.AdvancedSettingsPanel);
             this.Controls.Add(this.DocumentPropertiesGroup);
             this.Controls.Add(this.DestinationControl);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
@@ -238,8 +246,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.BottomPanel.ResumeLayout(false);
+            this.AdvancedSettingsGroup.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -263,8 +271,9 @@ namespace Daisy.SaveAsDAISY.Conversion
         private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Button OKButton;
         private System.Windows.Forms.LinkLabel AccessibilityCheckerLink;
-        private Forms.Controls.PathControl DestinationControl;
         private System.Windows.Forms.Panel BottomPanel;
+        private System.Windows.Forms.GroupBox AdvancedSettingsGroup;
+        private Forms.Controls.PathControl DestinationControl;
         private System.Windows.Forms.Panel AdvancedSettingsPanel;
         //private System.Windows.Forms.TextBox tBx_Publisher;
 

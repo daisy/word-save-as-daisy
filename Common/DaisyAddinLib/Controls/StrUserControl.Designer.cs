@@ -53,9 +53,9 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
             // StrUserControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            resources.ApplyResources(this, "$this");
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.InputPanel);
+            resources.ApplyResources(this, "$this");
             this.Name = "StrUserControl";
             this.Controls.SetChildIndex(this.parameterNiceName, 0);
             this.Controls.SetChildIndex(this.InputPanel, 0);

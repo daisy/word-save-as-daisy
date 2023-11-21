@@ -49,10 +49,10 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
             // EnumControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            resources.ApplyResources(this, "$this");
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.ValueSelector);
             this.Name = "EnumControl";
+            resources.ApplyResources(this, "$this");
             this.Controls.SetChildIndex(this.ValueSelector, 0);
             this.Controls.SetChildIndex(this.parameterNiceName, 0);
             this.ResumeLayout(false);

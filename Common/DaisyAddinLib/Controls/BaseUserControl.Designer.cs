@@ -51,14 +51,12 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
             // BaseUserControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
-            this.AutoSize = true;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.parameterNiceName);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "BaseUserControl";
-            this.Size = new System.Drawing.Size(42, 44);
+            this.Size = new System.Drawing.Size(33, 35);
             this.ResumeLayout(false);
             this.PerformLayout();
 

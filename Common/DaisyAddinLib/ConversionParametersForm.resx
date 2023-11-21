@@ -135,7 +135,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="UIDTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>761, 26</value>
+    <value>542, 26</value>
   </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="UIDTextBox.TabIndex" type="System.Int32, mscorlib">
@@ -169,7 +169,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="PublisherInput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>761, 27</value>
+    <value>542, 27</value>
   </data>
   <data name="PublisherInput.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -202,7 +202,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="CreatorInput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>761, 27</value>
+    <value>542, 27</value>
   </data>
   <data name="CreatorInput.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -235,7 +235,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="TitleInput.Size" type="System.Drawing.Size, System.Drawing">
-    <value>761, 27</value>
+    <value>542, 27</value>
   </data>
   <data name="TitleInput.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -474,7 +474,7 @@ your document with the Word Accessibility Checker.
     <value>4</value>
   </data>
   <data name="DocumentPropertiesTable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>861, 144</value>
+    <value>642, 144</value>
   </data>
   <data name="DocumentPropertiesTable.TabIndex" type="System.Int32, mscorlib">
     <value>96</value>
@@ -507,7 +507,7 @@ your document with the Word Accessibility Checker.
     <value>0, 0, 0, 0</value>
   </data>
   <data name="DocumentPropertiesGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>863, 219</value>
+    <value>644, 219</value>
   </data>
   <data name="DocumentPropertiesGroup.TabIndex" type="System.Int32, mscorlib">
     <value>81</value>
@@ -550,6 +550,9 @@ your document with the Word Accessibility Checker.
   </data>
   <data name="SwitchAdvancedSettingsButton.Text" xml:space="preserve">
     <value>Show Ad&amp;vanced&gt;&gt;</value>
+  </data>
+  <data name="SwitchAdvancedSettingsButton.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
   <data name="&gt;&gt;SwitchAdvancedSettingsButton.Name" xml:space="preserve">
     <value>SwitchAdvancedSettingsButton</value>
@@ -636,7 +639,7 @@ your document with the Word Accessibility Checker.
     <value>NoControl</value>
   </data>
   <data name="OKButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>577, 6</value>
+    <value>358, 6</value>
   </data>
   <data name="OKButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -675,7 +678,7 @@ your document with the Word Accessibility Checker.
     <value>NoControl</value>
   </data>
   <data name="ResetButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>675, 6</value>
+    <value>456, 6</value>
   </data>
   <data name="ResetButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -711,7 +714,7 @@ your document with the Word Accessibility Checker.
     <value>NoControl</value>
   </data>
   <data name="CancelButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>765, 6</value>
+    <value>546, 6</value>
   </data>
   <data name="CancelButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -738,19 +741,19 @@ your document with the Word Accessibility Checker.
     <value>2</value>
   </data>
   <data name="BottomPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+    <value>Bottom, Left, Right</value>
   </data>
   <data name="BottomPanel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
   <data name="BottomPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 291</value>
+    <value>8, 561</value>
   </data>
   <data name="BottomPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="BottomPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>859, 41</value>
+    <value>640, 41</value>
   </data>
   <data name="BottomPanel.TabIndex" type="System.Int32, mscorlib">
     <value>108</value>
@@ -765,25 +768,25 @@ your document with the Word Accessibility Checker.
     <value>$this</value>
   </data>
   <data name="&gt;&gt;BottomPanel.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
-  <data name="AdvancedSettingsPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Left, Right</value>
+  <data name="AdvancedSettingsGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="AdvancedSettingsPanel.AutoScroll" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="AdvancedSettingsPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 339</value>
+  <data name="AdvancedSettingsPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="AdvancedSettingsPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+  <data name="AdvancedSettingsPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 22</value>
   </data>
   <data name="AdvancedSettingsPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>859, 69</value>
+    <value>634, 238</value>
   </data>
   <data name="AdvancedSettingsPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>109</value>
+    <value>0</value>
   </data>
   <data name="&gt;&gt;AdvancedSettingsPanel.Name" xml:space="preserve">
     <value>AdvancedSettingsPanel</value>
@@ -792,13 +795,37 @@ your document with the Word Accessibility Checker.
     <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AdvancedSettingsPanel.Parent" xml:space="preserve">
-    <value>$this</value>
+    <value>AdvancedSettingsGroup</value>
   </data>
   <data name="&gt;&gt;AdvancedSettingsPanel.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
-  <data name="DestinationControl.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="AdvancedSettingsGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 291</value>
+  </data>
+  <data name="AdvancedSettingsGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>640, 263</value>
+  </data>
+  <data name="AdvancedSettingsGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>108</value>
+  </data>
+  <data name="AdvancedSettingsGroup.Text" xml:space="preserve">
+    <value>Conversion parameters</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsGroup.Name" xml:space="preserve">
+    <value>AdvancedSettingsGroup</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsGroup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsGroup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="DestinationControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="DestinationControl.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
@@ -807,13 +834,13 @@ your document with the Word Accessibility Checker.
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="DestinationControl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 2</value>
+    <value>4, 10</value>
   </data>
   <data name="DestinationControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>5, 4, 5, 4</value>
   </data>
   <data name="DestinationControl.Size" type="System.Drawing.Size, System.Drawing">
-    <value>858, 54</value>
+    <value>643, 55</value>
   </data>
   <data name="DestinationControl.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -846,7 +873,7 @@ your document with the Word Accessibility Checker.
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>876, 419</value>
+    <value>657, 615</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Calibri, 9pt</value>

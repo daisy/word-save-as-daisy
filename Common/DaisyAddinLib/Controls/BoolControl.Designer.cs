@@ -51,12 +51,10 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowOnly;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.checkBox1);
-            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "BoolControl";
-            this.Size = new System.Drawing.Size(77, 34);
+            this.Size = new System.Drawing.Size(96, 43);
             this.Controls.SetChildIndex(this.checkBox1, 0);
             this.Controls.SetChildIndex(this.parameterNiceName, 0);
             this.ResumeLayout(false);
