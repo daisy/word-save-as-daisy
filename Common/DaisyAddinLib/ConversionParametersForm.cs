@@ -186,7 +186,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
                 // Build AdvancedSettingsPanel
                 AdvancedSettingsGroup.Visible = true;
-                int tabIndex = 0;
+                int tabIndex = AdvancedSettingsPanel.TabIndex;
                 int h = 15; // Starting height
                 outputFileOrFolder = prepopulateDaisyOutput != null
                                        ? prepopulateDaisyOutput.OutputPath
@@ -211,6 +211,10 @@ namespace Daisy.SaveAsDAISY.Conversion
                     }
                 }
                 AdvancedSettingsPanel.Size = new Size(AdvancedSettingsPanel.Size.Width, h + 5);
+				BottomPanel.TabIndex = tabIndex++;
+				OKButton.TabIndex = tabIndex++;
+                ResetButton.TabIndex = tabIndex++;
+                CancelButton.TabIndex = tabIndex++;
                 //BottomPanel.Location = new Point(BottomPanel.Location.X, AdvancedSettingsPanel.Location.Y + h + 5);
                 //Size = new Size(Size.Width, BottomPanel.Location.Y + BottomPanel.Size.Height);
             }

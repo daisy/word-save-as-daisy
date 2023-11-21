@@ -248,6 +248,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.BottomPanel.ResumeLayout(false);
             this.AdvancedSettingsGroup.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
