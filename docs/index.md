@@ -52,9 +52,25 @@ This issue is being investigated, but the following action has been tested and r
 
 The add-in should start repairing himself before reopening the word document.
 
+## Speech synthesis issue on Windows 11
+
+On Windows 11 (but not Windows 10), Microsoft seems to have limited or missed a bug that forbid the use of their local text-to-speech engines :
+Both legacy SAPI engine and its newer Onecore version are impacted.
+Using one of those text-to-speech engine in parallel in one or more applications can often make one or both app crash.
+For example: launching an export to DAISY3 with audio synthesis in the DAISY Pipeline 2, and navigating with nvda or jaws with Onecore voices, 
+will sometimes make either DAISY pipeline 2 or NVDA/JAWS or both crash.
+The crash is also unstoppable on our side when it happens, as it uses special instructions (which is called a FAST_FAIL) that cannot be intercepted when it occurs.
+
+We have mitigated the issue in the DAISY Pipeline 2 for multithreaded audio synthesis by synchronizing the speech synthesis call at the lowest level we are able to.
+This reduced the performances of the synthesis but it avoids quasi-systematic unrecoverable crashes in the DAISY Pipeline 2 conversions.
+We then discovered that those crashes can still occur during a conversion if a narrator like nvda and jaws with Onecore voices selected is used during conversion.
+
+This has been reported to Microsoft through their Feedback channel, but if anyone has contacts at Microsoft and can help propagate this issue to Microsoft Dev teams, 
+we would really appreciate it.
+
 # Changelog
 
-# 2.8.0 beta (July 2023)
+# 2.8.0 beta (December 2023)
 
 (This version is under test phase and is not released yet)
 
@@ -79,6 +95,11 @@ For a given export to a selected format, a new folder taking the name of
 the converted file name followed by the selected format and a timestamp suffix
 will be created inside the selected destination folder and will contain
 the result of the conversion.
+
+Some new features are starting to be integrated in the addin and are still experimental:
+- With the updated DAISY Pipeline 2 provided, users can now test the export 
+to Megavoice fileset of MP3 files
+
 
 Various fixes and changes are included in the release :
 - Fixed [#25](https://github.com/daisy/word-save-as-daisy/issues/25)
