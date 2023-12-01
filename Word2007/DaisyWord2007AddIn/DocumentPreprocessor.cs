@@ -168,75 +168,99 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            object currentFile = currentDoc.FullName;
             object tmpFileName = document.CopyPath;
 
             if (File.Exists((string)tmpFileName)) {
                 File.Delete((string)tmpFileName);
             }
-            // Create an empty document to start the copy
-            MSword.Document copy = currentInstance.Documents.Add(
+
+            // Save the document under another temp name
+            currentDoc.SaveAs2(
+                FileName: tmpFileName,
+                AddToRecentFiles: false
+            );
+            // Save back as original file name (that will reset previous word state)
+            currentDoc.SaveAs2(
+                FileName: currentFile,
+                AddToRecentFiles: false
+            );
+            // Open back the copy as invisible
+            MSword.Document copy = currentInstance.Documents.Open(
+                FileName: tmpFileName,
                 Visible: false
             );
-            try {
-                
-                // Copy styles
-                foreach (MSword.Style style in currentDoc.Styles) {
-                    try {
-                        currentInstance.OrganizerCopy(currentDoc.FullName, copy.FullName, style.NameLocal, MSword.WdOrganizerObject.wdOrganizerObjectStyles);
-                    }
-                    catch (Exception ex) {
-                        AddinLogger.Warning("Non-critical exception raised while copying style " + style.NameLocal, ex);
-                    }
 
-                }
+            // Note : using the recommended "copy document into another one" way of 
+            // cloning can provoque clipboard issue ...
+            // new idea : saving a first time a copy, and saving back as the original file name,
+            // and open the copy as invisble
 
-                // Copy properties
-                DocumentProperties currentDocProps = (DocumentProperties)currentDoc.BuiltInDocumentProperties;
-                DocumentProperties copyProps = (DocumentProperties)copy.BuiltInDocumentProperties;
-                foreach (var key in Enum.GetValues(typeof(MSword.WdBuiltInProperty))) {
-                    try {
-                        copyProps[key].Value = currentDocProps[key].Value;
-                    }
-                    catch (Exception ex) {
-                        // exception trigger on undefined property
-                        AddinLogger.Warning("Non-critical exception raised copying built-in property " + key.ToString(), ex);
-                    }
+            // Create an empty document to start the copy
+            //MSword.Document copy = currentInstance.Documents.Add(
+            //    Visible: false
+            //);
+            //try {
 
-                }
-                // Copy custom properties
-                DocumentProperties currentDocCustomProps = (DocumentProperties)currentDoc.CustomDocumentProperties;
-                DocumentProperties copyCustomProps = (DocumentProperties)copy.CustomDocumentProperties;
-                foreach (DocumentProperty prop in currentDocCustomProps) {
-                    try {
-                        copyCustomProps.Add(prop.Name, prop.LinkToContent, prop.Type, prop.Value, prop.LinkSource);
-                    }
-                    catch (Exception ex) {
-                        // exception trigger on undefined property
-                        AddinLogger.Warning("Non-critical exception raised copying custom property " + prop.Name, ex);
-                    }
-                }
+            //    // Copy styles
+            //    foreach (MSword.Style style in currentDoc.Styles) {
+            //        try {
+            //            currentInstance.OrganizerCopy(currentDoc.FullName, copy.FullName, style.NameLocal, MSword.WdOrganizerObject.wdOrganizerObjectStyles);
+            //        }
+            //        catch (Exception ex) {
+            //            AddinLogger.Warning("Non-critical exception raised while copying style " + style.NameLocal, ex);
+            //        }
 
-                // Copy content
-                currentDoc.Content.Copy();
-                copy.Content.Paste();
-                Clipboard.Clear();
+            //    }
 
-                // Save new document on disk
-                copy.SaveAs2(
-                    FileName: tmpFileName,
-                    FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument,
-                    AddToRecentFiles: false
-                );
-                // use it as proprecessed document
-                preprocessedObject = copy;
-            } catch {
-                // On error, close copy and forward exception
-                copy.Close(SaveChanges: false);
-                throw;
-            }
-            // Calling save to avoid word asking to save after coping data from the document
-            currentDoc.Save();
+            //    // Copy properties
+            //    DocumentProperties currentDocProps = (DocumentProperties)currentDoc.BuiltInDocumentProperties;
+            //    DocumentProperties copyProps = (DocumentProperties)copy.BuiltInDocumentProperties;
+            //    foreach (var key in Enum.GetValues(typeof(MSword.WdBuiltInProperty))) {
+            //        try {
+            //            copyProps[key].Value = currentDocProps[key].Value;
+            //        }
+            //        catch (Exception ex) {
+            //            // exception trigger on undefined property
+            //            AddinLogger.Warning("Non-critical exception raised copying built-in property " + key.ToString(), ex);
+            //        }
 
+            //    }
+            //    // Copy custom properties
+            //    DocumentProperties currentDocCustomProps = (DocumentProperties)currentDoc.CustomDocumentProperties;
+            //    DocumentProperties copyCustomProps = (DocumentProperties)copy.CustomDocumentProperties;
+            //    foreach (DocumentProperty prop in currentDocCustomProps) {
+            //        try {
+            //            copyCustomProps.Add(prop.Name, prop.LinkToContent, prop.Type, prop.Value, prop.LinkSource);
+            //        }
+            //        catch (Exception ex) {
+            //            // exception trigger on undefined property
+            //            AddinLogger.Warning("Non-critical exception raised copying custom property " + prop.Name, ex);
+            //        }
+            //    }
+
+            //    // Copy content
+            //    currentDoc.Content.Copy();
+            //    copy.Content.Paste();
+            //    Clipboard.Clear();
+
+            //    // Save new document on disk
+            //    copy.SaveAs2(
+            //        FileName: tmpFileName,
+            //        FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument,
+            //        AddToRecentFiles: false
+            //    );
+            //    // use it as proprecessed document
+            //    preprocessedObject = copy;
+            //} catch {
+            //    // On error, close copy and forward exception
+            //    copy.Close(SaveChanges: false);
+            //    throw;
+            //}
+            //// Calling save to avoid word asking to save after coping data from the document
+            //currentDoc.Save();
+            // use the copy as proprecessed document
+            preprocessedObject = copy;
             return ConversionStatus.CreatedWorkingCopy;
 
         }
