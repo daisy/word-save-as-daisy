@@ -394,7 +394,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 					if (zipResolver != null)
 						zipResolver.Dispose();
 
-					throw ex;
+					throw new Exception("An error occured during the XSL-based conversion",ex);
 				}
 				finally
 				{

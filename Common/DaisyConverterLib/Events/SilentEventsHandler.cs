@@ -13,19 +13,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
     /// - Continue process on lost elements found
     /// </summary>
 	public class SilentEventsHandler : IConversionEventsHandler {
-        public void OnStop(string message) {
-        }
-
+       
         public bool AskForTranslatingSubdocuments() {
             return false;
         }
 
-        public void OnError(string errorMessage) {
-        }
-
-        public void OnStop(string message, string title) {
-            OnStop(message);
-        }
 
         public void onDocumentListConversionStart(List<DocumentParameters> documentLists, ConversionParameters conversion) {
 
@@ -71,13 +63,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
 
         }
 
-        public void OnUnknownError(string error) {
-
-        }
-
-        public void OnUnknownError(string title, string details) {
-
-        }
 
         public void OnValidationErrors(List<ValidationError> errors, string outputFile) {
 
@@ -105,9 +90,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         public void onPreprocessingCancel() {
         }
 
-        public void onPreprocessingError(string inputPath, string errors) {
-        }
-
         public void onPreprocessingSuccess() {
         }
 
@@ -123,6 +105,35 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         public bool userIsRenamingDocument(ref object preprocessedObject) {
             // Should not be used in silent mode
             throw new NotImplementedException();
+        }
+
+        public void onPreprocessingError(string inputPath, Exception errors)
+        {
+        }
+
+        public void OnConversionError(Exception error)
+        {
+        }
+
+        public void onPostProcessingError(Exception error)
+        {
+        }
+
+        public void onConversionSuccess()
+        {
+
+        }
+
+        public void onPreprocessingWarning(string message)
+        {
+        }
+
+        public void onConversionWarning(string message)
+        {
+        }
+
+        public void onPostProcessingInfo(string message)
+        {
         }
     }
 

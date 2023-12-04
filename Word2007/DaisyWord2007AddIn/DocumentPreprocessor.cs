@@ -192,73 +192,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             );
 
             // Note : using the recommended "copy document into another one" way of 
-            // cloning can provoque clipboard issue ...
-            // new idea : saving a first time a copy, and saving back as the original file name,
+            // cloning found on forums can provoque clipboard issue ...
+            // Alt idea : saving a first time a copy, and saving back as the original file name,
             // and open the copy as invisble
 
-            // Create an empty document to start the copy
-            //MSword.Document copy = currentInstance.Documents.Add(
-            //    Visible: false
-            //);
-            //try {
-
-            //    // Copy styles
-            //    foreach (MSword.Style style in currentDoc.Styles) {
-            //        try {
-            //            currentInstance.OrganizerCopy(currentDoc.FullName, copy.FullName, style.NameLocal, MSword.WdOrganizerObject.wdOrganizerObjectStyles);
-            //        }
-            //        catch (Exception ex) {
-            //            AddinLogger.Warning("Non-critical exception raised while copying style " + style.NameLocal, ex);
-            //        }
-
-            //    }
-
-            //    // Copy properties
-            //    DocumentProperties currentDocProps = (DocumentProperties)currentDoc.BuiltInDocumentProperties;
-            //    DocumentProperties copyProps = (DocumentProperties)copy.BuiltInDocumentProperties;
-            //    foreach (var key in Enum.GetValues(typeof(MSword.WdBuiltInProperty))) {
-            //        try {
-            //            copyProps[key].Value = currentDocProps[key].Value;
-            //        }
-            //        catch (Exception ex) {
-            //            // exception trigger on undefined property
-            //            AddinLogger.Warning("Non-critical exception raised copying built-in property " + key.ToString(), ex);
-            //        }
-
-            //    }
-            //    // Copy custom properties
-            //    DocumentProperties currentDocCustomProps = (DocumentProperties)currentDoc.CustomDocumentProperties;
-            //    DocumentProperties copyCustomProps = (DocumentProperties)copy.CustomDocumentProperties;
-            //    foreach (DocumentProperty prop in currentDocCustomProps) {
-            //        try {
-            //            copyCustomProps.Add(prop.Name, prop.LinkToContent, prop.Type, prop.Value, prop.LinkSource);
-            //        }
-            //        catch (Exception ex) {
-            //            // exception trigger on undefined property
-            //            AddinLogger.Warning("Non-critical exception raised copying custom property " + prop.Name, ex);
-            //        }
-            //    }
-
-            //    // Copy content
-            //    currentDoc.Content.Copy();
-            //    copy.Content.Paste();
-            //    Clipboard.Clear();
-
-            //    // Save new document on disk
-            //    copy.SaveAs2(
-            //        FileName: tmpFileName,
-            //        FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument,
-            //        AddToRecentFiles: false
-            //    );
-            //    // use it as proprecessed document
-            //    preprocessedObject = copy;
-            //} catch {
-            //    // On error, close copy and forward exception
-            //    copy.Close(SaveChanges: false);
-            //    throw;
-            //}
-            //// Calling save to avoid word asking to save after coping data from the document
-            //currentDoc.Save();
             // use the copy as proprecessed document
             preprocessedObject = copy;
             return ConversionStatus.CreatedWorkingCopy;
@@ -356,8 +293,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
             if (showMsg == 1) {
                 string message =
-                    "In order to convert MathType or Microsoft Equation Editor equations to DAISY,MathType 6.5 or later must be installed. See www.dessci.com/saveasdaisy for further information.Currently all the equations will be converted as Images";
-                eventsHandler.OnStop(message, "Warning");
+                    "In order to convert MathType or Microsoft Equation Editor equations to DAISY,MathType 6.5 or later must be installed.\r\nSee www.dessci.com/saveasdaisy for further information.\r\nCurrently all the equations will be converted as Images";
+                eventsHandler.onPreprocessingWarning(message);
             }
             return ConversionStatus.ProcessedMathML;
         }
@@ -477,7 +414,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 //document.ImageIds = imageIds;
                 //document.InlineIds = inlineShapeIds;
             } catch (Exception e) {
-                eventsHandler?.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
+                eventsHandler?.onPreprocessingWarning(
+                    "An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
                     "\r\n- " + e.Message +
                     "\r\n" + e.StackTrace);
             }

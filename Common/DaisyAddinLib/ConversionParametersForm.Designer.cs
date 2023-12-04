@@ -238,7 +238,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.MinimizeBox = false;
             this.Name = "ConversionParametersForm";
             this.ShowIcon = false;
-            this.Load += new System.EventHandler(this.ConversionParametersFrom_Load);
             this.DocumentPropertiesGroup.ResumeLayout(false);
             this.DocumentPropertiesGroup.PerformLayout();
             this.DocumentPropertiesTable.ResumeLayout(false);

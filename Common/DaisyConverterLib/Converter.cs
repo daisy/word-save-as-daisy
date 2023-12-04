@@ -164,8 +164,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             catch (Exception e)
             {
-                EventsHandler.onPreprocessingError(inputPath, e.Message);
-                throw;
+                Exception fault = new Exception("An error occured after " + CurrentStatus.ToString() + " status preprossing:\r\n" + e.Message, e);
+                EventsHandler.onPreprocessingError(inputPath, fault);
+                throw fault;
             }
             finally
             {
@@ -201,7 +202,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 if (subDocList.Errors.Count > 0)
                 {
                     string errors = "Subdocuments convertion will be ignored due to the following errors found while extracting them:\r\n" + string.Join("\r\n", subDocList.Errors);
-                    EventsHandler.onPreprocessingError(result.InputPath, errors);
+                    EventsHandler.onPreprocessingWarning(errors);
                     ConversionParameters.ParseSubDocuments = false;
                 }
                 else if (result.HasSubDocuments)
@@ -225,7 +226,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                                 catch (Exception e)
                                 {
                                     string errors = "Subdocuments convertion will be ignored due to the following errors found while preprocessing " + item.FileName + ":\r\n" + e.Message;
-                                    EventsHandler.onPreprocessingError(item.FileName, errors);
+                                    EventsHandler.onPreprocessingWarning(errors);
                                     ConversionParameters.ParseSubDocuments = false;
                                 }
                                 if (subDoc != null)
@@ -270,7 +271,6 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <param name="applyPostProcessing"></param>
         public ConversionResult Convert(DocumentParameters document, bool applyPostProcessing = true)
         {
-
             this.EventsHandler.onDocumentConversionStart(document, ConversionParameters);
             xmlConversionCancel = new CancellationTokenSource();
             CurrentStatus = ConversionStatus.HasStartedConversion;
@@ -323,16 +323,19 @@ namespace Daisy.SaveAsDAISY.Conversion
                 }
                 catch (Exception e)
                 {
-                    string message = e.Message;
+                    string message = "An error occured while converting " + document.InputPath + " to dtbook XML :\r\n" + e.Message;
                     while (e.InnerException != null)
                     {
                         message += "\r\n - " + e.InnerException.Message;
                         e = e.InnerException;
                     }
 
-
-                    this.EventsHandler.OnUnknownError(message);
-                    return ConversionResult.Failed(message);
+                    Exception fault = new Exception("An error occured while converting " + document.InputPath + " to dtbook XML :\r\n" + e.Message, e);
+                    this.EventsHandler.OnConversionError(
+                        fault
+                    );
+                    throw fault;
+                    //return ConversionResult.Failed(message);
                 }
                 if (conversionTask.IsFaulted)
                 {
@@ -346,8 +349,12 @@ namespace Daisy.SaveAsDAISY.Conversion
                         e = e.InnerException;
                     }
 
-                    this.EventsHandler.OnUnknownError(message);
-                    return ConversionResult.Failed(message);
+                    Exception fault = new Exception("An error occured while converting " + document.InputPath + " to dtbook XML :\r\n" + e.Message, e);
+                    this.EventsHandler.OnConversionError(
+                        fault
+                    );
+                    throw fault;
+                    //return ConversionResult.Failed(message);
                 }
 
             }
@@ -365,11 +372,22 @@ namespace Daisy.SaveAsDAISY.Conversion
                 {
                     ConversionParameters.PostProcessor.ExecuteScript(document.OutputPath);
                 }
+                catch (Pipeline2Script.JobException je) {
+                    // Job finished in error, not sure if i should  return a failed result
+                    // or throw back to allow a report
+                    this.EventsHandler.onPostProcessingError(
+                        je
+                    );
+                    return ConversionResult.Failed(je.Message);
+                }
                 catch (Exception e)
                 {
                     CurrentStatus = ConversionStatus.Error;
-                    this.EventsHandler.OnError(e.Message);
-                    return ConversionResult.Failed(e.Message);
+                    Exception fault = new Exception("Error while converting with DAISY Pipeline 2:\r\n" + e.Message, e);
+                    this.EventsHandler.onPostProcessingError(
+                        fault
+                    );
+                    throw fault;
                 }
                 this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
             }
@@ -448,15 +466,21 @@ namespace Daisy.SaveAsDAISY.Conversion
                         }
                         catch (Exception e)
                         {
+                            Exception fault = new Exception("Error while converting " + document.InputPath + " to dtbook XML:\r\n" + e.Message, e);
                             // TODO try to see if exception is raised by cancellation
-                            this.EventsHandler.OnUnknownError(document.InputPath + ": " + e.Message + "\r\n");
-                            return ConversionResult.Failed(document.InputPath + ": " + e.Message);
+                            this.EventsHandler.OnConversionError(fault);
+                            throw fault;
+                            //return ConversionResult.Failed(document.InputPath + ": " + e.Message);
                         }
 
                         if (conversionTask.IsFaulted)
                         {
-                            this.EventsHandler.OnUnknownError(conversionTask.Exception.Message);
-                            return ConversionResult.Failed(conversionTask.Exception.Message);
+                            Exception fault = new Exception("Error while converting " + document.InputPath + " to dtbook XML:\r\n" + conversionTask.Exception.Message, conversionTask.Exception);
+                            this.EventsHandler.OnConversionError(
+                                fault
+                            );
+                            throw fault;
+                            //return ConversionResult.Failed(conversionTask.Exception.Message);
                         }
                         if (CurrentStatus == ConversionStatus.Canceled)
                         {
@@ -520,14 +544,24 @@ namespace Daisy.SaveAsDAISY.Conversion
                     // Launch the post processing pipeline sript 
                     // (cleaning or converting DTBook to another format Like a DAISY book)
                     this.EventsHandler.onPostProcessingStart(ConversionParameters);
-                    try
-                    {
+                    try {
                         ConversionParameters.PostProcessor.ExecuteScript(ConversionParameters.OutputPath);
                     }
-                    catch (Exception e)
-                    {
-                        this.EventsHandler.OnUnknownError(e.Message);
-                        return ConversionResult.Failed(e.Message);
+                    catch (Pipeline2Script.JobException je) {
+                        // Job finished in error, not sure if i should  return a failed result
+                        // or throw back to allow a report
+                        this.EventsHandler.onPostProcessingError(
+                            je
+                        );
+                        return ConversionResult.Failed(je.Message);
+                    }
+                    catch (Exception e) {
+                        Exception fault = new Exception("An execution error occured while running conversion in DAISY Pipeline 2:" + e.Message, e);
+                        this.EventsHandler.onPostProcessingError(
+                            fault
+                        );
+                        throw fault;
+                        //return ConversionResult.Failed(e.Message);
                     }
                     this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
                 }

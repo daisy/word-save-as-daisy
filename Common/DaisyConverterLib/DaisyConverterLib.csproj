@@ -145,7 +145,7 @@
     <Compile Include="Preprocessing\IDocumentPreprocessor.cs" />
     <Compile Include="PackageUtilities.cs" />
     <Compile Include="Parameters\DocumentParameters.cs" />
-    <Compile Include="Preprocessing\ConversionStatus.cs" />
+    <Compile Include="ConversionStatus.cs" />
     <Compile Include="WordToDTBookXMLTransform.cs" />
     <Compile Include="ChainResourceManager.cs" />
     <Compile Include="Parameters\ConversionParameters.cs" />

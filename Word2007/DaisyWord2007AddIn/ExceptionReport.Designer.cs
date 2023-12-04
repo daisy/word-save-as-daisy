@@ -24,66 +24,86 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.Message = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ExceptionReport));
             this.ExceptionMessage = new System.Windows.Forms.TextBox();
             this.SendReport = new System.Windows.Forms.Button();
+            this.Message = new System.Windows.Forms.LinkLabel();
+            this.CheckSimilarIssue = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // Message
-            // 
-            this.Message.AutoSize = true;
-            this.Message.Location = new System.Drawing.Point(13, 14);
-            this.Message.Name = "Message";
-            this.Message.Size = new System.Drawing.Size(412, 26);
-            this.Message.TabIndex = 0;
-            this.Message.Text = "An unhandled exception was raised during the execution of the SaveAsDAISY Add-in." +
-    "\r\nPlease send the following report to the DAISY pipeline development team:";
             // 
             // ExceptionMessage
             // 
             this.ExceptionMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.ExceptionMessage.Location = new System.Drawing.Point(12, 43);
+            this.ExceptionMessage.Location = new System.Drawing.Point(16, 93);
+            this.ExceptionMessage.Margin = new System.Windows.Forms.Padding(4);
             this.ExceptionMessage.Multiline = true;
             this.ExceptionMessage.Name = "ExceptionMessage";
             this.ExceptionMessage.ReadOnly = true;
             this.ExceptionMessage.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.ExceptionMessage.Size = new System.Drawing.Size(413, 369);
+            this.ExceptionMessage.Size = new System.Drawing.Size(505, 416);
             this.ExceptionMessage.TabIndex = 1;
             this.ExceptionMessage.Text = "placeholder";
             // 
             // SendReport
             // 
-            this.SendReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.SendReport.Location = new System.Drawing.Point(348, 418);
+            this.SendReport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.SendReport.Location = new System.Drawing.Point(16, 516);
+            this.SendReport.Margin = new System.Windows.Forms.Padding(4);
             this.SendReport.Name = "SendReport";
-            this.SendReport.Size = new System.Drawing.Size(77, 20);
+            this.SendReport.Size = new System.Drawing.Size(177, 25);
             this.SendReport.TabIndex = 2;
-            this.SendReport.Text = "Send report";
+            this.SendReport.Text = "Report issue on Github";
             this.SendReport.UseVisualStyleBackColor = true;
             this.SendReport.Click += new System.EventHandler(this.SendReport_Click);
             // 
+            // Message
+            // 
+            this.Message.AutoSize = true;
+            this.Message.LinkArea = new System.Windows.Forms.LinkArea(168, 32);
+            this.Message.Location = new System.Drawing.Point(10, 9);
+            this.Message.Name = "Message";
+            this.Message.Size = new System.Drawing.Size(621, 80);
+            this.Message.TabIndex = 3;
+            this.Message.TabStop = true;
+            this.Message.Text = resources.GetString("Message.Text");
+            this.Message.UseCompatibleTextRendering = true;
+            this.Message.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.Message_LinkClicked);
+            // 
+            // CheckSimilarIssue
+            // 
+            this.CheckSimilarIssue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.CheckSimilarIssue.Location = new System.Drawing.Point(278, 516);
+            this.CheckSimilarIssue.Name = "CheckSimilarIssue";
+            this.CheckSimilarIssue.Size = new System.Drawing.Size(243, 25);
+            this.CheckSimilarIssue.TabIndex = 4;
+            this.CheckSimilarIssue.Text = "Check for similar issues on GitHub";
+            this.CheckSimilarIssue.UseVisualStyleBackColor = true;
+            this.CheckSimilarIssue.Click += new System.EventHandler(this.CheckForSimilarIssues);
+            // 
             // ExceptionReport
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(437, 450);
+            this.ClientSize = new System.Drawing.Size(539, 554);
+            this.Controls.Add(this.CheckSimilarIssue);
+            this.Controls.Add(this.Message);
             this.Controls.Add(this.SendReport);
             this.Controls.Add(this.ExceptionMessage);
-            this.Controls.Add(this.Message);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ExceptionReport";
             this.ShowIcon = false;
-            this.Text = "Unhandled Exception report";
+            this.Text = "Exception to report";
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label Message;
         private System.Windows.Forms.TextBox ExceptionMessage;
         private System.Windows.Forms.Button SendReport;
+        private System.Windows.Forms.LinkLabel Message;
+        private System.Windows.Forms.Button CheckSimilarIssue;
     }
 }

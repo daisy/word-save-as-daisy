@@ -14,6 +14,12 @@ namespace Daisy.SaveAsDAISY.Conversion
     /// </summary>
     public abstract class Pipeline2Script : Script
     {
+        public class JobException : Exception
+        {
+            public JobException(string message) : base(message)
+            {
+            }
+        }
         protected Pipeline2Script(IConversionEventsHandler e)
             : base(e) { }
 
@@ -30,7 +36,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             Pipeline2.Instance.SetPipelineErrorListener(
                 (message) =>
                 {
-                    this.EventsHandler.OnError(message);
+                    this.EventsHandler.OnConversionError(new Exception("Pipeline 2 returned the following error message :\r\n" + message));
                 }
             );
             Pipeline2.Instance.SetPipelineOutputListener(
@@ -97,8 +103,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                                 + this.NiceName
                                 + " conversion job has finished in error :\r\n"
                                 + string.Join("\r\n", errors);
-                            this.EventsHandler.OnError(messageERROR);
-                            throw new Exception(messageERROR);
+                            throw new JobException(messageERROR);
                         case Pipeline2.JobStatus.FAIL:
                             // open jobs folder
                             errors = pipeline.getErros(currentJob);
@@ -107,8 +112,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                                 + this.NiceName
                                 + " conversion job failed :\r\n"
                                 + string.Join("\r\n", errors);
-                            this.EventsHandler.OnError(messageFAIL);
-                            throw new Exception(messageFAIL);
+                            throw new JobException(messageFAIL);
                         default:
                             break;
                     }
@@ -121,7 +125,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     }
                     catch (Exception e)
                     {
-                        this.EventsHandler.OnError(e.Message);
+                        throw;
                     }
                     //
 #else
@@ -132,6 +136,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 // Post processing :
                 // NP 2023/09/27 : I don't know why yet, but pipeline 2 w/ simpleAPI export files with their uri encoded names
                 // While pipeline 2 app and pipeline 2 internal job folder has the correct file names 
+                // NP 2023/12/04 : found the issue in pipeline SimpleAPI, to be removed on pipeline SimpleAPI update 
                 if (Parameters.ContainsKey("output")) {
                     string[] outputDirectories = Directory.GetDirectories((string)this.Parameters["output"].ParameterValue, "*", SearchOption.AllDirectories);
                     foreach (var folder in outputDirectories) {

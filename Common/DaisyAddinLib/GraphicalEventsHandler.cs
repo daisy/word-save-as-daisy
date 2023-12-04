@@ -107,16 +107,16 @@ namespace Daisy.SaveAsDAISY
             TryClosingDialog();
         }
 
-        public void onPreprocessingError(string inputPath, string errors)
+        public void onPreprocessingError(string inputPath, Exception errors)
         {
-            AddinLogger.Error("Some errors were reported during preprocessing: \r\n" + errors);
-            TryShowMessage("Some errors were reported during preprocessing: \r\n" + errors);
-            MessageBox.Show(
-                errors,
-                "Preprocessing errors",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error
-            );
+            Exception e = errors;
+            string message = e.Message;
+            while(e.InnerException != null) {
+                message += "\r\n- " + e.Message;
+                e = e.InnerException;
+            }
+            AddinLogger.Error("Some errors were reported during preprocessing: \r\n" + message);
+            TryShowMessage("An error occured in preprocessing : " + errors.Message, true);
         }
 
         public void onPreprocessingSuccess()
@@ -174,29 +174,6 @@ namespace Daisy.SaveAsDAISY
             return dialogResult == DialogResult.Yes;
         }
         #endregion
-
-        public void OnStop(string message)
-        {
-            OnStop(message, "SaveAsDAISY");
-        }
-
-        public void OnError(string errorMessage)
-        {
-            AddinLogger.Error("An error occured during conversion: \r\n" + errorMessage);
-            TryShowMessage("An error occured during conversion: \r\n" + errorMessage, true);
-            MessageBox.Show(
-                errorMessage,
-                "An error occured during conversion",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Error
-            );
-        }
-
-        public void OnStop(string message, string title)
-        {
-            TryShowMessage(title + ": \r\n" + message, true);
-            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Stop);
-        }
 
         #region Conversion to dtbook
         public void onDocumentListConversionStart(
@@ -290,17 +267,16 @@ namespace Daisy.SaveAsDAISY
             infoBox.ShowDialog();
         }
 
-        public void OnUnknownError(string error)
+        public void OnConversionError(Exception errors)
         {
-            AddinLogger.Error("An error occured during conversion: \r\n" + error);
-            TryShowMessage("An error occured during conversion: \r\n" + error, true);
-            MessageBox.Show(error, "Unknown error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
-
-        public void OnUnknownError(string title, string details)
-        {
-            InfoBox infoBox = new InfoBox(title, details, Labels.ResourceManager);
-            infoBox.ShowDialog();
+            Exception e = errors;
+            string message = e.Message;
+            while (e.InnerException != null) {
+                message += "\r\n- " + e.Message;
+                e = e.InnerException;
+            }
+            AddinLogger.Error("An error occured during conversion: \r\n" + message);
+            TryShowMessage("Error during conversion : " + errors.Message, true);
         }
 
         public void OnValidationErrors(List<ValidationError> errors, string outputFile)
@@ -351,6 +327,34 @@ namespace Daisy.SaveAsDAISY
         {
             MasterSubValidation infoBox = new MasterSubValidation(error, "Validation");
             infoBox.ShowDialog();
+        }
+
+        public void onPostProcessingError(Exception errors)
+        {
+            Exception e = errors;
+            string message = e.Message;
+            while (e.InnerException != null) {
+                message += "\r\n- " + e.Message;
+                e = e.InnerException;
+            }
+            AddinLogger.Error("Errors reported during conversion by DAISY Pipeline 2: \r\n" + message);
+            TryShowMessage("Errors reported during conversion by DAISY Pipeline 2 : " + errors.Message, true);
+        }
+
+        public void onConversionSuccess()
+        {
+        }
+
+        public void onPreprocessingWarning(string message)
+        {
+        }
+
+        public void onConversionWarning(string message)
+        {
+        }
+
+        public void onPostProcessingInfo(string message)
+        {
         }
     }
 }

@@ -8,36 +8,48 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
     public partial class ExceptionReport : Form {
         private Exception ExceptionRaised { get;  }
         public ExceptionReport(Exception raised) {
+            string programFiles = System.Environment.ExpandEnvironmentVariables("%ProgramW6432%");
+            var location = Assembly.GetCallingAssembly().Location;
+            var isProgramFiles = location.StartsWith(programFiles);
             InitializeComponent();
             this.ExceptionRaised = raised;
-            this.ExceptionMessage.Text = raised.Message + "\r\nStacktrace:\r\n" + raised.StackTrace;
+            this.ExceptionMessage.Text = string.Format(
+                "- Addin Version: {0}\r\n" +
+                "- Running Architecture: {1}\r\n" +
+                "- OS: {2}\r\n" +
+                "- User or system wide install: {3}\r\n\r\n" +
+                "{4}\r\n\r\n" +
+                "Stacktrace:\r\n" +
+                "{5}",
+                typeof(ExceptionReport).Assembly.GetName().Version,
+                System.Environment.Is64BitProcess ? "x64" : "x86",
+                System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+                isProgramFiles ? "admin" : "user",
+                raised.Message,
+                raised.StackTrace
+                );
         }
 
         private void SendReport_Click(object sender, EventArgs evt) {
-            StringBuilder message = new StringBuilder("The following exception was reported by a user using the saveAsDaisy addin:\r\n");
-            message.AppendLine(this.ExceptionRaised.Message);
-            message.AppendLine();
-            message.Append(this.ExceptionRaised.StackTrace);
-            Exception e = ExceptionRaised;
-            while (e.InnerException != null) {
-                e = e.InnerException;
-                message.AppendLine(" - Inner exception : " + e.Message);
-                message.AppendLine();
-                message.Append(this.ExceptionRaised.StackTrace);
-            }
+            StringBuilder message = new StringBuilder("The following exception was reported by the saveAsDaisy addin:\r\n");
+            message.Append(ExceptionMessage.Text);
 
-            message.AppendLine();
-            message.AppendLine("Addin version - " + typeof(ExceptionReport).Assembly.GetName().Version);
-            
-            string mailto = string.Format(
-                "mailto:{0}?Subject={1}&Body={2}",
-                "daisy-pipeline@mail.daisy.org",
-                "Unhandled exception report in the SaveAsDAISY addin",
-                message.ToString()
+            string reportUrl = string.Format(
+                "https://github.com/daisy/word-save-as-daisy/issues/new?title={0}&body={1}",
+                Uri.EscapeDataString(ExceptionRaised.Message),
+                Uri.EscapeDataString(message.ToString())
                 );
-            mailto = Uri.EscapeUriString(mailto);
-            //MessageBox.Show(message.ToString());
-            Process.Start(mailto);
+            Process.Start(reportUrl);
+        }
+
+        private void Message_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start("https://github.com/daisy/word-save-as-daisy/issues");
+        }
+
+        private void CheckForSimilarIssues(object sender, EventArgs e)
+        {
+            Process.Start("https://github.com/daisy/word-save-as-daisy/issues?q=is%3Aissue+" + Uri.EscapeDataString(ExceptionRaised.Message));
         }
     }
 }

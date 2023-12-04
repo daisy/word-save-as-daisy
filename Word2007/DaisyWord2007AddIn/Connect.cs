@@ -760,6 +760,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             ? converter.ConversionParameters.OutputPath
                             : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
                         );
+                    } else {
+                        MessageBox.Show(result.UnknownErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                 }
@@ -779,6 +781,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 }
                 else
                 {
+                    
                     ExceptionReport report = new ExceptionReport(e);
                     report.Show();
                 }
@@ -949,7 +952,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             subDoc = converter.PreprocessDocument(inputPath);
                         } catch (Exception e) {
                             string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
-                            eventsHandler.onPreprocessingError(inputPath, errors);
+                            eventsHandler.onPreprocessingError(inputPath, new Exception(errors, e));
                         }
                         if (subDoc != null) {
                             documents.Add(subDoc);
@@ -995,8 +998,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         }
                         catch (Exception e)
                         {
-                            string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
-                            eventsHandler.onPreprocessingError(inputPath, errors);
+                            string errors = "Convertion aborted due to errors found while preprocessing " + inputPath;
+                            eventsHandler.onPreprocessingError(inputPath, new Exception(errors,e));
                         }
                         if (subDoc != null)
                         {
@@ -1047,8 +1050,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         }
                         catch (Exception e)
                         {
-                            string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
-                            eventsHandler.onPreprocessingError(inputPath, errors);
+                            string errors = "Convertion aborted due to errors found while preprocessing " + inputPath;
+                            eventsHandler.onPreprocessingError(inputPath, new Exception(errors, e));
                         }
                         if (subDoc != null)
                         {

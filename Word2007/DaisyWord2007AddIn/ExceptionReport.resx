@@ -117,4 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Message.Text" xml:space="preserve">
+    <value>An exception was raised during the execution of the SaveAsDAISY Add-in.
+You can send the following report to the DAISY pipeline development team
+by mail or check the daisy addin repository on GitHub for similar issues.
+You can also report this exception on GitHub by clicking on the report button below.</value>
+  </data>
 </root>
