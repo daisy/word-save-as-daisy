@@ -33,14 +33,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         // Classes
         private IntPtr SimpleAPIClass,
             CommandLineJobClass,
-            JobContextClass,
-            JobMonitorClass,
-            HashMapClass,
-            JobStatusClass,
-            MessageAccessorClass,
-            ArrayListClass,
-            JavaStringClass,
-            BigDecimalClass;
+            JobStatusClass;
 
         #region Singleton initialisation
 
@@ -149,14 +142,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             // Initialize runner in the JVM
             SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
             CommandLineJobClass = jni.GetJavaClass("SimpleAPI$CommandLineJob");
-            JobMonitorClass = jni.GetJavaClass("org/daisy/pipeline/job/JobMonitor");
-            HashMapClass = jni.GetJavaClass("java/util/HashMap");
             JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
-            MessageAccessorClass = jni.GetJavaClass("org/daisy/common/messaging/MessageAccessor");
-            BigDecimalClass = jni.GetJavaClass("java/math/BigDecimal");
-            ArrayListClass = jni.GetJavaClass("java/util/ArrayList");
-            JavaStringClass = jni.GetJavaClass("java/lang/String");
-
+            
             string systemOut = Path.Combine(LogsFolder, "sysOut.log");
             string systemErr = Path.Combine(LogsFolder, "sysErr.log");
 
@@ -321,7 +308,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                     "startJob",
                     "(Ljava/lang/String;Ljava/util/Map;)LSimpleAPI$CommandLineJob;",
                     scriptName,
-                    hashMap
+                    jni.CallMethod<IntPtr>(
+                        SimpleAPIClass,
+                        IntPtr.Zero,
+                        "stringifyOptions",
+                        "(Ljava/util/Map;)Ljava/util/Map;",
+                        hashMap
+                    )
                 );
 
                 return job;
@@ -397,131 +390,24 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-        //public IntPtr getContext(IntPtr jobObject)
-        //{
-        //    if (jobObject == IntPtr.Zero)
-        //    {
-        //        throw new Exception("Context requested on non-existing job");
-        //    }
-        //    return jni.CallMethod<IntPtr>(
-        //        JobClass,
-        //        jobObject,
-        //        "getContext",
-        //        "()Lorg/daisy/pipeline/job/AbstractJobContext;"
-        //    );
-        //}
-
-        public IntPtr getMonitor(IntPtr jobObject)
+        public List<string> getNewMessages(IntPtr commandLinejob)
         {
-            if (jobObject == IntPtr.Zero)
-            {
-                throw new Exception("Monitor requested on non-existing job");
+            if (commandLinejob == IntPtr.Zero) {
+                throw new Exception("getNewMessages requested on non-existing job");
             }
-            return jni.CallMethod<IntPtr>(
-                CommandLineJobClass,
-                jobObject,
-                "getMonitor",
-                "()Lorg/daisy/pipeline/job/JobMonitor;"
-            );
-        }
-
-        private List<string> alreadySentMessages = null;
-
-        public IntPtr getMessageAccessor(IntPtr jobMonitorObject)
-        {
-            // Reinitialize the message queue
-            alreadySentMessages = null;
-            if (jobMonitorObject == IntPtr.Zero)
-            {
-                throw new Exception("Monitor requested on non-existing context");
-            }
-            return jni.CallMethod<IntPtr>(
-                JobMonitorClass,
-                jobMonitorObject,
-                "getMessageAccessor",
-                "()Lorg/daisy/common/messaging/MessageAccessor;"
-            );
-        }
-
-        public string getProgress(IntPtr messageAccessorObject)
-        {
-            if (messageAccessorObject == IntPtr.Zero)
-            {
-                throw new Exception("Progress requested on non-existing message accessor");
-            }
-
-            return jni.CallMethod<string>(
-                BigDecimalClass,
-                jni.CallMethod<IntPtr>(
-                    MessageAccessorClass,
-                    messageAccessorObject,
-                    "getProgress",
-                    "()Ljava/math/BigDecimal;"
-                ),
-                "toString",
-                "()Ljava/lang/String;"
-            );
-        }
-
-        public List<string> getInfos(IntPtr messageAccessorObject)
-        {
-            if (alreadySentMessages == null)
-            {
-                alreadySentMessages = new List<string>();
-            }
-            List<string> result = new List<string>();
-            if (messageAccessorObject != IntPtr.Zero)
-            {
-                IntPtr messagesList = jni.CallMethod<IntPtr>(
-                    MessageAccessorClass,
-                    messageAccessorObject,
-                    "getInfos",
-                    "()Ljava/util/List;"
-                );
-                JavaIterable<IntPtr> messagesIterable = new JavaIterable<IntPtr>(jni, messagesList);
-                IntPtr messageClass = IntPtr.Zero;
-                foreach (IntPtr messageObject in messagesIterable)
-                {
-                    if (messageClass == IntPtr.Zero)
-                    {
-                        messageClass = jni.JNIEnvironment.GetObjectClass(messageObject);
-                    }
-                    string message = jni.CallMethod<string>(
-                        messageClass,
-                        messageObject,
-                        "getText",
-                        "()Ljava/lang/String;"
-                    );
-                    if (!alreadySentMessages.Contains(message))
-                    {
-                        result.Add(message);
-                        alreadySentMessages.Add(message);
-                    }
-                }
-            }
-            return result;
-        }
-
-        public List<string> getAllInfos()
-        {
-            return alreadySentMessages;
-        }
-
-        public List<string> getNewMessages()
-        {
             List<string> messages = new List<string>();
-            IntPtr messagesList = jni.CallMethod<IntPtr>(
-                SimpleAPIClass,
-                IntPtr.Zero,
+
+            IntPtr errorsList = jni.CallMethod<IntPtr>(
+                CommandLineJobClass,
+                commandLinejob,
                 "getNewMessages",
                 "()Ljava/util/List;"
             );
-            JavaIterable<IntPtr> messagesIterable = new JavaIterable<IntPtr>(jni, messagesList);
+
+            JavaIterable<IntPtr> messagesIterable = new JavaIterable<IntPtr>(jni, errorsList);
             IntPtr messageClass = IntPtr.Zero;
-            foreach (IntPtr messageObject in messagesIterable)
-            {
-                if (messageClass == IntPtr.Zero)
-                {
+            foreach (IntPtr messageObject in messagesIterable) {
+                if (messageClass == IntPtr.Zero) {
                     messageClass = jni.JNIEnvironment.GetObjectClass(messageObject);
                 }
                 string message = jni.CallMethod<string>(
@@ -537,33 +423,22 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public List<string> getErros(IntPtr commandLinejob)
         {
+            if (commandLinejob == IntPtr.Zero) {
+                throw new Exception("getErros requested on non-existing job");
+            }
             List<string> messages = new List<string>();
-            IntPtr monitor = jni.CallMethod<IntPtr>(
-                CommandLineJobClass,
-                commandLinejob,
-                "getMonitor",
-                "()Lorg/daisy/pipeline/job/JobMonitor;"
-            );
-            IntPtr accessor = jni.CallMethod<IntPtr>(
-                JobMonitorClass,
-                monitor,
-                "getMessageAccessor",
-                "()Lorg/daisy/common/messaging/MessageAccessor;"
-            );
 
             IntPtr errorsList = jni.CallMethod<IntPtr>(
-                MessageAccessorClass,
-                accessor,
+                CommandLineJobClass,
+                commandLinejob,
                 "getErrors",
                 "()Ljava/util/List;"
             );
 
             JavaIterable<IntPtr> messagesIterable = new JavaIterable<IntPtr>(jni, errorsList);
             IntPtr messageClass = IntPtr.Zero;
-            foreach (IntPtr messageObject in messagesIterable)
-            {
-                if (messageClass == IntPtr.Zero)
-                {
+            foreach (IntPtr messageObject in messagesIterable) {
+                if (messageClass == IntPtr.Zero) {
                     messageClass = jni.JNIEnvironment.GetObjectClass(messageObject);
                 }
                 string message = jni.CallMethod<string>(
@@ -575,26 +450,6 @@ namespace Daisy.SaveAsDAISY.Conversion
                 messages.Add(message);
             }
             return messages;
-        }
-
-        public string getLastOutput()
-        {
-            return jni.CallMethod<string>(
-                SimpleAPIClass,
-                IntPtr.Zero,
-                "getOutput",
-                "()Ljava/lang/String;"
-            );
-        }
-
-        public string getLastError()
-        {
-            return jni.CallMethod<string>(
-                SimpleAPIClass,
-                IntPtr.Zero,
-                "getError",
-                "()Ljava/lang/String;"
-            );
         }
     }
 }

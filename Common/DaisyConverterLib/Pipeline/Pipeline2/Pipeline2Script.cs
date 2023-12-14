@@ -70,14 +70,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 
             if (currentJob != IntPtr.Zero)
             {
-                //IntPtr context = pipeline.getContext(currentJob);
-                IntPtr monitor = pipeline.getMonitor(currentJob);
-                IntPtr messages = pipeline.getMessageAccessor(monitor);
                 bool checkStatus = true;
                 List<string> errors;
                 while (checkStatus)
                 {
-                    foreach (string message in pipeline.getNewMessages())
+                    foreach (string message in pipeline.getNewMessages(currentJob))
                     {
                         this.EventsHandler.onFeedbackMessageReceived(
                             this,
