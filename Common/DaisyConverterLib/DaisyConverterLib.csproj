@@ -291,9 +291,11 @@
     </EmbeddedResource>
     <EmbeddedResource Include="resources\xslts\Common2.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\xslts\Common3.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\xslts\OOML2MML.xsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

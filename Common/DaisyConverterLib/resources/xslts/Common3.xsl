@@ -2605,130 +2605,58 @@
             </xsl:when>
         </xsl:choose>
     </xsl:template>
-    <!--Template for taking language for bdo Tag-->
-    <xsl:template name="BdoLanguages">
-        <xsl:message terminate="no">debug in BdoLanguages</xsl:message>
-        <xsl:variable name="quote">"</xsl:variable>
-        <xsl:variable name="count_lang">
-            <xsl:for-each select="../../w:r[1]/w:rPr/w:lang">
-                <xsl:value-of select="count(@*)"/>
-            </xsl:for-each>
-        </xsl:variable>
+	
+	<xsl:template name="GetBdoLanguages">
+		<xsl:param name="runner"/>
+        <xsl:message terminate="no">debug in GetBdoLanguages</xsl:message>
         <xsl:choose>
-            <xsl:when test="../../w:r/w:rPr/w:rFonts/@w:hint='cs'">
+			<!-- Complex Script Font -->
+            <xsl:when test="$runner/w:rPr/w:rFonts/@w:hint='cs'">
                 <xsl:choose>
-                    <xsl:when test="../../w:r/w:rPr/w:lang/@w:bidi">
-                        <xsl:value-of select="../../w:r/w:rPr/w:lang/@w:bidi"/>
+                    <xsl:when test="$runner/w:rPr/w:lang/@w:bidi">
+                        <xsl:value-of select="$runner/w:rPr/w:lang/@w:bidi"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="$doclangbidi"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
-            <xsl:when test="../../w:r/w:rPr/w:rFonts/@w:hint='eastAsia'">
+			<!-- East Asia Font -->
+            <xsl:when test="$runner/w:rPr/w:rFonts/@w:hint='eastAsia'">
                 <xsl:choose>
-                    <xsl:when test="../../w:r/w:rPr/w:lang/@w:eastAsia">
-                        <xsl:value-of select="../../w:r/w:rPr/w:lang/@w:eastAsia"/>
+                    <xsl:when test="$runner/w:rPr/w:lang/@w:eastAsia">
+                        <xsl:value-of select="$runner/w:rPr/w:lang/@w:eastAsia"/>
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:value-of select="$doclangeastAsia"/>
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
+			<!-- Default Font -->
             <xsl:otherwise>
-                <xsl:choose>
-                    <xsl:when test="$count_lang&gt;1">
-                        <xsl:choose>
-                            <xsl:when test="../../w:r/w:rPr/w:lang/@w:val">
-                                <xsl:value-of select="../../w:r/w:rPr/w:lang/@w:val"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="$doclang"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:when test="$count_lang=1">
-                        <xsl:choose>
-                            <xsl:when test="../../w:r/w:rPr/w:lang/@w:val">
-                                <xsl:value-of select="../../w:r/w:rPr/w:lang/@w:val"/>
-                            </xsl:when>
-                            <xsl:when test="../../w:r/w:rPr/w:lang/@w:bidi">
-                                <xsl:value-of select="../../w:r/w:rPr/w:lang/@w:bidi"/>
-                            </xsl:when>
-                            <xsl:when test="../../w:r/w:rPr/w:lang/@w:eastAsia">
-                                <xsl:value-of select="../../w:r/w:rPr/w:lang/@w:eastAsia"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$doclang"/>
-                    </xsl:otherwise>
-                </xsl:choose>
+				<xsl:choose>
+					<!-- A bidirectionnal lang is set -->
+					<xsl:when test="$runner/w:rPr/w:lang/@w:bidi">
+						<xsl:value-of select="$runner/w:rPr/w:lang/@w:bidi"/>
+					</xsl:when>
+					<!-- An east asia lang is set -->
+					<xsl:when test="$runner/w:rPr/w:lang/@w:eastAsia">
+						<xsl:value-of select="$runner/w:rPr/w:lang/@w:eastAsia"/>
+					</xsl:when>
+					<!-- An alternative lang (but no bidi or east asia) is set -->
+					<xsl:when test="$runner/w:rPr/w:lang/@w:val">
+						<xsl:value-of select="$runner/w:rPr/w:lang/@w:val"/>
+					</xsl:when>
+					<!-- No lang set, return default doc lang -->
+					<xsl:otherwise>
+						<xsl:value-of select="$doclang"/>
+					</xsl:otherwise>
+				</xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
     </xsl:template>
-    <!--Template for taking language for bdo Tag-->
-    <xsl:template name="BdoRtlLanguages">
-        <xsl:message terminate="no">debug in BdoRtlLanguages</xsl:message>
-        <xsl:variable name="quote">"</xsl:variable>
-        <xsl:variable name="count_lang">
-            <xsl:for-each select="../w:r[1]/w:rPr/w:lang">
-                <xsl:value-of select="count(@*)"/>
-            </xsl:for-each>
-        </xsl:variable>
-        <xsl:choose>
-            <xsl:when test="w:rPr/w:rFonts/@w:hint='cs'">
-                <xsl:choose>
-                    <xsl:when test="w:rPr/w:lang/@w:bidi">
-                        <xsl:value-of select="w:rPr/w:lang/@w:bidi"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$doclangbidi"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:when test="w:rPr/w:rFonts/@w:hint='eastAsia'">
-                <xsl:choose>
-                    <xsl:when test="w:rPr/w:lang/@w:eastAsia">
-                        <xsl:value-of select="w:rPr/w:lang/@w:eastAsia"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$doclangeastAsia"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:choose>
-                    <xsl:when test="$count_lang&gt;1">
-                        <xsl:choose>
-                            <xsl:when test="w:rPr/w:lang/@w:val">
-                                <xsl:value-of select="w:rPr/w:lang/@w:val"/>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:value-of select="$doclang"/>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:when test="$count_lang=1">
-                        <xsl:choose>
-                            <xsl:when test="w:rPr/w:lang/@w:val">
-                                <xsl:value-of select="w:rPr/w:lang/@w:val"/>
-                            </xsl:when>
-                            <xsl:when test="w:rPr/w:lang/@w:bidi">
-                                <xsl:value-of select="w:rPr/w:lang/@w:bidi"/>
-                            </xsl:when>
-                            <xsl:when test="w:rPr/w:lang/@w:eastAsia">
-                                <xsl:value-of select="w:rPr/w:lang/@w:eastAsia"/>
-                            </xsl:when>
-                        </xsl:choose>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <xsl:value-of select="$doclang"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
+	
+   
     <xsl:template name="TempCharacterStyle">
         <xsl:param name="characterStyle"/>
         <xsl:message terminate="no">debug in TempCharacterStyle</xsl:message>

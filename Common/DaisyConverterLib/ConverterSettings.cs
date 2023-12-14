@@ -143,12 +143,12 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string resampleValue = "96";
         private string characterStyle = "False";
         private string pagenumStyle = "Custom";
-        private string footnotesLevel = "0"; // 0 mean current paragraphe, < 0 means parent level going upward, > 1 means absolute dtbook level
-        private string footnotesPosition = "page"; // Should be inline, end, or page
-        private string footnotesNumbering = "number"; // should be number, none, or word (to reuse word 
+        private string footnotesLevel = "0"; // 0 mean current paragraphe level, < 0 means parent level going upward, > 1 means absolute dtbook level
+        private string footnotesPosition = "end"; // Should be inline, end, or page
+        private string footnotesNumbering = "none"; // should be number, none, or word
         private string footnotesStartValue = "1"; // number to be used
         private string footnotesNumberingPrefix = ""; // prefix to be added before the numbering
-        private string footnotesNumberingSuffix = " "; // suffix to be added between the number and the text (default to a space to reproduce the plugin original behaviour)
+        private string footnotesNumberingSuffix = ""; // suffix to be added between the number and the text
         private string azureSpeechRegion = ""; // region defined in the Azure console for the speech service
         private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
         private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
@@ -156,19 +156,19 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             get =>
                 $"<Settings>" +
-                    $"<PageNumbers  value=\"{pagenumStyle}\" />" +
-                    $"<CharacterStyles value=\"{characterStyle}\" />" +
-                    $"<ImageSizes value=\"{imgoption}\" samplingvalue=\"{resampleValue}\" />" +
-                    $"<Footnotes level=\"{footnotesLevel}\" " +
-                        $"position=\"{footnotesPosition}\" " +
-                        $"numbering=\"{footnotesNumbering}\" " +
-                        $"startValue=\"{footnotesStartValue}\" " +
-                        $"numberPrefix=\"{footnotesNumberingPrefix}\" " +
-                        $"numberSuffix=\"{footnotesNumberingSuffix}\" />" +
-                    $"<Azure region=\"{azureSpeechRegion}\" " +
-                            $"key=\"{azureSpeechKey}\" />" +
-                    $"<TTSConfig file=\"{ttsConfigFile}\" />" +
-                $"</Settings>";
+                $"\r\n\t<PageNumbers  value=\"{pagenumStyle}\" />" +
+                $"\r\n\t<CharacterStyles value=\"{characterStyle}\" />" +
+                $"\r\n\t<ImageSizes value=\"{imgoption}\" samplingvalue=\"{resampleValue}\" />" +
+                $"\r\n\t<Footnotes level=\"{footnotesLevel}\" " +
+                $"\r\n\t\tposition=\"{footnotesPosition}\" " +
+                $"\r\n\t\tnumbering=\"{footnotesNumbering}\" " +
+                $"\r\n\t\tstartValue=\"{footnotesStartValue}\" " +
+                $"\r\n\t\tnumberPrefix=\"{footnotesNumberingPrefix}\" " +
+                $"\r\n\t\tnumberSuffix=\"{footnotesNumberingSuffix}\" />" +
+                $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
+                $"\r\n\t\tkey=\"{azureSpeechKey}\" />" +
+                $"\r\n\t<TTSConfig file=\"{ttsConfigFile}\" />" +
+                $"\r\n</Settings>";
 
         }
 

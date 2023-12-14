@@ -252,7 +252,7 @@
                 <xsl:call-template name="SetCurrentMatterType" />
             </xsl:if>
             <xsl:if test="myObj:GetCurrentMatterType()=$matterType">
-				<xsl:message terminate="no">progress:Converting element <xsl:value-of select="position()"/> / <xsl:value-of select="$ElementCountToConvert"/></xsl:message>
+				<xsl:message terminate="no">progress:Converting element <xsl:value-of select="name()"/> - <xsl:value-of select="position()"/> / <xsl:value-of select="$ElementCountToConvert"/></xsl:message>
                 <xsl:choose>
                     <!--Checking for Praragraph element-->
                     <xsl:when test="name()='w:p'
@@ -722,30 +722,18 @@
             </xsl:if>
             <!--Checking condition for MathEquations in Word2007-->
             <xsl:if test="m:oMath">
-                <xsl:choose>
-                    <!--Checking for BDO Element in MathEquation-->
-                    <xsl:when test="../w:pPr/w:bidi">
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,'&gt;')"/>
-                        <!--Calling Mathml Template for Math Equations-->
-                        <xsl:call-template name="ooml2mml">
-                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                            <xsl:with-param name="sZeros" select="$sZeros"/>
-                        </xsl:call-template>
-                        <!--Closing bdo Tag-->
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                    </xsl:when>
-                    <xsl:otherwise>
-                        <!--Calling Mathml Template for Math Equations-->
-                        <xsl:call-template name="ooml2mml">
-                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                            <xsl:with-param name="sZeros" select="$sZeros"/>
-                        </xsl:call-template>
-                    </xsl:otherwise>
-                </xsl:choose>
+				<xsl:if test="../w:pPr/w:bidi">
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,'&gt;')"/>
+				</xsl:if>
+				<xsl:call-template name="ooml2mml">
+					<xsl:with-param name="sOperators" select="$sOperators"/>
+					<xsl:with-param name="sMinuses" select="$sMinuses"/>
+					<xsl:with-param name="sNumbers" select="$sNumbers"/>
+					<xsl:with-param name="sZeros" select="$sZeros"/>
+				</xsl:call-template>
+				<xsl:if test="../w:pPr/w:bidi">
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
+				</xsl:if>
             </xsl:if>
             <!--Checking condition for MathEquations in Word2007-->
             <xsl:if test="../m:oMath">
@@ -1119,13 +1107,6 @@
                 </xsl:if>
             </xsl:if>
         </xsl:for-each>
-        <!--checking    condition to close bdo Tag -->
-        <xsl:if test="myObj:SetbdoFlag()&gt;=2">
-            <!--Closing BDO tag-->
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-        </xsl:if>
-        <!--reseting bdo flag-->
-        <xsl:variable name="bdoflag" select="myObj:reSetbdoFlag()"/>
         <xsl:variable name="assingBookmark" select="myObj:AssingBookmark()"/>
         <!--closing paragraph tag-->
         <xsl:if test="not($flag='0') and not(myObj:AbbrAcrFlag()='1') and not($flagNote='hyper')">
@@ -1615,47 +1596,7 @@
                 </xsl:choose>
             </xsl:when>
             <xsl:otherwise>
-                <xsl:choose>
-                    <!--Checking for BDO Element-->
-                    <xsl:when test="(../w:pPr/w:bidi) and (w:rPr/w:rtl)">
-                        <xsl:variable name="Bd">
-                            <xsl:call-template name="BdoRtlLanguages"/>
-                        </xsl:variable>
-                        <xsl:variable name="bdoflag" select="myObj:SetbdoFlag()"/>
-                        <!--opening bdo Tag-->
-                        <xsl:if test="$bdoflag=1">
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-                        </xsl:if>
-                    </xsl:when>
-                    <!--Checking for BDO Element-->
-                    <xsl:when test="(../w:pPr/w:bidi)">
-                        <xsl:variable name="Bd">
-                            <!--Calling template for Bdo language-->
-                            <xsl:call-template name="BdoRtlLanguages"/>
-                        </xsl:variable>
-                        <!--Setting flag for bdo-->
-                        <xsl:variable name="bdoflag" select="myObj:SetbdoFlag()"/>
-                        <!--checking condition for opening p tag-->
-                        <!--opening bdo Tag-->
-                        <xsl:if test="$bdoflag=1">
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-                        </xsl:if>
-                    </xsl:when>
-                    <!--Checking for BDO Element-->
-                    <xsl:when test="w:rPr/w:rtl">
-                        <xsl:variable name="Bd">
-                            <!--Calling template for Bdo language-->
-                            <xsl:call-template name="BdoRtlLanguages"/>
-                        </xsl:variable>
-                        <!--Setting flag for bdo-->
-                        <xsl:variable name="bdoflag" select="myObj:SetbdoFlag()"/>
-                        <!--opening bdo Tag-->
-                        <xsl:if test="$bdoflag=1">
-                            <!--If flag value is 1 opening bdo element-->
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$Bd,$quote,'&gt;')"/>
-                        </xsl:if>
-                    </xsl:when>
-                </xsl:choose>
+                
                 <!--Calling Custom styles template if not caption-->
                 <xsl:if test="not((((../w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
                         or (../w:pPr/w:pStyle/@w:val='Caption'))
@@ -2136,11 +2077,11 @@
                     <!--Opening page number tag-->
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','pagenum ','page=',$aquote,$page,$aquote,' id=',$aquote,concat('page',myObj:GeneratePageId()),$aquote,'&gt;')"/>
                 </xsl:if>
-                <!--Calling template for page number text-->
-                <xsl:call-template name="CustomCharStyle">
-                    <xsl:with-param name="characterStyle" select="$customcharStyle"/>
-                    <xsl:with-param name="txt" select="$txt"/>
-                </xsl:call-template>
+				<!-- pagenum only accept text-->
+				<xsl:if test="not($txt='')">
+					<xsl:value-of select="$txt"/>
+				</xsl:if>
+				<xsl:value-of select="normalize-space(w:t)"/>
                 <xsl:if test="count(following-sibling::node()[1]/w:rPr/w:rStyle[@w:val='PageNumberDAISY'])=0">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/pagenum','&gt;')"/>
                 </xsl:if>
@@ -2167,15 +2108,6 @@
                     </xsl:when>
                     <xsl:when test="(myObj:Getlinenumflag()='1')">
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
-                        <!--<xsl:call-template name="CloseLevel">
-                            <xsl:with-param name="CurrentLevel" select="-1"/>
-                            <xsl:with-param name="verfoot" select="$VERSION"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                            <xsl:with-param name="sZeros" select="$sZeros"/>
-                        </xsl:call-template>-->
                         <line>
                             <linenum>
                                 <xsl:call-template name="CustomCharStyle">
@@ -2210,7 +2142,7 @@
         <xsl:if test="not(myObj:HasCharacterStyle($styleTag))">
             <xsl:if test="myObj:PushCharacterStyle($styleTag)" />
             <xsl:value-of disable-output-escaping="yes"
-						  select="concat('&lt;', $styleTag, ' ', $attributes, '&gt;')"/>
+						  select="concat('&lt;', $styleTag, ' ', normalize-space($attributes), '&gt;')"/>
         </xsl:if>
     </xsl:template>
     <!-- template to close a style tag (and its children if needed recursively) -->
@@ -2234,14 +2166,38 @@
             <xsl:call-template name="CloseAllStyleTag" />
         </xsl:if>
     </xsl:template>
-    <!--Template for different inbuilt character styles applied on a block of letter (w:r)
-    Change to be made : 
-     - Merge emphasis/strong block : use a flag system to create start and closing tag for text decoration -->
+    
+	<!--Template for different inbuilt character styles applied on a block of letter (w:r) -->
     <xsl:template name="CustomCharStyle">
         <xsl:param name="characterStyle"/>
 		<xsl:param name="attributes" select="''" /> <!-- To handle hyperlinks --> 
         <xsl:param name="txt"/>
-        <!-- Compute character group status -->
+		<!-- Group of Bidirectionnal text -->
+		<xsl:variable name="isBidirectionnal" select="(../w:pPr/w:bidi) or w:rPr/w:rtl or (w:rPr/w:lang/@w:bidi)"/>
+		<xsl:variable name="bdoLang">
+			<xsl:call-template name="GetBdoLanguages">
+				<xsl:with-param name="runner" select="."/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="langChanged">
+			<xsl:choose>
+				<xsl:when test="preceding-sibling::w:r[1]">
+					<xsl:variable name="previousBdo">
+						<xsl:call-template name="GetBdoLanguages">
+							<xsl:with-param name="runner" select="preceding-sibling::w:r[1]"/>
+						</xsl:call-template>
+					</xsl:variable>
+					<xsl:value-of select="$previousBdo = $bdoLang"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="false()"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<!-- Check if bidirectionnal language has changed, and close previous bdo if so  -->
+		
+
+		<!-- Compute character group status -->
         <!-- Group of bold = strong characters -->
         <xsl:variable name="isStrong" select="w:rPr/w:b or w:rPr/w:bCs or w:rPr/w:rStyle[@w:val='Strong']"/>
         <!-- Group of italic = em characters -->
@@ -2285,10 +2241,22 @@
                 <xsl:with-param name="styleTag" select="'sub'"/>
             </xsl:call-template>
         </xsl:if>
+		<!-- Close BDO element if not bidirectionnal anymore or lang has changed-->
+		<xsl:if test="not($isBidirectionnal) or $langChanged">
+			<xsl:call-template name="CloseStyleTag">
+				<xsl:with-param name="styleTag" select="'bdo'"/>
+			</xsl:call-template>
+		</xsl:if>
         <xsl:choose>
-            <!-- If group is not a notereference and has one of strong|em|sub|sup status -->
-            <xsl:when test="$isStrong or $isEmp or $isSuperscript or $isSubscript and not($isNote)">
+            <!-- If group is not a notereference and has one of strong|em|sub|sup|a|bdo status -->
+            <xsl:when test="$isBidirectionnal or $isHyperlink or $isStrong or $isEmp or $isSuperscript or $isSubscript and not($isNote)">
                 <!-- if not already in the style stack, Open new style tag and add it to the stack -->
+				<xsl:if test="$isBidirectionnal">
+					<xsl:call-template name="OpenStyleTagIfNotOpened">
+						<xsl:with-param name="styleTag" select="'bdo'"/>
+						<xsl:with-param name="attributes">dir="rtl" xml:lang="<xsl:value-of select="$bdoLang"/>"</xsl:with-param>
+					</xsl:call-template>
+				</xsl:if>
                 <xsl:if test="$isSubscript">
                     <xsl:call-template name="OpenStyleTagIfNotOpened">
                         <xsl:with-param name="styleTag" select="'sub'"/>
@@ -2321,6 +2289,9 @@
                 </xsl:call-template>
                 <!-- Close style tag if no run with text is found afterward in the paragraph tag -->
                 <xsl:if test="not(following-sibling::w:r/w:t)">
+					<xsl:call-template name="CloseStyleTag">
+						<xsl:with-param name="styleTag" select="'a'"/>
+					</xsl:call-template>
                     <xsl:call-template name="CloseStyleTag">
                         <xsl:with-param name="styleTag" select="'em'"/>
                     </xsl:call-template>
@@ -2333,6 +2304,9 @@
                     <xsl:call-template name="CloseStyleTag">
                         <xsl:with-param name="styleTag" select="'sub'"/>
                     </xsl:call-template>
+					<xsl:call-template name="CloseStyleTag">
+						<xsl:with-param name="styleTag" select="'bdo'"/>
+					</xsl:call-template>
                 </xsl:if>
             </xsl:when>
             <!--Checking for WordDAISY custom character style-->
@@ -3595,7 +3569,9 @@
                         <xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">
                             <!--Variable holds the value which indicates that the image is bidirectionally oriented-->
                             <xsl:variable name="definitionlistBd">
-                                <xsl:call-template name="BdoRtlLanguages"/>
+								<xsl:call-template name="GetBdoLanguages">
+									<xsl:with-param name="runner" select="."/>
+								</xsl:call-template>
                             </xsl:variable>
                             <xsl:variable name="quote">"</xsl:variable>
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$definitionlistBd,$quote,'&gt;')"/>
@@ -3745,7 +3721,9 @@
                         <xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">
                             <!--Variable holds the value which indicates that the image is bidirectionally oriented-->
                             <xsl:variable name="definitionlistBd">
-                                <xsl:call-template name="BdoRtlLanguages"/>
+								<xsl:call-template name="GetBdoLanguages">
+									<xsl:with-param name="runner" select="."/>
+								</xsl:call-template>
                             </xsl:variable>
                             <xsl:variable name="quote">"</xsl:variable>
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','bdo ','dir= ',$quote,'rtl',$quote,' xml:lang=',$quote,$definitionlistBd,$quote,'&gt;')"/>

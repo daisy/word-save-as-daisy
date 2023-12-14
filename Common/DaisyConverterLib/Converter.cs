@@ -323,14 +323,14 @@ namespace Daisy.SaveAsDAISY.Conversion
                 }
                 catch (Exception e)
                 {
-                    string message = "An error occured while converting " + document.InputPath + " to dtbook XML :\r\n" + e.Message;
+                    string message = "An error occured while converting a single docx to dtbook XML";
                     while (e.InnerException != null)
                     {
                         message += "\r\n - " + e.InnerException.Message;
                         e = e.InnerException;
                     }
 
-                    Exception fault = new Exception("An error occured while converting " + document.InputPath + " to dtbook XML :\r\n" + e.Message, e);
+                    Exception fault = new Exception("Conversion of single docx to dtbook XML: task crashed", e);
                     this.EventsHandler.OnConversionError(
                         fault
                     );
@@ -349,7 +349,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                         e = e.InnerException;
                     }
 
-                    Exception fault = new Exception("An error occured while converting " + document.InputPath + " to dtbook XML :\r\n" + e.Message, e);
+                    Exception fault = new Exception("Conversion of single docx to dtbook XML: task ended in fault", e);
                     this.EventsHandler.OnConversionError(
                         fault
                     );
@@ -383,7 +383,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 catch (Exception e)
                 {
                     CurrentStatus = ConversionStatus.Error;
-                    Exception fault = new Exception("Error while converting with DAISY Pipeline 2:\r\n" + e.Message, e);
+                    Exception fault = new Exception("Error while converting with DAISY Pipeline 2", e);
                     this.EventsHandler.onPostProcessingError(
                         fault
                     );
@@ -466,7 +466,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                         }
                         catch (Exception e)
                         {
-                            Exception fault = new Exception("Error while converting " + document.InputPath + " to dtbook XML:\r\n" + e.Message, e);
+                            Exception fault = new Exception("Conversion of list of docx to dtbook XML: task crashed", e);
                             // TODO try to see if exception is raised by cancellation
                             this.EventsHandler.OnConversionError(fault);
                             throw fault;
@@ -475,7 +475,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
                         if (conversionTask.IsFaulted)
                         {
-                            Exception fault = new Exception("Error while converting " + document.InputPath + " to dtbook XML:\r\n" + conversionTask.Exception.Message, conversionTask.Exception);
+                            Exception fault = new Exception("Conversion of list of docx to dtbook XML: task ended in fault", conversionTask.Exception);
                             this.EventsHandler.OnConversionError(
                                 fault
                             );
