@@ -20,7 +20,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 "- User or system wide install: {3}\r\n\r\n" +
                 "{4}\r\n\r\n" +
                 "Stacktrace:\r\n" +
-                "{5}",
+                "```\r\n" +
+                "{5}\r\n" +
+                "```",
                 typeof(ExceptionReport).Assembly.GetName().Version,
                 System.Environment.Is64BitProcess ? "x64" : "x86",
                 System.Runtime.InteropServices.RuntimeInformation.OSDescription,

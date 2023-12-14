@@ -9,7 +9,7 @@
         -->
     
     <!-- Preprocessor variables, update following your addin assemblies version -->
-    <?define AddinVersion = "2.8.0.0" ?>
+    <?define AddinVersion = "2.8.1.0" ?>
     
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
@@ -24,13 +24,13 @@
     <?endif ?>
     
     <!--Change this ID for update -->
-    <Product Id="6207484C-7B14-40EB-8B8E-D0AEB6A5A213" 
+    <Product Id="DF9B042D-1B95-449D-9024-24689297A6D1" 
             Name="SaveAsDAISY add-in version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
         <!--Change this ID for update -->
-        <Package Id="0A284E55-A8B3-41BD-B1AF-924EA7F39668"
+        <Package Id="956007FB-24C4-4F7C-A37B-2D3E4279CD8E"
 				 Compressed="yes"
 				 InstallPrivileges="limited"
 				 InstallerVersion="200" />
@@ -1174,72 +1174,72 @@
 
 			<!-- DAISY Pipeline 2 -->
 			<ComponentRef Id="_daisy_pipeline_files"/>
-			<ComponentRef Id="_daisy_pipeline_bin_files"/>
-			<ComponentRef Id="_daisy_pipeline_cli_files"/>
-			<ComponentRef Id="_daisy_pipeline_etc_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_bin_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_bin_server_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_conf_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_conf_management_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_conf_security_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_conf_security_policy_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_conf_security_policy_limited_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_conf_security_policy_unlimited_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.base_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.datatransfer_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.desktop_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.instrument_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.logging_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.management_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.management.rmi_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.naming_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.prefs_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.rmi_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.security.jgss_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.security.sasl_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.sql_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.transaction.xa_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_java.xml_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_jdk.crypto.ec_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_jdk.management.agent_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_legal_jdk.zipfs_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_lib_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre_lib_security_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_bin_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_bin_client_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_bin_server_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_conf_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_conf_management_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_conf_security_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_conf_security_policy_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_conf_security_policy_limited_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_conf_security_policy_unlimited_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.base_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.datatransfer_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.desktop_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.instrument_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.logging_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.management_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.management.rmi_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.naming_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.prefs_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.rmi_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.security.jgss_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.security.sasl_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.sql_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.transaction.xa_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_java.xml_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_jdk.crypto.ec_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_jdk.management.agent_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_legal_jdk.zipfs_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_lib_files"/>
-			<ComponentRef Id="_daisy_pipeline_jre32_lib_security_files"/>
-			<ComponentRef Id="_daisy_pipeline_system_common_files"/>
-			<ComponentRef Id="_daisy_pipeline_system_no_osgi_files"/>
-			<ComponentRef Id="_daisy_pipeline_system_simple_api_files"/>
-			<ComponentRef Id="_daisy_pipeline_system_simple_api_META_INF_services_files"/>
+                                <ComponentRef Id="_daisy_pipeline_bin_files"/>
+                                <ComponentRef Id="_daisy_pipeline_cli_files"/>
+                                <ComponentRef Id="_daisy_pipeline_etc_files"/>
+                                <ComponentRef Id="_daisy_pipeline_jre_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_jre_bin_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_bin_server_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_jre_conf_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_conf_management_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_conf_security_files"/>
+                                            <ComponentRef Id="_daisy_pipeline_jre_conf_security_policy_files"/>
+                                                <ComponentRef Id="_daisy_pipeline_jre_conf_security_policy_limited_files"/>
+                                                <ComponentRef Id="_daisy_pipeline_jre_conf_security_policy_unlimited_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.base_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.datatransfer_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.desktop_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.instrument_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.logging_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.management_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.management.rmi_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.naming_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.prefs_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.rmi_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.security.jgss_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.security.sasl_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.sql_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.transaction.xa_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_java.xml_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_jdk.crypto.ec_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_jdk.management.agent_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_legal_jdk.zipfs_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_jre_lib_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre_lib_security_files"/>
+                                <ComponentRef Id="_daisy_pipeline_jre32_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_jre32_bin_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_bin_client_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_bin_server_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_jre32_conf_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_conf_management_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_conf_security_files"/>
+                                            <ComponentRef Id="_daisy_pipeline_jre32_conf_security_policy_files"/>
+                                                <ComponentRef Id="_daisy_pipeline_jre32_conf_security_policy_limited_files"/>
+                                                <ComponentRef Id="_daisy_pipeline_jre32_conf_security_policy_unlimited_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.base_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.datatransfer_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.desktop_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.instrument_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.logging_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.management_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.management.rmi_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.naming_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.prefs_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.rmi_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.security.jgss_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.security.sasl_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.sql_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.transaction.xa_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_java.xml_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_jdk.crypto.ec_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_jdk.management.agent_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_legal_jdk.zipfs_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_jre32_lib_files"/>
+                                        <ComponentRef Id="_daisy_pipeline_jre32_lib_security_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_system_common_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_system_no_osgi_files"/>
+                                    <ComponentRef Id="_daisy_pipeline_system_simple_api_files"/>
+                                            <ComponentRef Id="_daisy_pipeline_system_simple_api_META_INF_services_files"/>
 
 		</Feature>
         

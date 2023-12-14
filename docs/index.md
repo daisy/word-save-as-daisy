@@ -70,7 +70,7 @@ we would really appreciate it.
 
 # Changelog
 
-# 2.8.0 beta (December 2023)
+# 2.8.1 beta (December 2023)
 
 (This version is under test phase and is not released yet)
 
@@ -98,7 +98,7 @@ the result of the conversion.
 
 Some new features are starting to be integrated in the addin and are still experimental:
 - With the updated DAISY Pipeline 2 provided, users can now test the export 
-to Megavoice fileset of MP3 files
+to Megavoice fileset of MP3 files (Issues [#30](https://github.com/daisy/word-save-as-daisy/issues/30)
 
 
 Various fixes and changes are included in the release :
@@ -113,6 +113,7 @@ for each export format based on DAISY pipeline 2 settings
 looks at the daisy github repository of the addin.
 - Issue [#26](https://github.com/daisy/word-save-as-daisy/issues/26) is fixed by
 the removal of pipeline 1 that is vulnerable to attacks through its version of log4j
+- Issue [#29](https://github.com/daisy/word-save-as-daisy/issues/35)
 
 
 # 2.7.2 beta (September 2022)
