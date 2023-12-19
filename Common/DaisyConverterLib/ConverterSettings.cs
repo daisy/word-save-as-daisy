@@ -144,7 +144,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string characterStyle = "False";
         private string pagenumStyle = "Custom";
         private string footnotesLevel = "0"; // 0 mean current paragraphe level, < 0 means parent level going upward, > 1 means absolute dtbook level
-        private string footnotesPosition = "end"; // Should be inline, end, or page
+        private string footnotesPosition = "inline"; // Should be inline, end, or page
         private string footnotesNumbering = "none"; // should be number, none, or word
         private string footnotesStartValue = "1"; // number to be used
         private string footnotesNumberingPrefix = ""; // prefix to be added before the numbering

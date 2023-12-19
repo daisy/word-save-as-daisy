@@ -329,6 +329,7 @@
                         <xsl:if test="$FootnotesPosition='page'">
                         <!--calling for foonote template and displaying footnote text at the end of the page-->
                             <xsl:call-template name="InsertFootnotes">
+								<xsl:with-param name="level" select="0"/>
                                 <xsl:with-param name="verfoot" select="$version"/>
                                 <!--<xsl:with-param name="mastersubfoot" select="$masterSub"/>-->
                                 <xsl:with-param name="characStyle" select="$charStyles"/>
@@ -585,6 +586,7 @@
             <xsl:if test="not(name(..)='w:tc')">
                 <xsl:if test="$FootnotesPosition='page'">
                     <xsl:call-template name="InsertFootnotes">
+						<xsl:with-param name="level" select="0"/>
                         <xsl:with-param name="verfoot" select="$VERSION"/>
                         <!--<xsl:with-param name="mastersubfoot" select="$mastersubpara"/>-->
                         <xsl:with-param name="characStyle" select="$charparahandlerStyle"/>
@@ -607,6 +609,7 @@
                     )">
                         <xsl:if test="$FootnotesPosition='page'">
                             <xsl:call-template name="InsertFootnotes">
+								<xsl:with-param name="level" select="0"/>
                                 <xsl:with-param name="verfoot" select="$VERSION"/>
                                 <!--<xsl:with-param name="mastersubfoot" select="$mastersubpara"/>-->
                                 <xsl:with-param name="characStyle" select="$charparahandlerStyle"/>
@@ -621,6 +624,7 @@
                     <xsl:when test="(w:r/w:lastRenderedPageBreak)">
                         <xsl:if test="$FootnotesPosition='page'">
                             <xsl:call-template name="InsertFootnotes">
+								<xsl:with-param name="level" select="0"/>
                                 <xsl:with-param name="verfoot" select="$VERSION"/>
                                 <!--<xsl:with-param name="mastersubfoot" select="$mastersubpara"/>-->
                                 <xsl:with-param name="characStyle" select="$charparahandlerStyle"/>
@@ -2599,6 +2603,7 @@
                         and $FootnotesPosition='page'
                 ">
                     <xsl:call-template name="InsertFootnotes">
+						<xsl:with-param name="level" select="0"/>
                         <xsl:with-param name="verfoot" select="$VERSION"/>
                         <xsl:with-param name="custom" select="$custom"/>
                         <!--<xsl:with-param name="mastersubfoot" select="$mastersubstyle"/>-->

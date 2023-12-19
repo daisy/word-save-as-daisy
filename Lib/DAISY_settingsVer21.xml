@@ -2,7 +2,7 @@
 	<PageNumbers  value="Custom" />
 	<CharacterStyles value="False" />
 	<ImageSizes value="original" samplingvalue="96" />
-	<Footnotes level="0" position="end" numbering="none" startValue="1" numberPrefix="" numberSuffix=" " />
+	<Footnotes level="0" position="inline" numbering="none" startValue="1" numberPrefix="" numberSuffix=" " />
 	<Azure region="" key="" />
 	<TTSConfig file="" />
 </Settings>

@@ -139,6 +139,7 @@
     </xsl:template>
     <!--Template for Adding footnote-->
     <xsl:template name="InsertFootnotes">
+		<xsl:param name="level"/>
         <xsl:param name="verfoot"/>
         <xsl:param name="characterStyle"/>
         <xsl:param name="sOperators"/>
@@ -147,16 +148,18 @@
         <xsl:param name="sZeros"/>
         <xsl:message terminate="no">debug:footnote</xsl:message>
         <!--Inserting default footnote id in the array list-->
-        <xsl:variable name="checkid" select="myObj:FootNoteId(0)"/>
-        <!--Checking for the matching Id returned from footnoteId function of c#-->
+        <xsl:variable name="checkid" select="myObj:FootNoteId(0, $level)"/>
+        <!-- Checking for the matching Id and level returned from c# code -->
         <xsl:if test="$checkid!=0">
             <!--Traversing through each footnote element in footnotes.xml file-->
             <xsl:for-each select="document('word/footnotes.xml')//w:footnotes/w:footnote">
                 <!--Checking if Id returned from C# is equal to the footnote Id in footnotes.xml file-->
                 <xsl:if test="number(@w:id)=$checkid">
-                    <xsl:message terminate="no">debug:Insert footnote <xsl:value-of select="$checkid"/></xsl:message>
+                    <xsl:message terminate="no">progress:Insert footnote <xsl:value-of select="$checkid"/> </xsl:message>
                     <!--Creating note element and it's attribute values-->
                     <note id="{concat('footnote-',$checkid)}" class="Footnote">
+						<!-- avoid notes recursion-->
+						<xsl:variable name="newlevel" select="myObj:PushLevel($level + 1)"/>
                         <!--Travering each element inside w:footnote in footnote.xml file-->
                         <xsl:for-each select="./node()">
                             <!--Checking for Paragraph element-->
@@ -249,12 +252,14 @@
                                 </xsl:choose>
                             </xsl:if>
                         </xsl:for-each>
+						<xsl:variable name="newlevelOld" select="myObj:PopLevel()"/>
                     </note>
                 </xsl:if>
                 <xsl:variable name="SetFlag" select="myObj:InitializeNoteFlag()"/>
             </xsl:for-each>
             <!--Calling the template footnote recursively until the C# function returns 0-->
             <xsl:call-template name="InsertFootnotes">
+				<xsl:with-param name="level" select="$level" />
                 <xsl:with-param name="verfoot" select ="$verfoot"/>
                 <xsl:with-param name="characStyle" select="$characterStyle"/>
                 <xsl:with-param name="sOperators" select="$sOperators"/>

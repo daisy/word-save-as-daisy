@@ -80,9 +80,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         ArrayList arrHyperlink = new ArrayList();
 
         /// <summary>
-        /// 
+        /// Notes id
         /// </summary>
-        ArrayList arrListNote = new ArrayList();
+        ArrayList notesIdsQueue = new ArrayList();
+
+        /// <summary>
+        /// Notes levels
+        /// </summary>
+        ArrayList notesLevelsQueue = new ArrayList();
 
         ArrayList arrList = new ArrayList(); // not used
 
@@ -682,7 +687,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// pop (retrieve and delete) the last level of the document from the stack
         /// </summary>
         /// <returns></returns>
-        public String PoPLevel() {
+        public String PopLevel() {
             return stackList.Pop();
         }
 
@@ -1004,27 +1009,55 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 
         /// <summary>
-        /// Function to add Footnote to an Array
+        /// Store a footnote id found in content.
+        /// Also store its current level.
         /// </summary>
         /// <param name="inNum"></param>
         /// <returns></returns>
         public String AddFootNote(string inNum) {
-            arrListNote.Add(inNum);
+            notesIdsQueue.Add(inNum);
+            notesLevelsQueue.Add(PeekLevel());
             return inNum;
         }
 
         /// <summary>
-        /// Function to get Value of a particular Footnote
+        /// Function to get Value of a particular Footnote.
+        /// NP : Only used as FootNoteId(0) to get the first footnote to 
+        /// insert in content.
         /// </summary>
-        /// <param name="i"></param>
+        /// <param name="i">index of the footnote</param>
         /// <returns></returns>
-        public int FootNoteId(int i) {
-            if (arrListNote.Count > 0) {
-                String s1 = arrListNote[i].ToString();
-                arrListNote.RemoveAt(i);
-                return Int32.Parse(s1);
+        public int FootNoteId(int i, int level) {
+            if (notesIdsQueue.Count > 0) {
+                // Search next footnote to include by checking if we are at the good level
+                // (we could be in a level3 while having a level2 notes as first to insert
+                // if we are inserting notes at end of levels)
+                while (
+                    i < notesIdsQueue.Count &&
+                    (level > int.Parse(notesLevelsQueue[i].ToString()))
+                ) {
+                    i++;
+                }
+                if (i >= notesIdsQueue.Count) return 0;
+                int noteLevel = int.Parse(notesLevelsQueue[i].ToString());
+                string id = notesIdsQueue[i].ToString();
+                notesIdsQueue.RemoveAt(i);
+                notesLevelsQueue.RemoveAt(i);
+                return int.Parse(id);
             } else {
                 return 0;
+            }
+
+        }
+
+        public string FootNoteLevel(int i)
+        {
+            if (notesIdsQueue.Count > 0) {
+                String s1 = notesLevelsQueue[i].ToString();
+                notesLevelsQueue.RemoveAt(i);
+                return notesLevelsQueue[i].ToString();
+            } else {
+                return "";
             }
 
         }
@@ -1119,7 +1152,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to PoP the top value of the Stack
         /// </summary>
         /// <returns></returns>
-        public int ListPoPLevel() {
+        public int ListPopLevel() {
             if (lstackList.Count > 0)
                 return Convert.ToInt16(lstackList.Pop());
             else

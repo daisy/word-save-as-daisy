@@ -380,7 +380,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <!--If top level is less than or equal to current level then PoP the Stack and close that level-->
         <xsl:choose>
             <xsl:when test="$CurrentLevel &gt; 6 and $PeekLevel = 6 ">
-                <xsl:variable name="PopLevel" select="myObj:PoPLevel()"/>
+                <xsl:variable name="PopLevel" select="myObj:PopLevel()"/>
                 <xsl:message terminate="no">debug:Closing level <xsl:value-of select="$PopLevel"/></xsl:message>
                 <!--Close that level-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/level',$PopLevel,'&gt;')"/>
@@ -401,6 +401,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                 or number($FootnotesLevel) &gt;= $PeekLevel
                         )">
                     <xsl:call-template name="InsertFootnotes">
+						<xsl:with-param name="level" select="$PeekLevel"/>
                         <xsl:with-param name="verfoot" select="$verfoot"/>
                         <xsl:with-param name="characterStyle" select="$characterStyle"/>
                         <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -414,7 +415,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:when>
             <xsl:otherwise>
                 <xsl:if test="$CurrentLevel &lt;=$PeekLevel and $PeekLevel !=0">
-                    <xsl:variable name="PopLevel" select="myObj:PoPLevel()"/>
+                    <xsl:variable name="PopLevel" select="myObj:PopLevel()"/>
                     <!--Close that level-->
                     <!-- NP 20220427 - removing empty paragraph -->
                     <!-- if footnotes position is set to be at the end of this level, insert footnotes here -->
@@ -427,6 +428,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                          )">
                         <xsl:message terminate="no">debug Trying to insert notes before closing level <xsl:value-of select="$PopLevel"/></xsl:message>
                         <xsl:call-template name="InsertFootnotes">
+							<xsl:with-param name="level" select="$PopLevel"/>
                             <xsl:with-param name="verfoot" select="$verfoot"/>
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -447,6 +449,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                                 and number($FootnotesLevel) &gt;= ($PopLevel - 1)
                         )">
                         <xsl:call-template name="InsertFootnotes">
+							<xsl:with-param name="level" select="$PopLevel"/>
                             <xsl:with-param name="verfoot" select="$verfoot"/>
                             <xsl:with-param name="characterStyle" select="$characterStyle"/>
                             <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -634,7 +637,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <!--Checking the current level with the PeekLevel in the stack-->
         <xsl:if test="$close &lt; $PeekLevel">
             <!--PoPs one level from the stack-->
-            <xsl:variable name="PopLevel" select="myObj:ListPoPLevel()"/>
+            <xsl:variable name="PopLevel" select="myObj:ListPopLevel()"/>
       <xsl:if test="not(preceding-sibling::node()[1][w:r/w:rPr/w:rStyle[substring(@w:val,1,15)='PageNumberDAISY']])">
               <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
       </xsl:if>
@@ -705,7 +708,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <!--Checking the current level with the PeekLevel in the stack-->
         <xsl:if test="$close &lt; $PeekLevel">
             <!--PoPs one level from the stack-->
-            <xsl:variable name="PoPLevel" select="myObj:ListPoPLevel()"/>
+            <xsl:variable name="PopLevel" select="myObj:ListPopLevel()"/>
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
             <!--Loop through until we have closed all the Lower levels-->
@@ -724,7 +727,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <!--Checking the current level with the PeekLevel in the stack-->
         <xsl:if test="$close &lt;= $PeekLevel">
             <!--PoPs one level from the stack-->
-            <xsl:variable name="PoPLevel" select="myObj:ListPoPLevel()"/>
+            <xsl:variable name="PopLevel" select="myObj:ListPopLevel()"/>
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/li','&gt;')"/>
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/list','&gt;')"/>
             <xsl:if test="$PeekLevel!=0">
