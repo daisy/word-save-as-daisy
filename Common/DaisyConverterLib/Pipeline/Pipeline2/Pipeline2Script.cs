@@ -95,21 +95,21 @@ namespace Daisy.SaveAsDAISY.Conversion
                             break;
                         case Pipeline2.JobStatus.ERROR:
                             errors = pipeline.getErros(currentJob);
-                            string messageERROR =
+                            string errorMessage =
                                 " DP2 > "
                                 + this.NiceName
                                 + " conversion job has finished in error :\r\n"
                                 + string.Join("\r\n", errors);
-                            throw new JobException(messageERROR);
+                            throw new JobException(errorMessage);
                         case Pipeline2.JobStatus.FAIL:
                             // open jobs folder
                             errors = pipeline.getErros(currentJob);
-                            string messageFAIL =
+                            string failedMessage =
                                 " DP2 > "
                                 + this.NiceName
                                 + " conversion job failed :\r\n"
                                 + string.Join("\r\n", errors);
-                            throw new JobException(messageFAIL);
+                            throw new JobException(failedMessage);
                         default:
                             break;
                     }
@@ -129,33 +129,6 @@ namespace Daisy.SaveAsDAISY.Conversion
                     if (!isQuite && !string.IsNullOrEmpty(output))
                         System.Diagnostics.Process.Start(output);
 #endif
-                }
-                // Post processing :
-                // NP 2023/09/27 : I don't know why yet, but pipeline 2 w/ simpleAPI export files with their uri encoded names
-                // While pipeline 2 app and pipeline 2 internal job folder has the correct file names 
-                // NP 2023/12/04 : found the issue in pipeline SimpleAPI, to be removed on pipeline SimpleAPI update 
-                if (Parameters.ContainsKey("output")) {
-                    string[] outputDirectories = Directory.GetDirectories((string)this.Parameters["output"].ParameterValue, "*", SearchOption.AllDirectories);
-                    foreach (var folder in outputDirectories) {
-                        string actualName = folder;
-                        string expectedFolder = Uri.UnescapeDataString(folder);
-                        if (!Directory.Exists(expectedFolder)) {
-                            Directory.CreateDirectory(Path.GetDirectoryName(expectedFolder));
-                            Directory.Move(folder, expectedFolder);
-                        }
-                    }
-                    string[] outputFiles = Directory.GetFiles((string)this.Parameters["output"].ParameterValue, "*", SearchOption.AllDirectories);
-
-                    foreach (var file in outputFiles) {
-                        string actualName = Path.GetFileName(file);
-                        string expectedFile = Path.Combine(
-                            Uri.UnescapeDataString(Path.GetDirectoryName(file)),
-                            Uri.UnescapeDataString(actualName)
-                        );
-                        if (!File.Exists(expectedFile)) {
-                            File.Move(file, expectedFile);
-                        }
-                    }
                 }
             }
             else
