@@ -13,6 +13,16 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             var isProgramFiles = location.StartsWith(programFiles);
             InitializeComponent();
             this.ExceptionRaised = raised;
+
+            Exception current = raised;
+            string exceptionText = current.Message;
+            string trace = raised.StackTrace;
+            while (current.InnerException != null) {
+                current = current.InnerException;
+                exceptionText += "\r\n- " + current.Message;
+                trace += "\r\n" + current.StackTrace;
+            }
+
             this.ExceptionMessage.Text = string.Format(
                 "- Addin Version: {0}\r\n" +
                 "- Running Architecture: {1}\r\n" +
@@ -27,13 +37,13 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 System.Environment.Is64BitProcess ? "x64" : "x86",
                 System.Runtime.InteropServices.RuntimeInformation.OSDescription,
                 isProgramFiles ? "admin" : "user",
-                raised.Message,
-                raised.StackTrace
+                exceptionText,
+                trace
                 );
         }
 
         private void SendReport_Click(object sender, EventArgs evt) {
-            StringBuilder message = new StringBuilder("The following exception was reported by the saveAsDaisy addin:\r\n");
+            StringBuilder message = new StringBuilder("An exception was reported by the saveAsDaisy addin.\r\n");
             message.Append(ExceptionMessage.Text);
 
             string reportUrl = string.Format(

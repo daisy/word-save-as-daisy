@@ -775,15 +775,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             catch (Exception e)
             {
                 AddinLogger.Error(e);
-                if (conversionIntegrationTestSettings != null)
+                if (conversionIntegrationTestSettings == null)
                 {
-
-                }
-                else
-                {
-                    
                     ExceptionReport report = new ExceptionReport(e);
-                    report.Show();
+                    report.ShowDialog();
                 }
 
             }
@@ -809,14 +804,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             catch (Exception e)
             {
                 AddinLogger.Error(e);
-                if (conversionIntegrationTestSettings != null)
-                {
-
-                }
-                else
-                {
+                if (conversionIntegrationTestSettings == null) {
                     ExceptionReport report = new ExceptionReport(e);
-                    report.Show();
+                    report.ShowDialog();
                 }
 
             }
@@ -844,13 +834,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
             } catch (Exception e) {
                 AddinLogger.Error(e);
-                if (conversionIntegrationTestSettings != null) {
-
-                } else {
+                if (conversionIntegrationTestSettings == null) {
                     ExceptionReport report = new ExceptionReport(e);
-                    report.Show();
+                    report.ShowDialog();
                 }
-                
+
             }
             
         }
@@ -875,11 +863,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
             } catch (Exception e) {
                 AddinLogger.Error(e);
-                if (conversionIntegrationTestSettings != null) {
-
-                } else {
+                if (conversionIntegrationTestSettings == null) {
                     ExceptionReport report = new ExceptionReport(e);
-                    report.Show();
+                    report.ShowDialog();
                 }
 
             }
@@ -910,14 +896,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             catch (Exception e)
             {
                 AddinLogger.Error(e);
-                if (conversionIntegrationTestSettings != null)
-                {
-
-                }
-                else
-                {
+                if (conversionIntegrationTestSettings == null) {
                     ExceptionReport report = new ExceptionReport(e);
-                    report.Show();
+                    report.ShowDialog();
                 }
 
             }
