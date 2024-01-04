@@ -941,110 +941,141 @@ namespace Daisy.SaveAsDAISY.Conversion
 			DocumentParameters documentToMerge,
 			XmlDocument mergeTarget
 		) {
+			try {
+				XmlDocument tempDoc = new XmlDocument();
+				cutData = mergeTarget == null ? "" : cutData;
+				if (mergeTarget != null) { // An existing merge target (empty or not) is requested
+					ReplaceData(documentToMerge.OutputPath, out cutData);
+				}
+				tempDoc.XmlResolver = this.ResourceResolver;
 
-			XmlDocument tempDoc = new XmlDocument();
-			cutData = mergeTarget == null ? "" : cutData;
-			if (mergeTarget != null) { // An existing merge target (empty or not) is requested
-				ReplaceData(documentToMerge.OutputPath, out cutData);
-			}
-			tempDoc.XmlResolver = this.ResourceResolver;
+				tempDoc.Load(documentToMerge.OutputPath);
+				if (mergeTarget == null || mergeTarget.ChildNodes.Count == 0) {
+					// No (or empty) merge target,
+					// Prepare document merging data 
+					// (document languages and parts of documents that are not kept, like TOCs)
+					// Also keep a counter of document merged to add a footnote
+					documentLanguages = new ArrayList();
+					lostElements = new Dictionary<string, List<string>>();
+					mergedDocumentCounter = 0;
+					mergeErrors = "";
 
-            tempDoc.Load(documentToMerge.OutputPath);
-			if (mergeTarget == null || mergeTarget.ChildNodes.Count == 0) {
-				// No (or empty) merge target,
-				// Prepare document merging data 
-				// (document languages and parts of documents that are not kept, like TOCs)
-				// Also keep a counter of document merged to add a footnote
-				documentLanguages = new ArrayList();
-				lostElements = new Dictionary<string, List<string> >();
-				mergedDocumentCounter = 0;
-				mergeErrors = "";
+					// return the current xml document (that will remain on disk)
+					return tempDoc;
+				} else try { // merge the document in the target and delete it
+						progressMessageIntercepted?.Invoke(this, new DaisyEventArgs("Merging document " + (mergedDocumentCounter + 1) + " with previous result - " + documentToMerge.InputPath));
+						XmlNode tempNode = null;
 
-				// return the current xml document (that will remain on disk)
-				return tempDoc;
-			} else try { // merge the document in the target and delete it
-					progressMessageIntercepted?.Invoke(this, new DaisyEventArgs("Merging document " + (mergedDocumentCounter + 1) + " with previous result - " + documentToMerge.InputPath));
-					XmlNode tempNode = null;
+						tempDoc = SetFootnote(tempDoc, "subDoc" + (mergedDocumentCounter + 1));
 
-					tempDoc = SetFootnote(tempDoc, "subDoc" + (mergedDocumentCounter + 1));
+						for (int i = 0; i < tempDoc.SelectSingleNode("//head").ChildNodes.Count; i++) {
+							tempNode = tempDoc.SelectSingleNode("//head").ChildNodes[i];
 
-					for (int i = 0; i < tempDoc.SelectSingleNode("//head").ChildNodes.Count; i++) {
-						tempNode = tempDoc.SelectSingleNode("//head").ChildNodes[i];
-
-						if (tempNode.Attributes[0].Value == "dc:Language") {
-							if (!documentLanguages.Contains(tempNode.Attributes[1].Value)) {
-								documentLanguages.Add(tempNode.Attributes[1].Value);
-							}
-						}
-					}
-
-					for (int i = 0; i < tempDoc.SelectSingleNode("//bodymatter").ChildNodes.Count; i++) {
-						tempNode = tempDoc.SelectSingleNode("//bodymatter").ChildNodes[i];
-
-						if (tempNode != null) {
-							XmlNode addBodyNode = mergeTarget.ImportNode(tempNode, true);
-							if (addBodyNode != null) {
-								if(documentToMerge.ResourceId != null) { // Subdocument being reinserted
-									XmlNode subDocNode = mergeTarget.SelectSingleNode(
-										"//subdoc[@rId='" + documentToMerge.ResourceId + "']"
-									);
-									subDocNode.ParentNode.InsertBefore(
-										addBodyNode,
-										subDocNode
-									);
-								} else { // Document being appended to body matter ?
-									mergeTarget.LastChild.LastChild.FirstChild.NextSibling.AppendChild(addBodyNode);
+							if (tempNode.Attributes[0].Value == "dc:Language") {
+								if (!documentLanguages.Contains(tempNode.Attributes[1].Value)) {
+									documentLanguages.Add(tempNode.Attributes[1].Value);
 								}
 							}
-							   
 						}
-					}
 
-					tempNode = tempDoc.SelectSingleNode("//frontmatter/level1[@class='print_toc']");
-					if (tempNode != null) {
-						if(lostElements[documentToMerge.InputPath] == null) {
-							lostElements[documentToMerge.InputPath] = new List<string>();
-						}
-						if(!lostElements[documentToMerge.InputPath].Contains("TOC not translated")) {
-							lostElements[documentToMerge.InputPath].Add("TOC not translated");
-						}
-					}
-					if(documentToMerge.ResourceId != null ) {
-						mergeTarget.SelectSingleNode(
-							"//subdoc[@rId='" + documentToMerge.ResourceId + "']"
-						).ParentNode.RemoveChild(
-							mergeTarget.SelectSingleNode(
-								"//subdoc[@rId='" + documentToMerge.ResourceId + "']"
-							)
-						);
-
-					}
-					
-
-					XmlNode node = tempDoc.SelectSingleNode("//rearmatter");
-
-					if (node != null) {
-						for (int i = 0; i < tempDoc.SelectSingleNode("//rearmatter").ChildNodes.Count; i++) {
-							tempNode = tempDoc.SelectSingleNode("//rearmatter").ChildNodes[i];
+						for (int i = 0; i < tempDoc.SelectSingleNode("//bodymatter").ChildNodes.Count; i++) {
+							tempNode = tempDoc.SelectSingleNode("//bodymatter").ChildNodes[i];
 
 							if (tempNode != null) {
-								XmlNode addRearNode = mergeTarget.ImportNode(tempNode, true);
-								if (addRearNode != null)
-									mergeTarget.LastChild.LastChild.LastChild.AppendChild(addRearNode);
+								XmlNode addBodyNode = mergeTarget.ImportNode(tempNode, true);
+								if (addBodyNode != null) {
+									if (documentToMerge.ResourceId != null) { // Subdocument being reinserted
+										XmlNode subDocNode = mergeTarget.SelectSingleNode(
+											"//subdoc[@rId='" + documentToMerge.ResourceId + "']"
+										);
+										subDocNode.ParentNode.InsertBefore(
+											addBodyNode,
+											subDocNode
+										);
+									} else { // Document being appended to body matter ?
+										mergeTarget.LastChild.LastChild.FirstChild.NextSibling.AppendChild(addBodyNode);
+									}
+								}
+
 							}
 						}
-					}
-					mergedDocumentCounter++;
-				} catch (Exception e) {
-					mergeErrors = mergeErrors + "\n" + " \"" + documentToMerge.InputPath + "\"";
-					mergeErrors = mergeErrors + "\n" + "Validation error:" + "\n" + e.Message + "\n";
-				}
-			// delete document that have been merged in the target
-			if (File.Exists(documentToMerge.OutputPath)) {
-				File.Delete(documentToMerge.OutputPath);
-			}
 
-			return mergeTarget;
+						tempNode = tempDoc.SelectSingleNode("//frontmatter/level1[@class='print_toc']");
+						if (tempNode != null) {
+							if (lostElements[documentToMerge.InputPath] == null) {
+								lostElements[documentToMerge.InputPath] = new List<string>();
+							}
+							if (!lostElements[documentToMerge.InputPath].Contains("TOC not translated")) {
+								lostElements[documentToMerge.InputPath].Add("TOC not translated");
+							}
+						}
+						if (documentToMerge.ResourceId != null) {
+							mergeTarget.SelectSingleNode(
+								"//subdoc[@rId='" + documentToMerge.ResourceId + "']"
+							).ParentNode.RemoveChild(
+								mergeTarget.SelectSingleNode(
+									"//subdoc[@rId='" + documentToMerge.ResourceId + "']"
+								)
+							);
+
+						}
+
+
+						XmlNode node = tempDoc.SelectSingleNode("//rearmatter");
+
+						if (node != null) {
+							for (int i = 0; i < tempDoc.SelectSingleNode("//rearmatter").ChildNodes.Count; i++) {
+								tempNode = tempDoc.SelectSingleNode("//rearmatter").ChildNodes[i];
+
+								if (tempNode != null) {
+									XmlNode addRearNode = mergeTarget.ImportNode(tempNode, true);
+									if (addRearNode != null)
+										mergeTarget.LastChild.LastChild.LastChild.AppendChild(addRearNode);
+								}
+							}
+						}
+						mergedDocumentCounter++;
+					}
+					catch (Exception e) {
+						mergeErrors = mergeErrors + "\n" + " \"" + documentToMerge.InputPath + "\"";
+						mergeErrors = mergeErrors + "\n" + "Validation error:" + "\n" + e.Message + "\n";
+					}
+				// delete document that have been merged in the target
+				if (File.Exists(documentToMerge.OutputPath)) {
+					File.Delete(documentToMerge.OutputPath);
+				}
+
+				return mergeTarget;
+			}
+			catch (XmlException e) {
+				string rawContent = File.ReadAllText(documentToMerge.OutputPath);
+				string[] lines = rawContent.Split('\n');
+                // Compute context in raw file :
+                int errorOffset = 0;
+				for(int i = 0; i < e.LineNumber - 1; i++) {
+					errorOffset += lines[i].Length + 1;
+                }
+				errorOffset += e.LinePosition - 1;
+
+				int beforeOffset = Math.Max(0, errorOffset - 250);
+                int afterOffset = Math.Min(rawContent.Length - 1, errorOffset + 250);
+                throw new Exception(
+					string.Format(
+						"Invalid XML error reported: {0}\r\n" +
+                            "before:\r\n```xml\r\n{1}\r\n```\r\n" +
+							"token: `{2}`\r\n" +
+                            "after:\r\n```xml\r\n{3}\r\n```\r\n",
+						e.Message,
+                        rawContent.Substring(beforeOffset,errorOffset - beforeOffset),
+						rawContent[errorOffset],
+                        rawContent.Substring(errorOffset, afterOffset - errorOffset)
+                    ),
+					e
+				);
+			}
+			catch {
+				throw;
+			}
 		}
 
 

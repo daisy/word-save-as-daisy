@@ -313,7 +313,11 @@ namespace Daisy.SaveAsDAISY.Conversion
                 try
                 {
                     conversionTask = Task<XmlDocument>.Factory.StartNew(() => {
-                        return DocumentConverter.ConvertDocument(document, ConversionParameters);
+                        try {
+                            return DocumentConverter.ConvertDocument(document, ConversionParameters);
+                        } catch (Exception ex) {
+                            throw ex;
+                        }
                     });
                     conversionTask.Wait(xmlConversionCancel.Token);
                     conversionTask.Dispose();
@@ -323,14 +327,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                 }
                 catch (Exception e)
                 {
-                    string message = "An error occured while converting a single docx to dtbook XML";
-                    while (e.InnerException != null)
-                    {
-                        message += "\r\n - " + e.InnerException.Message;
-                        e = e.InnerException;
-                    }
-
+                    CurrentStatus = ConversionStatus.Error;
                     Exception fault = new Exception("Conversion of single docx to dtbook XML: task crashed", e);
+
                     this.EventsHandler.OnConversionError(
                         fault
                     );
@@ -340,16 +339,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                 if (conversionTask.IsFaulted)
                 {
                     CurrentStatus = ConversionStatus.Error;
-                    Exception e = conversionTask.Exception;
+                    Exception fault = new Exception("Conversion of single docx to dtbook XML: task ended in fault", conversionTask.Exception);
 
-                    string message = e.Message;
-                    while (e.InnerException != null)
-                    {
-                        message += "\r\n - " + e.InnerException.Message;
-                        e = e.InnerException;
-                    }
-
-                    Exception fault = new Exception("Conversion of single docx to dtbook XML: task ended in fault", e);
                     this.EventsHandler.OnConversionError(
                         fault
                     );
