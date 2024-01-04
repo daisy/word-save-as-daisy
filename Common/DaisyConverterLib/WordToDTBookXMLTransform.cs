@@ -1062,13 +1062,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                 throw new Exception(
 					string.Format(
 						"Invalid XML error reported: {0}\r\n" +
-                            "before:\r\n```xml\r\n{1}\r\n```\r\n" +
-							"token: `{2}`\r\n" +
-                            "after:\r\n```xml\r\n{3}\r\n```\r\n",
+                            " - Context before error token:\r\n```xml\r\n{1}\r\n```\r\n" +
+							" - Error token: `{2}`\r\n" +
+                            " - Context after error token:\r\n```xml\r\n{3}\r\n```\r\n",
 						e.Message,
                         rawContent.Substring(beforeOffset,errorOffset - beforeOffset),
 						rawContent[errorOffset],
-                        rawContent.Substring(errorOffset, afterOffset - errorOffset)
+                        rawContent.Substring(errorOffset + 1, afterOffset - errorOffset)
                     ),
 					e
 				);

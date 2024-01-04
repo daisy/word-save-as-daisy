@@ -152,10 +152,16 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string azureSpeechRegion = ""; // region defined in the Azure console for the speech service
         private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
         private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
-        private string SettingsXml
+        
+        /// <summary>
+        /// Get the current settings as XML string
+        /// </summary>
+        /// <param name="withPrivateData">if set to true, settings that are private to users 
+        /// (like tts keys) will also be included</param>
+        /// <returns></returns>
+        public string asXML(bool withPrivateData = false)
         {
-            get =>
-                $"<Settings>" +
+            return $"<Settings>" +
                 $"\r\n\t<PageNumbers  value=\"{pagenumStyle}\" />" +
                 $"\r\n\t<CharacterStyles value=\"{characterStyle}\" />" +
                 $"\r\n\t<ImageSizes value=\"{imgoption}\" samplingvalue=\"{resampleValue}\" />" +
@@ -165,11 +171,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t\tstartValue=\"{footnotesStartValue}\" " +
                 $"\r\n\t\tnumberPrefix=\"{footnotesNumberingPrefix}\" " +
                 $"\r\n\t\tnumberSuffix=\"{footnotesNumberingSuffix}\" />" +
-                $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
-                $"\r\n\t\tkey=\"{azureSpeechKey}\" />" +
                 $"\r\n\t<TTSConfig file=\"{ttsConfigFile}\" />" +
+                (withPrivateData
+                    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
+                      $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
+                    : ""
+                ) +
                 $"\r\n</Settings>";
-
         }
 
 
@@ -183,7 +191,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
             {
-                writer.Write(SettingsXml);
+                writer.Write(asXML());
                 writer.Flush();
             }
         }
@@ -257,7 +265,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
             {
-                writer.Write(SettingsXml);
+                writer.Write(asXML(true));
                 writer.Flush();
             }
         }

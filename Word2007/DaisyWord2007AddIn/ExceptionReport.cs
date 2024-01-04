@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Daisy.SaveAsDAISY.Conversion;
+using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
@@ -27,7 +28,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 "- Addin Version: {0}\r\n" +
                 "- Running Architecture: {1}\r\n" +
                 "- OS: {2}\r\n" +
-                "- User or system wide install: {3}\r\n\r\n" +
+                "- User or system wide install: {3}\r\n" +
+                "- Addin settings:\r\n" +
+                "```xml\r\n{6}\r\n```\r\n" +
                 "{4}\r\n\r\n" +
                 "Stacktrace:\r\n" +
                 "```\r\n" +
@@ -38,14 +41,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 System.Runtime.InteropServices.RuntimeInformation.OSDescription,
                 isProgramFiles ? "admin" : "user",
                 exceptionText,
-                trace
-                );
+                trace,
+                ConverterSettings.Instance.asXML().Replace("\r\n","").Replace("\t", "")
+                ) ;
         }
 
         private void SendReport_Click(object sender, EventArgs evt) {
             StringBuilder message = new StringBuilder("An exception was reported by the saveAsDaisy addin.\r\n");
             message.Append(ExceptionMessage.Text);
-
+            
             string reportUrl = string.Format(
                 "https://github.com/daisy/word-save-as-daisy/issues/new?title={0}&body={1}",
                 Uri.EscapeDataString(ExceptionRaised.Message),
