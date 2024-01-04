@@ -14,6 +14,7 @@ using System.IO.Compression;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 using Daisy.SaveAsDAISY.Conversion.PageStylesValidation;
+using System.Security;
 
 namespace Daisy.SaveAsDAISY.Conversion {
     /// <summary>
@@ -1332,7 +1333,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 mainPartxml = pack.GetPart(partUri);
                 PackageRelationship anchorRelationship = mainPartxml.GetRelationship(inNum);
                 String uri = anchorRelationship.TargetUri.ToString();
-                return HttpUtility.UrlPathEncode(uri);
+                return SecurityElement.Escape(uri);
             }
             return "";
             
