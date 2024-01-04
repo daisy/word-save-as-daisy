@@ -70,7 +70,7 @@ we would really appreciate it.
 
 # Changelog
 
-# 2.8.1 beta (December 2023)
+# 2.8.2 beta (January 2024)
 
 (This version is under test phase and is not released yet)
 
