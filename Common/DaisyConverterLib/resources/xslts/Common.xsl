@@ -1118,7 +1118,6 @@
                 <xsl:choose>
                     <!--check if <p> teg was opened in "Languages" template-->
                     <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
-                        <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                         <xsl:call-template name="CloseLevel">
                             <xsl:with-param name="CurrentLevel" select="-1"/>
                             <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1131,7 +1130,6 @@
                     </xsl:when>
                     <xsl:otherwise>
                         <xsl:if test="(not(w:r/w:rPr/w:rStyle[@w:val='PageNumberDAISY']) and ($custom='Custom')) or (not($custom='Custom'))">
-                            <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                             <xsl:call-template name="CloseLevel">
                                 <xsl:with-param name="CurrentLevel" select="-1"/>
                                 <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1289,7 +1287,6 @@
                             <xsl:if test="not(../preceding-sibling::node()[1]/w:pPr/w:sectPr)">
                                 <xsl:variable name="increment" select="myObj:IncrementPage()"/>
                                 <!--Closing paragraph tag-->
-                                <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                                 <xsl:call-template name="CloseLevel">
                                     <xsl:with-param name="CurrentLevel" select="-1"/>
                                     <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1315,7 +1312,6 @@
                                 </prodnote>
                                 <xsl:if test="$flag='3'">
                                     <!--Closing paragraph tag-->
-                                    <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                                     <xsl:call-template name="CloseLevel">
                                         <xsl:with-param name="CurrentLevel" select="-1"/>
                                         <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1340,7 +1336,6 @@
                         <!--Incrementing page numbers-->
                         <xsl:variable name="increment" select="myObj:IncrementPage()"/>
                         <!--Closing paragraph tag-->
-                        <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                         <xsl:call-template name="CloseLevel">
                             <xsl:with-param name="CurrentLevel" select="-1"/>
                             <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1361,7 +1356,6 @@
                         </xsl:call-template>
                         <xsl:if test="$flag='3'">
                             <!--Closing paragraph tag-->
-                            <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                             <xsl:call-template name="CloseLevel">
                                 <xsl:with-param name="CurrentLevel" select="-1"/>
                                 <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1380,7 +1374,6 @@
                                 or ../w:pPr/w:pStyle[substring(@w:val,1,5)='Index'])">
                         <xsl:variable name="increment" select="myObj:IncrementPage()"/>
                         <!--Closing paragraph tag-->
-                        <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                         <xsl:call-template name="CloseLevel">
                             <xsl:with-param name="CurrentLevel" select="-1"/>
                             <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -1401,7 +1394,6 @@
                         </xsl:call-template>
                         <xsl:if test="$flag='3'">
                             <!--Closing paragraph tag-->
-                            <!--<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>-->
                             <xsl:call-template name="CloseLevel">
                                 <xsl:with-param name="CurrentLevel" select="-1"/>
                                 <xsl:with-param name="verfoot" select="$VERSION"/>
@@ -2111,6 +2103,8 @@
                         </line>
                     </xsl:when>
                     <xsl:when test="(myObj:Getlinenumflag()='1')">
+						<!-- NP 20240109 : close all inlines before closing paragraph -->
+						<xsl:call-template name="CloseAllStyleTag"/>
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         <line>
                             <linenum>

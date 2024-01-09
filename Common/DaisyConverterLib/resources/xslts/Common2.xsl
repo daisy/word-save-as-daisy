@@ -390,6 +390,8 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             <!-- NP 20220503 : using CloseLevel to also close paragraph -->
             <xsl:when test="$CurrentLevel = -1">
                 <xsl:message terminate="no">debug:Closing paragraph</xsl:message>
+				<!-- NP 20240109 : close all inlines before closing paragraph -->
+				<xsl:call-template name="CloseAllStyleTag"/>
                 <!--Close that level-->
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                 <!--  insert footnotes after the paragraph if inlined footnotes in the current level is requested
@@ -958,6 +960,8 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     </xsl:if>
                     <xsl:variable name="captionflag" select="myObj:reSetcaptionFlag()"/>
                     <xsl:if test="(preceding-sibling::w:p[1]/w:r/w:rPr/w:rtl) or (preceding-sibling::w:p[1]/w:pPr/w:bidi)">
+						<!-- NP 20240109 : close all inlines before closing paragraph -->
+				        <xsl:call-template name="CloseAllStyleTag"/>
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         <!--<xsl:call-template name="CloseLevel">
                             <xsl:with-param name="CurrentLevel" select="-1"/>
