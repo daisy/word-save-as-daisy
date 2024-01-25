@@ -1,4 +1,4 @@
-# SaveAsDAISY build script
+﻿# SaveAsDAISY build script
 # Requires msbuild to be accessible in path
 
 param(
@@ -6,7 +6,11 @@ param(
 	[switch]$refreshpipeline = $false
 )
 
-function Print-WixTree {
+$currentVersion = "2.8.2"
+$wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
+
+# Create the wix directory tree for a path
+function Update-WixTree {
     param (
         [string]$oldroot,
         [string]$newroot,
@@ -57,11 +61,11 @@ function Print-WixTree {
     }
 }
 
-function Replace-Text {
+function Update-Version {
     param (
         [string]$path,
-        [string]$oldText,
-        [string]$newText
+        [string]$oldVersion,
+        [string]$newVersion
     )
 
     $excludeDirs = @('bin', 'obj')
@@ -75,25 +79,46 @@ function Replace-Text {
             }
         }
 
-        if (!$exclude) {
+        if (!$exclude -and $(Select-String -Path $_.FullName -Pattern $oldVersion -SimpleMatch)) {
+            Write-Host "Updating>" $_.FullName
             (Get-Content $_.FullName) |
-            Foreach-Object { $_ -replace $oldText, $newText } |
-            Set-Content $_.FullName
+            Foreach-Object { $_.Replace($oldVersion, $newVersion )} |
+            Set-Content $_.FullName -Encoding UTF8
         }
     }
 }
 
 if($version) {
-#   - search and replace occurences of previous versions by new version
-# Search in replace in all files 
-    
+    if($version -match '\d+\.\d+\.\d+'){
+        #   - search and replace occurences of previous versions by new version
+        # Search in replace in the required parts of the project
+        Update-Version -path $(Join-Path $PSScriptRoot "Common") -oldVersion $currentVersion -newVersion $version
+        Update-Version -path $(Join-Path $PSScriptRoot "Word2007") -oldVersion $currentVersion -newVersion $version
+        Update-Version -path $(Join-Path $PSScriptRoot "Installer") -oldVersion $currentVersion -newVersion $version
+        Update-Version -path $(Join-Path $PSScriptRoot "CustomActionAddin") -oldVersion $currentVersion -newVersion $version
+        
+        Write-Host "Updating Product and Package GUIDs in" $wixProductPath
+        $productUID = $(Select-String -Path $wixProductPath -Pattern "Product Id=`"(?<uid>[^`"]*)`"").Matches[0].Groups['uid'].Value
+        $packageUID = $(Select-String -Path $wixProductPath -Pattern "Package Id=`"(?<uid>[^`"]*)`"").Matches[0].Groups['uid'].Value
+        (Get-Content $wixProductPath) |
+            Foreach-Object { $_.Replace($productUID, [guid]::NewGuid().toString().ToUpper()).Replace($packageUID, [guid]::NewGuid().toString().ToUpper())
+        } | Set-Content $wixProductPath -Encoding UTF8
+        # self update the scrip current version
+        Write-Host "Updating version in build script" $PSCommandPath
+        (Get-Content $PSCommandPath) |
+            Foreach-Object { $_.Replace($currentVersion, $version ) } |
+            Set-Content $PSCommandPath -Encoding UTF8
+    } else {
+        Write-Host "$version is not a major.minor.patch version string"
+    }
+
 }
 
 if($refreshpipeline) {
     # regenerate and update the wix project "product.wxs"
     # - compute wix components and references for daisy-pipeline folder in Lib
     $_oldroot = Join-Path $PSScriptRoot "Lib"
-    $_cont, $_refs = Print-WixTree `
+    $_cont, $_refs = Update-WixTree `
         -oldroot $_oldroot `
         -path $(Join-Path $_oldroot "daisy-pipeline") `
         -newroot "`$(var.SolutionDir)Lib" `
@@ -101,17 +126,19 @@ if($refreshpipeline) {
         -level 6 `
         -indent "    "
     # Replace the text in range between markers (also replacing start markers)
-    $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
+    
     $wixProductContent = Get-Content -Raw $wixProductPath
     $dirMarkerStart = $wixProductContent.IndexOf("<Directory Id=`"_daisy_pipeline`"")
-    $dirMarkerEnd = $wixProductContent.IndexOf("<!--daisy-pipeline-->") + "<!--daisy-pipeline-->".Length #this is added by the print-wix function
+    $dirMarkerEnd = $wixProductContent.IndexOf("<!--daisy-pipeline-->") + "<!--daisy-pipeline-->".Length #because this marker is readded by the print-wix function
     $refMarkerStart = $wixProductContent.IndexOf("<ComponentRef Id=`"_daisy_pipeline_files`"/>")
     $refMarkerEnd = $wixProductContent.IndexOf("<!--daisy-pipeline refs-->")
     $beforeDirectoryStart = $wixProductContent.Substring(0, $dirMarkerStart)
     $betweenDirectoryEndAndRefStart = $wixProductContent.Substring($dirMarkerEnd + 1, $refMarkerStart - $dirMarkerEnd - 1)
     $afterRefEnd = $wixProductContent.Substring($refMarkerEnd)
     if(($dirMarkerStart -gt -1) -and ($dirMarkerEnd -gt -1) -and ($refMarkerStart -gt -1) -and ($refMarkerEnd -gt -1)){
-        Set-Content -Path $wixProductPath -Value "$beforeDirectoryStart$_cont$betweenDirectoryEndAndRefStart$_refs$("    " * 3)$afterRefEnd"
+        Set-Content -Path $wixProductPath `
+            -Value "$beforeDirectoryStart$_cont$betweenDirectoryEndAndRefStart$_refs$("    " * 3)$afterRefEnd" `
+            -Encoding UTF8
     } else {
         Write-Host "Can't update wix project, could not find every markers in content'"
     }
