@@ -40,11 +40,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
                     "1",
                     false,
                     "Possible values: \r\n" +
-                    " - Type 1: This produces a folder structure that is four levels deep." +
+                    " - Type 1: This produces a folder structure that is four levels deep.\r\n" +
                     " At the top level there can be up to 8 folders." +
                     " Each of these folders can have up to 20 sub-folders." +
                     " The sub-folders can have up to 999 sub-sub-folders, each of which can contain up to 999 MP3 files.\r\n" +
-                    " - Type 2: This produces a folder structure that is two levels deep. On the top level there can be up to 999 folders, and each of these folders can have up to 999 MP3 files."
+                    " - Type 2: This produces a folder structure that is two levels deep.\r\n" +
+                    " On the top level there can be up to 999 folders, and each of these folders can have up to 999 MP3 files."
                   )
                 },
                 {
@@ -57,7 +58,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
                     false,
                     "The folder level corresponding with the book, expressed as a 0-based number.\r\n\r\n" +
                     "Value `0` means that top-level folders correspond with top-level sections of the book.\r\n" +
-                    "Value `1` means that the book is contained in a single top-level folder (if it is not too big) with sub " +
+                    "Value `1` means that the book is contained in a single top-level folder (if it is not too big) with sub" +
                     "- folders that correspond with top-level sections of the book.\r\n" +
                     "Must be a non-negative integer value, less than or equal to 3 for type 1 players, and less than or equal to 1 for type 2 players."
                   )

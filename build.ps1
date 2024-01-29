@@ -6,7 +6,7 @@ param(
 	[switch]$refreshpipeline = $false
 )
 
-$currentVersion = "2.8.2"
+$currentVersion = "2.8.3"
 $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
 
 # Create the wix directory tree for a path
@@ -42,7 +42,7 @@ function Update-WixTree {
             $refs += ($indent * 3 * $startIndent) + "<ComponentRef Id=`"$id`"/>`n"
 
             foreach ($file in $files) {
-                $_cont, $_refs = Print-WixTree -path $file.FullName -mediaId $mediaId -level ($level + 2) -oldroot $oldroot -newroot $newroot -indent $indent -startIndent 1
+                $_cont, $_refs = Update-WixTree -path $file.FullName -mediaId $mediaId -level ($level + 2) -oldroot $oldroot -newroot $newroot -indent $indent -startIndent 1
                 $content += $_cont
                 $refs += $_refs
             }
@@ -51,7 +51,7 @@ function Update-WixTree {
         }
 
         foreach ($directory in $directories) {
-            $_cont, $_refs = Print-WixTree -path $directory.FullName -mediaId $mediaId -level ($level + 1) -oldroot $oldroot -newroot $newroot -indent $indent -startIndent 1
+            $_cont, $_refs = Update-WixTree -path $directory.FullName -mediaId $mediaId -level ($level + 1) -oldroot $oldroot -newroot $newroot -indent $indent -startIndent 1
             $content += $_cont
             $refs += $_refs
         }
@@ -126,7 +126,9 @@ if($refreshpipeline) {
         -level 6 `
         -indent "    "
     # Replace the text in range between markers (also replacing start markers)
-    
+    $refMarker = "<!--daisy-pipeline refs-->"
+
+
     $wixProductContent = Get-Content -Raw $wixProductPath
     $dirMarkerStart = $wixProductContent.IndexOf("<Directory Id=`"_daisy_pipeline`"")
     $dirMarkerEnd = $wixProductContent.IndexOf("<!--daisy-pipeline-->") + "<!--daisy-pipeline-->".Length #because this marker is readded by the print-wix function
@@ -137,7 +139,7 @@ if($refreshpipeline) {
     $afterRefEnd = $wixProductContent.Substring($refMarkerEnd)
     if(($dirMarkerStart -gt -1) -and ($dirMarkerEnd -gt -1) -and ($refMarkerStart -gt -1) -and ($refMarkerEnd -gt -1)){
         Set-Content -Path $wixProductPath `
-            -Value "$beforeDirectoryStart$_cont$betweenDirectoryEndAndRefStart$_refs$("    " * 3)$afterRefEnd" `
+            -Value "$beforeDirectoryStart$_cont$betweenDirectoryEndAndRefStart$_refs$("    " * 3)$refMarker$afterRefEnd" `
             -Encoding UTF8
     } else {
         Write-Host "Can't update wix project, could not find every markers in content'"

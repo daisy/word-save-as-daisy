@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -181,6 +181,6 @@
     <value>EnumControl</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>Daisy.SaveAsDAISY.Forms.Controls.BaseUserControl, DaisyAddinLib, Version=2.8.2.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
+    <value>Daisy.SaveAsDAISY.Forms.Controls.BaseUserControl, DaisyAddinLib, Version=2.8.3.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
   </data>
 </root>
