@@ -123,7 +123,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             EventsHandler.onDocumentPreprocessingStart(inputPath);
             DocumentParameters result = new DocumentParameters(inputPath)
             {
-                CopyPath = ConverterHelper.GetTempPath(inputPath, ".docx"),
                 ResourceId = resourceId != null ? resourceId : null,
                 ShowInputDocumentInWord = ConversionParameters.Visible
             };

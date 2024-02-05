@@ -128,7 +128,6 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Events\SilentEventsHandler.cs" />
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
-    <Compile Include="Parameters\PrepopulateDaisyXml.cs" />
     <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToMp3.cs" />
     <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToDaisy3.cs" />
     <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToEpub3.cs" />
@@ -143,7 +142,6 @@
     <Compile Include="Pipeline\Script.cs" />
     <Compile Include="Preprocessing\StringValidator.cs" />
     <Compile Include="Preprocessing\IDocumentPreprocessor.cs" />
-    <Compile Include="PackageUtilities.cs" />
     <Compile Include="Parameters\DocumentParameters.cs" />
     <Compile Include="ConversionStatus.cs" />
     <Compile Include="WordToDTBookXMLTransform.cs" />

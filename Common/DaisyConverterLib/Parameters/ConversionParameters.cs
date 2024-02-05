@@ -107,9 +107,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public ConversionParameters usingMainDocument(DocumentParameters mainDocument)
         {
-            Creator = PackageUtilities.DocPropCreator(mainDocument.CopyPath ?? mainDocument.InputPath);
-            Title = PackageUtilities.DocPropTitle(mainDocument.CopyPath ?? mainDocument.InputPath);
-            Publisher = PackageUtilities.DocPropPublish(mainDocument.CopyPath ?? mainDocument.InputPath);
+            // Analyze the copy to retrieve document properties
+            mainDocument.updatePropertiesFromCopy();
+            Creator = mainDocument.Creator;
+            Title = mainDocument.Title;
+            Publisher = mainDocument.Publisher;
             return this;
         }
 

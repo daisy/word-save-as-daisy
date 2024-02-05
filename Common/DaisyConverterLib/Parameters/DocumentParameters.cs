@@ -15,6 +15,114 @@ namespace Daisy.SaveAsDAISY.Conversion
     /// </summary>
     public class DocumentParameters
     {
+        /// <summary>
+        /// Document-specific parameters
+        /// </summary>
+        /// <param name="inputPath">The original file used as input</param>
+        public DocumentParameters(string inputPath)
+        {
+            InputPath = inputPath;
+            CopyPath = ConverterHelper.GetTempPath(inputPath, ".docx");
+
+            ObjectShapes = new List<string>();
+            ImageIds = new List<string>();
+            InlineShapes = new List<string>();
+            InlineIds = new List<string>();
+            SubDocumentsToConvert = new List<DocumentParameters>();
+            Creator = "";
+            Title = "";
+            Publisher = "";
+            HasRevisions = false;
+        }
+        
+        /// <summary>
+        /// Extract propertes from the copy. <br/>
+        /// needs to be called by document preprocessor after it has created the copy but before
+        /// the copy has been opened back for preprocessing or after preprocessing is finished and document is closed.
+        /// (else the file could be not readable as being opened by another process)
+        /// </summary>
+        public void updatePropertiesFromCopy()
+        {
+            try {
+                if (CopyPath != null && File.Exists(CopyPath)) using (
+                        Package pack = Package.Open(CopyPath, FileMode.Open, FileAccess.Read)
+                ) {
+                    Creator = pack.PackageProperties.Creator;
+                    Title = pack.PackageProperties.Title;
+                    // Search Title in content xml if not declared in properties
+                    if (Title == "") {
+                        XmlDocument wordContentDocument = getFirstDocumentFromRelationship(
+                            pack,
+                            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument"
+                        );
+                        if (wordContentDocument != null) {
+                            bool titleFlag = false;
+                            string styleVal = "";
+                            string msgConcat = "";
+                            NameTable nt = new NameTable();
+                            XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
+                            nsManager.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");
+                            try {
+                                XmlNodeList getParagraph = wordContentDocument.SelectNodes("//w:body/w:p/w:pPr/w:pStyle", nsManager);
+                                for (int j = 0; j < getParagraph.Count; j++) {
+                                    XmlAttributeCollection paraGraphAttribute = getParagraph[j].Attributes;
+                                    for (int i = 0; i < paraGraphAttribute.Count; i++) {
+                                        if (paraGraphAttribute[i].Name == "w:val") {
+                                            styleVal = paraGraphAttribute[i].Value;
+                                        }
+                                        if (styleVal != "" && styleVal == "Title") {
+                                            XmlNodeList getStyle = getParagraph[j].ParentNode.ParentNode.SelectNodes("w:r", nsManager);
+                                            if (getStyle != null) {
+                                                for (int k = 0; k < getStyle.Count; k++) {
+                                                    XmlNode getText = getStyle[k].SelectSingleNode("w:t", nsManager);
+                                                    msgConcat = msgConcat + " " + getText.InnerText;
+                                                }
+                                            }
+                                            titleFlag = true;
+                                            break;
+                                        }
+                                        if (titleFlag) {
+                                            break;
+                                        }
+                                    }
+                                    if (titleFlag) {
+                                        break;
+                                    }
+                                }
+                                Title = msgConcat;
+                            }
+                            catch (Exception e) {
+                                AddinLogger.Warning("An exception was raised while searching Title in content", e);
+                            }
+                            // while we are checking the content, also check for revisions
+                            XmlNodeList listDel = wordContentDocument.SelectNodes("//w:del", nsManager);
+                            XmlNodeList listIns = wordContentDocument.SelectNodes("//w:ins", nsManager);
+
+                            HasRevisions = listDel.Count > 0 || listIns.Count > 0;
+                        }
+                    }
+                    // Search publisher in extended properties xml
+                    XmlDocument propertiesXml = getFirstDocumentFromRelationship(
+                        pack,
+                        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties"
+                    );
+                    if (propertiesXml != null) {
+                        NameTable nt = new NameTable();
+                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
+                        nsManager.AddNamespace("vt", "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes");
+                        XmlNodeList node = propertiesXml.GetElementsByTagName("Company");
+                        if (node != null && node.Count > 0)
+                            Publisher = node.Item(0).InnerText;
+                    }
+
+
+                };
+            }
+            catch (Exception e2) {
+                AddinLogger.Warning("An exception was raised while parsing document properties", e2);
+            }
+        }
+
 
         public enum DocType
         {
@@ -23,17 +131,11 @@ namespace Daisy.SaveAsDAISY.Conversion
             Sub
         }
 
+        public string Creator { get; private set; }
 
-        public DocumentParameters(string inputPath)
-        {
-            this.InputPath = inputPath;
+        public string Title { get; private set; }
 
-            ObjectShapes = new List<string>();
-            ImageIds = new List<string>();
-            InlineShapes = new List<string>();
-            InlineIds = new List<string>();
-            SubDocumentsToConvert = new List<DocumentParameters>();
-        }
+        public string Publisher { get; private set; }
 
 
         /// <summary>
@@ -65,37 +167,14 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <summary>
         /// Original path/URL of the input
         /// </summary>
-        public string InputPath { get; set; }
-
-        public string Creator
-        {
-            get
-            {
-                return PackageUtilities.DocPropCreator(CopyPath ?? InputPath);
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                return PackageUtilities.DocPropTitle(CopyPath ?? InputPath);
-            }
-        }
-
-        public string Publisher
-        {
-            get
-            {
-                return PackageUtilities.DocPropPublish(CopyPath ?? InputPath);
-            }
-        }
-
+        public string InputPath { get; }
 
         /// <summary>
-        /// Document copy to use for processing
+        /// Document copy to use for processing. <br/>
+        /// Note : the copy is actually made by the DocumentPreprocessor class
+        /// (that is specific to a word version as it uses word interop to save the copy)
         /// </summary>
-        public string CopyPath { get; set; }
+        public string CopyPath { get; }
 
         /// <summary>
         /// Output Path of the document conversion
@@ -142,48 +221,10 @@ namespace Daisy.SaveAsDAISY.Conversion
         public List<string> InlineIds { get; set; }
 
 
-
-
-        private bool? _hasRevisions = null;
-
         /// <summary>
         /// Check if the current document as unaccepted revisions
         /// </summary>
-        public bool HasRevisions
-        {
-            get
-            {
-                if (!_hasRevisions.HasValue)
-                {
-                    const string docNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
-                    const string wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
-                    Package pack = Package.Open(this.CopyPath ?? this.InputPath, FileMode.Open, FileAccess.ReadWrite);
-                    PackageRelationship packRelationship = null;
-                    foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(wordRelationshipType))
-                    {
-                        packRelationship = searchRelation;
-                        break;
-                    }
-
-                    Uri partUri = PackUriHelper.ResolvePartUri(packRelationship.SourceUri, packRelationship.TargetUri);
-                    PackagePart mainPartxml = pack.GetPart(partUri);
-
-                    XmlDocument XmlPackage = new XmlDocument();
-                    XmlPackage.Load(mainPartxml.GetStream());
-                    pack.Close();
-
-                    NameTable nt = new NameTable();
-                    XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                    nsManager.AddNamespace("w", docNamespace);
-
-                    XmlNodeList listDel = XmlPackage.SelectNodes("//w:del", nsManager);
-                    XmlNodeList listIns = XmlPackage.SelectNodes("//w:ins", nsManager);
-
-                    _hasRevisions = listDel.Count > 0 || listIns.Count > 0;
-                }
-                return _hasRevisions.Value;
-            }
-        }
+        public bool HasRevisions { get; private set; }
 
 
         public bool TrackChanges = false;
@@ -229,10 +270,11 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             get
             {
-                Hashtable parameters = new Hashtable();
-
-                parameters.Add("TRACK", TrackChanges);
-                parameters.Add("MasterSubFlag", (SubDocumentsToConvert != null && SubDocumentsToConvert.Count > 0) ? true : false);
+                Hashtable parameters = new Hashtable
+                {
+                    { "TRACK", TrackChanges },
+                    { "MasterSubFlag", (SubDocumentsToConvert != null && SubDocumentsToConvert.Count > 0) ? true : false }
+                };
 
 
                 return parameters;
@@ -242,6 +284,29 @@ namespace Daisy.SaveAsDAISY.Conversion
         public string serialize()
         {
             return JsonConvert.SerializeObject(this);
+        }
+
+        /// <summary>
+        /// Search and retrieve the first xml document matching a relationship url within an opened office package
+        /// </summary>
+        /// <param name="pack">the office package (.docx)</param>
+        /// <param name="relationshipType">the url of the relationship associated with the searched document</param>
+        /// <returns></returns>
+        private static XmlDocument getFirstDocumentFromRelationship(Package pack, string relationshipType)
+        {
+            PackageRelationship packRelationship = null;
+            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(relationshipType)) {
+                packRelationship = searchRelation;
+                break;
+            }
+            if (packRelationship != null) {
+                Uri partUri = PackUriHelper.ResolvePartUri(packRelationship.SourceUri, packRelationship.TargetUri);
+                PackagePart mainPartxml = pack.GetPart(partUri);
+                XmlDocument doc = new XmlDocument();
+                doc.Load(mainPartxml.GetStream());
+                return doc;
+            }
+            return null; // default to no document returned
         }
 
 
