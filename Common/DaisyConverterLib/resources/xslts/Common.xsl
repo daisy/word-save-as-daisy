@@ -2177,23 +2177,18 @@
 				<xsl:with-param name="runner" select="."/>
 			</xsl:call-template>
 		</xsl:variable>
-		<xsl:variable name="langChanged">
+		<xsl:variable name="previousBdoLang">
 			<xsl:choose>
-				<xsl:when test="preceding-sibling::w:r[1]">
-					<xsl:variable name="previousBdo">
-						<xsl:call-template name="GetBdoLanguages">
-							<xsl:with-param name="runner" select="preceding-sibling::w:r[1]"/>
-						</xsl:call-template>
-					</xsl:variable>
-					<xsl:value-of select="$previousBdo = $bdoLang"/>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:value-of select="false()"/>
-				</xsl:otherwise>
+			    <xsl:when test="preceding-sibling::w:r[1]">
+				    <xsl:call-template name="GetBdoLanguages">
+					    <xsl:with-param name="runner" select="preceding-sibling::w:r[1]"/>
+				    </xsl:call-template>
+			    </xsl:when>
+			    <xsl:otherwise>
+				    <xsl:value-of select="$bdoLang"/>
+			    </xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
-		<!-- Check if bidirectionnal language has changed, and close previous bdo if so  -->
-		
 
 		<!-- Compute character group status -->
         <!-- Group of bold = strong characters -->
@@ -2240,7 +2235,7 @@
             </xsl:call-template>
         </xsl:if>
 		<!-- Close BDO element if not bidirectionnal anymore or lang has changed-->
-		<xsl:if test="not($isBidirectionnal) or $langChanged">
+		<xsl:if test="not($isBidirectionnal) or ($bdoLang != $previousBdoLang)">
 			<xsl:call-template name="CloseStyleTag">
 				<xsl:with-param name="styleTag" select="'bdo'"/>
 			</xsl:call-template>
