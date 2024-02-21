@@ -43,6 +43,8 @@ namespace Daisy.SaveAsDAISY.Conversion
         public string Subject { get; set; }
         public string Version { get; set; }
 
+        public string Language { get; set; }
+
         public StringValidator NameValidator { get; set; }
 
         public Script PostProcessor { get; set; } = null;
@@ -139,6 +141,8 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             switch (name)
             {
+                case "Language":
+                    Language = (string)value; break;
                 case "OutputFile":
                     OutputPath = (string)value; break;
                 case "Title":
@@ -218,6 +222,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                 parameters.Add("FootnotesNumberingPrefix", GlobalSettings.FootnotesNumberingPrefix);
                 parameters.Add("FootnotesNumberingSuffix", GlobalSettings.FootnotesNumberingSuffix);
 
+                // 20240220 : adding selected language
+                parameters.Add("Language", Language);
 
                 return parameters;
             }

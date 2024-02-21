@@ -42,6 +42,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.CreatorLabel = new System.Windows.Forms.Label();
             this.PublisherLabel = new System.Windows.Forms.Label();
             this.UIDLabel = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.SwitchAdvancedSettingsButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label_Creator = new System.Windows.Forms.Label();
@@ -52,6 +53,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.AdvancedSettingsGroup = new System.Windows.Forms.GroupBox();
             this.AdvancedSettingsPanel = new System.Windows.Forms.Panel();
             this.DestinationControl = new Daisy.SaveAsDAISY.Forms.Controls.PathControl();
+            this.languageSelector = new System.Windows.Forms.ComboBox();
             this.DocumentPropertiesGroup.SuspendLayout();
             this.DocumentPropertiesTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -75,8 +77,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             // 
             // CreatorInput
             // 
-            this.CreatorInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             resources.ApplyResources(this.CreatorInput, "CreatorInput");
+            this.CreatorInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CreatorInput.Name = "CreatorInput";
             this.toolTip1.SetToolTip(this.CreatorInput, resources.GetString("CreatorInput.ToolTip"));
             // 
@@ -113,11 +115,13 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.DocumentPropertiesTable.Controls.Add(this.TitleLabel, 0, 0);
             this.DocumentPropertiesTable.Controls.Add(this.TitleInput, 1, 0);
             this.DocumentPropertiesTable.Controls.Add(this.CreatorLabel, 0, 1);
-            this.DocumentPropertiesTable.Controls.Add(this.CreatorInput, 1, 1);
             this.DocumentPropertiesTable.Controls.Add(this.PublisherLabel, 0, 2);
             this.DocumentPropertiesTable.Controls.Add(this.PublisherInput, 1, 2);
             this.DocumentPropertiesTable.Controls.Add(this.UIDLabel, 0, 3);
             this.DocumentPropertiesTable.Controls.Add(this.UIDTextBox, 1, 3);
+            this.DocumentPropertiesTable.Controls.Add(this.CreatorInput, 1, 1);
+            this.DocumentPropertiesTable.Controls.Add(this.label1, 0, 4);
+            this.DocumentPropertiesTable.Controls.Add(this.languageSelector, 1, 4);
             this.DocumentPropertiesTable.Name = "DocumentPropertiesTable";
             // 
             // TitleLabel
@@ -143,6 +147,11 @@ namespace Daisy.SaveAsDAISY.Conversion
             resources.ApplyResources(this.UIDLabel, "UIDLabel");
             this.UIDLabel.ForeColor = System.Drawing.SystemColors.ControlText;
             this.UIDLabel.Name = "UIDLabel";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
             // 
             // SwitchAdvancedSettingsButton
             // 
@@ -221,6 +230,12 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.DestinationControl.ParameterName = "Destination:";
             this.DestinationControl.SelectedPath = null;
             // 
+            // languageSelector
+            // 
+            this.languageSelector.FormattingEnabled = true;
+            resources.ApplyResources(this.languageSelector, "languageSelector");
+            this.languageSelector.Name = "languageSelector";
+            // 
             // ConversionParametersForm
             // 
             this.AcceptButton = this.OKButton;
@@ -275,6 +290,8 @@ namespace Daisy.SaveAsDAISY.Conversion
         private System.Windows.Forms.GroupBox AdvancedSettingsGroup;
         private Forms.Controls.PathControl DestinationControl;
         private System.Windows.Forms.Panel AdvancedSettingsPanel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox languageSelector;
         //private System.Windows.Forms.TextBox tBx_Publisher;
 
 

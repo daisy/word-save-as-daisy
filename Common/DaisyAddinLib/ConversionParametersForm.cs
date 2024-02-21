@@ -39,6 +39,7 @@ using Daisy.SaveAsDAISY.Conversion;
 using System.Diagnostics;
 using Daisy.SaveAsDAISY.Forms.Controls;
 using System.Globalization;
+using System.Diagnostics.Eventing.Reader;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -123,20 +124,17 @@ namespace Daisy.SaveAsDAISY.Conversion
 		public string PipeOutput { get { return outputFileOrFolder; } }
 
 
-		/// <summary>
-		/// Default form for converting a word file
-		/// </summary>
-		/// <param name="conversion"></param>
-		/// <param name="labelsManager"></param>
-		public ConversionParametersForm(DocumentParameters document, ConversionParameters conversion) {
+        /// <summary>
+        /// Default form for converting a word file
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="conversion"></param>
+        public ConversionParametersForm(DocumentParameters document, ConversionParameters conversion) {
             // Copy current conversion settings
             UpdatedConversionParameters = conversion.usingMainDocument(document);
             
             btnID = conversion.ControlName;
 			tempInput = document.CopyPath ?? document.InputPath;
-            
-			//this.officeVersion = conversion.Version;
-			//this.masterSubFlag = conversion.ParseSubDocuments;
 
 			// if a script is defined in the parameters
 			useAScript = UpdatedConversionParameters.PostProcessor != null;
@@ -155,6 +153,24 @@ namespace Daisy.SaveAsDAISY.Conversion
             CreatorInput.Text = UpdatedConversionParameters.Creator;
             TitleInput.Text = UpdatedConversionParameters.Title;
             PublisherInput.Text = UpdatedConversionParameters.Publisher;
+
+            // Unknown / no language selection
+            languageSelector.Items.Add("");
+            // first load languages found in document
+            if (document.Languages.Count > 0) {
+                foreach (string item in document.Languages) {
+                    languageSelector.Items.Add(item);
+                }
+                // select the main most present language
+                languageSelector.SelectedIndex = 1;
+            }
+            // load the remaining list of available language codes
+            CultureInfo[] cultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
+            foreach (CultureInfo culture in cultures) {
+                if (!languageSelector.Items.Contains(culture.Name)) {
+                    languageSelector.Items.Add(culture.Name);
+                }
+            }
 
             DestinationControl.Width = this.Width - 10;
 
@@ -195,7 +211,6 @@ namespace Daisy.SaveAsDAISY.Conversion
                 foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters) {
                     ScriptParameter p = kv.Value;
 
-
                     // output is put in the dedicated output panel
                     if (kv.Key == "output" || kv.Key == "input" || p.Name == "input") continue;
 
@@ -215,8 +230,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 				OKButton.TabIndex = tabIndex++;
                 ResetButton.TabIndex = tabIndex++;
                 CancelButton.TabIndex = tabIndex++;
-                //BottomPanel.Location = new Point(BottomPanel.Location.X, AdvancedSettingsPanel.Location.Y + h + 5);
-                //Size = new Size(Size.Width, BottomPanel.Location.Y + BottomPanel.Size.Height);
+
             }
         }
 
@@ -421,7 +435,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 		private Hashtable updateParametersHash()
 		{
 
-			UpdatedConversionParameters = UpdatedConversionParameters.withParameter("OutputFile", DestinationControl.SelectedPath)
+			UpdatedConversionParameters = UpdatedConversionParameters
+				.withParameter("Language", languageSelector.SelectedItem)
+				.withParameter("OutputFile", DestinationControl.SelectedPath)
 				.withParameter("Title", TitleInput.Text)
 				.withParameter("Creator", CreatorInput.Text)
 				.withParameter("Publisher", PublisherInput.Text)

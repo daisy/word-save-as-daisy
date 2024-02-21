@@ -9,10 +9,7 @@
 xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
 xmlns:v="urn:schemas-microsoft-com:vml"
     xmlns:dcmitype="http://purl.org/dc/dcmitype/" xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype myObj xsl">
-    <!--<xsl:param name="sOperators"/>
-    <xsl:param name="sMinuses"/>
-    <xsl:param name="sNumbers"/>
-    <xsl:param name="sZeros"/>-->
+    
     <xsl:output method="xml" indent="no" />
 	<xsl:param name="Title"/>
 	<!--Holds Documents Title value-->
@@ -38,6 +35,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
 	<xsl:param name="FootnotesStartValue" />
 	<xsl:param name="FootnotesNumberingPrefix" />
 	<xsl:param name="FootnotesNumberingSuffix" />
+	<xsl:param name="Language" />
     <!--Template for adding Levels-->
     <xsl:template name="AddLevel">
         <!--Parameter levelValue holds the value of the current level -->

@@ -45,6 +45,7 @@
 	<xsl:param name="FootnotesStartValue" />
 	<xsl:param name="FootnotesNumberingPrefix" />
 	<xsl:param name="FootnotesNumberingSuffix" />
+	<xsl:param name="Language" />
 	<!--Template to create NoteReference for FootNote and EndNote
   It is taking two parameters noteID and noteClass. noteID 
   will contain the Reference id of either Footnote or Endnote.-->

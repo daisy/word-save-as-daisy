@@ -129,7 +129,7 @@
     <value>Calibri, 9pt</value>
   </data>
   <data name="UIDTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 111</value>
+    <value>96, 122</value>
   </data>
   <data name="UIDTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -154,7 +154,7 @@
     <value>DocumentPropertiesTable</value>
   </data>
   <data name="&gt;&gt;UIDTextBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="PublisherInput.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -163,7 +163,7 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="PublisherInput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 75</value>
+    <value>96, 82</value>
   </data>
   <data name="PublisherInput.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -187,16 +187,16 @@
     <value>DocumentPropertiesTable</value>
   </data>
   <data name="&gt;&gt;PublisherInput.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
-  <data name="CreatorInput.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
+  <data name="CreatorInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="CreatorInput.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="CreatorInput.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 40</value>
+    <value>96, 44</value>
   </data>
   <data name="CreatorInput.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -220,7 +220,7 @@
     <value>DocumentPropertiesTable</value>
   </data>
   <data name="&gt;&gt;CreatorInput.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>7</value>
   </data>
   <data name="TitleInput.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
@@ -261,6 +261,9 @@
   <data name="DocumentPropertiesGroup.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
+  <data name="AccessibilityCheckerLink.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
   <data name="AccessibilityCheckerLink.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
@@ -271,7 +274,7 @@
     <value>70, 26</value>
   </data>
   <data name="AccessibilityCheckerLink.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 168</value>
+    <value>9, 242</value>
   </data>
   <data name="AccessibilityCheckerLink.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -321,7 +324,7 @@ your document with the Word Accessibility Checker.
     <value>NoControl</value>
   </data>
   <data name="TitleLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 8</value>
+    <value>4, 10</value>
   </data>
   <data name="TitleLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -360,7 +363,7 @@ your document with the Word Accessibility Checker.
     <value>NoControl</value>
   </data>
   <data name="CreatorLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 43</value>
+    <value>4, 49</value>
   </data>
   <data name="CreatorLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -399,7 +402,7 @@ your document with the Word Accessibility Checker.
     <value>NoControl</value>
   </data>
   <data name="PublisherLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 79</value>
+    <value>4, 88</value>
   </data>
   <data name="PublisherLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -423,7 +426,7 @@ your document with the Word Accessibility Checker.
     <value>DocumentPropertiesTable</value>
   </data>
   <data name="&gt;&gt;PublisherLabel.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="UIDLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -438,7 +441,7 @@ your document with the Word Accessibility Checker.
     <value>NoControl</value>
   </data>
   <data name="UIDLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 115</value>
+    <value>4, 129</value>
   </data>
   <data name="UIDLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -462,19 +465,73 @@ your document with the Word Accessibility Checker.
     <value>DocumentPropertiesTable</value>
   </data>
   <data name="&gt;&gt;UIDLabel.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
+  </data>
+  <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="label1.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 171</value>
+  </data>
+  <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>69, 19</value>
+  </data>
+  <data name="label1.TabIndex" type="System.Int32, mscorlib">
+    <value>11</value>
+  </data>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="&gt;&gt;label1.Name" xml:space="preserve">
+    <value>label1</value>
+  </data>
+  <data name="&gt;&gt;label1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;label1.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
+  </data>
+  <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="languageSelector.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 163</value>
+  </data>
+  <data name="languageSelector.Size" type="System.Drawing.Size, System.Drawing">
+    <value>539, 27</value>
+  </data>
+  <data name="languageSelector.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="&gt;&gt;languageSelector.Name" xml:space="preserve">
+    <value>languageSelector</value>
+  </data>
+  <data name="&gt;&gt;languageSelector.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;languageSelector.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
+  </data>
+  <data name="&gt;&gt;languageSelector.ZOrder" xml:space="preserve">
+    <value>9</value>
   </data>
   <data name="DocumentPropertiesTable.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 21</value>
+    <value>1, 25</value>
   </data>
   <data name="DocumentPropertiesTable.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="DocumentPropertiesTable.RowCount" type="System.Int32, mscorlib">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="DocumentPropertiesTable.Size" type="System.Drawing.Size, System.Drawing">
-    <value>642, 144</value>
+    <value>642, 201</value>
   </data>
   <data name="DocumentPropertiesTable.TabIndex" type="System.Int32, mscorlib">
     <value>96</value>
@@ -492,7 +549,7 @@ your document with the Word Accessibility Checker.
     <value>1</value>
   </data>
   <data name="DocumentPropertiesTable.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="TitleLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TitleInput" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CreatorLabel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="CreatorInput" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PublisherLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PublisherInput" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="UIDLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="UIDTextBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,92,Percent,100" /&gt;&lt;Rows Styles="Percent,50,9434,Percent,49,0566,Absolute,36,Absolute,36,Absolute,21" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="TitleLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TitleInput" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CreatorLabel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PublisherLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PublisherInput" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="UIDLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="UIDTextBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CreatorInput" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="languageSelector" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,92,Percent,100" /&gt;&lt;Rows Styles="Percent,50,72464,Percent,49,27536,Absolute,40,Absolute,42,Absolute,40,Absolute,21" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="DocumentPropertiesGroup.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>
@@ -507,7 +564,7 @@ your document with the Word Accessibility Checker.
     <value>0, 0, 0, 0</value>
   </data>
   <data name="DocumentPropertiesGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>644, 219</value>
+    <value>644, 295</value>
   </data>
   <data name="DocumentPropertiesGroup.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -747,7 +804,7 @@ your document with the Word Accessibility Checker.
     <value>GrowAndShrink</value>
   </data>
   <data name="BottomPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 561</value>
+    <value>8, 756</value>
   </data>
   <data name="BottomPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -783,7 +840,7 @@ your document with the Word Accessibility Checker.
     <value>3, 22</value>
   </data>
   <data name="AdvancedSettingsPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>634, 238</value>
+    <value>634, 357</value>
   </data>
   <data name="AdvancedSettingsPanel.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -801,10 +858,10 @@ your document with the Word Accessibility Checker.
     <value>0</value>
   </data>
   <data name="AdvancedSettingsGroup.Location" type="System.Drawing.Point, System.Drawing">
-    <value>8, 291</value>
+    <value>8, 367</value>
   </data>
   <data name="AdvancedSettingsGroup.Size" type="System.Drawing.Size, System.Drawing">
-    <value>640, 263</value>
+    <value>640, 382</value>
   </data>
   <data name="AdvancedSettingsGroup.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -876,7 +933,7 @@ your document with the Word Accessibility Checker.
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>657, 615</value>
+    <value>657, 810</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Calibri, 9pt</value>

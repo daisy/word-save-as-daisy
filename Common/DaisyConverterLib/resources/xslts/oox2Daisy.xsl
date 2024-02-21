@@ -51,6 +51,19 @@
 	<xsl:param name="FootnotesStartValue" />
 	<xsl:param name="FootnotesNumberingPrefix" />
 	<xsl:param name="FootnotesNumberingSuffix" />
+	
+	<!-- NP 2024/02/13 :
+	    Probleme with language evaluation in word.
+	    I could not find the exact spot where word stores the document proofing language 
+	    It seems the default language of the document is actually stored in the default paragraph style but it seems imprecise
+	    The only viable solution i see for now is checking for languages declared in styles and content (including bidi and eastAsia ones)
+	    and ask the user which one is the document defaults.
+		For the rest of the document, when creating container with associated lang, 
+		we should add xml:lang attribute on elements that have a different language declared
+		compared to its parent
+	-->
+	<xsl:param name="Language" />
+	
     <xsl:output method="xml" indent="no" />
     <xsl:variable name="sOperators"
       select="concat(
@@ -187,7 +200,14 @@
             <xsl:variable name="doclangbidi" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
             <xsl:variable name="doclangeastAsia" select="document('word/styles.xml')//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
             <xsl:attribute name="xml:lang">
-                <xsl:value-of select="$doclang"/>
+				<xsl:choose>
+					<xsl:when test="$Language">
+						<xsl:value-of select="$Language"/>
+					</xsl:when>
+				    <xsl:otherwise>
+					    <xsl:value-of select="$doclang"/>
+				    </xsl:otherwise>
+				</xsl:choose>
             </xsl:attribute>
             <xsl:variable name="documentDate" select="document('docProps/core.xml')//cp:coreProperties/dcterms:modified"/>
             <xsl:variable name="documentSubject" select="myObj:DocPropSubject()"/>
@@ -208,7 +228,7 @@
                         <meta name="dtb:uid" content="{$UID}"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                <meta name="dt:version" content="2.1.1.0"/>
+                <meta name="dtb:generator" content="SaveAsDAISY 2.8.3, by the DAISY Consortium"/>
                 <!--Choose block for checking whether user has entered the Title of the document or not-->
                 <meta name="dc:Title" content="{$Title}"/>
                 <!--Choose block for checking whether user has entered the Creator of the document or not-->

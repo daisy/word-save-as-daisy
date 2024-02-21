@@ -40,6 +40,7 @@
 	<xsl:param name="FootnotesStartValue" />
 	<xsl:param name="FootnotesNumberingPrefix" />
 	<xsl:param name="FootnotesNumberingSuffix" />
+	<xsl:param name="Language" />
     <xsl:output method="xml" indent="no" />
     <!--template for frontmatter elements-->
     <xsl:template name="FrontMatter">
