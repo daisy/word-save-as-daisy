@@ -1283,53 +1283,56 @@
             and not(../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']))">
             <xsl:if test="not($flag='2')">
                 <xsl:choose>
-                    <xsl:when test="not(w:t) and (w:lastRenderedPageBreak) and (w:br/@w:type='page')">
-                        <xsl:if test="not(../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')">
-                            <xsl:if test="not(../preceding-sibling::node()[1]/w:pPr/w:sectPr)">
-                                <xsl:variable name="increment" select="myObj:IncrementPage()"/>
-                                <!--Closing paragraph tag-->
-                                <xsl:call-template name="CloseLevel">
-                                    <xsl:with-param name="CurrentLevel" select="-1"/>
-                                    <xsl:with-param name="verfoot" select="$VERSION"/>
-                                    <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                                    <xsl:with-param name="sOperators" select="$sOperators"/>
-                                    <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                    <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                    <xsl:with-param name="sZeros" select="$sZeros"/>
-								</xsl:call-template>
-                                <xsl:if test="$flag='3'">
-                                    <!--Closing paragraph tag-->
-                                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
-                                </xsl:if>
-                                <!--calling template to initialize page number information-->
-                                <xsl:call-template name="SectionBreak">
-                                    <xsl:with-param name="count" select="'1'"/>
-                                    <xsl:with-param name="node" select="'body'"/>
-                                </xsl:call-template>
-                                <!--producer note for blank pages-->
-                                <prodnote>
-                                    <xsl:attribute name="render">optional</xsl:attribute>
-                                    <xsl:value-of select="'Blank Page'"/>
-                                </prodnote>
-                                <xsl:if test="$flag='3'">
-                                    <!--Closing paragraph tag-->
-                                    <xsl:call-template name="CloseLevel">
-                                        <xsl:with-param name="CurrentLevel" select="-1"/>
-                                        <xsl:with-param name="verfoot" select="$VERSION"/>
-                                        <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                                        <xsl:with-param name="sOperators" select="$sOperators"/>
-                                        <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                        <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                        <xsl:with-param name="sZeros" select="$sZeros"/>
-									</xsl:call-template>
-                                </xsl:if>
-                                <!--Opening paragraph tag-->
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
-                            </xsl:if>
+					<!--runner with no text + pagebreak + not followed by TOC + not preceded by section-->
+                    <xsl:when test="not(w:t)
+					        and (w:lastRenderedPageBreak) 
+					        and (w:br/@w:type='page')
+					        and not(../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')
+					        and not(../preceding-sibling::node()[1]/w:pPr/w:sectPr)"
+					>
+                        <xsl:variable name="increment" select="myObj:IncrementPage()"/>
+                        <!--Closing paragraph tag-->
+                        <xsl:call-template name="CloseLevel">
+                            <xsl:with-param name="CurrentLevel" select="-1"/>
+                            <xsl:with-param name="verfoot" select="$VERSION"/>
+                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
+                            <xsl:with-param name="sOperators" select="$sOperators"/>
+                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
+                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
+                            <xsl:with-param name="sZeros" select="$sZeros"/>
+						</xsl:call-template>
+                        <xsl:if test="$flag='3'">
+                            <!--Closing paragraph tag-->
+                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                         </xsl:if>
+                        <!--calling template to initialize page number information-->
+                        <xsl:call-template name="SectionBreak">
+                            <xsl:with-param name="count" select="'1'"/>
+                            <xsl:with-param name="node" select="'body'"/>
+                        </xsl:call-template>
+                        <!--producer note for blank pages-->
+                        <prodnote>
+                            <xsl:attribute name="render">optional</xsl:attribute>
+                            <xsl:value-of select="'Blank Page'"/>
+                        </prodnote>
+                        <xsl:if test="$flag='3'">
+                            <!--Closing paragraph tag-->
+                            <xsl:call-template name="CloseLevel">
+                                <xsl:with-param name="CurrentLevel" select="-1"/>
+                                <xsl:with-param name="verfoot" select="$VERSION"/>
+                                <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
+                                <xsl:with-param name="sOperators" select="$sOperators"/>
+                                <xsl:with-param name="sMinuses" select="$sMinuses"/>
+                                <xsl:with-param name="sNumbers" select="$sNumbers"/>
+                                <xsl:with-param name="sZeros" select="$sZeros"/>
+							</xsl:call-template>
+                        </xsl:if>
+                        <!--Opening paragraph tag-->
+                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                     </xsl:when>
                     <!--Checking for page breaks and populating page numbers.-->
-                    <xsl:when test="((w:br/@w:type='page')
+                    <xsl:when test="(
+						    (w:br/@w:type='page')
                             and not((../following-sibling::w:p[1]/w:pPr/w:sectPr)
                                 or (following-sibling::w:r[1]/w:lastRenderedPageBreak)
                                 or (../following-sibling::w:p[2]/w:r/w:lastRenderedPageBreak)
@@ -1370,43 +1373,19 @@
                         <!--Opening paragraph tag-->
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                     </xsl:when>
+					<!-- Pagebreak not in section neither in Index-->
                     <xsl:when test="(w:lastRenderedPageBreak)
-                            and not(../w:pPr/w:sectPr                                        
-                                or ../w:pPr/w:pStyle[substring(@w:val,1,5)='Index'])">
+                            and not(
+							    ../w:pPr/w:sectPr                                        
+                                or ../w:pPr/w:pStyle[substring(@w:val,1,5)='Index']
+							)"
+					>
                         <xsl:variable name="increment" select="myObj:IncrementPage()"/>
-                        <!--Closing paragraph tag-->
-                        <xsl:call-template name="CloseLevel">
-                            <xsl:with-param name="CurrentLevel" select="-1"/>
-                            <xsl:with-param name="verfoot" select="$VERSION"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                            <xsl:with-param name="sZeros" select="$sZeros"/>
-						</xsl:call-template>
-                        <xsl:if test="$flag='3'">
-                            <!--Opening paragraph tag-->
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
-                        </xsl:if>
                         <!--calling template to initialize page number information-->
                         <xsl:call-template name="SectionBreak">
                             <xsl:with-param name="count" select="'1'"/>
                             <xsl:with-param name="node" select="'body'"/>
                         </xsl:call-template>
-                        <xsl:if test="$flag='3'">
-                            <!--Closing paragraph tag-->
-                            <xsl:call-template name="CloseLevel">
-                                <xsl:with-param name="CurrentLevel" select="-1"/>
-                                <xsl:with-param name="verfoot" select="$VERSION"/>
-                                <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                                <xsl:with-param name="sOperators" select="$sOperators"/>
-                                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                <xsl:with-param name="sZeros" select="$sZeros"/>
-							</xsl:call-template>
-                        </xsl:if>
-                        <!--Opening paragraph tag-->
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                     </xsl:when>
                 </xsl:choose>
             </xsl:if>
