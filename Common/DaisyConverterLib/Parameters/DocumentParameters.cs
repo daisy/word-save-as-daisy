@@ -113,9 +113,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                             "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties"
                         );
                         if (propertiesXml != null) {
-                        NameTable nt = new NameTable();
-                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                        nsManager.AddNamespace("vt", "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes");
+                            nsManager.AddNamespace("vt", "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes");
                             XmlNodeList node = propertiesXml.GetElementsByTagName("Company");
                             if (node != null && node.Count > 0)
                                 Publisher = node.Item(0).InnerText;
