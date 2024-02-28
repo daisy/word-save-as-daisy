@@ -66,8 +66,12 @@ namespace Daisy.SaveAsDAISY.Conversion
 		{
 			_log.Error("Error", ex);
 		}
+        public static void Error(string errorMessage, Exception ex)
+        {
+            _log.Error(errorMessage,ex);
+        }
 
-		public static void Info(string messsage)
+        public static void Info(string messsage)
 		{
 			_log.Info(messsage);
 		}

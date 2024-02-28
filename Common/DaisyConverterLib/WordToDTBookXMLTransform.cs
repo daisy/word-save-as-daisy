@@ -35,11 +35,7 @@ using System.Xml.Xsl;
 using System.Reflection;
 using System.Collections;
 using System.Xml.Schema;
-using System.Windows.Forms;
-using System.IO.Packaging;
-using System.Text;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -310,7 +306,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			string tempOutputPath =  Path.GetTempFileName();
 
 			string conversionOutputDirectory = Directory.GetParent(document.OutputPath).FullName;
-			progressMessageIntercepted(this, new DaisyEventArgs("Transform " + document.CopyPath + " to DTBook XML "+ document.OutputPath));
+            progressMessageIntercepted?.Invoke(this, new DaisyEventArgs("Transform " + document.CopyPath + " to DTBook XML "+ document.OutputPath));
 
 			try {
 				File.Copy(document.CopyPath, tempInputPath, true);
@@ -415,10 +411,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 					CopyCSSToDestinationfolder(document.OutputPath);
 					// TODO: The handling of DTD and math needs to be cleanedup
 					// For now, the transform set a system dtd for validation
-					Int16 value = (Int16)document.OutputPath.LastIndexOf("\\");
-					String tempStr = document.OutputPath.Substring(0, value);
-					
-					CopyDTDToDestinationfolder(document.OutputPath);
+
+                    CopyDTDToDestinationfolder(document.OutputPath);
 					CopyMATHToDestinationfolder(document.OutputPath);
 					if (conversion.Validate) {
 						validateXML(document.OutputPath);
@@ -426,8 +420,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 					// We need to change this method and the copy for validation : 
 					// it does not only delete the dtds files,
 					// it also updates the file dtds
-					DeleteDTD(tempStr + "\\" + "dtbook-2005-3.dtd", document.OutputPath, true);
-					DeleteMath(tempStr, true);
+					DeleteDTD(Path.Combine(conversionOutputDirectory, "dtbook-2005-3.dtd"), document.OutputPath, true);
+					DeleteMath(conversionOutputDirectory, true);
 				}
 			} finally {
 				if (File.Exists(tempInputPath)) {
@@ -871,18 +865,14 @@ namespace Daisy.SaveAsDAISY.Conversion
 				}
 
 				// Check whether the document is valid or invalid.
-				if (isValid == false)
+				if (isValid == false && feedbackValidationIntercepted != null)
 				{
-					if (feedbackValidationIntercepted != null)
-					{
-						foreach (ValidationError found in ValidationErrors) {
-							feedbackValidationIntercepted(
-								this, new DaisyEventArgs(
-									" Line Number:Position : " + found.error.Exception.LineNumber + ":" + found.error.Exception.LinePosition + Environment.NewLine +
-									" Message : " + found.error.Message + Environment.NewLine + 
-									" Reference Text :  " + found.referenceText + Environment.NewLine));
-						}
-						
+					foreach (ValidationError found in ValidationErrors) {
+						feedbackValidationIntercepted(
+							this, new DaisyEventArgs(
+								" Line Number:Position : " + found.error.Exception.LineNumber + ":" + found.error.Exception.LinePosition + Environment.NewLine +
+								" Message : " + found.error.Message + Environment.NewLine + 
+								" Reference Text :  " + found.referenceText + Environment.NewLine));
 					}
 				}
 			}

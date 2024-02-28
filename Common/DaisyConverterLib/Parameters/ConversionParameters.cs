@@ -43,7 +43,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         public string Subject { get; set; }
         public string Version { get; set; }
 
-        public string Language { get; set; }
+        public string Language { get; set; } = "";
 
         public StringValidator NameValidator { get; set; }
 
@@ -114,16 +114,23 @@ namespace Daisy.SaveAsDAISY.Conversion
             Creator = mainDocument.Creator;
             Title = mainDocument.Title;
             Publisher = mainDocument.Publisher;
+            Language = mainDocument.Languages[0];
             return this;
         }
 
         public ConversionParameters usingCachedSettings()
         {
             XmlDocument document = new XmlDocument();
-            document.Load(ConversionParametersXmlPath);
-            Creator = document.FirstChild.ChildNodes[0].InnerText;
-            Title = document.FirstChild.ChildNodes[1].InnerText;
-            Publisher = document.FirstChild.ChildNodes[2].InnerText;
+            try {
+                document.Load(ConversionParametersXmlPath);
+                Creator = document.FirstChild.ChildNodes[0].InnerText;
+                Title = document.FirstChild.ChildNodes[1].InnerText;
+                Publisher = document.FirstChild.ChildNodes[2].InnerText;
+            } catch (Exception e) {
+               AddinLogger.Warning($"Could not load cache from {ConversionParametersXmlPath}", e);
+            }
+
+
             return this;
         }
 
