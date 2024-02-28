@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
     <!--  IMPORTANT NOTE:
               When creating a new release, 
@@ -9,7 +9,7 @@
         -->
     
     <!-- Preprocessor variables, update following your addin assemblies version -->
-    <?define AddinVersion = "2.8.3.0" ?>
+    <?define AddinVersion = "2.8.4.0" ?>
     
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
@@ -24,13 +24,13 @@
     <?endif ?>
     
     <!--Change this ID for update -->
-    <Product Id="502B26F7-4647-484C-83EC-A377274927AF" 
+    <Product Id="AF904FA4-E478-4811-A136-5279277DB2EB" 
             Name="SaveAsDAISY add-in version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
         <!--Change this ID for update -->
-        <Package Id="BDA60CB5-1CDD-438B-BE56-F0DEC3F534D0"
+        <Package Id="8D71DBC2-C27A-45AA-A1FA-8602F64CD7DF"
 				 Compressed="yes"
 				 InstallPrivileges="limited"
 				 InstallerVersion="200" />

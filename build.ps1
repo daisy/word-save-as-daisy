@@ -1,4 +1,4 @@
-﻿# SaveAsDAISY build script
+# SaveAsDAISY build script
 # Requires msbuild to be accessible in path
 
 param(
@@ -6,7 +6,7 @@ param(
 	[switch]$refreshpipeline = $false
 )
 
-$currentVersion = "2.8.3"
+$currentVersion = "2.8.4"
 $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
 
 # Create the wix directory tree for a path

@@ -43,6 +43,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.PublisherLabel = new System.Windows.Forms.Label();
             this.UIDLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.languageSelector = new System.Windows.Forms.ComboBox();
             this.SwitchAdvancedSettingsButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label_Creator = new System.Windows.Forms.Label();
@@ -53,7 +54,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.AdvancedSettingsGroup = new System.Windows.Forms.GroupBox();
             this.AdvancedSettingsPanel = new System.Windows.Forms.Panel();
             this.DestinationControl = new Daisy.SaveAsDAISY.Forms.Controls.PathControl();
-            this.languageSelector = new System.Windows.Forms.ComboBox();
             this.DocumentPropertiesGroup.SuspendLayout();
             this.DocumentPropertiesTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -153,6 +153,12 @@ namespace Daisy.SaveAsDAISY.Conversion
             resources.ApplyResources(this.label1, "label1");
             this.label1.Name = "label1";
             // 
+            // languageSelector
+            // 
+            this.languageSelector.FormattingEnabled = true;
+            resources.ApplyResources(this.languageSelector, "languageSelector");
+            this.languageSelector.Name = "languageSelector";
+            // 
             // SwitchAdvancedSettingsButton
             // 
             resources.ApplyResources(this.SwitchAdvancedSettingsButton, "SwitchAdvancedSettingsButton");
@@ -229,12 +235,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.DestinationControl.Name = "DestinationControl";
             this.DestinationControl.ParameterName = "Destination:";
             this.DestinationControl.SelectedPath = null;
-            // 
-            // languageSelector
-            // 
-            this.languageSelector.FormattingEnabled = true;
-            resources.ApplyResources(this.languageSelector, "languageSelector");
-            this.languageSelector.Name = "languageSelector";
             // 
             // ConversionParametersForm
             // 

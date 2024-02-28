@@ -190,7 +190,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 FileName: tmpFileName,
                 Visible: false
             );
-
+            
             // Note : using the recommended "copy document into another one" way of 
             // cloning found on forums can provoque clipboard issue ...
             // Alt idea : saving a first time a copy, and saving back as the original file name,
