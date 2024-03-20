@@ -190,7 +190,13 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 FileName: tmpFileName,
                 Visible: false
             );
-            
+            // Upgrade the copy to docx for conversion
+            copy.SaveAs2(
+                FileName: tmpFileName,
+                AddToRecentFiles: false,
+                FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument
+            );
+
             // Note : using the recommended "copy document into another one" way of 
             // cloning found on forums can provoque clipboard issue ...
             // Alt idea : saving a first time a copy, and saving back as the original file name,
