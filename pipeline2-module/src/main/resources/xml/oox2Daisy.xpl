@@ -5,10 +5,6 @@
 				xmlns:xs="http://www.w3.org/2001/XMLSchema"
                 type="px:oox2Daisy" name="main">
 
-	<p:import href="dtbook-fix/tidy.xpl" />
-	<p:import href="dtbook-fix/repair.xpl" />
-	<p:import href="dtbook-fix/narrator.xpl" />
-
 	<p:import href="http://www.daisy.org/pipeline/modules/dtbook-break-detection/library.xpl">
 		<p:documentation>
 			px:dtbook-break-detect
@@ -99,18 +95,6 @@
 		<p:with-option name="href" select="$document-output-file"/>
 	</p:load>
 
-	<p:choose>
-		<p:when test="$ApplyDtbookFixRoutine">
-			<px:dtbook-tidy name="tidy"/>
-			<px:dtbook-repair name="repair"/>
-			<px:dtbook-narrator name="narrator">
-				<p:with-option name="publisher" select="$Publisher"/>
-			</px:dtbook-narrator>
-		</p:when>
-		<p:otherwise>
-			<p:identity/>
-		</p:otherwise>
-	</p:choose>
 
 	<p:choose>
 		<p:when test="$ApplySentenceDetection">
@@ -121,19 +105,6 @@
 			<p:identity/>
 		</p:otherwise>
 	</p:choose>
-
-	<p:xslt name="add-doctype" cx:serialize="true">
-		<p:input port="stylesheet">
-			<p:document href="dtbook-fix/xsl/export-doctype.xsl"/>
-		</p:input>
-		<p:with-param name="css" select="'dtbookbasic.css'"/>
-	</p:xslt>
-	<p:store name="store-xml2">
-		<p:with-option name="href" select="$document-output-file"/>
-	</p:store>
-	<p:load cx:depends-on="store-xml2">
-		<p:with-option name="href" select="$document-output-file"/>
-	</p:load>
 
 
 </p:declare-step>
