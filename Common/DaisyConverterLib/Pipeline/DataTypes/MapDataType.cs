@@ -12,8 +12,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 {
     public class MapDataType : StringDataType
     {
-        public override object Value { 
-            get => (object)JsonConvert.DeserializeObject<Dictionary<string,object>>(this.m_Value);
+        public override object Value
+        {
+            get => (object)JsonConvert.DeserializeObject<Dictionary<string, object>>(this.m_Value);
             set => this.Value = value;
         }
     }

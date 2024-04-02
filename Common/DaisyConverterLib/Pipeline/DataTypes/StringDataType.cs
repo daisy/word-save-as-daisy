@@ -8,7 +8,8 @@ using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-    public class StringDataType : ParameterDataType {
+    public class StringDataType : ParameterDataType
+    {
         protected string m_Value;
         private string m_Regex;
         public StringDataType(ScriptParameter p, XmlNode DataTypeNode) : base(p)
@@ -21,7 +22,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-        public StringDataType(string defaultValue = "", string regex = "") : base() {
+        public StringDataType(string defaultValue = "", string regex = "") : base()
+        {
             m_Value = defaultValue;
             m_Regex = regex;
         }
@@ -31,7 +33,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             get { return m_Value; }
             set
             {
-                if (value!=null)
+                if (value != null)
                 {
                     m_Value = (string)value;
                     UpdateScript(m_Value);
@@ -40,7 +42,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-        private bool UpdateScript(string Val)
+        private new bool UpdateScript(string Val)
         {
             if (Val != null && m_Parameter != null)
             {

@@ -45,9 +45,12 @@ namespace CustomActionAddin
                     }
                 }
             }
-
+            // Removing pipeline lite ms if it exists
             if (Directory.Exists(path + "\\pipeline-lite-ms"))
                 Directory.Delete(path + "\\pipeline-lite-ms", true);
+            // Remove pipeline 2
+            if (Directory.Exists(path + "\\daisy-pipeline"))
+                Directory.Delete(path + "\\daisy-pipeline", true);
 
         }
     }

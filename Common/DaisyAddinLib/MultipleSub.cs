@@ -22,7 +22,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         PackageRelationship packRelationship = null;
         const string appNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes";
         List<string> listDocuments;
-        private ResourceManager Labels;
+        private ResourceManager Labels = Daisy.SaveAsDAISY.Labels.ResourceManager;
         Hashtable table = new Hashtable();
         int subCount = 0;
         int masterSubFlag = 0;
@@ -41,7 +41,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             UpdatedConversionParameters = conversion;
             InitializeComponent();
             listDocuments = new List<string>();
-            this.Labels = AddInHelper.LabelsManager;
             btn_Up.Enabled = false;
             btn_Down.Enabled = false;
             btn_Delete.Enabled = false;
@@ -198,7 +197,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 						PathDataType pathDataType = p.ParameterDataType as PathDataType;
 						if (pathDataType == null) continue;
 
-						if (pathDataType.IsFileOrDirectory == PathDataType.FileOrDirectory.File)
+						if (pathDataType.IsFile)
 						{
 							try
 							{
@@ -547,7 +546,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     ScriptParameter p = kv.Value;
                     if (p.Name != "input" && p.ParameterDataType is PathDataType && p.IsParameterRequired)
                     {
-                        Control c = (Control)new PathBrowserControl(p, input, mProjectDirectory);
+                        Control c = (Control)new PathControl(p);
                         c.Anchor = AnchorStyles.Right;
                         c.Anchor = AnchorStyles.Top;
                         mLayoutPanel.Controls.Add(c);

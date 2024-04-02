@@ -10,16 +10,38 @@ If Office is not found by the installer (like preinstalled or windows store vers
 ## Latest version: 2.7.2 beta (released on September, 2022)
 
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
+- Or access to the [last release page](https://github.com/daisy/word-save-as-daisy/releases/latest)
 
 ## Report issues
 
 If you have an issue with the installers or with the add-in, please contact the development team by mail to [daisy-pipeline@mail.daisy.org](mailto:daisy-pipeline@mail.daisy.org).
 
-Any construcive feedback is also welcome to help us improve the add-in :)
+Any constructive feedbacks are also welcome to help us improve the add-in :)
 
 ## Feedbacks / Known issues
 
 ### The accessibility ribbon does not appear after successfull installation
+
+#### Addin is reported unloaded due to an error
+
+The addin assumes you have a recent version of .NET Framework (4+) available on your system.
+You can check if you have the required .NET Framework by checking if folders "C:\Windows\Microsoft.NET\Framework64\v4.0.30319"  and/or "C:\Windows\Microsoft.NET\Framework\v4.0.30319" exists.
+
+It is also possible that the wrong bit-version of the addin is installed : 
+this might have been the case if your office version has been installed through Microsoft Store, which makes office undetectable from our install process, and you selected the wrong bit-version.
+If this is the case, please check your office bit-version in Word in the "Account" page by opening "About Word" dialog.
+The bit-version is displayed at the end of the first line of the dialog.
+
+Lastly, it has been reported for other addin that this can occured if you run word on an account with administrator privileges with UAC deactivated.
+In this case, you need to do the following actions : 
+- uninstall the addin
+- Launch the addin installed as administrator
+- When accepting the software licence, click on the "Advanced" button
+- Select "Install for all users of this machine" and click "Next"
+- Change the installation folder if you need and click "Next'
+- The addin should then continue the install process as usual
+
+#### Addin is deactived after installation
 
 A user reported the addin to be deactivated after installation : 
 In Word, under the **File** / **Options** / **Add-ins** category, **Save As Daisy** appeared under the **Inactive applications** section.
@@ -30,7 +52,69 @@ This issue is being investigated, but the following action has been tested and r
 
 The add-in should start repairing himself before reopening the word document.
 
+## Speech synthesis issue on Windows 11
+
+On Windows 11 (but not Windows 10), Microsoft seems to have limited or missed a bug that forbid the use of their local text-to-speech engines :
+Both legacy SAPI engine and its newer Onecore version are impacted.
+Using one of those text-to-speech engine in parallel in one or more applications can often make one or both app crash.
+For example: launching an export to DAISY3 with audio synthesis in the DAISY Pipeline 2, and navigating with nvda or jaws with Onecore voices, 
+will sometimes make either DAISY pipeline 2 or NVDA/JAWS or both crash.
+The crash is also unstoppable on our side when it happens, as it uses special instructions (which is called a FAST_FAIL) that cannot be intercepted when it occurs.
+
+We have mitigated the issue in the DAISY Pipeline 2 for multithreaded audio synthesis by synchronizing the speech synthesis call at the lowest level we are able to.
+This reduced the performances of the synthesis but it avoids quasi-systematic unrecoverable crashes in the DAISY Pipeline 2 conversions.
+We then discovered that those crashes can still occur during a conversion if a narrator like nvda and jaws with Onecore voices selected is used during conversion.
+
+This has been reported to Microsoft through their Feedback channel, but if anyone has contacts at Microsoft and can help propagate this issue to Microsoft Dev teams, 
+we would really appreciate it.
+
 # Changelog
+
+# 2.8.2 beta (January 2024)
+
+(This version is under test phase and is not released yet)
+
+This major release marks a change in the underlying conversion process 
+to dtbook XML and packaged format,
+as DAISY Pipeline 1 is completely replaced by DAISY Pipeline 2.
+The following features that are either reported unused or that are available 
+through standard Microsoft Word actions are removed from the addin :
+
+- The "from multiple documents" exports actions are removed : 
+As it was not a batch conversion of documents but a conversion and merging 
+feature of multiple word document into a single Dtbook XML or DAISY book, 
+testers reported the feature as unused in its current state.
+For users needing a similar action, it is recommended to either use 
+a master document referencing the documents to merge, or manually 
+construct a new Word document from the documents to merge.
+- The "Add footnotes" button is removed from the ribbon :
+it is recommended to use Microsoft Word notes management 
+in the "References" ribbon's tab.
+- It is no longer required to select an empty folder as export destination :
+For a given export to a selected format, a new folder taking the name of 
+the converted file name followed by the selected format and a timestamp suffix
+will be created inside the selected destination folder and will contain
+the result of the conversion.
+
+Some new features are starting to be integrated in the addin and are still experimental:
+- With the updated DAISY Pipeline 2 provided, users can now test the export 
+to Megavoice fileset of MP3 files (Issues [#30](https://github.com/daisy/word-save-as-daisy/issues/30)
+
+
+Various fixes and changes are included in the release :
+- Fixed [#25](https://github.com/daisy/word-save-as-daisy/issues/25)
+by caching dtbook and mathml dtds and entities in the assembly,
+- New conversion form "advanced settings" panel to better display settings
+for each export format based on DAISY pipeline 2 settings
+- Fixed conversion progress dialog text area behavior
+- Fixed inline shapes export that could raise a clipboard issue
+- Fixed a bug in acronyms and abbreviations conversions
+- New update checking mecanism in the "About" dialog that 
+looks at the daisy github repository of the addin.
+- Issue [#26](https://github.com/daisy/word-save-as-daisy/issues/26) is fixed by
+the removal of pipeline 1 that is vulnerable to attacks through its version of log4j
+- Issue [#29](https://github.com/daisy/word-save-as-daisy/issues/35)
+
 
 # 2.7.2 beta (September 2022)
 

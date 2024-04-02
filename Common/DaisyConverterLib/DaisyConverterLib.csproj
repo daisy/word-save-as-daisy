@@ -128,21 +128,22 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Events\SilentEventsHandler.cs" />
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
-    <Compile Include="Parameters\PrepopulateDaisyXml.cs" />
-    <Compile Include="Pipeline\ChainedScripts\DtbookToEpub3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToMp3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToDaisy3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToEpub3.cs" />
     <Compile Include="Pipeline\DataTypes\MapDataType.cs" />
     <Compile Include="Pipeline\ParameterDataType.cs" />
     <Compile Include="Pipeline\Pipeline2\Pipeline2.cs" />
     <Compile Include="Pipeline\Pipeline2\Pipeline2Script.cs" />
-    <Compile Include="Pipeline\Pipeline2\Pipeline2Step.cs" />
-    <Compile Include="Pipeline\Pipeline2\Scripts\Daisy3ToEPUB3.cs" />
-    <Compile Include="Pipeline\Pipeline2\Scripts\WordToDTBook.cs" />
+    <Compile Include="Pipeline\Pipeline2\Scripts\Daisy3ToMp3.cs" />
+    <Compile Include="Pipeline\Pipeline2\Scripts\DtbookCleaner.cs" />
+    <Compile Include="Pipeline\Pipeline2\Scripts\DtbookToDaisy3.cs" />
+    <Compile Include="Pipeline\Pipeline2\Scripts\DtbookToEpub3.cs" />
     <Compile Include="Pipeline\Script.cs" />
-    <Compile Include="Preprocessing\FilenameValidator.cs" />
+    <Compile Include="Preprocessing\StringValidator.cs" />
     <Compile Include="Preprocessing\IDocumentPreprocessor.cs" />
-    <Compile Include="PackageUtilities.cs" />
     <Compile Include="Parameters\DocumentParameters.cs" />
-    <Compile Include="Preprocessing\ConversionStatus.cs" />
+    <Compile Include="ConversionStatus.cs" />
     <Compile Include="WordToDTBookXMLTransform.cs" />
     <Compile Include="ChainResourceManager.cs" />
     <Compile Include="Parameters\ConversionParameters.cs" />
@@ -163,9 +164,7 @@
     <Compile Include="Pipeline\DataTypes\IntegerDataType.cs" />
     <Compile Include="Pipeline\DataTypes\PathDataType.cs" />
     <Compile Include="Pipeline\DataTypes\StringDataType.cs" />
-    <Compile Include="Pipeline\Pipeline1\Pipeline1.cs" />
     <Compile Include="Pipeline\ScriptParameter.cs" />
-    <Compile Include="Pipeline\Pipeline1\Pipeline1Script.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShapesObjectExport.cs" />
     <Compile Include="SharedXmlUrlResolver.cs" />
@@ -175,7 +174,6 @@
     <Compile Include="ZipResolver.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Properties\Labels.resx" />
     <EmbeddedResource Include="resources\source.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +181,7 @@
     <EmbeddedResource Include="resources\dtds\dtbook-2005-3.dtd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Include="resources\dtds\mathml2.DTD">
+    <EmbeddedResource Include="resources\dtds\mathml2.dtd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="resources\entities\isoamsa.ent">
@@ -285,8 +283,39 @@
     <EmbeddedResource Include="resources\entities\mathml2-qname-1.mod">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\Common.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\Common2.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\Common3.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\OOML2MML.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\oox2Daisy.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\Schematron.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="resources\xslts\TOC.xsl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="JNET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=95283358f4f60f4e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Lib\JNET.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
     </Reference>
@@ -304,9 +333,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\jnet\JNET.csproj">
-      <Project>{941df07f-3ee8-4793-abba-659f2e0598c3}</Project>
-      <Name>JNET</Name>
+    <ProjectReference Include="..\Localization\Localization.csproj">
+      <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
+      <Name>Localization</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />

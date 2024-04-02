@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Daisy.SaveAsDAISY.Conversion.Events;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,16 @@ namespace Daisy.SaveAsDAISY.Conversion {
     /// </summary>
     public abstract class Script {
 
-        public delegate void PipelineOutputListener(string message);
+        protected IConversionEventsHandler eventsHandler;
+
+        public Script(IConversionEventsHandler eventsHandler = null)
+        {
+            this.eventsHandler = eventsHandler ?? new SilentEventsHandler();
+        }
+
+        public IConversionEventsHandler EventsHandler { get { return eventsHandler; } set { eventsHandler = value; } }
+
+        public delegate void PipelineOutputListener(object sender, EventArgs e);
         protected event PipelineOutputListener onPipelineOutput;
         public void setPipelineOutputListener(PipelineOutputListener onPipelineOutput) {
             this.onPipelineOutput = onPipelineOutput;
@@ -22,7 +32,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
 
-        public delegate void PipelineErrorListener(string message);
+        public delegate void PipelineErrorListener(object sender, EventArgs e);
         protected event PipelineErrorListener onPipelineError;
         public void setPipelineErrorListener(PipelineErrorListener onPipelineError) {
             this.onPipelineError = onPipelineError;
@@ -31,7 +41,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
             get => this.onPipelineError;
         }
 
-        public delegate void PipelineProgressListener(string message);
+        public delegate void PipelineProgressListener(object sender, EventArgs e);
         protected event PipelineProgressListener onPipelineProgress;
         public void setPipelineProgressListener(PipelineProgressListener onPipelineProgress) {
             this.onPipelineProgress = onPipelineProgress;
@@ -51,8 +61,6 @@ namespace Daisy.SaveAsDAISY.Conversion {
             get { return _parameters; }
         }
 
-        
-
         protected string niceName = "";
 
         /// <summary>
@@ -62,14 +70,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
             get { return niceName; }
         }
 
-        protected string nameOrURI = "";
+        protected string name = "";
 
         /// <summary>
-        /// Name or URI used for pipeline scripts calls 
-        /// (like _postprocess, or dtbook-to-daisy303, or "http://www.daisy.org/pipeline/modules/word-to-dtbook/oox2Daisy.xpl")
+        /// Name used in pipeline calls (_postprocess, or dtbook-to-daisy303)
         /// </summary>
-        public string NameOrURI {
-            get { return nameOrURI; }
+        public string Name {
+            get { return name; }
         }
 
         protected string description = "";
@@ -79,7 +86,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         public string Description
         {
-            get { return nameOrURI; }
+            get { return name; }
         }
 
         /// <summary>

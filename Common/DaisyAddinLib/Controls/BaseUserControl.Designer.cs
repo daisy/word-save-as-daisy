@@ -1,4 +1,7 @@
-namespace Daisy.SaveAsDAISY.Forms.Controls {
+using System.ComponentModel;
+
+namespace Daisy.SaveAsDAISY.Forms.Controls
+{
     partial class BaseUserControl
     {
         /// <summary>
@@ -19,6 +22,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
             base.Dispose(disposing);
         }
 
+
         #region Component Designer generated code
 
         /// <summary>
@@ -27,20 +31,38 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            this.descriptionTooltip = new System.Windows.Forms.ToolTip(this.components);
+            this.parameterNiceName = new System.Windows.Forms.Label();
             this.SuspendLayout();
+            // 
+            // parameterNiceName
+            // 
+            this.parameterNiceName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
+            this.parameterNiceName.AutoSize = true;
+            this.parameterNiceName.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.parameterNiceName.Location = new System.Drawing.Point(-3, 0);
+            this.parameterNiceName.Name = "parameterNiceName";
+            this.parameterNiceName.Size = new System.Drawing.Size(42, 20);
+            this.parameterNiceName.TabIndex = 3;
+            this.parameterNiceName.Text = "Nice:";
             // 
             // BaseUserControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackColor = System.Drawing.Color.Transparent;
+            this.Controls.Add(this.parameterNiceName);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Margin = new System.Windows.Forms.Padding(4);
+            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "BaseUserControl";
-            this.Size = new System.Drawing.Size(128, 53);
+            this.Size = new System.Drawing.Size(33, 35);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
+        protected System.Windows.Forms.ToolTip descriptionTooltip;
+        public System.Windows.Forms.Label parameterNiceName;
 
         #endregion
         //protected System.Windows.Forms.Label mLabel;

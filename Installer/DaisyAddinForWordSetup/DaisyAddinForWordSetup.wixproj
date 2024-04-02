@@ -93,6 +93,14 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common\Localization\Localization.csproj">
+      <Name>Localization</Name>
+      <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\..\Common\ManagedAggregator\ManagedAggregator.csproj">
       <Name>ManagedAggregator</Name>
       <Project>{9f777c87-f4fc-4954-bf3e-1ef20ee2d11d}</Project>
@@ -117,22 +125,6 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\..\Word2003\DaisyTranslatorWord2003Addin\DaisyTranslatorWord2003Addin.csproj">
-      <Name>DaisyTranslatorWord2003Addin</Name>
-      <Project>{94c3a3cb-7a9a-4d65-8345-21a0d52e82a7}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Word2003\DaisyTranslatorWord2003Shim\DaisyTranslatorWord2003Shim.vcxproj">
-      <Name>DaisyTranslatorWord2003Shim</Name>
-      <Project>{b4e4ce97-b0b0-48a0-82e4-0e8e9ec9e00e}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
     <ProjectReference Include="..\..\Word2007\DaisyWord2007AddIn\DaisyWord2007AddIn.csproj">
       <Name>DaisyWord2007AddIn</Name>
       <Project>{9b3a86f5-d5a5-4cc2-a995-2362a28d0ea9}</Project>
@@ -150,10 +142,8 @@
     <PostBuildEvent>IF NOT EXIST "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources" mkdir "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources"
 IF EXIST "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)" DEL "$(SolutionDir)DaisyInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)"
 IF EXIST "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline_cab" DEL "$(SolutionDir)DaisyInstaller\Resources\pipeline_cab"
-IF EXIST "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline2_cab" DEL "$(SolutionDir)DaisyInstaller\Resources\pipeline2_cab"
 COPY "$(TargetDir)$(TargetName).msi" "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\DaisyAddinForWordSetup_$(PlatformName)" /Y
-COPY "$(TargetDir)pipeline.cab" "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline_cab" /Y
-COPY "$(TargetDir)pipeline2.cab" "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline2_cab" /Y</PostBuildEvent>
+COPY "$(TargetDir)pipeline.cab" "$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline_cab" /Y</PostBuildEvent>
   </PropertyGroup>
   <!--
 	To modify your build process, add your task inside one of the targets below and uncomment it.

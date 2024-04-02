@@ -5,29 +5,39 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using Daisy.SaveAsDAISY.Conversion;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 
-namespace Daisy.SaveAsDAISY.Forms.Controls {
+namespace Daisy.SaveAsDAISY.Forms.Controls
+{
     public partial class BoolControl : BaseUserControl
     {
-        ScriptParameter m_Parameter;
         BoolDataType m_boolDataType;
 
-        public BoolControl()
+        private BoolControl() : base()
         {
+            this.parameterNiceName.Text = "test";
             InitializeComponent();
         }
 
         public BoolControl(ScriptParameter p)
-            : this()
+            : base(p)
         {
-            // base.DescriptionLabel = p.Description;
-            checkBox1.Text = p.NiceName;
-            m_Parameter = p;
-            m_boolDataType = (BoolDataType)p.ParameterDataType;
-            checkBox1.Checked = (bool)m_boolDataType.Value;
-            base.Size = this.Size;
+            InitializeComponent();
+            setLinkedParameter(p);
         }
+
+        public override void setLinkedParameter(ScriptParameter s)
+        {
+            base.setLinkedParameter(s);
+            checkBox1.AccessibleName = s.NiceName;
+            checkBox1.AccessibleDescription = s.Description;
+            descriptionTooltip.SetToolTip(checkBox1, s.Description);
+            m_boolDataType = (BoolDataType)s.ParameterDataType;
+            checkBox1.Checked = (bool)s.ParameterValue;
+        }
+
+
 
         public override void UpdateScriptParameterValue()
         {
@@ -41,9 +51,9 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
             }
         }
 
-        private void BoolControl_Load(object sender, EventArgs e)
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
-
+            this.UpdateScriptParameterValue();
         }
     }
 

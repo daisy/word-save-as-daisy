@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Daisy.SaveAsDAISY.Conversion.Events {
+
     /// <summary>
     /// Conversion Events
     /// 
@@ -11,16 +12,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
     /// Maybe rename this as IConverterInteractionsHandler
     /// </summary>
     public interface IConversionEventsHandler {
-
-        void OnStop(string message);
-        
-        void OnError(string errorMessage);
-        void OnStop(string message, string title);
-
-        /// <summary>
-        /// Called when conversion has finished
-        /// </summary>
-        void OnSuccess();
 
         #region Preprocess events
         void onDocumentPreprocessingStart(string inputPath);
@@ -31,7 +22,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
 
         void onPreprocessingCancel();
 
-        void onPreprocessingError(string inputPath, string errors);
+        void onPreprocessingWarning(string message);
+
+        void onPreprocessingError(string inputPath, Exception errors);
 
         void onPreprocessingSuccess();
         #endregion Preprocess events
@@ -45,7 +38,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// </summary>
         /// <param name="authorizedNamePattern"></param>
         /// <returns>should return either DialogResult.Yes, DialogResult.No or DialogResult.Cancel </returns>
-        DialogResult documentMustBeRenamed(FilenameValidator authorizedNamePattern);
+        DialogResult documentMustBeRenamed(StringValidator authorizedNamePattern);
 
         /// <summary>
         /// raised whem the user has choosen to rename the document manually
@@ -88,6 +81,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
 
         void onConversionCanceled();
 
+        void onConversionWarning(string message);
+
+        void onConversionSuccess();
+
 
         /// <summary>
         /// Progress message should indicate progression on the whole conversion process
@@ -116,8 +113,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// Called when an unknown error was raised during conversion
         /// </summary>
         /// <param name="error"></param>
-        void OnUnknownError(string error);
-        void OnUnknownError(string title, string details);
+        void OnConversionError(Exception error);
 
         /// <summary>
         /// Called when a validation error has occured
@@ -152,6 +148,15 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// </summary>
         /// <param name="conversion"></param>
         void onPostProcessingStart(ConversionParameters conversion);
+
+        void onPostProcessingInfo(string message);
+
+        /// <summary>
+        /// Method called when post processing starts
+        /// </summary>
+        /// <param name="conversion"></param>
+        void onPostProcessingError(Exception error);
+
         /// <summary>
         /// Method called when the post processing pass has successfully finished 
         /// </summary>

@@ -19,6 +19,9 @@ using Microsoft.Win32;
 using System.IO;
 using System.Threading;
 using System.Drawing.Imaging;
+using System.Drawing;
+using Microsoft.Office.Core;
+using System.Windows.Input;
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
@@ -27,17 +30,136 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
     /// </summary>
     public class DocumentPreprocessor : IDocumentPreprocessor {
 
-        object missing = Type.Missing;
+        /// <summary>
+        /// Saves the meta file. (source : https://keestalkstech.com/2016/06/rasterizing-emf-files-png-net-csharp/)
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="destination">The destination.</param>
+        /// <param name="scale">The scale. Default value is 4.</param>
+        /// <param name="backgroundColor">Color of the background.</param>
+        /// <param name="format">The format. Default is PNG.</param>
+        /// <param name="parameters">The parameters.</param>
+        public static void SaveMetaFile(
+            Stream source,
+            Stream destination,
+            float scale = 1f,
+            Color? backgroundColor = null,
+            ImageFormat format = null,
+            EncoderParameters parameters = null)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+            if (destination == null)
+            {
+                throw new ArgumentNullException(nameof(destination));
+            }
 
-        // to duplicate the current doc and use the copy
-        object doNotAddToRecentFiles = false;
-        object notReadOnly = false;
+            using (var img = new Metafile(source))
+            {
+                var f = format ?? ImageFormat.Png;
 
-        // visibility
-        // object visible = true;
-        object notVisible = false;
-        object originalFormat = MSword.WdOriginalFormat.wdOriginalDocumentFormat;
-        object format = MSword.WdSaveFormat.wdFormatXMLDocument;
+                //Determine default background color. 
+                //Not all formats support transparency. 
+                if (backgroundColor == null)
+                {
+                    var transparentFormats = new ImageFormat[] { ImageFormat.Gif, ImageFormat.Png, ImageFormat.Wmf, ImageFormat.Emf };
+                    var isTransparentFormat = transparentFormats.Contains(f);
+
+                    backgroundColor = isTransparentFormat ? Color.Transparent : Color.White;
+                }
+
+                //header contains DPI information
+                var header = img.GetMetafileHeader();
+
+                //calculate the width and height based on the scale
+                //and the respective DPI
+                var width = (int)Math.Round((scale * img.Width / header.DpiX * 100), 0, MidpointRounding.ToEven);
+                var height = (int)Math.Round((scale * img.Height / header.DpiY * 100), 0, MidpointRounding.ToEven);
+
+                using (var bitmap = new Bitmap(width, height))
+                {
+                    using (var g = System.Drawing.Graphics.FromImage(bitmap))
+                    {
+                        //fills the background
+                        g.Clear(backgroundColor.Value);
+
+                        //reuse the width and height to draw the image
+                        //in 100% of the square of the bitmap
+                        g.DrawImage(img, 0, 0, bitmap.Width, bitmap.Height);
+                    }
+                    // crop image
+                    int xmin = bitmap.Width - 1, xmax = 0;
+                    // search min and max x
+                    for (int y = 0; y < bitmap.Height; ++y)
+                    {
+                        for (int x = 0; x <= xmin; ++x)
+                        {
+                            if (bitmap.GetPixel(x, y).ToArgb() != backgroundColor.Value.ToArgb())
+                            {
+                                xmin = Math.Min(xmin, x);
+                            }
+                        }
+
+                        for (int x = bitmap.Width - 1; x >= xmax; --x)
+                        {
+                            if (bitmap.GetPixel(x, y).ToArgb() != backgroundColor.Value.ToArgb())
+                            {
+                                xmax = Math.Max(xmax, x);
+                            }
+                        }
+                    }
+                    // search min y
+                    int ymin = bitmap.Height - 1, ymax = 0;
+                    for (int x = 0; x < bitmap.Width; ++x)
+                    {
+                        for (int y = 0; y <= ymin; ++y)
+                        {
+                            if (bitmap.GetPixel(x, y).ToArgb() != backgroundColor.Value.ToArgb())
+                            {
+                                ymin = Math.Min(ymin, y);
+                            }
+                        }
+                        for (int y = bitmap.Height - 1; y >= ymax; --y)
+                        {
+                            if (bitmap.GetPixel(x, y).ToArgb() != backgroundColor.Value.ToArgb())
+                            {
+                                ymax = Math.Max(ymax, y);
+                            }
+                        }
+                    }
+
+                    
+                    //get codec based on GUID
+                    var codec = ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == f.Guid);
+
+                    //bitmap.Save(destination, codec, parameters);
+                    // cropping result
+                    bitmap.Clone(
+                        new System.Drawing.Rectangle(xmin, ymin, xmax - xmin, ymax - ymin),
+                        bitmap.PixelFormat
+                    ).Save(destination, codec, parameters);
+
+                }
+            }
+        }
+
+        /// <summary>
+        /// Save a metafile buffer (from inline shape range) to disk
+        /// </summary>
+        /// <param name="emfBuffer"></param>
+        /// <param name="destinationFilePath"></param>
+        public static void convertEmfBufferToPng(byte[] emfBuffer, string destinationFilePath)
+        {
+            using (var source = new MemoryStream(emfBuffer))
+            {
+                using (var destination = File.OpenWrite(destinationFilePath))
+                {
+                    SaveMetaFile(source, destination, 4, Color.White, ImageFormat.Png);
+                }
+            }
+        }
 
         protected MSword.Application currentInstance;
         public DocumentPreprocessor(MSword.Application WordInstance) {
@@ -46,30 +168,52 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            object currentFile = currentDoc.FullName;
             object tmpFileName = document.CopyPath;
 
-            object originalPath = document.InputPath;
-            // Save a copy to start working on
             if (File.Exists((string)tmpFileName)) {
                 File.Delete((string)tmpFileName);
             }
-            currentDoc.SaveAs(ref tmpFileName, ref format, ref missing, ref missing, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing);
-            currentDoc.Close();
 
-            // only reopen the document if it is the main document (and if we want it reopened)
-            if (document.ResourceId == null && document.ReopenInputDocument) currentInstance.Documents.Open(ref originalPath);
+            // Save the document under another temp name
+            currentDoc.SaveAs2(
+                FileName: tmpFileName,
+                AddToRecentFiles: false
+            );
+            // Save back as original file name (that will reset previous word state)
+            currentDoc.SaveAs2(
+                FileName: currentFile,
+                AddToRecentFiles: false
+            );
+            // Open back the copy as invisible
+            MSword.Document copy = currentInstance.Documents.Open(
+                FileName: tmpFileName,
+                Visible: false
+            );
+            // Upgrade the copy to docx for conversion
+            copy.SaveAs2(
+                FileName: tmpFileName,
+                AddToRecentFiles: false,
+                FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument
+            );
 
-            // Open (or retrieve) the temp file if opened in word and use it for preprocessing (document is not visible in word)
-            preprocessedObject = currentInstance.Documents.Open(ref tmpFileName, ref missing, ref notReadOnly, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref notVisible, ref missing, ref missing, ref missing, ref missing);
+            // Note : using the recommended "copy document into another one" way of 
+            // cloning found on forums can provoque clipboard issue ...
+            // Alt idea : saving a first time a copy, and saving back as the original file name,
+            // and open the copy as invisble
 
+            // use the copy as proprecessed document
+            preprocessedObject = copy;
             return ConversionStatus.CreatedWorkingCopy;
 
         }
 
         public ConversionStatus endPreprocessing(ref object preprocessedObject, IConversionEventsHandler eventsHandler = null) {
             MSword.Document preprocessingDocument = (MSword.Document)preprocessedObject;
-            object dontSaveChanges = MSword.WdSaveOptions.wdDoNotSaveChanges;
-            preprocessingDocument.Close(ref dontSaveChanges, ref originalFormat, ref missing);
+            preprocessingDocument.Close(
+                SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
+                OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
+            );
             return ConversionStatus.PreprocessingSucceeded;
         }
 
@@ -151,22 +295,22 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     }
                     rng = rng.NextStoryRange;
                 }
-                document.ListMathMl.Add(storyName, listmathML);
+                document.MathMLMap[storyName] = listmathML;
             }
             if (showMsg == 1) {
                 string message =
-                    "In order to convert MathType or Microsoft Equation Editor equations to DAISY,MathType 6.5 or later must be installed. See www.dessci.com/saveasdaisy for further information.Currently all the equations will be converted as Images";
-                eventsHandler.OnStop(message, "Warning");
+                    "In order to convert MathType or Microsoft Equation Editor equations to DAISY,MathType 6.5 or later must be installed.\r\nSee www.dessci.com/saveasdaisy for further information.\r\nCurrently all the equations will be converted as Images";
+                eventsHandler.onPreprocessingWarning(message);
             }
             return ConversionStatus.ProcessedMathML;
         }
 
         public ConversionStatus ProcessShapes(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
-            List<string> objectShapes = new List<string>();
-            List<string> imageIds = new List<string>();
-            List<string> inlineShapes = new List<string>();
-            List<string> inlineShapeIds = new List<string>();
+            //List<string> objectShapes = new List<string>();
+            //List<string> imageIds = new List<string>();
+            //List<string> inlineShapes = new List<string>();
+            //List<string> inlineShapeIds = new List<string>();
             try {
                 Exception threadEx = null;
                 Thread staThread = new Thread(
@@ -181,31 +325,35 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             WordInstance.Activate();
 
                             System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
-                            // If we need a finer way to find the process handle
-                            // https://stackoverflow.com/questions/8673726/get-specific-window-handle-using-office-interop
 
-                            foreach (MSword.Shape item in currentDoc.Shapes) {
-                                if (!item.Name.Contains("Text Box")) {
-                                    item.Select(ref missing);
-                                    string pathShape = outputPath + "\\" + Path.GetFileNameWithoutExtension(fileName) + "-Shape" + item.ID.ToString() + ".png";
+                            foreach (MSword.Shape shape in currentDoc.Shapes) {
+                                string name = shape.Name.ToString();
+                                string type = shape.Type.ToString();
+                                if (!shape.Name.Contains("Text Box")) {
+                                    shape.Select(ref missing);
+                                    string bookmark = "Shape_" + shape.ID.ToString();
+                                    string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
                                     WordInstance.Selection.CopyAsPicture();
                                     try {
-                                        // Note : using Clipboard.GetImage() set Word to display a clipboard data save request on closing
-                                        // So we rely on the user32 clipboard methods that does not seem to be intercepted by Office
+                                        
                                         System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
                                         byte[] Ret;
                                         MemoryStream ms = new MemoryStream();
                                         image.Save(ms, ImageFormat.Png);
                                         Ret = ms.ToArray();
-                                        FileStream fs = new FileStream(pathShape, FileMode.Create, FileAccess.Write);
-                                        
+                                        FileStream fs = new FileStream(shapeOutputPath, FileMode.Create, FileAccess.Write);
+
                                         fs.Write(Ret, 0, Ret.Length);
                                         fs.Flush();
                                         fs.Dispose();
-                                        objectShapes.Add(pathShape);
-                                        imageIds.Add(item.ID.ToString());
+
+                                        eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
+                                            "Exported shape " + shapeOutputPath
+                                        ));
+                                        //objectShapes.Add(pathShape);
+                                        //imageIds.Add(item.ID.ToString());
                                     } catch (ClipboardDataException cde) {
-                                        warnings.Add("- Shape " + item.ID.ToString() + ": " + cde.Message);
+                                        warnings.Add("- Shape " + shape.ID.ToString() + ": " + cde.Message);
                                     } catch (Exception e) {
                                         throw e;
                                     } finally {
@@ -218,28 +366,26 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                 rng = tmprng;
                                 while (rng != null) {
                                     foreach (MSword.InlineShape item in rng.InlineShapes) {
+                                        string type = item.Type.ToString();
                                         if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
-                                            string shapeId = ConverterHelper.GenerateId().ToString();
-                                            string str = "Shapes_" + shapeId;
-
-                                            string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-" + str + ".png");
-                                            object range = item.Range;
-                                            item.Range.Bookmarks.Add(str, ref range);
-                                            item.Range.CopyAsPicture();
+                                            MSword.Shape shape = item.ConvertToShape();
+                                            string bookmark = "Shape_" + shape.ID.ToString();
+                                            string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
+                                            //object range = item.Range;
+                                            //item.Range.Bookmarks.Add(bookmark, ref range);
+                                            //item.Select();
+                                            //item.Range.CopyAsPicture();
                                             try {
-                                                System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                                                byte[] Ret;
-                                                MemoryStream ms = new MemoryStream();
-                                                image.Save(ms, ImageFormat.Png);
-                                                Ret = ms.ToArray();
-                                                FileStream fs = new FileStream(shapeOutputPath, FileMode.Create, FileAccess.Write);
-                                                fs.Write(Ret, 0, Ret.Length);
-                                                fs.Flush();
-                                                fs.Dispose();
-                                                inlineShapes.Add(shapeOutputPath);
-                                                inlineShapeIds.Add(shapeId);
+                                                byte[] buffer = (byte[])item.Range.EnhMetaFileBits;
+                                                convertEmfBufferToPng(buffer, shapeOutputPath);
+                                                eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
+                                                    "Exported inlined shape " + shapeOutputPath
+                                                ));
+                                                //objectShapes.Add(shapeOutputPath);
+                                                //imageIds.Add(shape.ID.ToString());
+                                                //inlineShapes.Add(shapeOutputPath);
                                             } catch (ClipboardDataException cde) {
-                                                warnings.Add("- InlineShape with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
+                                                warnings.Add("- InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
                                             } catch (Exception e) {
                                                 throw e;
                                             } finally {
@@ -268,12 +414,14 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 if (threadEx != null) {
                     throw threadEx;
                 }
-                document.ObjectShapes = objectShapes;
-                document.InlineShapes = inlineShapes;
-                document.ImageIds = imageIds;
-                document.InlineIds = inlineShapeIds;
+                // not used
+                //document.ObjectShapes = objectShapes;
+                //document.InlineShapes = inlineShapes;
+                //document.ImageIds = imageIds;
+                //document.InlineIds = inlineShapeIds;
             } catch (Exception e) {
-                eventsHandler?.OnError("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
+                eventsHandler?.onPreprocessingWarning(
+                    "An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
                     "\r\n- " + e.Message +
                     "\r\n" + e.StackTrace);
             }
@@ -281,13 +429,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public object startPreprocessing(DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
-            object path = (object)document.InputPath;
             // reset the focus on the document (or open it as visible) in the word app if it is not a subdoc
-            object visible = document.ResourceId == null;
-            return currentInstance.Documents.Open(ref path, ref missing, ref missing, ref doNotAddToRecentFiles, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref missing, ref visible);
+            return currentInstance.Documents.Open(
+                FileName: document.InputPath,
+                AddToRecentFiles: false,
+                Visible: document.ResourceId == null
+            );
         }
 
-        public ConversionStatus ValidateName(ref object preprocessedObject, FilenameValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
+        public ConversionStatus ValidateName(ref object preprocessedObject, StringValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
             MSword.Application WordInstance = currentDoc.Application;
             bool nameIsValid = false;
@@ -347,7 +497,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
         #endregion
 
-        #region MathML parsing requirements
+        #region MathType parsing requirements
         static private bool GetFinalCLSID(ref string ProgID, out Guid finalCLSID) {
             bool bRetVal = false;
             Guid oGuid;

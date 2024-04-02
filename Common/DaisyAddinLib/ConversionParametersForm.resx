@@ -117,380 +117,152 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label_paneltitle.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="label_paneltitle.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 14.25pt</value>
-  </data>
-  <data name="label_paneltitle.Location" type="System.Drawing.Point, System.Drawing">
-    <value>193, -12</value>
-  </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="label_paneltitle.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="label_paneltitle.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 32</value>
-  </data>
-  <data name="label_paneltitle.TabIndex" type="System.Int32, mscorlib">
-    <value>74</value>
-  </data>
-  <data name="&gt;&gt;label_paneltitle.Name" xml:space="preserve">
-    <value>label_paneltitle</value>
-  </data>
-  <data name="&gt;&gt;label_paneltitle.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_paneltitle.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;label_paneltitle.ZOrder" xml:space="preserve">
-    <value>9</value>
-  </data>
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
-  <data name="tBx_Browse.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="tBx_Browse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>93, 4</value>
-  </data>
-  <data name="tBx_Browse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="tBx_Browse.ScrollBars" type="System.Windows.Forms.ScrollBars, System.Windows.Forms">
-    <value>Horizontal</value>
-  </data>
-  <data name="tBx_Browse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>255, 27</value>
-  </data>
-  <data name="tBx_Browse.TabIndex" type="System.Int32, mscorlib">
-    <value>1</value>
-  </data>
-  <data name="tBx_Browse.ToolTip" xml:space="preserve">
-    <value>Select the output folder</value>
-  </data>
-  <data name="&gt;&gt;tBx_Browse.Name" xml:space="preserve">
-    <value>tBx_Browse</value>
-  </data>
-  <data name="&gt;&gt;tBx_Browse.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tBx_Browse.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;tBx_Browse.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="mLayoutPanel.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="mLayoutPanel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
-  </data>
-  <data name="mLayoutPanel.FlowDirection" type="System.Windows.Forms.FlowDirection, System.Windows.Forms">
-    <value>TopDown</value>
-  </data>
-  <data name="mLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 42</value>
-  </data>
-  <data name="mLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="mLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>0, 0</value>
-  </data>
-  <data name="mLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>80</value>
-  </data>
-  <data name="mLayoutPanel.ToolTip" xml:space="preserve">
-    <value>Select the output folder</value>
-  </data>
-  <data name="mLayoutPanel.WrapContents" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;mLayoutPanel.Name" xml:space="preserve">
-    <value>mLayoutPanel</value>
-  </data>
-  <data name="&gt;&gt;mLayoutPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;mLayoutPanel.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;mLayoutPanel.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="tBx_Uid.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="UIDTextBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="tBx_Uid.Font" type="System.Drawing.Font, System.Drawing">
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="UIDTextBox.Font" type="System.Drawing.Font, System.Drawing">
     <value>Calibri, 9pt</value>
   </data>
-  <data name="tBx_Uid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 111</value>
+  <data name="UIDTextBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>96, 122</value>
   </data>
-  <data name="tBx_Uid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="UIDTextBox.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="tBx_Uid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 26</value>
+  <data name="UIDTextBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>542, 26</value>
   </data>
-  <data name="tBx_Uid.TabIndex" type="System.Int32, mscorlib">
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="UIDTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
   </data>
-  <data name="tBx_Uid.ToolTip" xml:space="preserve">
+  <data name="UIDTextBox.ToolTip" xml:space="preserve">
     <value>Unique Identifier</value>
   </data>
-  <data name="&gt;&gt;tBx_Uid.Name" xml:space="preserve">
-    <value>tBx_Uid</value>
+  <data name="&gt;&gt;UIDTextBox.Name" xml:space="preserve">
+    <value>UIDTextBox</value>
   </data>
-  <data name="&gt;&gt;tBx_Uid.Type" xml:space="preserve">
+  <data name="&gt;&gt;UIDTextBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tBx_Uid.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
+  <data name="&gt;&gt;UIDTextBox.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
   </data>
-  <data name="&gt;&gt;tBx_Uid.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="tBx_Publisher.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tBx_Publisher.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="tBx_Publisher.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 75</value>
-  </data>
-  <data name="tBx_Publisher.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="tBx_Publisher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 27</value>
-  </data>
-  <data name="tBx_Publisher.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
-  </data>
-  <data name="tBx_Publisher.ToolTip" xml:space="preserve">
-    <value>Publisher</value>
-  </data>
-  <data name="&gt;&gt;tBx_Publisher.Name" xml:space="preserve">
-    <value>tBx_Publisher</value>
-  </data>
-  <data name="&gt;&gt;tBx_Publisher.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tBx_Publisher.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;tBx_Publisher.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="tBx_Creator.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
-  </data>
-  <data name="tBx_Creator.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="tBx_Creator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 40</value>
-  </data>
-  <data name="tBx_Creator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="tBx_Creator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 27</value>
-  </data>
-  <data name="tBx_Creator.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;UIDTextBox.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="tBx_Creator.ToolTip" xml:space="preserve">
-    <value>Creator</value>
-  </data>
-  <data name="&gt;&gt;tBx_Creator.Name" xml:space="preserve">
-    <value>tBx_Creator</value>
-  </data>
-  <data name="&gt;&gt;tBx_Creator.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tBx_Creator.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;tBx_Creator.ZOrder" xml:space="preserve">
-    <value>3</value>
-  </data>
-  <data name="tBx_Title.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+  <data name="PublisherInput.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
     <value>Fill</value>
   </data>
-  <data name="tBx_Title.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="PublisherInput.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="tBx_Title.Location" type="System.Drawing.Point, System.Drawing">
-    <value>96, 4</value>
+  <data name="PublisherInput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>96, 82</value>
   </data>
-  <data name="tBx_Title.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="PublisherInput.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="tBx_Title.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 27</value>
+  <data name="PublisherInput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>542, 27</value>
   </data>
-  <data name="tBx_Title.TabIndex" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="tBx_Title.ToolTip" xml:space="preserve">
-    <value>Title</value>
-  </data>
-  <data name="&gt;&gt;tBx_Title.Name" xml:space="preserve">
-    <value>tBx_Title</value>
-  </data>
-  <data name="&gt;&gt;tBx_Title.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tBx_Title.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;tBx_Title.ZOrder" xml:space="preserve">
-    <value>4</value>
-  </data>
-  <data name="btn_HideDetail.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="btn_HideDetail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 384</value>
-  </data>
-  <data name="btn_HideDetail.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="btn_HideDetail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 30</value>
-  </data>
-  <data name="btn_HideDetail.TabIndex" type="System.Int32, mscorlib">
-    <value>104</value>
-  </data>
-  <data name="btn_HideDetail.Text" xml:space="preserve">
-    <value>&lt;&lt;&amp;Hide Advanced</value>
-  </data>
-  <data name="btn_HideDetail.Visible" type="System.Boolean, mscorlib">
-    <value>False</value>
-  </data>
-  <data name="&gt;&gt;btn_HideDetail.Name" xml:space="preserve">
-    <value>btn_HideDetail</value>
-  </data>
-  <data name="&gt;&gt;btn_HideDetail.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btn_HideDetail.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btn_HideDetail.ZOrder" xml:space="preserve">
+  <data name="PublisherInput.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
   </data>
-  <data name="panel1.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="PublisherInput.ToolTip" xml:space="preserve">
+    <value>Publisher</value>
   </data>
-  <data name="panel1.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+  <data name="&gt;&gt;PublisherInput.Name" xml:space="preserve">
+    <value>PublisherInput</value>
   </data>
-  <data name="btn_Browse.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="&gt;&gt;PublisherInput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PublisherInput.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
+  </data>
+  <data name="&gt;&gt;PublisherInput.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="CreatorInput.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="CreatorInput.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="btn_Browse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>352, 4</value>
+  <data name="CreatorInput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>96, 44</value>
   </data>
-  <data name="btn_Browse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="CreatorInput.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="btn_Browse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>80, 30</value>
+  <data name="CreatorInput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>542, 27</value>
   </data>
-  <data name="btn_Browse.TabIndex" type="System.Int32, mscorlib">
-    <value>2</value>
+  <data name="CreatorInput.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
   </data>
-  <data name="btn_Browse.Text" xml:space="preserve">
-    <value>&amp;Browse...</value>
+  <data name="CreatorInput.ToolTip" xml:space="preserve">
+    <value>Creator</value>
   </data>
-  <data name="&gt;&gt;btn_Browse.Name" xml:space="preserve">
-    <value>btn_Browse</value>
+  <data name="&gt;&gt;CreatorInput.Name" xml:space="preserve">
+    <value>CreatorInput</value>
   </data>
-  <data name="&gt;&gt;btn_Browse.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;CreatorInput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btn_Browse.Parent" xml:space="preserve">
-    <value>panel1</value>
+  <data name="&gt;&gt;CreatorInput.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
   </data>
-  <data name="&gt;&gt;btn_Browse.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="label_Folder.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label_Folder.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_Folder.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="label_Folder.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 9</value>
-  </data>
-  <data name="label_Folder.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="label_Folder.Size" type="System.Drawing.Size, System.Drawing">
-    <value>88, 20</value>
-  </data>
-  <data name="label_Folder.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
-  </data>
-  <data name="label_Folder.Text" xml:space="preserve">
-    <value>&amp;Destination:</value>
-  </data>
-  <data name="&gt;&gt;label_Folder.Name" xml:space="preserve">
-    <value>label_Folder</value>
-  </data>
-  <data name="&gt;&gt;label_Folder.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_Folder.Parent" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;label_Folder.ZOrder" xml:space="preserve">
-    <value>2</value>
-  </data>
-  <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 4</value>
-  </data>
-  <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 4, 4, 4</value>
-  </data>
-  <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>436, 38</value>
-  </data>
-  <data name="panel1.TabIndex" type="System.Int32, mscorlib">
-    <value>79</value>
-  </data>
-  <data name="&gt;&gt;panel1.Name" xml:space="preserve">
-    <value>panel1</value>
-  </data>
-  <data name="&gt;&gt;panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;panel1.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;panel1.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;CreatorInput.ZOrder" xml:space="preserve">
     <value>7</value>
   </data>
-  <data name="grpBox_Properties.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="TitleInput.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
   </data>
-  <data name="grpBox_Properties.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+  <data name="TitleInput.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="TitleInput.Location" type="System.Drawing.Point, System.Drawing">
+    <value>96, 4</value>
+  </data>
+  <data name="TitleInput.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="TitleInput.Size" type="System.Drawing.Size, System.Drawing">
+    <value>542, 27</value>
+  </data>
+  <data name="TitleInput.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="TitleInput.ToolTip" xml:space="preserve">
+    <value>Title</value>
+  </data>
+  <data name="&gt;&gt;TitleInput.Name" xml:space="preserve">
+    <value>TitleInput</value>
+  </data>
+  <data name="&gt;&gt;TitleInput.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TitleInput.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
+  </data>
+  <data name="&gt;&gt;TitleInput.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="DocumentPropertiesGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="DocumentPropertiesGroup.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
+  </data>
+  <data name="AccessibilityCheckerLink.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
   </data>
   <data name="AccessibilityCheckerLink.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -499,10 +271,10 @@
     <value>NoControl</value>
   </data>
   <data name="AccessibilityCheckerLink.LinkArea" type="System.Windows.Forms.LinkArea, System.Windows.Forms">
-    <value>71, 26</value>
+    <value>70, 26</value>
   </data>
   <data name="AccessibilityCheckerLink.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 168</value>
+    <value>9, 242</value>
   </data>
   <data name="AccessibilityCheckerLink.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
@@ -511,7 +283,7 @@
     <value>336, 42</value>
   </data>
   <data name="AccessibilityCheckerLink.TabIndex" type="System.Int32, mscorlib">
-    <value>97</value>
+    <value>11</value>
   </data>
   <data name="AccessibilityCheckerLink.Text" xml:space="preserve">
     <value>Before launching the conversion, please check 
@@ -525,16 +297,175 @@ your document with the Word Accessibility Checker.
     <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AccessibilityCheckerLink.Parent" xml:space="preserve">
-    <value>grpBox_Properties</value>
+    <value>DocumentPropertiesGroup</value>
   </data>
   <data name="&gt;&gt;AccessibilityCheckerLink.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="tableLayoutPanel2.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+  <data name="DocumentPropertiesTable.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left, Right</value>
+  </data>
+  <data name="DocumentPropertiesTable.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
-  <data name="tableLayoutPanel2.ColumnCount" type="System.Int32, mscorlib">
+  <data name="DocumentPropertiesTable.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
+  </data>
+  <data name="TitleLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="TitleLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TitleLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="TitleLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="TitleLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 10</value>
+  </data>
+  <data name="TitleLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="TitleLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>41, 20</value>
+  </data>
+  <data name="TitleLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="TitleLabel.Text" xml:space="preserve">
+    <value>T&amp;itle:</value>
+  </data>
+  <data name="&gt;&gt;TitleLabel.Name" xml:space="preserve">
+    <value>TitleLabel</value>
+  </data>
+  <data name="&gt;&gt;TitleLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TitleLabel.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
+  </data>
+  <data name="&gt;&gt;TitleLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="CreatorLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="CreatorLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="CreatorLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="CreatorLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CreatorLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 49</value>
+  </data>
+  <data name="CreatorLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="CreatorLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 20</value>
+  </data>
+  <data name="CreatorLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="CreatorLabel.Text" xml:space="preserve">
+    <value>&amp;Creator:</value>
+  </data>
+  <data name="&gt;&gt;CreatorLabel.Name" xml:space="preserve">
+    <value>CreatorLabel</value>
+  </data>
+  <data name="&gt;&gt;CreatorLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CreatorLabel.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
+  </data>
+  <data name="&gt;&gt;CreatorLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="PublisherLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="PublisherLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="PublisherLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="PublisherLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="PublisherLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 88</value>
+  </data>
+  <data name="PublisherLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="PublisherLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>72, 20</value>
+  </data>
+  <data name="PublisherLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>7</value>
+  </data>
+  <data name="PublisherLabel.Text" xml:space="preserve">
+    <value>&amp;Publisher:</value>
+  </data>
+  <data name="&gt;&gt;PublisherLabel.Name" xml:space="preserve">
+    <value>PublisherLabel</value>
+  </data>
+  <data name="&gt;&gt;PublisherLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;PublisherLabel.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
+  </data>
+  <data name="&gt;&gt;PublisherLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="UIDLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Left</value>
+  </data>
+  <data name="UIDLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="UIDLabel.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="UIDLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="UIDLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 129</value>
+  </data>
+  <data name="UIDLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
+  </data>
+  <data name="UIDLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>35, 20</value>
+  </data>
+  <data name="UIDLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>9</value>
+  </data>
+  <data name="UIDLabel.Text" xml:space="preserve">
+    <value>&amp;Uid:</value>
+  </data>
+  <data name="&gt;&gt;UIDLabel.Name" xml:space="preserve">
+    <value>UIDLabel</value>
+  </data>
+  <data name="&gt;&gt;UIDLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;UIDLabel.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
+  </data>
+  <data name="&gt;&gt;UIDLabel.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="label1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Left</value>
@@ -542,23 +473,20 @@ your document with the Word Accessibility Checker.
   <data name="label1.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label1.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
+  <data name="label1.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 43</value>
-  </data>
-  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+    <value>3, 171</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 20</value>
+    <value>69, 19</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>11</value>
   </data>
   <data name="label1.Text" xml:space="preserve">
-    <value>&amp;Creator:</value>
+    <value>Language</value>
   </data>
   <data name="&gt;&gt;label1.Name" xml:space="preserve">
     <value>label1</value>
@@ -567,238 +495,133 @@ your document with the Word Accessibility Checker.
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;label1.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
+    <value>DocumentPropertiesTable</value>
   </data>
   <data name="&gt;&gt;label1.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>8</value>
   </data>
-  <data name="label_Title.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
+  <data name="languageSelector.Location" type="System.Drawing.Point, System.Drawing">
+    <value>95, 163</value>
   </data>
-  <data name="label_Title.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
+  <data name="languageSelector.Size" type="System.Drawing.Size, System.Drawing">
+    <value>539, 27</value>
   </data>
-  <data name="label_Title.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
+  <data name="languageSelector.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
   </data>
-  <data name="label_Title.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 8</value>
+  <data name="&gt;&gt;languageSelector.Name" xml:space="preserve">
+    <value>languageSelector</value>
   </data>
-  <data name="label_Title.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
+  <data name="&gt;&gt;languageSelector.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="label_Title.Size" type="System.Drawing.Size, System.Drawing">
-    <value>41, 20</value>
+  <data name="&gt;&gt;languageSelector.Parent" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
   </data>
-  <data name="label_Title.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
-  </data>
-  <data name="label_Title.Text" xml:space="preserve">
-    <value>T&amp;itle:</value>
-  </data>
-  <data name="&gt;&gt;label_Title.Name" xml:space="preserve">
-    <value>label_Title</value>
-  </data>
-  <data name="&gt;&gt;label_Title.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_Title.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label_Title.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
-  <data name="label_Unique.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label_Unique.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_Unique.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="label_Unique.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 115</value>
-  </data>
-  <data name="label_Unique.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="label_Unique.Size" type="System.Drawing.Size, System.Drawing">
-    <value>35, 20</value>
-  </data>
-  <data name="label_Unique.TabIndex" type="System.Int32, mscorlib">
+  <data name="&gt;&gt;languageSelector.ZOrder" xml:space="preserve">
     <value>9</value>
   </data>
-  <data name="label_Unique.Text" xml:space="preserve">
-    <value>&amp;Uid:</value>
+  <data name="DocumentPropertiesTable.Location" type="System.Drawing.Point, System.Drawing">
+    <value>1, 25</value>
   </data>
-  <data name="&gt;&gt;label_Unique.Name" xml:space="preserve">
-    <value>label_Unique</value>
-  </data>
-  <data name="&gt;&gt;label_Unique.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_Unique.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label_Unique.ZOrder" xml:space="preserve">
-    <value>6</value>
-  </data>
-  <data name="label_Publisher.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Left</value>
-  </data>
-  <data name="label_Publisher.AutoSize" type="System.Boolean, mscorlib">
-    <value>True</value>
-  </data>
-  <data name="label_Publisher.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="label_Publisher.Location" type="System.Drawing.Point, System.Drawing">
-    <value>4, 79</value>
-  </data>
-  <data name="label_Publisher.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 0, 4, 0</value>
-  </data>
-  <data name="label_Publisher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>72, 20</value>
-  </data>
-  <data name="label_Publisher.TabIndex" type="System.Int32, mscorlib">
-    <value>7</value>
-  </data>
-  <data name="label_Publisher.Text" xml:space="preserve">
-    <value>&amp;Publisher:</value>
-  </data>
-  <data name="&gt;&gt;label_Publisher.Name" xml:space="preserve">
-    <value>label_Publisher</value>
-  </data>
-  <data name="&gt;&gt;label_Publisher.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;label_Publisher.Parent" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;label_Publisher.ZOrder" xml:space="preserve">
-    <value>7</value>
-  </data>
-  <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>1, 19</value>
-  </data>
-  <data name="tableLayoutPanel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="DocumentPropertiesTable.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
-  <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
-    <value>4</value>
-  </data>
-  <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>424, 144</value>
-  </data>
-  <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
-    <value>96</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel2.Name" xml:space="preserve">
-    <value>tableLayoutPanel2</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel2.Parent" xml:space="preserve">
-    <value>grpBox_Properties</value>
-  </data>
-  <data name="&gt;&gt;tableLayoutPanel2.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="tBx_Uid" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Publisher" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Creator" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Title" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Title" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label_Unique" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="label_Publisher" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,92,Percent,100" /&gt;&lt;Rows Styles="Percent,50,9434,Percent,49,0566,Absolute,36,Absolute,36" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="grpBox_Properties.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 8.25pt</value>
-  </data>
-  <data name="grpBox_Properties.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 42</value>
-  </data>
-  <data name="grpBox_Properties.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="grpBox_Properties.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 0, 0</value>
-  </data>
-  <data name="grpBox_Properties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>425, 229</value>
-  </data>
-  <data name="grpBox_Properties.TabIndex" type="System.Int32, mscorlib">
-    <value>81</value>
-  </data>
-  <data name="grpBox_Properties.Text" xml:space="preserve">
-    <value>Document properties</value>
-  </data>
-  <data name="&gt;&gt;grpBox_Properties.Name" xml:space="preserve">
-    <value>grpBox_Properties</value>
-  </data>
-  <data name="&gt;&gt;grpBox_Properties.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;grpBox_Properties.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;grpBox_Properties.ZOrder" xml:space="preserve">
+  <data name="DocumentPropertiesTable.RowCount" type="System.Int32, mscorlib">
     <value>5</value>
   </data>
-  <data name="oLayoutPanel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
-    <value>GrowAndShrink</value>
+  <data name="DocumentPropertiesTable.Size" type="System.Drawing.Size, System.Drawing">
+    <value>642, 201</value>
   </data>
-  <data name="oLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 332</value>
+  <data name="DocumentPropertiesTable.TabIndex" type="System.Int32, mscorlib">
+    <value>96</value>
   </data>
-  <data name="oLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
+  <data name="&gt;&gt;DocumentPropertiesTable.Name" xml:space="preserve">
+    <value>DocumentPropertiesTable</value>
   </data>
-  <data name="oLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>426, 44</value>
+  <data name="&gt;&gt;DocumentPropertiesTable.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="oLayoutPanel.TabIndex" type="System.Int32, mscorlib">
-    <value>88</value>
+  <data name="&gt;&gt;DocumentPropertiesTable.Parent" xml:space="preserve">
+    <value>DocumentPropertiesGroup</value>
   </data>
-  <data name="&gt;&gt;oLayoutPanel.Name" xml:space="preserve">
-    <value>oLayoutPanel</value>
+  <data name="&gt;&gt;DocumentPropertiesTable.ZOrder" xml:space="preserve">
+    <value>1</value>
   </data>
-  <data name="&gt;&gt;oLayoutPanel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.FlowLayoutPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="DocumentPropertiesTable.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="TitleLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="TitleInput" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CreatorLabel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PublisherLabel" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="PublisherInput" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="UIDLabel" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="UIDTextBox" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="CreatorInput" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label1" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="languageSelector" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,92,Percent,100" /&gt;&lt;Rows Styles="Percent,50,72464,Percent,49,27536,Absolute,40,Absolute,42,Absolute,40,Absolute,21" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="&gt;&gt;oLayoutPanel.Parent" xml:space="preserve">
+  <data name="DocumentPropertiesGroup.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 8.25pt</value>
+  </data>
+  <data name="DocumentPropertiesGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 69</value>
+  </data>
+  <data name="DocumentPropertiesGroup.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="DocumentPropertiesGroup.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="DocumentPropertiesGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>644, 295</value>
+  </data>
+  <data name="DocumentPropertiesGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="DocumentPropertiesGroup.Text" xml:space="preserve">
+    <value>Document properties</value>
+  </data>
+  <data name="&gt;&gt;DocumentPropertiesGroup.Name" xml:space="preserve">
+    <value>DocumentPropertiesGroup</value>
+  </data>
+  <data name="&gt;&gt;DocumentPropertiesGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;DocumentPropertiesGroup.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;oLayoutPanel.ZOrder" xml:space="preserve">
-    <value>4</value>
+  <data name="&gt;&gt;DocumentPropertiesGroup.ZOrder" xml:space="preserve">
+    <value>2</value>
   </data>
-  <data name="btn_OpenDetail.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="SwitchAdvancedSettingsButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left</value>
+  </data>
+  <data name="SwitchAdvancedSettingsButton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="btn_OpenDetail.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 288</value>
+  <data name="SwitchAdvancedSettingsButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="btn_OpenDetail.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="SwitchAdvancedSettingsButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>4, 8</value>
+  </data>
+  <data name="SwitchAdvancedSettingsButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="btn_OpenDetail.Size" type="System.Drawing.Size, System.Drawing">
-    <value>164, 30</value>
+  <data name="SwitchAdvancedSettingsButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>171, 30</value>
   </data>
-  <data name="btn_OpenDetail.TabIndex" type="System.Int32, mscorlib">
+  <data name="SwitchAdvancedSettingsButton.TabIndex" type="System.Int32, mscorlib">
     <value>92</value>
   </data>
-  <data name="btn_OpenDetail.Text" xml:space="preserve">
+  <data name="SwitchAdvancedSettingsButton.Text" xml:space="preserve">
     <value>Show Ad&amp;vanced&gt;&gt;</value>
   </data>
-  <data name="&gt;&gt;btn_OpenDetail.Name" xml:space="preserve">
-    <value>btn_OpenDetail</value>
+  <data name="SwitchAdvancedSettingsButton.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
   </data>
-  <data name="&gt;&gt;btn_OpenDetail.Type" xml:space="preserve">
+  <data name="&gt;&gt;SwitchAdvancedSettingsButton.Name" xml:space="preserve">
+    <value>SwitchAdvancedSettingsButton</value>
+  </data>
+  <data name="&gt;&gt;SwitchAdvancedSettingsButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btn_OpenDetail.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;SwitchAdvancedSettingsButton.Parent" xml:space="preserve">
+    <value>BottomPanel</value>
   </data>
-  <data name="&gt;&gt;btn_OpenDetail.ZOrder" xml:space="preserve">
-    <value>3</value>
+  <data name="&gt;&gt;SwitchAdvancedSettingsButton.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="tableLayoutPanel1.ColumnCount" type="System.Int32, mscorlib">
     <value>2</value>
@@ -811,6 +634,9 @@ your document with the Word Accessibility Checker.
   </data>
   <data name="label_Creator.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="label_Creator.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="label_Creator.Location" type="System.Drawing.Point, System.Drawing">
     <value>3, 20</value>
@@ -857,110 +683,239 @@ your document with the Word Accessibility Checker.
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label_Creator" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Absolute,20,Absolute,20,Absolute,20,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
-  <data name="btn_OK.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top</value>
+  <data name="OKButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
-  <data name="btn_OK.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+  <data name="OKButton.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>None</value>
   </data>
-  <data name="btn_OK.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="OKButton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="btn_OK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>173, 288</value>
+  <data name="OKButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="btn_OK.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="OKButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>358, 6</value>
+  </data>
+  <data name="OKButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="btn_OK.Size" type="System.Drawing.Size, System.Drawing">
-    <value>92, 30</value>
+  <data name="OKButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 32</value>
   </data>
-  <data name="btn_OK.TabIndex" type="System.Int32, mscorlib">
+  <data name="OKButton.TabIndex" type="System.Int32, mscorlib">
     <value>105</value>
   </data>
-  <data name="btn_OK.Text" xml:space="preserve">
+  <data name="OKButton.Text" xml:space="preserve">
     <value>&amp;Translate</value>
   </data>
-  <data name="&gt;&gt;btn_OK.Name" xml:space="preserve">
-    <value>btn_OK</value>
+  <data name="&gt;&gt;OKButton.Name" xml:space="preserve">
+    <value>OKButton</value>
   </data>
-  <data name="&gt;&gt;btn_OK.Type" xml:space="preserve">
+  <data name="&gt;&gt;OKButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btn_OK.Parent" xml:space="preserve">
-    <value>$this</value>
+  <data name="&gt;&gt;OKButton.Parent" xml:space="preserve">
+    <value>BottomPanel</value>
   </data>
-  <data name="&gt;&gt;btn_OK.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="btn_Reset.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top</value>
-  </data>
-  <data name="btn_Reset.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
-    <value>None</value>
-  </data>
-  <data name="btn_Reset.Font" type="System.Drawing.Font, System.Drawing">
-    <value>Segoe UI, 9pt</value>
-  </data>
-  <data name="btn_Reset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>269, 288</value>
-  </data>
-  <data name="btn_Reset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>4, 4, 4, 4</value>
-  </data>
-  <data name="btn_Reset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 30</value>
-  </data>
-  <data name="btn_Reset.TabIndex" type="System.Int32, mscorlib">
-    <value>106</value>
-  </data>
-  <data name="btn_Reset.Text" xml:space="preserve">
-    <value>&amp;Reset</value>
-  </data>
-  <data name="&gt;&gt;btn_Reset.Name" xml:space="preserve">
-    <value>btn_Reset</value>
-  </data>
-  <data name="&gt;&gt;btn_Reset.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;btn_Reset.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;btn_Reset.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;OKButton.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="btn_Cancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top</value>
+  <data name="ResetButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
-  <data name="btn_Cancel.Font" type="System.Drawing.Font, System.Drawing">
+  <data name="ResetButton.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>None</value>
+  </data>
+  <data name="ResetButton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
-  <data name="btn_Cancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>357, 288</value>
+  <data name="ResetButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="btn_Cancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+  <data name="ResetButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>456, 6</value>
+  </data>
+  <data name="ResetButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
-  <data name="btn_Cancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>85, 30</value>
+  <data name="ResetButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>83, 32</value>
   </data>
-  <data name="btn_Cancel.TabIndex" type="System.Int32, mscorlib">
-    <value>107</value>
+  <data name="ResetButton.TabIndex" type="System.Int32, mscorlib">
+    <value>106</value>
   </data>
-  <data name="btn_Cancel.Text" xml:space="preserve">
-    <value>Cancel</value>
+  <data name="ResetButton.Text" xml:space="preserve">
+    <value>&amp;Reset</value>
   </data>
-  <data name="&gt;&gt;btn_Cancel.Name" xml:space="preserve">
-    <value>btn_Cancel</value>
+  <data name="&gt;&gt;ResetButton.Name" xml:space="preserve">
+    <value>ResetButton</value>
   </data>
-  <data name="&gt;&gt;btn_Cancel.Type" xml:space="preserve">
+  <data name="&gt;&gt;ResetButton.Type" xml:space="preserve">
     <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;btn_Cancel.Parent" xml:space="preserve">
+  <data name="&gt;&gt;ResetButton.Parent" xml:space="preserve">
+    <value>BottomPanel</value>
+  </data>
+  <data name="&gt;&gt;ResetButton.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="CancelButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="CancelButton.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="CancelButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="CancelButton.Location" type="System.Drawing.Point, System.Drawing">
+    <value>546, 6</value>
+  </data>
+  <data name="CancelButton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="CancelButton.Size" type="System.Drawing.Size, System.Drawing">
+    <value>85, 32</value>
+  </data>
+  <data name="CancelButton.TabIndex" type="System.Int32, mscorlib">
+    <value>107</value>
+  </data>
+  <data name="CancelButton.Text" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="&gt;&gt;CancelButton.Name" xml:space="preserve">
+    <value>CancelButton</value>
+  </data>
+  <data name="&gt;&gt;CancelButton.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CancelButton.Parent" xml:space="preserve">
+    <value>BottomPanel</value>
+  </data>
+  <data name="&gt;&gt;CancelButton.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="BottomPanel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
+  </data>
+  <data name="BottomPanel.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="BottomPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 756</value>
+  </data>
+  <data name="BottomPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
+  </data>
+  <data name="BottomPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>640, 41</value>
+  </data>
+  <data name="BottomPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>108</value>
+  </data>
+  <data name="&gt;&gt;BottomPanel.Name" xml:space="preserve">
+    <value>BottomPanel</value>
+  </data>
+  <data name="&gt;&gt;BottomPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;BottomPanel.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;btn_Cancel.ZOrder" xml:space="preserve">
-    <value>2</value>
+  <data name="&gt;&gt;BottomPanel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="AdvancedSettingsGroup.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="AdvancedSettingsPanel.AutoScroll" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="AdvancedSettingsPanel.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
+    <value>Fill</value>
+  </data>
+  <data name="AdvancedSettingsPanel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>3, 22</value>
+  </data>
+  <data name="AdvancedSettingsPanel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>634, 357</value>
+  </data>
+  <data name="AdvancedSettingsPanel.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsPanel.Name" xml:space="preserve">
+    <value>AdvancedSettingsPanel</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsPanel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Panel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsPanel.Parent" xml:space="preserve">
+    <value>AdvancedSettingsGroup</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsPanel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="AdvancedSettingsGroup.Location" type="System.Drawing.Point, System.Drawing">
+    <value>8, 367</value>
+  </data>
+  <data name="AdvancedSettingsGroup.Size" type="System.Drawing.Size, System.Drawing">
+    <value>640, 382</value>
+  </data>
+  <data name="AdvancedSettingsGroup.TabIndex" type="System.Int32, mscorlib">
+    <value>12</value>
+  </data>
+  <data name="AdvancedSettingsGroup.Text" xml:space="preserve">
+    <value>Conversion parameters</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsGroup.Name" xml:space="preserve">
+    <value>AdvancedSettingsGroup</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsGroup.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsGroup.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;AdvancedSettingsGroup.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="DestinationControl.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="DestinationControl.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="DestinationControl.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
+    <value>GrowAndShrink</value>
+  </data>
+  <data name="DestinationControl.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Segoe UI, 9pt</value>
+  </data>
+  <data name="DestinationControl.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 13</value>
+  </data>
+  <data name="DestinationControl.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>5, 4, 5, 4</value>
+  </data>
+  <data name="DestinationControl.Size" type="System.Drawing.Size, System.Drawing">
+    <value>1005, 57</value>
+  </data>
+  <data name="DestinationControl.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;DestinationControl.Name" xml:space="preserve">
+    <value>DestinationControl</value>
+  </data>
+  <data name="&gt;&gt;DestinationControl.Type" xml:space="preserve">
+    <value>Daisy.SaveAsDAISY.Forms.Controls.PathControl, DaisyAddinLib, Version=2.8.3.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
+  </data>
+  <data name="&gt;&gt;DestinationControl.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;DestinationControl.ZOrder" xml:space="preserve">
+    <value>3</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -978,7 +933,7 @@ your document with the Word Accessibility Checker.
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>449, 422</value>
+    <value>657, 810</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Calibri, 9pt</value>

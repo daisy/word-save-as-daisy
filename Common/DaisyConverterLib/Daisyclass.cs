@@ -14,29 +14,43 @@ using System.IO.Compression;
 using System.Drawing.Imaging;
 using System.Collections.Generic;
 using Daisy.SaveAsDAISY.Conversion.PageStylesValidation;
+using System.Security;
 
-namespace Daisy.SaveAsDAISY.Conversion {
+namespace Daisy.SaveAsDAISY.Conversion
+{
     /// <summary>
     /// Document-related functions wrapper class and global variable, to be called in XSLT
     /// </summary>
-    class DaisyClass {
-
-        const string documentRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
-        const string footnotesRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes";
-        const string endnotesRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes";
-        const string appNamespace = "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes";
-        const string appRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties";
-        const string numberRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
-        private String inputFilename, outputFilename, inputName, output_Pipeline;
+    class DaisyClass
+    {
+        const string documentRelationshipType =
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
+        const string footnotesRelationshipType =
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes";
+        const string endnotesRelationshipType =
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes";
+        const string appNamespace =
+            "http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes";
+        const string appRelationshipType =
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties";
+        const string numberRelationshipType =
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
+        private String inputFilename,
+            outputFilename,
+            inputName,
+            output_Pipeline;
         const string wordNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
-        const string CustomRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml";
-        const string customPropRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties";
+        const string CustomRelationshipType =
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml";
+        const string customPropRelationshipType =
+            "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties";
         const string docNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
         private const string emptyListCounter = "A";
         const String headingZeroLvl = "0";
         const String headingOneLvl = "1";
         const String headingSixLvl = "6";
-        const String version2010 = "14.0", version2007 = "12.0", version2003 = "11.0", versionXP = "10.0";
+        const String version2003 = "11.0",
+            versionXP = "10.0";
         Package pack;
 
         /// <summary>
@@ -60,49 +74,58 @@ namespace Daisy.SaveAsDAISY.Conversion {
         Stack<String> listHeadingstackList = new Stack<String>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Stack<String> abbrparastackList = new Stack<String>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Stack<String> abbrheadstackList = new Stack<String>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         Stack<String> masteSubstackList = new Stack<String>();
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         ArrayList arrHyperlink = new ArrayList();
 
         /// <summary>
-        /// 
+        /// Notes id
         /// </summary>
-        ArrayList arrListNote = new ArrayList();
+        ArrayList notesIdsQueue = new ArrayList();
+
+        /// <summary>
+        /// Notes levels
+        /// </summary>
+        ArrayList notesLevelsQueue = new ArrayList();
 
         ArrayList arrList = new ArrayList(); // not used
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         ArrayList arrListLang = new ArrayList();
 
-
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         ArrayList arrCaptionProdnote = new ArrayList();
-        String strImage = "", strImageExt = "";
+        String strImage = "",
+            strImageExt = "";
         String sectionPagetype = "";
-        String getAuthor = "", getTitle = "", getYear = "";
+        String getAuthor = "",
+            getTitle = "",
+            getYear = "";
         String storeHyperId = "";
-        String caption, message = "";
-        String str, final, strImgName;
+        String caption,
+            message = "";
+        String str,
+            final,
+            strImgName;
         Int16 AbbrAcrflag = 0;
         Int16 listflag = 0;
         Int16 listHeadingFlag = 0;
@@ -110,7 +133,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         Int16 pageNum = 0;
         Int16 flagCheck = 0;
         Int16 length;
-        int setHyperLinkFlag = 0, listMasterSubFlag = 0;
+        int setHyperLinkFlag = 0,
+            listMasterSubFlag = 0;
         int checkSectionFront = 0;
         int chekTocOccur = 0;
 
@@ -122,37 +146,47 @@ namespace Daisy.SaveAsDAISY.Conversion {
         int checkToc = 0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         int checkSection = 0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         int checkSectionBody = 0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         int sectionCounter = 0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         int noteFlag = 0;
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         int incrementPage = 0;
 
-        int rowspan = 0, setToc = 0, set_tabToc = 0, set_Toc = 0, bdoflag = 0, rtlFlag = 0;
+        int rowspan = 0,
+            setToc = 0,
+            set_tabToc = 0,
+            set_Toc = 0,
+            bdoflag = 0,
+            rtlFlag = 0;
 
-        int captionFlag = 0, hyperlinkFlag = 0, testRun = 0;
+        int captionFlag = 0,
+            hyperlinkFlag = 0,
+            testRun = 0;
 
-        int set = 0, setbookmark = 0, checkCoverpage = 0;
+        int set = 0,
+            setbookmark = 0,
+            checkCoverpage = 0;
 
-        int pageId = 0, flagcounter = 0;
+        int pageId = 0,
+            flagcounter = 0;
 
         int sectionpageStart = 0;
 
@@ -175,23 +209,33 @@ namespace Daisy.SaveAsDAISY.Conversion {
         ArrayList absFormat = new ArrayList();
         ArrayList OverideNumList = new ArrayList();
         String prevNumId = String.Empty;
-        String prevHeadNumId = ""; String baseNumId = ""; String baseAbsId = "";
+        String prevHeadNumId = "";
+        String baseNumId = "";
+        String baseAbsId = "";
         Hashtable hTable = new Hashtable();
         Hashtable listCounters = new Hashtable();
         Hashtable headingCounters = new Hashtable();
         int objectId = 0;
-        String absVal = "", numFormat = "", lvlText = "", lStartOverride = "", lStart = "", headingInfo = "";
-        PackageRelationship wordRelationship = null, 
-            imgRelationship = null, 
-            numberRelationship = null, 
-            customRelationship = null, 
-            footRelationship = null, 
+        String absVal = "",
+            numFormat = "",
+            lvlText = "",
+            lStartOverride = "",
+            lStart = "",
+            headingInfo = "";
+        PackageRelationship wordRelationship = null,
+            imgRelationship = null,
+            numberRelationship = null,
+            customRelationship = null,
+            footRelationship = null,
             endRelationship = null;
         Dictionary<string, List<string>> listMathMl;
-        int footNoteFlag = 0, sidebarFlag = 0, mainFlag = 0, img_Flag = 0;
+        int footNoteFlag = 0,
+            sidebarFlag = 0,
+            mainFlag = 0,
+            img_Flag = 0;
 
         /// <summary>
-        /// DaisyClass constructor. 
+        /// DaisyClass constructor.
         /// Initialize the global variables to be modified by function calls from xslt stylesheets.
         /// </summary>
         /// <param name="inputName">Input document name</param>
@@ -200,19 +244,29 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="listMathMl"></param>
         /// <param name="packInput">Input package</param>
         /// <param name="output_Pipeline">Output folder</param>
-        public DaisyClass(String inputName, String input, String output, Dictionary<string,List<string>> listMathMl, Package packInput, string output_Pipeline) {
+        public DaisyClass(
+            String inputName,
+            String input,
+            String output,
+            Dictionary<string, List<string>> listMathMl,
+            Package packInput,
+            string output_Pipeline
+        )
+        {
             this.inputName = inputName;
             inputFilename = input;
             outputFilename = output;
             pack = packInput;
             this.listMathMl = listMathMl;
             this.output_Pipeline = output_Pipeline;
-            for (int i = 0; i < 9; i++) {
+            for (int i = 0; i < 9; i++)
+            {
                 startItem.Add("");
                 absFormat.Add("");
             }
 
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 2; i++)
+            {
                 prevHeadId.Add("");
             }
 
@@ -226,27 +280,42 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string CheckShapeId(String id) {
+        public string CheckShapeId(String id)
+        {
             int flag = 0;
             inputName = inputName.Replace(" ", "_");
-            if (string.Equals(outputFilename, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY\\")) {
+            if (
+                string.Equals(
+                    outputFilename,
+                    $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\SaveAsDAISY\\"
+                )
+            )
+            {
                 flag = 1;
                 img_Flag = 1;
-                string outputPath = output_Pipeline + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
-                if (File.Exists(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png")) {
-                    File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", output_Pipeline + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", true);
+                if (
+                    File.Exists(
+                        $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\SaveAsDAISY\\{Path.GetFileNameWithoutExtension(inputName)}-{id}.png")
+                )
+                {
+                    File.Copy(
+                        $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\SaveAsDAISY\\{Path.GetFileNameWithoutExtension(inputName)}-{id}.png",
+                        $"{output_Pipeline}\\{Path.GetFileNameWithoutExtension(inputName)}-{id}.png",
+                        true
+                    );
                 }
             }
-            if (!string.Equals(Path.GetTempPath(), outputFilename + "\\") && flag == 0) {
+            if (!string.Equals(Path.GetTempPath(), outputFilename + "\\") && flag == 0)
+            {
                 img_Flag = 1;
-                string outputPath = outputFilename + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
-                String tt = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
-                if (File.Exists(tt)) {
-                    string from = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
-                    string to = outputFilename + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png";
-                    if (from != to) {
-                        File.Copy(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", outputFilename + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png", true);
-                        File.Delete(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\" + "SaveAsDAISY" + "\\" + Path.GetFileNameWithoutExtension(inputName) + "-" + id + ".png");
+                string from = $"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\SaveAsDAISY\\{Path.GetFileNameWithoutExtension(inputName)}-{id}.png";
+                if (File.Exists(from))
+                {
+                    string to = $"{output_Pipeline}\\{Path.GetFileNameWithoutExtension(inputName)}-{id}.png";
+                    if (from != to)
+                    {
+                        File.Copy(from, to, true);
+                        File.Delete(from);
                     }
                 }
             }
@@ -255,54 +324,67 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return id;
         }
 
-
-
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="img"></param>
         /// <returns></returns>
-        public string CheckImage(string img) {
+        public string CheckImage(string img)
+        {
             String tmp = outputFilename + "\\" + HttpUtility.UrlDecode(img);
-            if (File.Exists(tmp)) {
+            if (File.Exists(tmp))
+            {
                 return "1";
-            } else if (img_Flag == 1)
+            }
+            else if (img_Flag == 1)
                 return "0";
             else
                 return "2";
         }
-
 
         /// <summary>
         /// Retrieve the next mathml for a story type.
         /// </summary>
         /// <param name="storyType">wdTextFrameStory, wdFootnotesStory or wdMainTextStory</param>
         /// <returns></returns>
-        public String GetMathML(String storyType) {
+        public String GetMathML(String storyType)
+        {
             String strMathMl = "";
-            if (listMathMl != null) {
-                List<string> mathMlStory = listMathMl[storyType];
-                if (listMathMl.Count != 0) {
-                    if (storyType == "wdTextFrameStory" && mathMlStory.Count != 0) {
-
-                        if (mathMlStory[sidebarFlag] != null) {
-                            if (mathMlStory.Count != 0) {
+            if (listMathMl != null)
+            {
+                List<string> mathMlStory = (List<string>)listMathMl[storyType];
+                if (listMathMl.Count != 0)
+                {
+                    if (storyType == "wdTextFrameStory" && mathMlStory.Count != 0)
+                    {
+                        if (mathMlStory[sidebarFlag] != null)
+                        {
+                            if (mathMlStory.Count != 0)
+                            {
                                 str = mathMlStory[sidebarFlag].ToString();
                                 strMathMl = str;
                                 sidebarFlag++;
                             }
                         }
-                    } else if (storyType == "wdFootnotesStory" && mathMlStory.Count != 0) {
-                        if (mathMlStory[footNoteFlag] != null) {
-                            if (mathMlStory.Count != 0) {
+                    }
+                    else if (storyType == "wdFootnotesStory" && mathMlStory.Count != 0)
+                    {
+                        if (mathMlStory[footNoteFlag] != null)
+                        {
+                            if (mathMlStory.Count != 0)
+                            {
                                 str = mathMlStory[footNoteFlag].ToString();
                                 strMathMl = str;
                                 footNoteFlag++;
                             }
                         }
-                    } else if (storyType == "wdMainTextStory" && mathMlStory.Count != 0) {
-                        if (mathMlStory[mainFlag] != null) {
-                            if (mathMlStory.Count != 0) {
+                    }
+                    else if (storyType == "wdMainTextStory" && mathMlStory.Count != 0)
+                    {
+                        if (mathMlStory[mainFlag] != null)
+                        {
+                            if (mathMlStory.Count != 0)
+                            {
                                 str = mathMlStory[mainFlag].ToString();
                                 strMathMl = str;
                                 mainFlag++;
@@ -319,26 +401,47 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="inNum"></param>
         /// <returns></returns>
-        public String MathImageFootnote(string inNum) {
-            try {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public string MathImageFootnote(string inNum)
+        {
+            try
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        documentRelationshipType
+                    )
+                )
+                {
                     wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(
+                    wordRelationship.SourceUri,
+                    wordRelationship.TargetUri
+                );
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(footnotesRelationshipType)) {
+                foreach (
+                    PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                        footnotesRelationshipType
+                    )
+                )
+                {
                     footRelationship = searchRelation;
                     break;
                 }
 
-                Uri footpartUri = PackUriHelper.ResolvePartUri(footRelationship.SourceUri, footRelationship.TargetUri);
+                Uri footpartUri = PackUriHelper.ResolvePartUri(
+                    footRelationship.SourceUri,
+                    footRelationship.TargetUri
+                );
                 PackagePart footPartxml = pack.GetPart(footpartUri);
 
                 imgRelationship = footPartxml.GetRelationship(inNum);
-                Uri imgpartUri = PackUriHelper.ResolvePartUri(imgRelationship.SourceUri, imgRelationship.TargetUri);
+                Uri imgpartUri = PackUriHelper.ResolvePartUri(
+                    imgRelationship.SourceUri,
+                    imgRelationship.TargetUri
+                );
                 PackagePart imgPartxml = pack.GetPart(imgpartUri);
 
                 Image img = Bitmap.FromStream(imgPartxml.GetStream());
@@ -346,22 +449,36 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 Int16 length = Int16.Parse(imgPartxml.Uri.ToString().LastIndexOf('/').ToString());
                 String strImgName = imgPartxml.Uri.ToString().Substring(length + 1);
                 String str = outputFilename.Insert(outputFilename.Length, "\\");
-                String final = str.Insert(str.Length, Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+                String final = str.Insert(
+                    str.Length,
+                    Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName
+                );
 
-                if (Path.GetExtension(final) != ".jpeg" && Path.GetExtension(final) != ".png") {
+                if (Path.GetExtension(final) != ".jpeg" && Path.GetExtension(final) != ".png")
+                {
                     img.Save(final.Replace(Path.GetExtension(final), ".png"), ImageFormat.Png);
-                    strImgName = imgPartxml.Uri.ToString().Substring(length + 1).Replace(Path.GetExtension(final),
-                        ".png");
-
-                } else if (Path.GetExtension(final) == ".jpeg") {
+                    strImgName = imgPartxml.Uri
+                        .ToString()
+                        .Substring(length + 1)
+                        .Replace(Path.GetExtension(final), ".png");
+                }
+                else if (Path.GetExtension(final) == ".jpeg")
+                {
                     img.Save(final.Replace(Path.GetExtension(final), ".jpg"));
-                    strImgName = imgPartxml.Uri.ToString().Substring(length + 1).Replace(Path.GetExtension(final), ".jpg");
-                } else {
+                    strImgName = imgPartxml.Uri
+                        .ToString()
+                        .Substring(length + 1)
+                        .Replace(Path.GetExtension(final), ".jpg");
+                }
+                else
+                {
                     img.Save(final);
                 }
 
                 return UriEscape(Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName);
-            } catch {
+            }
+            catch
+            {
                 return "translation.oox2Daisy.ImageContent";
             }
         }
@@ -371,18 +488,31 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="inNum"></param>
         /// <returns></returns>
-        public String MathImage(string inNum) {
-            try {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public String MathImage(string inNum)
+        {
+            try
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        documentRelationshipType
+                    )
+                )
+                {
                     wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(
+                    wordRelationship.SourceUri,
+                    wordRelationship.TargetUri
+                );
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
                 imgRelationship = mainPartxml.GetRelationship(inNum);
-                Uri imgpartUri = PackUriHelper.ResolvePartUri(imgRelationship.SourceUri, imgRelationship.TargetUri);
+                Uri imgpartUri = PackUriHelper.ResolvePartUri(
+                    imgRelationship.SourceUri,
+                    imgRelationship.TargetUri
+                );
                 PackagePart imgPartxml = pack.GetPart(imgpartUri);
 
                 Image img = Bitmap.FromStream(imgPartxml.GetStream());
@@ -390,17 +520,28 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 Int16 length = Int16.Parse(imgPartxml.Uri.ToString().LastIndexOf('/').ToString());
                 String strImgName = imgPartxml.Uri.ToString().Substring(length + 1);
                 String str = outputFilename.Insert(outputFilename.Length, "\\");
-                String final = str.Insert(str.Length, Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+                String final = str.Insert(
+                    str.Length,
+                    Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName
+                );
 
-                if (Path.GetExtension(final) != ".jpeg" && Path.GetExtension(final) != ".png") {
+                if (Path.GetExtension(final) != ".jpeg" && Path.GetExtension(final) != ".png")
+                {
                     img.Save(final.Replace(Path.GetExtension(final), ".png"), ImageFormat.Png);
-                    strImgName = imgPartxml.Uri.ToString().Substring(length + 1).Replace(Path.GetExtension(final), ".png");
-                } else {
+                    strImgName = imgPartxml.Uri
+                        .ToString()
+                        .Substring(length + 1)
+                        .Replace(Path.GetExtension(final), ".png");
+                }
+                else
+                {
                     img.Save(final);
                 }
 
                 return UriEscape(Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName);
-            } catch {
+            }
+            catch
+            {
                 return "translation.oox2Daisy.ImageContent";
             }
         }
@@ -412,43 +553,73 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="imageName"></param>
         /// <param name="val"></param>
         /// <returns></returns>
-        public String Image(String inNum, string imageName, String val) {
-            try {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public String Image(String inNum, string imageName, String val)
+        {
+            try
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        documentRelationshipType
+                    )
+                )
+                {
                     wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(
+                    wordRelationship.SourceUri,
+                    wordRelationship.TargetUri
+                );
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
                 imgRelationship = mainPartxml.GetRelationship(inNum);
-                Uri imgpartUri = PackUriHelper.ResolvePartUri(imgRelationship.SourceUri, imgRelationship.TargetUri);
+                Uri imgpartUri = PackUriHelper.ResolvePartUri(
+                    imgRelationship.SourceUri,
+                    imgRelationship.TargetUri
+                );
                 PackagePart imgPartxml = pack.GetPart(imgpartUri);
 
                 Image img = Bitmap.FromStream(imgPartxml.GetStream());
                 string retimg2007Name;
 
                 /*Checking if full filename(along with extn) of the image exists*/
-                if (Path.GetExtension(imageName) != "") {
+                if (Path.GetExtension(imageName) != "")
+                {
                     strImgName = imageName;
                     str = outputFilename.Insert(outputFilename.Length, "\\");
-                    final = str.Insert(str.Length, Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName);
-                    retimg2007Name = ImageExt(inNum, final, Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+                    final = str.Insert(
+                        str.Length,
+                        Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName
+                    );
+                    retimg2007Name = ImageExt(
+                        inNum,
+                        final,
+                        Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName
+                    );
                     return UriEscape(retimg2007Name);
                 }
                 /*Checking if full filename(along with extn) of the image does not exist*/
-                else if (Path.GetExtension(imageName) == "" && imageName != "") {
+                else if (Path.GetExtension(imageName) == "" && imageName != "")
+                {
                     length = Int16.Parse(imgPartxml.Uri.ToString().LastIndexOf('.').ToString());
                     strImgName = imgPartxml.Uri.ToString().Substring(length + 1);
                     string img2007Name = imageName + "." + strImgName;
                     str = outputFilename.Insert(outputFilename.Length, "\\");
-                    final = str.Insert(str.Length, Path.GetFileNameWithoutExtension(inputName) + "-" + img2007Name);
-                    retimg2007Name = ImageExt(inNum, final, Path.GetFileNameWithoutExtension(inputName) + "-" + img2007Name);
+                    final = str.Insert(
+                        str.Length,
+                        Path.GetFileNameWithoutExtension(inputName) + "-" + img2007Name
+                    );
+                    retimg2007Name = ImageExt(
+                        inNum,
+                        final,
+                        Path.GetFileNameWithoutExtension(inputName) + "-" + img2007Name
+                    );
                     return UriEscape(retimg2007Name);
                 }
                 /*Checking if entire filename of the image doesn't exist*/
-                else {
+                else
+                {
                     length = Int16.Parse(imgPartxml.Uri.ToString().LastIndexOf('/').ToString());
                     strImgName = imgPartxml.Uri.ToString().Substring(length + 1);
                     str = outputFilename.Insert(outputFilename.Length, "\\");
@@ -457,7 +628,9 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     retimg2007Name = ImageExt(inNum, final, strImgName);
                     return UriEscape(retimg2007Name);
                 }
-            } catch {
+            }
+            catch
+            {
                 return "translation.oox2Daisy.ImageContent";
             }
         }
@@ -469,22 +642,35 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="imageName"></param>
         /// <param name="resampleValue"></param>
         /// <returns></returns>
-        public String ResampleImage(String inNum, string imageName, String resampleValue) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public String ResampleImage(String inNum, string imageName, String resampleValue)
+        {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             imgRelationship = mainPartxml.GetRelationship(inNum);
-            Uri imgpartUri = PackUriHelper.ResolvePartUri(imgRelationship.SourceUri, imgRelationship.TargetUri);
+            Uri imgpartUri = PackUriHelper.ResolvePartUri(
+                imgRelationship.SourceUri,
+                imgRelationship.TargetUri
+            );
 
             PackagePart imgPartxml = pack.GetPart(imgpartUri);
 
             //Shaby : Implementation of Image Sampling
-            string srcName = Path.GetFileNameWithoutExtension(imageName); ;
+            string srcName = Path.GetFileNameWithoutExtension(imageName);
+            ;
             string srcFormat = Path.GetExtension(imgpartUri.ToString()).Remove(0, 1);
             Image srcImg = Bitmap.FromStream(imgPartxml.GetStream());
 
@@ -496,13 +682,15 @@ namespace Daisy.SaveAsDAISY.Conversion {
             targetImage.Width = sourceImage.XResolutionRate * targetImage.Resolution;
             targetImage.Height = sourceImage.YResolutionRate * targetImage.Resolution;
             targetImage.SrcImage = sourceImage.SrcImage;
-            try {
+            try
+            {
                 return targetImage.SaveProcessedImage(outputFilename);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 throw new Exception(ex.Message, ex.InnerException);
             }
         }
-
 
         /// <summary>
         /// Function to Copy image to the Output/destination folder
@@ -511,41 +699,73 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="pathName"></param>
         /// <param name="imageName"></param>
         /// <returns></returns>
-        public String ImageExt(String inNum, String pathName, String imageName) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public String ImageExt(String inNum, String pathName, String imageName)
+        {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
 
             imgRelationship = mainPartxml.GetRelationship(inNum);
-            Uri imgpartUri = PackUriHelper.ResolvePartUri(imgRelationship.SourceUri, imgRelationship.TargetUri);
+            Uri imgpartUri = PackUriHelper.ResolvePartUri(
+                imgRelationship.SourceUri,
+                imgRelationship.TargetUri
+            );
             PackagePart imgPartxml = pack.GetPart(imgpartUri);
 
             Image img = Bitmap.FromStream(imgPartxml.GetStream());
 
             /*Checking if filename extension is not .jpeg, .jpg, .jpe,.png and converting it to filename with .png extn*/
-            if ((Path.GetExtension(pathName) != ".jpeg") && (Path.GetExtension(pathName) != ".jpe") && (Path.GetExtension(pathName) != ".jpg") && (Path.GetExtension(pathName) != ".JPEG") && (Path.GetExtension(pathName) != ".JPE") && (Path.GetExtension(pathName) != ".JPG") && (Path.GetExtension(pathName) != ".png") && (Path.GetExtension(pathName) != ".PNG")) {
-
+            if (
+                (Path.GetExtension(pathName) != ".jpeg")
+                && (Path.GetExtension(pathName) != ".jpe")
+                && (Path.GetExtension(pathName) != ".jpg")
+                && (Path.GetExtension(pathName) != ".JPEG")
+                && (Path.GetExtension(pathName) != ".JPE")
+                && (Path.GetExtension(pathName) != ".JPG")
+                && (Path.GetExtension(pathName) != ".png")
+                && (Path.GetExtension(pathName) != ".PNG")
+            )
+            {
                 img.Save(pathName.Replace(Path.GetExtension(pathName), ".png"), ImageFormat.Png);
                 strImgName = imageName.Replace(Path.GetExtension(pathName), ".png");
                 return strImgName;
-
             }
             /*Checking if filename extension is .jpeg, .jpg, .jpe and converting it to filename with .jpg extn*/
-            else if ((Path.GetExtension(pathName) == ".jpeg") || (Path.GetExtension(pathName) == ".jpg") || (Path.GetExtension(pathName) == ".jpe") || (Path.GetExtension(pathName) == ".JPE") || (Path.GetExtension(pathName) == ".JPEG") || (Path.GetExtension(pathName) == ".JPG")) {
+            else if (
+                (Path.GetExtension(pathName) == ".jpeg")
+                || (Path.GetExtension(pathName) == ".jpg")
+                || (Path.GetExtension(pathName) == ".jpe")
+                || (Path.GetExtension(pathName) == ".JPE")
+                || (Path.GetExtension(pathName) == ".JPEG")
+                || (Path.GetExtension(pathName) == ".JPG")
+            )
+            {
                 //img.Save(pathName.Replace(Path.GetExtension(pathName), ".jpg"));
 
                 Bitmap imgbitmap = new Bitmap(img);
-                imgbitmap.Save(pathName.Replace(Path.GetExtension(pathName), ".jpg"), ImageFormat.Jpeg);
+                imgbitmap.Save(
+                    pathName.Replace(Path.GetExtension(pathName), ".jpg"),
+                    ImageFormat.Jpeg
+                );
 
                 strImgName = imageName.Replace(Path.GetExtension(pathName), ".jpg");
                 return strImgName;
             }
             /*If filename extension is .png it is returned as it is*/
-            else {
+            else
+            {
                 img.Save(pathName);
                 return imageName;
             }
@@ -557,43 +777,74 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="inNum"></param>
         /// <param name="imagegroupName"></param>
         /// <returns></returns>
-        public String Image(string inNum, string imagegroupName) {
-            try {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public String Image(string inNum, string imagegroupName)
+        {
+            try
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        documentRelationshipType
+                    )
+                )
+                {
                     wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                Uri partUri = PackUriHelper.ResolvePartUri(
+                    wordRelationship.SourceUri,
+                    wordRelationship.TargetUri
+                );
                 PackagePart mainPartxml = pack.GetPart(partUri);
 
                 imgRelationship = mainPartxml.GetRelationship(inNum);
-                Uri imgpartUri = PackUriHelper.ResolvePartUri(imgRelationship.SourceUri, imgRelationship.TargetUri);
+                Uri imgpartUri = PackUriHelper.ResolvePartUri(
+                    imgRelationship.SourceUri,
+                    imgRelationship.TargetUri
+                );
                 PackagePart imgPartxml = pack.GetPart(imgpartUri);
 
                 Image img = Bitmap.FromStream(imgPartxml.GetStream());
-                string imggrpName, retimggrpName;
+                string imggrpName,
+                    retimggrpName;
 
                 /*Checking if full filename(along with extn) of the image exists*/
-                if (Path.GetExtension(imagegroupName) != "") {
+                if (Path.GetExtension(imagegroupName) != "")
+                {
                     strImgName = imagegroupName;
                     str = outputFilename.Insert(outputFilename.Length, "\\");
-                    final = str.Insert(str.Length, Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName);
-                    retimggrpName = ImageExt(inNum, final, Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName);
+                    final = str.Insert(
+                        str.Length,
+                        Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName
+                    );
+                    retimggrpName = ImageExt(
+                        inNum,
+                        final,
+                        Path.GetFileNameWithoutExtension(inputName) + "-" + strImgName
+                    );
                     return UriEscape(retimggrpName);
                 }
                 /*Checking if full filename(along with extn) of the image does not exist*/
-                else if (Path.GetExtension(imagegroupName) == "" && imagegroupName != "") {
+                else if (Path.GetExtension(imagegroupName) == "" && imagegroupName != "")
+                {
                     length = Int16.Parse(imgPartxml.Uri.ToString().LastIndexOf('.').ToString());
                     strImgName = imgPartxml.Uri.ToString().Substring(length + 1);
                     imggrpName = imagegroupName + "." + strImgName;
                     str = outputFilename.Insert(outputFilename.Length, "\\");
-                    final = str.Insert(str.Length, Path.GetFileNameWithoutExtension(inputName) + "-" + imggrpName);
-                    retimggrpName = ImageExt(inNum, final, Path.GetFileNameWithoutExtension(inputName) + "-" + imggrpName);
+                    final = str.Insert(
+                        str.Length,
+                        Path.GetFileNameWithoutExtension(inputName) + "-" + imggrpName
+                    );
+                    retimggrpName = ImageExt(
+                        inNum,
+                        final,
+                        Path.GetFileNameWithoutExtension(inputName) + "-" + imggrpName
+                    );
                     return UriEscape(retimggrpName);
                 }
                 /*Checking if entire filename of the image doesn't exist*/
-                else if (imagegroupName == "") {
+                else if (imagegroupName == "")
+                {
                     length = Int16.Parse(imgPartxml.Uri.ToString().LastIndexOf('/').ToString());
                     strImgName = imgPartxml.Uri.ToString().Substring(length + 1);
                     str = outputFilename.Insert(outputFilename.Length, "\\");
@@ -601,33 +852,50 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     final = str.Insert(str.Length, imggrpName);
                     retimggrpName = ImageExt(inNum, final, imggrpName);
                     return UriEscape(retimggrpName);
-                } else {
+                }
+                else
+                {
                     return "0";
                 }
-
-            } catch {
+            }
+            catch
+            {
                 return "translation.oox2Daisy.ImageContent";
             }
         }
-
 
         /// <summary>
         /// Function to check Document is having external images or not
         /// </summary>
         /// <returns></returns>
-        public String ExternalImage() {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public String ExternalImage()
+        {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
 
-            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships()) {
+            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships())
+            {
                 wordRelationship = searchRelation;
-                if (wordRelationship.RelationshipType == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image") {
-                    if (wordRelationship.TargetMode.ToString() == "External") {
+                if (
+                    wordRelationship.RelationshipType
+                    == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image"
+                )
+                {
+                    if (wordRelationship.TargetMode.ToString() == "External")
+                    {
                         strImageExt = "translation.oox2Daisy.ExternalImage";
                         break;
                     }
@@ -643,23 +911,33 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="level"></param>
         /// <returns></returns>
-        public String PushLevel(String level) {
-            
-            if (stackList.Count > 0) {
-                if (level.Length > 0 && Convert.ToInt16(level) > 6 && stackList.Count == 6) {
+        public String PushLevel(String level)
+        {
+            if (stackList.Count > 0)
+            {
+                if (level.Length > 0 && Convert.ToInt16(level) > 6 && stackList.Count == 6)
+                {
                     stackList.Push(headingSixLvl);
-                } else if (level != stackList.Peek() + 1) {
+                }
+                else if (level != stackList.Peek() + 1)
+                {
                     level = Convert.ToString(Convert.ToInt16(stackList.Peek()) + 1);
                     stackList.Push(level);
-                } else {
+                }
+                else
+                {
                     stackList.Push(level);
                 }
-
-            } else {
-                if (level != headingOneLvl) {
+            }
+            else
+            {
+                if (level != headingOneLvl)
+                {
                     level = headingOneLvl;
                     stackList.Push(level);
-                } else {
+                }
+                else
+                {
                     stackList.Push(level);
                 }
             }
@@ -670,10 +948,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// peek (no suppresion) the last level of the document from the stack
         /// </summary>
         /// <returns></returns>
-        public String PeekLevel() {
-            if (stackList.Count > 0) {
+        public String PeekLevel()
+        {
+            if (stackList.Count > 0)
+            {
                 return stackList.Peek();
-            } else {
+            }
+            else
+            {
                 return headingZeroLvl;
             }
         }
@@ -682,7 +964,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// pop (retrieve and delete) the last level of the document from the stack
         /// </summary>
         /// <returns></returns>
-        public String PoPLevel() {
+        public String PopLevel()
+        {
             return stackList.Pop();
         }
 
@@ -690,7 +973,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Increment and return as a string the pageToc counter (number of pages before the toc)
         /// </summary>
         /// <returns></returns>
-        public string PageForTOC() {
+        public string PageForTOC()
+        {
             pageToc++;
             return pageToc.ToString();
         }
@@ -700,7 +984,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// (Also increment a checkToc counter)
         /// </summary>
         /// <returns></returns>
-        public string CheckToc() {
+        public string CheckToc()
+        {
             checkToc++;
             return checkToc.ToString();
         }
@@ -710,68 +995,140 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="counter"></param>
         /// <returns></returns>
-        public string PageNumUpperRoman(string counter) {
+        public string PageNumUpperRoman(string counter)
+        {
             Int16[] values = new Int16[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-            string[] numerals = new string[] { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+            string[] numerals = new string[]
+            {
+                "M",
+                "CM",
+                "D",
+                "CD",
+                "C",
+                "XC",
+                "L",
+                "XL",
+                "X",
+                "IX",
+                "V",
+                "IV",
+                "I"
+            };
             StringBuilder result = new StringBuilder();
 
             Int16 check = Convert.ToInt16(counter);
-            if (check == 0) {
+            if (check == 0)
+            {
                 check = 1;
             }
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 // If the number being converted is less than the test value, append
                 // the corresponding numeral or numeral pair to the resultant string
-                while (check >= values[i]) {
+                while (check >= values[i])
+                {
                     check -= values[i];
                     result.Append(numerals[i]);
                 }
             }
-            return result.ToString(); ;
+            return result.ToString();
+            ;
         }
 
         /// <summary>
         /// Function which returns Lower Roman letter with respect to an integer
         /// </summary>
         /// <param name="counter"></param>
-        /// <returns></returns>        
-        public string PageNumLowerRoman(string counter) {
-
+        /// <returns></returns>
+        public string PageNumLowerRoman(string counter)
+        {
             Int16[] values = new Int16[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-            string[] numerals = new string[] { "m", "cm", "d", "cd", "c", "xc", "l", "xl", "x", "ix", "v", "iv", "i" };
+            string[] numerals = new string[]
+            {
+                "m",
+                "cm",
+                "d",
+                "cd",
+                "c",
+                "xc",
+                "l",
+                "xl",
+                "x",
+                "ix",
+                "v",
+                "iv",
+                "i"
+            };
             StringBuilder result = new StringBuilder();
             Int16 check = Convert.ToInt16(counter);
-            if (check == 0) {
+            if (check == 0)
+            {
                 check = 1;
             }
-            for (int i = 0; i < values.Length; i++) {
+            for (int i = 0; i < values.Length; i++)
+            {
                 // If the number being converted is less than the test value, append
                 // the corresponding numeral or numeral pair to the resultant string
-                while (check >= values[i]) {
+                while (check >= values[i])
+                {
                     check -= values[i];
                     result.Append(numerals[i]);
                 }
             }
-            return result.ToString(); ;
+            return result.ToString();
+            ;
         }
-
 
         /// <summary>
         /// Function which returns Lower Alphabet with respect to an integer
         /// </summary>
         /// <param name="counter"></param>
         /// <returns></returns>
-        public string PageNumLowerAlphabet(string counter) {
-            string[] numerals = new string[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
+        public string PageNumLowerAlphabet(string counter)
+        {
+            string[] numerals = new string[]
+            {
+                "a",
+                "b",
+                "c",
+                "d",
+                "e",
+                "f",
+                "g",
+                "h",
+                "i",
+                "j",
+                "k",
+                "l",
+                "m",
+                "n",
+                "o",
+                "p",
+                "q",
+                "r",
+                "s",
+                "t",
+                "u",
+                "v",
+                "w",
+                "x",
+                "y",
+                "z"
+            };
             string lowerAlpha;
             int check = Convert.ToInt16(counter);
             /*if counter value is greater than 26,then checking the difference and getting the proper alphabet*/
-            if (check > 26) {
+            if (check > 26)
+            {
                 check = check - 26;
                 lowerAlpha = string.Concat(numerals[check - 1], numerals[check - 1]);
-            } else if (check != 0) {
+            }
+            else if (check != 0)
+            {
                 lowerAlpha = numerals[check - 1];
-            } else {
+            }
+            else
+            {
                 lowerAlpha = numerals[0];
             }
             return lowerAlpha;
@@ -782,28 +1139,62 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="counter"></param>
         /// <returns></returns>
-        public string PageNumUpperAlphabet(string counter) {
-            string[] numerals = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+        public string PageNumUpperAlphabet(string counter)
+        {
+            string[] numerals = new string[]
+            {
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "O",
+                "P",
+                "Q",
+                "R",
+                "S",
+                "T",
+                "U",
+                "V",
+                "W",
+                "X",
+                "Y",
+                "Z"
+            };
             string upperAlpha;
             int check = Convert.ToInt16(counter);
             /*if counter value is greater than 26,then checking the difference and getting the proper alphabet*/
-            if (check > 26) {
+            if (check > 26)
+            {
                 check = check - 26;
                 upperAlpha = string.Concat(numerals[check - 1], numerals[check - 1]);
-            } else if (check != 0) {
+            }
+            else if (check != 0)
+            {
                 upperAlpha = numerals[check - 1];
-            } else {
+            }
+            else
+            {
                 upperAlpha = numerals[0];
             }
             return upperAlpha;
-
         }
 
         /// <summary>
         /// Function which returns the flag regarding PageNumbers
         /// </summary>
         /// <returns></returns>
-        public string CheckForcounter() {
+        public string CheckForcounter()
+        {
             flagcounter++;
             return flagcounter.ToString();
         }
@@ -814,15 +1205,22 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="pageType"></param>
         /// <param name="pageStart"></param>
         /// <returns></returns>
-        public string SectionCounter(string pageType, string pageStart) {
-            if (string.IsNullOrEmpty(pageType)) {
+        public string SectionCounter(string pageType, string pageStart)
+        {
+            if (string.IsNullOrEmpty(pageType))
+            {
                 sectionPagetype = "decimal";
-            } else {
+            }
+            else
+            {
                 sectionPagetype = pageType;
             }
-            if (string.IsNullOrEmpty(pageStart)) {
+            if (string.IsNullOrEmpty(pageStart))
+            {
                 pageNum = 1;
-            } else {
+            }
+            else
+            {
                 pageNum = Convert.ToInt16(pageStart);
             }
 
@@ -834,10 +1232,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns the type of page format
         /// </summary>
         /// <returns></returns>
-        public string GetPageFormat() {
-            if (string.IsNullOrEmpty(sectionPagetype)) {
+        public string GetPageFormat()
+        {
+            if (string.IsNullOrEmpty(sectionPagetype))
+            {
                 return "decimal";
-            } else {
+            }
+            else
+            {
                 return sectionPagetype;
             }
         }
@@ -846,7 +1248,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns the Section value
         /// </summary>
         /// <returns></returns>
-        public string GetSectionCounter() {
+        public string GetSectionCounter()
+        {
             return sectionCounter.ToString();
         }
 
@@ -854,7 +1257,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns the Page Number
         /// </summary>
         /// <returns></returns>
-        public string GetPageNum() {
+        public string GetPageNum()
+        {
             return pageNum.ToString();
         }
 
@@ -862,7 +1266,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns the Section value for the first page
         /// </summary>
         /// <returns></returns>
-        public string GetSectionPageStart() {
+        public string GetSectionPageStart()
+        {
             sectionpageStart++;
             return sectionpageStart.ToString();
         }
@@ -871,7 +1276,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which initializes the Section value for page Start
         /// </summary>
         /// <returns></returns>
-        public string InitalizeSectionPageStart() {
+        public string InitalizeSectionPageStart()
+        {
             sectionpageStart = 0;
             return sectionpageStart.ToString();
         }
@@ -880,7 +1286,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which initializes the Section value for page body
         /// </summary>
         /// <returns></returns>
-        public string InitalizeSectionPageBody() {
+        public string InitalizeSectionPageBody()
+        {
             checkSectionBody = 0;
             return checkSectionBody.ToString();
         }
@@ -889,7 +1296,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments the TOC counter
         /// </summary>
         /// <returns></returns>
-        public string CheckTocOccur() {
+        public string CheckTocOccur()
+        {
             chekTocOccur++;
             return chekTocOccur.ToString();
         }
@@ -898,7 +1306,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments the Section counter
         /// </summary>
         /// <returns></returns>
-        public string CheckSection() {
+        public string CheckSection()
+        {
             checkSection++;
             return checkSection.ToString();
         }
@@ -907,7 +1316,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which initializes the Section value
         /// </summary>
         /// <returns></returns>
-        public string InitalizeCheckSection() {
+        public string InitalizeCheckSection()
+        {
             checkSection = 0;
             return checkSection.ToString();
         }
@@ -916,7 +1326,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments the Section counter for BODY
         /// </summary>
         /// <returns></returns>
-        public string CheckSectionBody() {
+        public string CheckSectionBody()
+        {
             checkSectionBody++;
             return checkSectionBody.ToString();
         }
@@ -925,7 +1336,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which initializes the Section counter for BODY
         /// </summary>
         /// <returns></returns>
-        public string InitalizeCheckSectionBody() {
+        public string InitalizeCheckSectionBody()
+        {
             checkSectionBody = 0;
             return checkSectionBody.ToString();
         }
@@ -935,17 +1347,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="start"></param>
         /// <returns></returns>
-        public string PageNum(string start) {
+        public string PageNum(string start)
+        {
             pageNum = Convert.ToInt16(start);
             return pageNum.ToString();
-
         }
 
         /// <summary>
         /// Function which increments the page number
         /// </summary>
         /// <returns></returns>
-        public string IncrementPageNo() {
+        public string IncrementPageNo()
+        {
             pageNum++;
             return pageNum.ToString();
         }
@@ -954,7 +1367,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments page occurence counter
         /// </summary>
         /// <returns></returns>
-        public string CheckPageOccurance() {
+        public string CheckPageOccurance()
+        {
             flagCheck++;
             return flagCheck.ToString();
         }
@@ -963,7 +1377,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns page Id
         /// </summary>
         /// <returns></returns>
-        public string GeneratePageId() {
+        public string GeneratePageId()
+        {
             pageId++;
             return pageId.ToString();
         }
@@ -972,7 +1387,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments page occurence counter
         /// </summary>
         /// <returns></returns>
-        public string IncrementPage() {
+        public string IncrementPage()
+        {
             incrementPage++;
             return incrementPage.ToString();
         }
@@ -981,7 +1397,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns page number
         /// </summary>
         /// <returns></returns>
-        public string ReturnPageNum() {
+        public string ReturnPageNum()
+        {
             return incrementPage.ToString();
         }
 
@@ -989,7 +1406,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments Section counter in front matter
         /// </summary>
         /// <returns></returns>
-        public string CheckSectionFront() {
+        public string CheckSectionFront()
+        {
             checkSectionFront++;
             return checkSectionFront.ToString();
         }
@@ -998,42 +1416,78 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns Section counter in front matter
         /// </summary>
         /// <returns></returns>
-        public string GetSectionFront() {
+        public string GetSectionFront()
+        {
             return checkSectionFront.ToString();
         }
 
-
         /// <summary>
-        /// Function to add Footnote to an Array
+        /// Store a footnote id found in content.
+        /// Also store its current level.
         /// </summary>
         /// <param name="inNum"></param>
         /// <returns></returns>
-        public String AddFootNote(string inNum) {
-            arrListNote.Add(inNum);
+        public String AddFootNote(string inNum)
+        {
+            notesIdsQueue.Add(inNum);
+            notesLevelsQueue.Add(PeekLevel());
             return inNum;
         }
 
         /// <summary>
-        /// Function to get Value of a particular Footnote
+        /// Function to get Value of a particular Footnote.
+        /// NP : Only used as FootNoteId(0) to get the first footnote to
+        /// insert in content.
         /// </summary>
-        /// <param name="i"></param>
+        /// <param name="i">index of the footnote</param>
         /// <returns></returns>
-        public String FootNoteId(int i) {
-            if (arrListNote.Count > 0) {
-                String s1 = arrListNote[i].ToString();
-                arrListNote.RemoveAt(i);
-                return s1;
-            } else {
-                return ("0");
+        public int FootNoteId(int i, int level)
+        {
+            if (notesIdsQueue.Count > 0)
+            {
+                // Search next footnote to include by checking if we are at the good level
+                // (we could be in a level3 while having a level2 notes as first to insert
+                // if we are inserting notes at end of levels)
+                while (
+                    i < notesIdsQueue.Count && (level > int.Parse(notesLevelsQueue[i].ToString()))
+                )
+                {
+                    i++;
+                }
+                if (i >= notesIdsQueue.Count)
+                    return 0;
+                int noteLevel = int.Parse(notesLevelsQueue[i].ToString());
+                string id = notesIdsQueue[i].ToString();
+                notesIdsQueue.RemoveAt(i);
+                notesLevelsQueue.RemoveAt(i);
+                return int.Parse(id);
             }
+            else
+            {
+                return 0;
+            }
+        }
 
+        public string FootNoteLevel(int i)
+        {
+            if (notesIdsQueue.Count > 0)
+            {
+                String s1 = notesLevelsQueue[i].ToString();
+                notesLevelsQueue.RemoveAt(i);
+                return notesLevelsQueue[i].ToString();
+            }
+            else
+            {
+                return "";
+            }
         }
 
         /// <summary>
         /// Function which returns the flag regarding Footnotes
         /// </summary>
         /// <returns></returns>
-        public string NoteFlag() {
+        public string NoteFlag()
+        {
             noteFlag++;
             return noteFlag.ToString();
         }
@@ -1042,7 +1496,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which initializes the flag regarding Footnotes
         /// </summary>
         /// <returns></returns>
-        public string InitializeNoteFlag() {
+        public string InitializeNoteFlag()
+        {
             noteFlag = 0;
             return noteFlag.ToString();
         }
@@ -1051,66 +1506,76 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to add Caption and Prodnote to an Array
         /// </summary>
         /// <returns></returns>
-        public int AddCaptionsProdnotes() {
+        public int AddCaptionsProdnotes()
+        {
             tmpcount++;
             arrCaptionProdnote.Add(tmpcount);
             return tmpcount;
         }
 
-
         /// <summary>
         /// Function to get Caption and Prodnote from an Array
         /// </summary>
         /// <returns></returns>
-        public int GetCaptionsProdnotes() {
-            if (arrCaptionProdnote.Count > 0) {
+        public int GetCaptionsProdnotes()
+        {
+            if (arrCaptionProdnote.Count > 0)
+            {
                 int cnt = Convert.ToInt32(arrCaptionProdnote[0]);
                 arrCaptionProdnote.RemoveAt(0);
                 return cnt;
-            } else {
+            }
+            else
+            {
                 return (0);
             }
-
         }
-
 
         /// <summary>
         /// Function to reset the count value used in the AddCaptionsProdnotes function
         /// </summary>
-        public void ResetCaptionsProdnotes() {
+        public void ResetCaptionsProdnotes()
+        {
             tmpcount = 0;
         }
 
-
         /// <summary>
-        /// Function to Push a level value to the stack 
+        /// Function to Push a level value to the stack
         /// (only if the level is superior to the last one in stack)
         /// Used in Common2.xsl:411
         /// </summary>
         /// <param name="i"></param>
         /// <returns></returns>
-        public int ListPush(int i) {
+        public int ListPush(int i)
+        {
             string j = i.ToString();
-            if (lstackList.Count > 0) {
-                if (i > Convert.ToInt16(lstackList.Peek())) {
+            if (lstackList.Count > 0)
+            {
+                if (i > Convert.ToInt16(lstackList.Peek()))
+                {
                     j = lstackList.Peek();
                     lstackList.Push(i.ToString());
                 }
-            } else {
+            }
+            else
+            {
                 lstackList.Push(i.ToString());
             }
             return Convert.ToInt16(j);
         }
 
-
         /// <summary>
         /// Function to Peek the top value of the Stack
         /// </summary>
         /// <returns></returns>
-        public int ListPeekLevel() {
-            if (lstackList.Count > 0) {
+        public int ListPeekLevel()
+        {
+            if (lstackList.Count > 0)
+            {
                 return Convert.ToInt16(lstackList.Peek());
-            } else {
+            }
+            else
+            {
                 return (0);
             }
         }
@@ -1119,7 +1584,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to PoP the top value of the Stack
         /// </summary>
         /// <returns></returns>
-        public int ListPoPLevel() {
+        public int ListPopLevel()
+        {
             if (lstackList.Count > 0)
                 return Convert.ToInt16(lstackList.Pop());
             else
@@ -1131,7 +1597,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// (increment the id counter)
         /// </summary>
         /// <returns></returns>
-        public int GenerateImageId() {
+        public int GenerateImageId()
+        {
             return ++imgId;
         }
 
@@ -1140,7 +1607,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="captionImg"></param>
         /// <returns></returns>
-        public String InsertCaption(String captionImg) {
+        public String InsertCaption(String captionImg)
+        {
             caption = captionImg;
             return caption;
         }
@@ -1150,8 +1618,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="imgRef"></param>
         /// <returns></returns>
-        public String ImageGroupId(string imgRef) {
-
+        public String ImageGroupId(string imgRef)
+        {
             strImage = String.Concat(strImage, imgRef, GenerateImageId(), " ");
             return strImage;
         }
@@ -1160,20 +1628,24 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function returns image index
         /// </summary>
         /// <returns></returns>
-        public int storeImgid() {
+        public int storeImgid()
+        {
             int indexImage = imgId;
             return indexImage;
         }
-
 
         /// <summary>
         /// Function returs caption
         /// </summary>
         /// <returns></returns>
-        public String ReturnCaption() {
-            if (string.IsNullOrEmpty(caption)) {
+        public String ReturnCaption()
+        {
+            if (string.IsNullOrEmpty(caption))
+            {
                 return ("0");
-            } else {
+            }
+            else
+            {
                 return caption;
             }
         }
@@ -1182,7 +1654,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to get ID of an image
         /// </summary>
         /// <returns></returns>
-        public String ReturnImageGroupId() {
+        public String ReturnImageGroupId()
+        {
             return strImage;
         }
 
@@ -1190,7 +1663,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to get Unique ID
         /// </summary>
         /// <returns></returns>
-        public long GenerateId() {
+        public long GenerateId()
+        {
             byte[] buffer = Guid.NewGuid().ToByteArray();
             return BitConverter.ToInt64(buffer, 0);
         }
@@ -1199,25 +1673,33 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to returns flag value
         /// </summary>
         /// <returns></returns>
-        public int Flag() {
+        public int Flag()
+        {
             int flag = 0;
             return flag;
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <param name="checkLvl"></param>
         /// <returns></returns>
-        public int GetCheckLvlInt(XPathNodeIterator checkLvl) {
-            try {
-                if (checkLvl.Count > 0) {
+        public int GetCheckLvlInt(XPathNodeIterator checkLvl)
+        {
+            try
+            {
+                if (checkLvl.Count > 0)
+                {
                     checkLvl.MoveNext();
                     return checkLvl.Current.ValueAsInt;
-                } else {
+                }
+                else
+                {
                     return 0;
                 }
-            } catch {
+            }
+            catch
+            {
                 throw;
             }
         }
@@ -1228,7 +1710,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="close"></param>
         /// <param name="peekLevel"></param>
         /// <returns></returns>
-        public bool Difference(int close, int peekLevel) {
+        public bool Difference(int close, int peekLevel)
+        {
             if (peekLevel - close > 1)
                 return true;
 
@@ -1240,7 +1723,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="rec"></param>
         /// <returns></returns>
-        public int Decrement(int rec) {
+        public int Decrement(int rec)
+        {
             return rec - 1;
         }
 
@@ -1248,7 +1732,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments the counter value
         /// </summary>
         /// <param name="rec"></param>
-        public void Increment(int rec) {
+        public void Increment(int rec)
+        {
             for (int i = 0; i <= rec; i++)
                 ListPush(i);
         }
@@ -1259,8 +1744,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="inNum">anchor id in the relathionship file</param>
         /// <param name="flagNote">type of relationship (footnote, endote or empty for document relationship)</param>
         /// <returns></returns>
-        public String Anchor(string inNum, string flagNote = "") {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType))
+        public String Anchor(string inNum, string flagNote = "")
+        {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
             {
                 wordRelationship = searchRelation;
                 break;
@@ -1271,18 +1761,32 @@ namespace Daisy.SaveAsDAISY.Conversion {
             switch (flagNote)
             {
                 case "footnote":
-                    partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                    partUri = PackUriHelper.ResolvePartUri(
+                        wordRelationship.SourceUri,
+                        wordRelationship.TargetUri
+                    );
                     mainPartxml = pack.GetPart(partUri);
-                    foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(footnotesRelationshipType))
+                    foreach (
+                        PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                            footnotesRelationshipType
+                        )
+                    )
                     {
                         anchorRelationshipFile = searchRelation;
                         break;
                     }
                     break;
                 case "endnote":
-                    partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                    partUri = PackUriHelper.ResolvePartUri(
+                        wordRelationship.SourceUri,
+                        wordRelationship.TargetUri
+                    );
                     mainPartxml = pack.GetPart(partUri);
-                    foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(endnotesRelationshipType))
+                    foreach (
+                        PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                            endnotesRelationshipType
+                        )
+                    )
                     {
                         anchorRelationshipFile = searchRelation;
                         break;
@@ -1292,24 +1796,27 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     anchorRelationshipFile = wordRelationship;
                     break;
             }
-            
-            if(anchorRelationshipFile != null)
+
+            if (anchorRelationshipFile != null)
             {
-                partUri = PackUriHelper.ResolvePartUri(anchorRelationshipFile.SourceUri, anchorRelationshipFile.TargetUri);
+                partUri = PackUriHelper.ResolvePartUri(
+                    anchorRelationshipFile.SourceUri,
+                    anchorRelationshipFile.TargetUri
+                );
                 mainPartxml = pack.GetPart(partUri);
                 PackageRelationship anchorRelationship = mainPartxml.GetRelationship(inNum);
                 String uri = anchorRelationship.TargetUri.ToString();
-                return HttpUtility.UrlPathEncode(uri);
+                return SecurityElement.Escape(uri);
             }
             return "";
-            
         }
 
         /// <summary>
         /// Function which concatenate messages for TOC
         /// </summary>
         /// <param name="str"></param>
-        public void SetTOCMessage(string str) {
+        public void SetTOCMessage(string str)
+        {
             message = message + " " + str;
         }
 
@@ -1317,14 +1824,16 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which return message for TOC
         /// </summary>
         /// <returns></returns>
-        public string GetTOCMessage() {
+        public string GetTOCMessage()
+        {
             return message;
         }
 
         /// <summary>
         /// Function which returns Null message for TOC
         /// </summary>
-        public void NullMsg() {
+        public void NullMsg()
+        {
             message = "";
         }
 
@@ -1332,7 +1841,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments the counter for TOC
         /// </summary>
         /// <returns></returns>
-        public string SetToc() {
+        public string SetToc()
+        {
             setToc++;
             return setToc.ToString();
         }
@@ -1341,7 +1851,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which resets the counter value for TOC
         /// </summary>
         /// <returns></returns>
-        public string GetToc() {
+        public string GetToc()
+        {
             setToc = 0;
             return setToc.ToString();
         }
@@ -1350,7 +1861,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which increments the counter for TOC
         /// </summary>
         /// <returns></returns>
-        public string Set_tabToc() {
+        public string Set_tabToc()
+        {
             set_tabToc++;
             return set_tabToc.ToString();
         }
@@ -1359,17 +1871,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which resets the counter value for TOC
         /// </summary>
         /// <returns></returns>
-        public string Get_tabToc() {
+        public string Get_tabToc()
+        {
             set_tabToc = 0;
             return set_tabToc.ToString();
         }
-
 
         /// <summary>
         /// Function which increments the counter for TOC
         /// </summary>
         /// <returns></returns>
-        public string Set_Toc() {
+        public string Set_Toc()
+        {
             set_Toc++;
             return set_Toc.ToString();
         }
@@ -1378,7 +1891,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which resets the counter value for TOC
         /// </summary>
         /// <returns></returns>
-        public string Get_Toc() {
+        public string Get_Toc()
+        {
             set_Toc = 0;
             return set_Toc.ToString();
         }
@@ -1387,17 +1901,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which sets the counter value for Continuous page break
         /// </summary>
         /// <returns></returns>
-        public string SetConPageBreak() {
+        public string SetConPageBreak()
+        {
             conPageBreak++;
             return conPageBreak.ToString();
         }
-
 
         /// <summary>
         /// Function which Resetsets the counter value for Continuous page break
         /// </summary>
         /// <returns></returns>
-        public string ResetSetConPageBreak() {
+        public string ResetSetConPageBreak()
+        {
             conPageBreak = 0;
             return conPageBreak.ToString();
         }
@@ -1406,84 +1921,144 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Functions to Implement Citation
         /// </summary>
         /// <returns></returns>
-        public String Citation() {
+        public String Citation()
+        {
+            // NP 20240320 : in case of document with invalid relationship, this can crasg
 
             String indicator = " ";
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
+            try {
+                foreach (
+                PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                    CustomRelationshipType
+                )
+            ) {
+                    customRelationship = searchRelation;
+                    Uri CustomUri = PackUriHelper.ResolvePartUri(
+                        customRelationship.SourceUri,
+                        customRelationship.TargetUri
+                    );
+                    PackagePart customPartxml = pack.GetPart(CustomUri);
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(customPartxml.GetStream());
+                    if (
+                        doc.DocumentElement.NamespaceURI
+                        == "http://schemas.openxmlformats.org/officeDocument/2006/bibliography"
+                    ) {
+                        NameTable nt = new NameTable();
+                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
+                        nsManager.AddNamespace(
+                            "b",
+                            "http://schemas.openxmlformats.org/officeDocument/2006/bibliography"
+                        );
+                        XmlNode node = doc.SelectSingleNode("//b:Sources/@StyleName", nsManager);
 
-            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
-                customRelationship = searchRelation;
-                Uri CustomUri = PackUriHelper.ResolvePartUri(customRelationship.SourceUri, customRelationship.TargetUri);
-                PackagePart customPartxml = pack.GetPart(CustomUri);
-                XmlDocument doc = new XmlDocument();
-                doc.Load(customPartxml.GetStream());
-                if (doc.DocumentElement.NamespaceURI == "http://schemas.openxmlformats.org/officeDocument/2006/bibliography") {
-                    NameTable nt = new NameTable();
-                    XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                    nsManager.AddNamespace("b", "http://schemas.openxmlformats.org/officeDocument/2006/bibliography");
-                    XmlNode node = doc.SelectSingleNode("//b:Sources/@StyleName", nsManager);
-
-                    if (node != null) {
-                        indicator = node.InnerText;
-                    } else
-                        indicator = " ";
+                        if (node != null) {
+                            indicator = node.InnerText;
+                        } else
+                            indicator = " ";
+                    }
                 }
+                return indicator;
             }
-            return indicator;
+            catch (Exception e) {
+                throw new Exception($"An error occured while searching for relationships in the document.\r\n" +
+                    $"This can occur in presence of malformed hyperlinks or with hyperlinks containing one of the following character at the wrong place:\r\n" +
+                    $"\"!\" | \"$\" | \"&\" | \"'\" | \"(\" / \")\" | \"*\" | \"+\" | \",\" | \";\" | \"=\" ", e);
+            }
+            
         }
-
 
         /// <summary>
         /// Function returns details(title,author,year) of a citation
         /// </summary>
         /// <param name="citeId"></param>
         /// <returns></returns>
-        public String CitationDetails(string citeId) {
+        public String CitationDetails(string citeId)
+        {
             string temp = "";
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
-            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
+            foreach (
+                PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                    CustomRelationshipType
+                )
+            )
+            {
                 customRelationship = searchRelation;
-                Uri CustomUri = PackUriHelper.ResolvePartUri(customRelationship.SourceUri, customRelationship.TargetUri);
+                Uri CustomUri = PackUriHelper.ResolvePartUri(
+                    customRelationship.SourceUri,
+                    customRelationship.TargetUri
+                );
                 PackagePart customPartxml = pack.GetPart(CustomUri);
                 XmlDocument doc = new XmlDocument();
                 doc.Load(customPartxml.GetStream());
-                if (doc.DocumentElement.NamespaceURI == "http://schemas.openxmlformats.org/officeDocument/2006/bibliography") {
+                if (
+                    doc.DocumentElement.NamespaceURI
+                    == "http://schemas.openxmlformats.org/officeDocument/2006/bibliography"
+                )
+                {
                     NameTable nt = new NameTable();
                     XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                    nsManager.AddNamespace("b", "http://schemas.openxmlformats.org/officeDocument/2006/bibliography");
+                    nsManager.AddNamespace(
+                        "b",
+                        "http://schemas.openxmlformats.org/officeDocument/2006/bibliography"
+                    );
                     XmlNodeList list = doc.SelectNodes("//b:Source/b:Tag", nsManager);
-                    for (int i = 0; i < list.Count; i++) {
-
-                        if (citeId.Contains(list.Item(i).InnerText)) {
-                            XmlNode getTitle1 = list.Item(i).ParentNode.SelectSingleNode("b:Title", nsManager);
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (citeId.Contains(list.Item(i).InnerText))
+                        {
+                            XmlNode getTitle1 = list.Item(i)
+                                .ParentNode.SelectSingleNode("b:Title", nsManager);
                             if (getTitle1 != null)
                                 getTitle = getTitle1.InnerText;
-                            XmlNode getYear1 = list.Item(i).ParentNode.SelectSingleNode("b:Year", nsManager);
+                            XmlNode getYear1 = list.Item(i)
+                                .ParentNode.SelectSingleNode("b:Year", nsManager);
                             if (getYear1 != null)
                                 getYear = getYear1.InnerText;
-                            XmlNodeList listAuthor = list.Item(i).ParentNode.SelectNodes("b:Author/b:Author/b:NameList//b:Person/b:Last", nsManager);
-                            if (listAuthor != null) {
-                                for (int j = 0; j < listAuthor.Count; j++) {
+                            XmlNodeList listAuthor = list.Item(i)
+                                .ParentNode.SelectNodes(
+                                    "b:Author/b:Author/b:NameList//b:Person/b:Last",
+                                    nsManager
+                                );
+                            if (listAuthor != null)
+                            {
+                                for (int j = 0; j < listAuthor.Count; j++)
+                                {
                                     temp = temp + " " + listAuthor.Item(j).InnerText;
                                 }
                                 getAuthor = temp;
                             }
                         }
-
                     }
-
                 }
             }
             return " ";
@@ -1493,7 +2068,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function returns Author name of a citation
         /// </summary>
         /// <returns></returns>
-        public string GetAuthor() {
+        public string GetAuthor()
+        {
             return getAuthor;
         }
 
@@ -1501,7 +2077,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function returns Title of a citation
         /// </summary>
         /// <returns></returns>
-        public string GetTitle() {
+        public string GetTitle()
+        {
             return getTitle;
         }
 
@@ -1509,7 +2086,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function returns Year of the citation
         /// </summary>
         /// <returns></returns>
-        public string GetYear() {
+        public string GetYear()
+        {
             return getYear;
         }
 
@@ -1518,23 +2096,29 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="lang"></param>
         /// <returns></returns>
-        public string AddLanguage(string lang) {
+        public string AddLanguage(string lang)
+        {
             int flag = 1;
-            if (arrListLang.Count == 0) {
+            if (arrListLang.Count == 0)
+            {
                 arrListLang.Add(lang);
-            } else if (arrListLang.Count > 0) {
-                for (int count = 0; count <= arrListLang.Count - 1; count++) {
-                    if (string.Compare(lang, arrListLang[count].ToString()) == 0) {
+            }
+            else if (arrListLang.Count > 0)
+            {
+                for (int count = 0; count <= arrListLang.Count - 1; count++)
+                {
+                    if (string.Compare(lang, arrListLang[count].ToString()) == 0)
+                    {
                         flag = 0;
                     }
                 }
 
-                if (flag == 1) {
+                if (flag == 1)
+                {
                     arrListLang.Add(lang);
                 }
             }
             return flag.ToString();
-
         }
 
         /// <summary>
@@ -1542,10 +2126,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public string AddHyperlink(string name) {
-            if (string.IsNullOrEmpty(name)) {
+        public string AddHyperlink(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
                 name = "";
-            } else {
+            }
+            else
+            {
                 arrHyperlink.Add(name);
             }
             return name;
@@ -1556,17 +2144,22 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public string GetHyperlinkName(string name) {
+        public string GetHyperlinkName(string name)
+        {
             int flag = 0;
-            if (string.IsNullOrEmpty(name) && arrHyperlink.Count == 0) {
+            if (string.IsNullOrEmpty(name) && arrHyperlink.Count == 0)
+            {
                 flag = 0;
-            } else if (arrHyperlink.Count > 0) {
-                for (int count = 0; count <= arrHyperlink.Count - 1; count++) {
-                    if (string.Compare(name, arrHyperlink[count].ToString()) == 0) {
+            }
+            else if (arrHyperlink.Count > 0)
+            {
+                for (int count = 0; count <= arrHyperlink.Count - 1; count++)
+                {
+                    if (string.Compare(name, arrHyperlink[count].ToString()) == 0)
+                    {
                         flag = 1;
                     }
                 }
-
             }
             return flag.ToString();
         }
@@ -1575,7 +2168,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to increments flag value for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public string SetHyperLinkFlag() {
+        public string SetHyperLinkFlag()
+        {
             setHyperLinkFlag++;
             return setHyperLinkFlag.ToString();
         }
@@ -1584,7 +2178,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns flag value for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public string GetHyperlinkFlag() {
+        public string GetHyperlinkFlag()
+        {
             return setHyperLinkFlag.ToString();
         }
 
@@ -1592,7 +2187,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to set flag for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public string SetGetHyperLinkFlag() {
+        public string SetGetHyperLinkFlag()
+        {
             setHyperLinkFlag = 0;
             return setHyperLinkFlag.ToString();
         }
@@ -1601,7 +2197,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to increments flag value for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public string HyperlinkFlag() {
+        public string HyperlinkFlag()
+        {
             hyperlinkFlag++;
             return hyperlinkFlag.ToString();
         }
@@ -1610,7 +2207,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to check whether hyperlink is coming is different runs or not
         /// </summary>
         /// <returns></returns>
-        public string TestRun() {
+        public string TestRun()
+        {
             testRun++;
             return testRun.ToString();
         }
@@ -1619,37 +2217,39 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to get the flag value for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public string GetTestRun() {
+        public string GetTestRun()
+        {
             return testRun.ToString();
         }
-
 
         /// <summary>
         /// Function to set the flag value for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public string SetTestRun() {
+        public string SetTestRun()
+        {
             testRun = 0;
             return testRun.ToString();
         }
-
 
         /// <summary>
         /// Function to store ID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string StroreId(string id) {
+        public string StroreId(string id)
+        {
             storeHyperId = id;
             return id;
         }
 
         /// <summary>
-        /// Function to check whether given Id is there or not 
+        /// Function to check whether given Id is there or not
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public int CheckId(string id) {
+        public int CheckId(string id)
+        {
             if (string.Compare(id, storeHyperId) == 0)
                 return 1;
             else
@@ -1660,7 +2260,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to increment flag for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public int SetHyperLink() {
+        public int SetHyperLink()
+        {
             set++;
             return set;
         }
@@ -1669,7 +2270,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to set flag for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public int GetHyperLink() {
+        public int GetHyperLink()
+        {
             set = 0;
             return set;
         }
@@ -1678,7 +2280,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to get flag value for Hyperlink
         /// </summary>
         /// <returns></returns>
-        public int GetFlag() {
+        public int GetFlag()
+        {
             return set;
         }
 
@@ -1686,7 +2289,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to increment flag value for Bookmark
         /// </summary>
         /// <returns></returns>
-        public int SetBookmark() {
+        public int SetBookmark()
+        {
             setbookmark++;
             return setbookmark;
         }
@@ -1695,7 +2299,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to get flag value for Bookmark
         /// </summary>
         /// <returns></returns>
-        public int GetBookmark() {
+        public int GetBookmark()
+        {
             return setbookmark;
         }
 
@@ -1703,7 +2308,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to set flag value for Bookmark
         /// </summary>
         /// <returns></returns>
-        public int AssingBookmark() {
+        public int AssingBookmark()
+        {
             setbookmark = 0;
             return setbookmark;
         }
@@ -1713,10 +2319,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public string EscapeSpecial(string id) {
+        public string EscapeSpecial(string id)
+        {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < id.Length; i++) {
-                if ((id[i] >= '0' && id[i] <= '9') || (id[i] >= 'A' && id[i] <= 'z')) {
+            for (int i = 0; i < id.Length; i++)
+            {
+                if ((id[i] >= '0' && id[i] <= '9') || (id[i] >= 'A' && id[i] <= 'z'))
+                {
                     sb.Append(id[i]);
                 }
             }
@@ -1728,45 +2337,64 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public String Book(String id) {
+        public String Book(String id)
+        {
             String indicator = "false";
-            if (id != "") {
-                if (id.StartsWith("Abbreviations", StringComparison.CurrentCulture)) {
+            if (id != "")
+            {
+                if (id.StartsWith("Abbreviations", StringComparison.CurrentCulture))
+                {
                     indicator = "AbbrTrue";
                 }
-                if (id.StartsWith("Acronyms", StringComparison.CurrentCulture)) {
+                if (id.StartsWith("Acronyms", StringComparison.CurrentCulture))
+                {
                     indicator = "AcrTrue";
                 }
             }
 
             return indicator;
-
         }
-
 
         /// <summary>
         /// Function which returns whether the BookmarkEnd related to Abbreviation or Acronym in footnote.xml/endnote.xml
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public String BookFootnote(String id) {
+        public String BookFootnote(String id)
+        {
             String indicator = "false";
             XmlNodeList node;
 
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
 
-            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(footnotesRelationshipType)) {
+            foreach (
+                PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                    footnotesRelationshipType
+                )
+            )
+            {
                 footRelationship = searchRelation;
                 break;
             }
 
-            Uri footpartUri = PackUriHelper.ResolvePartUri(footRelationship.SourceUri, footRelationship.TargetUri);
+            Uri footpartUri = PackUriHelper.ResolvePartUri(
+                footRelationship.SourceUri,
+                footRelationship.TargetUri
+            );
             PackagePart footPartxml = pack.GetPart(footpartUri);
 
             XmlDocument doc = new XmlDocument();
@@ -1778,22 +2406,38 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
             node = doc.SelectNodes("//w:bookmarkStart[@w:id='" + id + "']", nsManager);
 
-            if (node.Count == 0) {
-
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+            if (node.Count == 0)
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        documentRelationshipType
+                    )
+                )
+                {
                     wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri1 = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                Uri partUri1 = PackUriHelper.ResolvePartUri(
+                    wordRelationship.SourceUri,
+                    wordRelationship.TargetUri
+                );
                 PackagePart mainPartxml1 = pack.GetPart(partUri1);
 
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(endnotesRelationshipType)) {
+                foreach (
+                    PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                        endnotesRelationshipType
+                    )
+                )
+                {
                     endRelationship = searchRelation;
                     break;
                 }
 
-                Uri endpartUri = PackUriHelper.ResolvePartUri(endRelationship.SourceUri, endRelationship.TargetUri);
+                Uri endpartUri = PackUriHelper.ResolvePartUri(
+                    endRelationship.SourceUri,
+                    endRelationship.TargetUri
+                );
                 PackagePart endPartxml = pack.GetPart(endpartUri);
 
                 XmlDocument doc1 = new XmlDocument();
@@ -1805,20 +2449,30 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
                 node = doc1.SelectNodes("//w:bookmarkStart[@w:id='" + id + "']", nsManager1);
             }
-            if (node.Count != 0) {
-                if (node.Item(0).Attributes.Item(1).Value.StartsWith("Abbreviations", StringComparison.CurrentCulture)) {
+            if (node.Count != 0)
+            {
+                if (
+                    node.Item(0)
+                        .Attributes.Item(1)
+                        .Value.StartsWith("Abbreviations", StringComparison.CurrentCulture)
+                )
+                {
                     indicator = "AbbrTrue";
                 }
-                if (node.Item(0).Attributes.Item(1).Value.StartsWith("Acronyms", StringComparison.CurrentCulture)) {
+                if (
+                    node.Item(0)
+                        .Attributes.Item(1)
+                        .Value.StartsWith("Acronyms", StringComparison.CurrentCulture)
+                )
+                {
                     indicator = "AcrTrue";
                 }
-            } else
+            }
+            else
                 indicator = "false";
 
             return indicator;
-
         }
-
 
         /// <summary>
         /// Function which returns Full form of an Abbreviation
@@ -1826,56 +2480,28 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="abbrName"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        public String FullAbbr(String abbrName, String version) {
+        public String FullAbbr(String abbrName, String version)
+        {
             String indicator = "";
             wordRelationship = null;
-            if (IsOffice2007Or2010(version)) {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+            if (version == version2003 || version == versionXP)
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        customPropRelationshipType
+                    )
+                )
+                {
                     wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
-                PackagePart mainPartxml = pack.GetPart(partUri);
-
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
-
-                    customRelationship = searchRelation;
-
-                    Uri CustomUri = PackUriHelper.ResolvePartUri(customRelationship.SourceUri, customRelationship.TargetUri);
-                    PackagePart customPartxml = pack.GetPart(CustomUri);
-
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(customPartxml.GetStream());
-
-                    if (doc.DocumentElement.NamespaceURI == "http://Daisy-OpenXML/customxml") {
-                        NameTable nt = new NameTable();
-
-                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                        nsManager.AddNamespace("a", "http://Daisy-OpenXML/customxml");
-
-                        XmlNodeList node = doc.SelectNodes("//a:Item[@AbbreviationName='" + abbrName + "']", nsManager);
-
-                        if (node != null) {
-                            if (node.Count != 0) {
-                                if (node.Item(0).Attributes.Item(1).Value != "")
-                                    indicator = node.Item(0).Attributes.Item(1).Value;
-                            } else
-                                indicator = "";
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (version == version2003 || version == versionXP) {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(customPropRelationshipType)) {
-                    wordRelationship = searchRelation;
-                    break;
-                }
-
-                if (wordRelationship != null) {
-                    Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                if (wordRelationship != null)
+                {
+                    Uri partUri = PackUriHelper.ResolvePartUri(
+                        wordRelationship.SourceUri,
+                        wordRelationship.TargetUri
+                    );
                     PackagePart mainPartxml = pack.GetPart(partUri);
 
                     XmlDocument doc = new XmlDocument();
@@ -1883,24 +2509,89 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
                     XmlNodeList node = doc.FirstChild.NextSibling.ChildNodes;
 
-                    if (node != null) {
-                        for (int i = 0; i < node.Count; i++) {
-                            if (node.Item(i).Attributes.Item(2).Value == abbrName) {
-                                if (node.Item(i).FirstChild.InnerText != "") {
+                    if (node != null)
+                    {
+                        for (int i = 0; i < node.Count; i++)
+                        {
+                            if (node.Item(i).Attributes.Item(2).Value == abbrName)
+                            {
+                                if (node.Item(i).FirstChild.InnerText != "")
+                                {
                                     String temp = node.Item(i).FirstChild.InnerText;
                                     String input = temp.Replace("$#$", "-");
                                     String[] strKey = input.Split('-');
                                     indicator = strKey[1];
-                                } else
+                                }
+                                else
                                     indicator = "";
                             }
                         }
                     }
                 }
             }
+            else
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        documentRelationshipType
+                    )
+                )
+                {
+                    wordRelationship = searchRelation;
+                    break;
+                }
+
+                Uri partUri = PackUriHelper.ResolvePartUri(
+                    wordRelationship.SourceUri,
+                    wordRelationship.TargetUri
+                );
+                PackagePart mainPartxml = pack.GetPart(partUri);
+
+                foreach (
+                    PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                        CustomRelationshipType
+                    )
+                )
+                {
+                    customRelationship = searchRelation;
+
+                    Uri CustomUri = PackUriHelper.ResolvePartUri(
+                        customRelationship.SourceUri,
+                        customRelationship.TargetUri
+                    );
+                    PackagePart customPartxml = pack.GetPart(CustomUri);
+
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(customPartxml.GetStream());
+
+                    if (doc.DocumentElement.NamespaceURI == "http://Daisy-OpenXML/customxml")
+                    {
+                        NameTable nt = new NameTable();
+
+                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
+                        nsManager.AddNamespace("a", "http://Daisy-OpenXML/customxml");
+
+                        XmlNodeList node = doc.SelectNodes(
+                            "//a:Item[@AbbreviationName='" + abbrName + "']",
+                            nsManager
+                        );
+
+                        if (node != null)
+                        {
+                            if (node.Count != 0)
+                            {
+                                if (node.Item(0).Attributes.Item(1).Value != "")
+                                    indicator = node.Item(0).Attributes.Item(1).Value;
+                            }
+                            else
+                                indicator = "";
+                            break;
+                        }
+                    }
+                }
+            }
             return indicator;
         }
-
 
         /// <summary>
         /// Function which returns Full form of an Acronym
@@ -1908,86 +2599,123 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="acrName"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        public String FullAcr(String acrName, String version) {
+        public String FullAcr(String acrName, String version)
+        {
             String indicator = "";
             wordRelationship = null;
-            if (IsOffice2007Or2010(version)) {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+
+            if (version == version2003 || version == versionXP)
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        customPropRelationshipType
+                    )
+                )
+                {
                     wordRelationship = searchRelation;
                     break;
                 }
 
-                Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
-                PackagePart mainPartxml = pack.GetPart(partUri);
-
-                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(CustomRelationshipType)) {
-                    customRelationship = searchRelation;
-
-
-                    Uri CustomUri = PackUriHelper.ResolvePartUri(customRelationship.SourceUri, customRelationship.TargetUri);
-                    PackagePart customPartxml = pack.GetPart(CustomUri);
-
-                    XmlDocument doc = new XmlDocument();
-                    doc.Load(customPartxml.GetStream());
-
-                    if (doc.DocumentElement.NamespaceURI == "http://Daisy-OpenXML/customxml") {
-                        NameTable nt = new NameTable();
-
-                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
-                        nsManager.AddNamespace("a", "http://Daisy-OpenXML/customxml");
-
-                        XmlNodeList node = doc.SelectNodes("//a:Item[@AcronymName='" + acrName + "']", nsManager);
-
-                        if (node.Count != 0) {
-                            if (node.Item(0).Attributes.Item(1).Value != "")
-                                indicator = node.Item(0).Attributes.Item(1).Value;
-                        } else
-                            indicator = "";
-                        break;
-                    }
-
-                }
-            }
-
-            if (version == version2003 || version == versionXP) {
-                foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(customPropRelationshipType)) {
-                    wordRelationship = searchRelation;
-                    break;
-                }
-
-                if (wordRelationship != null) {
-                    Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+                if (wordRelationship != null)
+                {
+                    Uri partUri = PackUriHelper.ResolvePartUri(
+                        wordRelationship.SourceUri,
+                        wordRelationship.TargetUri
+                    );
                     PackagePart mainPartxml = pack.GetPart(partUri);
 
                     XmlDocument doc = new XmlDocument();
                     doc.Load(mainPartxml.GetStream());
 
                     XmlNodeList node = doc.FirstChild.NextSibling.ChildNodes;
-                    if (node != null) {
-                        for (int i = 0; i < node.Count; i++) {
-                            if (node.Item(i).Attributes.Item(2).Value == acrName) {
-                                if (node.Item(i).FirstChild.InnerText != "") {
+                    if (node != null)
+                    {
+                        for (int i = 0; i < node.Count; i++)
+                        {
+                            if (node.Item(i).Attributes.Item(2).Value == acrName)
+                            {
+                                if (node.Item(i).FirstChild.InnerText != "")
+                                {
                                     String temp = node.Item(i).FirstChild.InnerText;
                                     String input = temp.Replace("$#$", "-");
                                     String[] strKey = input.Split('-');
                                     indicator = strKey[1];
-                                } else
+                                }
+                                else
                                     indicator = "";
                             }
                         }
                     }
                 }
             }
+            else
+            {
+                foreach (
+                    PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                        documentRelationshipType
+                    )
+                )
+                {
+                    wordRelationship = searchRelation;
+                    break;
+                }
+
+                Uri partUri = PackUriHelper.ResolvePartUri(
+                    wordRelationship.SourceUri,
+                    wordRelationship.TargetUri
+                );
+                PackagePart mainPartxml = pack.GetPart(partUri);
+
+                foreach (
+                    PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                        CustomRelationshipType
+                    )
+                )
+                {
+                    customRelationship = searchRelation;
+
+                    Uri CustomUri = PackUriHelper.ResolvePartUri(
+                        customRelationship.SourceUri,
+                        customRelationship.TargetUri
+                    );
+                    PackagePart customPartxml = pack.GetPart(CustomUri);
+
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(customPartxml.GetStream());
+
+                    if (doc.DocumentElement.NamespaceURI == "http://Daisy-OpenXML/customxml")
+                    {
+                        NameTable nt = new NameTable();
+
+                        XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
+                        nsManager.AddNamespace("a", "http://Daisy-OpenXML/customxml");
+
+                        XmlNodeList node = doc.SelectNodes(
+                            "//a:Item[@AcronymName='" + acrName + "']",
+                            nsManager
+                        );
+
+                        if (node.Count != 0)
+                        {
+                            if (node.Item(0).Attributes.Item(1).Value != "")
+                                indicator = node.Item(0).Attributes.Item(1).Value;
+                        }
+                        else
+                            indicator = "";
+                        break;
+                    }
+                }
+            }
+
             return indicator;
-
         }
-
 
         /// <summary>
         /// Function used to set the Abbreviations/Acronyms flag
         /// </summary>
         /// <returns></returns>
-        public String SetAbbrAcrFlag() {
+        public String SetAbbrAcrFlag()
+        {
             AbbrAcrflag = 1;
             return "1";
         }
@@ -1996,17 +2724,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function used to reset the Abbreviations/Acronyms flag
         /// </summary>
         /// <returns></returns>
-        public String ReSetAbbrAcrFlag() {
+        public String ReSetAbbrAcrFlag()
+        {
             AbbrAcrflag = 0;
             return "0";
         }
-
 
         /// <summary>
         /// Function used to return the Abbreviations/Acronyms flag value
         /// </summary>
         /// <returns></returns>
-        public int AbbrAcrFlag() {
+        public int AbbrAcrFlag()
+        {
             return AbbrAcrflag;
         }
 
@@ -2015,18 +2744,19 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public String PushAbrAcr(String element) {
+        public String PushAbrAcr(String element)
+        {
             abbrstackList.Push(element);
             return "1";
         }
-
 
         /// <summary>
         /// Function used to push the given element into stack
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public String PushAbrAcrpara(String element) {
+        public String PushAbrAcrpara(String element)
+        {
             abbrparastackList.Push(element);
             return "1";
         }
@@ -2036,7 +2766,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         /// <param name="element"></param>
         /// <returns></returns>
-        public String PushAbrAcrhead(String element) {
+        public String PushAbrAcrhead(String element)
+        {
             abbrheadstackList.Push(element);
             return "1";
         }
@@ -2045,7 +2776,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function used to peek an element from the stack
         /// </summary>
         /// <returns></returns>
-        public String PeekAbrAcr() {
+        public String PeekAbrAcr()
+        {
             String temp = abbrstackList.Pop();
             return temp;
         }
@@ -2054,17 +2786,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function used to peek an element from the stack
         /// </summary>
         /// <returns></returns>
-        public String PeekAbrAcrpara() {
+        public String PeekAbrAcrpara()
+        {
             String temp = abbrparastackList.Pop();
             return temp;
         }
 
-
         /// <summary>
-        /// Function used to peek an element from the stack 
+        /// Function used to peek an element from the stack
         /// </summary>
         /// <returns></returns>
-        public String PeekAbrAcrhead() {
+        public String PeekAbrAcrhead()
+        {
             String temp = abbrheadstackList.Pop();
             return temp;
         }
@@ -2073,7 +2806,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns the count value
         /// </summary>
         /// <returns></returns>
-        public String CountAbrAcr() {
+        public String CountAbrAcr()
+        {
             return abbrstackList.Count.ToString();
         }
 
@@ -2081,7 +2815,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns the count value
         /// </summary>
         /// <returns></returns>
-        public String CountAbrAcrpara() {
+        public String CountAbrAcrpara()
+        {
             return abbrparastackList.Count.ToString();
         }
 
@@ -2089,16 +2824,17 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function which returns the count value
         /// </summary>
         /// <returns></returns>
-        public String CountAbrAcrhead() {
+        public String CountAbrAcrhead()
+        {
             return abbrheadstackList.Count.ToString();
         }
-
 
         /// <summary>
         /// Function to return Rowspan value of a table
         /// </summary>
         /// <returns></returns>
-        public string Rowspan() {
+        public string Rowspan()
+        {
             rowspan++;
             return rowspan.ToString();
         }
@@ -2107,7 +2843,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to set Rowspan value of a table
         /// </summary>
         /// <returns></returns>
-        public string SetRowspan() {
+        public string SetRowspan()
+        {
             rowspan = 0;
             return rowspan.ToString();
         }
@@ -2116,33 +2853,37 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to return Rowspan value of a table
         /// </summary>
         /// <returns></returns>
-        public string GetRowspan() {
+        public string GetRowspan()
+        {
             return rowspan.ToString();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public string GetFlagRowspan() {
+        public string GetFlagRowspan()
+        {
             flagRowspan++;
             return flagRowspan.ToString();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public string SetFlagRowspan() {
+        public string SetFlagRowspan()
+        {
             flagRowspan = 0;
             return flagRowspan.ToString();
         }
 
         /// <summary>
-        /// 
+        ///
         /// </summary>
         /// <returns></returns>
-        public string ReturnFlagRowspan() {
+        public string ReturnFlagRowspan()
+        {
             return flagRowspan.ToString();
         }
 
@@ -2150,7 +2891,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to increment flag value for BDO
         /// </summary>
         /// <returns></returns>
-        public String SetbdoFlag() {
+        public String SetbdoFlag()
+        {
             bdoflag++;
             return bdoflag.ToString();
         }
@@ -2159,17 +2901,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to set flag value for BDO
         /// </summary>
         /// <returns></returns>
-        public String reSetbdoFlag() {
+        public String reSetbdoFlag()
+        {
             bdoflag = 0;
             return bdoflag.ToString();
         }
 
-
         /// <summary>
-        /// Function to increment flag value for RTL 
+        /// Function to increment flag value for RTL
         /// </summary>
         /// <returns></returns>
-        public String SetRtlFlag() {
+        public String SetRtlFlag()
+        {
             rtlFlag++;
             return rtlFlag.ToString();
         }
@@ -2178,16 +2921,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to set flag value for RTL
         /// </summary>
         /// <returns></returns>
-        public String ResetRtlFlag() {
+        public String ResetRtlFlag()
+        {
             rtlFlag = 0;
             return rtlFlag.ToString();
         }
 
         /// <summary>
-        /// Function to increment flag value for caption 
+        /// Function to increment flag value for caption
         /// </summary>
         /// <returns></returns>
-        public String SetcaptionFlag() {
+        public String SetcaptionFlag()
+        {
             captionFlag++;
             return captionFlag.ToString();
         }
@@ -2196,16 +2941,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to set flag value for caption
         /// </summary>
         /// <returns></returns>
-        public String reSetcaptionFlag() {
+        public String reSetcaptionFlag()
+        {
             captionFlag = 0;
             return captionFlag.ToString();
         }
 
         /// <summary>
-        /// Function to increment flag value for Cover page 
+        /// Function to increment flag value for Cover page
         /// </summary>
         /// <returns></returns>
-        public string CheckCoverPage() {
+        public string CheckCoverPage()
+        {
             checkCoverpage++;
             return checkCoverpage.ToString();
         }
@@ -2214,54 +2961,62 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// Function to increment flag value for cover page
         /// </summary>
         /// <returns></returns>
-        public string CodeFlag() {
+        public string CodeFlag()
+        {
             codeFlag++;
             return codeFlag.ToString();
         }
-
 
         /// <summary>
         /// Function to returns flag value for cover page
         /// </summary>
         /// <returns></returns>
-        public string GetCodeFlag() {
+        public string GetCodeFlag()
+        {
             return codeFlag.ToString();
         }
 
         /*Function to set flag value for cover page */
-        public string InitializeCodeFlag() {
+        public string InitializeCodeFlag()
+        {
             codeFlag = 0;
             return codeFlag.ToString();
         }
 
         /*Function to set flag value for Heading */
-        public int ListHeadingFlag() {
+        public int ListHeadingFlag()
+        {
             return listHeadingFlag;
         }
 
         /*Function used to push the given element into stack*/
-        public String PushListHeading(String element) {
+        public String PushListHeading(String element)
+        {
             listHeadingstackList.Push(element);
             return "1";
         }
 
         /*Function used to peek an element from the stack*/
-        public String PeekListHeading() {
+        public String PeekListHeading()
+        {
             String temp = "";
-            while (listHeadingstackList.Count > 0) {
+            while (listHeadingstackList.Count > 0)
+            {
                 temp = listHeadingstackList.Pop() + temp;
             }
             return temp;
         }
 
         /*Function used to set the Abbreviations/Acronyms flag*/
-        public String SetListHeadingFlag() {
+        public String SetListHeadingFlag()
+        {
             listHeadingFlag = 1;
             return "1";
         }
 
         /*Function used to reset the Abbreviations/Acronyms flag*/
-        public String ReSetListHeadingFlag() {
+        public String ReSetListHeadingFlag()
+        {
             listHeadingFlag = 0;
             return "0";
         }
@@ -2269,14 +3024,15 @@ namespace Daisy.SaveAsDAISY.Conversion {
         #region Different Langauage
 
         /*Function used to compare two Headings info*/
-        public String CompareHeading(String strA, String strB) {
+        public String CompareHeading(String strA, String strB)
+        {
             String value = "0";
-            if (strA != "" && strB != "") {
+            if (strA != "" && strB != "")
+            {
                 if (strA.Substring(0, strA.Length - 1).Equals(strB.Substring(0, strB.Length - 1)))
                     value = "1";
             }
             return value;
-
         }
 
         #endregion
@@ -2284,18 +3040,21 @@ namespace Daisy.SaveAsDAISY.Conversion {
         # region LineNum
 
         /*Function used to set the Linenumber flag*/
-        public String Setlinenumflag() {
+        public String Setlinenumflag()
+        {
             linenumflag = 1;
             return "1";
         }
 
         /*Function used to get the Linenumber flag value*/
-        public int Getlinenumflag() {
+        public int Getlinenumflag()
+        {
             return linenumflag;
         }
 
         /*Function used to reset the Linenumber flag*/
-        public String Resetlinenumflag() {
+        public String Resetlinenumflag()
+        {
             linenumflag = 0;
             return "0";
         }
@@ -2305,41 +3064,49 @@ namespace Daisy.SaveAsDAISY.Conversion {
         #region MultipleOOXML
 
         /*Function used to get the masterSub flag*/
-        public int ListMasterSubFlag() {
+        public int ListMasterSubFlag()
+        {
             return listMasterSubFlag;
         }
 
         /*Function used to push the given element into stack*/
-        public String PushMasterSubdoc(String element) {
+        public String PushMasterSubdoc(String element)
+        {
             masteSubstackList.Push(element);
             return "1";
         }
 
         /*Function used to peek an element from the stack*/
-        public String PeekMasterSubdoc() {
+        public String PeekMasterSubdoc()
+        {
             String temp = "";
-            while (masteSubstackList.Count > 0) {
+            while (masteSubstackList.Count > 0)
+            {
                 temp = masteSubstackList.Pop() + temp;
             }
             return temp;
         }
 
         /*Function used to set the MultipleOOXML flag*/
-        public String MasterSubSetFlag() {
+        public String MasterSubSetFlag()
+        {
             listMasterSubFlag = 1;
             return "1";
         }
 
         /*Function used to reset the MultipleOOXML flag*/
-        public String MasterSubResetFlag() {
+        public String MasterSubResetFlag()
+        {
             listMasterSubFlag = 0;
             return "0";
         }
 
         /*Function used to close levels for MultipleOOXML */
-        public String ClosingMasterSub(String value) {
+        public String ClosingMasterSub(String value)
+        {
             String output = "";
-            for (int i = Convert.ToInt16(value); i >= 1; i--) {
+            for (int i = Convert.ToInt16(value); i >= 1; i--)
+            {
                 output = output + "</level" + i + ">";
             }
 
@@ -2348,9 +3115,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         /*Function used to open levels for MultipleOOXML */
-        public String OpenMasterSub(String value) {
+        public String OpenMasterSub(String value)
+        {
             String output = "";
-            for (int i = 1; i <= Convert.ToInt16(value); i++) {
+            for (int i = 1; i <= Convert.ToInt16(value); i++)
+            {
                 output = output + "<level" + i + ">";
             }
 
@@ -2362,11 +3131,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         #region List
 
-        public String DiffLevel(String opLvl, String PeekLvl) {
+        public String DiffLevel(String opLvl, String PeekLvl)
+        {
             return Convert.ToString(Convert.ToInt16(opLvl) - Convert.ToInt16(PeekLvl));
         }
 
-        public String ReduceOne(String opLvl) {
+        public String ReduceOne(String opLvl)
+        {
             return Convert.ToString(Convert.ToInt16(opLvl) - 1);
         }
 
@@ -2375,35 +3146,48 @@ namespace Daisy.SaveAsDAISY.Conversion {
         #region Lists Numbering
 
         /*Function which increments the counter value*/
-        public void Increment(int rec, int pkLvl, String numId) {
-            for (int i = 0; i <= rec; i++) {
+        public void Increment(int rec, int pkLvl, String numId)
+        {
+            for (int i = 0; i <= rec; i++)
+            {
                 ListPush(i);
                 if (i > pkLvl)
                     IncrementListCounters(i.ToString(), numId);
-
             }
         }
 
-        public String TextList(String numFormat, String lvlText, String numId, String iLvl) {
+        public String TextList(String numFormat, String lvlText, String numId, String iLvl)
+        {
             String text = "";
             int index = lvlText.IndexOf('%');
-            if (index < 0) {
-                if (numFormat == "bullet") {
+            if (index < 0)
+            {
+                if (numFormat == "bullet")
+                {
                     text = bulletChar[Convert.ToInt16(iLvl)].ToString();
-                } else if (numFormat == "none") {
+                }
+                else if (numFormat == "none")
+                {
                     text = "";
-                } else if (numFormat == "") {
+                }
+                else if (numFormat == "")
+                {
                     text = "";
-                } else {
+                }
+                else
+                {
                     text = lvlText;
                 }
                 text = text + " ";
-            } else {
+            }
+            else
+            {
                 text = lvlText.Substring(lvlText.IndexOf('%'));
                 AbstractFormat(numId, iLvl);
                 int cntSymbol = 0;
 
-                for (int j = 0; j < text.Length; j++) {
+                for (int j = 0; j < text.Length; j++)
+                {
                     if (text[j].ToString() == "%")
                         cntSymbol++;
                 }
@@ -2414,32 +3198,73 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     cntCopy = NonZeroListCounter(numId);
                 else
                     cntCopy = 0;
-                for (int i = 0; i < text.Length; i++) {
+                for (int i = 0; i < text.Length; i++)
+                {
                     chr.SetValue(text[i].ToString(), i);
-                    if (i > 0) {
-                        if (chr.GetValue(i - 1).ToString() == "%") {
-                            if (numFormat == "decimalZero") {
-                                if (cntSymbol == 1) {
-                                    String valList = SpecificFormat(cntCopy.ToString(), numFormat, iLvl);
+                    if (i > 0)
+                    {
+                        if (chr.GetValue(i - 1).ToString() == "%")
+                        {
+                            if (numFormat == "decimalZero")
+                            {
+                                if (cntSymbol == 1)
+                                {
+                                    String valList = SpecificFormat(
+                                        cntCopy.ToString(),
+                                        numFormat,
+                                        iLvl
+                                    );
                                     chr.SetValue("0" + valList, i);
-                                } else {
-                                    if (cntCopy > 0) {
-                                        String valList = SpecificFormat(((ArrayList)listCounters["List" + numId])[cntCopy].ToString(), numFormat, iLvl);
+                                }
+                                else
+                                {
+                                    if (cntCopy > 0)
+                                    {
+                                        String valList = SpecificFormat(
+                                            ((ArrayList)listCounters["List" + numId])[
+                                                cntCopy
+                                            ].ToString(),
+                                            numFormat,
+                                            iLvl
+                                        );
                                         if (Convert.ToInt16(valList) < 9)
                                             chr.SetValue("0" + valList, i);
                                         else
                                             chr.SetValue(valList, i);
-                                    } else {
-                                        String valList = SpecificFormat(((ArrayList)listCounters["List" + numId])[cntCopy].ToString(), numFormat, iLvl);
+                                    }
+                                    else
+                                    {
+                                        String valList = SpecificFormat(
+                                            ((ArrayList)listCounters["List" + numId])[
+                                                cntCopy
+                                            ].ToString(),
+                                            numFormat,
+                                            iLvl
+                                        );
                                         chr.SetValue(valList, i);
                                     }
                                 }
-                            } else {
-                                if (cntSymbol == 1) {
-                                    String valList = SpecificFormat(cntCopy.ToString(), numFormat, iLvl);
+                            }
+                            else
+                            {
+                                if (cntSymbol == 1)
+                                {
+                                    String valList = SpecificFormat(
+                                        cntCopy.ToString(),
+                                        numFormat,
+                                        iLvl
+                                    );
                                     chr.SetValue(valList, i);
-                                } else {
-                                    String valList = SpecificFormat(((ArrayList)listCounters["List" + numId])[cntCopy].ToString(), absFormat[cntCopy].ToString(), iLvl);
+                                }
+                                else
+                                {
+                                    String valList = SpecificFormat(
+                                        ((ArrayList)listCounters["List" + numId])[
+                                            cntCopy
+                                        ].ToString(),
+                                        absFormat[cntCopy].ToString(),
+                                        iLvl
+                                    );
                                     chr.SetValue(valList, i);
                                 }
                             }
@@ -2448,7 +3273,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     }
                 }
                 String temp = "";
-                for (int i = 0; i < chr.Length; i++) {
+                for (int i = 0; i < chr.Length; i++)
+                {
                     temp = temp + chr[i];
                 }
                 temp = temp.Replace("%", "");
@@ -2458,43 +3284,76 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return text + " ";
         }
 
-        public String SpecificFormat(String lvlText, String numFormat, String iLvl) {
+        public String SpecificFormat(String lvlText, String numFormat, String iLvl)
+        {
             String tempString = "";
-            if (numFormat == "decimal" || numFormat == "decimalZero") {
+            if (numFormat == "decimal" || numFormat == "decimalZero")
+            {
                 tempString = lvlText;
-            } else if (numFormat == "lowerLetter") {
+            }
+            else if (numFormat == "lowerLetter")
+            {
                 tempString = PageNumLowerAlphabet(lvlText);
-            } else if (numFormat == "upperLetter") {
+            }
+            else if (numFormat == "upperLetter")
+            {
                 tempString = PageNumUpperAlphabet(lvlText);
-            } else if (numFormat == "upperRoman") {
+            }
+            else if (numFormat == "upperRoman")
+            {
                 tempString = PageNumUpperRoman(lvlText);
-            } else if (numFormat == "lowerRoman") {
+            }
+            else if (numFormat == "lowerRoman")
+            {
                 tempString = PageNumLowerRoman(lvlText);
-            } else if (numFormat == "bullet") {
+            }
+            else if (numFormat == "bullet")
+            {
                 tempString = bulletChar[Convert.ToInt16(iLvl)].ToString();
-            } else if (numFormat == "none") {
+            }
+            else if (numFormat == "none")
+            {
                 tempString = "";
-            } else {
+            }
+            else
+            {
                 tempString = lvlText;
             }
             return tempString;
         }
 
-        public void AbstractFormat(String numId, String iLvl) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public void AbstractFormat(String numId, String iLvl)
+        {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
 
-            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(numberRelationshipType)) {
+            foreach (
+                PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                    numberRelationshipType
+                )
+            )
+            {
                 numberRelationship = searchRelation;
                 break;
             }
 
-            Uri numberPartUri = PackUriHelper.ResolvePartUri(numberRelationship.SourceUri, numberRelationship.TargetUri);
+            Uri numberPartUri = PackUriHelper.ResolvePartUri(
+                numberRelationship.SourceUri,
+                numberRelationship.TargetUri
+            );
             PackagePart numberPartxml = pack.GetPart(numberPartUri);
 
             XmlDocument doc = new XmlDocument();
@@ -2504,76 +3363,121 @@ namespace Daisy.SaveAsDAISY.Conversion {
             XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
             nsManager.AddNamespace("w", docNamespace);
 
-
-            XmlNodeList list = doc.SelectNodes("w:numbering/w:num[@w:numId=" + numId + "]/w:abstractNumId", nsManager);
-            if (list.Count != 0) {
+            XmlNodeList list = doc.SelectNodes(
+                "w:numbering/w:num[@w:numId=" + numId + "]/w:abstractNumId",
+                nsManager
+            );
+            if (list.Count != 0)
+            {
                 String absNumid = list[0].Attributes[0].Value;
-                XmlNodeList listAbs = doc.SelectNodes("w:numbering/w:abstractNum[@w:abstractNumId=" + absNumid + "]/w:lvl", nsManager);
-                if (listAbs.Count != 0) {
+                XmlNodeList listAbs = doc.SelectNodes(
+                    "w:numbering/w:abstractNum[@w:abstractNumId=" + absNumid + "]/w:lvl",
+                    nsManager
+                );
+                if (listAbs.Count != 0)
+                {
                     for (int j = 0; j < listAbs.Count; j++)
-                        absFormat[j] = listAbs[j].SelectSingleNode("w:numFmt", nsManager).Attributes[0].Value;
+                        absFormat[j] = listAbs[j]
+                            .SelectSingleNode("w:numFmt", nsManager)
+                            .Attributes[0].Value;
                 }
             }
         }
 
-        public String IsList(String numId) {
+        public String IsList(String numId)
+        {
             if (listCounters.ContainsKey("List" + numId))
                 return "ListTrue";
             else if (headingCounters.ContainsKey("List" + numId))
                 return "HeadTrue";
             else
                 return numId;
-
         }
 
-        public void IncrementListCounters(String iLvl, String numId) {
+        public void IncrementListCounters(String iLvl, String numId)
+        {
             if (startItem[Convert.ToInt16(iLvl)].ToString() == "")
                 startItem[Convert.ToInt16(iLvl)] = "0";
 
-            if (((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)].ToString() == DaisyClass.emptyListCounter) {
+            if (
+                ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)].ToString()
+                == DaisyClass.emptyListCounter
+            )
+            {
                 if (Convert.ToInt16(startItem[Convert.ToInt16(iLvl)]) != 1)
-                    ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)] = startItem[Convert.ToInt16(iLvl)].ToString();
+                    ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)] = startItem[
+                        Convert.ToInt16(iLvl)
+                    ].ToString();
                 else
                     ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)] = 1;
-            } else
-                ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)] = Convert.ToInt16(((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)]) + 1;
+            }
+            else
+                ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)] =
+                    Convert.ToInt16(
+                        ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)]
+                    ) + 1;
 
-            for (int i = Convert.ToInt16(iLvl) + 1; i < ((ArrayList)listCounters["List" + numId]).Count; i++) {
+            for (
+                int i = Convert.ToInt16(iLvl) + 1;
+                i < ((ArrayList)listCounters["List" + numId]).Count;
+                i++
+            )
+            {
                 ((ArrayList)listCounters["List" + numId])[i] = DaisyClass.emptyListCounter;
             }
 
-            for (int i = 0; i <= Convert.ToInt16(iLvl); i++) {
-                if (((ArrayList)listCounters["List" + numId])[Convert.ToInt16(i)].ToString() == DaisyClass.emptyListCounter)
-                    ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(i)] = startItem[i].ToString();
+            for (int i = 0; i <= Convert.ToInt16(iLvl); i++)
+            {
+                if (
+                    ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(i)].ToString()
+                    == DaisyClass.emptyListCounter
+                )
+                    ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(i)] = startItem[
+                        i
+                    ].ToString();
             }
-
         }
 
-        public int GetListCounter(string iLvl, string numId) {
-            string listCounter = ((ArrayList)listCounters["List" + numId])[Convert.ToInt16(iLvl)].ToString();
+        public int GetListCounter(string iLvl, string numId)
+        {
+            string listCounter = ((ArrayList)listCounters["List" + numId])[
+                Convert.ToInt16(iLvl)
+            ].ToString();
             if (listCounter == DaisyClass.emptyListCounter)
                 return 1;
             else
                 return int.Parse(listCounter) + 1;
         }
 
-        public Int16 NonZeroListCounter(String numId) {
+        public Int16 NonZeroListCounter(String numId)
+        {
             Int16 nonZeroValue = -1;
             Int16 i = 0;
-            for (i = 0; i < ((ArrayList)listCounters["List" + numId]).Count; i++) {
-                if (((ArrayList)listCounters["List" + numId])[i].ToString() == DaisyClass.emptyListCounter) {
-                    nonZeroValue = Convert.ToInt16(((ArrayList)listCounters["List" + numId])[i - 1].ToString());
+            for (i = 0; i < ((ArrayList)listCounters["List" + numId]).Count; i++)
+            {
+                if (
+                    ((ArrayList)listCounters["List" + numId])[i].ToString()
+                    == DaisyClass.emptyListCounter
+                )
+                {
+                    nonZeroValue = Convert.ToInt16(
+                        ((ArrayList)listCounters["List" + numId])[i - 1].ToString()
+                    );
                     break;
                 }
             }
             if (nonZeroValue == -1)
-                nonZeroValue = Convert.ToInt16(((ArrayList)listCounters["List" + numId])[8].ToString());
+                nonZeroValue = Convert.ToInt16(
+                    ((ArrayList)listCounters["List" + numId])[8].ToString()
+                );
 
             return nonZeroValue;
         }
 
-        public String ResetListCounters() {
-            foreach (DictionaryEntry myEntry in listCounters) {
+        public String ResetListCounters()
+        {
+            foreach (DictionaryEntry myEntry in listCounters)
+            {
                 for (int i = 0; i < 9; i++)
                     ((ArrayList)myEntry.Value)[i] = DaisyClass.emptyListCounter;
             }
@@ -2581,21 +3485,28 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return "1";
         }
 
-        public String GetCurrentNumID() {
+        public String GetCurrentNumID()
+        {
             return prevNumId;
         }
 
-        public String CheckNumID(String numId) {
-            if (prevNumId != numId) {
+        public String CheckNumID(String numId)
+        {
+            if (prevNumId != numId)
+            {
                 prevNumId = numId;
                 return "True";
-            } else {
+            }
+            else
+            {
                 return "False";
             }
         }
 
-        public string StartNewListCounter(String numId) {
-            if (!listCounters.ContainsKey("List" + numId)) {
+        public string StartNewListCounter(String numId)
+        {
+            if (!listCounters.ContainsKey("List" + numId))
+            {
                 listCounters.Add("List" + numId, new ArrayList(9));
 
                 for (int i = 0; i < 9; i++)
@@ -2606,13 +3517,15 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         /*Function which decrements the counter value*/
-        public int DecrementStart(int rec) {
+        public int DecrementStart(int rec)
+        {
             rec = rec - 1;
             return rec;
         }
 
         /*Function which decrements the counter value*/
-        public String StartString(int iLvl, int strtItem) {
+        public String StartString(int iLvl, int strtItem)
+        {
             startItem[iLvl] = strtItem.ToString();
             return "1";
         }
@@ -2621,35 +3534,48 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         #region Heading Numbering
 
-        public void StoreHeadingPart(String headingInfo) {
+        public void StoreHeadingPart(String headingInfo)
+        {
             this.headingInfo = headingInfo;
         }
 
-        public String RetrieveHeadingPart() {
+        public String RetrieveHeadingPart()
+        {
             return this.headingInfo;
         }
 
-        public String TextHeading(String numFormat, String lvlText, String numId, String iLvl) {
-
+        public String TextHeading(String numFormat, String lvlText, String numId, String iLvl)
+        {
             String text = "";
             int index = lvlText.IndexOf('%');
-            if (index < 0) {
-                if (numFormat == "bullet") {
+            if (index < 0)
+            {
+                if (numFormat == "bullet")
+                {
                     text = bulletChar[Convert.ToInt16(iLvl)].ToString();
-                } else if (numFormat == "none") {
+                }
+                else if (numFormat == "none")
+                {
                     text = "";
-                } else if (numFormat == "") {
+                }
+                else if (numFormat == "")
+                {
                     text = "";
-                } else {
+                }
+                else
+                {
                     text = lvlText;
                 }
                 text = text + " ";
-            } else {
+            }
+            else
+            {
                 text = lvlText.Substring(lvlText.IndexOf('%'));
                 AbstractFormat(numId, iLvl);
                 int cntSymbol = 0;
 
-                for (int j = 0; j < text.Length; j++) {
+                for (int j = 0; j < text.Length; j++)
+                {
                     if (text[j].ToString() == "%")
                         cntSymbol++;
                 }
@@ -2660,32 +3586,73 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     cntCopy = NonZeroHeadingCounter(numId);
                 else
                     cntCopy = 0;
-                for (int i = 0; i < text.Length; i++) {
+                for (int i = 0; i < text.Length; i++)
+                {
                     chr.SetValue(text[i].ToString(), i);
-                    if (i > 0) {
-                        if (chr.GetValue(i - 1).ToString() == "%") {
-                            if (numFormat == "decimalZero") {
-                                if (cntSymbol == 1) {
-                                    String valList = SpecificFormat(cntCopy.ToString(), numFormat, iLvl);
+                    if (i > 0)
+                    {
+                        if (chr.GetValue(i - 1).ToString() == "%")
+                        {
+                            if (numFormat == "decimalZero")
+                            {
+                                if (cntSymbol == 1)
+                                {
+                                    String valList = SpecificFormat(
+                                        cntCopy.ToString(),
+                                        numFormat,
+                                        iLvl
+                                    );
                                     chr.SetValue("0" + valList, i);
-                                } else {
-                                    if (cntCopy > 0) {
-                                        String valList = SpecificFormat(((ArrayList)headingCounters["List" + numId])[cntCopy].ToString(), numFormat, iLvl);
+                                }
+                                else
+                                {
+                                    if (cntCopy > 0)
+                                    {
+                                        String valList = SpecificFormat(
+                                            ((ArrayList)headingCounters["List" + numId])[
+                                                cntCopy
+                                            ].ToString(),
+                                            numFormat,
+                                            iLvl
+                                        );
                                         if (Convert.ToInt16(valList) < 9)
                                             chr.SetValue("0" + valList, i);
                                         else
                                             chr.SetValue(valList, i);
-                                    } else {
-                                        String valList = SpecificFormat(((ArrayList)headingCounters["List" + numId])[cntCopy].ToString(), numFormat, iLvl);
+                                    }
+                                    else
+                                    {
+                                        String valList = SpecificFormat(
+                                            ((ArrayList)headingCounters["List" + numId])[
+                                                cntCopy
+                                            ].ToString(),
+                                            numFormat,
+                                            iLvl
+                                        );
                                         chr.SetValue(valList, i);
                                     }
                                 }
-                            } else {
-                                if (cntSymbol == 1) {
-                                    String valList = SpecificFormat(cntCopy.ToString(), numFormat, iLvl);
+                            }
+                            else
+                            {
+                                if (cntSymbol == 1)
+                                {
+                                    String valList = SpecificFormat(
+                                        cntCopy.ToString(),
+                                        numFormat,
+                                        iLvl
+                                    );
                                     chr.SetValue(valList, i);
-                                } else {
-                                    String valList = SpecificFormat(((ArrayList)headingCounters["List" + numId])[cntCopy].ToString(), absFormat[cntCopy].ToString(), iLvl);
+                                }
+                                else
+                                {
+                                    String valList = SpecificFormat(
+                                        ((ArrayList)headingCounters["List" + numId])[
+                                            cntCopy
+                                        ].ToString(),
+                                        absFormat[cntCopy].ToString(),
+                                        iLvl
+                                    );
                                     chr.SetValue(valList, i);
                                 }
                             }
@@ -2694,7 +3661,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     }
                 }
                 String temp = "";
-                for (int i = 0; i < chr.Length; i++) {
+                for (int i = 0; i < chr.Length; i++)
+                {
                     temp = temp + chr[i];
                 }
                 temp = temp.Replace("%", "");
@@ -2704,7 +3672,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return text + " ";
         }
 
-        public void BulletChar() {
+        public void BulletChar()
+        {
             bulletChar.Add("\u2605");
             bulletChar.Add("\u25B6");
             bulletChar.Add("\u25A3");
@@ -2716,67 +3685,107 @@ namespace Daisy.SaveAsDAISY.Conversion {
             bulletChar.Add("\u25C7");
         }
 
-        public void IncrementHeadingCounters(String iLvl, String numId, String absId) {
-            if (numId != "" && absId != "") {
+        public void IncrementHeadingCounters(String iLvl, String numId, String absId)
+        {
+            if (numId != "" && absId != "")
+            {
                 String tempId = "";
                 tempId = CheckAbstCounter(numId, absId);
 
-                switch (((ArrayList)startHeadingItem["List" + tempId])[Convert.ToInt16(iLvl)].ToString()) {
+                switch (
+                    ((ArrayList)startHeadingItem["List" + tempId])[Convert.ToInt16(iLvl)].ToString()
+                )
+                {
                     case "Inc":
 
-                        switch (((ArrayList)headingCounters["List" + numId])[Convert.ToInt16(iLvl)].ToString()) {
+                        switch (
+                            ((ArrayList)headingCounters["List" + numId])[
+                                Convert.ToInt16(iLvl)
+                            ].ToString()
+                        )
+                        {
                             case DaisyClass.emptyListCounter:
-                                ((ArrayList)headingCounters["List" + numId])[Convert.ToInt16(iLvl)] = 1;
+                                ((ArrayList)headingCounters["List" + numId])[
+                                    Convert.ToInt16(iLvl)
+                                ] = 1;
                                 break;
                             default:
-                                ((ArrayList)headingCounters["List" + numId])[Convert.ToInt16(iLvl)] = Convert.ToInt16(((ArrayList)headingCounters["List" + numId])[Convert.ToInt16(iLvl)]) + 1;
+                                ((ArrayList)headingCounters["List" + numId])[
+                                    Convert.ToInt16(iLvl)
+                                ] =
+                                    Convert.ToInt16(
+                                        ((ArrayList)headingCounters["List" + numId])[
+                                            Convert.ToInt16(iLvl)
+                                        ]
+                                    ) + 1;
                                 break;
                         }
                         break;
 
                     default:
-                        ((ArrayList)headingCounters["List" + numId])[Convert.ToInt16(iLvl)] = ((ArrayList)startHeadingItem["List" + tempId])[Convert.ToInt16(iLvl)].ToString();
+                        ((ArrayList)headingCounters["List" + numId])[Convert.ToInt16(iLvl)] = (
+                            (ArrayList)startHeadingItem["List" + tempId]
+                        )[Convert.ToInt16(iLvl)].ToString();
                         break;
                 }
 
-                for (int i = Convert.ToInt16(iLvl) + 1; i < ((ArrayList)headingCounters["List" + numId]).Count; i++) {
+                for (
+                    int i = Convert.ToInt16(iLvl) + 1;
+                    i < ((ArrayList)headingCounters["List" + numId]).Count;
+                    i++
+                )
+                {
                     ((ArrayList)headingCounters["List" + numId])[i] = DaisyClass.emptyListCounter;
                 }
             }
         }
 
-        public String CheckAbstCounter(String numId, String absId) {
+        public String CheckAbstCounter(String numId, String absId)
+        {
             String tempId = "";
-            if (!startHeadingItem.ContainsKey("List" + numId)) {
+            if (!startHeadingItem.ContainsKey("List" + numId))
+            {
                 if (absId == "")
                     absId = baseAbsId;
 
                 if (baseAbsId == absId)
                     tempId = baseNumId;
-            } else
+            }
+            else
                 tempId = numId;
 
             return tempId;
         }
 
-        public Int16 NonZeroHeadingCounter(String numId) {
+        public Int16 NonZeroHeadingCounter(String numId)
+        {
             Int16 nonZeroValue = -1;
             Int16 i = 0;
-            for (i = 0; i < ((ArrayList)headingCounters["List" + numId]).Count; i++) {
-                if (((ArrayList)headingCounters["List" + numId])[i].ToString() == DaisyClass.emptyListCounter) {
-                    nonZeroValue = Convert.ToInt16(((ArrayList)headingCounters["List" + numId])[i - 1].ToString());
+            for (i = 0; i < ((ArrayList)headingCounters["List" + numId]).Count; i++)
+            {
+                if (
+                    ((ArrayList)headingCounters["List" + numId])[i].ToString()
+                    == DaisyClass.emptyListCounter
+                )
+                {
+                    nonZeroValue = Convert.ToInt16(
+                        ((ArrayList)headingCounters["List" + numId])[i - 1].ToString()
+                    );
                     break;
                 }
             }
             if (nonZeroValue == -1)
-                nonZeroValue = Convert.ToInt16(((ArrayList)headingCounters["List" + numId])[8].ToString());
+                nonZeroValue = Convert.ToInt16(
+                    ((ArrayList)headingCounters["List" + numId])[8].ToString()
+                );
 
             return nonZeroValue;
-
         }
 
-        public String ResetHeadingCounters() {
-            foreach (DictionaryEntry myEntry in headingCounters) {
+        public String ResetHeadingCounters()
+        {
+            foreach (DictionaryEntry myEntry in headingCounters)
+            {
                 for (int i = 0; i < 9; i++)
                     ((ArrayList)myEntry.Value)[i] = "";
             }
@@ -2784,17 +3793,24 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return "1";
         }
 
-        public String CheckHeadingNumID(String numId) {
+        public String CheckHeadingNumID(String numId)
+        {
             String diffNumId = "";
-            if (prevHeadNumId != numId) {
-                if (prevHeadNumId != "") {
-                    diffNumId = "True";
-                    prevHeadNumId = numId;
-                } else {
+            if (prevHeadNumId != numId)
+            {
+                if (prevHeadNumId != "")
+                {
                     diffNumId = "True";
                     prevHeadNumId = numId;
                 }
-            } else {
+                else
+                {
+                    diffNumId = "True";
+                    prevHeadNumId = numId;
+                }
+            }
+            else
+            {
                 diffNumId = "False";
                 prevHeadNumId = numId;
             }
@@ -2802,13 +3818,16 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return diffNumId;
         }
 
-        public String StartNewHeadingCounter(String numId, String absId) {
-            if (headingCounters.Count == 0) {
+        public String StartNewHeadingCounter(String numId, String absId)
+        {
+            if (headingCounters.Count == 0)
+            {
                 baseNumId = numId;
                 baseAbsId = absId;
             }
 
-            if (!headingCounters.ContainsKey("List" + numId)) {
+            if (!headingCounters.ContainsKey("List" + numId))
+            {
                 headingCounters.Add("List" + numId, new ArrayList(9));
 
                 for (int i = 0; i < 9; i++)
@@ -2818,9 +3837,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return "1";
         }
 
-        public String StartHeadingValueCtr(String numId, String absId) {
-            if (!startHeadingItem.ContainsKey("List" + numId)) {
-                if (baseAbsId != absId || !startHeadingItem.ContainsKey("List" + baseNumId)) {
+        public String StartHeadingValueCtr(String numId, String absId)
+        {
+            if (!startHeadingItem.ContainsKey("List" + numId))
+            {
+                if (baseAbsId != absId || !startHeadingItem.ContainsKey("List" + baseNumId))
+                {
                     startHeadingItem.Add("List" + numId, new ArrayList(9));
 
                     for (int i = 0; i < 9; i++)
@@ -2831,9 +3853,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return "1";
         }
 
-        public String StartHeadingNewCtr(String numId, String absId) {
-            if (!startHeadingItem.ContainsKey("List" + numId)) {
-                if (baseAbsId != absId || !startHeadingItem.ContainsKey("List" + baseNumId)) {
+        public String StartHeadingNewCtr(String numId, String absId)
+        {
+            if (!startHeadingItem.ContainsKey("List" + numId))
+            {
+                if (baseAbsId != absId || !startHeadingItem.ContainsKey("List" + baseNumId))
+                {
                     startHeadingItem.Add("List" + numId, new ArrayList(9));
 
                     for (int i = 0; i < 9; i++)
@@ -2844,32 +3869,53 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return "1";
         }
 
-        public string CopyToBaseCounter(String numId) {
-            if (numId != baseNumId && numId != "" && numId != "0") {
-                for (int i = 0; i < 9; i++) {
-                    ((ArrayList)headingCounters["List" + baseNumId])[i] = ((ArrayList)headingCounters["List" + numId])[i];
+        public string CopyToBaseCounter(String numId)
+        {
+            if (numId != baseNumId && numId != "" && numId != "0")
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    ((ArrayList)headingCounters["List" + baseNumId])[i] = (
+                        (ArrayList)headingCounters["List" + numId]
+                    )[i];
                 }
 
                 return "1";
-            } else
+            }
+            else
                 return "2";
-
         }
 
-        public string CopyToCurrCounter(String numId) {
-            if (numId != baseNumId && numId != "" && numId != "0") {
-                for (int i = 0; i < 9; i++) {
-                    if (((ArrayList)headingCounters["List" + baseNumId])[i].ToString() != DaisyClass.emptyListCounter)
-                        ((ArrayList)headingCounters["List" + numId])[i] = ((ArrayList)headingCounters["List" + baseNumId])[i];
+        public string CopyToCurrCounter(String numId)
+        {
+            if (numId != baseNumId && numId != "" && numId != "0")
+            {
+                for (int i = 0; i < 9; i++)
+                {
+                    if (
+                        ((ArrayList)headingCounters["List" + baseNumId])[i].ToString()
+                        != DaisyClass.emptyListCounter
+                    )
+                        ((ArrayList)headingCounters["List" + numId])[i] = (
+                            (ArrayList)headingCounters["List" + baseNumId]
+                        )[i];
                 }
                 return "1";
-            } else
+            }
+            else
                 return "2";
-
         }
 
         /*Function which decrements the counter value*/
-        public String StartHeadingString(int iLvl, String strtItem, String numId, String absId, String location, String overRide) {
+        public String StartHeadingString(
+            int iLvl,
+            String strtItem,
+            String numId,
+            String absId,
+            String location,
+            String overRide
+        )
+        {
             if (strtItem == "")
                 strtItem = "0";
 
@@ -2878,7 +3924,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
             if (baseAbsId == absId)
                 numId = baseNumId;
 
-            if (iLvl == 0) {
+            if (iLvl == 0)
+            {
                 for (int i = 1; i < 9; i++)
                     ((ArrayList)startHeadingItem["List" + numId])[i] = "";
             }
@@ -2887,39 +3934,53 @@ namespace Daisy.SaveAsDAISY.Conversion {
             for (int i = val; i < 9; i++)
                 ((ArrayList)startHeadingItem["List" + numId])[i] = "";
 
-            if (overRide == "Yes" && location == "Document" && overrideFlag == 1) {
+            if (overRide == "Yes" && location == "Document" && overrideFlag == 1)
+            {
                 ((ArrayList)startHeadingItem["List" + numId])[iLvl] = strtItem;
-            } else {
-                if (((ArrayList)startHeadingItem["List" + numId])[iLvl].ToString() == "") {
+            }
+            else
+            {
+                if (((ArrayList)startHeadingItem["List" + numId])[iLvl].ToString() == "")
+                {
                     if ((baseAbsId == absId && baseNumId != numId && overRide == "No"))
                         ((ArrayList)startHeadingItem["List" + numId])[iLvl] = "Inc";
-
                     else
                         ((ArrayList)startHeadingItem["List" + numId])[iLvl] = strtItem;
-                } else {
+                }
+                else
+                {
                     ((ArrayList)startHeadingItem["List" + numId])[iLvl] = "Inc";
                 }
             }
             return "0";
         }
 
-        public Int16 CheckOverRideFlag(String numId) {
+        public Int16 CheckOverRideFlag(String numId)
+        {
             Int16 overrideFlag = 0;
-            if (!OverideNumList.Contains(numId)) {
+            if (!OverideNumList.Contains(numId))
+            {
                 OverideNumList.Add(numId);
                 overrideFlag = 1;
-            } else {
+            }
+            else
+            {
                 overrideFlag = 0;
             }
             return overrideFlag;
         }
 
-        public String AddCurrHeadId(String currId) {
-            if (currId != "0" && currId != "") {
-                if (prevHeadId[0].ToString() == "") {
+        public String AddCurrHeadId(String currId)
+        {
+            if (currId != "0" && currId != "")
+            {
+                if (prevHeadId[0].ToString() == "")
+                {
                     prevHeadId[0] = currId;
                     prevHeadId[1] = currId;
-                } else {
+                }
+                else
+                {
                     prevHeadId[0] = prevHeadId[1];
                     prevHeadId[1] = currId;
                 }
@@ -2927,13 +3988,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return "1";
         }
 
-        public String AddCurrHeadLevel(String currLvl, String location, String absId) {
+        public String AddCurrHeadLevel(String currLvl, String location, String absId)
+        {
             String diffValue = "" + "|" + prevHeadLvl;
 
-            if (absId != "") {
-                if (prevHeadLvl == "") {
-                    if (Convert.ToInt16(currLvl) > 0) {
-                        for (int i = 0; i < Convert.ToInt16(currLvl); i++) {
+            if (absId != "")
+            {
+                if (prevHeadLvl == "")
+                {
+                    if (Convert.ToInt16(currLvl) > 0)
+                    {
+                        for (int i = 0; i < Convert.ToInt16(currLvl); i++)
+                        {
                             StartHeadingValueCtr(baseNumId, baseAbsId);
                             StartHeadingString(i, "1", baseNumId, baseAbsId, "Document", "No");
                             IncrementHeadingCounters(i.ToString(), baseNumId, baseAbsId);
@@ -2941,10 +4007,22 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     }
                     prevHeadLvl = currLvl;
                     diffValue = "" + "|" + prevHeadLvl;
-                } else {
-                    if (Convert.ToInt16(currLvl) - Convert.ToInt16(prevHeadLvl) > 1) {
-                        diffValue = Convert.ToInt16(currLvl) - Convert.ToInt16(prevHeadLvl) + "|" + prevHeadLvl;
-                        NumberHeadings(Convert.ToInt16(prevHeadLvl), Convert.ToInt16(currLvl), location, absId);
+                }
+                else
+                {
+                    if (Convert.ToInt16(currLvl) - Convert.ToInt16(prevHeadLvl) > 1)
+                    {
+                        diffValue =
+                            Convert.ToInt16(currLvl)
+                            - Convert.ToInt16(prevHeadLvl)
+                            + "|"
+                            + prevHeadLvl;
+                        NumberHeadings(
+                            Convert.ToInt16(prevHeadLvl),
+                            Convert.ToInt16(currLvl),
+                            location,
+                            absId
+                        );
                     }
 
                     prevHeadLvl = currLvl;
@@ -2953,21 +4031,38 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return diffValue;
         }
 
-        public void NumberHeadings(int prevHeadLvl, int currLvl, String location, String absId) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public void NumberHeadings(int prevHeadLvl, int currLvl, String location, String absId)
+        {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
 
-            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(numberRelationshipType)) {
+            foreach (
+                PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                    numberRelationshipType
+                )
+            )
+            {
                 numberRelationship = searchRelation;
                 break;
             }
 
-            Uri numberPartUri = PackUriHelper.ResolvePartUri(numberRelationship.SourceUri, numberRelationship.TargetUri);
+            Uri numberPartUri = PackUriHelper.ResolvePartUri(
+                numberRelationship.SourceUri,
+                numberRelationship.TargetUri
+            );
             PackagePart numberPartxml = pack.GetPart(numberPartUri);
 
             XmlDocument doc = new XmlDocument();
@@ -2981,9 +4076,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
             CopyToCurrCounter(prevHeadId[1].ToString());
 
             int val = prevHeadLvl + 1;
-            for (int i = val; i <= currLvl; i++) {
-                XmlNodeList listDel = doc.SelectNodes("w:numbering/w:num[@w:numId=" + prevHeadId[0] + "]/w:lvlOverride[@w:ilvl=" + i + "]/w:startOverride", nsManager);
-                if (listDel.Count != 0) {
+            for (int i = val; i <= currLvl; i++)
+            {
+                XmlNodeList listDel = doc.SelectNodes(
+                    "w:numbering/w:num[@w:numId="
+                        + prevHeadId[0]
+                        + "]/w:lvlOverride[@w:ilvl="
+                        + i
+                        + "]/w:startOverride",
+                    nsManager
+                );
+                if (listDel.Count != 0)
+                {
                     StartHeadingValueCtr(prevHeadId[1].ToString(), absId);
                     String tempId = "";
                     tempId = CheckAbstCounter(prevHeadId[1].ToString(), absId);
@@ -2993,64 +4097,114 @@ namespace Daisy.SaveAsDAISY.Conversion {
                     if (valAbs == "")
                         valAbs = "0";
 
-                    if (i == currLvl) {
-                        if (location == "Style") {
-                            ((ArrayList)startHeadingItem["List" + tempId])[i] = Convert.ToInt16(valAbs) - 1;
-                            ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = Convert.ToInt16(valAbs) - 1;
-                        } else {
-                            ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
-                            ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = valAbs;
+                    if (i == currLvl)
+                    {
+                        if (location == "Style")
+                        {
+                            ((ArrayList)startHeadingItem["List" + tempId])[i] =
+                                Convert.ToInt16(valAbs) - 1;
+                            ((ArrayList)headingCounters["List" + prevHeadId[1]])[
+                                Convert.ToInt16(i)
+                            ] = Convert.ToInt16(valAbs) - 1;
                         }
-                    } else {
-                        ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
-                        ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = valAbs;
+                        else
+                        {
+                            ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
+                            ((ArrayList)headingCounters["List" + prevHeadId[1]])[
+                                Convert.ToInt16(i)
+                            ] = valAbs;
+                        }
                     }
-
-
-                } else {
-                    XmlNodeList listAbsDel = doc.SelectNodes("w:numbering/w:num[@w:numId=" + prevHeadId[0] + "]/w:abstractNumId", nsManager);
-                    XmlNodeList list = doc.SelectNodes("w:numbering/w:abstractNum[@w:abstractNumId=" + listAbsDel[0].Attributes[0].Value + "]/w:lvl[@w:ilvl=" + i + "]/w:start", nsManager);
+                    else
+                    {
+                        ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
+                        ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] =
+                            valAbs;
+                    }
+                }
+                else
+                {
+                    XmlNodeList listAbsDel = doc.SelectNodes(
+                        "w:numbering/w:num[@w:numId=" + prevHeadId[0] + "]/w:abstractNumId",
+                        nsManager
+                    );
+                    XmlNodeList list = doc.SelectNodes(
+                        "w:numbering/w:abstractNum[@w:abstractNumId="
+                            + listAbsDel[0].Attributes[0].Value
+                            + "]/w:lvl[@w:ilvl="
+                            + i
+                            + "]/w:start",
+                        nsManager
+                    );
 
                     StartHeadingValueCtr(prevHeadId[1].ToString(), absId);
                     String tempId = "";
                     tempId = CheckAbstCounter(prevHeadId[1].ToString(), absId);
 
-                    if (list.Count != 0) {
+                    if (list.Count != 0)
+                    {
                         String valAbs = list[0].Attributes[0].Value;
 
                         if (valAbs == "")
                             valAbs = "0";
 
-                        if (i == currLvl) {
-                            if (location == "Style") {
-                                ((ArrayList)startHeadingItem["List" + tempId])[i] = Convert.ToInt16(valAbs) - 1;
-                                ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = Convert.ToInt16(valAbs) - 1;
-                            } else {
-                                ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
-                                ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = valAbs;
+                        if (i == currLvl)
+                        {
+                            if (location == "Style")
+                            {
+                                ((ArrayList)startHeadingItem["List" + tempId])[i] =
+                                    Convert.ToInt16(valAbs) - 1;
+                                ((ArrayList)headingCounters["List" + prevHeadId[1]])[
+                                    Convert.ToInt16(i)
+                                ] = Convert.ToInt16(valAbs) - 1;
                             }
-                        } else {
-                            ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
-                            ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = valAbs;
+                            else
+                            {
+                                ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
+                                ((ArrayList)headingCounters["List" + prevHeadId[1]])[
+                                    Convert.ToInt16(i)
+                                ] = valAbs;
+                            }
                         }
-                    } else {
+                        else
+                        {
+                            ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
+                            ((ArrayList)headingCounters["List" + prevHeadId[1]])[
+                                Convert.ToInt16(i)
+                            ] = valAbs;
+                        }
+                    }
+                    else
+                    {
                         String valAbs = "0";
 
-                        if (i == currLvl) {
-                            if (location == "Style") {
-                                ((ArrayList)startHeadingItem["List" + tempId])[i] = Convert.ToInt16(valAbs) - 1;
-                                ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = Convert.ToInt16(valAbs) - 1;
-                            } else {
-                                ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
-                                ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = valAbs;
+                        if (i == currLvl)
+                        {
+                            if (location == "Style")
+                            {
+                                ((ArrayList)startHeadingItem["List" + tempId])[i] =
+                                    Convert.ToInt16(valAbs) - 1;
+                                ((ArrayList)headingCounters["List" + prevHeadId[1]])[
+                                    Convert.ToInt16(i)
+                                ] = Convert.ToInt16(valAbs) - 1;
                             }
-                        } else {
+                            else
+                            {
+                                ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
+                                ((ArrayList)headingCounters["List" + prevHeadId[1]])[
+                                    Convert.ToInt16(i)
+                                ] = valAbs;
+                            }
+                        }
+                        else
+                        {
                             ((ArrayList)startHeadingItem["List" + tempId])[i] = valAbs;
-                            ((ArrayList)headingCounters["List" + prevHeadId[1]])[Convert.ToInt16(i)] = valAbs;
+                            ((ArrayList)headingCounters["List" + prevHeadId[1]])[
+                                Convert.ToInt16(i)
+                            ] = valAbs;
                         }
                     }
                 }
-
             }
         }
 
@@ -3058,28 +4212,41 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         #region Shapes and Objects
 
-        public String GenerateObjectId() {
+        public String GenerateObjectId()
+        {
             objectId++;
             return objectId.ToString();
         }
 
-        public String GetObjectId() {
+        public String GetObjectId()
+        {
             return objectId.ToString();
         }
 
         // Object in destination folder
 
-        public String Object(string inNum) {
-
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public String Object(string inNum)
+        {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
             imgRelationship = mainPartxml.GetRelationship(inNum);
-            Uri imgpartUri = PackUriHelper.ResolvePartUri(imgRelationship.SourceUri, imgRelationship.TargetUri);
+            Uri imgpartUri = PackUriHelper.ResolvePartUri(
+                imgRelationship.SourceUri,
+                imgRelationship.TargetUri
+            );
             PackagePart objPartxml = pack.GetPart(imgpartUri);
             Stream stream = null;
             stream = objPartxml.GetStream();
@@ -3087,13 +4254,19 @@ namespace Daisy.SaveAsDAISY.Conversion {
             String strImgName = objPartxml.Uri.ToString().Substring(length + 1);
             String str = outputFilename.Insert(outputFilename.Length, "\\");
             String final = str.Insert(str.Length, strImgName);
-            if (!strImgName.EndsWith(".bin")) {
-                FileStream objectFileStream = new FileStream(final, FileMode.Create, FileAccess.Write);
+            if (!strImgName.EndsWith(".bin"))
+            {
+                FileStream objectFileStream = new FileStream(
+                    final,
+                    FileMode.Create,
+                    FileAccess.Write
+                );
                 int Length = 256;
                 Byte[] buffer = new Byte[Length];
                 int bytesRead = stream.Read(buffer, 0, Length);
                 // write the required bytes
-                while (bytesRead > 0) {
+                while (bytesRead > 0)
+                {
                     objectFileStream.Write(buffer, 0, bytesRead);
                     bytesRead = stream.Read(buffer, 0, Length);
                 }
@@ -3107,41 +4280,63 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         #region Updated Lists
 
-        public String Val() {
+        public String Val()
+        {
             return absVal;
         }
 
-        public String NumFormat() {
+        public String NumFormat()
+        {
             return numFormat;
         }
 
-        public String LvlText() {
+        public String LvlText()
+        {
             return lvlText;
         }
 
-        public String LStartOverride() {
+        public String LStartOverride()
+        {
             return lStartOverride;
         }
 
-        public String LStart() {
+        public String LStart()
+        {
             return lStart;
         }
 
-        public void GeneralList(String iLvl, String numId) {
-            foreach (PackageRelationship searchRelation in pack.GetRelationshipsByType(documentRelationshipType)) {
+        public void GeneralList(String iLvl, String numId)
+        {
+            foreach (
+                PackageRelationship searchRelation in pack.GetRelationshipsByType(
+                    documentRelationshipType
+                )
+            )
+            {
                 wordRelationship = searchRelation;
                 break;
             }
 
-            Uri partUri = PackUriHelper.ResolvePartUri(wordRelationship.SourceUri, wordRelationship.TargetUri);
+            Uri partUri = PackUriHelper.ResolvePartUri(
+                wordRelationship.SourceUri,
+                wordRelationship.TargetUri
+            );
             PackagePart mainPartxml = pack.GetPart(partUri);
 
-            foreach (PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(numberRelationshipType)) {
+            foreach (
+                PackageRelationship searchRelation in mainPartxml.GetRelationshipsByType(
+                    numberRelationshipType
+                )
+            )
+            {
                 numberRelationship = searchRelation;
                 break;
             }
 
-            Uri numberPartUri = PackUriHelper.ResolvePartUri(numberRelationship.SourceUri, numberRelationship.TargetUri);
+            Uri numberPartUri = PackUriHelper.ResolvePartUri(
+                numberRelationship.SourceUri,
+                numberRelationship.TargetUri
+            );
             PackagePart numberPartxml = pack.GetPart(numberPartUri);
 
             XmlDocument doc = new XmlDocument();
@@ -3151,59 +4346,104 @@ namespace Daisy.SaveAsDAISY.Conversion {
             XmlNamespaceManager nsManager = new XmlNamespaceManager(nt);
             nsManager.AddNamespace("w", docNamespace);
 
-            XmlNodeList list = doc.SelectNodes("w:numbering/w:num[@w:numId=" + numId + "]/w:abstractNumId", nsManager);
-            if (list != null) {
-                if (list.Count != 0) {
+            XmlNodeList list = doc.SelectNodes(
+                "w:numbering/w:num[@w:numId=" + numId + "]/w:abstractNumId",
+                nsManager
+            );
+            if (list != null)
+            {
+                if (list.Count != 0)
+                {
                     if (list.Item(0).Attributes[0].Value != "")
                         absVal = list.Item(0).Attributes[0].Value;
-                } else
+                }
+                else
                     absVal = "";
             }
 
-
-            XmlNodeList numFormatNode = doc.SelectNodes("w:numbering/w:abstractNum[@w:abstractNumId=" + absVal + "]/w:lvl[@w:ilvl=" + iLvl + "]/w:numFmt", nsManager);
-            if (numFormatNode != null) {
-                if (numFormatNode.Count != 0) {
+            XmlNodeList numFormatNode = doc.SelectNodes(
+                "w:numbering/w:abstractNum[@w:abstractNumId="
+                    + absVal
+                    + "]/w:lvl[@w:ilvl="
+                    + iLvl
+                    + "]/w:numFmt",
+                nsManager
+            );
+            if (numFormatNode != null)
+            {
+                if (numFormatNode.Count != 0)
+                {
                     if (numFormatNode.Item(0).Attributes[0].Value != "")
                         numFormat = numFormatNode.Item(0).Attributes[0].Value;
-                } else
+                }
+                else
                     numFormat = "";
             }
 
-            XmlNodeList lvlTextNode = doc.SelectNodes("w:numbering/w:abstractNum[@w:abstractNumId=" + absVal + "]/w:lvl[@w:ilvl=" + iLvl + "]/w:lvlText", nsManager);
-            if (lvlTextNode != null) {
-                if (lvlTextNode.Count != 0) {
+            XmlNodeList lvlTextNode = doc.SelectNodes(
+                "w:numbering/w:abstractNum[@w:abstractNumId="
+                    + absVal
+                    + "]/w:lvl[@w:ilvl="
+                    + iLvl
+                    + "]/w:lvlText",
+                nsManager
+            );
+            if (lvlTextNode != null)
+            {
+                if (lvlTextNode.Count != 0)
+                {
                     if (lvlTextNode.Item(0).Attributes[0].Value != "")
                         lvlText = lvlTextNode.Item(0).Attributes[0].Value;
-                } else
+                }
+                else
                     lvlText = "";
             }
 
-            XmlNodeList lStartOverrideNode = doc.SelectNodes("w:numbering/w:abstractNum[@w:abstractNumId=" + absVal + "]/w:lvl[@w:ilvl=" + iLvl + "]/w:start", nsManager);
-            if (lStartOverrideNode != null) {
-                if (lStartOverrideNode.Count != 0) {
+            XmlNodeList lStartOverrideNode = doc.SelectNodes(
+                "w:numbering/w:abstractNum[@w:abstractNumId="
+                    + absVal
+                    + "]/w:lvl[@w:ilvl="
+                    + iLvl
+                    + "]/w:start",
+                nsManager
+            );
+            if (lStartOverrideNode != null)
+            {
+                if (lStartOverrideNode.Count != 0)
+                {
                     if (lStartOverrideNode.Item(0).Attributes[0].Value != "")
                         lStartOverride = lStartOverrideNode.Item(0).Attributes[0].Value;
-                } else
+                }
+                else
                     lStartOverride = "";
             }
 
-            XmlNodeList lStartNode = doc.SelectNodes("w:numbering/w:abstractNum[@w:abstractNumId=" + absVal + "]/w:lvl[@w:ilvl=" + iLvl + "]/w:start", nsManager);
-            if (lStartNode != null) {
-                if (lStartNode.Count != 0) {
+            XmlNodeList lStartNode = doc.SelectNodes(
+                "w:numbering/w:abstractNum[@w:abstractNumId="
+                    + absVal
+                    + "]/w:lvl[@w:ilvl="
+                    + iLvl
+                    + "]/w:start",
+                nsManager
+            );
+            if (lStartNode != null)
+            {
+                if (lStartNode.Count != 0)
+                {
                     if (lStartNode.Item(0).Attributes[0].Value != "")
                         lStart = lStartNode.Item(0).Attributes[0].Value;
-                } else
+                }
+                else
                     lStart = "";
             }
         }
-
 
         #endregion
 
         #region URI Images
 
-        public String UriEscape(String imgName) {
+        public String UriEscape(String imgName)
+        {
             String imgNameRet;
             imgNameRet = HttpUtility.UrlEncode(imgName);
             if (imgNameRet.Contains("+"))
@@ -3212,7 +4452,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
         #endregion
 
-        public String DocPropSubject() {
+        public String DocPropSubject()
+        {
             String strCreator = pack.PackageProperties.Subject;
             if (strCreator != "" && strCreator != null)
                 return strCreator;
@@ -3220,7 +4461,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 return "";
         }
 
-        public String DocPropDescription() {
+        public String DocPropDescription()
+        {
             String strCreator = pack.PackageProperties.Description;
             if (strCreator != "" && strCreator != null)
                 return strCreator;
@@ -3229,27 +4471,26 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         /*Function used to set the Abbreviations/Acronyms flag*/
-        public String SetListFlag() {
+        public String SetListFlag()
+        {
             listflag = 1;
             return "1";
         }
 
         /*Function used to reset the Abbreviations/Acronyms flag*/
-        public String ReSetListFlag() {
+        public String ReSetListFlag()
+        {
             listflag = 0;
             return "0";
         }
 
         /*Function used to return the Abbreviations/Acronyms flag value*/
-        public int ListFlag() {
+        public int ListFlag()
+        {
             return listflag;
         }
 
         #region help methods
-
-        private bool IsOffice2007Or2010(string version) {
-            return version == version2007 || version == version2010;
-        }
 
         #endregion
 
@@ -3258,10 +4499,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         /// <summary>
         /// Stack of character style ti apply on a groupe of letter or text
-        /// This is call by CustomCharStyle template to handle 
+        /// This is call by CustomCharStyle template to handle
         /// italic (em), bold(strong), superscript(sup) and subscript(sub) groups of characters
         /// </summary>
         Stack<string> characterStyle = new Stack<string>();
+
         public void PushCharacterStyle(string tag)
         {
             characterStyle.Push(tag);
@@ -3274,12 +4516,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public string PopCharacterStyle()
         {
-            if(characterStyle.Count == 0)
+            if (characterStyle.Count == 0)
             {
                 return "";
-            } else return characterStyle.Pop();
+            }
+            else
+                return characterStyle.Pop();
         }
-
 
         #endregion
         #region matter type processing (Frontmatter (DAISY)/Bodymatter (DAISY)/Rearematter (DAISY) )
@@ -3290,7 +4533,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         private bool _isAnyPageStyleApplied = false;
         private bool _isRearmatterStyleApplied = false;
 
-        public string PushPageStyle(string pageStyle) {
+        public string PushPageStyle(string pageStyle)
+        {
             _isAnyPageStyleApplied = true;
             var pushingStyle = PageStylesValidator.GetPageStyle(pageStyle);
             if (pushingStyle == PageStyle.Rearmatter)
@@ -3299,14 +4543,16 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return pageStyle;
         }
 
-        public void IncrementCheckingParagraph() {
+        public void IncrementCheckingParagraph()
+        {
             var result = _pageStylesValidator.ValidateParagraph(_currentParagraphStylse);
             if (!result.IsValid)
                 _pageStylesErrors.Append(result.ErrorMessage + Environment.NewLine);
             _currentParagraphStylse = new List<PageStyle>();
         }
 
-        public string IsInvalidPageStylesSequence() {
+        public string IsInvalidPageStylesSequence()
+        {
             var result = _pageStylesValidator.ValidateLastStyle();
             if (!result.IsValid)
                 _pageStylesErrors.Append(result.ErrorMessage);
@@ -3317,21 +4563,25 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 return false.ToString().ToLower();
         }
 
-        public string GetPageStylesErrors() {
+        public string GetPageStylesErrors()
+        {
             return _pageStylesErrors.ToString();
         }
 
-        public string IsAnyPageStyleApplied() {
+        public string IsAnyPageStyleApplied()
+        {
             return _isAnyPageStyleApplied.ToString().ToLower();
         }
 
         private string _currentMatterType = string.Empty;
 
-        public void SetCurrentMatterType(string matterType) {
+        public void SetCurrentMatterType(string matterType)
+        {
             _currentMatterType = matterType;
         }
 
-        public string GetCurrentMatterType() {
+        public string GetCurrentMatterType()
+        {
             if (!_isAnyPageStyleApplied)
                 return "Bodymatter";
             if (string.IsNullOrEmpty(_currentMatterType))
@@ -3339,25 +4589,30 @@ namespace Daisy.SaveAsDAISY.Conversion {
             return _currentMatterType;
         }
 
-        public void ResetCurrentMatterType() {
+        public void ResetCurrentMatterType()
+        {
             _currentMatterType = string.Empty;
         }
 
-        public string IsRearmatterStyleApplied() {
+        public string IsRearmatterStyleApplied()
+        {
             return _isRearmatterStyleApplied.ToString().ToLower();
         }
 
         private bool _isFirstParagraph = true;
 
-        public void ResetIsFirstParagraph() {
+        public void ResetIsFirstParagraph()
+        {
             _isFirstParagraph = true;
         }
 
-        public void FirstParagraphProcessed() {
+        public void FirstParagraphProcessed()
+        {
             _isFirstParagraph = false;
         }
 
-        public string IsFirstParagraph() {
+        public string IsFirstParagraph()
+        {
             return _isFirstParagraph.ToString().ToLower();
         }
 

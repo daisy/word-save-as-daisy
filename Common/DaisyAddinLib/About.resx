@@ -126,10 +126,14 @@
     <value>Segoe UI, 9pt, style=Bold</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 169</value>
+    <value>172, 229</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>122, 15</value>
+    <value>155, 20</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -153,10 +157,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="versionNumLabel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>180, 188</value>
+    <value>240, 257</value>
+  </data>
+  <data name="versionNumLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="versionNumLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>123, 15</value>
+    <value>164, 22</value>
   </data>
   <data name="versionNumLabel.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -173,14 +180,20 @@
   <data name="&gt;&gt;versionNumLabel.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="bttnOk.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
   <data name="bttnOk.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="bttnOk.Location" type="System.Drawing.Point, System.Drawing">
-    <value>110, 248</value>
+    <value>314, 336</value>
+  </data>
+  <data name="bttnOk.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="bttnOk.Size" type="System.Drawing.Size, System.Drawing">
-    <value>76, 23</value>
+    <value>101, 34</value>
   </data>
   <data name="bttnOk.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -200,14 +213,20 @@
   <data name="&gt;&gt;bttnOk.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="Updatesbutton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
   <data name="Updatesbutton.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="Updatesbutton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>192, 248</value>
+    <value>145, 336</value>
+  </data>
+  <data name="Updatesbutton.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="Updatesbutton.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 23</value>
+    <value>161, 34</value>
   </data>
   <data name="Updatesbutton.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -236,7 +255,7 @@
         xqxoasRTxBFV0ylfyHisct7irJWrrNknf2Ewp6+kuE4rjBiWEEcCIhRUUUIZNqK066RYSNK51ME/5PoT
         5FLIVQIjxwIq0CC7fvA/+D1bKz854SUFJaD7xXE+hoGeXaBRc5zvY8dpnAD+Z+BKb/krdWDmk/RaS4sc
         Af3bwMV1S1P2gMsdYPDJkE3Zlfy0hHweeD+jb8oCA7dA75o3t+Y5Th+ANM1q+QY4OARGCpS93uHdgfa5
-        /XnHnR+kH93CctIRE0fUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH5QEcCDc3i1u1hQAAnxlJ
+        /XnHnR+kH93CctIRE0fUAAAACXBIWXMAAAsSAAALEgHS3X78AAAAB3RJTUUH5QEcCDc3i1u1hQAAnxlJ
         REFUeF7tvQeAFNWyuH9///fue/fdfM2RDCYwiwlFzDmDOeeIigoqopgJoiAoQUmC5JyXnHPOOUlURFAx
         W//66kzN9szOworA7kKXFt3bfbr79AlfV500f+o6eJzEGmushUe7DYno4Am5ates8Sma6Xz6sR5DJtq2
         88BxKRq9T6cB4bmERTmWDDt4rHQlXkM1rG47ZY1NalcN23lwtnbKmpBUzrlGw6Ac6zEsaLehHNPnqXYb
@@ -919,6 +938,9 @@
         SUVORK5CYII=
 </value>
   </data>
+  <data name="panel1.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
+    <value>Stretch</value>
+  </data>
   <data name="&gt;&gt;label4.Name" xml:space="preserve">
     <value>label4</value>
   </data>
@@ -944,10 +966,13 @@
     <value>1</value>
   </data>
   <data name="panel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-1, -1</value>
+    <value>1, 1</value>
+  </data>
+  <data name="panel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="panel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>324, 243</value>
+    <value>428, 327</value>
   </data>
   <data name="panel1.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -971,10 +996,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label4.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 188</value>
+    <value>172, 257</value>
+  </data>
+  <data name="label4.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label4.Size" type="System.Drawing.Size, System.Drawing">
-    <value>45, 15</value>
+    <value>57, 20</value>
   </data>
   <data name="label4.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -1001,10 +1029,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label3.Location" type="System.Drawing.Point, System.Drawing">
-    <value>129, 206</value>
+    <value>172, 283</value>
+  </data>
+  <data name="label3.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label3.Size" type="System.Drawing.Size, System.Drawing">
-    <value>127, 15</value>
+    <value>158, 20</value>
   </data>
   <data name="label3.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1028,17 +1059,19 @@
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>8, 19</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="$this.BackgroundImageLayout" type="System.Windows.Forms.ImageLayout, System.Windows.Forms">
     <value>None</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>322, 283</value>
+    <value>428, 374</value>
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 8.25pt</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterParent</value>

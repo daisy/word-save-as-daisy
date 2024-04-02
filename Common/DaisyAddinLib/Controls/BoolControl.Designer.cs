@@ -1,4 +1,5 @@
-namespace Daisy.SaveAsDAISY.Forms.Controls {
+namespace Daisy.SaveAsDAISY.Forms.Controls
+{
     partial class BoolControl
     {
         /// <summary>
@@ -30,27 +31,32 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
+            // parameterNiceName
+            // 
+            this.parameterNiceName.Location = new System.Drawing.Point(32, 4);
+            // 
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
             this.checkBox1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(41, 1);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4);
+            this.checkBox1.Location = new System.Drawing.Point(9, 7);
+            this.checkBox1.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(82, 19);
+            this.checkBox1.Size = new System.Drawing.Size(18, 17);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "checkBox1";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // BoolControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.checkBox1);
-            this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "BoolControl";
-            this.Size = new System.Drawing.Size(320, 23);
+            this.Size = new System.Drawing.Size(96, 43);
+            this.Controls.SetChildIndex(this.checkBox1, 0);
+            this.Controls.SetChildIndex(this.parameterNiceName, 0);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -37,8 +37,11 @@ namespace Daisy.SaveAsDAISY.Forms {
             if (conversionSetter.DoTranslate() == 1) {
                 // get the updated settings
                 ConversionParameters = conversionSetter.UpdatedConversionParameters;
+                progressDialog.BringToFront();
+                progressDialog.Focus();
                 return ConversionStatus.ReadyForConversion;
             }
+            progressDialog.Close();
             return ConversionStatus.Canceled;
         }
 

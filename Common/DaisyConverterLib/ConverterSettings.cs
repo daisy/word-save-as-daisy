@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace Daisy.SaveAsDAISY.Conversion {
+namespace Daisy.SaveAsDAISY.Conversion
+{
     /// <summary>
     /// Global settings of the converter, controled by "ConverterSettingsForm" class.<br/>
     /// Those settings are usually stored in a "DAISY_settingsVer21.xml" file in the application APPDATA directory
     /// </summary>
-    public sealed class ConverterSettings {
+    public sealed class ConverterSettings
+    {
 
         public static string ApplicationDataFolder = Path.GetFullPath(
             Path.Combine(
@@ -20,10 +22,47 @@ namespace Daisy.SaveAsDAISY.Conversion {
         private static string ConverterSettingsFile = Path.Combine(ApplicationDataFolder, "DAISY_settingsVer21.xml");
 
         #region Singleton definition
-        private static readonly Lazy<ConverterSettings> lazy  = new Lazy<ConverterSettings>(() => new ConverterSettings());
+        private static readonly Lazy<ConverterSettings> lazy = new Lazy<ConverterSettings>(() => new ConverterSettings());
 
         public static ConverterSettings Instance => lazy.Value;
         #endregion
+        /// <summary>
+        /// @see FootnotesNumberingChoice.Enum
+        /// </summary>
+        public static class ImageOptionChoice
+        {
+            /// <summary>
+            /// Image resizing
+            /// </summary>
+            public enum Enum
+            {
+                /// <summary>
+                /// Keep original image
+                /// </summary>
+                Original,
+                /// <summary>
+                /// Resize image
+                /// </summary>
+                Resize,
+                /// <summary>
+                /// Resample the image
+                /// </summary>
+                Resample
+            }
+            public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
+            {
+                { Enum.Original, "original" },
+                { Enum.Resize, "resize" },
+                { Enum.Resample, "resample" },
+            };
+            public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
+            {
+                { "original", Enum.Original },
+                { "resize", Enum.Resize },
+                { "resample", Enum.Resample},
+            };
+        }
+
         /// <summary>
         /// @see FootnotesNumberingChoice.Enum
         /// </summary>
@@ -99,79 +138,97 @@ namespace Daisy.SaveAsDAISY.Conversion {
         }
 
         #region Private fields with default values
-        
+
         private string imgoption = "original";
         private string resampleValue = "96";
         private string characterStyle = "False";
         private string pagenumStyle = "Custom";
-        private string footnotesLevel = "0"; // 0 mean current paragraphe, < 0 means parent level going upward, > 1 means absolute dtbook level
-        private string footnotesPosition = "page" ; // Should be inline, end, or page
-        private string footnotesNumbering = "number"; // should be number, none, or word (to reuse word 
+        private string footnotesLevel = "0"; // 0 mean current paragraphe level, < 0 means parent level going upward, > 1 means absolute dtbook level
+        private string footnotesPosition = "inline"; // Should be inline, end, or page
+        private string footnotesNumbering = "none"; // should be number, none, or word
         private string footnotesStartValue = "1"; // number to be used
         private string footnotesNumberingPrefix = ""; // prefix to be added before the numbering
-        private string footnotesNumberingSuffix = " "; // suffix to be added between the number and the text (default to a space to reproduce the plugin original behaviour)
-
-
-        private string SettingsXml { get => 
-                $"<Settings>" +
-                    $"<PageNumbers  value=\"{pagenumStyle}\" />" +
-                    $"<CharacterStyles value=\"{characterStyle}\" />" +
-                    $"<ImageSizes value=\"{imgoption}\" samplingvalue=\"{resampleValue}\" />" +
-                    $"<Footnotes level=\"{footnotesLevel}\" " +
-                        $"position=\"{footnotesPosition}\" " +
-                        $"numbering=\"{footnotesNumbering}\" " +
-                        $"startValue=\"{footnotesStartValue}\" " +
-                        $"numberPrefix=\"{footnotesNumberingPrefix}\" " +
-                        $"numberSuffix=\"{footnotesNumberingSuffix}\" />" +
-                $"</Settings>";
-            
+        private string footnotesNumberingSuffix = ""; // suffix to be added between the number and the text
+        private string azureSpeechRegion = ""; // region defined in the Azure console for the speech service
+        private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
+        private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
+        
+        /// <summary>
+        /// Get the current settings as XML string
+        /// </summary>
+        /// <param name="withPrivateData">if set to true, settings that are private to users 
+        /// (like tts keys) will also be included</param>
+        /// <returns></returns>
+        public string asXML(bool withPrivateData = false)
+        {
+            return $"<Settings>" +
+                $"\r\n\t<PageNumbers  value=\"{pagenumStyle}\" />" +
+                $"\r\n\t<CharacterStyles value=\"{characterStyle}\" />" +
+                $"\r\n\t<ImageSizes value=\"{imgoption}\" samplingvalue=\"{resampleValue}\" />" +
+                $"\r\n\t<Footnotes level=\"{footnotesLevel}\" " +
+                $"\r\n\t\tposition=\"{footnotesPosition}\" " +
+                $"\r\n\t\tnumbering=\"{footnotesNumbering}\" " +
+                $"\r\n\t\tstartValue=\"{footnotesStartValue}\" " +
+                $"\r\n\t\tnumberPrefix=\"{footnotesNumberingPrefix}\" " +
+                $"\r\n\t\tnumberSuffix=\"{footnotesNumberingSuffix}\" />" +
+                $"\r\n\t<TTSConfig file=\"{ttsConfigFile}\" />" +
+                (withPrivateData
+                    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
+                      $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
+                    : ""
+                ) +
+                $"\r\n</Settings>";
         }
 
 
         #endregion
 
-        public void CreateDefaultSettings() {
+        public void CreateDefaultSettings()
+        {
             if (!Directory.Exists(ApplicationDataFolder))
             {
                 Directory.CreateDirectory(ApplicationDataFolder);
             }
-            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile))) {
-                writer.Write(SettingsXml);
+            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
+            {
+                writer.Write(asXML());
                 writer.Flush();
             }
         }
 
 
 
-        private ConverterSettings() {
+        private ConverterSettings()
+        {
             XmlDocument settingsDocument = new XmlDocument();
-            if (!File.Exists(ConverterSettingsFile)) {
+            if (!File.Exists(ConverterSettingsFile))
+            {
                 // Save the default settings
                 save();
             }
 
             settingsDocument.Load(ConverterSettingsFile);
             XmlNode ImageSizesNode = settingsDocument.SelectSingleNode("//Settings/ImageSizes");
-            if(ImageSizesNode != null)
+            if (ImageSizesNode != null)
             {
                 imgoption = (ImageSizesNode.Attributes["value"]?.InnerXml) ?? imgoption;
                 resampleValue = (ImageSizesNode.Attributes["samplingvalue"]?.InnerXml) ?? imgoption;
             }
 
             XmlNode CharacterStylesNode = settingsDocument.SelectSingleNode("//Settings/CharacterStyles");
-            if(CharacterStylesNode != null)
+            if (CharacterStylesNode != null)
             {
                 characterStyle = (CharacterStylesNode.Attributes["value"]?.InnerXml) ?? characterStyle;
             }
 
             XmlNode PageNumbersNode = settingsDocument.SelectSingleNode("//Settings/PageNumbers");
-            if(PageNumbersNode != null)
+            if (PageNumbersNode != null)
             {
                 pagenumStyle = (PageNumbersNode.Attributes["value"]?.InnerXml) ?? pagenumStyle;
             }
 
             XmlNode FootnotesSettings = settingsDocument.SelectSingleNode("//Settings/Footnotes");
-            if(FootnotesSettings != null)
+            if (FootnotesSettings != null)
             {
                 footnotesLevel = (FootnotesSettings.Attributes["level"].InnerXml) ?? footnotesLevel;
                 footnotesPosition = (FootnotesSettings.Attributes["position"]?.InnerXml) ?? footnotesPosition;
@@ -180,10 +237,23 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 footnotesNumberingPrefix = (FootnotesSettings.Attributes["numberPrefix"]?.InnerXml) ?? footnotesNumberingPrefix;
                 footnotesNumberingSuffix = (FootnotesSettings.Attributes["numberSuffix"]?.InnerXml) ?? footnotesNumberingSuffix;
             }
-            
+
+            XmlNode AzureSettings = settingsDocument.SelectSingleNode("//Settings/Azure");
+            if(AzureSettings != null)
+            {
+                azureSpeechRegion = (AzureSettings.Attributes["region"].InnerXml) ?? azureSpeechRegion;
+                azureSpeechKey = (AzureSettings.Attributes["key"].InnerXml) ?? azureSpeechKey;
+            }
+            XmlNode TTSConfigSettings = settingsDocument.SelectSingleNode("//Settings/TTSConfig");
+            if (TTSConfigSettings != null)
+            {
+                ttsConfigFile = (TTSConfigSettings.Attributes["file"].InnerXml) ?? ttsConfigFile;
+            }
+
+
 
         }
-        
+
         /// <summary>
         /// Save the converter settings to an xml file on disk
         /// </summary>
@@ -195,18 +265,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
             }
             using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
             {
-                writer.Write(SettingsXml);
+                writer.Write(asXML(true));
                 writer.Flush();
             }
         }
 
 
 
-        public string ImageOption { get => imgoption; set => imgoption = value; }
+        public ImageOptionChoice.Enum ImageOption { get => ImageOptionChoice.Keys[imgoption]; set => imgoption = ImageOptionChoice.Values[value]; }
 
-        public string ImageResamplingValue { get => resampleValue; set => resampleValue = value; }
+        public int ImageResamplingValue { get => int.Parse(resampleValue); set => resampleValue = value.ToString(); }
 
-        public string CharacterStyle { get => characterStyle; set => characterStyle = value; }
+        public bool CharacterStyle { get => characterStyle != "False"; set => characterStyle = value ? "True" : "False"; }
 
         public string PagenumStyle { get => pagenumStyle; set => pagenumStyle = value; }
 
@@ -234,6 +304,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public string FootnotesNumberingPrefix { get => footnotesNumberingPrefix; set => footnotesNumberingPrefix = value; }
 
         public string FootnotesNumberingSuffix { get => footnotesNumberingSuffix; set => footnotesNumberingSuffix = value; }
+
+        public string AzureSpeechRegion { get => azureSpeechRegion; set => azureSpeechRegion = value; }
+
+        public string AzureSpeechKey { get => azureSpeechKey; set => azureSpeechKey = value; }
+
+        public string TTSConfigFile { get => ttsConfigFile; set => ttsConfigFile = value; }
 
 
     }

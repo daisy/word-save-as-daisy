@@ -45,13 +45,5 @@ namespace Daisy.SaveAsDAISY.Forms
 			return buttonName == "DaisyMultiple" || buttonName == "DaisyTabMultiple" || buttonName == "Button2";
 		}
 
-
-		public static System.Resources.ResourceManager LabelsManager = new System.Resources.ResourceManager(
-			"DaisyAddinLib.resources.Labels",
-			Assembly.GetExecutingAssembly()
-		);
-        
-		
-		
 	}
 }

@@ -1,4 +1,4 @@
-﻿/* 
+/* 
  * Copyright (c) 2006, Clever Age
  * All rights reserved.
  * 
@@ -57,5 +57,5 @@ using System.Runtime.InteropServices;
 //      Numéro de build
 //      Révision
 //
-[assembly: AssemblyVersion("2.7.2.0")]
-[assembly: AssemblyFileVersion("2.7.2.0")]
+[assembly: AssemblyVersion("2.8.5.0")]
+[assembly: AssemblyFileVersion("2.8.5.0")]

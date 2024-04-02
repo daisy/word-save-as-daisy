@@ -10,14 +10,6 @@ using System.Text.RegularExpressions;
 namespace Daisy.SaveAsDAISY.Conversion {
     public static class ConverterHelper {
 
-
-		/// <summary>
-		/// Gets path to pipeline root directory.
-		/// </summary>
-		public static string Pipeline1Path {
-			get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\pipeline-lite-ms"; }
-		}
-
 		/// <summary>
 		/// Get the pipeline 2 root directory
 		/// </summary>
@@ -30,14 +22,18 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		/// </summary>
 		/// <returns></returns>
 		public static bool PipelineIsInstalled() {
-			return Directory.Exists(Pipeline1Path);
+			return Directory.Exists(Pipeline2Path);
 		}
 
 		/// <summary>
 		/// Gets path to the addin directory in AppData.
 		/// </summary>
 		public static string AppDataSaveAsDAISYDirectory {
-			get { return Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"\SaveAsDAISY"; }
+			get { return Directory.CreateDirectory(
+				Path.Combine(
+					Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+					"SaveAsDAISY"
+				)).FullName; }
 		}
 
         
@@ -78,22 +74,22 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 
 
-        private static FilenameValidator _dTBookXMLFileNameFormat = new FilenameValidator {
+        private static StringValidator _dTBookXMLFileNameFormat = new StringValidator {
             AuthorisationPattern = new Regex(@"^[^,]+$"),
-            UnauthorizedNameMessage = "Your document file name contains unauthorized characters, that may be automatically replaced by underscores.\r\n" +
+            UnauthorizedValueMessage = "Your document file name contains unauthorized characters, that may be automatically replaced by underscores.\r\n" +
                         "Any commas (,) present in the file name should be removed, or they will be replaced by underscores automatically."
         };
-		public static FilenameValidator DTBookXMLFileNameFormat { get => _dTBookXMLFileNameFormat; }
+		public static StringValidator DTBookXMLFileNameFormat { get => _dTBookXMLFileNameFormat; }
 
         
-        private static FilenameValidator _DAISYFileNameFormat = new FilenameValidator {
+        private static StringValidator _DAISYFileNameFormat = new StringValidator {
             AuthorisationPattern = new Regex(@"^[a-zA-Z0-9_\-\.]+\.docx$"),
-            UnauthorizedNameMessage = "Your document file name contains unauthorized characters, that may be automatically replaced by underscores.\r\n" +
+            UnauthorizedValueMessage = "Your document file name contains unauthorized characters, that may be automatically replaced by underscores.\r\n" +
                         "Only Alphanumerical letters (a-z, A-Z, 0-9), hyphens (-), dots (.) " +
                             "and underscores (_) are allowed in DAISY file names." +
                         "\r\nAny other characters (including spaces) will be replaced automaticaly by underscores."
         };
-		public static FilenameValidator DAISYFileNameFormat { get => _DAISYFileNameFormat; }
+		public static StringValidator DAISYFileNameFormat { get => _DAISYFileNameFormat; }
 
 
 

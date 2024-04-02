@@ -213,7 +213,7 @@ namespace Daisy.SaveAsDAISY.Forms
                 XmlNode bodymatterNode = tocNode.SelectSingleNode("following::w:pPr/w:pStyle[substring(@w:val, 1, 10)='Bodymatter']", nsManager);
 				
                 if (bodymatterNode == null)
-                    this.CreateBookmark(" :" + Properties.Resources.TocBodymatterValidationMessage, tocNode, tocNode, tocNode);
+                    this.CreateBookmark(" :" + Labels.TocBodymatterValidationMessage, tocNode, tocNode, tocNode);
             }
         }
 

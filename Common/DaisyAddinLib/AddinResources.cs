@@ -52,12 +52,7 @@ namespace Daisy.SaveAsDAISY
         {
             this.resourceManager = new ChainResourceManager();
             // Add a default resource managers (for common labels)
-            this.resourceManager.Add(
-                new System.Resources.ResourceManager(
-                    "Daisy.SaveAsDAISY.Forms.Properties.Labels",
-                    Assembly.GetExecutingAssembly()
-                )
-            );
+            this.resourceManager.Add(Labels.ResourceManager);
         }
 
 

@@ -30,130 +30,74 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConversionParametersForm));
-            this.label_paneltitle = new System.Windows.Forms.Label();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.tBx_Browse = new System.Windows.Forms.TextBox();
-            this.mLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.tBx_Uid = new System.Windows.Forms.TextBox();
-            this.tBx_Publisher = new System.Windows.Forms.TextBox();
-            this.tBx_Creator = new System.Windows.Forms.TextBox();
-            this.tBx_Title = new System.Windows.Forms.TextBox();
-            this.btn_HideDetail = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.btn_Browse = new System.Windows.Forms.Button();
-            this.label_Folder = new System.Windows.Forms.Label();
-            this.grpBox_Properties = new System.Windows.Forms.GroupBox();
+            this.UIDTextBox = new System.Windows.Forms.TextBox();
+            this.PublisherInput = new System.Windows.Forms.TextBox();
+            this.CreatorInput = new System.Windows.Forms.TextBox();
+            this.TitleInput = new System.Windows.Forms.TextBox();
+            this.DocumentPropertiesGroup = new System.Windows.Forms.GroupBox();
             this.AccessibilityCheckerLink = new System.Windows.Forms.LinkLabel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.DocumentPropertiesTable = new System.Windows.Forms.TableLayoutPanel();
+            this.TitleLabel = new System.Windows.Forms.Label();
+            this.CreatorLabel = new System.Windows.Forms.Label();
+            this.PublisherLabel = new System.Windows.Forms.Label();
+            this.UIDLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.label_Title = new System.Windows.Forms.Label();
-            this.label_Unique = new System.Windows.Forms.Label();
-            this.label_Publisher = new System.Windows.Forms.Label();
-            this.oLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
-            this.btn_OpenDetail = new System.Windows.Forms.Button();
+            this.languageSelector = new System.Windows.Forms.ComboBox();
+            this.SwitchAdvancedSettingsButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.label_Creator = new System.Windows.Forms.Label();
-            this.btn_OK = new System.Windows.Forms.Button();
-            this.btn_Reset = new System.Windows.Forms.Button();
-            this.btn_Cancel = new System.Windows.Forms.Button();
-            this.panel1.SuspendLayout();
-            this.grpBox_Properties.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
+            this.OKButton = new System.Windows.Forms.Button();
+            this.ResetButton = new System.Windows.Forms.Button();
+            this.CancelButton = new System.Windows.Forms.Button();
+            this.BottomPanel = new System.Windows.Forms.Panel();
+            this.AdvancedSettingsGroup = new System.Windows.Forms.GroupBox();
+            this.AdvancedSettingsPanel = new System.Windows.Forms.Panel();
+            this.DestinationControl = new Daisy.SaveAsDAISY.Forms.Controls.PathControl();
+            this.DocumentPropertiesGroup.SuspendLayout();
+            this.DocumentPropertiesTable.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.BottomPanel.SuspendLayout();
+            this.AdvancedSettingsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label_paneltitle
+            // UIDTextBox
             // 
-            resources.ApplyResources(this.label_paneltitle, "label_paneltitle");
-            this.label_paneltitle.BackColor = System.Drawing.SystemColors.Control;
-            this.label_paneltitle.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label_paneltitle.Name = "label_paneltitle";
+            this.UIDTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.UIDTextBox, "UIDTextBox");
+            this.UIDTextBox.Name = "UIDTextBox";
+            this.toolTip1.SetToolTip(this.UIDTextBox, resources.GetString("UIDTextBox.ToolTip"));
             // 
-            // tBx_Browse
+            // PublisherInput
             // 
-            this.tBx_Browse.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.tBx_Browse, "tBx_Browse");
-            this.tBx_Browse.Name = "tBx_Browse";
-            this.toolTip1.SetToolTip(this.tBx_Browse, resources.GetString("tBx_Browse.ToolTip"));
+            this.PublisherInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.PublisherInput, "PublisherInput");
+            this.PublisherInput.Name = "PublisherInput";
+            this.toolTip1.SetToolTip(this.PublisherInput, resources.GetString("PublisherInput.ToolTip"));
             // 
-            // mLayoutPanel
+            // CreatorInput
             // 
-            resources.ApplyResources(this.mLayoutPanel, "mLayoutPanel");
-            this.mLayoutPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.mLayoutPanel.Name = "mLayoutPanel";
-            this.mLayoutPanel.TabStop = true;
-            this.toolTip1.SetToolTip(this.mLayoutPanel, resources.GetString("mLayoutPanel.ToolTip"));
+            resources.ApplyResources(this.CreatorInput, "CreatorInput");
+            this.CreatorInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CreatorInput.Name = "CreatorInput";
+            this.toolTip1.SetToolTip(this.CreatorInput, resources.GetString("CreatorInput.ToolTip"));
             // 
-            // tBx_Uid
+            // TitleInput
             // 
-            this.tBx_Uid.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.tBx_Uid, "tBx_Uid");
-            this.tBx_Uid.Name = "tBx_Uid";
-            this.toolTip1.SetToolTip(this.tBx_Uid, resources.GetString("tBx_Uid.ToolTip"));
+            this.TitleInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            resources.ApplyResources(this.TitleInput, "TitleInput");
+            this.TitleInput.Name = "TitleInput";
+            this.toolTip1.SetToolTip(this.TitleInput, resources.GetString("TitleInput.ToolTip"));
             // 
-            // tBx_Publisher
+            // DocumentPropertiesGroup
             // 
-            this.tBx_Publisher.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.tBx_Publisher, "tBx_Publisher");
-            this.tBx_Publisher.Name = "tBx_Publisher";
-            this.toolTip1.SetToolTip(this.tBx_Publisher, resources.GetString("tBx_Publisher.ToolTip"));
-            // 
-            // tBx_Creator
-            // 
-            this.tBx_Creator.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.tBx_Creator, "tBx_Creator");
-            this.tBx_Creator.Name = "tBx_Creator";
-            this.toolTip1.SetToolTip(this.tBx_Creator, resources.GetString("tBx_Creator.ToolTip"));
-            // 
-            // tBx_Title
-            // 
-            this.tBx_Title.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            resources.ApplyResources(this.tBx_Title, "tBx_Title");
-            this.tBx_Title.Name = "tBx_Title";
-            this.toolTip1.SetToolTip(this.tBx_Title, resources.GetString("tBx_Title.ToolTip"));
-            // 
-            // btn_HideDetail
-            // 
-            resources.ApplyResources(this.btn_HideDetail, "btn_HideDetail");
-            this.btn_HideDetail.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_HideDetail.Name = "btn_HideDetail";
-            this.btn_HideDetail.UseVisualStyleBackColor = true;
-            this.btn_HideDetail.Click += new System.EventHandler(this.btn_HideDetail_Click);
-            // 
-            // panel1
-            // 
-            resources.ApplyResources(this.panel1, "panel1");
-            this.panel1.Controls.Add(this.btn_Browse);
-            this.panel1.Controls.Add(this.tBx_Browse);
-            this.panel1.Controls.Add(this.label_Folder);
-            this.panel1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.panel1.Name = "panel1";
-            this.panel1.TabStop = true;
-            // 
-            // btn_Browse
-            // 
-            this.btn_Browse.BackColor = System.Drawing.SystemColors.Control;
-            resources.ApplyResources(this.btn_Browse, "btn_Browse");
-            this.btn_Browse.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Browse.Name = "btn_Browse";
-            this.btn_Browse.UseVisualStyleBackColor = false;
-            this.btn_Browse.Click += new System.EventHandler(this.btn_Browse_Click);
-            // 
-            // label_Folder
-            // 
-            resources.ApplyResources(this.label_Folder, "label_Folder");
-            this.label_Folder.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label_Folder.Name = "label_Folder";
-            // 
-            // grpBox_Properties
-            // 
-            resources.ApplyResources(this.grpBox_Properties, "grpBox_Properties");
-            this.grpBox_Properties.BackColor = System.Drawing.SystemColors.Control;
-            this.grpBox_Properties.Controls.Add(this.AccessibilityCheckerLink);
-            this.grpBox_Properties.Controls.Add(this.tableLayoutPanel2);
-            this.grpBox_Properties.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.grpBox_Properties.Name = "grpBox_Properties";
-            this.grpBox_Properties.TabStop = false;
+            resources.ApplyResources(this.DocumentPropertiesGroup, "DocumentPropertiesGroup");
+            this.DocumentPropertiesGroup.BackColor = System.Drawing.SystemColors.Control;
+            this.DocumentPropertiesGroup.Controls.Add(this.AccessibilityCheckerLink);
+            this.DocumentPropertiesGroup.Controls.Add(this.DocumentPropertiesTable);
+            this.DocumentPropertiesGroup.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.DocumentPropertiesGroup.Name = "DocumentPropertiesGroup";
+            this.DocumentPropertiesGroup.TabStop = false;
             // 
             // AccessibilityCheckerLink
             // 
@@ -164,59 +108,64 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.AccessibilityCheckerLink.UseCompatibleTextRendering = true;
             this.AccessibilityCheckerLink.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AccessibilityCheckerLink_LinkClicked);
             // 
-            // tableLayoutPanel2
+            // DocumentPropertiesTable
             // 
-            resources.ApplyResources(this.tableLayoutPanel2, "tableLayoutPanel2");
-            this.tableLayoutPanel2.BackColor = System.Drawing.SystemColors.Control;
-            this.tableLayoutPanel2.Controls.Add(this.tBx_Uid, 1, 3);
-            this.tableLayoutPanel2.Controls.Add(this.label1, 0, 1);
-            this.tableLayoutPanel2.Controls.Add(this.tBx_Publisher, 1, 2);
-            this.tableLayoutPanel2.Controls.Add(this.tBx_Creator, 1, 1);
-            this.tableLayoutPanel2.Controls.Add(this.tBx_Title, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label_Title, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label_Unique, 0, 3);
-            this.tableLayoutPanel2.Controls.Add(this.label_Publisher, 0, 2);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            resources.ApplyResources(this.DocumentPropertiesTable, "DocumentPropertiesTable");
+            this.DocumentPropertiesTable.BackColor = System.Drawing.SystemColors.Control;
+            this.DocumentPropertiesTable.Controls.Add(this.TitleLabel, 0, 0);
+            this.DocumentPropertiesTable.Controls.Add(this.TitleInput, 1, 0);
+            this.DocumentPropertiesTable.Controls.Add(this.CreatorLabel, 0, 1);
+            this.DocumentPropertiesTable.Controls.Add(this.PublisherLabel, 0, 2);
+            this.DocumentPropertiesTable.Controls.Add(this.PublisherInput, 1, 2);
+            this.DocumentPropertiesTable.Controls.Add(this.UIDLabel, 0, 3);
+            this.DocumentPropertiesTable.Controls.Add(this.UIDTextBox, 1, 3);
+            this.DocumentPropertiesTable.Controls.Add(this.CreatorInput, 1, 1);
+            this.DocumentPropertiesTable.Controls.Add(this.label1, 0, 4);
+            this.DocumentPropertiesTable.Controls.Add(this.languageSelector, 1, 4);
+            this.DocumentPropertiesTable.Name = "DocumentPropertiesTable";
+            // 
+            // TitleLabel
+            // 
+            resources.ApplyResources(this.TitleLabel, "TitleLabel");
+            this.TitleLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.TitleLabel.Name = "TitleLabel";
+            // 
+            // CreatorLabel
+            // 
+            resources.ApplyResources(this.CreatorLabel, "CreatorLabel");
+            this.CreatorLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.CreatorLabel.Name = "CreatorLabel";
+            // 
+            // PublisherLabel
+            // 
+            resources.ApplyResources(this.PublisherLabel, "PublisherLabel");
+            this.PublisherLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.PublisherLabel.Name = "PublisherLabel";
+            // 
+            // UIDLabel
+            // 
+            resources.ApplyResources(this.UIDLabel, "UIDLabel");
+            this.UIDLabel.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.UIDLabel.Name = "UIDLabel";
             // 
             // label1
             // 
             resources.ApplyResources(this.label1, "label1");
-            this.label1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label1.Name = "label1";
             // 
-            // label_Title
+            // languageSelector
             // 
-            resources.ApplyResources(this.label_Title, "label_Title");
-            this.label_Title.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label_Title.Name = "label_Title";
+            this.languageSelector.FormattingEnabled = true;
+            resources.ApplyResources(this.languageSelector, "languageSelector");
+            this.languageSelector.Name = "languageSelector";
             // 
-            // label_Unique
+            // SwitchAdvancedSettingsButton
             // 
-            resources.ApplyResources(this.label_Unique, "label_Unique");
-            this.label_Unique.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label_Unique.Name = "label_Unique";
-            // 
-            // label_Publisher
-            // 
-            resources.ApplyResources(this.label_Publisher, "label_Publisher");
-            this.label_Publisher.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.label_Publisher.Name = "label_Publisher";
-            // 
-            // oLayoutPanel
-            // 
-            resources.ApplyResources(this.oLayoutPanel, "oLayoutPanel");
-            this.oLayoutPanel.BackColor = System.Drawing.Color.Red;
-            this.oLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.oLayoutPanel.Name = "oLayoutPanel";
-            this.oLayoutPanel.TabStop = true;
-            // 
-            // btn_OpenDetail
-            // 
-            resources.ApplyResources(this.btn_OpenDetail, "btn_OpenDetail");
-            this.btn_OpenDetail.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_OpenDetail.Name = "btn_OpenDetail";
-            this.btn_OpenDetail.UseVisualStyleBackColor = true;
-            this.btn_OpenDetail.Click += new System.EventHandler(this.btn_OpenDetail_Click_1);
+            resources.ApplyResources(this.SwitchAdvancedSettingsButton, "SwitchAdvancedSettingsButton");
+            this.SwitchAdvancedSettingsButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.SwitchAdvancedSettingsButton.Name = "SwitchAdvancedSettingsButton";
+            this.SwitchAdvancedSettingsButton.UseVisualStyleBackColor = true;
+            this.SwitchAdvancedSettingsButton.Click += new System.EventHandler(this.OnClickSwitchAdvandedSettingsButton);
             // 
             // tableLayoutPanel1
             // 
@@ -230,100 +179,119 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.label_Creator.ForeColor = System.Drawing.SystemColors.ControlText;
             this.label_Creator.Name = "label_Creator";
             // 
-            // btn_OK
+            // OKButton
             // 
-            resources.ApplyResources(this.btn_OK, "btn_OK");
-            this.btn_OK.BackColor = System.Drawing.SystemColors.Control;
-            this.btn_OK.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_OK.Name = "btn_OK";
-            this.btn_OK.UseVisualStyleBackColor = false;
-            this.btn_OK.Click += new System.EventHandler(this.btn_OK_Click);
+            resources.ApplyResources(this.OKButton, "OKButton");
+            this.OKButton.BackColor = System.Drawing.SystemColors.Control;
+            this.OKButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.OKButton.Name = "OKButton";
+            this.OKButton.UseVisualStyleBackColor = false;
+            this.OKButton.Click += new System.EventHandler(this.onClickTranslateButton);
             // 
-            // btn_Reset
+            // ResetButton
             // 
-            resources.ApplyResources(this.btn_Reset, "btn_Reset");
-            this.btn_Reset.BackColor = System.Drawing.SystemColors.Control;
-            this.btn_Reset.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Reset.Name = "btn_Reset";
-            this.btn_Reset.UseVisualStyleBackColor = false;
-            this.btn_Reset.Click += new System.EventHandler(this.btn_Reset_Click);
+            resources.ApplyResources(this.ResetButton, "ResetButton");
+            this.ResetButton.BackColor = System.Drawing.SystemColors.Control;
+            this.ResetButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ResetButton.Name = "ResetButton";
+            this.ResetButton.UseVisualStyleBackColor = false;
+            this.ResetButton.Click += new System.EventHandler(this.btn_Reset_Click);
             // 
-            // btn_Cancel
+            // CancelButton
             // 
-            resources.ApplyResources(this.btn_Cancel, "btn_Cancel");
-            this.btn_Cancel.BackColor = System.Drawing.SystemColors.Control;
-            this.btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btn_Cancel.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btn_Cancel.Name = "btn_Cancel";
-            this.btn_Cancel.UseVisualStyleBackColor = false;
-            this.btn_Cancel.Click += new System.EventHandler(this.btn_Cancel_Click);
+            resources.ApplyResources(this.CancelButton, "CancelButton");
+            this.CancelButton.BackColor = System.Drawing.SystemColors.Control;
+            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.UseVisualStyleBackColor = false;
+            this.CancelButton.Click += new System.EventHandler(this.onClickCancelButton);
+            // 
+            // BottomPanel
+            // 
+            resources.ApplyResources(this.BottomPanel, "BottomPanel");
+            this.BottomPanel.Controls.Add(this.SwitchAdvancedSettingsButton);
+            this.BottomPanel.Controls.Add(this.OKButton);
+            this.BottomPanel.Controls.Add(this.CancelButton);
+            this.BottomPanel.Controls.Add(this.ResetButton);
+            this.BottomPanel.Name = "BottomPanel";
+            // 
+            // AdvancedSettingsGroup
+            // 
+            resources.ApplyResources(this.AdvancedSettingsGroup, "AdvancedSettingsGroup");
+            this.AdvancedSettingsGroup.Controls.Add(this.AdvancedSettingsPanel);
+            this.AdvancedSettingsGroup.Name = "AdvancedSettingsGroup";
+            this.AdvancedSettingsGroup.TabStop = false;
+            // 
+            // AdvancedSettingsPanel
+            // 
+            resources.ApplyResources(this.AdvancedSettingsPanel, "AdvancedSettingsPanel");
+            this.AdvancedSettingsPanel.Name = "AdvancedSettingsPanel";
+            // 
+            // DestinationControl
+            // 
+            resources.ApplyResources(this.DestinationControl, "DestinationControl");
+            this.DestinationControl.BackColor = System.Drawing.Color.Transparent;
+            this.DestinationControl.Name = "DestinationControl";
+            this.DestinationControl.ParameterName = "Destination:";
+            this.DestinationControl.SelectedPath = null;
             // 
             // ConversionParametersForm
             // 
-            this.AcceptButton = this.btn_OK;
+            this.AcceptButton = this.OKButton;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.CancelButton = this.btn_Cancel;
-            this.Controls.Add(this.btn_OK);
-            this.Controls.Add(this.btn_Reset);
-            this.Controls.Add(this.btn_Cancel);
-            this.Controls.Add(this.btn_OpenDetail);
-            this.Controls.Add(this.oLayoutPanel);
-            this.Controls.Add(this.grpBox_Properties);
-            this.Controls.Add(this.mLayoutPanel);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.btn_HideDetail);
-            this.Controls.Add(this.label_paneltitle);
+            this.Controls.Add(this.AdvancedSettingsGroup);
+            this.Controls.Add(this.BottomPanel);
+            this.Controls.Add(this.DocumentPropertiesGroup);
+            this.Controls.Add(this.DestinationControl);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ConversionParametersForm";
             this.ShowIcon = false;
-            this.Load += new System.EventHandler(this.ConversionParametersFrom_Load);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.grpBox_Properties.ResumeLayout(false);
-            this.grpBox_Properties.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
+            this.DocumentPropertiesGroup.ResumeLayout(false);
+            this.DocumentPropertiesGroup.PerformLayout();
+            this.DocumentPropertiesTable.ResumeLayout(false);
+            this.DocumentPropertiesTable.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.BottomPanel.ResumeLayout(false);
+            this.AdvancedSettingsGroup.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label_paneltitle;
         private System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Button btn_Browse;
-        private System.Windows.Forms.TextBox tBx_Browse;
-        private System.Windows.Forms.Label label_Folder;
-        private System.Windows.Forms.GroupBox grpBox_Properties;
-        private System.Windows.Forms.FlowLayoutPanel mLayoutPanel;
-        private System.Windows.Forms.FlowLayoutPanel oLayoutPanel;
-        private System.Windows.Forms.Button btn_HideDetail;
-        private System.Windows.Forms.Button btn_OpenDetail;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.TextBox tBx_Uid;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tBx_Publisher;
-        private System.Windows.Forms.TextBox tBx_Creator;
-        private System.Windows.Forms.TextBox tBx_Title;
-        private System.Windows.Forms.Label label_Title;
-        private System.Windows.Forms.Label label_Unique;
-        private System.Windows.Forms.Label label_Publisher;
+        private System.Windows.Forms.GroupBox DocumentPropertiesGroup;
+        private System.Windows.Forms.Button SwitchAdvancedSettingsButton;
+        private System.Windows.Forms.TableLayoutPanel DocumentPropertiesTable;
+        private System.Windows.Forms.TextBox UIDTextBox;
+        private System.Windows.Forms.Label CreatorLabel;
+        private System.Windows.Forms.TextBox PublisherInput;
+        private System.Windows.Forms.TextBox CreatorInput;
+        private System.Windows.Forms.TextBox TitleInput;
+        private System.Windows.Forms.Label TitleLabel;
+        private System.Windows.Forms.Label UIDLabel;
+        private System.Windows.Forms.Label PublisherLabel;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         //private System.Windows.Forms.TextBox tBx_Uid;
         private System.Windows.Forms.Label label_Creator;
-        private System.Windows.Forms.Button btn_Reset;
-        private System.Windows.Forms.Button btn_Cancel;
-        private System.Windows.Forms.Button btn_OK;
+        private System.Windows.Forms.Button ResetButton;
+        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button OKButton;
         private System.Windows.Forms.LinkLabel AccessibilityCheckerLink;
+        private System.Windows.Forms.Panel BottomPanel;
+        private System.Windows.Forms.GroupBox AdvancedSettingsGroup;
+        private Forms.Controls.PathControl DestinationControl;
+        private System.Windows.Forms.Panel AdvancedSettingsPanel;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox languageSelector;
         //private System.Windows.Forms.TextBox tBx_Publisher;
 
 

@@ -1,4 +1,5 @@
-namespace Daisy.SaveAsDAISY.Forms.Controls {
+namespace Daisy.SaveAsDAISY.Forms.Controls
+{
     partial class StrUserControl
     {
         /// <summary> 
@@ -28,37 +29,45 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StrUserControl));
-            this.m_StrNiceLbl = new System.Windows.Forms.Label();
-            this.m_StrTxtBox = new System.Windows.Forms.TextBox();
+            this.parameterInput = new System.Windows.Forms.TextBox();
+            this.InputPanel = new System.Windows.Forms.Panel();
+            this.InputPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // m_StrNiceLbl
+            // parameterNiceName
             // 
-            resources.ApplyResources(this.m_StrNiceLbl, "m_StrNiceLbl");
-            this.m_StrNiceLbl.Name = "m_StrNiceLbl";
+            resources.ApplyResources(this.parameterNiceName, "parameterNiceName");
             // 
-            // m_StrTxtBox
+            // parameterInput
             // 
-            resources.ApplyResources(this.m_StrTxtBox, "m_StrTxtBox");
-            this.m_StrTxtBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.m_StrTxtBox.Name = "m_StrTxtBox";
+            resources.ApplyResources(this.parameterInput, "parameterInput");
+            this.parameterInput.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.parameterInput.Name = "parameterInput";
+            // 
+            // InputPanel
+            // 
+            resources.ApplyResources(this.InputPanel, "InputPanel");
+            this.InputPanel.Controls.Add(this.parameterInput);
+            this.InputPanel.Name = "InputPanel";
             // 
             // StrUserControl
             // 
-            resources.ApplyResources(this, "$this");
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackColor = System.Drawing.Color.Transparent;
-            this.Controls.Add(this.m_StrNiceLbl);
-            this.Controls.Add(this.m_StrTxtBox);
+            this.Controls.Add(this.InputPanel);
+            resources.ApplyResources(this, "$this");
             this.Name = "StrUserControl";
+            this.Controls.SetChildIndex(this.parameterNiceName, 0);
+            this.Controls.SetChildIndex(this.InputPanel, 0);
+            this.InputPanel.ResumeLayout(false);
+            this.InputPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label m_StrNiceLbl;
-        private System.Windows.Forms.TextBox m_StrTxtBox;
+        private System.Windows.Forms.TextBox parameterInput;
+        private System.Windows.Forms.Panel InputPanel;
     }
 }

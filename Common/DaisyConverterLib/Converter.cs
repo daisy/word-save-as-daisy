@@ -11,7 +11,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace Daisy.SaveAsDAISY.Conversion {
+namespace Daisy.SaveAsDAISY.Conversion
+{
 
     /// <summary>
     /// Base class to preprocess and convert one or more preprocessed document to a single DTBook XML
@@ -19,7 +20,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
 	/// 
 	/// Its more a "Document processing workflow" 
     /// </summary>
-    public class Converter {
+    public class Converter
+    {
 
         /// <summary>
         /// 
@@ -32,8 +34,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
         private string validationErrorMsg = string.Empty;
 
 
-		private Task<XmlDocument> conversionTask;
-		private CancellationTokenSource xmlConversionCancel;
+        private Task<XmlDocument> conversionTask;
+        private CancellationTokenSource xmlConversionCancel;
 
 
 
@@ -42,26 +44,29 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <summary>
         /// Override default resource manager.
         /// </summary>
-        public System.Resources.ResourceManager OverrideResourceManager {
-			set { this.ResourceManager.Add(value); }
-		}
+        public System.Resources.ResourceManager OverrideResourceManager
+        {
+            set { this.ResourceManager.Add(value); }
+        }
 
 
-		/// <summary>
-		/// Retrieve the label associated to the specified key
-		/// </summary>
-		/// <param name="key"></param>
-		/// <returns></returns>
-		public string GetString(string key) {
-			return this.ResourceManager.GetString(key);
-		}
+        /// <summary>
+        /// Retrieve the label associated to the specified key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetString(string key)
+        {
+            return this.ResourceManager.GetString(key);
+        }
 
-		/// <summary>
-		/// Resource manager
-		/// </summary>
-		public System.Resources.ResourceManager ResManager {
-			get { return this.ResourceManager; }
-		}
+        /// <summary>
+        /// Resource manager
+        /// </summary>
+        public System.Resources.ResourceManager ResManager
+        {
+            get { return this.ResourceManager; }
+        }
 
         protected WordToDTBookXMLTransform DocumentConverter { get => documentConverter; set => documentConverter = value; }
         public ConversionParameters ConversionParameters { get => conversionParameters; set => conversionParameters = value; }
@@ -83,143 +88,176 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         private IDocumentPreprocessor documentPreprocessor;
 
-        public Converter(IDocumentPreprocessor preprocessor, WordToDTBookXMLTransform documentConverter, ConversionParameters conversionParameters, IConversionEventsHandler eventsHandler = null) {
-			
-			this.DocumentPreprocessor = preprocessor;
-			this.DocumentConverter = documentConverter;
-			this.ConversionParameters = conversionParameters;
-			this.EventsHandler = eventsHandler ?? new SilentEventsHandler();
-			this.DocumentConverter.RemoveMessageListeners();
-			this.DocumentConverter.AddProgressMessageListener(new WordToDTBookXMLTransform.XSLTMessagesListener(this.EventsHandler.onProgressMessageReceived));
-			this.DocumentConverter.AddFeedbackMessageListener(new WordToDTBookXMLTransform.XSLTMessagesListener(this.EventsHandler.onFeedbackMessageReceived));
-			this.DocumentConverter.AddFeedbackValidationListener(new WordToDTBookXMLTransform.XSLTMessagesListener(this.EventsHandler.onFeedbackValidationMessageReceived));
-			this.DocumentConverter.DirectTransform = true;
+        public Converter(IDocumentPreprocessor preprocessor, WordToDTBookXMLTransform documentConverter, ConversionParameters conversionParameters, IConversionEventsHandler eventsHandler = null)
+        {
 
-			this.ResourceManager = new ChainResourceManager();
-			// Add a default resource managers (for common labels)
-			this.ResourceManager.Add(
-				new System.Resources.ResourceManager(
-					"DaisyAddinLib.resources.Labels",
-					Assembly.GetExecutingAssembly()
-				)
-			);
-		}
+            this.DocumentPreprocessor = preprocessor;
+            this.DocumentConverter = documentConverter;
+            this.ConversionParameters = conversionParameters;
+            this.EventsHandler = eventsHandler ?? new SilentEventsHandler();
+            this.DocumentConverter.RemoveMessageListeners();
+            this.DocumentConverter.AddProgressMessageListener(new WordToDTBookXMLTransform.XSLTMessagesListener(this.EventsHandler.onProgressMessageReceived));
+            this.DocumentConverter.AddFeedbackMessageListener(new WordToDTBookXMLTransform.XSLTMessagesListener(this.EventsHandler.onFeedbackMessageReceived));
+            this.DocumentConverter.AddFeedbackValidationListener(new WordToDTBookXMLTransform.XSLTMessagesListener(this.EventsHandler.onFeedbackValidationMessageReceived));
+            this.DocumentConverter.DirectTransform = true;
 
-		/// <summary>
-		/// Preprocess a given document 
-		/// </summary>
-		/// <param name="inputPath"></param>
-		/// <param name="resourceId"></param>
-		/// <param name="withWordVisible">(defaults to true) Speicify if word must be visible or not during preprocessing</param>
-		/// <returns>A document ready for conversion or null if an error has occured or if the preprocess has been canceled</returns>
-		public DocumentParameters PreprocessDocument(string inputPath, string resourceId = null) {
-			EventsHandler.onDocumentPreprocessingStart(inputPath);
-			DocumentParameters result = new DocumentParameters(inputPath) {
-				CopyPath = ConverterHelper.GetTempPath(inputPath, ".docx"),
-				ResourceId = resourceId != null ? resourceId : null,
-				ShowInputDocumentInWord = ConversionParameters.Visible
-			};
-			// dot not make visible subdocuments (documents with resource Id assigned)
-			// Note : allow preprocessing to be "silent"
-			object preprocessedObject = DocumentPreprocessor.startPreprocessing(result, EventsHandler);
-			
-			try {
-				do {
-					switch (CurrentStatus) {
-						case ConversionStatus.None: // Starting by validating file name
-							EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Validating file name"));
-							CurrentStatus = DocumentPreprocessor.ValidateName(ref preprocessedObject, ConversionParameters.NameValidator, EventsHandler);
-							break;
-						case ConversionStatus.ValidatedName: // make the working copy
-							EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Name validated, creating the working copy"));
-							CurrentStatus  = DocumentPreprocessor.CreateWorkingCopy(ref preprocessedObject, ref result, EventsHandler);
-							break;
-						case ConversionStatus.CreatedWorkingCopy: // start processing shapes
-							EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Working copy created, processing shapes"));
-							CurrentStatus = DocumentPreprocessor.ProcessShapes(ref preprocessedObject, ref result, EventsHandler);
-							break;
-						case ConversionStatus.ProcessedShapes: // start processing math
-							EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Shapes processed, processing mathml"));
-							CurrentStatus = DocumentPreprocessor.ProcessEquations(ref preprocessedObject, ref result, EventsHandler);
-							break;
-						case ConversionStatus.ProcessedMathML: // finalize preprocessing
-							EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("MathML processed"));
-							CurrentStatus = DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
-							break;
-					}
-				} while (CurrentStatus != ConversionStatus.Canceled &&
-						CurrentStatus != ConversionStatus.Error &&
-						CurrentStatus != ConversionStatus.PreprocessingSucceeded);
-			} catch (Exception e) {
-				EventsHandler.onPreprocessingError(inputPath, e.Message);
-				throw;
-			} finally {
-				if (CurrentStatus != ConversionStatus.PreprocessingSucceeded) {
-					DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
-				}
-			}
-			if (CurrentStatus != ConversionStatus.PreprocessingSucceeded) {
-				return null;
-			}
-			// Check for revisions
-			if (result.HasRevisions) {
-				result.TrackChanges = EventsHandler.AskForTrackConfirmation();
-				// To be removed later, after moving TrackChanges eval from conversion to document param object
-				ConversionParameters.TrackChanges = result.TrackChanges ? "Yes" : "No";
-			} else {
-				ConversionParameters.TrackChanges = "NoTrack";
-			}
+            this.ResourceManager = new ChainResourceManager();
+            // Add a default resource managers (for common labels)
+            this.ResourceManager.Add(
+                new System.Resources.ResourceManager(
+                    "DaisyAddinLib.resources.Labels",
+                    Assembly.GetExecutingAssembly()
+                )
+            );
+        }
 
-			// Only attempt to parse subdocument if no resourceId is provided or if nop attempt to parse was previously done 
-			if (ConversionParameters.ParseSubDocuments == null || resourceId == null) {
-				EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Parsing subdocuments"));
-				SubdocumentsList subDocList = SubdocumentsManager.FindSubdocuments(
-					result.CopyPath,
-					result.InputPath);
-				result.HasSubDocuments = !subDocList.Empty;
-				if (subDocList.Errors.Count > 0) {
-					string errors = "Subdocuments convertion will be ignored due to the following errors found while extracting them:\r\n" + string.Join("\r\n", subDocList.Errors);
-					EventsHandler.onPreprocessingError(result.InputPath, errors);
-					ConversionParameters.ParseSubDocuments = false;
-				} else if (result.HasSubDocuments) {
-					ConversionParameters.ParseSubDocuments = false;
-					if (EventsHandler != null) {
-						ConversionParameters.ParseSubDocuments = EventsHandler.AskForTranslatingSubdocuments();
-					}
-					if (ConversionParameters.ParseSubDocuments) {
-						foreach (SubdocumentInfo item in subDocList.Subdocuments) {
-							if (CurrentStatus != ConversionStatus.Canceled) {
-								DocumentParameters subDoc = null;
-								try {
-									subDoc = this.PreprocessDocument(item.FileName, item.RelationshipId);
-								} catch (Exception e) {
-									string errors = "Subdocuments convertion will be ignored due to the following errors found while preprocessing "+ item.FileName  +":\r\n" + e.Message;
-									EventsHandler.onPreprocessingError(item.FileName, errors);
-									ConversionParameters.ParseSubDocuments = false;
-								}
-								if (subDoc != null) {
-									result.SubDocumentsToConvert.Add(subDoc);
-								} else {
-									// Cancel sub documents conversion
-									result.SubDocumentsToConvert.Clear();
-									break;
+        /// <summary>
+        /// Preprocess a given document 
+        /// </summary>
+        /// <param name="inputPath"></param>
+        /// <param name="resourceId"></param>
+        /// <param name="withWordVisible">(defaults to true) Speicify if word must be visible or not during preprocessing</param>
+        /// <returns>A document ready for conversion or null if an error has occured or if the preprocess has been canceled</returns>
+        public DocumentParameters PreprocessDocument(string inputPath, string resourceId = null)
+        {
+            EventsHandler.onDocumentPreprocessingStart(inputPath);
+            DocumentParameters result = new DocumentParameters(inputPath)
+            {
+                ResourceId = resourceId != null ? resourceId : null,
+                ShowInputDocumentInWord = ConversionParameters.Visible
+            };
+            // dot not make visible subdocuments (documents with resource Id assigned)
+            // Note : allow preprocessing to be "silent"
+            object preprocessedObject = DocumentPreprocessor.startPreprocessing(result, EventsHandler);
+
+            try
+            {
+                do
+                {
+                    switch (CurrentStatus)
+                    {
+                        case ConversionStatus.None: // Starting by validating file name
+                            EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Validating file name"));
+                            CurrentStatus = DocumentPreprocessor.ValidateName(ref preprocessedObject, ConversionParameters.NameValidator, EventsHandler);
+                            break;
+                        case ConversionStatus.ValidatedName: // make the working copy
+                            EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Name validated, creating the working copy"));
+                            CurrentStatus = DocumentPreprocessor.CreateWorkingCopy(ref preprocessedObject, ref result, EventsHandler);
+                            break;
+                        case ConversionStatus.CreatedWorkingCopy: // start processing shapes
+                            EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Working copy created, processing shapes"));
+                            CurrentStatus = DocumentPreprocessor.ProcessShapes(ref preprocessedObject, ref result, EventsHandler);
+                            break;
+                        case ConversionStatus.ProcessedShapes: // start processing math
+                            EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Shapes processed, processing mathml"));
+                            CurrentStatus = DocumentPreprocessor.ProcessEquations(ref preprocessedObject, ref result, EventsHandler);
+                            break;
+                        case ConversionStatus.ProcessedMathML: // finalize preprocessing
+                            EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("MathML processed"));
+                            CurrentStatus = DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
+                            break;
+                    }
+                } while (CurrentStatus != ConversionStatus.Canceled &&
+                        CurrentStatus != ConversionStatus.Error &&
+                        CurrentStatus != ConversionStatus.PreprocessingSucceeded);
+            }
+            catch (Exception e)
+            {
+                Exception fault = new Exception("An error occured after " + CurrentStatus.ToString() + " status preprossing:\r\n" + e.Message, e);
+                EventsHandler.onPreprocessingError(inputPath, fault);
+                throw fault;
+            }
+            finally
+            {
+                if (CurrentStatus != ConversionStatus.PreprocessingSucceeded)
+                {
+                    DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
+                }
+            }
+            if (CurrentStatus != ConversionStatus.PreprocessingSucceeded)
+            {
+                return null;
+            }
+            // Check for revisions
+            if (result.HasRevisions)
+            {
+                result.TrackChanges = EventsHandler.AskForTrackConfirmation();
+                // To be removed later, after moving TrackChanges eval from conversion to document param object
+                ConversionParameters.TrackChanges = result.TrackChanges ? "Yes" : "No";
+            }
+            else
+            {
+                ConversionParameters.TrackChanges = "NoTrack";
+            }
+
+            // Only attempt to parse subdocument if no resourceId is provided or if nop attempt to parse was previously done 
+            if (ConversionParameters.ParseSubDocuments || resourceId == null)
+            {
+                EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Parsing subdocuments"));
+                SubdocumentsList subDocList = SubdocumentsManager.FindSubdocuments(
+                    result.CopyPath,
+                    result.InputPath);
+                result.HasSubDocuments = !subDocList.Empty;
+                if (subDocList.Errors.Count > 0)
+                {
+                    string errors = "Subdocuments convertion will be ignored due to the following errors found while extracting them:\r\n" + string.Join("\r\n", subDocList.Errors);
+                    EventsHandler.onPreprocessingWarning(errors);
+                    ConversionParameters.ParseSubDocuments = false;
+                }
+                else if (result.HasSubDocuments)
+                {
+                    ConversionParameters.ParseSubDocuments = false;
+                    if (EventsHandler != null)
+                    {
+                        ConversionParameters.ParseSubDocuments = EventsHandler.AskForTranslatingSubdocuments();
+                    }
+                    if (ConversionParameters.ParseSubDocuments)
+                    {
+                        foreach (SubdocumentInfo item in subDocList.Subdocuments)
+                        {
+                            if (CurrentStatus != ConversionStatus.Canceled)
+                            {
+                                DocumentParameters subDoc = null;
+                                try
+                                {
+                                    subDoc = this.PreprocessDocument(item.FileName, item.RelationshipId);
                                 }
-								
-							} else {
-								EventsHandler.onConversionCanceled();
-								return null;
-							}
+                                catch (Exception e)
+                                {
+                                    string errors = "Subdocuments convertion will be ignored due to the following errors found while preprocessing " + item.FileName + ":\r\n" + e.Message;
+                                    EventsHandler.onPreprocessingWarning(errors);
+                                    ConversionParameters.ParseSubDocuments = false;
+                                }
+                                if (subDoc != null)
+                                {
+                                    result.SubDocumentsToConvert.Add(subDoc);
+                                }
+                                else
+                                {
+                                    // Cancel sub documents conversion
+                                    result.SubDocumentsToConvert.Clear();
+                                    break;
+                                }
+
+                            }
+                            else
+                            {
+                                EventsHandler.onConversionCanceled();
+                                return null;
+                            }
                         }
-					}
-				} else {
-					ConversionParameters.ParseSubDocuments = false;
-				}
-			}
-			CurrentStatus = ConversionStatus.PreprocessingSucceeded;
-			EventsHandler.onPreprocessingSuccess();
-			return result;
-			
-		}
+                    }
+                }
+                else
+                {
+                    ConversionParameters.ParseSubDocuments = false;
+                }
+            }
+            CurrentStatus = ConversionStatus.PreprocessingSucceeded;
+            EventsHandler.onPreprocessingSuccess();
+            return result;
+
+        }
 
 
 
@@ -230,232 +268,313 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <param name="document"></param>
         /// <param name="conversion"></param>
         /// <param name="applyPostProcessing"></param>
-        public ConversionResult Convert(DocumentParameters document, bool applyPostProcessing = true) {
+        public ConversionResult Convert(DocumentParameters document, bool applyPostProcessing = true)
+        {
+            this.EventsHandler.onDocumentConversionStart(document, ConversionParameters);
+            xmlConversionCancel = new CancellationTokenSource();
+            CurrentStatus = ConversionStatus.HasStartedConversion;
+            
+            // If conversion is to be post processed output the xsl transfo to temp
+            string outputDirectory = ConversionParameters.OutputPath.EndsWith(".xml") ?
+                        Directory.GetParent(ConversionParameters.OutputPath).FullName :
+                        ConversionParameters.OutputPath;
+            // For script execution, replace this by a temp directory
+            if(ConversionParameters.PostProcessor != null)
+            {
+                outputDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName())).FullName;
+            }
 
-			this.EventsHandler.onDocumentConversionStart(document, ConversionParameters);
-			xmlConversionCancel = new CancellationTokenSource();
-			CurrentStatus = ConversionStatus.HasStartedConversion;
-			// If conversion is to be post processed output the xsl transfo to temp
-			string outputDirectory = ConversionParameters.PostProcessor != null ?
-				Path.GetTempPath() : (
-					ConversionParameters.OutputPath.EndsWith(".xml") ?
-						Directory.GetParent(ConversionParameters.OutputPath).FullName :
-						ConversionParameters.OutputPath
-				);
+            // Rebuild and sanitize file name
+            string outputFilename = (
+                ConversionParameters.OutputPath.EndsWith(".xml") ?
+                    Path.GetFileName(ConversionParameters.OutputPath) :
+                    Path.GetFileNameWithoutExtension(document.InputPath) + ".xml"
+                );
 
-			// Rebuild and sanitize file name
-			string outputFilename = (
-				ConversionParameters.OutputPath.EndsWith(".xml") ?
-					Path.GetFileName(ConversionParameters.OutputPath) :
-					Path.GetFileNameWithoutExtension(document.InputPath) + ".xml"
-				);
+            string sanitizedName = outputFilename.Replace(",", "_");/*.Replace(" ", "_");*/
 
-			string sanitizedName = outputFilename.Replace(",", "_");/*.Replace(" ", "_");*/
+            // Rebuild output path
+            document.OutputPath = Path.Combine(outputDirectory, sanitizedName);
 
-			// Rebuild output path
-			document.OutputPath = Path.Combine(outputDirectory, sanitizedName);
-
-			if (document.SubDocumentsToConvert.Count > 0 && ConversionParameters.ParseSubDocuments) {
+            if (document.SubDocumentsToConvert.Count > 0 && ConversionParameters.ParseSubDocuments)
+            {
                 List<DocumentParameters> flattenList = new List<DocumentParameters> {
                     document
                 };
-                foreach (DocumentParameters subDocument in document.SubDocumentsToConvert) {
-					flattenList.Add(subDocument);
-				}
-				this.Convert(flattenList, false);
-			} else {
-				try {
-					conversionTask = Task<XmlDocument>.Factory.StartNew(() => {
-						return DocumentConverter.ConvertDocument(document, ConversionParameters);
-					});
-					conversionTask.Wait(xmlConversionCancel.Token);
-					conversionTask.Dispose();
-				} catch (OperationCanceledException) { 
-				} catch (Exception e) {
-					string message = e.Message;
-					while(e.InnerException != null) {
-						message += "\r\n - " + e.InnerException.Message;
-						e = e.InnerException;
-					}
-					
+                foreach (DocumentParameters subDocument in document.SubDocumentsToConvert)
+                {
+                    flattenList.Add(subDocument);
+                }
+                this.Convert(flattenList, false);
+            }
+            else
+            {
+                try
+                {
+                    conversionTask = Task<XmlDocument>.Factory.StartNew(() => {
+                        try {
+                            return DocumentConverter.ConvertDocument(document, ConversionParameters);
+                        } catch (Exception ex) {
+                            throw ex;
+                        }
+                    });
+                    conversionTask.Wait(xmlConversionCancel.Token);
+                    conversionTask.Dispose();
+                }
+                catch (OperationCanceledException)
+                {
+                }
+                catch (Exception e)
+                {
+                    CurrentStatus = ConversionStatus.Error;
+                    Exception fault = new Exception("Conversion of single docx to dtbook XML: task crashed", e);
 
-					this.EventsHandler.OnUnknownError(message);
-					return ConversionResult.Failed(message);
-				}
-				if (conversionTask.IsFaulted) {
-					CurrentStatus = ConversionStatus.Error;
-					Exception e = conversionTask.Exception;
+                    this.EventsHandler.OnConversionError(
+                        fault
+                    );
+                    throw fault;
+                    //return ConversionResult.Failed(message);
+                }
+                if (conversionTask.IsFaulted)
+                {
+                    CurrentStatus = ConversionStatus.Error;
+                    Exception fault = new Exception("Conversion of single docx to dtbook XML: task ended in fault", conversionTask.Exception);
 
-					string message = e.Message;
-					while (e.InnerException != null) {
-						message += "\r\n - " + e.InnerException.Message;
-						e = e.InnerException;
-					}
+                    this.EventsHandler.OnConversionError(
+                        fault
+                    );
+                    throw fault;
+                    //return ConversionResult.Failed(message);
+                }
 
-					this.EventsHandler.OnUnknownError(message);
-					return ConversionResult.Failed(message);
-				}
+            }
+            if (CurrentStatus == ConversionStatus.Canceled)
+            { // Conversion is aborted
+                this.EventsHandler.onConversionCanceled();
+                return ConversionResult.Cancel();
+            }
 
-			}
-			if (CurrentStatus == ConversionStatus.Canceled) { // Conversion is aborted
-				this.EventsHandler.onConversionCanceled();
-				return ConversionResult.Cancel();
-			}
+            this.EventsHandler.onDocumentConversionSuccess(document, ConversionParameters);
+            if (applyPostProcessing && ConversionParameters.PostProcessor != null)
+            { // launch the pipeline post processing
+                this.EventsHandler.onPostProcessingStart(ConversionParameters);
+                try
+                {
+                    ConversionParameters.PostProcessor.ExecuteScript(document.OutputPath);
+                }
+                catch (Pipeline2Script.JobException je) {
+                    // Job finished in error, not sure if i should  return a failed result
+                    // or throw back to allow a report
+                    this.EventsHandler.onPostProcessingError(
+                        je
+                    );
+                    return ConversionResult.Failed(je.Message);
+                }
+                catch (Exception e)
+                {
+                    CurrentStatus = ConversionStatus.Error;
+                    Exception fault = new Exception("Error while converting with DAISY Pipeline 2", e);
+                    this.EventsHandler.onPostProcessingError(
+                        fault
+                    );
+                    throw fault;
+                }
+                this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
+            }
+            return ConversionResult.Success();
+        }
 
-			this.EventsHandler.onDocumentConversionSuccess(document, ConversionParameters);
-			if (applyPostProcessing && ConversionParameters.PostProcessor != null) { // launch the pipeline post processing
-				this.EventsHandler.onPostProcessingStart(ConversionParameters);
-				try {
-					ConversionParameters.PostProcessor.ExecuteScript(document.OutputPath);
-				} catch (Exception e) {
-					CurrentStatus = ConversionStatus.Error;
-					this.EventsHandler.OnUnknownError(e.Message);
-					return ConversionResult.Failed(e.Message);
-				}
-				this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
-			}
-			return ConversionResult.Success();
-		}
-
-		/// <summary>
-		/// Convert a list of document, merge them in a single XML file and apply post processing on the merged document
-		/// </summary>
-		/// <param name="documentLists">list of one or more document to convert</param>
-		/// <param name="conversion">global conversion settings</param>
-		/// <param name="applyPostProcessing">if true, post processing will be applied on the merge result</param>
-		public ConversionResult Convert(List<DocumentParameters> documentLists, bool applyPostProcessing = true) {
-            if (documentLists is null) {
+        /// <summary>
+        /// Convert a list of document, merge them in a single XML file and apply post processing on the merged document
+        /// </summary>
+        /// <param name="documentLists">list of one or more document to convert</param>
+        /// <param name="conversion">global conversion settings</param>
+        /// <param name="applyPostProcessing">if true, post processing will be applied on the merge result</param>
+        public ConversionResult Convert(List<DocumentParameters> documentLists, bool applyPostProcessing = true)
+        {
+            if (documentLists is null)
+            {
                 throw new ArgumentNullException(nameof(documentLists));
             }
 
             this.EventsHandler.onDocumentListConversionStart(documentLists, ConversionParameters);
-			CurrentStatus = ConversionStatus.HasStartedConversion;
-			string errors = "";
+            CurrentStatus = ConversionStatus.HasStartedConversion;
+            string errors = "";
 
-			try {
-				XmlDocument mergeResult = new XmlDocument();
-				if (documentLists.Count == 1) {
-					return this.Convert(documentLists[0], false);
-				} else {
-					string outputDirectory = ConversionParameters.OutputPath.EndsWith(".xml") ?
-						Directory.GetParent(ConversionParameters.OutputPath).FullName :
-						ConversionParameters.OutputPath;
-					// Rebuild and sanitize file name
-					string outputFilename = (
-						ConversionParameters.OutputPath.EndsWith(".xml") ?
-							Path.GetFileName(ConversionParameters.OutputPath) :
-							Path.GetFileNameWithoutExtension(documentLists[0].InputPath) + ".xml"
-						).Replace(" ", "_").Replace(",", "_");
+            try
+            {
+                XmlDocument mergeResult = new XmlDocument();
+                if (documentLists.Count == 1)
+                {
+                    return this.Convert(documentLists[0], false);
+                }
+                else
+                {
+                    string outputDirectory = ConversionParameters.OutputPath.EndsWith(".xml") ?
+                        Directory.GetParent(ConversionParameters.OutputPath).FullName :
+                        ConversionParameters.OutputPath;
+                    // Rebuild and sanitize file name
+                    string outputFilename = (
+                        ConversionParameters.OutputPath.EndsWith(".xml") ?
+                            Path.GetFileName(ConversionParameters.OutputPath) :
+                            Path.GetFileNameWithoutExtension(documentLists[0].InputPath) + ".xml"
+                        ).Replace(" ", "_").Replace(",", "_");
 
-					// Rebuild output path based on first document 
-					ConversionParameters.OutputPath = Path.Combine(outputDirectory, outputFilename);
-					foreach (DocumentParameters document in documentLists) {
-						//document.OutputPath = outputDirectory + "\\" + Path.GetFileNameWithoutExtension(document.InputPath) + ".xml";
-						// use memory temp for output
-						document.OutputPath = Path.GetTempFileName();
-						try {
-							conversionTask = Task<XmlDocument>.Factory.StartNew(() => {
-								return DocumentConverter.ConvertDocument(document, ConversionParameters, mergeResult);
-							});
+                    // Rebuild output path based on first document 
+                    ConversionParameters.OutputPath = Path.Combine(outputDirectory, outputFilename);
+                    foreach (DocumentParameters document in documentLists)
+                    {
+                        //document.OutputPath = outputDirectory + "\\" + Path.GetFileNameWithoutExtension(document.InputPath) + ".xml";
+                        // use memory temp for output
+                        document.OutputPath = Path.GetTempFileName();
+                        try
+                        {
+                            conversionTask = Task<XmlDocument>.Factory.StartNew(() => {
+                                return DocumentConverter.ConvertDocument(document, ConversionParameters, mergeResult);
+                            });
 
-							conversionTask.Wait(xmlConversionCancel.Token);
-							if (conversionTask.IsCanceled) {
-								this.EventsHandler.onConversionCanceled();
-								return ConversionResult.Cancel();
-							} else {
-								mergeResult = conversionTask.Result;
-							}
-							conversionTask.Dispose();
-						} catch (OperationCanceledException) {
-							this.EventsHandler.onConversionCanceled();
-							return ConversionResult.Cancel();
-						} catch (AggregateException) {
-							// Can be raise
-						} catch (Exception e) {
-							// TODO try to see if exception is raised by cancellation
-							this.EventsHandler.OnUnknownError(document.InputPath + ": " + e.Message + "\r\n");
-							return ConversionResult.Failed(document.InputPath + ": " + e.Message);
-						}
+                            conversionTask.Wait(xmlConversionCancel.Token);
+                            if (conversionTask.IsCanceled)
+                            {
+                                this.EventsHandler.onConversionCanceled();
+                                return ConversionResult.Cancel();
+                            }
+                            else
+                            {
+                                mergeResult = conversionTask.Result;
+                            }
+                            conversionTask.Dispose();
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            this.EventsHandler.onConversionCanceled();
+                            return ConversionResult.Cancel();
+                        }
+                        catch (AggregateException)
+                        {
+                            // Can be raise
+                        }
+                        catch (Exception e)
+                        {
+                            Exception fault = new Exception("Conversion of list of docx to dtbook XML: task crashed", e);
+                            // TODO try to see if exception is raised by cancellation
+                            this.EventsHandler.OnConversionError(fault);
+                            throw fault;
+                            //return ConversionResult.Failed(document.InputPath + ": " + e.Message);
+                        }
 
-						if (conversionTask.IsFaulted) {
-							this.EventsHandler.OnUnknownError(conversionTask.Exception.Message);
-							return ConversionResult.Failed(conversionTask.Exception.Message);
-						}
-						if (CurrentStatus == ConversionStatus.Canceled) {
-							this.EventsHandler.onConversionCanceled();
-							return ConversionResult.Cancel();
-						}
-						this.EventsHandler.onDocumentConversionSuccess(document, ConversionParameters);
-					}
-					DocumentConverter.finalizeAndSaveMergedDocument(mergeResult, ConversionParameters);
-				}
-			} catch (Exception e) {
-				// Propagate unhandled exception
-				throw new Exception(ResourceManager.GetString("TranslationFailed") + "\n"
-					+ ResourceManager.GetString("WellDaisyFormat") + "\n" + " \""
-					+ errors + "\n" + "Crictical issue:" + "\n" + e.Message + "\n", e);
+                        if (conversionTask.IsFaulted)
+                        {
+                            Exception fault = new Exception("Conversion of list of docx to dtbook XML: task ended in fault", conversionTask.Exception);
+                            this.EventsHandler.OnConversionError(
+                                fault
+                            );
+                            throw fault;
+                            //return ConversionResult.Failed(conversionTask.Exception.Message);
+                        }
+                        if (CurrentStatus == ConversionStatus.Canceled)
+                        {
+                            this.EventsHandler.onConversionCanceled();
+                            return ConversionResult.Cancel();
+                        }
+                        this.EventsHandler.onDocumentConversionSuccess(document, ConversionParameters);
+                    }
+                    DocumentConverter.finalizeAndSaveMergedDocument(mergeResult, ConversionParameters);
+                }
+            }
+            catch (Exception e)
+            {
+                // Propagate unhandled exception
+                throw new Exception(ResourceManager.GetString("TranslationFailed") + "\n"
+                    + ResourceManager.GetString("WellDaisyFormat") + "\n" + " \""
+                    + errors + "\n" + "Crictical issue:" + "\n" + e.Message + "\n", e);
 
-			}
-			if (DocumentConverter.ValidationErrors.Count > 0) {
-				this.EventsHandler.OnValidationErrors(DocumentConverter.ValidationErrors, ConversionParameters.OutputPath );
-				return ConversionResult.FailedOnValidation(
-					string.Join(
-						"\r\n",
-						DocumentConverter.ValidationErrors.Select(
-							error => error.ToString()
-						).ToArray()
-					)
-				);
-			} else if (CurrentStatus == ConversionStatus.Canceled) {
-				return ConversionResult.Cancel();
-			} else {
-				this.EventsHandler.onDocumentListConversionSuccess(documentLists, ConversionParameters);
-				
-				if (DocumentConverter.LostElements.Count > 0) {
-					ArrayList unconvertedElements = new ArrayList();
-                    foreach (KeyValuePair<string, List<string> > lostElementForFile in DocumentConverter.LostElements) {
-						if(lostElementForFile.Value.Count > 0) {
-							string lostElements = lostElementForFile.Key + ":\r\n";
-                            foreach (string lostElement in lostElementForFile.Value) {
-								lostElements += " - " + lostElement + "\r\n";
-							}
-							unconvertedElements.Add(lostElements);
+            }
+            if (DocumentConverter.ValidationErrors.Count > 0)
+            {
+                this.EventsHandler.OnValidationErrors(DocumentConverter.ValidationErrors, ConversionParameters.OutputPath);
+                return ConversionResult.FailedOnValidation(
+                    string.Join(
+                        "\r\n",
+                        DocumentConverter.ValidationErrors.Select(
+                            error => error.ToString()
+                        ).ToArray()
+                    )
+                );
+            }
+            else if (CurrentStatus == ConversionStatus.Canceled)
+            {
+                return ConversionResult.Cancel();
+            }
+            else
+            {
+                this.EventsHandler.onDocumentListConversionSuccess(documentLists, ConversionParameters);
+
+                if (DocumentConverter.LostElements.Count > 0)
+                {
+                    ArrayList unconvertedElements = new ArrayList();
+                    foreach (KeyValuePair<string, List<string>> lostElementForFile in DocumentConverter.LostElements)
+                    {
+                        if (lostElementForFile.Value.Count > 0)
+                        {
+                            string lostElements = lostElementForFile.Key + ":\r\n";
+                            foreach (string lostElement in lostElementForFile.Value)
+                            {
+                                lostElements += " - " + lostElement + "\r\n";
+                            }
+                            unconvertedElements.Add(lostElements);
                         }
                     }
-					this.EventsHandler.OnLostElements(ConversionParameters.OutputPath, unconvertedElements);
-					applyPostProcessing = this.EventsHandler.IsContinueDTBookGenerationOnLostElements();
-				}
-				if (applyPostProcessing && ConversionParameters.PostProcessor != null) {
-					// If post processing is requested (and can be applied even if lost elements are found)
-					// Launch the post processing pipeline sript 
-					// (cleaning or converting DTBook to another format Like a DAISY book)
-					this.EventsHandler.onPostProcessingStart(ConversionParameters);
-					try {
-						ConversionParameters.PostProcessor.ExecuteScript(ConversionParameters.OutputPath);
-					} catch (Exception e) {
-						this.EventsHandler.OnUnknownError(e.Message);
-						return ConversionResult.Failed(e.Message);
-					}
-					this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
-				}
-			}
-			return ConversionResult.Success();
+                    this.EventsHandler.OnLostElements(ConversionParameters.OutputPath, unconvertedElements);
+                    applyPostProcessing = this.EventsHandler.IsContinueDTBookGenerationOnLostElements();
+                }
+                if (applyPostProcessing && ConversionParameters.PostProcessor != null)
+                {
+                    // If post processing is requested (and can be applied even if lost elements are found)
+                    // Launch the post processing pipeline sript 
+                    // (cleaning or converting DTBook to another format Like a DAISY book)
+                    this.EventsHandler.onPostProcessingStart(ConversionParameters);
+                    try {
+                        ConversionParameters.PostProcessor.ExecuteScript(ConversionParameters.OutputPath);
+                    }
+                    catch (Pipeline2Script.JobException je) {
+                        // Job finished in error, not sure if i should  return a failed result
+                        // or throw back to allow a report
+                        this.EventsHandler.onPostProcessingError(
+                            je
+                        );
+                        return ConversionResult.Failed(je.Message);
+                    }
+                    catch (Exception e) {
+                        Exception fault = new Exception("An execution error occured while running conversion in DAISY Pipeline 2:" + e.Message, e);
+                        this.EventsHandler.onPostProcessingError(
+                            fault
+                        );
+                        throw fault;
+                        //return ConversionResult.Failed(e.Message);
+                    }
+                    this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
+                }
+            }
+            return ConversionResult.Success();
 
-		}
+        }
 
 
-		/// <summary>
-		/// 
-		/// </summary>
-		protected void RequestConversionCancel() {
-			if (xmlConversionCancel != null) {
-				xmlConversionCancel.Cancel();
-			}
-			CurrentStatus = ConversionStatus.Canceled;
-			
-		}
+        /// <summary>
+        /// 
+        /// </summary>
+        protected void RequestConversionCancel()
+        {
+            if (xmlConversionCancel != null)
+            {
+                xmlConversionCancel.Cancel();
+            }
+            CurrentStatus = ConversionStatus.Canceled;
+
+        }
 
 
-	}
+    }
 
 }

@@ -333,8 +333,11 @@
   <data name="&gt;&gt;combobox_resample.ZOrder" xml:space="preserve">
     <value>3</value>
   </data>
+  <data name="btn_ok.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
   <data name="btn_ok.Location" type="System.Drawing.Point, System.Drawing">
-    <value>159, 483</value>
+    <value>531, 495</value>
   </data>
   <data name="btn_ok.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -358,7 +361,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btn_ok.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
+  </data>
+  <data name="grpbox_pgnum.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="grpbox_pgnum.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 15</value>
@@ -370,7 +376,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="grpbox_pgnum.Size" type="System.Drawing.Size, System.Drawing">
-    <value>361, 59</value>
+    <value>747, 74</value>
   </data>
   <data name="grpbox_pgnum.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -388,7 +394,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpbox_pgnum.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
+  </data>
+  <data name="grpbox_charstyles.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="grpbox_charstyles.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 81</value>
@@ -400,7 +409,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="grpbox_charstyles.Size" type="System.Drawing.Size, System.Drawing">
-    <value>361, 58</value>
+    <value>747, 73</value>
   </data>
   <data name="grpbox_charstyles.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -418,7 +427,10 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpbox_charstyles.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
+  </data>
+  <data name="grpbox_ImageSizes.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
   <data name="grpbox_ImageSizes.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 146</value>
@@ -430,7 +442,7 @@
     <value>4, 4, 4, 4</value>
   </data>
   <data name="grpbox_ImageSizes.Size" type="System.Drawing.Size, System.Drawing">
-    <value>361, 124</value>
+    <value>747, 155</value>
   </data>
   <data name="grpbox_ImageSizes.TabIndex" type="System.Int32, mscorlib">
     <value>13</value>
@@ -448,10 +460,13 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;grpbox_ImageSizes.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
+  </data>
+  <data name="btnCancel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>267, 483</value>
+    <value>423, 495</value>
   </data>
   <data name="btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -475,7 +490,178 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnCancel.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="FootnotesBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;notesPositionLabel.Name" xml:space="preserve">
+    <value>notesPositionLabel</value>
+  </data>
+  <data name="&gt;&gt;notesPositionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesPositionLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesPositionLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;notesPositionSelector.Name" xml:space="preserve">
+    <value>notesPositionSelector</value>
+  </data>
+  <data name="&gt;&gt;notesPositionSelector.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesPositionSelector.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesPositionSelector.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="&gt;&gt;notesLevelLabel.Name" xml:space="preserve">
+    <value>notesLevelLabel</value>
+  </data>
+  <data name="&gt;&gt;notesLevelLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesLevelLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesLevelLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;notesLevelSelector.Name" xml:space="preserve">
+    <value>notesLevelSelector</value>
+  </data>
+  <data name="&gt;&gt;notesLevelSelector.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesLevelSelector.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesLevelSelector.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingLabel.Name" xml:space="preserve">
+    <value>notesNumberingLabel</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingLabel.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingSelector.Name" xml:space="preserve">
+    <value>notesNumberingSelector</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingSelector.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingSelector.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingSelector.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartLabel.Name" xml:space="preserve">
+    <value>notesNumberingStartLabel</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartValue.Name" xml:space="preserve">
+    <value>notesNumberingStartValue</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.MaskedTextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartValue.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberingStartValue.ZOrder" xml:space="preserve">
+    <value>7</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixLabel.Name" xml:space="preserve">
+    <value>notesNumberPrefixLabel</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixLabel.ZOrder" xml:space="preserve">
+    <value>8</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixValue.Name" xml:space="preserve">
+    <value>notesNumberPrefixValue</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixValue.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberPrefixValue.ZOrder" xml:space="preserve">
+    <value>9</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixLabel.Name" xml:space="preserve">
+    <value>notesNumberSuffixLabel</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixLabel.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixLabel.ZOrder" xml:space="preserve">
+    <value>10</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixValue.Name" xml:space="preserve">
+    <value>notesNumberSuffixValue</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixValue.Parent" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;notesNumberSuffixValue.ZOrder" xml:space="preserve">
+    <value>11</value>
+  </data>
+  <data name="FootnotesBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 277</value>
+  </data>
+  <data name="FootnotesBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>639, 199</value>
+  </data>
+  <data name="FootnotesBox.TabIndex" type="System.Int32, mscorlib">
+    <value>15</value>
+  </data>
+  <data name="FootnotesBox.Text" xml:space="preserve">
+    <value>Footnotes customization</value>
+  </data>
+  <data name="&gt;&gt;FootnotesBox.Name" xml:space="preserve">
+    <value>FootnotesBox</value>
+  </data>
+  <data name="&gt;&gt;FootnotesBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;FootnotesBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;FootnotesBox.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="notesPositionLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -504,6 +690,9 @@
   <data name="&gt;&gt;notesPositionLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="notesPositionSelector.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="notesPositionSelector.Items" xml:space="preserve">
     <value>End of pages</value>
   </data>
@@ -517,7 +706,7 @@
     <value>110, 21</value>
   </data>
   <data name="notesPositionSelector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>245, 24</value>
+    <value>514, 24</value>
   </data>
   <data name="notesPositionSelector.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -567,6 +756,9 @@
   <data name="&gt;&gt;notesLevelLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="notesLevelSelector.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="notesLevelSelector.Items" xml:space="preserve">
     <value>Note reference level</value>
   </data>
@@ -592,7 +784,7 @@
     <value>110, 51</value>
   </data>
   <data name="notesLevelSelector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>245, 24</value>
+    <value>514, 24</value>
   </data>
   <data name="notesLevelSelector.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -642,6 +834,9 @@
   <data name="&gt;&gt;notesNumberingLabel.ZOrder" xml:space="preserve">
     <value>4</value>
   </data>
+  <data name="notesNumberingSelector.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="notesNumberingSelector.Items" xml:space="preserve">
     <value>Don't add a numeric prefix</value>
   </data>
@@ -652,7 +847,7 @@
     <value>128, 81</value>
   </data>
   <data name="notesNumberingSelector.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 24</value>
+    <value>496, 24</value>
   </data>
   <data name="notesNumberingSelector.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -702,6 +897,9 @@
   <data name="&gt;&gt;notesNumberingStartLabel.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
+  <data name="notesNumberingStartValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="notesNumberingStartValue.Location" type="System.Drawing.Point, System.Drawing">
     <value>128, 111</value>
   </data>
@@ -709,7 +907,7 @@
     <value>000</value>
   </data>
   <data name="notesNumberingStartValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
+    <value>496, 22</value>
   </data>
   <data name="notesNumberingStartValue.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -753,11 +951,14 @@
   <data name="&gt;&gt;notesNumberPrefixLabel.ZOrder" xml:space="preserve">
     <value>8</value>
   </data>
+  <data name="notesNumberPrefixValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="notesNumberPrefixValue.Location" type="System.Drawing.Point, System.Drawing">
     <value>128, 139</value>
   </data>
   <data name="notesNumberPrefixValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
+    <value>496, 22</value>
   </data>
   <data name="notesNumberPrefixValue.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -804,11 +1005,14 @@
   <data name="&gt;&gt;notesNumberSuffixLabel.ZOrder" xml:space="preserve">
     <value>10</value>
   </data>
+  <data name="notesNumberSuffixValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
   <data name="notesNumberSuffixValue.Location" type="System.Drawing.Point, System.Drawing">
     <value>128, 169</value>
   </data>
   <data name="notesNumberSuffixValue.Size" type="System.Drawing.Size, System.Drawing">
-    <value>227, 22</value>
+    <value>496, 22</value>
   </data>
   <data name="notesNumberSuffixValue.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -825,29 +1029,494 @@
   <data name="&gt;&gt;notesNumberSuffixValue.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <data name="FootnotesBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 277</value>
+  <data name="TextToSpeechBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Left, Right</value>
   </data>
-  <data name="FootnotesBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>361, 199</value>
+  <data name="AzureKeyValue.AccessibleDescription" xml:space="preserve">
+    <value>One of the two keys provided in your Azure Speech Service resource panel</value>
   </data>
-  <data name="FootnotesBox.TabIndex" type="System.Int32, mscorlib">
-    <value>15</value>
+  <data name="AzureKeyValue.AccessibleName" xml:space="preserve">
+    <value>Azure Speech Service connection key</value>
   </data>
-  <data name="FootnotesBox.Text" xml:space="preserve">
-    <value>Footnotes customization</value>
+  <data name="AzureKeyValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
   </data>
-  <data name="&gt;&gt;FootnotesBox.Name" xml:space="preserve">
-    <value>FootnotesBox</value>
+  <data name="AzureKeyValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>140, 83</value>
   </data>
-  <data name="&gt;&gt;FootnotesBox.Type" xml:space="preserve">
+  <data name="AzureKeyValue.PasswordChar" type="System.Char, mscorlib" xml:space="preserve">
+    <value>*</value>
+  </data>
+  <data name="AzureKeyValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>471, 22</value>
+  </data>
+  <data name="AzureKeyValue.TabIndex" type="System.Int32, mscorlib">
+    <value>6</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyValue.Name" xml:space="preserve">
+    <value>AzureKeyValue</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyValue.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyValue.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="AzureKeyLabel.AccessibleDescription" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AzureKeyLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="AzureKeyLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="AzureKeyLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>5, 88</value>
+  </data>
+  <data name="AzureKeyLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>96, 16</value>
+  </data>
+  <data name="AzureKeyLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>5</value>
+  </data>
+  <data name="AzureKeyLabel.Text" xml:space="preserve">
+    <value>Azure TTS key</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyLabel.Name" xml:space="preserve">
+    <value>AzureKeyLabel</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyLabel.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="AzureRegionValue.AccessibleDescription" xml:space="preserve">
+    <value>The region declared in your Azure Speech Service resource panel</value>
+  </data>
+  <data name="AzureRegionValue.AccessibleName" xml:space="preserve">
+    <value>Azure Speech Service region</value>
+  </data>
+  <data name="AzureRegionValue.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="AzureRegionValue.Items" xml:space="preserve">
+    <value />
+  </data>
+  <data name="AzureRegionValue.Items1" xml:space="preserve">
+    <value>Asia</value>
+  </data>
+  <data name="AzureRegionValue.Items2" xml:space="preserve">
+    <value>Asia Pacific</value>
+  </data>
+  <data name="AzureRegionValue.Items3" xml:space="preserve">
+    <value>Australia</value>
+  </data>
+  <data name="AzureRegionValue.Items4" xml:space="preserve">
+    <value>Australia Central</value>
+  </data>
+  <data name="AzureRegionValue.Items5" xml:space="preserve">
+    <value>Australia Central 2</value>
+  </data>
+  <data name="AzureRegionValue.Items6" xml:space="preserve">
+    <value>Australia East</value>
+  </data>
+  <data name="AzureRegionValue.Items7" xml:space="preserve">
+    <value>Australia Southeast</value>
+  </data>
+  <data name="AzureRegionValue.Items8" xml:space="preserve">
+    <value>Brazil</value>
+  </data>
+  <data name="AzureRegionValue.Items9" xml:space="preserve">
+    <value>Brazil South</value>
+  </data>
+  <data name="AzureRegionValue.Items10" xml:space="preserve">
+    <value>Brazil Southeast</value>
+  </data>
+  <data name="AzureRegionValue.Items11" xml:space="preserve">
+    <value>Brazil US</value>
+  </data>
+  <data name="AzureRegionValue.Items12" xml:space="preserve">
+    <value>Canada</value>
+  </data>
+  <data name="AzureRegionValue.Items13" xml:space="preserve">
+    <value>Canada Central</value>
+  </data>
+  <data name="AzureRegionValue.Items14" xml:space="preserve">
+    <value>Canada East</value>
+  </data>
+  <data name="AzureRegionValue.Items15" xml:space="preserve">
+    <value>Central India</value>
+  </data>
+  <data name="AzureRegionValue.Items16" xml:space="preserve">
+    <value>Central US</value>
+  </data>
+  <data name="AzureRegionValue.Items17" xml:space="preserve">
+    <value>Central US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items18" xml:space="preserve">
+    <value>Central US EUAP</value>
+  </data>
+  <data name="AzureRegionValue.Items19" xml:space="preserve">
+    <value>devfabric</value>
+  </data>
+  <data name="AzureRegionValue.Items20" xml:space="preserve">
+    <value>East Asia</value>
+  </data>
+  <data name="AzureRegionValue.Items21" xml:space="preserve">
+    <value>East Asia (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items22" xml:space="preserve">
+    <value>East US</value>
+  </data>
+  <data name="AzureRegionValue.Items23" xml:space="preserve">
+    <value>East US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items24" xml:space="preserve">
+    <value>East US 2</value>
+  </data>
+  <data name="AzureRegionValue.Items25" xml:space="preserve">
+    <value>East US 2 (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items26" xml:space="preserve">
+    <value>East US 2 EUAP</value>
+  </data>
+  <data name="AzureRegionValue.Items27" xml:space="preserve">
+    <value>East US STG</value>
+  </data>
+  <data name="AzureRegionValue.Items28" xml:space="preserve">
+    <value>Europe</value>
+  </data>
+  <data name="AzureRegionValue.Items29" xml:space="preserve">
+    <value>France</value>
+  </data>
+  <data name="AzureRegionValue.Items30" xml:space="preserve">
+    <value>France Central</value>
+  </data>
+  <data name="AzureRegionValue.Items31" xml:space="preserve">
+    <value>France South</value>
+  </data>
+  <data name="AzureRegionValue.Items32" xml:space="preserve">
+    <value>Germany</value>
+  </data>
+  <data name="AzureRegionValue.Items33" xml:space="preserve">
+    <value>Germany North</value>
+  </data>
+  <data name="AzureRegionValue.Items34" xml:space="preserve">
+    <value>Germany West Central</value>
+  </data>
+  <data name="AzureRegionValue.Items35" xml:space="preserve">
+    <value>Global</value>
+  </data>
+  <data name="AzureRegionValue.Items36" xml:space="preserve">
+    <value>India</value>
+  </data>
+  <data name="AzureRegionValue.Items37" xml:space="preserve">
+    <value>Japan</value>
+  </data>
+  <data name="AzureRegionValue.Items38" xml:space="preserve">
+    <value>Japan East</value>
+  </data>
+  <data name="AzureRegionValue.Items39" xml:space="preserve">
+    <value>Japan West</value>
+  </data>
+  <data name="AzureRegionValue.Items40" xml:space="preserve">
+    <value>Jio India Central</value>
+  </data>
+  <data name="AzureRegionValue.Items41" xml:space="preserve">
+    <value>Jio India West</value>
+  </data>
+  <data name="AzureRegionValue.Items42" xml:space="preserve">
+    <value>Korea</value>
+  </data>
+  <data name="AzureRegionValue.Items43" xml:space="preserve">
+    <value>Korea Central</value>
+  </data>
+  <data name="AzureRegionValue.Items44" xml:space="preserve">
+    <value>Korea South</value>
+  </data>
+  <data name="AzureRegionValue.Items45" xml:space="preserve">
+    <value>North Central US</value>
+  </data>
+  <data name="AzureRegionValue.Items46" xml:space="preserve">
+    <value>North Central US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items47" xml:space="preserve">
+    <value>North Europe</value>
+  </data>
+  <data name="AzureRegionValue.Items48" xml:space="preserve">
+    <value>Norway</value>
+  </data>
+  <data name="AzureRegionValue.Items49" xml:space="preserve">
+    <value>Norway East</value>
+  </data>
+  <data name="AzureRegionValue.Items50" xml:space="preserve">
+    <value>Norway West</value>
+  </data>
+  <data name="AzureRegionValue.Items51" xml:space="preserve">
+    <value>Qatar Central</value>
+  </data>
+  <data name="AzureRegionValue.Items52" xml:space="preserve">
+    <value>Singapore</value>
+  </data>
+  <data name="AzureRegionValue.Items53" xml:space="preserve">
+    <value>South Africa</value>
+  </data>
+  <data name="AzureRegionValue.Items54" xml:space="preserve">
+    <value>South Africa North</value>
+  </data>
+  <data name="AzureRegionValue.Items55" xml:space="preserve">
+    <value>South Africa West</value>
+  </data>
+  <data name="AzureRegionValue.Items56" xml:space="preserve">
+    <value>South Central US</value>
+  </data>
+  <data name="AzureRegionValue.Items57" xml:space="preserve">
+    <value>South Central US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items58" xml:space="preserve">
+    <value>South India</value>
+  </data>
+  <data name="AzureRegionValue.Items59" xml:space="preserve">
+    <value>Southeast Asia</value>
+  </data>
+  <data name="AzureRegionValue.Items60" xml:space="preserve">
+    <value>Southeast Asia (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items61" xml:space="preserve">
+    <value>Sweden Central</value>
+  </data>
+  <data name="AzureRegionValue.Items62" xml:space="preserve">
+    <value>Switzerland</value>
+  </data>
+  <data name="AzureRegionValue.Items63" xml:space="preserve">
+    <value>Switzerland North</value>
+  </data>
+  <data name="AzureRegionValue.Items64" xml:space="preserve">
+    <value>Switzerland West</value>
+  </data>
+  <data name="AzureRegionValue.Items65" xml:space="preserve">
+    <value>UAE Central</value>
+  </data>
+  <data name="AzureRegionValue.Items66" xml:space="preserve">
+    <value>UAE North</value>
+  </data>
+  <data name="AzureRegionValue.Items67" xml:space="preserve">
+    <value>UK South</value>
+  </data>
+  <data name="AzureRegionValue.Items68" xml:space="preserve">
+    <value>UK West</value>
+  </data>
+  <data name="AzureRegionValue.Items69" xml:space="preserve">
+    <value>United Arab Emirates</value>
+  </data>
+  <data name="AzureRegionValue.Items70" xml:space="preserve">
+    <value>United Kingdom</value>
+  </data>
+  <data name="AzureRegionValue.Items71" xml:space="preserve">
+    <value>United States</value>
+  </data>
+  <data name="AzureRegionValue.Items72" xml:space="preserve">
+    <value>United States EUAP</value>
+  </data>
+  <data name="AzureRegionValue.Items73" xml:space="preserve">
+    <value>West Central US</value>
+  </data>
+  <data name="AzureRegionValue.Items74" xml:space="preserve">
+    <value>West Europe</value>
+  </data>
+  <data name="AzureRegionValue.Items75" xml:space="preserve">
+    <value>West India</value>
+  </data>
+  <data name="AzureRegionValue.Items76" xml:space="preserve">
+    <value>West US</value>
+  </data>
+  <data name="AzureRegionValue.Items77" xml:space="preserve">
+    <value>West US (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items78" xml:space="preserve">
+    <value>West US 2</value>
+  </data>
+  <data name="AzureRegionValue.Items79" xml:space="preserve">
+    <value>West US 2 (Stage)</value>
+  </data>
+  <data name="AzureRegionValue.Items80" xml:space="preserve">
+    <value>West US 3</value>
+  </data>
+  <data name="AzureRegionValue.Location" type="System.Drawing.Point, System.Drawing">
+    <value>140, 53</value>
+  </data>
+  <data name="AzureRegionValue.Size" type="System.Drawing.Size, System.Drawing">
+    <value>471, 24</value>
+  </data>
+  <data name="AzureRegionValue.TabIndex" type="System.Int32, mscorlib">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionValue.Name" xml:space="preserve">
+    <value>AzureRegionValue</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionValue.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionValue.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="AzureRegionLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="AzureRegionLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 56</value>
+  </data>
+  <data name="AzureRegionLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>112, 16</value>
+  </data>
+  <data name="AzureRegionLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>3</value>
+  </data>
+  <data name="AzureRegionLabel.Text" xml:space="preserve">
+    <value>Azure TTS region</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionLabel.Name" xml:space="preserve">
+    <value>AzureRegionLabel</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionLabel.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="TTSConfigFileBrowse.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Right</value>
+  </data>
+  <data name="TTSConfigFileBrowse.Location" type="System.Drawing.Point, System.Drawing">
+    <value>522, 24</value>
+  </data>
+  <data name="TTSConfigFileBrowse.Size" type="System.Drawing.Size, System.Drawing">
+    <value>89, 23</value>
+  </data>
+  <data name="TTSConfigFileBrowse.TabIndex" type="System.Int32, mscorlib">
+    <value>2</value>
+  </data>
+  <data name="TTSConfigFileBrowse.Text" xml:space="preserve">
+    <value>Browse</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileBrowse.Name" xml:space="preserve">
+    <value>TTSConfigFileBrowse</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileBrowse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileBrowse.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileBrowse.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="TTSConfigFilePath.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Left, Right</value>
+  </data>
+  <data name="TTSConfigFilePath.Location" type="System.Drawing.Point, System.Drawing">
+    <value>140, 25</value>
+  </data>
+  <data name="TTSConfigFilePath.Size" type="System.Drawing.Size, System.Drawing">
+    <value>376, 22</value>
+  </data>
+  <data name="TTSConfigFilePath.TabIndex" type="System.Int32, mscorlib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFilePath.Name" xml:space="preserve">
+    <value>TTSConfigFilePath</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFilePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFilePath.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFilePath.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="TTSConfigFileLabel.AccessibleDescription" xml:space="preserve">
+    <value>Path to the default DAISY Pipeline 2 Text-to-speech configuration file to use for synthesis</value>
+  </data>
+  <data name="TTSConfigFileLabel.AccessibleName" xml:space="preserve">
+    <value>Text-to-speech configuration file</value>
+  </data>
+  <data name="TTSConfigFileLabel.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="TTSConfigFileLabel.Location" type="System.Drawing.Point, System.Drawing">
+    <value>6, 27</value>
+  </data>
+  <data name="TTSConfigFileLabel.Size" type="System.Drawing.Size, System.Drawing">
+    <value>113, 16</value>
+  </data>
+  <data name="TTSConfigFileLabel.TabIndex" type="System.Int32, mscorlib">
+    <value>0</value>
+  </data>
+  <data name="TTSConfigFileLabel.Text" xml:space="preserve">
+    <value>TTS configuration</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileLabel.Name" xml:space="preserve">
+    <value>TTSConfigFileLabel</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileLabel.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="TextToSpeechBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 351</value>
+  </data>
+  <data name="TextToSpeechBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>624, 121</value>
+  </data>
+  <data name="TextToSpeechBox.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="TextToSpeechBox.Text" xml:space="preserve">
+    <value>Speech synthesis</value>
+  </data>
+  <data name="TextToSpeechBox.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;TextToSpeechBox.Name" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;TextToSpeechBox.Type" xml:space="preserve">
     <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;FootnotesBox.Parent" xml:space="preserve">
+  <data name="&gt;&gt;TextToSpeechBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;FootnotesBox.ZOrder" xml:space="preserve">
-    <value>0</value>
+  <data name="&gt;&gt;TextToSpeechBox.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <metadata name="TTSConfigFileSelect.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
+  <data name="TTSConfigFileSelect.Filter" xml:space="preserve">
+    <value>TTS config (*.xml)|*.xml</value>
+  </data>
+  <data name="TTSConfigFileSelect.Title" xml:space="preserve">
+    <value>Select a TTS configuration file</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
@@ -856,7 +1525,7 @@
     <value>8, 16</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>380, 516</value>
+    <value>643, 536</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -872,6 +1541,12 @@
   </data>
   <data name="$this.Text" xml:space="preserve">
     <value>SaveAsDAISY Settings</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileSelect.Name" xml:space="preserve">
+    <value>TTSConfigFileSelect</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileSelect.Type" xml:space="preserve">
+    <value>System.Windows.Forms.OpenFileDialog, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>ConverterSettingsForm</value>

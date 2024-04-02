@@ -8,36 +8,40 @@ using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-    public class EnumDataType : ParameterDataType {
-        private List<string> m_ValueList;
-        private List<string> m_NiceNameList;
-        private int m_SelectedIndex;
+    public class EnumDataType : ParameterDataType
+    {
+        private List<object> valuesList;
+        private List<string> valuesNameList;
+        private int selectedIndex;
+
+
 
         public EnumDataType(ScriptParameter p, XmlNode node) : base(p)
         {
-            m_ValueList = new List<string>();
-            m_NiceNameList = new List<string>();
-            m_SelectedIndex = -1;
+            valuesList = new List<object>();
+            valuesNameList = new List<string>();
+            selectedIndex = -1;
             PopulateListFromNode(node);
 
             // select list node as default value if default  exists
             if (p.ParameterValue != null && p.ParameterValue.ToString() != ""
-                && m_ValueList.Contains(p.ParameterValue.ToString()))
-                m_SelectedIndex = m_ValueList.BinarySearch(p.ParameterValue.ToString());
+                && valuesList.Contains(p.ParameterValue))
+                selectedIndex = valuesList.BinarySearch(p.ParameterValue);
         }
 
-        public EnumDataType(Dictionary<string,string> itemsList, string defaultValue = "" ) : base() {
-            m_ValueList = new List<string>();
-            m_NiceNameList = new List<string>();
-            m_SelectedIndex = -1;
-            foreach(KeyValuePair<string,string> item in itemsList) {
-                m_NiceNameList.Add(item.Key);
-                m_ValueList.Add(item.Value);
+        public EnumDataType(Dictionary<string, object> itemsList, string defaultKey = null) : base()
+        {
+            valuesList = new List<object>();
+            valuesNameList = new List<string>();
+            selectedIndex = -1;
+            foreach (KeyValuePair<string, object> item in itemsList)
+            {
+                valuesNameList.Add(item.Key);
+                valuesList.Add(item.Value);
             }
-            
-            if (defaultValue != null && defaultValue != ""
-                && m_ValueList.Contains(defaultValue))
-                m_SelectedIndex = m_ValueList.BinarySearch(defaultValue);
+
+            if (defaultKey != null && valuesNameList.Contains(defaultKey))
+                selectedIndex = valuesNameList.IndexOf(defaultKey);
         }
 
         private void PopulateListFromNode(XmlNode DatatypeNode)
@@ -47,37 +51,37 @@ namespace Daisy.SaveAsDAISY.Conversion
 
             foreach (XmlNode n in nodeList)
             {
-                m_ValueList.Add(n.Attributes.GetNamedItem("value").Value);
-                m_NiceNameList.Add(n.Attributes.GetNamedItem("nicename").Value);
+                valuesList.Add(n.Attributes.GetNamedItem("value").Value);
+                valuesNameList.Add(n.Attributes.GetNamedItem("nicename").Value);
             }
         }
 
 
-        public List<string> GetValues { get { return m_ValueList; } }
-        public List<string> GetNiceNames { get { return m_NiceNameList; } }
+        public List<object> GetValues { get { return valuesList; } }
+        public List<string> GetNiceNames { get { return valuesNameList; } }
 
         /// <summary>
         ///  Gets and sets the index of value selected.
         /// </summary>
         public int SelectedIndex
         {
-            get { return m_SelectedIndex; }
+            get { return selectedIndex; }
             set
             {
-                if (value >= 0 && value < m_ValueList.Count)
+                if (value >= 0 && value < valuesList.Count)
                     SetSelectedIndexAndUpdateScript(value);
                 else throw new System.Exception("IndexNotInRange");
             }
         }
 
 
-        public string SelectedItemValue
+        public object SelectedItemValue
         {
-            get { return m_ValueList[m_SelectedIndex]; }
+            get { return valuesList[selectedIndex]; }
             set
             {
-                if (value != null && m_ValueList.Contains(value))
-                    SetSelectedIndexAndUpdateScript(m_ValueList.BinarySearch(value));
+                if (value != null && valuesList.Contains(value))
+                    SetSelectedIndexAndUpdateScript(valuesList.BinarySearch(value));
                 else throw new System.Exception("NotAbleToSelectItem");
             }
         }
@@ -85,27 +89,30 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public string SelectedItemNiceName
         {
-            get { return m_NiceNameList[m_SelectedIndex]; }
+            get { return valuesNameList[selectedIndex]; }
             set
             {
-                if (value != null && m_NiceNameList.Contains(value))
-                    SetSelectedIndexAndUpdateScript(m_NiceNameList.BinarySearch(value));
+                if (value != null && valuesNameList.Contains(value))
+                    SetSelectedIndexAndUpdateScript(valuesNameList.BinarySearch(value));
                 else throw new System.Exception("NotAbleToSelectItem");
             }
         }
 
-        public override object Value { 
-            get => SelectedItemValue; 
-            set {
-                SelectedItemNiceName = value.ToString();
-            } 
+        public override object Value
+        {
+            get => SelectedItemValue;
+            set
+            {
+
+                SelectedItemValue = value;
+            }
         }
 
-        private bool SetSelectedIndexAndUpdateScript(int Index)
+        private bool SetSelectedIndexAndUpdateScript(int index)
         {
-            if (Index > 0 && Index < m_ValueList.Count)
+            if (index > 0 && index < valuesList.Count)
             {
-                m_SelectedIndex = Index;
+                selectedIndex = index;
                 UpdateScript(SelectedItemValue);
                 return true;
             }

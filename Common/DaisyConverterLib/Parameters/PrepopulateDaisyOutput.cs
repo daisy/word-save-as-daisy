@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Xml;
 
 namespace Daisy.SaveAsDAISY.Conversion
@@ -21,7 +22,10 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// </summary>
 		private PrepopulateDaisyOutput()
 		{
-			OutputPath = string.Empty;
+			OutputPath = Path.Combine(
+				Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+				"SaveAsDAISY Results"
+			);
 		}
 
 		/// <summary>
@@ -39,8 +43,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// <returns>Instnace of <see cref="PrepopulateDaisyOutput"/> class if xml file exists, otherwise - null.</returns>
 		public static PrepopulateDaisyOutput Load()
 		{
-			if( ! File.Exists(XmlFilePath))
-				return null;
+			if(!File.Exists(XmlFilePath)) return new PrepopulateDaisyOutput();
 
 			PrepopulateDaisyOutput result = new PrepopulateDaisyOutput();;
 
@@ -81,11 +84,21 @@ namespace Daisy.SaveAsDAISY.Conversion
             
 			document.Save(XmlFilePath);
 		}
-
+		private string _outputPath;
 		/// <summary>
 		/// Output path.
 		/// </summary>
-		public string OutputPath { get; set; }
+		public string OutputPath { get {
+				if(_outputPath != null && !Directory.Exists(_outputPath)) {
+                    Directory.CreateDirectory(_outputPath);
+                }
+				return _outputPath;
+            }
+			set {
+				_outputPath = value;
+
+            }
+		}
 
 	}
 }

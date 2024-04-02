@@ -1,4 +1,5 @@
-namespace Daisy.SaveAsDAISY.Forms.Controls {
+namespace Daisy.SaveAsDAISY.Forms.Controls
+{
     partial class IntUserControl
     {
         /// <summary>
@@ -27,44 +28,40 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
         /// </summary>
         private void InitializeComponent()
         {
-            this.mIntNiceLabel = new System.Windows.Forms.Label();
             this.mListBokBox = new System.Windows.Forms.NumericUpDown();
             ((System.ComponentModel.ISupportInitialize)(this.mListBokBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // mIntNiceLabel
+            // parameterNiceName
             // 
-            this.mIntNiceLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.mIntNiceLabel.AutoSize = true;
-            this.mIntNiceLabel.Location = new System.Drawing.Point(94, 2);
-            this.mIntNiceLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.mIntNiceLabel.Name = "mIntNiceLabel";
-            this.mIntNiceLabel.Size = new System.Drawing.Size(34, 15);
-            this.mIntNiceLabel.TabIndex = 1;
-            this.mIntNiceLabel.Text = "Nice:";
+            this.parameterNiceName.Location = new System.Drawing.Point(3, -3);
             // 
             // mListBokBox
             // 
-            this.mListBokBox.Location = new System.Drawing.Point(90, 0);
+            this.mListBokBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.mListBokBox.Location = new System.Drawing.Point(6, 24);
+            this.mListBokBox.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.mListBokBox.Maximum = new decimal(new int[] {
             0,
             0,
             0,
             0});
             this.mListBokBox.Name = "mListBokBox";
-            this.mListBokBox.Size = new System.Drawing.Size(215, 23);
+            this.mListBokBox.Size = new System.Drawing.Size(362, 23);
             this.mListBokBox.TabIndex = 2;
             // 
             // IntUserControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
             this.BackColor = System.Drawing.Color.Transparent;
             this.Controls.Add(this.mListBokBox);
-            this.Controls.Add(this.mIntNiceLabel);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.Margin = new System.Windows.Forms.Padding(5, 7, 5, 7);
             this.Name = "IntUserControl";
-            this.Size = new System.Drawing.Size(361, 26);
+            this.Size = new System.Drawing.Size(371, 57);
+            this.Controls.SetChildIndex(this.mListBokBox, 0);
+            this.Controls.SetChildIndex(this.parameterNiceName, 0);
             ((System.ComponentModel.ISupportInitialize)(this.mListBokBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -72,8 +69,6 @@ namespace Daisy.SaveAsDAISY.Forms.Controls {
         }
 
         #endregion
-
-        private System.Windows.Forms.Label mIntNiceLabel;
         private System.Windows.Forms.NumericUpDown mListBokBox;
     }
 

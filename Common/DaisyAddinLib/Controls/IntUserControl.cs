@@ -6,48 +6,48 @@ using System.Text;
 using System.Windows.Forms;
 using System.IO;
 using Daisy.SaveAsDAISY.Conversion;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Daisy.SaveAsDAISY.Forms.Controls {
+namespace Daisy.SaveAsDAISY.Forms.Controls
+{
     public partial class IntUserControl : BaseUserControl
     {
-        ScriptParameter m_Parameter;
         IntegerDataType m_IntDataType;
-        
+
         public IntUserControl()
         {
             InitializeComponent();
         }
         public IntUserControl(ScriptParameter p)
-            : this()
+            : base(p)
         {
-            mIntNiceLabel.Text = p.NiceName;
-            m_Parameter = p;
+            InitializeComponent();
+            setLinkedParameter(p);
+        }
+
+        public override void setLinkedParameter(ScriptParameter p)
+        {
+            base.setLinkedParameter(p);
             m_IntDataType = (IntegerDataType)p.ParameterDataType;
-            int wdiff = mIntNiceLabel.Width;
+            mListBokBox.AccessibleName = p.NiceName;
+            mListBokBox.AccessibleDescription = p.Description;
+            descriptionTooltip.SetToolTip(mListBokBox, p.Description);
+
             IntegerDataType IntData = (IntegerDataType)p.ParameterDataType;
 
-            wdiff -= mIntNiceLabel.Width;
-            if (wdiff < 0)
-            {
-                Point location = mIntNiceLabel.Location;
-                Width -= wdiff;
-                mIntNiceLabel.Location = location;
-            }
-            else
-            {
-                mIntNiceLabel.Location = new Point(mIntNiceLabel.Location.X - wdiff, mIntNiceLabel.Location.Y);
-            }
-            List<string> intList = IntData.GetValues;
-            mListBokBox.Minimum = Convert.ToInt32(intList[0]);
-            mListBokBox.Maximum = Convert.ToInt32(intList[1]);
+            mListBokBox.Minimum = IntData.Min;
+            mListBokBox.Maximum = IntData.Max;
+            mListBokBox.Value = (int)IntData.Value;
+
             base.Size = this.Size;
         }
+
 
         public override void UpdateScriptParameterValue()
         {
             try
             {
-                m_IntDataType.SelectedIndex = Convert.ToInt32(mListBokBox.Value);
+                m_IntDataType.Value = Convert.ToInt32(mListBokBox.Value);
 
             }
             catch (System.Exception ex)

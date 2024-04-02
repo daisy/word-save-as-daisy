@@ -1,57 +1,196 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui" onLoad="OnLoad">
-    <ribbon>
-        <officeMenu>
-            <menu id="DaisyMenu" label="Save As DAIS&amp;Y" insertAfterMso="FileSaveAsMenu" itemSize="large" getImage="iconSelector">
-                <button id="DaisySingle" tag="_postprocess" label="DAISY XML (from &amp;Single docx)"  onAction="SaveAsDaisy"  enabled="true" getImage="iconSelector" keytip="s" getDescription="GetDescriptionSingle"/>
-                <dynamicMenu id="DaisyDTBookSingle" label="Full D&amp;AISY (from single docx)"  getContent="GetDTbook" getImage="iconSelector" getDescription="GetDescriptionSingleDTBook"/>
-                <button id="DaisyMultiple" tag="_postprocess" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="iconSelector" keytip="m" getDescription="GetDescriptionMultiple"/>
-                <dynamicMenu id="DaisyDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="iconSelector" getDescription="GetDescriptionMultipleDTBook"/>
-            </menu>
-        </officeMenu>
-        <tabs>
-            <tab id="CustomTab" label="Accessibility">
-                <group id="SampleGroup" label="Save As DAISY">
-                    <menu id="DaisyMnu" label="S&amp;aveAsDAISY" size="large" getImage="iconSelector" >
-                        <button id="DaisyTabSingle" tag="_postprocess" label="DAISY XML (from &amp;Single docx)" onAction="SaveAsDaisy" enabled="true" getImage="iconSelector" keytip="s" screentip="DAISY XML only (dtbook dtd)"/>
-                        <dynamicMenu id="DaisyTabDTBookSingle" label="Full D&amp;AISY (from single docx)" getContent="GetDTbook" getImage="iconSelector" />
-                        <button id="DaisyTabMultiple" tag="_postprocess" label="DAISY XML (from &amp;Multiple docx, Experimental)" onAction="Mutiple" enabled="true" getImage="iconSelector" keytip="m" screentip="DAISY XML only (dtbook dtd)"/>
-                        <dynamicMenu id="DaisyTabDTBookMultiple" label="F&amp;ull DAISY (from Multiple docx, Experimental)" getContent="GetDTbook" getImage="iconSelector" />
-                    </menu>
-                </group >
-
-                <group id="SampleGroup2" label="Abbreviations">
-                    <button id="Button3"  label="Mark As A&amp;bbreviation" size="large" onAction="MarkAsAbbreviationUI" getImage="iconSelector"/>
-                    <button id="Button4" label="Ma&amp;nage Abbreviation" size="large" onAction="ManageAbbreviation" getImage="iconSelector"/>
-                </group>
-                <group id="SampleGroup3" label="Acronyms">
-                    <button id="Button5"  label="Mark As A&amp;cronym" size="large" onAction="MarkAsAcronymUI" getImage="iconSelector"/>
-                    <button id="Button6" label="Mana&amp;ge Acronym" size="large" onAction="ManageAcronym" getImage="iconSelector"/>
-                </group >
-                <group id="SampleGroup4" label="Validate">
-                    <toggleButton id="toggleValidate" label="&amp;Accessibility check" screentip="&amp;Run the accessibility checker on the current document. For Word 2007, a custom word validation process is applied. " description="&amp;Run the accessiblity checker on the current document. For Word 2007, a custom word validation process is applied. " size="large" onAction="Validate" getPressed="buttonValidatePressed" getEnabled="getValidateEnabled" getImage="iconSelector"/>
-                </group>
-                <group id="SampleGroup5" label ="DAISY Styles">
-                    <button id="Button7" label="&amp;Import" size="large" onAction="Update_Styles" getEnabled="getEnabled" getImage="iconSelector"/>
-                </group>
-                <group id="SampleGroup9" label="AddFootnote">
-                    <button id="Button11" label="Add&amp;Footnote" size="large" onAction="AddFotenote" getImage="iconSelector"/>
-                </group >
-                <group id="SampleGroup10" label ="Language">
-                    <button id="Button12" label="&amp;Language" size="large" onAction="GetlanguageSettings" getImage="iconSelector"/>
-                </group>
-                <group id="SampleGroup7" label ="DAISY Settings">
-                    <button id="Button10" label="&amp;Settings" size="large" onAction="GetDaisySettings" getImage="iconSelector"/>
-                </group>
-                <group id="SampleGroup6" label="Help">
-                    <button id="Button8"  label="&amp;Version Details" size="large" onAction="AboutUI" getImage="iconSelector"/>
-                    <menu id="DaisyHelpMnu" label="&amp;Documentation" size="large" getImage="iconSelector" >
-                        <button id="Button9"  label="Instruction Manual" onAction="ShowWordManual" />
-                        <!--<button id="Button13"  label="DAISY Manual in DTBook Format" onAction="ShowDtBookManual" />-->
-                        <button id="Button13"  label="Authoring guidelines" onAction="ShowAuthoringGuidelines" />
-                    </menu>
-                </group>
-            </tab>
-        </tabs>
-    </ribbon>
+<customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui"
+          onLoad="OnLoad">
+	<ribbon>
+		<officeMenu>
+			<menu id="SaveAsDaisyOfficeMenu"
+			      getLabel="getRibbonLabel"
+			      insertAfterMso="FileSaveAsMenu"
+			      itemSize="large"
+			      getImage="iconSelector">
+				<button id="ExportToXMLOfficeButton"
+				        getLabel="getRibbonLabel"
+				        onAction="SaveAsDTBookXML"
+				        getEnabled="ribbonButtonsEnabled"
+				        getImage="iconSelector"
+				        getScreentip="getRibbonDescription"
+				        getDescription="getRibbonDescription"
+						/>
+				<button id="ExportToDaisy3OfficeButton"
+				        getLabel="getRibbonLabel"
+				        onAction="SaveAsDAISY3"
+				        getEnabled="ribbonButtonsEnabled"
+				        getImage="iconSelector"
+				        getDescription="getRibbonDescription"
+				        getScreentip="getRibbonDescription"
+						/>
+				<button id="ExportToEpub3OfficeButton"
+				        getLabel="getRibbonLabel"
+				        onAction="SaveAsEPUB3"
+				        getEnabled="ribbonButtonsEnabled"
+				        getImage="iconSelector"
+				        getDescription="getRibbonDescription"
+				        getScreentip="getRibbonDescription"
+						/>
+				<button id="ExportToMP33OfficeButton"
+				        getLabel="getRibbonLabel"
+				        onAction="SaveAsMP3"
+				        getEnabled="ribbonButtonsEnabled"
+				        getImage="iconSelector"
+				        getDescription="getRibbonDescription"
+				        getScreentip="getRibbonDescription"/>
+			</menu>
+		</officeMenu>
+		<tabs>
+			<tab id="SaveAsDAISYTab"
+			     getLabel="getRibbonLabel">
+				<group id="ExportGroup"
+				       getLabel="getRibbonLabel">
+					<menu id="ExportTabMenu"
+					      getLabel="getRibbonLabel"
+					      size="large"
+					      getImage="iconSelector">
+						<button id="ExportToXMLTabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="SaveAsDTBookXML"
+						        getEnabled="ribbonButtonsEnabled"
+						        getImage="iconSelector"
+						        getScreentip="getRibbonDescription"
+						        getDescription="getRibbonDescription"
+								/>
+						<button id="ExportToDaisy3TabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="SaveAsDAISY3"
+						        getEnabled="ribbonButtonsEnabled"
+						        getImage="iconSelector"
+						        getDescription="getRibbonDescription"
+						        getScreentip="getRibbonDescription"
+								/>
+						<button id="ExportToEpub3TabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="SaveAsEPUB3"
+						        getEnabled="ribbonButtonsEnabled"
+						        getImage="iconSelector"
+						        getDescription="getRibbonDescription"
+						        getScreentip="getRibbonDescription"
+								/>
+						<button id="ExportToMP3TabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="SaveAsMP3"
+						        getEnabled="ribbonButtonsEnabled"
+						        getImage="iconSelector"
+						        getDescription="getRibbonDescription"
+						        getScreentip="getRibbonDescription"/>
+					</menu>
+				</group>
+				<group id="AbbreviationsGroup"
+				       getLabel="getRibbonLabel">
+					<button id="MarkAbbreviationTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="MarkAsAbbreviationUI"
+					        getImage="iconSelector"
+					        getEnabled="ribbonButtonsEnabled"
+							/>
+					<button id="ManageAbbreviationsTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="ManageAbbreviation"
+					        getImage="iconSelector"
+					        getEnabled="ribbonButtonsEnabled"
+							/>
+				</group>
+				<group id="AcronymsGroup"
+				       getLabel="getRibbonLabel">
+					<button id="MarkAcronymTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="MarkAsAcronymUI"
+					        getImage="iconSelector"
+					        getEnabled="ribbonButtonsEnabled"
+							/>
+					<button id="ManageAcronymsTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="ManageAcronym"
+					        getImage="iconSelector"
+					        getEnabled="ribbonButtonsEnabled"
+							/>
+				</group>
+				<group id="ValidateGroup"
+				       getLabel="getRibbonLabel">
+					<toggleButton id="toggleValidateTabButton"
+					              getLabel="getRibbonLabel"
+					              getScreentip="getRibbonDescription"
+					              getDescription="getRibbonDescription"
+					              size="large"
+					              onAction="Validate"
+					              getPressed="buttonValidatePressed"
+					              getEnabled="getValidateEnabled"
+					              getImage="iconSelector"
+								  />
+				</group>
+				<group id="DaisyStylesGroup"
+				       getLabel="getRibbonLabel">
+					<button id="ImportDaisyStylesTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="Update_Styles"
+					        getEnabled="getEnabled"
+					        getImage="iconSelector"
+							/>
+				</group>
+				<group id="FootnotesGroup"
+				       getLabel="getRibbonLabel">
+					<button id="AddFootnotesTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="AddFotenote"
+					        getImage="iconSelector"
+							/>
+				</group>
+				<group id="LanguageGroup"
+				       getLabel="getRibbonLabel">
+					<button id="DocumentLanguageTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="GetlanguageSettings"
+					        getImage="iconSelector"
+					        getEnabled="ribbonButtonsEnabled"
+							/>
+				</group>
+				<group id="SettingsGroup"
+				       getLabel="getRibbonLabel">
+					<button id="SettingsTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="GetDaisySettings"
+					        getImage="iconSelector"
+							/>
+				</group>
+				<group id="HelpGroup"
+				       getLabel="getRibbonLabel">
+					<button id="VersionDetailsTabButton"
+					        getLabel="getRibbonLabel"
+					        size="large"
+					        onAction="AboutUI"
+					        getImage="iconSelector"
+							/>
+					<menu id="DocumentationTabMenu"
+					      getLabel="getRibbonLabel"
+					      size="large"
+					      getImage="iconSelector">
+						<button id="OpenManualTabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="ShowWordManual"
+								/>
+						<button id="OpenGuidelinesTabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="ShowAuthoringGuidelines"
+								/>
+					</menu>
+				</group>
+			</tab>
+		</tabs>
+	</ribbon>
 </customUI>

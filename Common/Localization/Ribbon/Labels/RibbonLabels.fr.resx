@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AbbreviationsGroup" xml:space="preserve">
+    <value>Abreviations</value>
+  </data>
+  <data name="AcronymsGroup" xml:space="preserve">
+    <value>Acronymes</value>
+  </data>
+  <data name="AddFootnotesTabButton" xml:space="preserve">
+    <value>Ajouter une note de bas de page</value>
+  </data>
+  <data name="DaisyStylesGroup" xml:space="preserve">
+    <value>Styles DAISY</value>
+  </data>
+  <data name="DocumentationTabMenu" xml:space="preserve">
+    <value>&amp;Documentation</value>
+  </data>
+  <data name="DocumentLanguageTabButton" xml:space="preserve">
+    <value>&amp;Langue du document</value>
+  </data>
+  <data name="ExportGroup" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ExportTabMenu" xml:space="preserve">
+    <value>Exporter en format DAISY</value>
+  </data>
+  <data name="ExportToDaisy3OfficeButton" xml:space="preserve">
+    <value>&amp;DAISY3</value>
+  </data>
+  <data name="ExportToDaisy3TabButton" xml:space="preserve">
+    <value>&amp;DAISY3</value>
+  </data>
+  <data name="ExportToEpub3OfficeButton" xml:space="preserve">
+    <value>&amp;EPUB3 (experimental)</value>
+  </data>
+  <data name="ExportToEpub3TabButton" xml:space="preserve">
+    <value>&amp;EPUB3 (experimental)</value>
+  </data>
+  <data name="ExportToXMLOfficeButton" xml:space="preserve">
+    <value>DAISY &amp;XML</value>
+  </data>
+  <data name="ExportToXMLTabButton" xml:space="preserve">
+    <value>DAISY &amp;XML</value>
+  </data>
+  <data name="FootnotesGroup" xml:space="preserve">
+    <value>Notes de bas de pages</value>
+  </data>
+  <data name="HelpGroup" xml:space="preserve">
+    <value>Aide</value>
+  </data>
+  <data name="ImportDaisyStylesTabButton" xml:space="preserve">
+    <value>&amp;Importer les styles DAISY</value>
+  </data>
+  <data name="LanguageGroup" xml:space="preserve">
+    <value>Langue</value>
+  </data>
+  <data name="ManageAbbreviationsTabButton" xml:space="preserve">
+    <value>&amp;Gérer les abréviations</value>
+  </data>
+  <data name="ManageAcronymsTabButton" xml:space="preserve">
+    <value>Gé&amp;rer les acronymes</value>
+  </data>
+  <data name="MarkAbbreviationTabButton" xml:space="preserve">
+    <value>Marquer en a&amp;bbreviation</value>
+  </data>
+  <data name="MarkAcronymTabButton" xml:space="preserve">
+    <value>Marquer en a&amp;cronym</value>
+  </data>
+  <data name="OpenGuidelinesTabButton" xml:space="preserve">
+    <value>Recommandations d'édition</value>
+  </data>
+  <data name="OpenManualTabButton" xml:space="preserve">
+    <value>Manuel d'instruction</value>
+  </data>
+  <data name="SaveAsDaisyOfficeMenu" xml:space="preserve">
+    <value>Save As DAIS&amp;Y</value>
+  </data>
+  <data name="SaveAsDAISYTab" xml:space="preserve">
+    <value>Accessibilité</value>
+  </data>
+  <data name="SettingsGroup" xml:space="preserve">
+    <value>Réglages</value>
+  </data>
+  <data name="SettingsTabButton" xml:space="preserve">
+    <value>&amp;Réglages</value>
+  </data>
+  <data name="toggleValidateTabButton" xml:space="preserve">
+    <value>Valider</value>
+  </data>
+  <data name="ValidateGroup" xml:space="preserve">
+    <value>Validation</value>
+  </data>
+  <data name="VersionDetailsTabButton" xml:space="preserve">
+    <value>&amp;Informations logiciel</value>
+  </data>
+</root>

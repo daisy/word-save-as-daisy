@@ -34,45 +34,49 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// <param name="originalInputPath">Path to the original word document.</param>
 		/// <returns>Collection of the subdocuments.</returns>
 		public static SubdocumentsList FindSubdocuments(string tempInputPath, string originalInputPath)
-		{
-			PackageRelationship relationship = null;
-			SubdocumentsList result = new SubdocumentsList();
+        {
+            PackageRelationship relationship = null;
+            SubdocumentsList result = new SubdocumentsList();
+			
+            Package packDoc = Package.Open(tempInputPath, FileMode.Open, FileAccess.ReadWrite);
+            
+            foreach (PackageRelationship searchRelation in packDoc.GetRelationshipsByType(WordRelationshipType)) {
+                relationship = searchRelation;
+                break;
+            }
 
-			Package packDoc = Package.Open(tempInputPath, FileMode.Open, FileAccess.ReadWrite);
+            Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
+            PackagePart mainPartxml = packDoc.GetPart(partUri);
+            try {
+                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships()) {
+                    relationship = searchRelation;
+                    if (IsExternalSubdocumentRelationship(relationship)) {
+                        bool subDocumentFound = IsMsWordSubdocumentRelationship(relationship);
+                        result.SubdocumentsCount += subDocumentFound ? 1 : 0;
+                        String filePath = GetRealFilePath(relationship.TargetUri.ToString(), originalInputPath);
+                        if (!string.IsNullOrEmpty(filePath)) {
+                            if (subDocumentFound) {
+                                result.Subdocuments.Add(new SubdocumentInfo(filePath, relationship.Id));
+                            } else {
+                                result.NotTranslatedSubdocuments.Add(new SubdocumentInfo(filePath, relationship.Id));
+                            }
+                        } else {
+                            result.Errors.Add(
+                                "The subdocument " + originalInputPath + "\\" + relationship.TargetUri.ToString() + " was not found on your system."
+                            );
+                        }
 
-			foreach (PackageRelationship searchRelation in packDoc.GetRelationshipsByType(WordRelationshipType))
-			{
-				relationship = searchRelation;
-				break;
-			}
-
-			Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
-			PackagePart mainPartxml = packDoc.GetPart(partUri);
-
-			foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships())
-			{
-				relationship = searchRelation;
-				if (IsExternalSubdocumentRelationship(relationship)) {
-					bool subDocumentFound = IsMsWordSubdocumentRelationship(relationship);
-					result.SubdocumentsCount += subDocumentFound ? 1 : 0;
-					String filePath = GetRealFilePath(relationship.TargetUri.ToString(), originalInputPath);
-					if (!string.IsNullOrEmpty(filePath)) {
-						if (subDocumentFound) {
-							result.Subdocuments.Add(new SubdocumentInfo(filePath, relationship.Id));
-						}
-						else {
-							result.NotTranslatedSubdocuments.Add(new SubdocumentInfo(filePath, relationship.Id));
-						}
-					} else {
-						result.Errors.Add(
-							"The subdocument " + originalInputPath + "\\" + relationship.TargetUri.ToString() + " was not found on your system."
-						);
                     }
-					
-				}
-			}
-			packDoc.Close();
-			return result;
+                }
+            } catch	(Exception e) {
+				// NP 2024 03 20 : handling exceptions raised by System.IO.Packaging in case of malformed hyperlinks
+				// (in the document triggering it, a coma was found in the domain adress of a hyperlink)
+                throw new Exception($"An error occured while searching for relationships in {originalInputPath} content.\r\n" +
+					$"This can occur in presence of malformed hyperlinks or with hyperlinks containing one of the following character at the wrong place:\r\n" +
+					$"\"!\" | \"$\" | \"&\" | \"'\" | \"(\" / \")\" | \"*\" | \"+\" | \",\" | \";\" | \"=\" ",e);
+            }
+            packDoc.Close();
+            return result;
 		}
 
 		/// <summary>
@@ -101,7 +105,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 				Uri partUri = PackUriHelper.ResolvePartUri(relationship.SourceUri, relationship.TargetUri);
 				PackagePart mainPartxml = pack.GetPart(partUri);
 
-				foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships())
+                foreach (PackageRelationship searchRelation in mainPartxml.GetRelationships())
 				{
 					relationship = searchRelation;
 					//checking whether Doc is simple or Master\sub Doc

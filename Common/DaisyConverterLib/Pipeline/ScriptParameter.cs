@@ -13,7 +13,8 @@ namespace Daisy.SaveAsDAISY.Conversion
     public class ScriptParameter
     {
 
-        public enum ParameterDirection {
+        public enum ParameterDirection
+        {
             Input,
             Output,
             Option
@@ -35,17 +36,18 @@ namespace Daisy.SaveAsDAISY.Conversion
             string name,
             string niceName,
             ParameterDataType dataType,
-            object initialValue, 
+            object initialValue,
             bool required = false,
             string description = "",
             bool displayed = true,
             ParameterDirection directon = ParameterDirection.Option
-        ) {
+        )
+        {
             m_Name = name;
             m_NiceName = niceName;
             m_DataType = dataType;
-            m_DataType.LinkedParameter = this;
             m_Value = initialValue;
+            m_DataType.LinkedParameter = this;
             m_Description = description;
             m_Required = required;
             m_Displayed = displayed;
@@ -68,7 +70,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             // Get attribute  information of ScriptParameter
             for (int AttrIndex = 0; AttrIndex < node.Attributes.Count; AttrIndex++)
             {
-                
+
                 switch (node.Attributes[AttrIndex].Name)
                 {
                     case "name":
@@ -112,7 +114,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                         break;
                 }
 
-                ChildNode =  ChildNode.NextSibling;
+                ChildNode = ChildNode.NextSibling;
             }
 
         }

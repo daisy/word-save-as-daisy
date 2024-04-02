@@ -58,7 +58,7 @@
     <IncrementalBuild>false</IncrementalBuild>
     <RegisterForComInterop>false</RegisterForComInterop>
     <Prefer32Bit>false</Prefer32Bit>
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release to Client%28signed%29|AnyCPU' ">
     <OutputPath>bin\Release to Client%28signed%29\</OutputPath>
@@ -150,11 +150,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abbreviation.cs">
+    <Compile Include="AliasesManagement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Abbreviation.designer.cs">
-      <DependentUpon>Abbreviation.cs</DependentUpon>
+    <Compile Include="AliasesManagement.designer.cs">
+      <DependentUpon>AliasesManagement.cs</DependentUpon>
     </Compile>
     <Compile Include="AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -195,12 +195,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Abbreviation.resx">
-      <DependentUpon>Abbreviation.cs</DependentUpon>
+    <EmbeddedResource Include="AliasesManagement.resx">
+      <DependentUpon>AliasesManagement.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="ExceptionReport.resx">
       <DependentUpon>ExceptionReport.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Mark.resx">
       <SubType>Designer</SubType>
@@ -225,14 +226,18 @@
       <Project>{8cb777eb-36ed-45d8-84ff-bdd64ad5026e}</Project>
       <Name>DaisyConverterLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Common\Localization\Localization.csproj">
+      <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
+      <Name>Localization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Abbreviation.ja-JP.resx">
-      <DependentUpon>Abbreviation.cs</DependentUpon>
+    <EmbeddedResource Include="AliasesManagement.ja-JP.resx">
+      <DependentUpon>AliasesManagement.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Abbreviation.ru-RU.resx">
-      <DependentUpon>Abbreviation.cs</DependentUpon>
+    <EmbeddedResource Include="AliasesManagement.ru-RU.resx">
+      <DependentUpon>AliasesManagement.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Language.ja-JP.resx">
@@ -309,19 +314,19 @@
     </PreBuildEvent>
     <PostBuildEvent>REM - Copy resources needed for debugging
 REM --- XSLTs for word to dtbook conversion
+
+
 IF EXIST "$(TargetDir)resources" rd /S /Q "$(TargetDir)resources"
+
+
 xcopy /E /Y "$(SolutionDir)Converter\bin\$(ConfigurationName)\resources"  "$(TargetDir)resources\"
+
+
 REM --- pipeline for dtbook to daisy
-IF EXIST "$(TargetDir)pipeline-lite-ms" rd /S /Q "$(TargetDir)pipeline-lite-ms"
-xcopy /E  "$(SolutionDir)Lib\pipeline-lite-ms"  "$(TargetDir)pipeline-lite-ms\"
-REM --- Common resources from Lib folder
-REM xcopy /Y  "$(SolutionDir)Lib\template2007.dotx"  "$(TargetDir)"
-REM xcopy /Y  "$(SolutionDir)Lib\Help.chm"  "$(TargetDir)"
-REM xcopy /Y  "$(SolutionDir)Lib\Save As Daisy Getting Started.docx"  "$(TargetDir)"
-REM xcopy /Y  "$(SolutionDir)Lib\Save-as-instruction-manual.zip"  "$(TargetDir)"
-REM xcopy /Y  "$(SolutionDir)Lib\Daisy_Translator_Instruction_Manual_01_March_2011_v2_5.docx"  "$(TargetDir)"
+IF EXIST "$(TargetDir)daisy-pipeline" rd /S /Q "$(TargetDir)daisy-pipeline"
 
 
+xcopy /E  "$(SolutionDir)Lib\daisy-pipeline"  "$(TargetDir)daisy-pipeline\"
 </PostBuildEvent>
   </PropertyGroup>
   <ProjectExtensions>

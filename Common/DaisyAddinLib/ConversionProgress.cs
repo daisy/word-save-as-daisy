@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Word;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -15,23 +16,30 @@ namespace Daisy.SaveAsDAISY {
         }
 
         // For external thread calls
-        private delegate void DelegatedAddMessage(string message, bool isProgress = true);
+        public delegate void DelegatedAddMessage(string message, bool isProgress = true);
 
         public void AddMessage(string message, bool isProgress = true) {
             if (this.InvokeRequired) {
-                this.Invoke(new DelegatedAddMessage(AddMessage), message, isProgress);
+                this.BeginInvoke(new DelegatedAddMessage(AddMessage), message, isProgress);
             } else {
-                if (isProgress)
+                string[] lines = message.Split(new char[] {'\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string line in lines)
                 {
-                    CurrentProgressMessage = message;
-                    LastMessage.Text = CurrentProgressMessage;
-                    ConversionProgressBar.PerformStep();
+                    if (isProgress)
+                    {
+                        CurrentProgressMessage = line;
+                        LastMessage.Text = CurrentProgressMessage;
+                        ConversionProgressBar.PerformStep();
+                    }
+                    else
+                    {
+                        LastMessage.Text = CurrentProgressMessage + " - " + line;
+                    }
+                    this.MessageTextArea.BeginInvoke((MethodInvoker)delegate { this.MessageTextArea.AppendText(line + "\r\n"); });
+                    //this.MessageTextArea.AppendText(line + "\r\n");
+                    //this.MessageTextArea.Text += line + "\r\n";
                 }
-                else
-                {
-                    LastMessage.Text = CurrentProgressMessage + " - " + message;
-                }
-                this.MessageTextArea.Text += (message.EndsWith("\n") ? message : message + "\r\n");
+                
             }
             
         }
@@ -48,12 +56,15 @@ namespace Daisy.SaveAsDAISY {
             if (this.InvokeRequired) {
                 this.Invoke(new DelegatedInitializeProgress(InitializeProgress), message, maximum, step);
             } else {
-                CurrentProgressMessage = message;
-                LastMessage.Text = CurrentProgressMessage;
-                this.MessageTextArea.Text += (message.EndsWith("\n") ? message : message + "\r\n");
-                ConversionProgressBar.Maximum = maximum;
-                ConversionProgressBar.Step = step;
-                ConversionProgressBar.Value = 0;
+                if(this.Created)
+                {
+                    CurrentProgressMessage = message;
+                    LastMessage.Text = CurrentProgressMessage;
+                    this.MessageTextArea.AppendText((message.EndsWith("\n") ? message : message + "\r\n"));
+                    ConversionProgressBar.Maximum = maximum;
+                    ConversionProgressBar.Step = step;
+                    ConversionProgressBar.Value = 0;
+                }
             }
             
 
@@ -102,6 +113,8 @@ namespace Daisy.SaveAsDAISY {
                 MessageTextArea.Visible = true;
                 this.Height = 300;
                 MessageTextArea.Height = 135;
+                MessageTextArea.SelectionStart = MessageTextArea.Text.Length;
+                MessageTextArea.ScrollToCaret();
                 ShowHideDetails.Text = "Hide details << ";
             } else {
                 MessageTextArea.Visible = false;

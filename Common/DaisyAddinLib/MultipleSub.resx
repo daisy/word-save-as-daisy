@@ -126,10 +126,14 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 12</value>
+    <value>4, 15</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="label1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>67, 15</value>
+    <value>83, 20</value>
   </data>
   <data name="label1.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -153,10 +157,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_output.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 33</value>
+    <value>7, 41</value>
+  </data>
+  <data name="tBx_output.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_output.Size" type="System.Drawing.Size, System.Drawing">
-    <value>267, 23</value>
+    <value>355, 27</value>
   </data>
   <data name="tBx_output.TabIndex" type="System.Int32, mscorlib">
     <value>10</value>
@@ -183,10 +190,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Output.Location" type="System.Drawing.Point, System.Drawing">
-    <value>274, 33</value>
+    <value>365, 41</value>
+  </data>
+  <data name="btn_Output.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Output.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 23</value>
+    <value>97, 28</value>
   </data>
   <data name="btn_Output.TabIndex" type="System.Int32, mscorlib">
     <value>11</value>
@@ -209,7 +219,6 @@
   <data name="grpBox_Properties.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="grpBox_Properties.AutoSizeMode" type="System.Windows.Forms.AutoSizeMode, System.Windows.Forms">
     <value>GrowAndShrink</value>
   </data>
@@ -229,10 +238,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Unique.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 111</value>
+    <value>4, 135</value>
+  </data>
+  <data name="label_Unique.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_Unique.Size" type="System.Drawing.Size, System.Drawing">
-    <value>28, 15</value>
+    <value>35, 20</value>
   </data>
   <data name="label_Unique.TabIndex" type="System.Int32, mscorlib">
     <value>20</value>
@@ -253,10 +265,13 @@
     <value>0</value>
   </data>
   <data name="btn_Populate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 134</value>
+    <value>99, 165</value>
+  </data>
+  <data name="btn_Populate.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Populate.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 28</value>
   </data>
   <data name="btn_Populate.TabIndex" type="System.Int32, mscorlib">
     <value>58</value>
@@ -286,10 +301,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="lbl_Subject.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 85</value>
+    <value>4, 104</value>
+  </data>
+  <data name="lbl_Subject.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lbl_Subject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 15</value>
+    <value>61, 20</value>
   </data>
   <data name="lbl_Subject.TabIndex" type="System.Int32, mscorlib">
     <value>18</value>
@@ -316,10 +334,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Creator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 30</value>
+    <value>99, 37</value>
+  </data>
+  <data name="tBx_Creator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Creator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 23</value>
+    <value>353, 27</value>
   </data>
   <data name="tBx_Creator.TabIndex" type="System.Int32, mscorlib">
     <value>54</value>
@@ -349,10 +370,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Publisher.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 59</value>
+    <value>4, 72</value>
+  </data>
+  <data name="label_Publisher.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_Publisher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>59, 15</value>
+    <value>72, 20</value>
   </data>
   <data name="label_Publisher.TabIndex" type="System.Int32, mscorlib">
     <value>16</value>
@@ -379,10 +403,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Title.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 3</value>
+    <value>99, 4</value>
+  </data>
+  <data name="tBx_Title.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Title.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 23</value>
+    <value>353, 27</value>
   </data>
   <data name="tBx_Title.TabIndex" type="System.Int32, mscorlib">
     <value>53</value>
@@ -412,10 +439,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Creator.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 33</value>
+    <value>4, 39</value>
+  </data>
+  <data name="label_Creator.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_Creator.Size" type="System.Drawing.Size, System.Drawing">
-    <value>49, 15</value>
+    <value>61, 20</value>
   </data>
   <data name="label_Creator.TabIndex" type="System.Int32, mscorlib">
     <value>14</value>
@@ -442,10 +472,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Publisher.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 57</value>
+    <value>99, 70</value>
+  </data>
+  <data name="tBx_Publisher.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Publisher.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 23</value>
+    <value>353, 27</value>
   </data>
   <data name="tBx_Publisher.TabIndex" type="System.Int32, mscorlib">
     <value>55</value>
@@ -475,10 +508,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="label_Title.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 6</value>
+    <value>4, 6</value>
+  </data>
+  <data name="label_Title.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="label_Title.Size" type="System.Drawing.Size, System.Drawing">
-    <value>32, 15</value>
+    <value>41, 20</value>
   </data>
   <data name="label_Title.TabIndex" type="System.Int32, mscorlib">
     <value>12</value>
@@ -505,10 +541,13 @@
     <value>Calibri, 9pt</value>
   </data>
   <data name="tBx_Uid.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 109</value>
+    <value>99, 134</value>
+  </data>
+  <data name="tBx_Uid.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Uid.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 22</value>
+    <value>353, 26</value>
   </data>
   <data name="tBx_Uid.TabIndex" type="System.Int32, mscorlib">
     <value>57</value>
@@ -535,10 +574,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Subject.Location" type="System.Drawing.Point, System.Drawing">
-    <value>74, 83</value>
+    <value>99, 102</value>
+  </data>
+  <data name="tBx_Subject.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Subject.Size" type="System.Drawing.Size, System.Drawing">
-    <value>265, 23</value>
+    <value>353, 27</value>
   </data>
   <data name="tBx_Subject.TabIndex" type="System.Int32, mscorlib">
     <value>56</value>
@@ -559,16 +601,16 @@
     <value>10</value>
   </data>
   <data name="tableLayoutPanel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>5, 16</value>
+    <value>7, 20</value>
   </data>
   <data name="tableLayoutPanel1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 3, 0</value>
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="tableLayoutPanel1.RowCount" type="System.Int32, mscorlib">
     <value>6</value>
   </data>
   <data name="tableLayoutPanel1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>342, 162</value>
+    <value>456, 199</value>
   </data>
   <data name="tableLayoutPanel1.TabIndex" type="System.Int32, mscorlib">
     <value>52</value>
@@ -586,22 +628,22 @@
     <value>0</value>
   </data>
   <data name="tableLayoutPanel1.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label_Unique" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btn_Populate" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbl_Subject" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Creator" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Publisher" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Title" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Creator" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Publisher" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Title" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Uid" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Subject" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,71,Percent,100" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,26,Absolute,26,Absolute,25,Absolute,30" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="label_Unique" Row="4" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="btn_Populate" Row="5" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lbl_Subject" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Creator" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Publisher" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Title" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Creator" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Publisher" Row="2" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="label_Title" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Uid" Row="4" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Subject" Row="3" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,95,Percent,100" /&gt;&lt;Rows Styles="Percent,50,Percent,50,Absolute,32,Absolute,32,Absolute,31,Absolute,37" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="grpBox_Properties.Font" type="System.Drawing.Font, System.Drawing">
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="grpBox_Properties.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 246</value>
+    <value>9, 303</value>
   </data>
   <data name="grpBox_Properties.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 3, 0</value>
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="grpBox_Properties.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="grpBox_Properties.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 194</value>
+    <value>467, 239</value>
   </data>
   <data name="grpBox_Properties.TabIndex" type="System.Int32, mscorlib">
     <value>51</value>
@@ -631,13 +673,16 @@
     <value>True</value>
   </data>
   <data name="lBx_SubDocs.ItemHeight" type="System.Int32, mscorlib">
-    <value>15</value>
+    <value>20</value>
   </data>
   <data name="lBx_SubDocs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 29</value>
+    <value>4, 35</value>
+  </data>
+  <data name="lBx_SubDocs.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="lBx_SubDocs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>263, 107</value>
+    <value>351, 132</value>
   </data>
   <data name="lBx_SubDocs.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -664,10 +709,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="tBx_Browse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 3</value>
+    <value>4, 4</value>
+  </data>
+  <data name="tBx_Browse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="tBx_Browse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>263, 23</value>
+    <value>351, 27</value>
   </data>
   <data name="tBx_Browse.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -694,16 +742,16 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="groupBoxXml.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 164</value>
+    <value>9, 202</value>
   </data>
   <data name="groupBoxXml.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 3, 0</value>
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="groupBoxXml.Padding" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
   </data>
   <data name="groupBoxXml.Size" type="System.Drawing.Size, System.Drawing">
-    <value>350, 72</value>
+    <value>466, 88</value>
   </data>
   <data name="groupBoxXml.TabIndex" type="System.Int32, mscorlib">
     <value>9</value>
@@ -724,10 +772,13 @@
     <value>10</value>
   </data>
   <data name="btnShow.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 448</value>
+    <value>9, 551</value>
+  </data>
+  <data name="btnShow.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btnShow.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 26</value>
+    <value>155, 32</value>
   </data>
   <data name="btnShow.TabIndex" type="System.Int32, mscorlib">
     <value>59</value>
@@ -748,10 +799,13 @@
     <value>9</value>
   </data>
   <data name="btnHide.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 451</value>
+    <value>9, 555</value>
+  </data>
+  <data name="btnHide.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btnHide.Size" type="System.Drawing.Size, System.Drawing">
-    <value>116, 23</value>
+    <value>155, 28</value>
   </data>
   <data name="btnHide.TabIndex" type="System.Int32, mscorlib">
     <value>101</value>
@@ -781,10 +835,10 @@
     <value>TopDown</value>
   </data>
   <data name="mLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 241</value>
+    <value>9, 297</value>
   </data>
   <data name="mLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>0, 0, 3, 0</value>
+    <value>0, 0, 4, 0</value>
   </data>
   <data name="mLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
     <value>0, 0</value>
@@ -805,10 +859,13 @@
     <value>4</value>
   </data>
   <data name="oLayoutPanel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 476</value>
+    <value>9, 586</value>
+  </data>
+  <data name="oLayoutPanel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="oLayoutPanel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>320, 35</value>
+    <value>427, 43</value>
   </data>
   <data name="oLayoutPanel.TabIndex" type="System.Int32, mscorlib">
     <value>33</value>
@@ -832,10 +889,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Delete.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 13</value>
+    <value>4, 16</value>
+  </data>
+  <data name="btn_Delete.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Delete.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 23</value>
+    <value>99, 28</value>
   </data>
   <data name="btn_Delete.TabIndex" type="System.Int32, mscorlib">
     <value>5</value>
@@ -859,10 +919,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 38</value>
+    <value>4, 47</value>
+  </data>
+  <data name="button1.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 23</value>
+    <value>99, 28</value>
   </data>
   <data name="button1.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -886,10 +949,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Up.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 63</value>
+    <value>4, 78</value>
+  </data>
+  <data name="btn_Up.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Up.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 23</value>
+    <value>99, 28</value>
   </data>
   <data name="btn_Up.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -913,10 +979,13 @@
     <value>Segoe UI, 8.25pt</value>
   </data>
   <data name="btn_Down.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 88</value>
+    <value>4, 108</value>
+  </data>
+  <data name="btn_Down.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Down.Size" type="System.Drawing.Size, System.Drawing">
-    <value>74, 23</value>
+    <value>99, 28</value>
   </data>
   <data name="btn_Down.TabIndex" type="System.Int32, mscorlib">
     <value>8</value>
@@ -937,7 +1006,7 @@
     <value>3</value>
   </data>
   <data name="groupBox2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>269, 26</value>
+    <value>359, 31</value>
   </data>
   <data name="groupBox2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>0, 0, 0, 0</value>
@@ -946,7 +1015,7 @@
     <value>0, 0, 0, 0</value>
   </data>
   <data name="groupBox2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>79, 113</value>
+    <value>105, 139</value>
   </data>
   <data name="groupBox2.TabIndex" type="System.Int32, mscorlib">
     <value>35</value>
@@ -970,10 +1039,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Browse.Location" type="System.Drawing.Point, System.Drawing">
-    <value>272, 3</value>
+    <value>363, 4</value>
+  </data>
+  <data name="btn_Browse.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Browse.Size" type="System.Drawing.Size, System.Drawing">
-    <value>73, 20</value>
+    <value>97, 23</value>
   </data>
   <data name="btn_Browse.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -994,16 +1066,16 @@
     <value>1</value>
   </data>
   <data name="tableLayoutPanel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 24</value>
+    <value>12, 30</value>
   </data>
   <data name="tableLayoutPanel2.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
-    <value>3, 0, 3, 0</value>
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="tableLayoutPanel2.RowCount" type="System.Int32, mscorlib">
     <value>2</value>
   </data>
   <data name="tableLayoutPanel2.Size" type="System.Drawing.Size, System.Drawing">
-    <value>348, 139</value>
+    <value>464, 171</value>
   </data>
   <data name="tableLayoutPanel2.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -1021,7 +1093,7 @@
     <value>3</value>
   </data>
   <data name="tableLayoutPanel2.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="groupBox2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btn_Browse" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lBx_SubDocs" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Browse" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,79" /&gt;&lt;Rows Styles="Percent,18,70968,Percent,81,29032" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="groupBox2" Row="1" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="btn_Browse" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="lBx_SubDocs" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="tBx_Browse" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100,Absolute,105" /&gt;&lt;Rows Styles="Percent,18,70968,Percent,81,29032" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="lbl_Subdocuments.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1030,10 +1102,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="lbl_Subdocuments.Location" type="System.Drawing.Point, System.Drawing">
-    <value>11, 3</value>
+    <value>15, 4</value>
+  </data>
+  <data name="lbl_Subdocuments.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 0, 4, 0</value>
   </data>
   <data name="lbl_Subdocuments.Size" type="System.Drawing.Size, System.Drawing">
-    <value>109, 15</value>
+    <value>134, 20</value>
   </data>
   <data name="lbl_Subdocuments.TabIndex" type="System.Int32, mscorlib">
     <value>37</value>
@@ -1057,10 +1132,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Ok.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 450</value>
+    <value>169, 554</value>
+  </data>
+  <data name="btn_Ok.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Ok.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 28</value>
   </data>
   <data name="btn_Ok.TabIndex" type="System.Int32, mscorlib">
     <value>102</value>
@@ -1084,10 +1162,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Reset.Location" type="System.Drawing.Point, System.Drawing">
-    <value>204, 450</value>
+    <value>272, 554</value>
+  </data>
+  <data name="btn_Reset.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Reset.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 28</value>
   </data>
   <data name="btn_Reset.TabIndex" type="System.Int32, mscorlib">
     <value>103</value>
@@ -1111,10 +1192,13 @@
     <value>Segoe UI, 9pt</value>
   </data>
   <data name="btn_Cancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>281, 450</value>
+    <value>375, 554</value>
+  </data>
+  <data name="btn_Cancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="btn_Cancel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>75, 23</value>
+    <value>100, 28</value>
   </data>
   <data name="btn_Cancel.TabIndex" type="System.Int32, mscorlib">
     <value>104</value>
@@ -1141,7 +1225,7 @@
     <value>45</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
-    <value>6, 13</value>
+    <value>8, 16</value>
   </data>
   <data name="$this.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -1150,7 +1234,10 @@
     <value>GrowAndShrink</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>363, 539</value>
+    <value>484, 663</value>
+  </data>
+  <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
+    <value>4, 4, 4, 4</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>CenterScreen</value>

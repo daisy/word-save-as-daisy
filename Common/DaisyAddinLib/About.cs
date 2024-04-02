@@ -10,12 +10,29 @@ using System.Collections;
 using System.Windows.Forms;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
+using System.Text.RegularExpressions;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
     public partial class About : Form
     {
         private string _currentVersion;
+
+        private int computeVersionComparator(string version)
+        {
+            Regex versionSeek = new Regex(@"(\d+)\.(\d+)\.(\d+)");
+            Match found = versionSeek.Match(version);
+            if (found.Success)
+            {
+                int major = Int32.Parse(found.Groups[1].Value);
+                int minor = Int32.Parse(found.Groups[2].Value);
+                int patch = Int32.Parse(found.Groups[3].Value);
+                return patch + ((minor + 1) * 1000) + ((major + 1) * 1000000);
+            }
+            return 0;
+        }
 
         /// <summary>
         /// Constructor which initializes the components
@@ -37,41 +54,47 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             try
             {
-                string sourceURL = "http://openxml-daisy.sourceforge.net/DaisyTranslatorUpdates/version.xml";
+
+                string sourceURL = "https://github.com/daisy/word-save-as-daisy/releases/latest";
+                // from https://stackoverflow.com/questions/10822509/the-request-was-aborted-could-not-create-ssl-tls-secure-channel
+                
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                    | SecurityProtocolType.Tls11
+                    | SecurityProtocolType.Tls12
+                    | SecurityProtocolType.Ssl3;
+                // allows for validation of SSL conversations
+                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(sourceURL);
+                request.AllowAutoRedirect = true;
                 request.Proxy.Credentials = CredentialCache.DefaultCredentials;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream receiveStream = response.GetResponseStream();
-                StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
-
-                XmlDocument documnt = new XmlDocument();
-                documnt.Load(readStream);
-                String NewVersion = documnt.DocumentElement.FirstChild.InnerText;
+                string lastTag = response.ResponseUri.ToString().Split('/').Last();
                 response.Close();
-                readStream.Close();
 
-                _currentVersion = GetCurrentversion();
-
-                int Installedversion = Convert.ToInt16(_currentVersion.Replace(".", ""));
-                int Availableversion = Convert.ToInt16(NewVersion.Replace(".", ""));
-
-                string Download = sourceURL.Replace("version.xml", NewVersion + "/" + "DAISYTranslatorAddInForWordSetup-en.exe");
-                if (Availableversion == Installedversion || Availableversion < Installedversion)
+                if (computeVersionComparator(lastTag) > computeVersionComparator(GetCurrentversion()))
                 {
-                    MessageBox.Show("New version is not available", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else if (Availableversion > Installedversion)
-                {
-                    DialogResult dr = MessageBox.Show("New version of SaveAsDAISY Add-in is available.Do you want to download it now?", "SaveAsDAISY-New Version", MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
+                    DialogResult dr = MessageBox.Show(
+                        "New version of SaveAsDAISY Add-in is available.Do you want to download it now?\r\n" +
+                            "(You will be redirected to the latest release download page)",
+                        "SaveAsDAISY-New Version",
+                        MessageBoxButtons.OKCancel,
+                        MessageBoxIcon.Information
+                    );
                     if (dr == DialogResult.OK)
-                        System.Diagnostics.Process.Start(Download);
+                        System.Diagnostics.Process.Start("https://github.com/daisy/word-save-as-daisy/releases/latest");
+
+                }
+                else
+                {
+                    MessageBox.Show("Your already have the latest version of the plugin.", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message,"SaveAsDAISY",MessageBoxButtons.OK,MessageBoxIcon.Error);
             }
-            this.Close();
+            
         }
 
         /// <summary>
