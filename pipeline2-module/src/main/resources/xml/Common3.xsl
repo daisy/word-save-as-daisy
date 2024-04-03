@@ -91,54 +91,6 @@
 		</xsl:if>
 	</xsl:template>
 
-	<!--Template to add EndNote-->
-	<xsl:template name="InsertEndnotes">
-		<xsl:param name="endNoteId" as="xs:integer"/>
-		<xsl:param name="vernote" as="xs:string"/>
-		<xsl:param name="characterStyle" as="xs:boolean" select="false()"/>
-		<xsl:param name="sOperators" as="xs:string"/>
-		<xsl:param name="sMinuses" as="xs:string"/>
-		<xsl:param name="sNumbers" as="xs:string"/>
-		<xsl:param name="sZeros" as="xs:string"/>
-		<!--Checking for EndNoteId greater than 0-->
-		<xsl:if test="$endNoteId &gt; 0">
-			<note>
-				<!--Creating attribute ID for Note element-->
-				<xsl:attribute name="id">
-					<xsl:value-of select="concat('endnote-',$endNoteId)"/>
-				</xsl:attribute>
-				<!--Creating attribute class for Note element-->
-				<xsl:attribute name="class">
-					<xsl:value-of select="'Endnote'"/>
-				</xsl:attribute>
-				<!--Travering each w:endnote element in endnote.xml file-->
-				<xsl:for-each select="$endnotesXml//w:endnotes/w:endnote">
-					<!--Checks for matching Id-->
-					<xsl:if test="@w:id=$endNoteId">
-						<xsl:message terminate="no">progress:Insert endnote <xsl:value-of select="$endNoteId"/> </xsl:message>
-						<!--Travering each element inside w:endnote in endnote.xml file-->
-						<xsl:for-each select="./node()">
-							<!--Checking for Paragraph element-->
-							<xsl:if test="self::w:p">
-								<xsl:call-template name="ParagraphStyle">
-									<xsl:with-param name="VERSION" select="$vernote"/>
-									<xsl:with-param name="flagNote" select="'endnote'"/>
-									<xsl:with-param name="checkid" select="$endNoteId + 1"/>
-									<xsl:with-param name="sOperators" select="$sOperators"/>
-									<xsl:with-param name="sMinuses" select="$sMinuses"/>
-									<xsl:with-param name="sNumbers" select="$sNumbers"/>
-									<xsl:with-param name="sZeros" select="$sZeros"/>
-									<xsl:with-param name="characterparaStyle" select="$characterStyle"/>
-								</xsl:call-template>
-							</xsl:if>
-						</xsl:for-each>
-						<xsl:sequence select="d:sink(d:InitializeNoteFlag($myObj))"/> <!-- empty -->
-					</xsl:if>
-				</xsl:for-each>
-			</note>
-		</xsl:if>
-	</xsl:template>
-
 	<!--Template for Adding footnote-->
 	<xsl:template name="InsertFootnotes">
 		<xsl:param name="level"/>

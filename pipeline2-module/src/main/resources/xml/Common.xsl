@@ -45,179 +45,6 @@
     <xsl:param name="FootnotesNumberingSuffix" />
     <xsl:param name="Language" />
 
-    <!--template for frontmatter elements-->
-    <xsl:template name="FrontMatter">
-        <!--Parameter Tile of the document-->
-        <xsl:param name="Title" as="xs:string"/>
-        <!--Parameter author of the document-->
-        <xsl:param name="Creator" as="xs:string"/>
-        <!--Parameter trackchanges-->
-        <xsl:param name="prmTrack" as="xs:string"/>
-        <!--Parameter version of Office-->
-        <xsl:param name="version" as="xs:string"/>
-        <!--Parameter custom page number-->
-        <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="masterSub" as="xs:boolean"/>
-        <xsl:param name="sOperators" as="xs:string"/>
-        <xsl:param name="sMinuses" as="xs:string"/>
-        <xsl:param name="sNumbers" as="xs:string"/>
-        <xsl:param name="sZeros" as="xs:string"/>
-        <xsl:param name="imgOption" as="xs:string"/>
-        <xsl:param name="dpi" as="xs:float"/>
-        <xsl:param name="charStyles" as="xs:boolean"/>
-
-        <xsl:message terminate="no">progress:Building the frontmatter</xsl:message>
-        <frontmatter>
-            <doctitle>
-                <xsl:choose>
-                    <!--Taking Document Title value from core.xml-->
-                    <xsl:when test="string-length($Title) = 0">
-                        <xsl:value-of select="$docPropsCoreXml//cp:coreProperties/dc:title"/>
-                    </xsl:when>
-                    <!--Taking the Title value entered by the user-->
-                    <xsl:otherwise>
-                        <xsl:value-of select="$Title"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </doctitle>
-            <docauthor>
-                <xsl:choose>
-                    <!--Taking Document creator value from core.xml-->
-                    <xsl:when test="string-length($Creator) = 0">
-                        <xsl:value-of select="$docPropsCoreXml//cp:coreProperties/dc:creator"/>
-                    </xsl:when>
-                    <!--Taking the Creator value entered by the user-->
-                    <xsl:otherwise>
-                        <xsl:value-of select="$Creator"/>
-                    </xsl:otherwise>
-                </xsl:choose>
-            </docauthor>
-            <!-- Only launch if there is a bodymatter style set on a pragraph that is not the first one -->
-            <xsl:if test="
-                    count($documentXml//w:document/w:body/w:p[position() &gt; 1]/w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
-                    or count($documentXml//w:document/w:body/w:p/w:r[position() &gt; 1]/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
-            ">
-                <xsl:message terminate="no">progress:Adding frontmatter content found in the document</xsl:message>
-                <xsl:call-template name="Matter">
-                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                    <xsl:with-param name="version" select="$version"/>
-                    <xsl:with-param name="custom" select="$custom"/>
-                    <xsl:with-param name="masterSub" select="$masterSub"/>
-                    <xsl:with-param name="sOperators" select="$sOperators"/>
-                    <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                    <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                    <xsl:with-param name="sZeros" select="$sZeros"/>
-                    <xsl:with-param name="imgOption" select="$imgOption"/>
-                    <xsl:with-param name="dpi" select="$dpi"/>
-                    <xsl:with-param name="charStyles" select="$charStyles"/>
-                    <xsl:with-param name="matterType" select="'Frontmatter'" />
-                </xsl:call-template>
-            </xsl:if>
-        </frontmatter>
-
-    </xsl:template>
-
-
-    <!--Template for implementing bodymatter elements-->
-    <xsl:template name="BodyMatter">
-        <!--Parameter trackchanges-->
-        <xsl:param name="prmTrack" as="xs:string"/>
-        <!--Parameter version of Office-->
-        <xsl:param name="version" as="xs:string"/>
-        <!--Parameter custom page number-->
-        <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="masterSub" as="xs:boolean"/>
-        <xsl:param name="sOperators" as="xs:string"/>
-        <xsl:param name="sMinuses" as="xs:string"/>
-        <xsl:param name="sNumbers" as="xs:string"/>
-        <xsl:param name="sZeros" as="xs:string"/>
-        <xsl:param name="imgOption" as="xs:string"/>
-        <xsl:param name="dpi" as="xs:float"/>
-        <xsl:param name="charStyles" as="xs:boolean"/>
-        <xsl:message terminate="no">progress:Building the bodymatter</xsl:message>
-        <bodymatter id="bodymatter_0001">
-            <xsl:call-template name="Matter">
-                <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                <xsl:with-param name="version" select="$version"/>
-                <xsl:with-param name="custom" select="$custom"/>
-                <xsl:with-param name="masterSub" select="$masterSub"/>
-                <xsl:with-param name="sOperators" select="$sOperators"/>
-                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                <xsl:with-param name="sZeros" select="$sZeros"/>
-                <xsl:with-param name="imgOption" select="$imgOption"/>
-                <xsl:with-param name="dpi" select="$dpi"/>
-                <xsl:with-param name="charStyles" select="$charStyles"/>
-                <xsl:with-param name="matterType" select="'Bodymatter'" />
-            </xsl:call-template>
-        </bodymatter>
-    </xsl:template>
-
-
-
-    <!--Template for implementing Rearmatter elements-->
-    <xsl:template name="RearMatter">
-        <!--Parameter trackchanges-->
-        <xsl:param name="prmTrack" as="xs:string"/>
-        <!--Parameter version of Office-->
-        <xsl:param name="version" as="xs:string"/>
-        <!--Parameter custom page number-->
-        <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="masterSub" as="xs:boolean"/>
-        <xsl:param name="sOperators" as="xs:string"/>
-        <xsl:param name="sMinuses" as="xs:string"/>
-        <xsl:param name="sNumbers" as="xs:string"/>
-        <xsl:param name="sZeros" as="xs:string"/>
-        <xsl:param name="imgOption" as="xs:string"/>
-        <xsl:param name="dpi" as="xs:float"/>
-        <xsl:param name="charStyles" as="xs:boolean"/>
-        <xsl:message terminate="no">progress:Building the rearmatter</xsl:message>
-        <rearmatter>
-            <xsl:if test="count(
-                $documentXml//w:document/w:body/w:p/w:r[
-                    ./w:rPr/w:rStyle[@w:val='EndnoteReference'] 
-                    or ./w:endnoteReference
-                ]
-            )  &gt; 0">
-                <xsl:message terminate="no">progress:Inserting endnotes in the rearmatter</xsl:message>
-                <level1>
-                    <!--Checking if any elements should be translated to the rearmatter-->
-                    <!--Otherwise Traversing through document.xml file and passing the Endnote id to the Note template.-->
-                    <xsl:for-each select="(
-                        $documentXml//w:document/w:body/w:p/w:r[
-                            ./w:rPr/w:rStyle[@w:val='EndnoteReference'] 
-                            or ./w:endnoteReference
-                        ]
-                    )">
-                        <xsl:call-template name="InsertEndnotes">
-                            <xsl:with-param name="endNoteId" select="./w:endnoteReference/@w:id"/>
-                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                            <xsl:with-param name="sZeros" select="$sZeros"/>
-                            <xsl:with-param name="vernote" select="$version"/>
-                        </xsl:call-template>
-                    </xsl:for-each>
-                </level1>
-            </xsl:if>
-            <xsl:message terminate="no">progress:Adding any rearmatter content found in the document</xsl:message>
-            <xsl:call-template name="Matter">
-                <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                <xsl:with-param name="version" select="$version"/>
-                <xsl:with-param name="custom" select="$custom"/>
-                <xsl:with-param name="masterSub" select="$masterSub"/>
-                <xsl:with-param name="sOperators" select="$sOperators"/>
-                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                <xsl:with-param name="sZeros" select="$sZeros"/>
-                <xsl:with-param name="imgOption" select="$imgOption"/>
-                <xsl:with-param name="dpi" select="$dpi"/>
-                <xsl:with-param name="charStyles" select="$charStyles"/>
-                <xsl:with-param name="matterType" select="'Rearmatter'" />
-            </xsl:call-template>
-        </rearmatter>
-    </xsl:template>
-
 
     <!-- Template for content of front|body|rearmatter -->
     <xsl:template name="Matter">
@@ -287,13 +114,38 @@
         <xsl:sequence select="d:ResetCurrentMatterType($myObj)"/> <!-- empty -->
         <!--Traversing through each node of the document-->
         <xsl:for-each select="$documentXml//w:body/node()">
-            <xsl:if test="not($masterSub)">
-                <xsl:call-template name="SetCurrentMatterType" />
+            <xsl:if test="not($masterSub) and self::w:p">
+                <!-- First check if the paragraph has style with a "(Front|Body|Rear)matter" prefix,
+                    and set parsing context accordingly (stored in the java side) -->
+                <xsl:choose>
+                    <xsl:when test="(
+                        count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1
+                        or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1
+                    )">
+                        <xsl:message terminate="no">progress:SetCurrentMatterType - Found Frontmatter</xsl:message>
+                        <xsl:sequence select="d:sink(d:SetCurrentMatterType($myObj, 'Frontmatter'))"/>
+                    </xsl:when>
+                    <xsl:when test="(
+                        count(w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
+                        or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
+                    )">
+                        <xsl:message terminate="no">progress:SetCurrentMatterType - Found Bodymatter</xsl:message>
+                        <xsl:sequence select="d:sink(d:SetCurrentMatterType($myObj, 'Bodymatter'))"/>
+                    </xsl:when>
+                    <xsl:when test="(
+                        count(w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
+                        or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
+                    )">
+                        <xsl:message terminate="no">progress:SetCurrentMatterType - Found Rearmatter</xsl:message>
+                        <xsl:sequence select="d:sink(d:SetCurrentMatterType($myObj, 'Rearmatter'))"/>
+                    </xsl:when>
+                </xsl:choose>
             </xsl:if>
+            <!-- If the node parsing context match the wanted matter context (i.e. node context is Bodymatter and requested matter type is Bodymatter ) -->
             <xsl:if test="d:GetCurrentMatterType($myObj)=$matterType">
                 <xsl:message terminate="no">progress:Found element <xsl:value-of select="name()"/> </xsl:message>
                 <xsl:choose>
-                    <!--Checking for Praragraph element-->
+                    <!--Checking for Paragraph element-->
                     <xsl:when test="(
                         self::w:p
                         and not(
@@ -327,7 +179,7 @@
                                 <xsl:with-param name="lvlcharStyle" select="$charStyles"/>
                             </xsl:call-template>
                         </xsl:if>
-                        <xsl:sequence select="d:sink(d:CheckCaverPage($myObj))"/> <!-- empty -->
+                        <xsl:sequence select="d:sink(d:CheckCoverPage($myObj))"/> <!-- empty -->
                         <xsl:call-template name="StyleContainer">
                             <xsl:with-param name="prmTrack" select="$prmTrack"/>
                             <xsl:with-param name="VERSION" select="$version"/>
@@ -342,7 +194,7 @@
                     <!--Checking for Table element-->
                     <xsl:when test="self::w:tbl">
                         <!--If exists then calling TableHandler-->
-                        <xsl:sequence select="d:sink(d:CheckCaverPage($myObj))"/> <!-- empty -->
+                        <xsl:sequence select="d:sink(d:CheckCoverPage($myObj))"/> <!-- empty -->
                         <xsl:call-template name="TableHandler">
                             <xsl:with-param name="parmVerTable" select="$version"/>
                             <xsl:with-param name="custom" select="$custom"/>
@@ -400,8 +252,12 @@
                                 </xsl:call-template>
                             </xsl:when>
                             <xsl:otherwise>
-                                <!--Calling structuredocument for handling Fidelity loss-->
-                                <xsl:call-template name="structuredocument"/>
+                                <xsl:if test="w:sdtPr/w:docPartObj/w:docPartGallery">
+                                    <!--Displaying fidelity loss message-->
+                                    <xsl:message terminate="no">
+                                        <xsl:value-of select="concat('translation.oox2Daisy.sdtElement|',w:sdtPr/w:docPartObj/w:docPartGallery/@w:val)"/>
+                                    </xsl:message>
+                                </xsl:if>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:when>
@@ -645,51 +501,122 @@
 
         <!--Initializing section Information if page number style is automatic-->
         <xsl:if test="(w:pPr/w:sectPr) and not($flag='2') and ($custom='Automatic')">
-            <xsl:call-template name="SectionInfo"/>
+            <!-- <xsl:call-template name="SectionInfo"/> -->
+            <xsl:for-each select="following-sibling::*">
+                <xsl:choose>
+                    <!--Checking for section break-->
+                    <xsl:when test="w:pPr/w:sectPr">
+                        <xsl:if test="d:GetSectionPageStart($myObj)=1">
+                            <xsl:sequence select="d:sink(d:SectionCounter($myObj,w:pPr/w:sectPr/w:pgNumType/@w:fmt,w:pPr/w:sectPr/w:pgNumType/@w:start))"/> <!-- empty -->
+                        </xsl:if>
+                    </xsl:when>
+                    <!--Checking for section break-->
+                    <xsl:when test="self::w:sectPr">
+                        <xsl:if test="d:GetSectionPageStart($myObj)=1">
+                            <xsl:sequence select="d:sink(d:SectionCounter($myObj,w:pgNumType/@w:fmt,w:pgNumType/@w:start))"/> <!-- empty -->
+                        </xsl:if>
+                    </xsl:when>
+                </xsl:choose>
+            </xsl:for-each>
+            <xsl:sequence select="d:sink(d:InitalizeSectionPageStart($myObj))"/> <!-- empty -->
         </xsl:if>
 
-        <xsl:if test="(w:r/w:pict//v:textbox/w:txbxContent) and (not(w:r/w:pict/v:group)) and ($VERSION='12.0')">
-            <xsl:if test="not(w:r/w:pict//v:textbox/w:txbxContent/w:p/w:pPr/w:pStyle[@w:val='Caption'])">
-                <xsl:call-template name="InsertSidebar">
-                    <xsl:with-param name="flag" select="$flag"/>
-                    <xsl:with-param name="custom" select="$custom"/>
-                    <xsl:with-param name="txt" select="$txt"/>
-                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                    <xsl:with-param name="VERSION" select="$VERSION"/>
-                    <xsl:with-param name="charparahandlerStyle" select="$charparahandlerStyle"/>
-                    <xsl:with-param name="mastersubpara" select="$mastersubpara"/>
-                    <xsl:with-param name="level" select="$level"/>
-                </xsl:call-template>
+        <!-- Convert textboxes as <sidebar render="required"> element -->
+        <xsl:if test="(w:r/w:pict//v:textbox/w:txbxContent) 
+                and (
+                    ($VERSION='12.0' and not(w:r/w:pict/v:group))
+                    or (
+                        (($VERSION='11.0') or ($VERSION='10.0')) 
+                        and not(w:r/w:pict/v:group[@editas='orgchart'])
+                    )
+                )
+                and not(w:r/w:pict//v:textbox/w:txbxContent/w:p/w:pPr/w:pStyle[@w:val='Caption'])"
+        >
+            <xsl:if test="$flag='0'">
+                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;/h',$level,'&gt;')"/>
             </xsl:if>
+            <xsl:for-each select="w:r/w:pict//v:textbox/w:txbxContent">
+                <sidebar>
+                    <xsl:attribute    name="render">required</xsl:attribute>
+                    <xsl:for-each select="./node()">
+                        <xsl:choose>
+                            <!--Checking for Headings in sidebar-->
+                            <xsl:when test="(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or (w:pPr/w:pStyle/@w:val='BridgeheadDAISY')">
+                                <hd>
+                                    <xsl:call-template name="ParaHandler">
+                                        <xsl:with-param name="flag" select="'0'"/>
+                                        <xsl:with-param name="txt" select="$txt"/>
+                                        <xsl:with-param name="custom" select="$custom"/>
+                                        <xsl:with-param name="charparahandlerStyle" select="$charparahandlerStyle"/>
+                                    </xsl:call-template>
+                                </hd>
+                            </xsl:when>
+                            <!--Checking for lists in sidebar-->
+                            <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId))">
+                                <xsl:call-template name="List">
+                                    <xsl:with-param name="listcharStyle" select="$charparahandlerStyle"/>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <!--Checking for Table in sidebar-->
+                            <xsl:when test="self::w:tbl">
+                                <xsl:call-template name="TableHandler">
+                                    <xsl:with-param name="parmVerTable" select="$VERSION"/>
+                                    <xsl:with-param name="custom" select="$custom"/>
+                                    <xsl:with-param name="mastersubtbl" select="$mastersubpara"/>
+                                    <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <!--Checking for Prodnote style in sidebar-->
+                            <xsl:when test="(w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY') or (w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
+                                <xsl:call-template name="ParagraphStyle">
+                                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
+                                    <xsl:with-param name="VERSION" select="$VERSION"/>
+                                    <xsl:with-param name="custom" select="$custom"/>
+                                    <xsl:with-param name="txt" select="$txt"/>
+                                    <xsl:with-param name="characterparaStyle" select="$charparahandlerStyle"/>
+                                </xsl:call-template>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:if test="not(w:pPr/w:pStyle/@w:val='List-HeadingDAISY')">
+                                    <!--Calling StyleContainer Template -->
+                                    <xsl:call-template name="StyleContainer">
+                                        <xsl:with-param name="VERSION" select="$VERSION"/>
+                                        <xsl:with-param name="prmTrack" select="$prmTrack"/>
+                                        <xsl:with-param name="custom" select="$custom"/>
+                                        <xsl:with-param name="mastersubstyle" select="$mastersubpara"/>
+                                        <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
+                                    </xsl:call-template>
+                                </xsl:if>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </xsl:for-each>
+                </sidebar>
+            </xsl:for-each>
         </xsl:if>
 
-        <xsl:if test="(w:r/w:pict//v:textbox/w:txbxContent)and not(w:r/w:pict/v:group[@editas='orgchart']) and (($VERSION='11.0') or ($VERSION='10.0'))">
-            <xsl:if test="not(w:r/w:pict//v:textbox/w:txbxContent/w:p/w:pPr/w:pStyle[@w:val='Caption'])">
-                <xsl:call-template name="InsertSidebar">
-                    <xsl:with-param name="flag" select="$flag"/>
-                    <xsl:with-param name="custom" select="$custom"/>
-                    <xsl:with-param name="txt" select="$txt"/>
-                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                    <xsl:with-param name="VERSION" select="$VERSION"/>
-                    <xsl:with-param name="charparahandlerStyle" select="$charparahandlerStyle"/>
-                    <xsl:with-param name="mastersubpara" select="$mastersubpara"/>
-                    <xsl:with-param name="level" select="$level"/>
-                </xsl:call-template>
-            </xsl:if>
-        </xsl:if>
-
-        <xsl:if test="not($flag='0') and not(d:AbbrAcrFlag($myObj)=1)and not($flagNote='hyper')">
-            <xsl:if test="(not(d:GetTestRun($myObj)&gt;='1')) and (d:GetCodeFlag($myObj)='0')">
+        <xsl:if test="not($flag='0')
+                and not(d:AbbrAcrFlag($myObj)=1)
+                and not($flagNote='hyper')"
+        >
+            <xsl:if test="not(d:GetTestRun($myObj)&gt;='1')
+                    and (d:GetCodeFlag($myObj)='0')"
+            >
                 <!--Setting a flag for linenumber-->
                 <xsl:sequence select="d:sink(d:Setlinenumflag($myObj))"/> <!-- empty -->
                 <xsl:choose>
-                    <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
+                    <xsl:when test="(w:r/w:rPr/w:lang)
+                            or (w:r/w:rPr/w:rFonts/@w:hint)"
+                    >
                         <xsl:call-template name="Languages">
                             <xsl:with-param name="Attribute" select="false()"/>
                         </xsl:call-template>
                     </xsl:when>
                     <xsl:otherwise>
-                        <xsl:if test="(not(w:r/w:rPr/w:rStyle[@w:val='PageNumberDAISY']) and ($custom='Custom')) or (not($custom='Custom'))">
+                        <xsl:if test="(
+                                    not(w:r/w:rPr/w:rStyle[@w:val='PageNumberDAISY'])
+                                    and ($custom='Custom')
+                                ) or not($custom='Custom')"
+                        >
                             <xsl:value-of disable-output-escaping="yes" select="'&lt;p&gt;'"/>
                         </xsl:if>
                     </xsl:otherwise>
@@ -1198,80 +1125,6 @@
 
     </xsl:template>
 
-    <xsl:template name="InsertSidebar">
-        <xsl:param name="flag" as="xs:string"/>
-        <xsl:param name="custom" as="xs:string"/>
-        <xsl:param name="txt" as="xs:string"/>
-        <xsl:param name="prmTrack" as="xs:string"/>
-        <xsl:param name="VERSION" as="xs:string"/>
-        <xsl:param name="charparahandlerStyle" as="xs:boolean"/>
-        <xsl:param name="mastersubpara" as="xs:boolean"/>
-        <xsl:param name="level" as="xs:integer"/>
-        <xsl:message terminate="no">progress:Creating sidebar</xsl:message>
-
-        <xsl:if test="$flag='0'">
-            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;/h',$level,'&gt;')"/>
-        </xsl:if>
-        <xsl:for-each select="w:r/w:pict//v:textbox/w:txbxContent">
-            <sidebar>
-                <xsl:attribute    name="render">required</xsl:attribute>
-                <xsl:for-each select="./node()">
-                    <xsl:choose>
-                        <!--Checking for Headings in sidebar-->
-                        <xsl:when test="(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or (w:pPr/w:pStyle/@w:val='BridgeheadDAISY')">
-                            <hd>
-                                <xsl:call-template name="ParaHandler">
-                                    <xsl:with-param name="flag" select="'0'"/>
-                                    <xsl:with-param name="txt" select="$txt"/>
-                                    <xsl:with-param name="custom" select="$custom"/>
-                                    <xsl:with-param name="charparahandlerStyle" select="$charparahandlerStyle"/>
-                                </xsl:call-template>
-                            </hd>
-                        </xsl:when>
-                        <!--Checking for lists in sidebar-->
-                        <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId))">
-                            <xsl:call-template name="List">
-                                <xsl:with-param name="listcharStyle" select="$charparahandlerStyle"/>
-                            </xsl:call-template>
-                        </xsl:when>
-                        <!--Checking for Table in sidebar-->
-                        <xsl:when test="self::w:tbl">
-                            <xsl:call-template name="TableHandler">
-                                <xsl:with-param name="parmVerTable" select="$VERSION"/>
-                                <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="mastersubtbl" select="$mastersubpara"/>
-                                <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                            </xsl:call-template>
-                        </xsl:when>
-                        <!--Checking for Prodnote style in sidebar-->
-                        <xsl:when test="(w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY') or (w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
-                            <xsl:call-template name="ParagraphStyle">
-                                <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                                <xsl:with-param name="VERSION" select="$VERSION"/>
-                                <xsl:with-param name="custom" select="$custom"/>
-                                <xsl:with-param name="txt" select="$txt"/>
-                                <xsl:with-param name="characterparaStyle" select="$charparahandlerStyle"/>
-                            </xsl:call-template>
-                        </xsl:when>
-
-
-                        <xsl:otherwise>
-                            <xsl:if test="not(w:pPr/w:pStyle/@w:val='List-HeadingDAISY')">
-                                <!--Calling StyleContainer Template -->
-                                <xsl:call-template name="StyleContainer">
-                                    <xsl:with-param name="VERSION" select="$VERSION"/>
-                                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
-                                    <xsl:with-param name="custom" select="$custom"/>
-                                    <xsl:with-param name="mastersubstyle" select="$mastersubpara"/>
-                                    <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                                </xsl:call-template>
-                            </xsl:if>
-                        </xsl:otherwise>
-                    </xsl:choose>
-                </xsl:for-each>
-            </sidebar>
-        </xsl:for-each>
-    </xsl:template>
 
     <!-- Parse paragraph styles and do : 
         - notes references creation 
@@ -1667,15 +1520,6 @@
         </xsl:for-each>
     </xsl:template>
 
-    <!--template for traping fidelity loss element structure document-->
-    <xsl:template name="structuredocument">
-        <xsl:if test="w:sdtPr/w:docPartObj/w:docPartGallery">
-            <!--Displaying fidelity loss message-->
-            <xsl:message terminate="no">
-                <xsl:value-of select="concat('translation.oox2Daisy.sdtElement|',w:sdtPr/w:docPartObj/w:docPartGallery/@w:val)"/>
-            </xsl:message>
-        </xsl:if>
-    </xsl:template>
 
     <!--Template to implement citation styles-->
     <xsl:template name="styleCitation">
@@ -1906,27 +1750,6 @@
                 </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>
-
-    <!--Tmplate to capture section information-->
-    <xsl:template name="SectionInfo">
-        <xsl:for-each select="following-sibling::*">
-            <xsl:choose>
-                <!--Checking for section break-->
-                <xsl:when test="w:pPr/w:sectPr">
-                    <xsl:if test="d:GetSectionPageStart($myObj)=1">
-                        <xsl:sequence select="d:sink(d:SectionCounter($myObj,w:pPr/w:sectPr/w:pgNumType/@w:fmt,w:pPr/w:sectPr/w:pgNumType/@w:start))"/> <!-- empty -->
-                    </xsl:if>
-                </xsl:when>
-                <!--Checking for section break-->
-                <xsl:when test="self::w:sectPr">
-                    <xsl:if test="d:GetSectionPageStart($myObj)=1">
-                        <xsl:sequence select="d:sink(d:SectionCounter($myObj,w:pgNumType/@w:fmt,w:pgNumType/@w:start))"/> <!-- empty -->
-                    </xsl:if>
-                </xsl:when>
-            </xsl:choose>
-        </xsl:for-each>
-        <xsl:sequence select="d:sink(d:InitalizeSectionPageStart($myObj))"/> <!-- empty -->
     </xsl:template>
 
     <!--Template to Implement Blocquote using Blocklist Template -->
@@ -2531,11 +2354,41 @@
         <xsl:choose>
             <!--Checking for List in Blockquote-->
             <xsl:when test="w:pPr/w:pStyle[substring(@w:val,1,5)='Block']">
-                <!--Calling Blocklist Template-->
-                <xsl:call-template name="Blocklist">
-                    <xsl:with-param name="custom" select="$custom"/>
-                    <xsl:with-param name="blkcharstyle" select="$characterStyle"/>
-                </xsl:call-template>
+                <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,5)='Block'])=0">
+                    <xsl:value-of disable-output-escaping="yes" select="'&lt;blockquote &gt;'"/>
+                </xsl:if>
+                <xsl:choose>
+                    <!--Checking for 'Blockquote-AuthorDAISY' style-->
+                    <xsl:when test="w:pPr/w:pStyle[@w:val='Blockquote-AuthorDAISY']">
+                        <author>
+                            <xsl:call-template name="ParaHandler">
+                                <xsl:with-param name="flag" select="'0'"/>
+                                <xsl:with-param name="custom" select="$custom"/>
+                                <xsl:with-param name="charparahandlerStyle" select="$characterStyle"/>
+                            </xsl:call-template>
+                        </author>
+                    </xsl:when>
+                    <!--Checking for List in BlockQuote Element-->
+                    <xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId))">
+                        <!--variable checkilvl holds level(w:ilvl) value of the List-->
+                        <xsl:call-template name="List">
+                            <xsl:with-param name="listcharStyle" select="$characterStyle"/>
+                        </xsl:call-template>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <xsl:if test="not(w:pPr/pStyle/@w:val='List-HeadingDAISY')">
+                            <!--Calling ParagraphStyle Template-->
+                            <xsl:call-template name="ParagraphStyle">
+                                <xsl:with-param name="custom" select="$custom"/>
+                                <xsl:with-param name="characterparaStyle" select="$characterStyle"/>
+                            </xsl:call-template>
+                        </xsl:if>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:if test="count(following-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,5)='Block'])=0">
+                    <!--Closing blockquote element-->
+                    <xsl:value-of disable-output-escaping="yes" select="'&lt;/blockquote &gt;'"/>
+                </xsl:if>
             </xsl:when>
             <!-- TOC starting paragraphe -->
             <xsl:when test="(
@@ -2591,6 +2444,7 @@
 					) and $FootnotesPosition='page'
                 )">
                     <xsl:call-template name="InsertFootnotes">
+                        <xsl:with-param name="level" as="xs:integer" select="d:PeekLevel($myObj)"/>
                         <xsl:with-param name="verfoot" select="$VERSION"/>
                         <xsl:with-param name="sOperators" select="$sOperators"/>
                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -2685,14 +2539,11 @@
                                     <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
                                     <xsl:sequence select="d:sink(d:GetCheckLvlInt($myObj,./w:pPr/w:outlineLvl/@w:val))"/> <!-- empty -->
                                     <xsl:variable name="checknumId" as="xs:string" select="./w:pPr/w:numPr/w:numId/@w:val"/>
-
                                     <xsl:sequence select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
                                 </xsl:if>
                             </xsl:for-each>
                         </xsl:variable>
                         <xsl:variable name="absValue" as="xs:string" select="string-join($absValue,'')"/>
-
-
                         <xsl:variable name="ilvl" as="xs:string*">
                             <xsl:variable name="nameHeading" as="xs:string" select="w:pPr/w:pStyle/@w:val"/>
                             <xsl:for-each select="$stylesXml//w:styles/w:style[@w:styleId=$nameHeading]">
@@ -2791,13 +2642,68 @@
                                 <xsl:variable name="checkilvl" as="xs:integer" select="d:GetCheckLvlInt($myObj,w:pPr/w:numPr/w:ilvl/@w:val)"/>
                                 <!--Variable checknumId holds the w:numId value which specifies the type of numbering in the list-->
                                 <xsl:variable name="checknumId" as="xs:string" select="w:pPr/w:numPr/w:numId/@w:val"/>
-
-                                <xsl:call-template name="VanishTemplate">
+                                <!-- <xsl:call-template name="VanishTemplate">
                                     <xsl:with-param name="checkilvl" select="$checkilvl"/>
                                     <xsl:with-param name="checknumId" select="$checknumId"/>
                                     <xsl:with-param name="checkCounter" select="$checkCounter"/>
-                                </xsl:call-template>
+                                </xsl:call-template> -->
+                                <xsl:variable name="val" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
+                                <xsl:variable name="lStartOverride" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
+                                <xsl:variable name="lStart" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
+                                <xsl:sequence select="d:sink(d:AddCurrHeadId($myObj,$checknumId))"/> <!-- empty -->
+                                <xsl:variable name="addCurrLvl" as="xs:string" select="d:AddCurrHeadLevel($myObj,$checkilvl,'Vanish',$val)"/>
 
+                                <xsl:choose>
+                                    <xsl:when test="$checkCounter='HeadTrue'">
+                                        <xsl:choose>
+                                            <xsl:when test="string-length(substring-before($addCurrLvl,'|'))=0">
+                                                <xsl:choose>
+                                                    <xsl:when test="not($lStartOverride='')">
+                                                        <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStartOverride,$checknumId,$val,'Vanish','Yes'))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checknumId,$val)"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$checknumId))"/> <!-- empty -->
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStart,$checknumId,$val,'Vanish','No'))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checknumId,$val)"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$checknumId))"/> <!-- empty -->
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                            </xsl:when>
+                                        </xsl:choose>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                        <xsl:choose>
+                                            <xsl:when test="string-length(substring-before($addCurrLvl,'|'))=0">
+                                                <xsl:variable name="CheckNumId" as="xs:string" select="d:CheckHeadingNumID($myObj,$checknumId)"/>
+                                                <xsl:if test="$CheckNumId ='True'">
+                                                    <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
+                                                    <xsl:sequence select="d:sink(d:StartNewHeadingCounter($myObj,$checknumId,$val))"/> <!-- empty -->
+                                                </xsl:if>
+                                                <xsl:choose>
+                                                    <xsl:when test="not($lStartOverride='')">
+                                                        <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStartOverride,$checkCounter,$val,'Vanish','Yes'))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checkCounter,$val)"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$checkCounter))"/> <!-- empty -->
+                                                    </xsl:when>
+                                                    <xsl:otherwise>
+                                                        <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStart,$checknumId,$val,'Vanish','No'))"/> <!-- empty -->
+                                                        <xsl:sequence select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checkCounter,$val)"/> <!-- empty -->
+                                                        <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$checkCounter))"/> <!-- empty -->
+                                                    </xsl:otherwise>
+                                                </xsl:choose>
+                                            </xsl:when>
+                                        </xsl:choose>
+                                    </xsl:otherwise>
+                                </xsl:choose>
                             </xsl:otherwise>
                         </xsl:choose>
                     </xsl:when>
@@ -2851,70 +2757,6 @@
                             </xsl:call-template>
                         </xsl:if>
                     </xsl:otherwise>
-                </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:template>
-
-    <xsl:template name="VanishTemplate">
-        <xsl:param name="checkilvl" as="xs:integer"/>
-        <xsl:param name="checknumId" as="xs:string"/>
-        <xsl:param name="checkCounter" as="xs:string"/>
-        <xsl:variable name="val" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:abstractNumId/@w:val"/>
-        <xsl:variable name="lStartOverride" as="xs:string" select="$numberingXml//w:numbering/w:num[@w:numId=$checknumId]/w:lvlOverride[@w:ilvl=$checkilvl]/w:startOverride/@w:val"/>
-        <xsl:variable name="lStart" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$val]/w:lvl[@w:ilvl=$checkilvl]/w:start/@w:val"/>
-
-        <xsl:sequence select="d:sink(d:AddCurrHeadId($myObj,$checknumId))"/> <!-- empty -->
-        <xsl:variable name="addCurrLvl" as="xs:string" select="d:AddCurrHeadLevel($myObj,$checkilvl,'Vanish',$val)"/>
-
-        <xsl:choose>
-            <xsl:when test="$checkCounter='HeadTrue'">
-                <xsl:choose>
-                    <xsl:when test="string-length(substring-before($addCurrLvl,'|'))=0">
-                        <xsl:choose>
-                            <xsl:when test="not($lStartOverride='')">
-                                <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStartOverride,$checknumId,$val,'Vanish','Yes'))"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
-                                <xsl:sequence select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checknumId,$val)"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$checknumId))"/> <!-- empty -->
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStart,$checknumId,$val,'Vanish','No'))"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
-                                <xsl:sequence select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checknumId,$val)"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$checknumId))"/> <!-- empty -->
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
-                </xsl:choose>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:choose>
-                    <xsl:when test="string-length(substring-before($addCurrLvl,'|'))=0">
-                        <xsl:variable name="CheckNumId" as="xs:string" select="d:CheckHeadingNumID($myObj,$checknumId)"/>
-                        <xsl:if test="$CheckNumId ='True'">
-                            <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
-                            <xsl:sequence select="d:sink(d:StartNewHeadingCounter($myObj,$checknumId,$val))"/> <!-- empty -->
-                        </xsl:if>
-                        <xsl:choose>
-                            <xsl:when test="not($lStartOverride='')">
-                                <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStartOverride,$checkCounter,$val,'Vanish','Yes'))"/> <!-- empty -->
-                                <xsl:sequence select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checkCounter,$val)"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$checkCounter))"/> <!-- empty -->
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:sequence select="d:sink(d:CopyToCurrCounter($myObj,$checknumId))"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:StartHeadingValueCtr($myObj,$checknumId,$val))"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:StartHeadingString($myObj,$checkilvl,$lStart,$checknumId,$val,'Vanish','No'))"/> <!-- empty -->
-                                <xsl:sequence select="d:IncrementHeadingCounters($myObj,w:pPr/w:numPr/w:ilvl/@w:val,$checkCounter,$val)"/> <!-- empty -->
-                                <xsl:sequence select="d:sink(d:CopyToBaseCounter($myObj,$checkCounter))"/> <!-- empty -->
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:when>
                 </xsl:choose>
             </xsl:otherwise>
         </xsl:choose>
@@ -3726,66 +3568,7 @@
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:when>
-
-            <!--Checking for occurence of Lists in paragraph-->
-            <xsl:when test="(w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId)">
-                <xsl:call-template name="ParaHandler">
-                    <xsl:with-param name="flag" select="'3'"/>
-                    <xsl:with-param name="VERSION" select="$VERSION"/>
-                    <xsl:with-param name="flagNote" select="$flagNote"/>
-                    <xsl:with-param name="custom" select="$custom"/>
-                    <xsl:with-param name="sOperators" select="$sOperators"/>
-                    <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                    <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                    <xsl:with-param name="sZeros" select="$sZeros"/>
-                    <xsl:with-param name="txt" select="$txt"/>
-                    <xsl:with-param name="mastersubpara" select="$masterparastyle"/>
-                    <xsl:with-param name="charparahandlerStyle" select="$characterparaStyle"/>
-                </xsl:call-template>
-            </xsl:when>
-            <!--Checking for DefinitionTermDAISY custom character style and DefinitionDataDAISY    custom paragraph style-->
-            <xsl:when test="(w:r/w:rPr/w:rStyle/@w:val='DefinitionTermDAISY') or (w:pPr/w:pStyle/@w:val='DefinitionDataDAISY')">
-                <xsl:if test="(count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='DefinitionDataDAISY'])=0)
-                                                                                        and (count(preceding-sibling::node()[1]/w:r/w:rPr/w:rStyle[@w:val='DefinitionTermDAISY'])=0)">
-                    <xsl:value-of disable-output-escaping="yes" select="'&lt;dl&gt;'"/>
-                </xsl:if>
-                <!--Checking for DefinitionTermDAISY custom character style-->
-                <xsl:if test="w:r/w:rPr/w:rStyle/@w:val='DefinitionTermDAISY'">
-                    <dt>
-                        <!--Checking if image is bidirectionally oriented-->
-                        <xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">
-                            <!--Variable holds the value which indicates that the image is bidirectionally oriented-->
-                            <xsl:variable name="definitionlistBd" as="xs:string">
-                                <xsl:call-template name="GetBdoLanguages">
-									<xsl:with-param name="runner" select="."/>
-								</xsl:call-template>
-                            </xsl:variable>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;bdo dir= &quot;rtl&quot; xml:lang=&quot;',$definitionlistBd,'&quot;&gt;')"/>
-                        </xsl:if>
-                        <xsl:value-of select="w:r/w:t"/>
-                        <xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">
-                            <xsl:value-of disable-output-escaping="yes" select="'&lt;/bdo&gt;'"/>
-                        </xsl:if>
-                    </dt>
-                </xsl:if>
-                <!--Checking for DefinitionData-DAISY custom character style-->
-                <xsl:if test="(w:pPr/w:pStyle/@w:val='DefinitionDataDAISY')">
-                    <dd>
-                        <xsl:call-template name="Paracharacterstyle">
-                            <xsl:with-param name="characterStyle" select="$characterparaStyle"/>
-                            <xsl:with-param name="txt" select="$txt"/>
-                            <xsl:with-param name="flag" select="'0'"/>
-                        </xsl:call-template>
-                    </dd>
-                </xsl:if>
-                <xsl:if test="(
-                    count(following-sibling::node()[1]/w:pPr/w:pStyle[@w:val='DefinitionDataDAISY'])=0
-                ) and (
-                    count(following-sibling::node()[1]/w:r/w:rPr/w:rStyle[@w:val='DefinitionTermDAISY'])=0
-                )">
-                    <xsl:value-of disable-output-escaping="yes" select="'&lt;/dl&gt;'"/>
-                </xsl:if>
-            </xsl:when>
+            
             <!--Checking if table occurs in the document and implementing all the styles applied on it-->
             <xsl:when test="(
                 (parent::w:tc)
@@ -3968,40 +3751,6 @@
                 </xsl:call-template>
             </xsl:otherwise>
         </xsl:choose>
-    </xsl:template>
-
-    <xsl:template name="CheckPageStyles">
-        <xsl:message terminate="no">progress:Checking for page styles</xsl:message>
-        <xsl:for-each select="$documentXml//w:document/w:body/node()">
-            <xsl:if test="self::w:p">
-                <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter']">
-                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
-                </xsl:for-each>
-                <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter']">
-                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
-                </xsl:for-each>
-                <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter']">
-                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
-                </xsl:for-each>
-                <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter']">
-                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
-                </xsl:for-each>
-                <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter']">
-                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
-                </xsl:for-each>
-                <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter']">
-                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
-                </xsl:for-each>
-                <xsl:sequence select="d:IncrementCheckingParagraph($myObj)"/> <!-- empty -->
-            </xsl:if>
-        </xsl:for-each>
-
-        <xsl:if test="d:IsInvalidPageStylesSequence($myObj)='true'">
-            <xsl:message terminate="yes">
-                <xsl:value-of select="d:GetPageStylesErrors($myObj)"/>
-            </xsl:message>
-        </xsl:if>
-
     </xsl:template>
 
     <!-- Change the matter type based on style encountered during parsing paragraph (w:p) nodes-->

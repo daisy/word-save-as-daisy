@@ -195,6 +195,8 @@
         </xsl:call-template>
     </xsl:variable>
     <!--Extending the DTD to support MathML-->
+
+    <!-- Conversion starts here -->
     <xsl:template name="main">
         <!--This Xslt is Adding meta elements in Dtbook head element
     It is also calling templates Frontmatter, Bodymatter and Rearmatter-->
@@ -361,51 +363,75 @@
                 </head>
                 <!--Starting Book Element-->
                 <book showin="blp">
-                    <xsl:if test="not($MasterSub='Yes')">
-                        <xsl:call-template name="CheckPageStyles" />
+                    <xsl:if test="not($MasterSub)">
+                        <xsl:message terminate="no">progress:Checking for page styles</xsl:message>
+                        <xsl:for-each select="$documentXml//w:document/w:body/node()">
+                            <xsl:if test="self::w:p">
+                                <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter']">
+                                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
+                                </xsl:for-each>
+                                <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter']">
+                                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
+                                </xsl:for-each>
+                                <xsl:for-each select="w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter']">
+                                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
+                                </xsl:for-each>
+                                <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter']">
+                                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
+                                </xsl:for-each>
+                                <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter']">
+                                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
+                                </xsl:for-each>
+                                <xsl:for-each select="w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter']">
+                                    <xsl:if test="d:PushPageStyle($myObj,@w:val)"/>
+                                </xsl:for-each>
+                                <xsl:sequence select="d:IncrementCheckingParagraph($myObj)"/> <!-- empty -->
+                            </xsl:if>
+                        </xsl:for-each>
+
+                        <xsl:if test="d:IsInvalidPageStylesSequence($myObj)='true'">
+                            <xsl:message terminate="yes">
+                                <xsl:value-of select="d:GetPageStylesErrors($myObj)"/>
+                            </xsl:message>
+                        </xsl:if>
                     </xsl:if>
                     <xsl:message terminate="no">progress:Starting conversion of <xsl:value-of select="count($documentXml//w:body/*)"/> elements</xsl:message>
                     <!-- Calling Frontmatter template and passing parameters Title and Creator for doctitle and docpublisher-->
-                    <xsl:call-template name="FrontMatter">
-                        <xsl:with-param name="Title" select ="$Title"/>
-                        <xsl:with-param name="Creator" select ="$Creator"/>
-                        <xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-                        <xsl:with-param name="version" select ="$Version"/>
-                        <xsl:with-param name="custom" select="$Custom"/>
-                        <xsl:with-param name="masterSub" select="$MasterSub"/>
-                        <xsl:with-param name="sOperators" select="$sOperators"/>
-                        <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                        <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                        <xsl:with-param name="sZeros" select="$sZeros"/>
-                        <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
-                        <xsl:with-param name="dpi" select="$DPI"/>
-                        <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-                    </xsl:call-template>
-                    <!--Calling Bodymatter template-->
-                    <xsl:call-template name="BodyMatter">
-                        <xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-                        <xsl:with-param name="version" select ="$Version"/>
-                        <xsl:with-param name="custom" select="$Custom"/>
-                        <xsl:with-param name="masterSub" select="$MasterSub"/>
-                        <xsl:with-param name="sOperators" select="$sOperators"/>
-                        <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                        <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                        <xsl:with-param name="sZeros" select="$sZeros"/>
-                        <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
-                        <xsl:with-param name="dpi" select="$DPI"/>
-                        <xsl:with-param name="charStyles" select="$CharacterStyles"/>
-                    </xsl:call-template>
-                    <!--Calling Rearmatter template-->
-                    <!--NP 20220427 - launch only if a Rearmatter daisy style is found to avoid empty rearmatter -->
-                    <xsl:if test="(
-                            count($documentXml//w:document/w:body/w:p/w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
-                            or count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
-                            or count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[@w:val='EndnoteReference']) &gt; 0
-                            or count($documentXml//w:document/w:body/w:p/w:r/w:endnoteReference)  &gt; 0
-                    )">
-                            <xsl:call-template name="RearMatter">
-                                <xsl:with-param name="prmTrack" select ="$prmTRACK"/>
-                                <xsl:with-param name="version" select ="$Version"/>
+                    <xsl:message terminate="no">progress:Building the frontmatter</xsl:message>
+                    <frontmatter>
+                        <doctitle>
+                            <xsl:choose>
+                                <!--Taking Document Title value from core.xml-->
+                                <xsl:when test="string-length($Title) = 0">
+                                    <xsl:value-of select="$docPropsCoreXml//cp:coreProperties/dc:title"/>
+                                </xsl:when>
+                                <!--Taking the Title value entered by the user-->
+                                <xsl:otherwise>
+                                    <xsl:value-of select="$Title"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </doctitle>
+                        <docauthor>
+                            <xsl:choose>
+                                <!--Taking Document creator value from core.xml-->
+                                <xsl:when test="string-length($Creator) = 0">
+                                    <xsl:value-of select="$docPropsCoreXml//cp:coreProperties/dc:creator"/>
+                                </xsl:when>
+                                <!--Taking the Creator value entered by the user-->
+                                <xsl:otherwise>
+                                    <xsl:value-of select="$Creator"/>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </docauthor>
+                        <!-- Only launch if there is a bodymatter style set on a pragraph that is not the first one -->
+                        <xsl:if test="
+                                count($documentXml//w:document/w:body/w:p[position() &gt; 1]/w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
+                                or count($documentXml//w:document/w:body/w:p/w:r[position() &gt; 1]/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
+                        ">
+                            <xsl:message terminate="no">progress:Adding frontmatter content found in the document</xsl:message>
+                            <xsl:call-template name="Matter">
+                                <xsl:with-param name="prmTrack" select="$prmTRACK"/>
+                                <xsl:with-param name="version" select="$Version"/>
                                 <xsl:with-param name="custom" select="$Custom"/>
                                 <xsl:with-param name="masterSub" select="$MasterSub"/>
                                 <xsl:with-param name="sOperators" select="$sOperators"/>
@@ -415,7 +441,109 @@
                                 <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
                                 <xsl:with-param name="dpi" select="$DPI"/>
                                 <xsl:with-param name="charStyles" select="$CharacterStyles"/>
+                                <xsl:with-param name="matterType" select="'Frontmatter'" />
                             </xsl:call-template>
+                        </xsl:if>
+                    </frontmatter>
+                    <xsl:message terminate="no">progress:Building the bodymatter</xsl:message>
+                    <!--Calling Bodymatter template-->
+                    <bodymatter id="bodymatter_0001">
+                        <xsl:call-template name="Matter">
+                            <xsl:with-param name="prmTrack" select="$prmTRACK"/>
+                            <xsl:with-param name="version" select="$Version"/>
+                            <xsl:with-param name="custom" select="$Custom"/>
+                            <xsl:with-param name="masterSub" select="$MasterSub"/>
+                            <xsl:with-param name="sOperators" select="$sOperators"/>
+                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
+                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
+                            <xsl:with-param name="sZeros" select="$sZeros"/>
+                            <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
+                            <xsl:with-param name="dpi" select="$DPI"/>
+                            <xsl:with-param name="charStyles" select="$CharacterStyles"/>
+                            <xsl:with-param name="matterType" select="'Bodymatter'" />
+                        </xsl:call-template>
+                    </bodymatter>
+                    <!--Calling Rearmatter template-->
+                    <!--NP 20220427 - launch only if a Rearmatter daisy style is found to avoid empty rearmatter -->
+                    <xsl:if test="(
+                            count($documentXml//w:document/w:body/w:p/w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
+                            or count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
+                            or count($documentXml//w:document/w:body/w:p/w:r/w:rPr/w:rStyle[@w:val='EndnoteReference']) &gt; 0
+                            or count($documentXml//w:document/w:body/w:p/w:r/w:endnoteReference)  &gt; 0
+                    )">
+                        <rearmatter>
+                            <xsl:if test="count(
+                                $documentXml//w:document/w:body/w:p/w:r[
+                                    ./w:rPr/w:rStyle[@w:val='EndnoteReference'] 
+                                    or ./w:endnoteReference
+                                ]
+                            )  &gt; 0">
+                                <xsl:message terminate="no">progress:Inserting endnotes in the rearmatter</xsl:message>
+                                <level1>
+                                    <!--Checking if any elements should be translated to the rearmatter-->
+                                    <!--Otherwise Traversing through document.xml file and passing the Endnote id to the Note template.-->
+                                    <xsl:for-each select="(
+                                        $documentXml//w:document/w:body/w:p/w:r[
+                                            ./w:rPr/w:rStyle[@w:val='EndnoteReference'] 
+                                            or ./w:endnoteReference
+                                        ]
+                                    )">
+                                        <xsl:variable name="endNoteId" as="xs:integer" select="./w:endnoteReference/@w:id"/>
+                                        <xsl:if test="$endNoteId &gt; 0">
+                                            <note>
+                                                <!--Creating attribute ID for Note element-->
+                                                <xsl:attribute name="id">
+                                                    <xsl:value-of select="concat('endnote-',$endNoteId)"/>
+                                                </xsl:attribute>
+                                                <!--Creating attribute class for Note element-->
+                                                <xsl:attribute name="class">
+                                                    <xsl:value-of select="'Endnote'"/>
+                                                </xsl:attribute>
+                                                <!--Travering each w:endnote element in endnote.xml file-->
+                                                <xsl:for-each select="$endnotesXml//w:endnotes/w:endnote">
+                                                    <!--Checks for matching Id-->
+                                                    <xsl:if test="@w:id=$endNoteId">
+                                                        <xsl:message terminate="no">progress:Insert endnote <xsl:value-of select="$endNoteId"/> </xsl:message>
+                                                        <!--Travering each element inside w:endnote in endnote.xml file-->
+                                                        <xsl:for-each select="./node()">
+                                                            <!--Checking for Paragraph element-->
+                                                            <xsl:if test="self::w:p">
+                                                                <xsl:call-template name="ParagraphStyle">
+                                                                    <xsl:with-param name="VERSION" select="$Version"/>
+                                                                    <xsl:with-param name="flagNote" select="'endnote'"/>
+                                                                    <xsl:with-param name="checkid" select="$endNoteId + 1"/>
+                                                                    <xsl:with-param name="sOperators" select="$sOperators"/>
+                                                                    <xsl:with-param name="sMinuses" select="$sMinuses"/>
+                                                                    <xsl:with-param name="sNumbers" select="$sNumbers"/>
+                                                                    <xsl:with-param name="sZeros" select="$sZeros"/>
+                                                                    <xsl:with-param name="characterparaStyle" select="false()"/>
+                                                                </xsl:call-template>
+                                                            </xsl:if>
+                                                        </xsl:for-each>
+                                                        <xsl:sequence select="d:sink(d:InitializeNoteFlag($myObj))"/> <!-- empty -->
+                                                    </xsl:if>
+                                                </xsl:for-each>
+                                            </note>
+                                        </xsl:if>
+                                    </xsl:for-each>
+                                </level1>
+                            </xsl:if>
+                            <xsl:message terminate="no">progress:Adding any rearmatter content found in the document</xsl:message>
+                            <xsl:call-template name="Matter">
+                                <xsl:with-param name="prmTrack" select="$prmTRACK"/>
+                                <xsl:with-param name="version" select="$Version"/>
+                                <xsl:with-param name="custom" select="$Custom"/>
+                                <xsl:with-param name="masterSub" select="$MasterSub"/>
+                                <xsl:with-param name="sOperators" select="$sOperators"/>
+                                <xsl:with-param name="sMinuses" select="$sMinuses"/>
+                                <xsl:with-param name="sNumbers" select="$sNumbers"/>
+                                <xsl:with-param name="sZeros" select="$sZeros"/>
+                                <xsl:with-param name="imgOption" select="$ImageSizeOption"/>
+                                <xsl:with-param name="dpi" select="$DPI"/>
+                                <xsl:with-param name="charStyles" select="$CharacterStyles"/>
+                                <xsl:with-param name="matterType" select="'Rearmatter'" />
+                            </xsl:call-template>
+                        </rearmatter>
                     </xsl:if>
                 </book>
             </dtbook>
