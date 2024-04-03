@@ -97,7 +97,15 @@ public class DaisyClass {
 
 	private List<String> arrHyperlink = new ArrayList<>();
 
-	private List<Integer> arrListNote = new ArrayList<>();
+	/**
+	 * Notes id
+	 */
+	private List<Integer> notesIdsQueue = new ArrayList<>();
+
+	/**
+	 * Notes level
+	 */
+	private List<Integer> notesLevelsQueue = new ArrayList<>();
 
 	private final List<String> arrListLang = new ArrayList<>();
 
@@ -562,7 +570,7 @@ public class DaisyClass {
 	/**
 	 * pop (retrieve and delete) the last level of the document from the stack
 	 */
-	public int PoPLevel() {
+	public int PopLevel() {
 		return stackList.pop();
 	}
 
@@ -796,19 +804,41 @@ public class DaisyClass {
 	}
 
 	/**
-	 * Function to add Footnote to an Array
+	 * Store a footnote id found in content.
+     * Also store its current level.
 	 */
 	public int AddFootNote(int inNum) {
-		arrListNote.add(inNum);
+		notesIdsQueue.add(inNum);
+		notesLevelsQueue.add(PeekLevel());
 		return inNum;
 	}
 
 	/**
-	 * Function to get Value of a particular Footnote
+	 * Function to get Value of a particular Footnote.
+	 * NP : Only used as FootNoteId(0) to get the first footnote to 
+	 * insert in content.
+	 * 
+	 * @param i index of the footnote
+	 * @param level level of the footnote
+	 * 
 	 */
-	public int FootNoteId(int i) {
-		if (arrListNote.size() > 0) {
-			return arrListNote.remove(i);
+	public int FootNoteId(int i, int level) {
+		if (notesIdsQueue.size() > 0) {
+			// Search next footnote to include by checking if we are at the good level
+			// (we could be in a level3 while having a level2 notes as first to insert
+			// if we are inserting notes at end of levels)
+			
+			while (
+				i < notesIdsQueue.size() &&
+				(level > this.notesLevelsQueue.get(i))
+			) {
+				i++;
+			}
+			if (i >= notesIdsQueue.size()) return 0;
+			int id = notesIdsQueue.get(i);
+			notesIdsQueue.remove(i);
+			notesLevelsQueue.remove(i);
+			return id;
 		} else {
 			return 0;
 		}
@@ -889,7 +919,7 @@ public class DaisyClass {
 	/**
 	 * Function to PoP the top value of the Stack
 	 */
-	public int ListPoPLevel() {
+	public int ListPopLevel() {
 		if (lstackList.size() > 0)
 			return Integer.parseInt(lstackList.pop());
 		else
@@ -1682,7 +1712,7 @@ public class DaisyClass {
 	/**
 	 * Function to increment flag value for Cover page
 	 */
-	public int CheckCaverPage() {
+	public int CheckCoverPage() {
 		checkCverpage++;
 		return checkCverpage;
 	}

@@ -40,6 +40,7 @@
 	<xsl:param name="FootnotesStartValue" />
 	<xsl:param name="FootnotesNumberingPrefix" />
 	<xsl:param name="FootnotesNumberingSuffix" />
+	<xsl:param name="Language" />
 
 	<!--Template for adding Levels-->
 	<xsl:template name="AddLevel">
@@ -409,7 +410,7 @@
 		<xsl:choose>
 			<xsl:when test="$CurrentLevel &gt; 6 and $PeekLevel = 6 ">
 				
-				<xsl:variable name="PopLevel" as="xs:integer" select="d:PoPLevel($myObj)"/>
+				<xsl:variable name="PopLevel" as="xs:integer" select="d:PopLevel($myObj)"/>
 				<xsl:message terminate="no">
 					progress:Closing level <xsl:value-of select="$PopLevel"/>
 				</xsl:message>
@@ -420,9 +421,9 @@
 			</xsl:when>
 			<!-- NP 20220503 : using CloseLevel to also close paragraph -->
 			<xsl:when test="$CurrentLevel = -1">
-				<xsl:message terminate="no">
-					progress:Closing paragraph
-				</xsl:message>
+				<xsl:message terminate="no">progress:Closing paragraph</xsl:message>
+				<!-- NP 20240109 : close all inlines before closing paragraph -->
+				<xsl:call-template name="CloseAllStyleTag"/>
 				<!--Close the paragraph -->
 				<xsl:value-of disable-output-escaping="yes" select="'&lt;/p&gt;'"/>
 				<!--  insert footnotes after the paragraph if inlined footnotes in the current level is requested
@@ -434,6 +435,7 @@
 								or number($FootnotesLevel) &gt;= $PeekLevel
 						)">
 					<xsl:call-template name="InsertFootnotes">
+						<xsl:with-param name="level" select="$PeekLevel"/>
 						<xsl:with-param name="verfoot" select="$verfoot"/>
 						<xsl:with-param name="characterStyle" select="$characterStyle"/>
 						<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -447,7 +449,7 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:if test="$CurrentLevel &lt;=$PeekLevel and $PeekLevel !=0">
-					<xsl:variable name="PopLevel" as="xs:integer" select="d:PoPLevel($myObj)"/>
+					<xsl:variable name="PopLevel" as="xs:integer" select="d:PopLevel($myObj)"/>
 					<!--Close that level-->
 					<!-- NP 20220427 - removing empty paragraph -->
 					<!-- if footnotes position is set to be at the end of this level, insert footnotes here -->
@@ -460,6 +462,7 @@
 						 )">
 						<xsl:message terminate="no">progress:Trying to insert notes before closing level <xsl:value-of select="$PopLevel"/></xsl:message>
 						<xsl:call-template name="InsertFootnotes">
+							<xsl:with-param name="level" select="$PopLevel"/>
 							<xsl:with-param name="verfoot" select="$verfoot"/>
 							<xsl:with-param name="characterStyle" select="$characterStyle"/>
 							<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -480,6 +483,7 @@
 								and number($FootnotesLevel) &gt;= ($PopLevel - 1)
 						)">
 						<xsl:call-template name="InsertFootnotes">
+							<xsl:with-param name="level" select="$PopLevel"/>
 							<xsl:with-param name="verfoot" select="$verfoot"/>
 							<xsl:with-param name="characterStyle" select="$characterStyle"/>
 							<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -679,7 +683,7 @@
 		<!--Checking the current level with the PeekLevel in the stack-->
 		<xsl:if test="$close &lt; $PeekLevel">
 			<!--PoPs one level from the stack-->
-			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
+			<xsl:sequence select="d:sink(d:ListPopLevel($myObj))"/> <!-- empty -->
 			<xsl:if test="not(preceding-sibling::node()[1][w:r/w:rPr/w:rStyle[substring(@w:val,1,15)='PageNumberDAISY']])">
 					<xsl:value-of disable-output-escaping="yes" select="'&lt;/li&gt;'"/>
 			</xsl:if>
@@ -747,7 +751,7 @@
 		<!--Checking the current level with the PeekLevel in the stack-->
 		<xsl:if test="$close &lt; $PeekLevel">
 			<!--PoPs one level from the stack-->
-			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
+			<xsl:sequence select="d:sink(d:ListPopLevel($myObj))"/> <!-- empty -->
 			<xsl:value-of disable-output-escaping="yes" select="'&lt;/list&gt;'"/>
 			<xsl:value-of disable-output-escaping="yes" select="'&lt;/li&gt;'"/>
 			<!--Loop through until we have closed all the Lower levels-->
@@ -766,7 +770,7 @@
 		<!--Checking the current level with the PeekLevel in the stack-->
 		<xsl:if test="$close &lt;= $PeekLevel">
 			<!--PoPs one level from the stack-->
-			<xsl:sequence select="d:sink(d:ListPoPLevel($myObj))"/> <!-- empty -->
+			<xsl:sequence select="d:sink(d:ListPopLevel($myObj))"/> <!-- empty -->
 			<xsl:value-of disable-output-escaping="yes" select="'&lt;/li&gt;'"/>
 			<xsl:value-of disable-output-escaping="yes" select="'&lt;/list&gt;'"/>
 			<xsl:if test="$PeekLevel!=0">
@@ -1006,6 +1010,8 @@
 						<xsl:value-of disable-output-escaping="yes" select="'&lt;/bdo&gt;'"/>
 					</xsl:if>
 					<xsl:sequence select="d:sink(d:reSetcaptionFlag($myObj))"/> <!-- empty -->
+					<!-- NP 20240109 : close all inlines before closing paragraph -->
+					<xsl:call-template name="CloseAllStyleTag"/>
 					<xsl:if test="(preceding-sibling::w:p[1]/w:r/w:rPr/w:rtl) or (preceding-sibling::w:p[1]/w:pPr/w:bidi)">
 						<xsl:value-of disable-output-escaping="yes" select="'&lt;/p&gt;'"/>
 					</xsl:if>

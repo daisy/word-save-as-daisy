@@ -43,6 +43,7 @@
     <xsl:param name="FootnotesStartValue" />
     <xsl:param name="FootnotesNumberingPrefix" />
     <xsl:param name="FootnotesNumberingSuffix" />
+    <xsl:param name="Language" />
 
     <!--template for frontmatter elements-->
     <xsl:template name="FrontMatter">
@@ -254,11 +255,12 @@
         <xsl:variable name="heading1StyleId" as="xs:string?" select="string-join($heading1StyleId,'')[not(.='')]"/>
         <!--Looping through each hyperlink-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:hyperlink">
-            <xsl:message terminate="no">progress:Start parsing document for <xsl:value-of select="$matterType"/>  </xsl:message>
+            <xsl:message terminate="no">progress:Hyperlink found - <xsl:value-of select="@w:anchor"/></xsl:message>
             <!--Calling d:AddHyperlink() for storing Anchor in Hyperlink-->
             <xsl:sequence select="d:sink(d:AddHyperlink($myObj,string(@w:anchor)))"/> <!-- empty -->
         </xsl:for-each>
-
+        <xsl:message terminate="no">progress:Start adding content in <xsl:value-of select="$matterType"/>  </xsl:message>
+		<xsl:variable name="ElementCountToConvert" select="count($documentXml//w:body/*)" />
         <!--<xsl:if test="$matterType=''">-->
         <!--Checking the first paragraph of the document-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p[1]">
@@ -353,6 +355,7 @@
                         <xsl:if test="$FootnotesPosition='page'">
                         <!--calling for foonote template and displaying footnote text at the end of the page-->
                             <xsl:call-template name="InsertFootnotes">
+                                <xsl:with-param name="level" select="0"/>
                                 <xsl:with-param name="verfoot" select="$version"/>
                                 <xsl:with-param name="sOperators" select="$sOperators"/>
                                 <xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -592,6 +595,7 @@
                 
                 <xsl:if test="$FootnotesPosition='page'">
                     <xsl:call-template name="InsertFootnotes">
+                        <xsl:with-param name="level" select="0"/>
                         <xsl:with-param name="verfoot" select="$VERSION"/>
                         <xsl:with-param name="sOperators" select="$sOperators"/>
                         <xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -613,6 +617,7 @@
                     )">
                         <xsl:if test="$FootnotesPosition='page'">
                             <xsl:call-template name="InsertFootnotes">
+                                <xsl:with-param name="level" select="0"/>
                                 <xsl:with-param name="verfoot" select="$VERSION"/>
                                 <xsl:with-param name="sOperators" select="$sOperators"/>
                                 <xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -625,6 +630,7 @@
                     <xsl:when test="(w:r/w:lastRenderedPageBreak)">
                         <xsl:if test="$FootnotesPosition='page'">
                             <xsl:call-template name="InsertFootnotes">
+                                <xsl:with-param name="level" select="0"/>
                                 <xsl:with-param name="verfoot" select="$VERSION"/>
                                 <xsl:with-param name="sOperators" select="$sOperators"/>
                                 <xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -1314,50 +1320,51 @@
         )">
             <xsl:if test="not($flag='2')">
                 <xsl:choose>
-                    <xsl:when test="not(w:t) and (w:lastRenderedPageBreak) and (w:br/@w:type='page')">
-                        <xsl:if test="not(../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')">
-                            <xsl:if test="not(../preceding-sibling::node()[1]/w:pPr/w:sectPr)">
-                                <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
-                                <!--Closing paragraph tag-->
-                                <xsl:call-template name="CloseLevel">
-                                    <xsl:with-param name="CurrentLevel" select="-1"/>
-                                    <xsl:with-param name="verfoot" select="$VERSION"/>
-                                    <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                                    <xsl:with-param name="sOperators" select="$sOperators"/>
-                                    <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                    <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                    <xsl:with-param name="sZeros" select="$sZeros"/>
-                                </xsl:call-template>
-                                <xsl:if test="$flag='3'">
-                                    <!--Closing paragraph tag-->
-                                    <xsl:value-of disable-output-escaping="yes" select="'&lt;p&gt;'"/>
-                                </xsl:if>
-                                <!--calling template to initialize page number information-->
-                                <xsl:call-template name="SectionBreak">
-                                    <xsl:with-param name="count" select="1"/>
-                                    <xsl:with-param name="node" select="'body'"/>
-                                </xsl:call-template>
-                                <!--producer note for blank pages-->
-                                <prodnote>
-                                    <xsl:attribute name="render">optional</xsl:attribute>
-                                    <xsl:value-of select="'Blank Page'"/>
-                                </prodnote>
-                                <xsl:if test="$flag='3'">
-                                    <!--Closing paragraph tag-->
-                                    <xsl:call-template name="CloseLevel">
-                                        <xsl:with-param name="CurrentLevel" select="-1"/>
-                                        <xsl:with-param name="verfoot" select="$VERSION"/>
-                                        <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                                        <xsl:with-param name="sOperators" select="$sOperators"/>
-                                        <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                        <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                        <xsl:with-param name="sZeros" select="$sZeros"/>
-                                    </xsl:call-template>
-                                </xsl:if>
-                                <!--Opening paragraph tag-->
-                                <xsl:value-of disable-output-escaping="yes" select="'&lt;p&gt;'"/>
-                            </xsl:if>
+                    <!--runner with no text + pagebreak + not followed by TOC + not preceded by section-->
+                    <xsl:when test="not(w:t)
+					        and (w:lastRenderedPageBreak) 
+					        and (w:br/@w:type='page')
+					        and not(../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')
+					        and not(../preceding-sibling::node()[1]/w:pPr/w:sectPr)">
+                        <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
+                        <!--Closing paragraph tag-->
+                        <xsl:call-template name="CloseLevel">
+                            <xsl:with-param name="CurrentLevel" select="-1"/>
+                            <xsl:with-param name="verfoot" select="$VERSION"/>
+                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
+                            <xsl:with-param name="sOperators" select="$sOperators"/>
+                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
+                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
+                            <xsl:with-param name="sZeros" select="$sZeros"/>
+                        </xsl:call-template>
+                        <xsl:if test="$flag='3'">
+                            <!--Closing paragraph tag-->
+                            <xsl:value-of disable-output-escaping="yes" select="'&lt;p&gt;'"/>
                         </xsl:if>
+                        <!--calling template to initialize page number information-->
+                        <xsl:call-template name="SectionBreak">
+                            <xsl:with-param name="count" select="1"/>
+                            <xsl:with-param name="node" select="'body'"/>
+                        </xsl:call-template>
+                        <!--producer note for blank pages-->
+                        <prodnote>
+                            <xsl:attribute name="render">optional</xsl:attribute>
+                            <xsl:value-of select="'Blank Page'"/>
+                        </prodnote>
+                        <xsl:if test="$flag='3'">
+                            <!--Closing paragraph tag-->
+                            <xsl:call-template name="CloseLevel">
+                                <xsl:with-param name="CurrentLevel" select="-1"/>
+                                <xsl:with-param name="verfoot" select="$VERSION"/>
+                                <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
+                                <xsl:with-param name="sOperators" select="$sOperators"/>
+                                <xsl:with-param name="sMinuses" select="$sMinuses"/>
+                                <xsl:with-param name="sNumbers" select="$sNumbers"/>
+                                <xsl:with-param name="sZeros" select="$sZeros"/>
+                            </xsl:call-template>
+                        </xsl:if>
+                        <!--Opening paragraph tag-->
+                        <xsl:value-of disable-output-escaping="yes" select="'&lt;p&gt;'"/>
                     </xsl:when>
                     <!--Checking for page breaks and populating page numbers.-->
                     <xsl:when test="(
@@ -1406,45 +1413,19 @@
                         <!--Opening paragraph tag-->
                         <xsl:value-of disable-output-escaping="yes" select="'&lt;p&gt;'"/>
                     </xsl:when>
-                    <xsl:when test="(
-                        w:lastRenderedPageBreak
-                        and not(../w:pPr/w:sectPr                                        
-                            or ../w:pPr/w:pStyle[substring(@w:val,1,5)='Index'])
-                    )">
+                    <!-- Pagebreak not in section neither in Index-->
+                    <xsl:when test="(w:lastRenderedPageBreak)
+                            and not(
+							    ../w:pPr/w:sectPr                                        
+                                or ../w:pPr/w:pStyle[substring(@w:val,1,5)='Index']
+							)">
                         <xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
-                        <!--Closing paragraph tag-->
-                        <xsl:call-template name="CloseLevel">
-                            <xsl:with-param name="CurrentLevel" select="-1"/>
-                            <xsl:with-param name="verfoot" select="$VERSION"/>
-                            <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                            <xsl:with-param name="sOperators" select="$sOperators"/>
-                            <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                            <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                            <xsl:with-param name="sZeros" select="$sZeros"/>
-                        </xsl:call-template>
-                        <xsl:if test="$flag='3'">
-                            <!--Opening paragraph tag-->
-                            <xsl:value-of disable-output-escaping="yes" select="'&lt;p&gt;'"/>
-                        </xsl:if>
+                        
                         <!--calling template to initialize page number information-->
                         <xsl:call-template name="SectionBreak">
                             <xsl:with-param name="count" select="1"/>
                             <xsl:with-param name="node" select="'body'"/>
                         </xsl:call-template>
-                        <xsl:if test="$flag='3'">
-                            <!--Closing paragraph tag-->
-                            <xsl:call-template name="CloseLevel">
-                                <xsl:with-param name="CurrentLevel" select="-1"/>
-                                <xsl:with-param name="verfoot" select="$VERSION"/>
-                                <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
-                                <xsl:with-param name="sOperators" select="$sOperators"/>
-                                <xsl:with-param name="sMinuses" select="$sMinuses"/>
-                                <xsl:with-param name="sNumbers" select="$sNumbers"/>
-                                <xsl:with-param name="sZeros" select="$sZeros"/>
-                            </xsl:call-template>
-                        </xsl:if>
-                        <!--Opening paragraph tag-->
-                        <xsl:value-of disable-output-escaping="yes" select="'&lt;p&gt;'"/>
                     </xsl:when>
                 </xsl:choose>
             </xsl:if>
@@ -1613,50 +1594,6 @@
             </xsl:when>
 
             <xsl:otherwise>
-                <xsl:choose>
-                    <!--Checking for BDO Element-->
-                    <xsl:when test="(../w:pPr/w:bidi) and (w:rPr/w:rtl)">
-                        <xsl:variable name="Bd" as="xs:string">
-                            <xsl:call-template name="BdoRtlLanguages"/>
-                        </xsl:variable>
-                        <xsl:variable name="bdoflag" as="xs:integer" select="d:SetbdoFlag($myObj)"/>
-                        <!--opening bdo Tag-->
-                        <xsl:if test="$bdoflag=1">
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;bdo dir= &quot;rtl&quot; xml:lang=&quot;',$Bd,'&quot;&gt;')"/>
-                        </xsl:if>
-                    </xsl:when>
-
-                    <!--Checking for BDO Element-->
-                    <xsl:when test="(../w:pPr/w:bidi)">
-                        <xsl:variable name="Bd" as="xs:string">
-                            <!--Calling template for Bdo language-->
-                            <xsl:call-template name="BdoRtlLanguages"/>
-                        </xsl:variable>
-                        <!--Setting flag for bdo-->
-                        <xsl:variable name="bdoflag" as="xs:integer" select="d:SetbdoFlag($myObj)"/>
-                        <!--checking condition for opening p tag-->
-                        <!--opening bdo Tag-->
-                        <xsl:if test="$bdoflag=1">
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;bdo dir= &quot;rtl&quot; xml:lang=&quot;',$Bd,'&quot;&gt;')"/>
-                        </xsl:if>
-                    </xsl:when>
-
-                    <!--Checking for BDO Element-->
-                    <xsl:when test="w:rPr/w:rtl">
-                        <xsl:variable name="Bd" as="xs:string">
-                            <!--Calling template for Bdo language-->
-                            <xsl:call-template name="BdoRtlLanguages"/>
-                        </xsl:variable>
-                        <!--Setting flag for bdo-->
-                        <xsl:variable name="bdoflag" as="xs:integer" select="d:SetbdoFlag($myObj)"/>
-                        <!--opening bdo Tag-->
-                        <xsl:if test="$bdoflag=1">
-                            <!--If flag value is 1 opening bdo element-->
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;bdo dir= &quot;rtl&quot; xml:lang=&quot;',$Bd,'&quot;&gt;')"/>
-                        </xsl:if>
-                    </xsl:when>
-                </xsl:choose>
-
                 <!--Calling Custom styles template if not caption-->
                 <xsl:if test="not(
                     (
@@ -2143,11 +2080,11 @@
                     <!--Opening page number tag-->
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;pagenum page=&quot;',$page,'&quot; id=&quot;page',d:GeneratePageId($myObj),'&quot;&gt;')"/>
                 </xsl:if>
-                <!--Calling template for page number text-->
-                <xsl:call-template name="CustomCharStyle">
-                    <xsl:with-param name="characterStyle" select="$customcharStyle"/>
-                    <xsl:with-param name="txt" select="$txt"/>
-                </xsl:call-template>
+                <!-- pagenum only accept text-->
+				<xsl:if test="not($txt='')">
+					<xsl:value-of select="$txt"/>
+				</xsl:if>
+				<xsl:value-of select="normalize-space(w:t)"/>
                 <xsl:if test="count(following-sibling::node()[1]/w:rPr/w:rStyle[@w:val='PageNumberDAISY'])=0">
                     <xsl:value-of disable-output-escaping="yes" select="'&lt;/pagenum&gt;'"/>
                 </xsl:if>
@@ -2173,6 +2110,8 @@
                         </line>
                     </xsl:when>
                     <xsl:when test="(d:Getlinenumflag($myObj)=1)">
+                        <!-- NP 20240109 : close all inlines before closing paragraph -->
+						<xsl:call-template name="CloseAllStyleTag"/>
                         <xsl:value-of disable-output-escaping="yes" select="'&lt;/p&gt;'"/>
                         <line>
                             <linenum>
@@ -2208,22 +2147,14 @@
         <xsl:param name="attributes" select="''"/>
         <xsl:if test="not(d:HasCharacterStyle($myObj, $styleTag))">
             <xsl:sequence select="d:PushCharacterStyle($myObj, $styleTag)" />
-            <xsl:text disable-output-escaping="yes">&lt;</xsl:text>
-            <xsl:value-of select="$styleTag"/>
-            <xsl:if test="$attributes">
-                <xsl:text> </xsl:text>
-                <xsl:value-of select="$attributes"/>
-            </xsl:if>
-            <xsl:text disable-output-escaping="yes">&gt;</xsl:text>
-            <!--<xsl:value-of disable-output-escaping="yes"
-                          select="concat('&lt;', $styleTag, ' ', $attributes, '&gt;')"/>-->
+            <xsl:value-of disable-output-escaping="yes"
+						  select="concat('&lt;', $styleTag, ' ', normalize-space($attributes), '&gt;')"/>
         </xsl:if>
     </xsl:template>
     
     <!-- template to close a style tag (and its children if needed recursively) -->
     <xsl:template name="CloseStyleTag">
         <xsl:param name="styleTag"/>
-        
         <xsl:if test="d:HasCharacterStyle($myObj, $styleTag)">
             <xsl:variable name="currentTagInStack" select="d:PopCharacterStyle($myObj)" />
             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;/',$currentTagInStack,'&gt;')"/>
@@ -2249,7 +2180,25 @@
         <xsl:param name="characterStyle" as="xs:boolean" select="false()"/>
         <xsl:param name="attributes" select="''" /> <!-- To handle hyperlinks -->
         <xsl:param name="txt" as="xs:string" select="''"/>
-        
+        <!-- Group of Bidirectionnal text -->
+		<xsl:variable name="isBidirectionnal" select="(../w:pPr/w:bidi) or w:rPr/w:rtl or (w:rPr/w:lang/@w:bidi)"/>
+		<xsl:variable name="bdoLang">
+			<xsl:call-template name="GetBdoLanguages">
+				<xsl:with-param name="runner" select="."/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="previousBdoLang">
+			<xsl:choose>
+			    <xsl:when test="preceding-sibling::w:r[1]">
+				    <xsl:call-template name="GetBdoLanguages">
+					    <xsl:with-param name="runner" select="preceding-sibling::w:r[1]"/>
+				    </xsl:call-template>
+			    </xsl:when>
+			    <xsl:otherwise>
+				    <xsl:value-of select="$bdoLang"/>
+			    </xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
         <!-- Compute character group status -->
         
         <!-- Group of bold = strong characters -->
@@ -2297,11 +2246,23 @@
                 <xsl:with-param name="styleTag" select="'sub'"/>
             </xsl:call-template>
         </xsl:if>
+        <!-- Close BDO element if not bidirectionnal anymore or lang has changed-->
+		<xsl:if test="not($isBidirectionnal) or ($bdoLang != $previousBdoLang)">
+			<xsl:call-template name="CloseStyleTag">
+				<xsl:with-param name="styleTag" select="'bdo'"/>
+			</xsl:call-template>
+		</xsl:if>
         
         <xsl:choose>
-            <!-- If group is not a notereference and has one of strong|em|sub|sup status -->
-            <xsl:when test="$isStrong or $isEmp or $isSuperscript or $isSubscript and not($isNote)">
+            <!-- If group is not a notereference and has one of strong|em|sub|sup|a|bdo status -->
+            <xsl:when test="$isBidirectionnal or $isHyperlink or $isStrong or $isEmp or $isSuperscript or $isSubscript and not($isNote)">
                 <!-- if not already in the style stack, Open new style tag and add it to the stack -->
+                <xsl:if test="$isBidirectionnal">
+					<xsl:call-template name="OpenStyleTagIfNotOpened">
+						<xsl:with-param name="styleTag" select="'bdo'"/>
+						<xsl:with-param name="attributes">dir="rtl" xml:lang="<xsl:value-of select="$bdoLang"/>"</xsl:with-param>
+					</xsl:call-template>
+				</xsl:if>
                 <xsl:if test="$isSubscript">
                     <xsl:call-template name="OpenStyleTagIfNotOpened">
                         <xsl:with-param name="styleTag" select="'sub'"/>
@@ -2337,6 +2298,9 @@
                 <!-- Close style tag if no run with text is found afterward in the paragraph tag -->
                 <xsl:if test="not(following-sibling::w:r/w:t)">
                     <xsl:call-template name="CloseStyleTag">
+						<xsl:with-param name="styleTag" select="'a'"/>
+					</xsl:call-template>
+                    <xsl:call-template name="CloseStyleTag">
                         <xsl:with-param name="styleTag" select="'em'"/>
                     </xsl:call-template>
                     <xsl:call-template name="CloseStyleTag">
@@ -2348,6 +2312,9 @@
                     <xsl:call-template name="CloseStyleTag">
                         <xsl:with-param name="styleTag" select="'sub'"/>
                     </xsl:call-template>
+					<xsl:call-template name="CloseStyleTag">
+						<xsl:with-param name="styleTag" select="'bdo'"/>
+					</xsl:call-template>
                 </xsl:if>
             </xsl:when>
             <!--Checking for WordDAISY custom character style-->
@@ -3636,7 +3603,9 @@
                         <xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">
                             <!--Variable holds the value which indicates that the image is bidirectionally oriented-->
                             <xsl:variable name="definitionlistBd" as="xs:string">
-                                <xsl:call-template name="BdoRtlLanguages"/>
+                                <xsl:call-template name="GetBdoLanguages">
+									<xsl:with-param name="runner" select="."/>
+								</xsl:call-template>
                             </xsl:variable>
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;bdo dir= &quot;rtl&quot; xml:lang=&quot;',$definitionlistBd,'&quot;&gt;')"/>
                         </xsl:if>
@@ -3787,7 +3756,9 @@
                         <xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">
                             <!--Variable holds the value which indicates that the image is bidirectionally oriented-->
                             <xsl:variable name="definitionlistBd" as="xs:string">
-                                <xsl:call-template name="BdoRtlLanguages"/>
+                                <xsl:call-template name="GetBdoLanguages">
+									<xsl:with-param name="runner" select="."/>
+								</xsl:call-template>
                             </xsl:variable>
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;bdo dir= &quot;rtl&quot; xml:lang=&quot;',$definitionlistBd,'&quot;&gt;')"/>
                         </xsl:if>
