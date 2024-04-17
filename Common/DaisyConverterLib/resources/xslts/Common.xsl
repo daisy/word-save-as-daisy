@@ -2151,7 +2151,7 @@
 		<xsl:param name="attributes" select="''" /> <!-- To handle hyperlinks --> 
         <xsl:param name="txt"/>
 		<!-- Group of Bidirectionnal text -->
-		<xsl:variable name="isBidirectionnal" select="(../w:pPr/w:bidi) or w:rPr/w:rtl or (w:rPr/w:lang/@w:bidi)"/>
+		<xsl:variable name="isBidirectionnal" select="../w:pPr/w:bidi or w:rPr/w:rtl"/>
 		<xsl:variable name="bdoLang">
 			<xsl:call-template name="GetBdoLanguages">
 				<xsl:with-param name="runner" select="."/>
