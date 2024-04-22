@@ -135,33 +135,41 @@ namespace Daisy.SaveAsDAISY.Conversion
                 options.Add("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005");
             }
 #endif
+            try {
+                // Load a new JVM
+                jni = new JavaNativeInterface(options, jvmDllPath, false);
 
-            // Load a new JVM
-            jni = new JavaNativeInterface(options, jvmDllPath, false);
+                // Initialize runner in the JVM
+                SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
+                CommandLineJobClass = jni.GetJavaClass("SimpleAPI$CommandLineJob");
+                JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
+            } catch ( Exception ex ) {
+                throw new Exception("An error occured while launching DAISY Pipeline 2", ex);
+            }
 
-            // Initialize runner in the JVM
-            SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
-            CommandLineJobClass = jni.GetJavaClass("SimpleAPI$CommandLineJob");
-            JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
+            try {
+                string systemOut = Path.Combine(LogsFolder, "sysOut.log");
+                string systemErr = Path.Combine(LogsFolder, "sysErr.log");
+
+                IntPtr JavaSystem = jni.GetJavaClass("java/lang/System");
+                jni.CallVoidMethod(
+                    JavaSystem,
+                    IntPtr.Zero,
+                    "setOut",
+                    "(Ljava/io/PrintStream;)V",
+                    makePrintStream(systemOut)
+                );
+                jni.CallVoidMethod(
+                    JavaSystem,
+                    IntPtr.Zero,
+                    "setErr",
+                    "(Ljava/io/PrintStream;)V",
+                    makePrintStream(systemErr)
+                );
+            } catch (Exception ex ) {
+                throw new Exception("An error occured while creating log dp2 log files", ex);
+            }
             
-            string systemOut = Path.Combine(LogsFolder, "sysOut.log");
-            string systemErr = Path.Combine(LogsFolder, "sysErr.log");
-
-            IntPtr JavaSystem = jni.GetJavaClass("java/lang/System");
-            jni.CallVoidMethod(
-                JavaSystem,
-                IntPtr.Zero,
-                "setOut",
-                "(Ljava/io/PrintStream;)V",
-                makePrintStream(systemOut)
-            );
-            jni.CallVoidMethod(
-                JavaSystem,
-                IntPtr.Zero,
-                "setErr",
-                "(Ljava/io/PrintStream;)V",
-                makePrintStream(systemErr)
-            );
         }
 
         private IntPtr makePrintStream(string filepath)

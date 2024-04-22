@@ -7,16 +7,16 @@ We provide an unified installer that detects standard installations of Microsoft
 If Office is not found by the installer (like preinstalled or windows store versions of MS Office), it will request which architecture (32bits or 64bits) you want the addin to be installed for.
 
 
-## Latest version: 2.7.2 beta (released on September, 2022)
+## Latest stable version: 2.7.2 beta (released on September, 2022)
 
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
 - Or access to the [last release page](https://github.com/daisy/word-save-as-daisy/releases/latest)
 
 ## Report issues
 
-If you have an issue with the installers or with the add-in, please contact the development team by mail to [daisy-pipeline@mail.daisy.org](mailto:daisy-pipeline@mail.daisy.org).
+If you have an issue with the installers or with the add-in, please contact the development team by mail to [daisy-pipeline@mail.daisy.org](mailto:daisy-pipeline@mail.daisy.org), or check our [github repository](https://github.com/daisy/word-save-as-daisy/issues).
 
-Any constructive feedbacks are also welcome to help us improve the add-in :)
+Any constructive feedbacks are also welcome to help us improve the add-in :-)
 
 ## Feedbacks / Known issues
 
@@ -70,9 +70,34 @@ we would really appreciate it.
 
 # Changelog
 
-# 2.8.2 beta (January 2024)
+## 2.8.5 beta (March 2024)
 
-(This version is under test phase and is not released yet)
+This minor release includes the following changes :
+- Clarify an error message for exception raised by the Microsoft package parsing libraryr when navigating in a document: 
+  - The parser can crash in presence of certain malformed hyperlinks, i. e. if an hyperlink host adress contains a coma.
+- For Non-docx document, the working copy used for the conversion is now also automatically upgraded to docx format before conversion.
+- For new users, the output folder is now set by default to the `%USERPROFILE%\Documents\SaveAsDAISY Results` folder.
+  - The output folder is also automatically created if not found. 
+
+
+## 2.8.4 beta (February 2024)
+
+This minor release includes the following changes :
+- For automatic pagination, inline pagenum elements in paragraph (fixes [#40](https://github.com/daisy/word-save-as-daisy/issues/40))
+  - Note that automatic pagination is not recommended in the current state of the addin :
+    In our tests, Word does not register all automatic pagebreak in the underlying content, only a few one that were rendered while saving the document.
+- A new language selector is provided in conversion parameters as to better select the main language of the document (fixes [#39](https://github.com/daisy/word-save-as-daisy/issues/39))
+  - This is needed by the DAISY Pipeline 2 to select the correct language for the synthesis of the audio files.
+- Fixed a language test for bidirectionnal elements
+
+
+## 2.8.3 beta (January 2024)
+
+This minor release includes the following changes :
+- Fixed an issue with inlined element not being closed correctly before inserting pagenum
+- The underlying DAISY Pipeline 2 has been update to version 1.14.17-p1 
+
+## 2.8.2 beta (December 2023)
 
 This major release marks a change in the underlying conversion process 
 to dtbook XML and packaged format,
@@ -113,10 +138,9 @@ for each export format based on DAISY pipeline 2 settings
 looks at the daisy github repository of the addin.
 - Issue [#26](https://github.com/daisy/word-save-as-daisy/issues/26) is fixed by
 the removal of pipeline 1 that is vulnerable to attacks through its version of log4j
-- Issue [#29](https://github.com/daisy/word-save-as-daisy/issues/35)
+- Including an improved exception reporting when conversion errors occurs.
 
-
-# 2.7.2 beta (September 2022)
+## 2.7.2 beta (September 2022)
 
 This minor release adds the following changes to the addin : 
 - feature [#19](https://github.com/daisy/word-save-as-daisy/issues/19) : Adding notes positionning options in settings
@@ -128,7 +152,7 @@ This minor release adds the following changes to the addin :
   - User without administrator privileges will need to contact their IT administrator to update the program the first time and switch to user-space installation if they are allowed to
 
 
-# 2.7 beta (January 2022)
+## 2.7 beta (January 2022)
 
 This major release starts the transition to the DAISY pipeline 2 as conversion engine.
 We now include the export to Epub3 (from a single docx file) as experimental functionnality under the SaveAsDAISY menu.
@@ -143,7 +167,7 @@ to help them find the bit version of their office if needed.
 Users reported that voices provider are mainly distributing 32bits SAPI voices, thus requiring 32bit java for their launch.
 - Conversion controls are now disabled in protected view (that limits word actions including plugin ones on documents)
 
-# 2.6.1 beta - update 3 (September 2021)
+## 2.6.1 beta - update 3 (September 2021)
 
 Minor behaviour updates including :
 - bugfix for [#6](https://github.com/daisy/word-save-as-daisy/issues/6)
@@ -154,7 +178,7 @@ The code base is under a heavy rewrite process to optimize it and prepare the sw
 allowing to provide more outputed format and better support.
 
 
-# 2.6.1 beta - Minor update 2 (January 28, 2021)
+## 2.6.1 beta - Minor update 2 (January 28, 2021)
 
 Minor update including
 - bugfix for [#2](https://github.com/daisy/word-save-as-daisy/issues/2) in test phase
@@ -167,7 +191,7 @@ Minor update including
 
 
 
-# 2.6.1 beta - Minor update 1 (January 14, 2021)
+## 2.6.1 beta - Minor update 1 (January 14, 2021)
 
 Minor update including
 - bugfix for [#1](https://github.com/daisy/word-save-as-daisy/issues/1) in test phase
@@ -175,12 +199,12 @@ Minor update including
 Users are advised to validated using the accessibility checker before launching a conversion in the conversion setting form, with a link to the checker documentation.
 - Updated the AdoptOpenJDK java 8 runtime provided with the embedded DAISY pipeline lite
 
-## Feedbacks
+### Feedbacks
 
 - File not found errors with partial file names reported missing:
 Some characters like spaces and commas may lead to "File not found" errors in the conversion process. Replace those characters by underscore "_" and launch the conversion again.
 
-# 2.6.1 beta (December 18, 2020)
+## 2.6.1 beta (December 18, 2020)
 
 ## Installer update
 
