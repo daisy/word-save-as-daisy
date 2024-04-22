@@ -37,8 +37,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             // 
             // lBx_Lngs
             // 
-            this.lBx_Lngs.FormattingEnabled = true;
             resources.ApplyResources(this.lBx_Lngs, "lBx_Lngs");
+            this.lBx_Lngs.FormattingEnabled = true;
             this.lBx_Lngs.Name = "lBx_Lngs";
             // 
             // lbl_Lang
@@ -55,8 +55,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             // 
             // btn_Close
             // 
-            this.btn_Close.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             resources.ApplyResources(this.btn_Close, "btn_Close");
+            this.btn_Close.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btn_Close.Name = "btn_Close";
             this.btn_Close.UseVisualStyleBackColor = true;
             this.btn_Close.Click += new System.EventHandler(this.btn_Close_Click);

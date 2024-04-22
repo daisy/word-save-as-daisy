@@ -117,20 +117,23 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="lBx_Lngs.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
   <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lBx_Lngs.ItemHeight" type="System.Int32, mscorlib">
     <value>16</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="lBx_Lngs.Location" type="System.Drawing.Point, System.Drawing">
-    <value>3, 36</value>
+    <value>13, 36</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="lBx_Lngs.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
   </data>
   <data name="lBx_Lngs.Size" type="System.Drawing.Size, System.Drawing">
-    <value>380, 164</value>
+    <value>372, 164</value>
   </data>
   <data name="lBx_Lngs.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -151,19 +154,19 @@
     <value>True</value>
   </data>
   <data name="lbl_Lang.Location" type="System.Drawing.Point, System.Drawing">
-    <value>-1, 11</value>
+    <value>13, 9</value>
   </data>
   <data name="lbl_Lang.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 0, 4, 0</value>
   </data>
   <data name="lbl_Lang.Size" type="System.Drawing.Size, System.Drawing">
-    <value>142, 16</value>
+    <value>335, 20</value>
   </data>
   <data name="lbl_Lang.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
   <data name="lbl_Lang.Text" xml:space="preserve">
-    <value>Choose the &amp;Language:</value>
+    <value>Choose the &amp;Language to apply on selection:</value>
   </data>
   <data name="&gt;&gt;lbl_Lang.Name" xml:space="preserve">
     <value>lbl_Lang</value>
@@ -177,8 +180,11 @@
   <data name="&gt;&gt;lbl_Lang.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="btn_Apply.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
   <data name="btn_Apply.Location" type="System.Drawing.Point, System.Drawing">
-    <value>176, 208</value>
+    <value>177, 211</value>
   </data>
   <data name="btn_Apply.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -204,8 +210,11 @@
   <data name="&gt;&gt;btn_Apply.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
+  <data name="btn_Close.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
   <data name="btn_Close.Location" type="System.Drawing.Point, System.Drawing">
-    <value>284, 208</value>
+    <value>285, 211</value>
   </data>
   <data name="btn_Close.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -238,10 +247,7 @@
     <value>8, 16</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>311, 192</value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
+    <value>398, 252</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
