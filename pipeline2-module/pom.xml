@@ -27,6 +27,23 @@
 			<version>5.0.0</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-scratchpad</artifactId>
+			<version>5.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.libreoffice</groupId>
+			<artifactId>libreoffice</artifactId>
+			<version>7.4.7</version>
+			<scope>compile</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.libreoffice/unoloader -->
+		<dependency>
+			<groupId>org.libreoffice</groupId>
+			<artifactId>unoloader</artifactId>
+			<version>7.4.7</version>
+		</dependency>
+		<dependency>
 			<groupId>org.daisy.pipeline</groupId>
 			<artifactId>saxon-adapter</artifactId>
 		</dependency>
@@ -69,8 +86,7 @@
 	<properties>
 		<expose-services>
 			org.daisy.pipeline.modules.impl.Module_word_to_dtbook,
-			org.daisy.pipeline.word_to_dtbook.impl.DaisyClass$Provider,
-			org.daisy.pipeline.word_to_dtbook.impl.Pipeline1Library$Provider
+			org.daisy.pipeline.word_to_dtbook.impl.DaisyClass$Provider
 		</expose-services>
 	</properties>
 
