@@ -31,6 +31,8 @@ import org.apache.poi.openxml4j.opc.TargetMode;
 import org.daisy.common.xpath.saxon.ExtensionFunctionProvider;
 import org.daisy.common.xpath.saxon.ReflexiveExtensionFunctionProvider;
 
+import org.daisy.pipeline.word_to_dtbook.shapes.OOShapesExporter;
+import org.daisy.pipeline.word_to_dtbook.shapes.WordShapesExporter;
 import org.osgi.service.component.annotations.Component;
 
 import org.w3c.dom.DOMException;
@@ -40,9 +42,14 @@ import org.w3c.dom.NodeList;
 
 import org.xml.sax.SAXException;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
+
 import com.google.common.collect.ImmutableMap;
 
 public class DaisyClass {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(DaisyClass.class);
 
 	@Component(
 		name = "DaisyClass",
@@ -180,7 +187,6 @@ public class DaisyClass {
 	private Hashtable<String,List<String>> headingCounters = new Hashtable<>();
 	private int objectId = 0;
 	private String headingInfo = "";
-	private final Hashtable<String,List<String>> listMathMl;
 	private int footNoteFlag = 0;
 	private int sidebarFlag = 0;
 	private int mainFlag = 0;
@@ -199,14 +205,27 @@ public class DaisyClass {
 	public DaisyClass(String inputName,
 	                  String input,
 	                  String output,
-	                  Map<String,List<String>> listMathMl,
 	                  String output_Pipeline
 	) throws InvalidFormatException {
 		this.inputName = GetFileNameWithoutExtension(new File(URI.create(inputName))).replace(" ", "_");
 		outputFilename = new File(URI.create(output));
 		outputFilename.mkdirs();
 		pack = OPCPackage.open(new File(URI.create(input)));
-		this.listMathMl = new Hashtable<>(listMathMl);
+
+		try{
+			WordShapesExporter.ProcessShapes(inputName, output_Pipeline);
+		} catch (java.lang.Exception e){
+			LOGGER.info(e.getMessage());
+			LOGGER.info("Trying openoffice shapes export...");
+			try {
+				OOShapesExporter.ProcessShapes(inputName, output_Pipeline);
+			} catch (Exception ex) {
+				LOGGER.info("Could not export shapes with openoffice, shapes will be ignored");
+			}
+		}
+
+
+
 		this.output_Pipeline = new File(URI.create(output_Pipeline));
 		this.output_Pipeline.mkdirs();
 		for (int i = 0; i < 9; i++) {
@@ -280,33 +299,7 @@ public class DaisyClass {
 	 @param storyType wdTextFrameStory, wdFootnotesStory or wdMainTextStory
 	*/
 	public String GetMathML(String storyType) {
-		String strMathMl = "";
-		if (listMathMl != null) {
-			if (listMathMl.size() != 0) {
-				if (storyType.equals("wdTextFrameStory") && listMathMl.get(storyType).size() != 0) {
-					if (listMathMl.get(storyType).get(sidebarFlag) != null) {
-						if (listMathMl.get(storyType).size() != 0) {
-							strMathMl = listMathMl.get(storyType).get(sidebarFlag);
-							sidebarFlag++;
-						}
-					}
-				} else if (storyType.equals("wdFootnotesStory") && listMathMl.get(storyType).size() != 0) {
-					if (listMathMl.get(storyType).get(footNoteFlag) != null) {
-						if (listMathMl.get(storyType).size() != 0) {
-							strMathMl = listMathMl.get(storyType).get(footNoteFlag);
-							footNoteFlag++;
-						}
-					}
-				} else if (storyType.equals("wdMainTextStory") && listMathMl.get(storyType).size() != 0) {
-					if (listMathMl.get(storyType).get(mainFlag) != null) {
-						if (listMathMl.get(storyType).size() != 0) {
-							strMathMl = listMathMl.get(storyType).get(mainFlag);
-							mainFlag++;
-						}
-					}
-				}
-			}
-		}
+		String strMathMl = "(math type equations are not supported)";
 		return strMathMl;
 	}
 
@@ -541,8 +534,11 @@ public class DaisyClass {
 		if (!stackList.empty()) {
 			if (level > 6 && stackList.size() == 6) {
 				stackList.push(headingSixLvl);
-			} else {
+			} else if (level != stackList.peek() + 1)
+			{
 				level = stackList.peek() + 1;
+				stackList.push(level);
+			} else {
 				stackList.push(level);
 			}
 		} else {
@@ -2619,8 +2615,9 @@ public class DaisyClass {
 
 	private String _currentMatterType = "";
 
-	public void SetCurrentMatterType(String matterType) {
+	public String SetCurrentMatterType(String matterType) {
 		_currentMatterType = matterType;
+		return _currentMatterType;
 	}
 
 	public String GetCurrentMatterType() {

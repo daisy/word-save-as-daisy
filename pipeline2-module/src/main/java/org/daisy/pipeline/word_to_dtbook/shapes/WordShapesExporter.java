@@ -1,17 +1,16 @@
 package org.daisy.pipeline.word_to_dtbook.shapes;
 import org.daisy.common.file.URLs;
-import org.daisy.pipeline.word_to_dtbook.impl.DaisyClass;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
-import java.util.List;
 
 public class WordShapesExporter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WordShapesExporter.class);
-    synchronized public static void ProcessShapes(String inputPath, String outputPath) throws IOException, InterruptedException {
+    synchronized public static void ProcessShapes(String inputPath, String outputPath) throws Exception {
         String exeFileName = "ExportShapesWithWord.exe";
         // Write ExportShapesWithWord in a temp folder
         if (!System.getProperty("os.name").toLowerCase().startsWith("windows"))
@@ -46,7 +45,16 @@ public class WordShapesExporter {
 
         }
         // Launched the program with inputPath and outputPath as argument
-        ProcessBuilder procbuilder = new ProcessBuilder(exeFile.getAbsolutePath(), inputPath, outputPath);
+        ProcessBuilder procbuilder;
+        try{
+            procbuilder = new ProcessBuilder(
+                    exeFile.getAbsolutePath(),
+                    new File(new URI(inputPath)).getAbsolutePath(),
+                    new File(new URI(outputPath)).getAbsolutePath()
+            );
+        } catch (Exception e){
+            throw new Exception("Could not export shapes with word", e);
+        }
 
         /*procbuilder.redirectOutput();
         procbuilder.redirectError();*/
