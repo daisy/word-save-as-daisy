@@ -14,7 +14,9 @@
                 xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
                 xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
-                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r vt dcmitype">
+                xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+                xmlns:mml="http://www.w3.org/1998/Math/MathML"
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r vt dcmitype xs d m mml">
 
     <xsl:output method="xml" encoding="UTF-8"/>
     <!-- Original location of input .docx file (URI) -->
@@ -33,7 +35,7 @@
     <xsl:param name="Publisher" as="xs:string" /> <!--Holds Documents Publisher value-->
     <xsl:param name="UID" as="xs:string" /> <!--Holds Document unique id value-->
     <xsl:param name="Subject" as="xs:string" /> <!--Holds Documents Subject value-->
-    <xsl:param name="prmTRACK" as="xs:string" />
+    <xsl:param name="acceptRevisions" as="xs:boolean" />
     <xsl:param name="Version" as="xs:string" /> <!--Holds Documents version value-->
     <xsl:param name="Custom" as="xs:string" /> <!-- Automatic|Custom -->
     <xsl:param name="MasterSub" as="xs:boolean" />
@@ -58,10 +60,10 @@
         we should add xml:lang attribute on elements that have a different language declared
         compared to its parent
     -->
-    <xsl:param name="Language" />
+    <xsl:param name="Language" as="xs:string?" />
 
     <!-- New object to interact with saxon-->
-    <xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$MathML,$FinalOutputDir)" />
+    <xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$FinalOutputDir)" />
 	
     <!-- Retrieve xml documents from the word file -->
 	<xsl:variable name="documentXml"
@@ -201,17 +203,18 @@
         <!--This Xslt is Adding meta elements in Dtbook head element
     It is also calling templates Frontmatter, Bodymatter and Rearmatter-->
         <!--Adding dtbook element-->
-        <xsl:result-document encoding="utf-8">
-            <xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet href="dtbookbasic.css" type="text/css"?&gt;</xsl:text>
-            <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'</xsl:text>
-            <xsl:text disable-output-escaping="yes">[
+        <xsl:result-document encoding="utf-8" indent="yes" >
+            <!--<xsl:text disable-output-escaping="yes">&lt;?xml-stylesheet href="dtbookbasic.css" type="text/css"?&gt;</xsl:text>-->
+           <xsl:text disable-output-escaping="yes">&lt;!DOCTYPE dtbook PUBLIC '-//NISO//DTD dtbook 2005-3//EN' 'http://www.daisy.org/z3986/2005/dtbook-2005-3.dtd'</xsl:text>
+            <xsl:if test="count($documentXml//m:*) &gt; 0">
+<xsl:text disable-output-escaping="yes">[
       &lt;!ENTITY % MATHML.prefixed "INCLUDE" &gt;
       &lt;!ENTITY % MATHML.prefix "mml"&gt;
       &lt;!ENTITY % Schema.prefix "sch"&gt;
       &lt;!ENTITY % XLINK.prefix "xlp"&gt;
       &lt;!ENTITY % MATHML.Common.attrib
           "xlink:href    CDATA       #IMPLIED
-          xlink:type     CDATA       #IMPLIED   
+          xlink:type     CDATA       #IMPLIED
           class          CDATA       #IMPLIED
           style          CDATA       #IMPLIED
           id             ID          #IMPLIED
@@ -225,10 +228,14 @@
        &lt;!ENTITY % externalFlow "| mml:math"&gt;
        &lt;!ENTITY % externalNamespaces "xmlns:mml CDATA #FIXED
                   'http://www.w3.org/1998/Math/MathML'" &gt;
-] &gt;
-</xsl:text>
-            <xsl:text>&#10;</xsl:text>
-            <dtbook version="2005-3" xmlns:mml="http://www.w3.org/1998/Math/MathML">
+]</xsl:text>
+            </xsl:if>
+
+            <xsl:text disable-output-escaping="yes"> &gt;&#10;</xsl:text>
+            <dtbook version="2005-3">
+                <xsl:if test="count($documentXml//m:*) &gt; 0">
+                    <xsl:namespace name="mml" select="'http://www.w3.org/1998/Math/MathML'" />
+                </xsl:if>
                 <xsl:variable name="doclang" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val" />
                 <xsl:variable name="doclangbidi" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi" />
                 <xsl:variable name="doclangeastAsia" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia" />
@@ -259,7 +266,7 @@
                             <meta name="dtb:uid" content="{$UID}"/>
                         </xsl:otherwise>
                     </xsl:choose>
-                    <meta name="dtb:generator" content="DAISY Pipeline 2 word-to-dtbook"/>
+                    <meta name="dtb:generator" content="DAISY Pipeline 2 word-to-dtbook 1.0.0"/>
                     <!--Choose block for checking whether user has entered the Title of the document or not-->
                     <meta name="dc:Title" content="{$Title}"/>
                     <!--Choose block for checking whether user has entered the Creator of the document or not-->
@@ -430,7 +437,7 @@
                         ">
                             <xsl:message terminate="no">progress:Adding frontmatter content found in the document</xsl:message>
                             <xsl:call-template name="Matter">
-                                <xsl:with-param name="prmTrack" select="$prmTRACK"/>
+                                <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                                 <xsl:with-param name="version" select="$Version"/>
                                 <xsl:with-param name="custom" select="$Custom"/>
                                 <xsl:with-param name="masterSub" select="$MasterSub"/>
@@ -449,7 +456,7 @@
                     <!--Calling Bodymatter template-->
                     <bodymatter id="bodymatter_0001">
                         <xsl:call-template name="Matter">
-                            <xsl:with-param name="prmTrack" select="$prmTRACK"/>
+                            <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                             <xsl:with-param name="version" select="$Version"/>
                             <xsl:with-param name="custom" select="$Custom"/>
                             <xsl:with-param name="masterSub" select="$MasterSub"/>
@@ -530,7 +537,7 @@
                             </xsl:if>
                             <xsl:message terminate="no">progress:Adding any rearmatter content found in the document</xsl:message>
                             <xsl:call-template name="Matter">
-                                <xsl:with-param name="prmTrack" select="$prmTRACK"/>
+                                <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                                 <xsl:with-param name="version" select="$Version"/>
                                 <xsl:with-param name="custom" select="$Custom"/>
                                 <xsl:with-param name="masterSub" select="$MasterSub"/>

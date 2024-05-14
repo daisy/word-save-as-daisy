@@ -29,7 +29,7 @@
     <!--Holds Document unique id value-->
     <xsl:param name="Subject"/>
     <!--Holds Documents Subject value-->
-    <xsl:param name="prmTRACK"/>
+    <xsl:param name="acceptRevisions"/>
     <xsl:param name="Version"/>
     <!--Holds Documents version value-->
     <xsl:param name="Custom"/>
@@ -49,7 +49,7 @@
     <!-- Template for content of front|body|rearmatter -->
     <xsl:template name="Matter">
         <!--Parameter trackchanges-->
-        <xsl:param name="prmTrack" as="xs:string"/>
+        <xsl:param name="acceptRevisions" as="xs:boolean"/>
         <!--Parameter version of Office-->
         <xsl:param name="version" as="xs:string"/>
         <!--Parameter custom page number-->
@@ -181,7 +181,7 @@
                         </xsl:if>
                         <xsl:sequence select="d:sink(d:CheckCoverPage($myObj))"/> <!-- empty -->
                         <xsl:call-template name="StyleContainer">
-                            <xsl:with-param name="prmTrack" select="$prmTrack"/>
+                            <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                             <xsl:with-param name="VERSION" select="$version"/>
                             <xsl:with-param name="custom" select="$custom"/>
                             <xsl:with-param name="styleHeading" select="$heading1StyleId"/>
@@ -424,7 +424,7 @@
     <!--Implementing all the paragraph styles and all other feature that appears inside the paragraph-->
     <xsl:template name="ParaHandler">
         <xsl:param name="flag" as="xs:string"/>
-        <xsl:param name="prmTrack" as="xs:string" select="''"/>
+        <xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
         <xsl:param name="VERSION" as="xs:string" select="''"/>
         <xsl:param name="flagNote" as="xs:string" select="''"/>
         <xsl:param name="checkid" as="xs:integer?"/>
@@ -569,7 +569,7 @@
                             <!--Checking for Prodnote style in sidebar-->
                             <xsl:when test="(w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY') or (w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')">
                                 <xsl:call-template name="ParagraphStyle">
-                                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
+                                    <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                                     <xsl:with-param name="VERSION" select="$VERSION"/>
                                     <xsl:with-param name="custom" select="$custom"/>
                                     <xsl:with-param name="txt" select="$txt"/>
@@ -581,7 +581,7 @@
                                     <!--Calling StyleContainer Template -->
                                     <xsl:call-template name="StyleContainer">
                                         <xsl:with-param name="VERSION" select="$VERSION"/>
-                                        <xsl:with-param name="prmTrack" select="$prmTrack"/>
+                                        <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                                         <xsl:with-param name="custom" select="$custom"/>
                                         <xsl:with-param name="mastersubstyle" select="$mastersubpara"/>
                                         <xsl:with-param name="characterStyle" select="$charparahandlerStyle"/>
@@ -1015,7 +1015,7 @@
             </xsl:if>
 
             <xsl:if test="self::w:del">
-                <xsl:if test="$prmTrack='No'">
+                <xsl:if test="$acceptRevisions = false()">
                     <xsl:for-each select="w:r">
                         <xsl:value-of select="w:delText"/>
                     </xsl:for-each>
@@ -1023,7 +1023,7 @@
             </xsl:if>
 
             <xsl:if test="self::w:ins">
-                <xsl:if test="$prmTrack='Yes'">
+                <xsl:if test="$acceptRevisions = true()">
                     <xsl:for-each select="w:r">
                         <xsl:value-of select="w:t"/>
                     </xsl:for-each>
@@ -2338,7 +2338,7 @@
 
     <!--Template for implementing paragraph styles-->
     <xsl:template name="StyleContainer">
-        <xsl:param name="prmTrack" as="xs:string" select="''"/>
+        <xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
         <xsl:param name="VERSION" as="xs:string"/>
         <xsl:param name="custom" as="xs:string"/>
         <xsl:param name="styleHeading" as="xs:string?"/>
@@ -2746,7 +2746,7 @@
                             )
                         )">
                             <xsl:call-template name="ParagraphStyle">
-                                <xsl:with-param name="prmTrack" select="$prmTrack"/>
+                                <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                                 <xsl:with-param name="VERSION" select="$VERSION"/>
                                 <xsl:with-param name="custom" select="$custom"/>
                                 <xsl:with-param name="masterparastyle" select="$mastersubstyle"/>
@@ -3067,7 +3067,7 @@
 
     <!--Template to implement Custom and inbuilt paragraph styles.-->
     <xsl:template name="ParagraphStyle">
-        <xsl:param name="prmTrack" as="xs:string" select="''"/>
+        <xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
         <xsl:param name="VERSION" as="xs:string" select="''"/>
         <xsl:param name="flagNote" as="xs:string" select="''"/>
         <xsl:param name="checkid" as="xs:integer?"/>
@@ -3554,7 +3554,7 @@
                     <xsl:otherwise>
                         <xsl:call-template name="ParaHandler">
                             <xsl:with-param name="flag" select="'1'"/>
-                            <xsl:with-param name="prmTrack" select="$prmTrack"/>
+                            <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                             <xsl:with-param name="VERSION" select="$VERSION"/>
                             <xsl:with-param name="flagNote" select="$flagNote"/>
                             <xsl:with-param name="checkid" select="$checkid"/>
@@ -3616,7 +3616,7 @@
             )">
                 <xsl:call-template name="ParaHandler">
                     <xsl:with-param name="flag" select="'1'"/>
-                    <xsl:with-param name="prmTrack" select="$prmTrack"/>
+                    <xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
                     <xsl:with-param name="VERSION" select="$VERSION"/>
                     <xsl:with-param name="flagNote" select="$flagNote"/>
                     <xsl:with-param name="checkid" select="$checkid"/>

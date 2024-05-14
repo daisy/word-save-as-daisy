@@ -31,7 +31,7 @@
 	<!--Holds Document unique id value-->
 	<xsl:param name="Subject"/>
 	<!--Holds Documents Subject value-->
-	<xsl:param name="prmTRACK"/>
+	<xsl:param name="acceptRevisions"/>
 	<xsl:param name="Version"/>
 	<!--Holds Documents version value-->
 	<xsl:param name="Custom"/>
@@ -111,7 +111,7 @@
 					<xsl:message terminate="no">progress:Insert footnote <xsl:value-of select="$checkid"/></xsl:message>
 					<!--Creating note element and it's attribute values-->
 					<note id="{concat('footnote-',$checkid)}" class="Footnote">
-						<xsl:sequence select="d:sink(d:PushLevel($level + 1))"/>
+						<xsl:sequence select="d:sink(d:PushLevel($myObj, $level + 1))"/>
 						<!--Travering each element inside w:footnote in footnote.xml file-->
 						<xsl:for-each select="./node()">
 							<!--Checking for Paragraph element-->

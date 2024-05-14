@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.daisy.pipeline.modules</groupId>
 		<artifactId>modules-parent</artifactId>
-		<version>1.14.7</version>
+		<version>1.14.23</version>
 	</parent>
 
 	<artifactId>word-to-dtbook</artifactId>
@@ -21,6 +21,21 @@
 	</repositories>
 
 	<dependencies>
+		<!-- for XProcScriptService and UrlBasedDatatypeService -->
+		<dependency>
+			<groupId>org.daisy.pipeline</groupId>
+			<artifactId>framework-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.daisy.pipeline.modules</groupId>
+			<artifactId>common-utils</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.daisy.pipeline.modules</groupId>
+			<artifactId>file-utils</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
@@ -47,11 +62,7 @@
 			<groupId>org.daisy.pipeline</groupId>
 			<artifactId>saxon-adapter</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.daisy.pipeline.modules</groupId>
-			<artifactId>dtbook-break-detection</artifactId>
-			<scope>runtime</scope>
-		</dependency>
+
 		<dependency>
 			<groupId>org.daisy.pipeline</groupId>
 			<artifactId>calabash-adapter</artifactId>
@@ -64,19 +75,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.daisy.libs</groupId>
-			<artifactId>com.xmlcalabash</artifactId>
-			<version>1.1.20-p12-98</version>
-			<scope>runtime</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.daisy.maven</groupId>
 			<artifactId>xproc-engine-daisy-pipeline</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.daisy.pipeline.modules</groupId>
-			<artifactId>nlp-omnilang-lexer</artifactId>
 			<scope>test</scope>
 		</dependency>
 

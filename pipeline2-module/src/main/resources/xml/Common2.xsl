@@ -26,7 +26,7 @@
 	<!--Holds Document unique id value-->
 	<xsl:param name="Subject"/>
 	<!--Holds Documents Subject value-->
-	<xsl:param name="prmTRACK"/>
+	<xsl:param name="acceptRevisions"/>
 	<xsl:param name="Version"/>
 	<!--Holds Documents version value-->
 	<xsl:param name="Custom"/>
