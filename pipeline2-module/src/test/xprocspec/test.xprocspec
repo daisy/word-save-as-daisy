@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.daisy.org/ns/xprocspec"
                xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
-               script="../../main/resources/xml/oox2Daisy.xpl">
+               script="../../main/resources/xml/word-to-dtbook.script.xpl">
 
   <x:scenario label="FromSingleDocx">
-    <x:call step="px:oox2Daisy"/>
+    <x:call step="px:word-to-dtbook.script"/>
 
     <x:scenario label="Test 1">
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%201/Input/F1.docx')"/>
+            select="resolve-uri('../resources/Test%201/Input/F1.docx')"/>
         <x:option name="Title" select="'Help'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -21,15 +21,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/1/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%201/Output/"/>
+        <x:document type="directory" href="../resources/Test%201/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/1/Output/F1.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%201/Output/F1.xml"/>
+            href="../resources/Test%201/Output/F1.xml"/>
       </x:expect>
     </x:scenario>
 
@@ -37,7 +37,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%202/Input/F%202.docx')"/>
+            select="resolve-uri('../resources/Test%202/Input/F%202.docx')"/>
         <x:option name="Title" select="'Document'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -48,15 +48,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/2/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%202/Output/"/>
+        <x:document type="directory" href="../resources/Test%202/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/2/Output/F%202.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%202/Output/F%202.xml"/>
+            href="../resources/Test%202/Output/F%202.xml"/>
       </x:expect>
     </x:scenario>
 
@@ -64,7 +64,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%203/Input/F%203.docx')"/>
+            select="resolve-uri('../resources/Test%203/Input/F%203.docx')"/>
         <x:option name="Title" select="'Testing'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -75,15 +75,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/3/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%203/Output/"/>
+        <x:document type="directory" href="../resources/Test%203/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/3/Output/F%203.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%203/Output/F%203.xml"/>
+            href="../resources/Test%203/Output/F%203.xml"/>
       </x:expect>
     </x:scenario>
 
@@ -91,7 +91,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%204/Input/F4.docx')"/>
+            select="resolve-uri('../resources/Test%204/Input/F4.docx')"/>
         <x:option name="Title" select="'Blood'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -102,15 +102,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/4/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%204/Output/"/>
+        <x:document type="directory" href="../resources/Test%204/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/4/Output/F4.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%204/Output/F4.xml"/>
+            href="../resources/Test%204/Output/F4.xml"/>
       </x:expect>
     </x:scenario>
     
@@ -118,7 +118,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%205/Input/F5.docx')"/>
+            select="resolve-uri('../resources/Test%205/Input/F5.docx')"/>
         <x:option name="Title" select="'Service'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -129,15 +129,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/5/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%205/Output/"/>
+        <x:document type="directory" href="../resources/Test%205/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/5/Output/F5.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%205/Output/F5.xml"/>
+            href="../resources/Test%205/Output/F5.xml"/>
       </x:expect>
     </x:scenario>
 
@@ -145,7 +145,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%206/Input/F6.docx')"/>
+            select="resolve-uri('../resources/Test%206/Input/F6.docx')"/>
         <x:option name="Title" select="'Belarus'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -156,15 +156,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/6/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%206/Output/"/>
+        <x:document type="directory" href="../resources/Test%206/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/6/Output/F6.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%206/Output/F6.xml"/>
+            href="../resources/Test%206/Output/F6.xml"/>
       </x:expect>
     </x:scenario>
 
@@ -172,7 +172,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%207/Input/F7.docx')"/>
+            select="resolve-uri('../resources/Test%207/Input/F7.docx')"/>
         <x:option name="Title" select="'Blog'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -183,15 +183,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/7/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%207/Output/"/>
+        <x:document type="directory" href="../resources/Test%207/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/7/Output/F7.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%207/Output/F7.xml"/>
+            href="../resources/Test%207/Output/F7.xml"/>
       </x:expect>
     </x:scenario>
 
@@ -199,7 +199,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%208/Input/F8.docx')"/>
+            select="resolve-uri('../resources/Test%208/Input/F8.docx')"/>
         <x:option name="Title" select="'Trial'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -210,15 +210,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/8/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%208/Output/"/>
+        <x:document type="directory" href="../resources/Test%208/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/8/Output/F8.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%208/Output/F8.xml"/>
+            href="../resources/Test%208/Output/F8.xml"/>
       </x:expect>
     </x:scenario>
 
@@ -226,7 +226,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%209/Input/F9.docx')"/>
+            select="resolve-uri('../resources/Test%209/Input/F9.docx')"/>
         <x:option name="Title" select="'Tool'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -237,15 +237,15 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/9/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%209/Output/"/>
+        <x:document type="directory" href="../resources/Test%209/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/9/Output/F9.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%209/Output/F9.xml"/>
+            href="../resources/Test%209/Output/F9.xml"/>
       </x:expect>
     </x:scenario>
 
@@ -253,7 +253,7 @@
       <x:call>
         <x:option
             name="source"
-            select="resolve-uri('../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%2010/Input/F10.docx')"/>
+            select="resolve-uri('../resources/Test%2010/Input/F10.docx')"/>
         <x:option name="Title" select="'Problem'"/>
         <x:option name="Creator" select="'Balandin Vyacheslav'"/>
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
@@ -264,17 +264,16 @@
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/10/Output/"/>
       </x:context>
       <x:expect label="directory" type="compare">
-        <x:document type="directory" href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%2010/Output/"/>
+        <x:document type="directory" href="../resources/Test%2010/Output/"/>
       </x:expect>
       <x:context label="result">
-        <x:document type="port" port="result"/>
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/10/Output/F10.xml"/>
       </x:context>
       <x:expect label="result" type="compare">
         <x:document
             type="file"
-            href="../../../../Tests/Word2007Addin.IntegrationTests/TestData/FromSingleDocx/Test%2010/Output/F10.xml"/>
+            href="../resources/Test%2010/Output/F10.xml"/>
       </x:expect>
     </x:scenario>
-
   </x:scenario>
 </x:description>
