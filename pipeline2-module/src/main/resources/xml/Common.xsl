@@ -733,6 +733,7 @@
                         </xsl:when>
                     </xsl:choose>
                 </xsl:variable>
+                <xsl:variable name="isExternal" select="exists(@r:id) and not(@w:anchor)" />
                 <!--Calling CustomCharStyle template with flagNote for hyperlink text-->
                 <xsl:for-each select="w:r">
                     <xsl:call-template name="CustomCharStyle">
@@ -742,7 +743,7 @@
                                 <xsl:value-of select="$href"/>
                                 <xsl:text>" </xsl:text>
                             </xsl:if>
-                            <xsl:if test="@r:id">
+                            <xsl:if test="$isExternal">
                                 <xsl:text>external="true" </xsl:text>
                             </xsl:if>
                         </xsl:with-param>

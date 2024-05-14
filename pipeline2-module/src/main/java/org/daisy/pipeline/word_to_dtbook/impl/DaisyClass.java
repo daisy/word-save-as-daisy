@@ -1016,6 +1016,11 @@ public class DaisyClass {
 			uri = anchorRelationship.getTargetURI().toString();
 			// don't encode apos
 			uri = uri.replaceAll("%27", "'");
+
+			// reencode ampersand if not already encoded
+			if(uri.contains("&") && !uri.contains("&amp;")){
+				uri = uri.replaceAll("&", "&amp;");
+			}
 			// normalize: change hex values to lowercase
 			if (uri.contains("%")) {
 				Matcher m = Pattern.compile("%..").matcher(uri);
