@@ -7,6 +7,7 @@
                 xmlns:dcterms="http://purl.org/dc/terms/"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties"
+                xmlns:ep="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
                 xmlns:dc="http://purl.org/dc/elements/1.1/"
                 xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
                 xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
@@ -69,6 +70,9 @@
 	<xsl:variable name="documentXml"
 	              as="document-node(element(w:document))"
 				  select="document(concat('jar:',$InputFile,'!/word/document.xml'))" />
+    <xsl:variable name="docPropsAppXml"
+                  as="document-node(element(ep:Properties))"
+                  select="document(concat('jar:',$InputFile,'!/docProps/app.xml'))" />
 	<xsl:variable name="docPropsCoreXml"
 				  as="document-node(element(cp:coreProperties))"
 				  select="document(concat('jar:',$InputFile,'!/docProps/core.xml'))" />
@@ -268,19 +272,52 @@
                     </xsl:choose>
                     <meta name="dtb:generator" content="DAISY Pipeline 2 word-to-dtbook 1.0.0"/>
                     <!--Choose block for checking whether user has entered the Title of the document or not-->
-                    <meta name="dc:Title" content="{$Title}"/>
+                    <xsl:choose>
+                        <!--Taking Document Title value from core.xml-->
+                        <xsl:when test="string-length($Title) = 0">
+                            <meta name="dc:Title" content="{$docPropsCoreXml//cp:coreProperties/dc:title/text()}"/>
+                        </xsl:when>
+                        <!--Taking the Title value entered by the user-->
+                        <xsl:otherwise>
+                            <meta name="dc:Title" content="{$Title}"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+
                     <!--Choose block for checking whether user has entered the Creator of the document or not-->
-                    <xsl:if test="string-length($Creator)!= 0">
-                        <meta name="dc:Creator" content="{$Creator}"/>
-                    </xsl:if>
+                    <xsl:choose>
+                        <!--Taking Document Creator value from core.xml-->
+                        <xsl:when test="string-length($Creator) = 0">
+                            <!--Note : Creators are separated with semi-colons in the property-->
+                            <xsl:variable name="creatorFromPackage" select="$docPropsCoreXml//cp:coreProperties/dc:creator/text()" />
+                            <xsl:if test="string-length($creatorFromPackage)!=0">
+                                <meta name="dc:Creator" content="{$creatorFromPackage}"/>
+                            </xsl:if>
+                        </xsl:when>
+                        <!--Taking the Creator value entered by the user-->
+                        <xsl:otherwise>
+                            <meta name="dc:Creator" content="{$Creator}"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+
                     <!--Taking the value of dc:date from core.xml file-->
                     <xsl:if test="string-length($documentDate)!=0">
                         <meta name="dc:Date" content="{substring-before($documentDate,'T')}"/>
                     </xsl:if>
                     <!--Choose block for checking whether user has entered the Publisher of the document or not-->
-                    <xsl:if test="string-length($Publisher)!=0">
-                        <meta name="dc:Publisher" content="{$Publisher}"/>
-                    </xsl:if>
+                    <xsl:choose>
+                        <!--Taking Document publisher value from app.xml-->
+                        <xsl:when test="string-length($Publisher) = 0">
+                            <xsl:variable name="publisherFromPackage" select="$docPropsAppXml//ep:Properties/ep:Company/text()" />
+                            <xsl:if test="string-length($publisherFromPackage)!=0">
+                                <meta name="dc:Publisher" content="{$publisherFromPackage}"/>
+                            </xsl:if>
+                        </xsl:when>
+                        <!--Taking the Publisher value entered by the user-->
+                        <xsl:otherwise>
+                            <meta name="dc:Publisher" content="{$Publisher}"/>
+                        </xsl:otherwise>
+                    </xsl:choose>
+
                     <!--Taking the value of dc:subject from core.xml file-->
                     <xsl:choose>
                         <xsl:when test="string-length($Subject)!=0">
