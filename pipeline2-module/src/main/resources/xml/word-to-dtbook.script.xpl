@@ -11,7 +11,8 @@
 		<a px:role="homepage" href="http://daisy.github.io/pipeline/Get-Help/User-Guide/Scripts/word-to-dtbook/">
 			Online documentation
 		</a>
-		<!--<address>
+		<!-- TO BE FILLED
+		<address>
 			Authors:
 			<dl px:role="author">
 				<dt>Name:</dt>
@@ -38,17 +39,17 @@
 			<p px:role="desc" xml:space="preserve">The document you want to convert.</p>
 		</p:documentation>
 	</p:option>
-	<p:option name="document-output-dir" required="true"/>
+	<p:option name="result" required="true" px:output="result" px:type="anyDirURI">
+		<p:documentation>
+			<h2 px:role="name">Output directory of the dtbook XML</h2>
+		</p:documentation>
+	</p:option>
+
 	<p:option name="document-output-file" select="concat(
-		$document-output-dir,
+		$result,
 		replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1.xml'),',','_')
 	)"/>
-	<p:option name="document-output-test" select="concat(
-		$document-output-dir,
-		replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1_test.xml'),',','_')
-	)"/>
-	<p:option name="tempSource" select="$source"/>
-	<p:option name="pipeline-output-dir" select="$document-output-dir"/>
+
 	<p:option name="Title" select="''">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document title</h2>
@@ -67,10 +68,25 @@
 			<p px:role="desc"></p>
 		</p:documentation>
 	</p:option>
-	<p:option name="UID" select="''"/>
-	<p:option name="Subject" select="''"/>
-	<p:option name="acceptRevisions" select="true()"/>
-	<p:option name="Version" select="'14'"/>
+	<p:option name="UID" select="''">
+		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
+			<h2 px:role="name">Identifier to be added as dtb:uid metadata</h2>
+			<p px:role="desc"></p>
+		</p:documentation>
+	</p:option>
+	<p:option name="Subject" select="''">
+		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
+			<h2 px:role="name">Subject(s) to be added as dc:Subject metadata</h2>
+			<p px:role="desc"></p>
+		</p:documentation>
+	</p:option>
+	<p:option name="acceptRevisions" select="true()">
+		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
+			<h2 px:role="name">Accept revisions</h2>
+			<p px:role="desc">If the document has revisions that are not accepted, consider them as accepted for the conversion.</p>
+		</p:documentation>
+	</p:option>
+	<p:option name="Version" select="'14'" px:hidden="true"/>
 
 	<!-- discarding math type equations preprocessing
 	<p:option name="MathML" select="map{'wdTextFrameStory':[],
@@ -78,9 +94,24 @@
 	                                    'wdMainTextStory':[]
 	                                    }" />-->
 	<!-- cx:as="map(xs:string,xs:string*)" -->
-	<p:option name="MasterSub" select="false()" cx:as="xs:boolean" />
+	<p:option name="MasterSub" select="false()" cx:as="xs:boolean" px:hidden="true()"/>
 	<!-- from settings  -->
-	<p:option name="Custom" select="''"/>
+	<p:option name="PagenumStyle" select="'Custom'">
+		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
+			<h2 px:role="name">Pagination mode</h2>
+			<p px:role="desc">Define how page numbers are computed and inserted in the result</p>
+		</p:documentation>
+		<p:pipeinfo>
+			<px:type>
+				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
+					<value>Custom</value>
+					<a:documentation xml:lang="en">Use numbers tagged with the style 'PageNumberDAISY' in the document</a:documentation>
+					<value>Automatic</value>
+					<a:documentation xml:lang="en">Use Word page breaks to compute and insert page numbers in content</a:documentation>
+				</choice>
+			</px:type>
+		</p:pipeinfo>
+	</p:option>
 	<p:option name="ImageSizeOption" select="'original'">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Image size option</h2>
@@ -114,7 +145,7 @@
 	<p:option name="FootnotesPosition" select="'end'">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Footnotes position</h2>
-			<p px:role="desc">Position of footnotes in content</p>
+			<p px:role="desc">Footnotes position in content</p>
 		</p:documentation>
 		<p:pipeinfo>
 			<px:type>
@@ -132,19 +163,20 @@
 	<p:option name="FootnotesLevel" select="0" cx:as="xs:integer">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Footnotes insertion level</h2>
-			<p px:role="desc">Closest level into which notes are inserted in content.</p>
+			<p px:role="desc">Closest level into which notes are inserted in content.
+			0 means the footnotes will be inserted as close as possible of its first call.</p>
 		</p:documentation>
 	</p:option>
 	<p:option name="FootnotesNumbering" cx:as="xs:string" select="'none'">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
-			<h2 px:role="name">Footnotes position</h2>
-			<p px:role="desc">Position of footnotes in content</p>
+			<h2 px:role="name">Footnotes numbering</h2>
+			<p px:role="desc">Customize footnotes numbering</p>
 		</p:documentation>
 		<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>none</value>
-					<a:documentation xml:lang="en">Disable note numbering in output</a:documentation>
+					<a:documentation xml:lang="en">Disable note numbering</a:documentation>
 					<value>word</value>
 					<a:documentation xml:lang="en">Use original word numbering</a:documentation>
 					<value>number</value>
@@ -180,9 +212,9 @@
 			<p:document href="oox2Daisy.xsl"/>
 		</p:input>
 		<p:with-param name="OriginalInputFile" select="$source"/>
-		<p:with-param name="InputFile" select="$tempSource"/>
-		<p:with-param name="OutputDir" select="$document-output-dir"/>
-		<p:with-param name="FinalOutputDir" select="$pipeline-output-dir"/>
+		<p:with-param name="InputFile" select="$source"/>
+		<p:with-param name="OutputDir" select="$result"/>
+		<p:with-param name="FinalOutputDir" select="$result"/>
 		<p:with-param name="Title" select="$Title"/>
 		<p:with-param name="Creator" select="$Creator"/>
 		<p:with-param name="Publisher" select="$Publisher"/>
@@ -190,7 +222,7 @@
 		<p:with-param name="Subject" select="$Subject"/>
 		<p:with-param name="acceptRevisions" select="$acceptRevisions"/>
 		<p:with-param name="Version" select="$Version"/>
-		<p:with-param name="Custom" select="$Custom"/>
+		<p:with-param name="Custom" select="$PagenumStyle"/>
 		<p:with-param name="MasterSub" select="$MasterSub"/>
 		<p:with-param name="ImageSizeOption" select="$ImageSizeOption"/>
 		<p:with-param name="DPI" select="$DPI"/>
