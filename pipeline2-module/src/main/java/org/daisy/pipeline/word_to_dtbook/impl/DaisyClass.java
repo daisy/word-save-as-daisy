@@ -4,8 +4,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URLDecoder;
@@ -207,25 +211,49 @@ public class DaisyClass {
 	                  String output,
 	                  String output_Pipeline
 	) throws InvalidFormatException {
+
 		this.inputName = GetFileNameWithoutExtension(new File(URI.create(inputName))).replace(" ", "_");
 		outputFilename = new File(URI.create(output));
 		outputFilename.mkdirs();
-		pack = OPCPackage.open(new File(URI.create(input)));
+		File inputFile = new File(URI.create(input));
 
+		// first try to copy the current file in another location
+		// as the file might be opened by the user in word
+		OPCPackage copyOrOriginal;
 		try{
-			WordShapesExporter.ProcessShapes(inputName, output_Pipeline);
-		} catch (java.lang.Exception e){
-			LOGGER.info(e.getMessage());
-			LOGGER.info("Trying openoffice shapes export...");
-			try {
-				OOShapesExporter.ProcessShapes(inputName, output_Pipeline);
-			} catch (Exception ex) {
-				LOGGER.info("Could not export shapes with openoffice, shapes will be ignored");
+			File tmpDirectory = Files.createTempDirectory("pipeline-").toFile();
+			tmpDirectory.deleteOnExit();
+			File copied = new File(tmpDirectory,inputFile.getName());
+			try (
+					InputStream in = new BufferedInputStream(
+							new FileInputStream(inputFile));
+					OutputStream out = new BufferedOutputStream(
+							new FileOutputStream(copied))) {
+
+				byte[] buffer = new byte[4096];
+				int lengthRead;
+				while ((lengthRead = in.read(buffer)) > 0) {
+					out.write(buffer, 0, lengthRead);
+					out.flush();
+				}
 			}
+			copyOrOriginal = OPCPackage.open(copied);
+			/*try{
+				WordShapesExporter.ProcessShapes(copied.toURI().toString(), output_Pipeline);
+			} catch (java.lang.Exception e){
+				LOGGER.info(e.getMessage());
+				LOGGER.info("Trying openoffice shapes export...");
+				try {
+					OOShapesExporter.ProcessShapes(copied.toURI().toString(), output_Pipeline);
+				} catch (Exception ex) {
+					LOGGER.info("Could not export shapes with openoffice, shapes will be ignored");
+				}
+			}*/
+		} catch (Exception e){
+			LOGGER.info("Could not copy the input for shapes treatment");
+			copyOrOriginal = OPCPackage.open(inputFile);
 		}
-
-
-
+		pack = copyOrOriginal;
 		this.output_Pipeline = new File(URI.create(output_Pipeline));
 		this.output_Pipeline.mkdirs();
 		for (int i = 0; i < 9; i++) {

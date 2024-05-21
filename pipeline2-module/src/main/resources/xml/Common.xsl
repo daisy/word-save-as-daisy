@@ -16,34 +16,30 @@
                 xmlns:o="urn:schemas-microsoft-com:office:office"
                 xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
-                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o xs">
     <!--Parameter citation-->
     <xsl:param name="Cite_style" as="xs:string" select="d:Citation($myObj)"/>
-    <xsl:param name="Title"/>
-    <!--Holds Documents Title value-->
-    <xsl:param name="Creator"/>
-    <!--Holds Documents creator value-->
-    <xsl:param name="Publisher"/>
-    <!--Holds Documents Publisher value-->
-    <xsl:param name="UID"/>
-    <!--Holds Document unique id value-->
-    <xsl:param name="Subject"/>
-    <!--Holds Documents Subject value-->
-    <xsl:param name="acceptRevisions"/>
-    <xsl:param name="Version"/>
-    <!--Holds Documents version value-->
-    <xsl:param name="Custom"/>
-    <xsl:param name="MasterSub"/>
-    <xsl:param name="ImageSizeOption"/>
-    <xsl:param name="DPI"/>
-    <xsl:param name="CharacterStyles"/>
-    <xsl:param name="FootnotesPosition"/>
-    <xsl:param name="FootnotesLevel"/>
-    <xsl:param name="FootnotesNumbering" />
-    <xsl:param name="FootnotesStartValue" />
-    <xsl:param name="FootnotesNumberingPrefix" />
-    <xsl:param name="FootnotesNumberingSuffix" />
-    <xsl:param name="Language" />
+
+    <!--Declaring Global paramaters-->
+    <xsl:param name="Title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
+    <xsl:param name="Creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
+    <xsl:param name="Publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
+    <xsl:param name="UID" as="xs:string" select="''"/> <!--Holds Document unique id value-->
+    <xsl:param name="Subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
+    <xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
+    <xsl:param name="Version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
+    <xsl:param name="Custom" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
+    <xsl:param name="MasterSub" as="xs:boolean" select="false()"/>
+    <xsl:param name="ImageSizeOption" as="xs:string" select="'original'"/> <!-- resize|resample|original -->
+    <xsl:param name="DPI" as="xs:integer" select="96"/>
+    <xsl:param name="CharacterStyles" as="xs:boolean" select="false()" /> <!-- if true, also convert custom character styles to span with style attribute -->
+    <xsl:param name="FootnotesPosition" as="xs:string" select="'end'" /> <!-- page|end| -->
+    <xsl:param name="FootnotesLevel" as="xs:integer" select="0" />
+    <xsl:param name="FootnotesNumbering" as="xs:string" select="'none'"  />
+    <xsl:param name="FootnotesStartValue" as="xs:integer" select="1" />
+    <xsl:param name="FootnotesNumberingPrefix" as="xs:string?" select="''"/>
+    <xsl:param name="FootnotesNumberingSuffix" as="xs:string?" select="''"/>
+    <xsl:param name="Language" as="xs:string?" select="''"/>
 
 
     <!-- Template for content of front|body|rearmatter -->
@@ -82,12 +78,10 @@
         <xsl:variable name="heading1StyleId" as="xs:string?" select="string-join($heading1StyleId,'')[not(.='')]"/>
         <!--Looping through each hyperlink-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p/w:hyperlink">
-            <xsl:message terminate="no">progress:Hyperlink found - <xsl:value-of select="@w:anchor"/></xsl:message>
             <!--Calling d:AddHyperlink() for storing Anchor in Hyperlink-->
             <xsl:sequence select="d:sink(d:AddHyperlink($myObj,string(@w:anchor)))"/> <!-- empty -->
         </xsl:for-each>
-        <xsl:message terminate="no">progress:Start adding content in <xsl:value-of select="$matterType"/>  </xsl:message>
-		<xsl:variable name="ElementCountToConvert" select="count($documentXml//w:body/*)" />
+        <xsl:variable name="ElementCountToConvert" select="count($documentXml//w:body/*)" />
         <!--<xsl:if test="$matterType=''">-->
         <!--Checking the first paragraph of the document-->
         <xsl:for-each select="$documentXml//w:document/w:body/w:p[1]">
@@ -122,28 +116,25 @@
                         count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1
                         or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1
                     )">
-                        <xsl:message terminate="no">progress:SetCurrentMatterType - Found Frontmatter</xsl:message>
                         <xsl:sequence select="d:sink(d:SetCurrentMatterType($myObj, 'Frontmatter'))"/>
                     </xsl:when>
                     <xsl:when test="(
                         count(w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
                         or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
                     )">
-                        <xsl:message terminate="no">progress:SetCurrentMatterType - Found Bodymatter</xsl:message>
                         <xsl:sequence select="d:sink(d:SetCurrentMatterType($myObj, 'Bodymatter'))"/>
                     </xsl:when>
                     <xsl:when test="(
                         count(w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
                         or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
                     )">
-                        <xsl:message terminate="no">progress:SetCurrentMatterType - Found Rearmatter</xsl:message>
                         <xsl:sequence select="d:sink(d:SetCurrentMatterType($myObj, 'Rearmatter'))"/>
                     </xsl:when>
                 </xsl:choose>
             </xsl:if>
             <!-- If the node parsing context match the wanted matter context (i.e. node context is Bodymatter and requested matter type is Bodymatter ) -->
             <xsl:if test="d:GetCurrentMatterType($myObj)=$matterType">
-                <xsl:message terminate="no">progress:Found element <xsl:value-of select="name()"/> </xsl:message>
+                <xsl:message terminate="no">progress:Converting element <xsl:value-of select="name()"/> - <xsl:value-of select="position()"/> / <xsl:value-of select="$ElementCountToConvert"/></xsl:message>
                 <xsl:choose>
                     <!--Checking for Paragraph element-->
                     <xsl:when test="(
@@ -3762,21 +3753,18 @@
 					count(w:pPr/w:pStyle[substring(@w:val,1,11)='Frontmatter'])=1
 					or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,11)='Frontmatter'])=1
                 )">
-                    <xsl:message terminate="no">progress:SetCurrentMatterType - Found Frontmatter</xsl:message>
                     <xsl:if test="d:SetCurrentMatterType($myObj, 'Frontmatter')"/>
                 </xsl:when>
                 <xsl:when test="(
 					count(w:pPr/w:pStyle[substring(@w:val,1,10)='Bodymatter'])=1
 					or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Bodymatter'])=1
                 )">
-                    <xsl:message terminate="no">progress:SetCurrentMatterType - Found Bodymatter</xsl:message>
                     <xsl:if test="d:SetCurrentMatterType($myObj, 'Bodymatter')"/>
                 </xsl:when>
                 <xsl:when test="(
 					count(w:pPr/w:pStyle[substring(@w:val,1,10)='Rearmatter'])=1
 					or count(w:r/w:rPr/w:rStyle[substring(@w:val,1,10)='Rearmatter'])=1
                 )">
-                    <xsl:message terminate="no">progress:SetCurrentMatterType - Found Rearmatter</xsl:message>
                     <xsl:if test="d:SetCurrentMatterType($myObj, 'Rearmatter')"/>
                 </xsl:when>
             </xsl:choose>

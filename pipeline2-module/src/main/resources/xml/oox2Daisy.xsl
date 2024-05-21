@@ -31,25 +31,28 @@
 
     <!--Implements Image,imagegroup,Note and Notereference-->
     <!--Declaring Global paramaters-->
-    <xsl:param name="Title" as="xs:string" /> <!--Holds Documents Title value-->
-    <xsl:param name="Creator" as="xs:string" /> <!--Holds Documents creator value-->
-    <xsl:param name="Publisher" as="xs:string" /> <!--Holds Documents Publisher value-->
-    <xsl:param name="UID" as="xs:string" /> <!--Holds Document unique id value-->
-    <xsl:param name="Subject" as="xs:string" /> <!--Holds Documents Subject value-->
-    <xsl:param name="acceptRevisions" as="xs:boolean" />
-    <xsl:param name="Version" as="xs:string" /> <!--Holds Documents version value-->
-    <xsl:param name="Custom" as="xs:string" /> <!-- Automatic|Custom -->
-    <xsl:param name="MasterSub" as="xs:boolean" />
-    <xsl:param name="ImageSizeOption" as="xs:string" /> <!-- resize|resample|original -->
-    <xsl:param name="DPI" as="xs:float" />
-    <xsl:param name="CharacterStyles" as="xs:boolean" /> <!-- if true, also convert custom character styles to span with style attribute -->
-
+    <xsl:param name="Title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
+    <xsl:param name="Creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
+    <xsl:param name="Publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
+    <xsl:param name="UID" as="xs:string" select="''"/> <!--Holds Document unique id value-->
+    <xsl:param name="Subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
+    <xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
+    <xsl:param name="Version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
+    <xsl:param name="Custom" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
+    <xsl:param name="MasterSub" as="xs:boolean" select="false()"/>
+    <xsl:param name="ImageSizeOption" as="xs:string" select="'original'"/> <!-- resize|resample|original -->
+    <xsl:param name="DPI" as="xs:integer" select="96"/>
+    <xsl:param name="CharacterStyles" as="xs:boolean" select="false()" /> <!-- if true, also convert custom character styles to span with style attribute -->
     <xsl:param name="FootnotesPosition" as="xs:string" select="'end'" /> <!-- page|end| -->
     <xsl:param name="FootnotesLevel" as="xs:integer" select="0" />
     <xsl:param name="FootnotesNumbering" as="xs:string" select="'none'"  />
     <xsl:param name="FootnotesStartValue" as="xs:integer" select="1" />
-    <xsl:param name="FootnotesNumberingPrefix" as="xs:string?" />
-    <xsl:param name="FootnotesNumberingSuffix" as="xs:string?"/>
+    <xsl:param name="FootnotesNumberingPrefix" as="xs:string?" select="''"/>
+    <xsl:param name="FootnotesNumberingSuffix" as="xs:string?" select="''"/>
+    <xsl:param name="Language" as="xs:string?" select="''"/>
+
+    <!-- For regression tests comparisons -->
+    <xsl:param name="disableDateGeneration" as="xs:boolean" select="false()" />
     
     <!-- NP 2024/02/13 :
         Probleme with language evaluation in word.
@@ -61,7 +64,7 @@
         we should add xml:lang attribute on elements that have a different language declared
         compared to its parent
     -->
-    <xsl:param name="Language" as="xs:string?" />
+
 
     <!-- New object to interact with saxon-->
     <xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$FinalOutputDir)" />
@@ -300,7 +303,7 @@
                     </xsl:choose>
 
                     <!--Taking the value of dc:date from core.xml file-->
-                    <xsl:if test="string-length($documentDate)!=0">
+                    <xsl:if test="string-length($documentDate)!=0 and not($disableDateGeneration)">
                         <meta name="dc:Date" content="{substring-before($documentDate,'T')}"/>
                     </xsl:if>
                     <!--Choose block for checking whether user has entered the Publisher of the document or not-->

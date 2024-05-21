@@ -11,26 +11,6 @@
 		<a px:role="homepage" href="http://daisy.github.io/pipeline/Get-Help/User-Guide/Scripts/word-to-dtbook/">
 			Online documentation
 		</a>
-		<!-- TO BE FILLED
-		<address>
-			Authors:
-			<dl px:role="author">
-				<dt>Name:</dt>
-				<dd px:role="name">Bert Frees</dd>
-				<dt>E-mail:</dt>
-				<dd><a px:role="contact" href="mailto:bertfrees@gmail.com">bertfrees@gmail.com</a></dd>
-				<dt>Organization:</dt>
-				<dd px:role="organization" href="http://www.sbs-online.ch/">SBS</dd>
-			</dl>
-			<dl px:role="author">
-				<dt>Name:</dt>
-				<dd px:role="name">Jostein Austvik Jacobsen</dd>
-				<dt>E-mail:</dt>
-				<dd><a px:role="contact" href="mailto:josteinaj@gmail.com">josteinaj@gmail.com</a></dd>
-				<dt>Organization:</dt>
-				<dd px:role="organization" href="http://www.nlb.no/">NLB</dd>
-			</dl>
-		</address>-->
 	</p:documentation>
 
 	<p:option name="source" required="true" px:type="anyFileURI">
@@ -41,7 +21,8 @@
 	</p:option>
 	<p:option name="result" required="true" px:output="result" px:type="anyDirURI">
 		<p:documentation>
-			<h2 px:role="name">Output directory of the dtbook XML</h2>
+			<h2 px:role="name">DTBook output</h2>
+			<p px:role="desc" xml:space="preserve">Output folder of the conversion to DTBook XML</p>
 		</p:documentation>
 	</p:option>
 
@@ -50,37 +31,34 @@
 		replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1.xml'),',','_')
 	)"/>
 
-	<p:option name="Title" select="''">
+	<p:option name="Title" select="''" required="false">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document title</h2>
-			<p px:role="desc"></p>
 		</p:documentation>
 	</p:option>
-	<p:option name="Creator" select="''">
+	<p:option name="Creator" select="''" required="false">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document author</h2>
-			<p px:role="desc"></p>
 		</p:documentation>
 	</p:option>
-	<p:option name="Publisher" select="''">
+	<p:option name="Publisher" select="''" required="false">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document publisher</h2>
-			<p px:role="desc"></p>
 		</p:documentation>
 	</p:option>
 	<p:option name="UID" select="''">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
-			<h2 px:role="name">Identifier to be added as dtb:uid metadata</h2>
-			<p px:role="desc"></p>
+			<h2 px:role="name">Document identifier</h2>
+			<p px:role="desc">Identifier to be added as dtb:uid metadata</p>
 		</p:documentation>
 	</p:option>
 	<p:option name="Subject" select="''">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
-			<h2 px:role="name">Subject(s) to be added as dc:Subject metadata</h2>
-			<p px:role="desc"></p>
+			<h2 px:role="name">Subject(s)</h2>
+			<p px:role="desc">Subject(s) to be added as dc:Subject metadata</p>
 		</p:documentation>
 	</p:option>
-	<p:option name="acceptRevisions" select="true()">
+	<p:option name="acceptRevisions" select="'true'" px:type="boolean">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Accept revisions</h2>
 			<p px:role="desc">If the document has revisions that are not accepted, consider them as accepted for the conversion.</p>
@@ -94,14 +72,14 @@
 	                                    'wdMainTextStory':[]
 	                                    }" />-->
 	<!-- cx:as="map(xs:string,xs:string*)" -->
-	<p:option name="MasterSub" select="false()" cx:as="xs:boolean" px:hidden="true()"/>
+	<p:option name="MasterSub" px:hidden="true" select="'false'" px:type="boolean" />
 	<!-- from settings  -->
 	<p:option name="PagenumStyle" select="'Custom'">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Pagination mode</h2>
 			<p px:role="desc">Define how page numbers are computed and inserted in the result</p>
 		</p:documentation>
-		<p:pipeinfo>
+		<!--<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>Custom</value>
@@ -110,14 +88,13 @@
 					<a:documentation xml:lang="en">Use Word page breaks to compute and insert page numbers in content</a:documentation>
 				</choice>
 			</px:type>
-		</p:pipeinfo>
+		</p:pipeinfo>-->
 	</p:option>
 	<p:option name="ImageSizeOption" select="'original'">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
-			<h2 px:role="name">Image size option</h2>
-			<p px:role="desc"></p>
+			<h2 px:role="name">Image resizing</h2>
 		</p:documentation>
-		<p:pipeinfo>
+		<!--<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>original</value>
@@ -128,7 +105,7 @@
 					<a:documentation xml:lang="en">Resample images</a:documentation>
 				</choice>
 			</px:type>
-		</p:pipeinfo>
+		</p:pipeinfo>-->
 	</p:option>
 	<p:option name="DPI" select="96" cx:as="xs:integer">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -136,10 +113,9 @@
 			<p px:role="desc">Image resampling targeted resolution in dpi (dot-per-inch)</p>
 		</p:documentation>
 	</p:option>
-	<p:option name="CharacterStyles" select="false()" cx:as="xs:boolean">
+	<p:option name="CharacterStyles" select="'false'" px:type="boolean">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Translate character styles</h2>
-			<p px:role="desc"></p>
 		</p:documentation>
 	</p:option>
 	<p:option name="FootnotesPosition" select="'end'">
@@ -147,7 +123,7 @@
 			<h2 px:role="name">Footnotes position</h2>
 			<p px:role="desc">Footnotes position in content</p>
 		</p:documentation>
-		<p:pipeinfo>
+		<!--<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>inline</value>
@@ -158,12 +134,12 @@
 					<a:documentation xml:lang="en">Put the notes near the page break</a:documentation>
 				</choice>
 			</px:type>
-		</p:pipeinfo>
+		</p:pipeinfo>-->
 	</p:option>
 	<p:option name="FootnotesLevel" select="0" cx:as="xs:integer">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Footnotes insertion level</h2>
-			<p px:role="desc">Closest level into which notes are inserted in content.
+			<p px:role="desc">Lowest level into which notes are inserted in content.
 			0 means the footnotes will be inserted as close as possible of its first call.</p>
 		</p:documentation>
 	</p:option>
@@ -172,7 +148,7 @@
 			<h2 px:role="name">Footnotes numbering</h2>
 			<p px:role="desc">Customize footnotes numbering</p>
 		</p:documentation>
-		<p:pipeinfo>
+		<!--<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>none</value>
@@ -183,7 +159,7 @@
 					<a:documentation xml:lang="en">Use custom numbering, starting from the footnotes start value</a:documentation>
 				</choice>
 			</px:type>
-		</p:pipeinfo>
+		</p:pipeinfo>-->
 	</p:option>
 	<p:option name="FootnotesStartValue" cx:as="xs:integer" select="1">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -194,15 +170,18 @@
 	<p:option name="FootnotesNumberingPrefix" cx:as="xs:string?" select="''">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Footnotes number prefix</h2>
-			<p px:role="desc">Add an prefix before the note numbering</p>
+			<p px:role="desc">Add a prefix before the note's number if numbering is requested.</p>
 		</p:documentation>
 	</p:option>
-	<p:option name="FootnotesNumberingSuffix" cx:as="xs:string?" select="''"/>
+	<p:option name="FootnotesNumberingSuffix" cx:as="xs:string?" select="''">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Footnotes number suffix</h2>
-			<p px:role="desc">Add a text between the notes number and its textual content.</p>
+			<p px:role="desc">Add a text between the note's number and the note's content.</p>
 		</p:documentation>
-	<p:output port="result" sequence="true"/>
+	</p:option>
+
+	<!-- hidden option for tests -->
+	<p:option name="disableDateGeneration" cx:as="xs:boolean" select="false()" px:hidden="true" />
 
 	<p:xslt template-name="main" name="convert-to-dtbook" cx:serialize="true">
 		<p:input port="source">
@@ -220,26 +199,24 @@
 		<p:with-param name="Publisher" select="$Publisher"/>
 		<p:with-param name="UID" select="$UID"/>
 		<p:with-param name="Subject" select="$Subject"/>
-		<p:with-param name="acceptRevisions" select="$acceptRevisions"/>
+		<p:with-param name="acceptRevisions" select="$acceptRevisions = 'true'"/>
 		<p:with-param name="Version" select="$Version"/>
 		<p:with-param name="Custom" select="$PagenumStyle"/>
-		<p:with-param name="MasterSub" select="$MasterSub"/>
+		<p:with-param name="MasterSub" select="$MasterSub='true'"/>
 		<p:with-param name="ImageSizeOption" select="$ImageSizeOption"/>
 		<p:with-param name="DPI" select="$DPI"/>
-		<p:with-param name="CharacterStyles" select="$CharacterStyles"/>
+		<p:with-param name="CharacterStyles" select="$CharacterStyles='true'"/>
 		<p:with-param name="FootnotesPosition" select="$FootnotesPosition"/>
 		<p:with-param name="FootnotesLevel" select="$FootnotesLevel"/>
 		<p:with-param name="FootnotesNumbering" select="$FootnotesNumbering"/>
 		<p:with-param name="FootnotesStartValue" select="$FootnotesStartValue"/>
 		<p:with-param name="FootnotesNumberingPrefix" select="$FootnotesNumberingPrefix"/>
 		<p:with-param name="FootnotesNumberingSuffix" select="$FootnotesNumberingSuffix"/>
+		<p:with-param name="disableDateGeneration" select="$disableDateGeneration"/>
 	</p:xslt>
 	<p:store name="store-xml">
 		<p:with-option name="href" select="$document-output-file"/>
 	</p:store>
-	<p:load cx:depends-on="store-xml">
-		<p:with-option name="href" select="$document-output-file"/>
-	</p:load>
 
 
 </p:declare-step>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <x:description xmlns:x="http://www.daisy.org/ns/xprocspec"
                xmlns:px="http://www.daisy.org/ns/pipeline/xproc"
-               script="../../main/resources/xml/word-to-dtbook.script.xpl">
+               script="../../main/resources/xml/word-to-dtbook.xpl">
 
   <x:scenario label="FromSingleDocx">
     <x:call step="px:word-to-dtbook.script"/>
@@ -13,6 +13,8 @@
             select="resolve-uri('../resources/Test%201/Input/F1.docx')"/>
         <x:option name="UID" select="'1'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/1/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/1/Output/"/>
@@ -40,6 +42,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'2'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/2/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/2/Output/"/>
@@ -67,6 +71,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'3'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/3/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/3/Output/"/>
@@ -94,6 +100,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'4'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/4/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/4/Output/"/>
@@ -121,6 +129,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'5'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/5/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/5/Output/"/>
@@ -148,6 +158,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'6'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/6/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/6/Output/"/>
@@ -175,6 +187,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'7'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/7/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/7/Output/"/>
@@ -202,6 +216,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'8'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/8/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/8/Output/"/>
@@ -229,6 +245,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'9'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/9/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/9/Output/"/>
@@ -256,6 +274,8 @@
         <x:option name="Publisher" select="'Pruchkovskaya'"/>
         <x:option name="UID" select="'10'"/>
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/10/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/10/Output/"/>

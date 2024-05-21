@@ -14,33 +14,28 @@
                 xmlns:dcmitype="http://purl.org/dc/dcmitype/"
                 xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
-                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl">
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl xs">
 
-	<xsl:param name="Title"/>
-	<!--Holds Documents Title value-->
-	<xsl:param name="Creator"/>
-	<!--Holds Documents creator value-->
-	<xsl:param name="Publisher"/>
-	<!--Holds Documents Publisher value-->
-	<xsl:param name="UID"/>
-	<!--Holds Document unique id value-->
-	<xsl:param name="Subject"/>
-	<!--Holds Documents Subject value-->
-	<xsl:param name="acceptRevisions"/>
-	<xsl:param name="Version"/>
-	<!--Holds Documents version value-->
-	<xsl:param name="Custom"/>
-	<xsl:param name="MasterSub"/>
-	<xsl:param name="ImageSizeOption"/>
-	<xsl:param name="DPI"/>
-	<xsl:param name="CharacterStyles"/>
-	<xsl:param name="FootnotesPosition"/>
-	<xsl:param name="FootnotesLevel"/>
-	<xsl:param name="FootnotesNumbering" />
-	<xsl:param name="FootnotesStartValue" />
-	<xsl:param name="FootnotesNumberingPrefix" />
-	<xsl:param name="FootnotesNumberingSuffix" />
-	<xsl:param name="Language" />
+	<!--Declaring Global paramaters-->
+	<xsl:param name="Title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
+	<xsl:param name="Creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
+	<xsl:param name="Publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
+	<xsl:param name="UID" as="xs:string" select="''"/> <!--Holds Document unique id value-->
+	<xsl:param name="Subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
+	<xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
+	<xsl:param name="Version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
+	<xsl:param name="Custom" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
+	<xsl:param name="MasterSub" as="xs:boolean" select="false()"/>
+	<xsl:param name="ImageSizeOption" as="xs:string" select="'original'"/> <!-- resize|resample|original -->
+	<xsl:param name="DPI" as="xs:integer" select="96"/>
+	<xsl:param name="CharacterStyles" as="xs:boolean" select="false()" /> <!-- if true, also convert custom character styles to span with style attribute -->
+	<xsl:param name="FootnotesPosition" as="xs:string" select="'end'" /> <!-- page|end| -->
+	<xsl:param name="FootnotesLevel" as="xs:integer" select="0" />
+	<xsl:param name="FootnotesNumbering" as="xs:string" select="'none'"  />
+	<xsl:param name="FootnotesStartValue" as="xs:integer" select="1" />
+	<xsl:param name="FootnotesNumberingPrefix" as="xs:string?" select="''"/>
+	<xsl:param name="FootnotesNumberingSuffix" as="xs:string?" select="''"/>
+	<xsl:param name="Language" as="xs:string?" select="''"/>
 
 	<!--Template for adding Levels-->
 	<xsl:template name="AddLevel">
@@ -58,8 +53,7 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:message terminate="no">progress:Adding level <xsl:value-of select="$levelValue"/></xsl:message>
-		
+
 		<xsl:variable name="numFormat" as="xs:string" select="substring-before($headingFormatAndTextAndID,'|')" />
 		<xsl:variable name="lvlText" as="xs:string" select="substring-before(substring-after($headingFormatAndTextAndID,'|'),'!')" />
 		<xsl:variable name="numId" as="xs:string" select="substring-after($headingFormatAndTextAndID,'!')" />
@@ -191,7 +185,6 @@
 
 	<xsl:template name="openHeading">
 		<xsl:param name="level"/>
-		<xsl:message terminate="no">debug in openHeading</xsl:message>
 		<xsl:choose>
 			<xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
 				<xsl:call-template name="LanguagesPara">
@@ -217,7 +210,6 @@
 		<xsl:param name="sMinuses" as="xs:string"/>
 		<xsl:param name="sNumbers" as="xs:string"/>
 		<xsl:param name="sZeros" as="xs:string"/>
-		<xsl:message terminate="no">debug In TempLevelSpan</xsl:message>
 		<xsl:choose>
 			<xsl:when test="$lvlcharStyle">
 				<xsl:choose>
@@ -411,9 +403,7 @@
 			<xsl:when test="$CurrentLevel &gt; 6 and $PeekLevel = 6 ">
 				
 				<xsl:variable name="PopLevel" as="xs:integer" select="d:PopLevel($myObj)"/>
-				<xsl:message terminate="no">
-					progress:Closing level <xsl:value-of select="$PopLevel"/>
-				</xsl:message>
+
 				<!--Close that level-->
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;/level',$PopLevel,'&gt;')"/>
 				<!-- TODO : if footnotes position is set to be after this level, insert footnotes here -->
@@ -421,7 +411,6 @@
 			</xsl:when>
 			<!-- NP 20220503 : using CloseLevel to also close paragraph -->
 			<xsl:when test="$CurrentLevel = -1">
-				<xsl:message terminate="no">progress:Closing paragraph</xsl:message>
 				<!-- NP 20240109 : close all inlines before closing paragraph -->
 				<xsl:call-template name="CloseAllStyleTag"/>
 				<!--Close the paragraph -->
@@ -460,7 +449,6 @@
 								and number($FootnotesLevel) &gt;= number($PopLevel)
 							)
 						 )">
-						<xsl:message terminate="no">progress:Trying to insert notes before closing level <xsl:value-of select="$PopLevel"/></xsl:message>
 						<xsl:call-template name="InsertFootnotes">
 							<xsl:with-param name="level" select="$PopLevel"/>
 							<xsl:with-param name="verfoot" select="$verfoot"/>
@@ -471,7 +459,6 @@
 							<xsl:with-param name="sZeros" select="$sZeros"/>
 						</xsl:call-template>
 					</xsl:if>
-					<xsl:message terminate="no">progress:Closing level <xsl:value-of select="$PopLevel"/></xsl:message>
 					<!-- Close the level tag-->
 					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;/level',$PopLevel,'&gt;')"/>
 					<!-- TODO : if footnotes are requested to be inlined in the  $PopLevel - 1 level, insert the notes here 
@@ -711,7 +698,6 @@
 	<xsl:template name="recStart">
 		<xsl:param name="abstLevel" as="xs:string"/>
 		<xsl:param name="level" as="xs:integer"/>
-		<xsl:message terminate="no">debug in recStart</xsl:message>
 		<xsl:choose>
 			<xsl:when test="$level=0">
 				<xsl:variable name="strStart" as="xs:string" select="$numberingXml//w:numbering/w:abstractNum[@w:abstractNumId=$abstLevel]/w:lvl[@w:ilvl=$level]/w:start/@w:val"/>
@@ -785,7 +771,6 @@
 
 	<!--Template for default Page number-->
 	<xsl:template name="DefaultPageNum">
-		<xsl:message terminate="no">debug in DefaultPageNum</xsl:message>
 		<xsl:if test="d:ReturnPageNum($myObj)&lt;=1">
 			<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
 		</xsl:if>
@@ -891,7 +876,6 @@
 		<xsl:param name="custom" as="xs:string"/>
 		<xsl:param name="mastersubtbl" as="xs:boolean"/>
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">progress:Table found</xsl:message>
 		<xsl:if test="$custom='Automatic'">
 			<xsl:for-each select="w:tr/w:tc">
 				<xsl:if test="(

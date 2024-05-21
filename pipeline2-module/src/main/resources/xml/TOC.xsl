@@ -16,7 +16,7 @@
                 xmlns:o="urn:schemas-microsoft-com:office:office"
                 xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
-                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o">
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl m o xs">
   <!--Parameter citation-->
   <xsl:param name="Cite_style" select="d:Citation($myObj)"/>
 

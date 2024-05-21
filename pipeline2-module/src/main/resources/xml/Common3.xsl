@@ -16,43 +16,40 @@
                 xmlns:o="urn:schemas-microsoft-com:office:office"
                 xmlns:d="org.daisy.pipeline.word_to_dtbook.impl.DaisyClass"
                 xmlns="http://www.daisy.org/z3986/2005/dtbook/"
-                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm">
+                exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d o xsl dgm xs">
 	<!--Storing the default language of the document from styles.xml-->
 	<xsl:variable name="doclang" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:val"/>
 	<xsl:variable name="doclangbidi" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:bidi"/>
 	<xsl:variable name="doclangeastAsia" as="xs:string" select="$stylesXml//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang/@w:eastAsia"/>
-	<xsl:param name="Title"/>
-	<!--Holds Documents Title value-->
-	<xsl:param name="Creator"/>
-	<!--Holds Documents creator value-->
-	<xsl:param name="Publisher"/>
-	<!--Holds Documents Publisher value-->
-	<xsl:param name="UID"/>
-	<!--Holds Document unique id value-->
-	<xsl:param name="Subject"/>
-	<!--Holds Documents Subject value-->
-	<xsl:param name="acceptRevisions"/>
-	<xsl:param name="Version"/>
-	<!--Holds Documents version value-->
-	<xsl:param name="Custom"/>
-	<xsl:param name="MasterSub"/>
-	<xsl:param name="ImageSizeOption"/>
-	<xsl:param name="DPI"/>
-	<xsl:param name="CharacterStyles"/>
-	<xsl:param name="FootnotesPosition"/>
-	<xsl:param name="FootnotesLevel"/>
-	<xsl:param name="FootnotesNumbering" />
-	<xsl:param name="FootnotesStartValue" />
-	<xsl:param name="FootnotesNumberingPrefix" />
-	<xsl:param name="FootnotesNumberingSuffix" />
-	<xsl:param name="Language" />
+
+	<!--Declaring Global paramaters-->
+	<xsl:param name="Title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
+	<xsl:param name="Creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
+	<xsl:param name="Publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
+	<xsl:param name="UID" as="xs:string" select="''"/> <!--Holds Document unique id value-->
+	<xsl:param name="Subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
+	<xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
+	<xsl:param name="Version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
+	<xsl:param name="Custom" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
+	<xsl:param name="MasterSub" as="xs:boolean" select="false()"/>
+	<xsl:param name="ImageSizeOption" as="xs:string" select="'original'"/> <!-- resize|resample|original -->
+	<xsl:param name="DPI" as="xs:integer" select="96"/>
+	<xsl:param name="CharacterStyles" as="xs:boolean" select="false()" /> <!-- if true, also convert custom character styles to span with style attribute -->
+	<xsl:param name="FootnotesPosition" as="xs:string" select="'end'" /> <!-- page|end| -->
+	<xsl:param name="FootnotesLevel" as="xs:integer" select="0" />
+	<xsl:param name="FootnotesNumbering" as="xs:string" select="'none'"  />
+	<xsl:param name="FootnotesStartValue" as="xs:integer" select="1" />
+	<xsl:param name="FootnotesNumberingPrefix" as="xs:string?" select="''"/>
+	<xsl:param name="FootnotesNumberingSuffix" as="xs:string?" select="''"/>
+	<xsl:param name="Language" as="xs:string?" select="''"/>
+
 	<!--Template to create NoteReference for FootNote and EndNote
   It is taking two parameters varFootnote_Id and varNote_Class. varFootnote_Id 
   will contain the Reference id of either Footnote or Endnote.-->
 	<xsl:template name="NoteReference">
 		<xsl:param name="noteID" as="xs:integer"/>
 		<xsl:param name="noteClass" as="xs:string"/>
-		<xsl:message terminate="no">progress:footnote</xsl:message>
+		<xsl:message terminate="no">progress:Insert note reference <xsl:value-of select="$noteID"/> </xsl:message>
 		<!--Checking for matching reference Id for Fotnote and Endnote in footnote.xml
 	or endnote.xml-->
 		<xsl:if test="$footnotesXml//w:footnotes/w:footnote[@w:id=$noteID]or $endnotesXml//w:endnotes/w:endnote[@w:id=$noteID]">
@@ -349,7 +346,6 @@
 		<xsl:param name="imgOpt" as="xs:string"/>
 		<xsl:param name="dpi" as="xs:float?"/>
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:message terminate="no">debug in PictureHandler</xsl:message>
 		<xsl:variable name="alttext" as="xs:string?" select="w:drawing/wp:inline/wp:docPr/@descr"/>
 		<!--Variable holds the value of Image Id-->
 		<xsl:variable name="Img_Id" as="xs:string?">
@@ -1623,7 +1619,6 @@
 
 	<!--Template for counting number of pages before TOC-->
 	<xsl:template name="countpageTOC">
-		<xsl:message terminate="no">debug in countpageTOC</xsl:message>
 		<xsl:for-each select="preceding-sibling::*">
 			<xsl:choose>
 				<!--Checking for page break in TOC-->
@@ -1661,7 +1656,6 @@
 		<xsl:param name="pagetype" as="xs:string"/>
 		<xsl:param name="matter" as="xs:string"/>
 		<xsl:param name="counter" as="xs:integer"/>
-		<xsl:message terminate="no">debug in PageNumber</xsl:message>
 		<xsl:choose>
 			<xsl:when test="d:GetCurrentMatterType($myObj)='Frontmatter'">
 				<xsl:if test="not((d:SetConPageBreak($myObj)&gt;1) and (w:type/@w:val='continuous'))">
@@ -1948,7 +1942,6 @@
 	<!--Template to implement Languages-->
 	<xsl:template name="Languages">
 		<xsl:param name="Attribute" as="xs:boolean"/>
-		<xsl:message terminate="no">debug in Languages</xsl:message>
 		<xsl:variable name="count_lang" as="xs:integer" select="xs:integer(string-join(('0',w:r[1]/w:rPr/w:lang/count(@*)),''))"/>
 		<xsl:choose>
 			<!--Checking for language type CS-->
@@ -2287,7 +2280,6 @@
 	<!--Template to implement Languages-->
 	<xsl:template name="PictureLanguage" as="xs:string">
 		<xsl:param name="CheckLang" as="xs:string"/>
-		<xsl:message terminate="no">debug in PictureLanguage</xsl:message>
 		<xsl:choose>
 			<!--Checking languge for picture-->
 			<xsl:when test="$CheckLang='picture'">
@@ -2485,7 +2477,6 @@
 
 	<xsl:template name="GetBdoLanguages">
 		<xsl:param name="runner"/>
-        <xsl:message terminate="no">debug in GetBdoLanguages</xsl:message>
         <xsl:choose>
 			<!-- Complex Script Font -->
             <xsl:when test="$runner/w:rPr/w:rFonts/@w:hint='cs'">
