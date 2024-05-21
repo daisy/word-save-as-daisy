@@ -123,7 +123,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             EventsHandler.onDocumentPreprocessingStart(inputPath);
             DocumentParameters result = new DocumentParameters(inputPath)
             {
-                ResourceId = resourceId != null ? resourceId : null,
+                ResourceId = resourceId ?? null,
                 ShowInputDocumentInWord = ConversionParameters.Visible
             };
             // dot not make visible subdocuments (documents with resource Id assigned)
@@ -259,6 +259,126 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         }
 
+        /// <summary>
+        /// TEST : Convert a single document to XML using only DAISY Pipeline 2 scripts
+        /// </summary>
+        /// <param name="document"></param>
+        /// <param name="conversion"></param>
+        /// <param name="applyPostProcessing"></param>
+        public ConversionResult Convert2(DocumentParameters document, bool applyPostProcessing = true)
+        {
+            this.EventsHandler.onDocumentConversionStart(document, ConversionParameters);
+            xmlConversionCancel = new CancellationTokenSource();
+            CurrentStatus = ConversionStatus.HasStartedConversion;
+
+            // If conversion is to be post processed output the xsl transfo to temp
+            string outputDirectory = ConversionParameters.OutputPath.EndsWith(".xml") ?
+                        Directory.GetParent(ConversionParameters.OutputPath).FullName :
+                        ConversionParameters.OutputPath;
+            // For script execution, replace this by a temp directory
+            if (ConversionParameters.PostProcessor != null) {
+                outputDirectory = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName())).FullName;
+            }
+
+            // Rebuild and sanitize file name
+            string outputFilename = (
+                ConversionParameters.OutputPath.EndsWith(".xml") ?
+                    Path.GetFileName(ConversionParameters.OutputPath) :
+                    Path.GetFileNameWithoutExtension(document.InputPath) + ".xml"
+                );
+
+            string sanitizedName = outputFilename.Replace(",", "_");/*.Replace(" ", "_");*/
+
+            // Rebuild output path
+            document.OutputPath = Path.Combine(outputDirectory, sanitizedName);
+
+            //if (document.SubDocumentsToConvert.Count > 0 && ConversionParameters.ParseSubDocuments) {
+            //    List<DocumentParameters> flattenList = new List<DocumentParameters> {
+            //        document
+            //    };
+            //    foreach (DocumentParameters subDocument in document.SubDocumentsToConvert) {
+            //        flattenList.Add(subDocument);
+            //    }
+            //    this.Convert(flattenList, false);
+            //} else {
+            //    try {
+            //        conversionTask = Task<XmlDocument>.Factory.StartNew(() => {
+            //            try {
+            //                return DocumentConverter.ConvertDocument(document, ConversionParameters);
+            //            }
+            //            catch (Exception ex) {
+            //                throw ex;
+            //            }
+            //        });
+            //        conversionTask.Wait(xmlConversionCancel.Token);
+            //        conversionTask.Dispose();
+            //    }
+            //    catch (OperationCanceledException) {
+            //    }
+            //    catch (Exception e) {
+            //        CurrentStatus = ConversionStatus.Error;
+            //        Exception fault = new Exception("Conversion of single docx to dtbook XML: task crashed", e);
+
+            //        this.EventsHandler.OnConversionError(
+            //            fault
+            //        );
+            //        throw fault;
+            //        //return ConversionResult.Failed(message);
+            //    }
+            //    if (conversionTask.IsFaulted) {
+            //        CurrentStatus = ConversionStatus.Error;
+            //        Exception fault = new Exception("Conversion of single docx to dtbook XML: task ended in fault", conversionTask.Exception);
+
+            //        this.EventsHandler.OnConversionError(
+            //            fault
+            //        );
+            //        throw fault;
+            //        //return ConversionResult.Failed(message);
+            //    }
+            //}
+            //if (CurrentStatus == ConversionStatus.Canceled) { // Conversion is aborted
+            //    this.EventsHandler.onConversionCanceled();
+            //    return ConversionResult.Cancel();
+            //}
+
+            this.EventsHandler.onDocumentConversionSuccess(document, ConversionParameters);
+            if (applyPostProcessing && ConversionParameters.PostProcessor != null) { // launch the pipeline post processing
+                this.EventsHandler.onPostProcessingStart(ConversionParameters);
+                try {
+                    if(ConversionParameters.PostProcessor.Parameters.ContainsKey("Title"))
+                        ConversionParameters.PostProcessor.Parameters["Title"].ParameterValue = ConversionParameters.Title;
+
+                    if (ConversionParameters.PostProcessor.Parameters.ContainsKey("Creator"))
+                        ConversionParameters.PostProcessor.Parameters["Creator"].ParameterValue = ConversionParameters.Creator;
+
+                    if (ConversionParameters.PostProcessor.Parameters.ContainsKey("Publisher"))
+                        ConversionParameters.PostProcessor.Parameters["Publisher"].ParameterValue = ConversionParameters.Publisher;
+
+                    if (ConversionParameters.PostProcessor.Parameters.ContainsKey("UID"))
+                        ConversionParameters.PostProcessor.Parameters["UID"].ParameterValue = ConversionParameters.UID;
+
+                    ConversionParameters.PostProcessor.ExecuteScript(document.CopyPath);
+                }
+                catch (Pipeline2Script.JobException je) {
+                    // Job finished in error, not sure if i should  return a failed result
+                    // or throw back to allow a report
+                    this.EventsHandler.onPostProcessingError(
+                        je
+                    );
+                    return ConversionResult.Failed(je.Message);
+                }
+                catch (Exception e) {
+                    CurrentStatus = ConversionStatus.Error;
+                    Exception fault = new Exception("Error while converting with DAISY Pipeline 2", e);
+                    this.EventsHandler.onPostProcessingError(
+                        fault
+                    );
+                    throw fault;
+                }
+                this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
+            }
+            return ConversionResult.Success();
+        }
 
 
         /// <summary>
@@ -566,10 +686,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         protected void RequestConversionCancel()
         {
-            if (xmlConversionCancel != null)
-            {
-                xmlConversionCancel.Cancel();
-            }
+            xmlConversionCancel?.Cancel();
             CurrentStatus = ConversionStatus.Canceled;
 
         }

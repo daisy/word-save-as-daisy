@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 
 namespace Daisy.SaveAsDAISY.Conversion
@@ -61,6 +62,11 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "resize", Enum.Resize },
                 { "resample", Enum.Resample},
             };
+
+            public static readonly EnumDataType DataType = new EnumDataType(
+                Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                Enum.Original.ToString() // Default value is now stored here
+            );
         }
 
         /// <summary>
@@ -98,6 +104,11 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "end", Enum.End },
                 { "page", Enum.Page},
             };
+
+            public static readonly EnumDataType DataType = new EnumDataType(
+                Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                Enum.Inline.ToString() // Default value is now stored here
+            );
         }
 
         /// <summary>
@@ -135,17 +146,54 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "number", Enum.Number },
                 { "none", Enum.None},
             };
+
+            public static readonly EnumDataType DataType = new EnumDataType(
+                Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                Enum.None.ToString()
+            );
+        }
+
+        public static class PageNumberingChoice
+        {
+            /// <summary>
+            /// Possible type of page numbering computation
+            /// </summary>
+            public enum Enum
+            {
+                /// <summary>
+                /// Use numbers tagged with style PagenumberDAISY to insert page numbers in content
+                /// </summary>
+                Custom,
+                /// <summary>
+                /// Use word page break to compute and insert page numbers in content
+                /// </summary>
+                Automatic
+            }
+            public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
+            {
+                { Enum.Custom, "Custom" },
+                { Enum.Automatic, "Automatic" },
+            };
+            public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
+            {
+                { "Custom", Enum.Custom },
+                { "Automatic", Enum.Automatic },
+            };
+            public static readonly EnumDataType DataType = new EnumDataType(
+                Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                Enum.Custom.ToString()
+            );
         }
 
         #region Private fields with default values
 
-        private string imgoption = "original";
+        private string imgoption = ImageOptionChoice.DataType.Value.ToString();
         private string resampleValue = "96";
         private string characterStyle = "False";
-        private string pagenumStyle = "Custom";
+        private string pagenumStyle = PageNumberingChoice.DataType.Value.ToString();
         private string footnotesLevel = "0"; // 0 mean current paragraphe level, < 0 means parent level going upward, > 1 means absolute dtbook level
-        private string footnotesPosition = "inline"; // Should be inline, end, or page
-        private string footnotesNumbering = "none"; // should be number, none, or word
+        private string footnotesPosition = FootnotesPositionChoice.DataType.Value.ToString(); // Should be inline, end, or page
+        private string footnotesNumbering = FootnotesNumberingChoice.DataType.Value.ToString(); // should be number, none, or word
         private string footnotesStartValue = "1"; // number to be used
         private string footnotesNumberingPrefix = ""; // prefix to be added before the numbering
         private string footnotesNumberingSuffix = ""; // suffix to be added between the number and the text
@@ -159,7 +207,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <param name="withPrivateData">if set to true, settings that are private to users 
         /// (like tts keys) will also be included</param>
         /// <returns></returns>
-        public string asXML(bool withPrivateData = false)
+        public string AsXML(bool withPrivateData = false)
         {
             return $"<Settings>" +
                 $"\r\n\t<PageNumbers  value=\"{pagenumStyle}\" />" +
@@ -191,7 +239,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
             {
-                writer.Write(asXML());
+                writer.Write(AsXML());
                 writer.Flush();
             }
         }
@@ -204,7 +252,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             if (!File.Exists(ConverterSettingsFile))
             {
                 // Save the default settings
-                save();
+                Save();
             }
 
             settingsDocument.Load(ConverterSettingsFile);
@@ -257,7 +305,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <summary>
         /// Save the converter settings to an xml file on disk
         /// </summary>
-        public void save()
+        public void Save()
         {
             if (!Directory.Exists(ApplicationDataFolder))
             {
@@ -265,7 +313,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
             {
-                writer.Write(asXML(true));
+                writer.Write(AsXML(true));
                 writer.Flush();
             }
         }
@@ -278,7 +326,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public bool CharacterStyle { get => characterStyle != "False"; set => characterStyle = value ? "True" : "False"; }
 
-        public string PagenumStyle { get => pagenumStyle; set => pagenumStyle = value; }
+        public PageNumberingChoice.Enum PagenumStyle { get => PageNumberingChoice.Keys[pagenumStyle]; set => pagenumStyle = PageNumberingChoice.Values[value]; }
 
         /// <summary>
         /// Position of the notes relatively to the selected level <br/>

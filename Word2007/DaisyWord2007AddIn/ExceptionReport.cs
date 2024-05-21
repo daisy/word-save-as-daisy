@@ -42,7 +42,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 isProgramFiles ? "admin" : "user",
                 exceptionText,
                 trace,
-                ConverterSettings.Instance.asXML().Replace("\r\n","").Replace("\t", "")
+                ConverterSettings.Instance.AsXML().Replace("\r\n","").Replace("\t", "")
                 ) ;
         }
 

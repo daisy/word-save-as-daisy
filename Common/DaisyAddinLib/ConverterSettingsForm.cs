@@ -188,7 +188,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             notesNumberingStartValue.Mask = "000";
 
-            if (GlobaleSettings.PagenumStyle == "Custom")
+            if (GlobaleSettings.PagenumStyle == ConverterSettings.PageNumberingChoice.Enum.Custom)
             {
                 this.radiobtn_custom.Checked = true;
             }
@@ -274,7 +274,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             try
             {
                 // Update fields
-                GlobaleSettings.PagenumStyle = this.radiobtn_custom.Checked ? "Custom" : "Automatic";
+                GlobaleSettings.PagenumStyle = this.radiobtn_custom.Checked 
+                    ? ConverterSettings.PageNumberingChoice.Enum.Custom 
+                    : ConverterSettings.PageNumberingChoice.Enum.Automatic;
                 GlobaleSettings.CharacterStyle = this.checkbox_translate.Checked;
 
                 if (this.radiobtn_originalimage.Checked == true)
@@ -329,7 +331,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 GlobaleSettings.AzureSpeechRegion = AzureRegionDictionnary[(string)(AzureRegionValue.SelectedItem ?? "")];
 
                 // Save
-                GlobaleSettings.save();
+                GlobaleSettings.Save();
                 this.Close();
             }
             catch (Exception ex)

@@ -38,7 +38,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         
 
-        public static bool documentIsOpen(string documentPath) {
+        public static bool DocumentIsOpen(string documentPath) {
 			try {
 				Package pack;
 				pack = Package.Open(documentPath, FileMode.Open, FileAccess.ReadWrite);

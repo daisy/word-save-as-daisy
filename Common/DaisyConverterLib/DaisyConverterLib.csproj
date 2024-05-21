@@ -131,6 +131,7 @@
     <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToMp3.cs" />
     <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToDaisy3.cs" />
     <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToEpub3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\WordToCleanedDtbook.cs" />
     <Compile Include="Pipeline\DataTypes\MapDataType.cs" />
     <Compile Include="Pipeline\ParameterDataType.cs" />
     <Compile Include="Pipeline\Pipeline2\Pipeline2.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Pipeline\Pipeline2\Scripts\DtbookCleaner.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\DtbookToDaisy3.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\DtbookToEpub3.cs" />
+    <Compile Include="Pipeline\Pipeline2\Scripts\WordToDtbook.cs" />
     <Compile Include="Pipeline\Script.cs" />
     <Compile Include="Preprocessing\StringValidator.cs" />
     <Compile Include="Preprocessing\IDocumentPreprocessor.cs" />
