@@ -79,7 +79,7 @@
 			<h2 px:role="name">Pagination mode</h2>
 			<p px:role="desc">Define how page numbers are computed and inserted in the result</p>
 		</p:documentation>
-		<!--<p:pipeinfo>
+		<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>Custom</value>
@@ -88,13 +88,13 @@
 					<a:documentation xml:lang="en">Use Word page breaks to compute and insert page numbers in content</a:documentation>
 				</choice>
 			</px:type>
-		</p:pipeinfo>-->
+		</p:pipeinfo>
 	</p:option>
 	<p:option name="ImageSizeOption" select="'original'">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Image resizing</h2>
 		</p:documentation>
-		<!--<p:pipeinfo>
+		<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>original</value>
@@ -105,7 +105,7 @@
 					<a:documentation xml:lang="en">Resample images</a:documentation>
 				</choice>
 			</px:type>
-		</p:pipeinfo>-->
+		</p:pipeinfo>
 	</p:option>
 	<p:option name="DPI" select="96" cx:as="xs:integer">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -123,7 +123,7 @@
 			<h2 px:role="name">Footnotes position</h2>
 			<p px:role="desc">Footnotes position in content</p>
 		</p:documentation>
-		<!--<p:pipeinfo>
+		<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>inline</value>
@@ -134,7 +134,7 @@
 					<a:documentation xml:lang="en">Put the notes near the page break</a:documentation>
 				</choice>
 			</px:type>
-		</p:pipeinfo>-->
+		</p:pipeinfo>
 	</p:option>
 	<p:option name="FootnotesLevel" select="0" cx:as="xs:integer">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
@@ -148,7 +148,7 @@
 			<h2 px:role="name">Footnotes numbering</h2>
 			<p px:role="desc">Customize footnotes numbering</p>
 		</p:documentation>
-		<!--<p:pipeinfo>
+		<p:pipeinfo>
 			<px:type>
 				<choice xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0">
 					<value>none</value>
@@ -159,7 +159,7 @@
 					<a:documentation xml:lang="en">Use custom numbering, starting from the footnotes start value</a:documentation>
 				</choice>
 			</px:type>
-		</p:pipeinfo>-->
+		</p:pipeinfo>
 	</p:option>
 	<p:option name="FootnotesStartValue" cx:as="xs:integer" select="1">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
