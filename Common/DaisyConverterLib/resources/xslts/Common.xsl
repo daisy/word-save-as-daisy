@@ -675,20 +675,21 @@
             <xsl:if test="(not(myObj:GetTestRun()&gt;='1')) and (myObj:GetCodeFlag()='0')">
                 <!--Setting a flag for linenumber-->
                 <xsl:variable name="linenumflag" select="myObj:Setlinenumflag()"/>
+				<xsl:variable name="paragraphLanguage">
+					<xsl:call-template name="GetParagraphLanguage">
+						<xsl:with-param name="paragraphNode" select="."/>
+					</xsl:call-template>
+				</xsl:variable>
+				
+				<!-- NP 2024/06/14 change language handling -->
                 <xsl:choose>
-                    <xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
-                        <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'0'"/>
-                            <xsl:with-param name="txt" select="$txt"/>
-                        </xsl:call-template>
-                    </xsl:when>
+					<xsl:when test="not($paragraphLanguage=$Language)">
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p xml:lang=&quot;',$paragraphLanguage,'&quot;&gt;')"/>
+					</xsl:when>
                     <xsl:otherwise>
                         <xsl:if test="(not(w:r/w:rPr/w:rStyle[@w:val='PageNumberDAISY']) and ($custom='Custom')) or (not($custom='Custom'))">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p','&gt;')"/>
                         </xsl:if>
-                        <!--<xsl:if test="not($txt='')">
-                                                        <xsl:value-of select="$txt"/>
-                                                </xsl:if>-->
                     </xsl:otherwise>
                 </xsl:choose>
             </xsl:if>
@@ -2220,6 +2221,7 @@
 				<xsl:with-param name="styleTag" select="'bdo'"/>
 			</xsl:call-template>
 		</xsl:if>
+		
         <xsl:choose>
             <!-- If group is not a notereference and has one of strong|em|sub|sup|a|bdo status -->
             <xsl:when test="$isBidirectionnal or $isHyperlink or $isStrong or $isEmp or $isSuperscript or $isSubscript and not($isNote)">
@@ -3193,9 +3195,9 @@
             <!--Checking for Title/Subtitle paragraph style-->
             <xsl:when test="(w:pPr/w:pStyle/@w:val='Title') or (w:pPr/w:pStyle/@w:val='Subtitle')">
                 <xsl:variable name="lang">
-                    <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
-                    </xsl:call-template>
+					<xsl:call-template name="GetParagraphLanguage">
+						<xsl:with-param name="paragraphNode" select="." />
+					</xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','doctitle ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 <xsl:call-template name="ParaHandler">
@@ -3210,9 +3212,9 @@
             <!--Checking for AuthorDAISY custom paragraph style-->
             <xsl:when test="(w:pPr/w:pStyle/@w:val='AuthorDAISY')">
                 <xsl:variable name="lang">
-                    <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
-                    </xsl:call-template>
+					<xsl:call-template name="GetParagraphLanguage">
+						<xsl:with-param name="paragraphNode" select="." />
+					</xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','author ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 <xsl:if test="$flagNote='footnote' or $flagNote='endnote'">
@@ -3238,9 +3240,9 @@
             <!--Checking for CovertitleDAISY custom paragraph style-->
             <xsl:when test="(w:pPr/w:pStyle/@w:val='CovertitleDAISY')">
                 <xsl:variable name="lang">
-                    <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
-                    </xsl:call-template>
+					<xsl:call-template name="GetParagraphLanguage">
+						<xsl:with-param name="paragraphNode" select="." />
+					</xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','covertitle ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 <xsl:call-template name="Paracharacterstyle">
@@ -3266,9 +3268,9 @@
                     </xsl:if>
                 </xsl:if>
                 <xsl:variable name="lang">
-                    <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
-                    </xsl:call-template>
+					<xsl:call-template name="GetParagraphLanguage">
+						<xsl:with-param name="paragraphNode" select="." />
+					</xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','byline ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 <xsl:call-template name="Paracharacterstyle">
@@ -3294,9 +3296,9 @@
                     </xsl:if>
                 </xsl:if>
                 <xsl:variable name="lang">
-                    <xsl:call-template name="Languages">
-                        <xsl:with-param name="Attribute" select="'1'"/>
-                    </xsl:call-template>
+					<xsl:call-template name="GetParagraphLanguage">
+						<xsl:with-param name="paragraphNode" select="." />
+					</xsl:call-template>
                 </xsl:variable>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','dateline ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 <xsl:call-template name="Paracharacterstyle">
@@ -3310,9 +3312,9 @@
             <xsl:when test="(w:pPr/w:pStyle/@w:val='Prodnote-OptionalDAISY')and (not((preceding-sibling::node()[$checkImageposition]/w:r/w:drawing) or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict) or (preceding-sibling::node()[$checkImageposition]/w:r/w:object)))">
                 <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='Prodnote-OptionalDAISY'])=0">
                     <xsl:variable name="lang">
-                        <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
-                        </xsl:call-template>
+						<xsl:call-template name="GetParagraphLanguage">
+							<xsl:with-param name="paragraphNode" select="." />
+						</xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$aquote,'optional',$aquote,' xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 </xsl:if>
@@ -3329,9 +3331,9 @@
             <xsl:when test="(w:pPr/w:pStyle/@w:val='Prodnote-RequiredDAISY')and (not((preceding-sibling::node()[$checkImageposition]/w:r/w:drawing) or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict) or (preceding-sibling::node()[$checkImageposition]/w:r/w:object)))">
                 <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='Prodnote-RequiredDAISY'])=0">
                     <xsl:variable name="lang">
-                        <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
-                        </xsl:call-template>
+						<xsl:call-template name="GetParagraphLanguage">
+							<xsl:with-param name="paragraphNode" select="." />
+						</xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','prodnote ','render=',$aquote,'required',$aquote,' xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 </xsl:if>
@@ -3361,9 +3363,9 @@
                 </xsl:if>
                 <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,4)='Poem'])=0">
                     <xsl:variable name="lang">
-                        <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
-                        </xsl:call-template>
+						<xsl:call-template name="GetParagraphLanguage">
+							<xsl:with-param name="paragraphNode" select="." />
+						</xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','poem ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 </xsl:if>
@@ -3388,9 +3390,9 @@
                 <xsl:if test="(w:pPr/w:pStyle/@w:val='PoemDAISY')">
                     <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='PoemDAISY'])=0">
                         <xsl:variable name="lang">
-                            <xsl:call-template name="Languages">
-                                <xsl:with-param name="Attribute" select="'1'"/>
-                            </xsl:call-template>
+							<xsl:call-template name="GetParagraphLanguage">
+								<xsl:with-param name="paragraphNode" select="." />
+							</xsl:call-template>
                         </xsl:variable>
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','linegroup ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                     </xsl:if>
@@ -3431,9 +3433,9 @@
             <xsl:when test="(w:pPr/w:pStyle[substring(@w:val,1,8)='Epigraph'])">
                 <xsl:if test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[substring(@w:val,1,8)='Epigraph'])=0">
                     <xsl:variable name="lang">
-                        <xsl:call-template name="Languages">
-                            <xsl:with-param name="Attribute" select="'1'"/>
-                        </xsl:call-template>
+						<xsl:call-template name="GetParagraphLanguage">
+							<xsl:with-param name="paragraphNode" select="." />
+						</xsl:call-template>
                     </xsl:variable>
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','epigraph ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                 </xsl:if>
@@ -3465,18 +3467,18 @@
                     <!--Checking for occurence of Lists in AddressDAISY custom paragraph style-->
                     <xsl:when test="(w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId)">
                         <xsl:variable name="lang">
-                            <xsl:call-template name="Languages">
-                                <xsl:with-param name="Attribute" select="'1'"/>
-                            </xsl:call-template>
+							<xsl:call-template name="GetParagraphLanguage">
+								<xsl:with-param name="paragraphNode" select="." />
+							</xsl:call-template>
                         </xsl:variable>
                         <!--Opening Address tag-->
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','address ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>
                     </xsl:when>
                     <xsl:when test="count(preceding-sibling::node()[1]/w:pPr/w:pStyle[@w:val='AddressDAISY'])=0">
                         <xsl:variable name="lang">
-                            <xsl:call-template name="Languages">
-                                <xsl:with-param name="Attribute" select="'1'"/>
-                            </xsl:call-template>
+							<xsl:call-template name="GetParagraphLanguage">
+								<xsl:with-param name="paragraphNode" select="." />
+							</xsl:call-template>
                         </xsl:variable>
                         <!--Opening Address tag-->
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','address ','xml:lang=',$aquote,$lang,$aquote,'&gt;')"/>

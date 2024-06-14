@@ -165,21 +165,24 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:when>
         </xsl:choose>
     </xsl:template>
+	
+	<!-- Start a heading -->
 	<xsl:template name="openHeading">
 		<xsl:param name="level"/>
 		<xsl:message terminate="no">debug in openHeading</xsl:message>
-		<xsl:choose>
-			<xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
-				<xsl:call-template name="LanguagesPara">
-					<xsl:with-param name="Attribute" select="'1'"/>
-					<xsl:with-param name="level" select="concat('h',$level)"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('h',$level),'&gt;')"/>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:variable name="headingLanguage">
+			<xsl:call-template name="GetParagraphLanguage">
+				<xsl:with-param name="paragraphNode" select="."/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="attributes">
+			<xsl:if test="not($Language=$headingLanguage)">
+				<xsl:text> xml:lang="</xsl:text><xsl:value-of select="$headingLanguage"/><xsl:text>"</xsl:text>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('h',$level,$attributes),'&gt;')" />
 	</xsl:template>
+	
     <xsl:template name="TempLevelSpan">
         <xsl:param name="verhead"/>
         <xsl:param name="custom"/>
