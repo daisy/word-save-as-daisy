@@ -56,7 +56,7 @@ namespace Daisy.SaveAsDAISY.Conversion
          * A490 - A4CF IsYiRadicals 
          * AC00 - D7AF IsHangulSyllables 
          */
-        private static readonly string EastAsiaPattern = "[\\(\\)=\\+\\{\\}\\-_;\\.~\\$\\*\\%\\&]*[" +
+        private static readonly string EastAsiaPattern = "[\\[\\]\\(\\)\\{\\}=\\+\\-_;\\.~\\$\\*\\%\\&\"',0123456789!\\?@#:<>\\/\\|]*[" +
             "\u1100-\u11FF" +
             "\u1720-\u173F" +
             "\u3040-\u309F" +
@@ -95,7 +95,7 @@ namespace Daisy.SaveAsDAISY.Conversion
          * FB50 - FDFF IsArabicPresentationForms-A
          * FE70 - FEFF IsArabicPresentationForms-B
          */
-        private static readonly string BidiPattern = "[\\(\\)=\\+\\{\\}\\-_;\\.~\\$\\*\\%\\&]*[" +
+        private static readonly string BidiPattern = "[\\[\\]\\(\\)\\{\\}=\\+\\-_;\\.~\\$\\*\\%\\&\"',0123456789!\\?@#:<>\\/\\|]*[" +
             "\u0590-\u05FF" +
             "\u0600-\u06FF" +
             "\u0700-\u074F" +

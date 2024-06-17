@@ -12,7 +12,7 @@
  xmlns:dgm="http://schemas.openxmlformats.org/drawingml/2006/diagram"
  xmlns:o="urn:schemas-microsoft-com:office:office"
  xmlns:msxsl="urn:schemas-microsoft-com:xslt"
- xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype myObj o xsl dgm">
+ xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype myObj o xsl dgm msxsl">
     <!--<xsl:param name="sOperators"/>
     <xsl:param name="sMinuses"/>
     <xsl:param name="sNumbers"/>
@@ -21,6 +21,7 @@
     <!--Storing the default language of the document from styles.xml-->
 	<xsl:variable name="styles" select="document('word/styles.xml')//w:styles" />
 
+	<xsl:variable name="ignorableCharacters" select="concat('[](){}=+-_;.~$*%&amp;&quot;,0123456789!?@#:&lt;&gt;/|', &quot;&apos;&quot;)"/>
 	<xsl:variable name="EastAsianCharacters"
 		select="concat(
 			'ᄀᄁᄂᄃᄄᄅᄆᄇᄈᄉᄊᄋᄌᄍᄎᄏᄐᄑᄒᄓᄔᄕᄖᄗᄘᄙᄚᄛᄜᄝᄞᄟᄠᄡᄢᄣᄤᄥᄦᄧᄨᄩᄪᄫᄬᄭᄮᄯᄰᄱᄲᄳᄴᄵᄶᄷᄸᄹᄺᄻᄼᄽᄾᄿᅀᅁᅂᅃᅄᅅᅆᅇᅈᅉᅊᅋᅌᅍᅎᅏᅐᅑᅒᅓᅔᅕᅖᅗᅘᅙᅚᅛᅜᅝᅞᅟᅠᅡᅢᅣᅤᅥᅦᅧᅨᅩᅪᅫᅬᅭᅮᅯᅰᅱᅲᅳᅴᅵᅶᅷᅸᅹᅺᅻᅼᅽᅾᅿᆀᆁᆂᆃᆄᆅᆆᆇᆈᆉᆊᆋᆌᆍᆎᆏᆐᆑᆒᆓᆔᆕᆖᆗᆘᆙᆚᆛᆜᆝᆞᆟᆠᆡᆢᆣᆤᆥᆦᆧᆨᆩᆪᆫᆬᆭᆮᆯᆰᆱᆲᆳᆴᆵᆶᆷᆸᆹᆺᆻᆼᆽᆾᆿᇀᇁᇂᇃᇄᇅᇆᇇᇈᇉᇊᇋᇌᇍᇎᇏᇐᇑᇒᇓᇔᇕᇖᇗᇘᇙᇚᇛᇜᇝᇞᇟᇠᇡᇢᇣᇤᇥᇦᇧᇨᇩᇪᇫᇬᇭᇮᇯᇰᇱᇲᇳᇴᇵᇶᇷᇸᇹᇺᇻᇼᇽᇾᇿ',
@@ -401,7 +402,7 @@
                     <!--Checking if image is bidirectionally oriented-->
                     <xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                     </xsl:if>
                 </caption>
                 <!--Recursively calling the ProcessCaptionProdNote template till all the Captions are processed-->
@@ -440,7 +441,7 @@
                 <!--Checking if image is bidirectionally oriented-->
                 <xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                 </xsl:if>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/prodnote ','&gt;')"/>
                 <!--Recursively calling the ProcessCaptionProdNote template till all the ProdNotes are processed-->
@@ -479,7 +480,7 @@
                 <!--Checking if image is bidirectionally oriented-->
                 <xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                 </xsl:if>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/prodnote ','&gt;')"/>
                 <!--Recursively calling the ProcessCaptionProdNote template till all the ProdNotes are processed-->
@@ -748,7 +749,7 @@
                             </xsl:if>
                             <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                             </xsl:if>
                         </caption>
                     </xsl:if>
@@ -825,7 +826,7 @@
                     <!--Checking for image is bidirectionally oriented-->
                     <xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                     </xsl:if>
                 </caption>
                 <!--Recursively calling the ProcessCaptionProdNote template till all the Captions are processed-->
@@ -867,7 +868,7 @@
                 <!--Checking if image is bidirectionally oriented-->
                 <xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                 </xsl:if>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/prodnote ','&gt;')"/>
                 <!--Recursively calling the ProcessCaptionProdNote template till all the prodnotes are processed-->
@@ -909,7 +910,7 @@
                 <!--Checking if image is bidirectionally oriented-->
                 <xsl:if test="$followingnodes[1]/w:pPr/w:bidi">
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                    <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                 </xsl:if>
                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/prodnote ','&gt;')"/>
                 <!--Recursively calling the ProcessCaptionProdNote template till all the prodnotes are processed-->
@@ -1015,7 +1016,7 @@
                         <xsl:value-of select="$checkcaption"/>
                         <xsl:if test="../../w:r/w:pict/v:shape/v:textbox/w:txbxContent/w:p/w:pPr/w:bidi">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         </xsl:if>
                     </caption>
                 </xsl:if>
@@ -1127,7 +1128,7 @@
                         </xsl:if>
                         <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         </xsl:if>
                     </caption>
                 </xsl:if>
@@ -1235,7 +1236,7 @@
                             </xsl:if>
                             <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+								<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                             </xsl:if>
                             <!--Printing the field value of the Caption-->
                         </caption>
@@ -1341,12 +1342,12 @@
                         </xsl:if>
                         <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                            <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         </xsl:if>
                     </caption>
                     <xsl:if test="../following-sibling::w:p[1]/w:pPr/w:bidi">
                         <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/bdo','&gt;')"/>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                     </xsl:if>
                 </xsl:if>
                 <xsl:call-template name="ProcessCaptionProdNote">
@@ -1856,7 +1857,6 @@
         <xsl:param name="pagetype"/>
         <xsl:param name="matter"/>
         <xsl:param name="counter"/>
-        <xsl:message terminate="no">debug in PageNumber</xsl:message>
         <xsl:choose>
             <xsl:when test="myObj:GetCurrentMatterType()='Frontmatter'">
                 <xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
@@ -1918,61 +1918,61 @@
             <xsl:when test="myObj:GetCurrentMatterType()='Bodymatter'">
                 <xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
                     <xsl:variable name="count" select="myObj:IncrementPageNo()-1"/>
-          <xsl:choose>
-            <!--LowerRoman page number-->
-            <xsl:when test="$pagetype='lowerRoman'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="myObj:PageNumLowerRoman($count)"/>
-              </pagenum>
-            </xsl:when>
-            <!--UpperRoman page number-->
-            <xsl:when test="$pagetype='upperRoman'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="myObj:PageNumUpperRoman($count)"/>
-              </pagenum>
-            </xsl:when>
-            <!--LowerLetter page number-->
-            <xsl:when test="$pagetype='lowerLetter'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="myObj:PageNumLowerAlphabet($count)"/>
-              </pagenum>
-            </xsl:when>
-            <!--UpperLetter page number-->
-            <xsl:when test="$pagetype='upperLetter'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="myObj:PageNumUpperAlphabet($count)"/>
-              </pagenum>
-            </xsl:when>
-            <!--Page number with dash-->
-            <xsl:when test="$pagetype='numberInDash'">
-              <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
-                <xsl:value-of select="concat('-',$count,'-')"/>
-              </pagenum>
-            </xsl:when>
-            <!--Normal page number-->
-            <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="$counter='0' and myObj:GetSectionFront()=1">
-                  <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
-                    <xsl:value-of select="$count"/>
-                  </pagenum>
-                </xsl:when>
-                <xsl:when test="$counter='0' and myObj:GetSectionFront()=0">
-                  <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
-                    <xsl:value-of select="myObj:ReturnPageNum()"/>
-                  </pagenum>
-                </xsl:when>
-                <xsl:otherwise>
-                  <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
-                    <xsl:value-of select="$count"/>
-                  </pagenum>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-          </xsl:choose>
+                    <xsl:choose>
+                        <!--LowerRoman page number-->
+                        <xsl:when test="$pagetype='lowerRoman'">
+                          <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+                            <xsl:value-of select="myObj:PageNumLowerRoman($count)"/>
+                          </pagenum>
+                        </xsl:when>
+                        <!--UpperRoman page number-->
+                        <xsl:when test="$pagetype='upperRoman'">
+                          <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+                            <xsl:value-of select="myObj:PageNumUpperRoman($count)"/>
+                          </pagenum>
+                        </xsl:when>
+                        <!--LowerLetter page number-->
+                        <xsl:when test="$pagetype='lowerLetter'">
+                          <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+                            <xsl:value-of select="myObj:PageNumLowerAlphabet($count)"/>
+                          </pagenum>
+                        </xsl:when>
+                        <!--UpperLetter page number-->
+                        <xsl:when test="$pagetype='upperLetter'">
+                          <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+                            <xsl:value-of select="myObj:PageNumUpperAlphabet($count)"/>
+                          </pagenum>
+                        </xsl:when>
+                        <!--Page number with dash-->
+                        <xsl:when test="$pagetype='numberInDash'">
+                          <pagenum page="special" id="{concat('page',myObj:GeneratePageId())}">
+                            <xsl:value-of select="concat('-',$count,'-')"/>
+                          </pagenum>
+                        </xsl:when>
+                        <!--Normal page number-->
+                        <xsl:otherwise>
+                          <xsl:choose>
+                            <xsl:when test="$counter='0' and myObj:GetSectionFront()=1">
+                              <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
+                                <xsl:value-of select="$count"/>
+                              </pagenum>
+                            </xsl:when>
+                            <xsl:when test="$counter='0' and myObj:GetSectionFront()=0">
+                              <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
+                                <xsl:value-of select="myObj:ReturnPageNum()"/>
+                              </pagenum>
+                            </xsl:when>
+                            <xsl:otherwise>
+                              <pagenum page="normal" id="{concat('page',myObj:GeneratePageId())}">
+                                <xsl:value-of select="$count"/>
+                              </pagenum>
+                            </xsl:otherwise>
+                          </xsl:choose>
+                        </xsl:otherwise>
+                      </xsl:choose>
                 </xsl:if>
             </xsl:when>
-            <xsl:when test="myObj:GetCurrentMatterType()='Reartmatter'">
+            <xsl:when test="myObj:GetCurrentMatterType()='Rearmatter'">
                 <xsl:if test="not((myObj:SetConPageBreak()&gt;1) and (w:type/@w:val='continuous'))">
                     <xsl:variable name="count" select="myObj:IncrementPageNo()-1"/>
                     <xsl:choose>
@@ -2229,16 +2229,16 @@
 					<xsl:value-of select="$runNode/w:rPr/w:lang/@w:val" />
 				</xsl:when>
 				<!-- 2 - Check custom or default character style properties -->
-				<xsl:when test="$characterStyle/w:lang/@w:val">
-					<xsl:value-of select="$characterStyle/w:lang/@w:val" />
+				<xsl:when test="msxsl:node-set($characterStyle)/w:lang/@w:val">
+					<xsl:value-of select="msxsl:node-set($characterStyle)/w:lang/@w:val" />
 				</xsl:when>
 				<!-- 3 - Check paragraph properties -->
-				<xsl:when test="$paragraphRunProperties/w:lang/@w:val">
-					<xsl:value-of select="$paragraphRunProperties/w:lang/@w:val" />
+				<xsl:when test="msxsl:node-set($paragraphRunProperties)/w:lang/@w:val">
+					<xsl:value-of select="msxsl:node-set($paragraphRunProperties)/w:lang/@w:val" />
 				</xsl:when>
 				<!-- 4 - Check paragraph styles -->
-				<xsl:when test="$paragraphStyle/w:lang/@w:val">
-					<xsl:value-of select="$paragraphStyle/w:lang/@w:val" />
+				<xsl:when test="msxsl:node-set($paragraphStyle)/w:lang/@w:val">
+					<xsl:value-of select="msxsl:node-set($paragraphStyle)/w:lang/@w:val" />
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="$defaultLatin" />
@@ -2253,15 +2253,15 @@
 				</xsl:when>
 				<!-- 2 - Check custom or default character style properties -->
 				<xsl:when test="msxsl:node-set($characterStyle)/w:lang/@w:eastAsia">
-					<xsl:value-of select="$characterStyle/w:lang/@w:eastAsia" />
+					<xsl:value-of select="msxsl:node-set($characterStyle)/w:lang/@w:eastAsia" />
 				</xsl:when>
 				<!-- 3 - Check paragraph properties -->
 				<xsl:when test="msxsl:node-set($paragraphRunProperties)/w:lang/@w:eastAsia">
-					<xsl:value-of select="$paragraphRunProperties/w:lang/@w:eastAsia" />
+					<xsl:value-of select="msxsl:node-set($paragraphRunProperties)/w:lang/@w:eastAsia" />
 				</xsl:when>
 				<!-- 4 - Check paragraph styles -->
 				<xsl:when test="msxsl:node-set($paragraphStyle)/w:lang/@w:eastAsia">
-					<xsl:value-of select="$paragraphStyle/w:lang/@w:eastAsia" />
+					<xsl:value-of select="msxsl:node-set($paragraphStyle)/w:lang/@w:eastAsia" />
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="$defaultEastAsia" />
@@ -2276,15 +2276,15 @@
 				</xsl:when>
 				<!-- 2 - Check custom or default character style properties -->
 				<xsl:when test="msxsl:node-set($characterStyle)/w:lang/@w:bidi">
-					<xsl:value-of select="$characterStyle/w:lang/@w:bidi" />
+					<xsl:value-of select="msxsl:node-set($characterStyle)/w:lang/@w:bidi" />
 				</xsl:when>
 				<!-- 3 - Check paragraph properties -->
 				<xsl:when test="msxsl:node-set($paragraphRunProperties)/w:lang/@w:bidi">
-					<xsl:value-of select="$paragraphRunProperties/w:lang/@w:bidi" />
+					<xsl:value-of select="msxsl:node-set($paragraphRunProperties)/w:lang/@w:bidi" />
 				</xsl:when>
 				<!-- 4 - Check paragraph styles -->
 				<xsl:when test="msxsl:node-set($paragraphStyle)/w:lang/@w:bidi">
-					<xsl:value-of select="$paragraphStyle/w:lang/@w:bidi" />
+					<xsl:value-of select="msxsl:node-set($paragraphStyle)/w:lang/@w:bidi" />
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:value-of select="$defaultComplex" />
@@ -2293,7 +2293,7 @@
 		</xsl:variable>
 		<!-- Now resolve if we are in latin or east asia or complex -->
 		<!-- Code used by richard check characters : 
-		    Check for the first character in the run, 
+		    Check for the first character in the run (that is not space or punctuation)
 			- Consider Latin by default
 			- if character starts by an East asian one (checked with regex and ranges of unicode characters)
 			- else if character starts by an Bidirectionnal one (checked with regex and ranges of unicode characters)
@@ -2301,7 +2301,8 @@
 			also checks runner style layout
 			note : the older code also check (w:r/w:rPr/w:rFonts/@w:hint) to see if hint of the font used was cs or eastAsia
 		-->
-		<xsl:variable name="innerText" select="normalize-space($runNode/w:t/text())" />
+		
+		<xsl:variable name="innerText" select="translate(normalize-space($runNode/w:t/text()), $ignorableCharacters, '')" />
 		<xsl:choose>
 			<!-- Not sure about the character test, also adding cs and layout check as backup-->
 			<xsl:when test="string-length($innerText) &gt; 0">
@@ -2320,18 +2321,17 @@
 				</xsl:choose>
 			</xsl:when>
 			<xsl:otherwise>
-				<!-- Empty text runner, check surrounding run nodes first -->
 				<xsl:choose>
-					<xsl:when test="$runNode/preceding-sibling::w:r[1]/w:t">
+				    <xsl:when test="$runNode/preceding-sibling::w:r[1]/w:t">
+				        <xsl:call-template name="GetRunLanguage">
+							<xsl:with-param name="runNode" select="$runNode/preceding-sibling::w:r[1]" />
+						</xsl:call-template>
+					</xsl:when>
+					<!--<xsl:when test="$runNode/following-sibling::w:r[1]/w:t">
 						<xsl:call-template name="GetRunLanguage">
 							<xsl:with-param name="runNode" select="$runNode/following-sibling::w:r[1]" />
 						</xsl:call-template>
-					</xsl:when>
-					<xsl:when test="$runNode/following-sibling::w:r[1]/w:t">
-						<xsl:call-template name="GetRunLanguage">
-							<xsl:with-param name="runNode" select="$runNode/following-sibling::w:r[1]" />
-						</xsl:call-template>
-					</xsl:when>
+					</xsl:when>-->
 					<!-- Check east asian layout -->
 					<xsl:when test="$runNode/w:rPr/w:eastAsianLayout">
 						<xsl:value-of select="$runEastAsia"/>
