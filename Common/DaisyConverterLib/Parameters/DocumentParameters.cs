@@ -66,6 +66,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             "\u31A0-\u31BF" +
             "\u31F0-\u31FF" +
             "\u4DC0-\u4DFF" +
+            "\u4E00-\u9FFF" +
             "\uA000-\uA48F" +
             "\uA490-\uA4CF" +
             "\uAC00-\uD7AF" +
@@ -259,7 +260,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
                             // for each paragraph in document
                             XmlNodeList paragraph = wordContentDocument.SelectNodes(
-                                "//w:body/w:p",
+                                "//w:p",
                                 nsManager
                             );
                             foreach ( XmlNode paragraphNode in paragraph ) {
@@ -338,7 +339,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                                         // <w:rPr> <w:rStyle w:val="TestCharacterStyle" />
                                         XmlNodeList runStyleId = run.SelectNodes("./w:rPr/w:rStyle/@w:val", nsManager);
                                         if (runStyleId.Count > 0) {
-                                            string styleVal = styleId[0].Value;
+                                            XmlAttribute xmlNode = (XmlAttribute)runStyleId[0];
+                                            string styleVal = xmlNode.Value;
                                             XmlNodeList styleLanguages = stylesDocument.SelectNodes(
                                                 $"//w:styles/w:style[@w:type='character' and @w:styleId='{styleVal}']/w:rPr/w:lang",
                                                 nsManager
@@ -380,9 +382,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                                     int langId = Languages.IndexOf(langToAdd);
                                     if (langId == -1) {
                                         Languages.Add(langToAdd);
-                                        languagesCount.Add(1);
+                                        languagesCount.Add(runText.Length);
                                     } else {
-                                        languagesCount[langId] += 1;
+                                        languagesCount[langId] += runText.Length;
                                     }
 
                                 }

@@ -2217,12 +2217,13 @@
 				<xsl:with-param name="styleTag" select="'span'"/>
 			</xsl:call-template>
 		</xsl:if>
+		<xsl:variable name="innerText" select="translate(normalize-space(w:t/text()), $ignorableCharacters, '')" />
 		
         <xsl:choose>
             <!-- If group is not a notereference and has one of strong|em|sub|sup|a|bdo status -->
             <xsl:when test="$isBidirectionnal or (not($isBidirectionnal) and $textLanguage != $paragraphLanguage) or $isHyperlink or $isStrong or $isEmp or $isSuperscript or $isSubscript and not($isNote)">
                 <!-- if not already in the style stack, Open new style tag and add it to the stack -->
-				<xsl:if test="not($isBidirectionnal) and $textLanguage != $paragraphLanguage">
+				<xsl:if test="not($isBidirectionnal) and $textLanguage != $paragraphLanguage and string-length($innerText) &gt; 0">
 					<xsl:call-template name="OpenStyleTagIfNotOpened">
 						<xsl:with-param name="styleTag" select="'span'"/>
 						<xsl:with-param name="attributes">xml:lang="<xsl:value-of select="$textLanguage"/>"</xsl:with-param>
@@ -2353,14 +2354,20 @@
         <xsl:param name="sNumbers"/>
         <xsl:param name="sZeros"/>
         <xsl:param name="listcharStyle"/>
-        <xsl:message terminate="no">debug in List</xsl:message>
         <!--variable checkilvl holds level(w:ilvl) value of the List-->
         <!--NOTE:Use GetCheckLvlInt function that return 0 if node is not exists-->
         <xsl:variable name="checkilvl" select="myObj:GetCheckLvlInt(w:pPr/w:numPr/w:ilvl/@w:val)"/>
         <!--Variable checknumId holds the w:numId value which specifies the type of numbering in the list-->
-        <xsl:variable name="checknumId" select="w:pPr/w:numPr/w:numId/@w:val"/>
+		<xsl:variable name="checknumId">
+			<xsl:choose>
+				<xsl:when test="w:pPr/w:numPr/w:numId/@w:val">
+					<xsl:value-of select="w:pPr/w:numPr/w:numId/@w:val" />
+				</xsl:when>
+				<xsl:otherwise>1</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
         <xsl:variable name="CheckNumId" select="myObj:CheckNumID($checknumId)"/>
-        <xsl:if test="$CheckNumId ='True'">
+		<xsl:if test="$CheckNumId ='True'">
             <xsl:variable name="resetListCounters" select="myObj:StartNewListCounter($checknumId)"/>
         </xsl:if>
         <xsl:if test="string-length(preceding-sibling::node()[1]/w:pPr/w:numPr/w:ilvl/@w:val)=0 or preceding-sibling::w:p[1]/w:pPr/w:rPr/w:vanish" >
@@ -2766,7 +2773,14 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:when>
-			<xsl:when test="((w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId) and not(w:pPr/w:rPr/w:vanish)) and not(w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']) or myObj:CompareHeading(w:pPr/w:pStyle/@w:val,$styleHeading)=1">
+			<xsl:when test="(
+					    (w:pPr/w:numPr/w:ilvl) and (w:pPr/w:numPr/w:numId) and not(w:pPr/w:rPr/w:vanish)
+				      ) and not(
+					    w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'] 
+					    or myObj:CompareHeading(w:pPr/w:pStyle/@w:val,$styleHeading)=1
+					  ) 
+					  "
+			>
 				<xsl:call-template name="List">
 					<xsl:with-param name="prmTrack" select="$prmTrack"/>
 					<xsl:with-param name="VERSION" select="$VERSION"/>
@@ -2779,14 +2793,19 @@
 			<xsl:otherwise>
 				<!--calling template named ParagraphStyle-->
 				<xsl:variable name="checkImageposition" select="myObj:GetCaptionsProdnotes()"/>
-				<xsl:if test="not((preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
+				<xsl:if test="not(
+						        (preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
                                 or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict)
                                 or (preceding-sibling::node()[$checkImageposition]/w:r/w:object)
-                                or (((w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
-                                                or (w:pPr/w:pStyle/@w:val='Caption')
-                                                or (./node()[name()='w:fldSimple']))
-                                and ((preceding-sibling::node()[1][name()='w:tbl'])
-                                                or (following-sibling::node()[1][name()='w:tbl']))))">
+                                or ((
+						                (w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
+                                        or (w:pPr/w:pStyle/@w:val='Caption')
+                                        or (./node()[name()='w:fldSimple'])
+						            ) and (
+						                (preceding-sibling::node()[1][name()='w:tbl'])
+                                        or (following-sibling::node()[1][name()='w:tbl'])
+						        ))
+				)">
 					<xsl:call-template name="ParagraphStyle">
 						<xsl:with-param name="prmTrack" select="$prmTrack"/>
 						<xsl:with-param name="VERSION" select="$VERSION"/>
@@ -3739,17 +3758,27 @@
 				</xsl:call-template>
             </xsl:when>
             <!--Checking if no style exist and then calling the template named ParaHandler-->
-            <xsl:when test="not((((w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
-                    or (w:pPr/w:pStyle/@w:val='Caption')
-                    or (./node()[name()='w:fldSimple']))
-                    and ((preceding-sibling::node()[1][name()='w:tbl'])
-                        or (following-sibling::node()[1][name()='w:tbl'])))
-                        or (w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])
+            <xsl:when test="not(
+					  (
+					    (   
+					        (w:pPr/w:pStyle/@w:val='Table-CaptionDAISY')
+                            or (w:pPr/w:pStyle/@w:val='Caption')
+                            or (./node()[name()='w:fldSimple'])
+					    ) and (
+					        (preceding-sibling::node()[1][name()='w:tbl'])
+                            or (following-sibling::node()[1][name()='w:tbl'])
+					    )
+					  ) or (w:pPr/w:pStyle[substring(@w:val,1,3)='TOC'])
                         or (preceding-sibling::node()[$checkImageposition]/w:r/w:drawing)
                         or (preceding-sibling::node()[$checkImageposition]/w:r/w:pict)
-                        or ((w:pPr/w:pStyle[@w:val='Image-CaptionDAISY'])
-                    and ((following-sibling::node()[1]/w:r/w:drawing)
-                        or (following-sibling::node()[1]/w:r/w:pict))))">
+                        or (
+					        (w:pPr/w:pStyle[@w:val='Image-CaptionDAISY'])
+                            and (
+					            (following-sibling::node()[1]/w:r/w:drawing)
+                                or (following-sibling::node()[1]/w:r/w:pict)
+					        )
+					    )
+			)">
                 <xsl:call-template name="ParaHandler">
                     <xsl:with-param name="flag" select="'1'"/>
                     <xsl:with-param name="prmTrack" select="$prmTrack"/>
