@@ -2164,6 +2164,37 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:variable>
+		<xsl:variable name="paragraphLatin">
+			<xsl:choose>
+				<xsl:when test="$paragraphStyleId and $styles/w:style[@w:type='paragraph' and @w:styleId=$paragraphStyleId]/w:rPr/w:lang/@w:val">
+					<xsl:value-of select="$styles/w:style[@w:type='paragraph' and @w:styleId=$paragraphStyleId]/w:rPr/w:lang/@w:val" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$defaultLatin"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="paragraphEastAsia">
+			<xsl:choose>
+				<xsl:when test="$paragraphStyleId and $styles/w:style[@w:type='paragraph' and @w:styleId=$paragraphStyleId]/w:rPr/w:lang/@w:eastAsia">
+					<xsl:value-of select="$styles/w:style[@w:type='paragraph' and @w:styleId=$paragraphStyleId]/w:rPr/w:lang/@w:eastAsia" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$defaultEastAsia"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		<xsl:variable name="paragraphComplex">
+			<xsl:choose>
+				<xsl:when test="$paragraphStyleId and $styles/w:style[@w:type='paragraph' and @w:styleId=$paragraphStyleId]/w:rPr/w:lang/@w:bidi">
+					<xsl:value-of select="$styles/w:style[@w:type='paragraph' and @w:styleId=$paragraphStyleId]/w:rPr/w:lang/@w:bidi" />
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:value-of select="$defaultComplex"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:variable>
+		
 		<!-- deduce languages from runner first-->
 		<xsl:variable name="runnerLanguages">
 			<xsl:for-each select="$paragraphNode/w:r">
@@ -2193,17 +2224,21 @@
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:choose>
+			<!-- Prioritize the language count -->
 			<xsl:when test="msxsl:node-set($languagesSorted)/lang[1]/@val">
 				<xsl:value-of select="msxsl:node-set($languagesSorted)/lang[1]/@val"/>
 			</xsl:when>
-			<xsl:when test="w:rPr/w:eastAsianLayout or (w:rPr/w:rFonts/@w:hint='eastAsia')">
-				<xsl:value-of select="$defaultEastAsia"/>
+			<!-- then check if east asia is used as default -->
+			<xsl:when test="w:rPr/w:eastAsianLayout or (w:rPr/w:rFonts/@w:hint='eastAsia') or (w:pPr/w:rPr/w:rFonts/@w:hint='eastAsia')">
+				<xsl:value-of select="$paragraphEastAsia"/>
 			</xsl:when>
-			<xsl:when test="w:rPr/w:cs or (w:rPr/w:rFonts/@w:hint='cs')">
-				<xsl:value-of select="$defaultComplex"/>
+			<!-- then check if complex is used as default -->
+			<xsl:when test="w:rPr/w:cs or (w:rPr/w:rFonts/@w:hint='cs') or (w:pPr/w:rPr/w:rFonts/@w:hint='cs')">
+				<xsl:value-of select="$paragraphComplex"/>
 			</xsl:when>
+			<!-- default as latin -->
 			<xsl:otherwise>
-				<xsl:value-of select="$defaultLatin"/>
+				<xsl:value-of select="$paragraphLatin"/>
 			</xsl:otherwise>
 		</xsl:choose>
 		
