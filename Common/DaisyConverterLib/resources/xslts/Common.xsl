@@ -803,8 +803,10 @@
             </xsl:if>
             <!--Checking for BookMarkStart-->
             <xsl:if test="name()='w:bookmarkStart'">
+				<xsl:variable name="aquote">"</xsl:variable>
                 <!--Checking whether BookMarkStart is related to Abbreviations or not -->
                 <xsl:if test="substring(@w:name,1,13)='Abbreviations'">
+					<xsl:call-template name="CloseAllStyleTag" />
                     <xsl:variable name="full" select="myObj:FullAbbr(@w:name,$VERSION)"/>
                     <xsl:choose>
                         <!--Checking whether all previous Abbrevioations tags are closed or not before opening an new Abbreviation tag-->
@@ -812,35 +814,33 @@
                             <xsl:choose>
                                 <!--checking whether an Abbreviation is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
                                 </xsl:when>
                                 <xsl:otherwise>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','abbr','&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
                                 </xsl:otherwise>
                             </xsl:choose>
+							<xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:choose>
-                                <!--checking whether an Abbreviation is having Full Form or not-->
-                                <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="abbr" select="myObj:PushAbrAcr($temp)"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','abbr','&gt;')"/>
-                                    <xsl:variable name="abbr" select="myObj:PushAbrAcr($temp)"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
+							<xsl:variable name="temp">
+								<xsl:choose>
+									<!--checking whether an Abbreviation is having Full Form or not-->
+									<xsl:when test="not($full='')">
+										<xsl:value-of  select="concat('&lt;','abbr ','title=',$aquote,$full,$aquote,'&gt;')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat('&lt;','abbr','&gt;')"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="abbr" select="myObj:PushAbrAcr($temp)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:if>
                 <!--Checking whether BookMarkStart is related to Acronyms or not -->
                 <xsl:if test="substring(@w:name,1,11)='AcronymsYes'">
+					<xsl:call-template name="CloseAllStyleTag" />
                     <xsl:variable name="full">
                         <xsl:value-of select="myObj:FullAcr(@w:name,$VERSION)"/>
                     </xsl:variable>
@@ -850,36 +850,33 @@
                             <xsl:choose>
                                 <!--checking whether an Acronym is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
                                 </xsl:otherwise>
                             </xsl:choose>
+							<xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:choose>
-                                <!--checking whether an Acronym is having Full Form or not-->
-                                <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="acrYes" select="myObj:PushAbrAcr($temp)"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
-                                    <xsl:variable name="acrYes" select="myObj:PushAbrAcr($temp)"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
+							<xsl:variable name="temp">
+								<xsl:choose>
+                                    <!--checking whether an Acronym is having Full Form or not-->
+                                    <xsl:when test="not($full='')">
+                                        <xsl:value-of select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+										<xsl:value-of  select="concat('&lt;','acronym ','pronounce=',$aquote,'yes',$aquote,'&gt;')"/>
+                                    </xsl:otherwise>
+                                </xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="acrYes" select="myObj:PushAbrAcr($temp)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:if>
                 <!--Checking whether BookMarkStart is related to Acronymss or not -->
                 <xsl:if test="substring(@w:name,1,10)='AcronymsNo'">
+					<xsl:call-template name="CloseAllStyleTag" />
                     <xsl:variable name="full">
                         <xsl:value-of select="myObj:FullAcr(@w:name,$VERSION)"/>
                     </xsl:variable>
@@ -889,42 +886,39 @@
                             <xsl:choose>
                                 <!--checking whether an Acronym is having Full Form or not-->
                                 <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
                                 </xsl:when>
                                 <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
                                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
-                                    <xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
+                                    
                                 </xsl:otherwise>
                             </xsl:choose>
+							<xsl:variable name="abrFlag" select="myObj:SetAbbrAcrFlag()"/>
                         </xsl:when>
                         <xsl:otherwise>
-                            <xsl:choose>
-                                <!--checking whether an Acronym is having Full Form or not-->
-                                <xsl:when test="not($full='')">
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
-                                    <xsl:variable name="acrNo" select="myObj:PushAbrAcr($temp)"/>
-                                </xsl:when>
-                                <xsl:otherwise>
-                                    <xsl:variable name="aquote">"</xsl:variable>
-                                    <xsl:variable name="temp" select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
-                                    <xsl:variable name="acrNo" select="myObj:PushAbrAcr($temp)"/>
-                                </xsl:otherwise>
-                            </xsl:choose>
+							<xsl:variable name="temp">
+								<xsl:choose>
+									<!--checking whether an Acronym is having Full Form or not-->
+									<xsl:when test="not($full='')">
+										<xsl:value-of select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,' title=',$aquote,$full,$aquote,'&gt;')"/>
+									</xsl:when>
+									<xsl:otherwise>
+										<xsl:value-of select="concat('&lt;','acronym ','pronounce=',$aquote,'no',$aquote,'&gt;')"/>
+									</xsl:otherwise>
+								</xsl:choose>
+							</xsl:variable>
+							<xsl:variable name="acrNo" select="myObj:PushAbrAcr($temp)"/>
                         </xsl:otherwise>
                     </xsl:choose>
                 </xsl:if>
                 <!--Checking for hyperlink-->
                 <xsl:if test="myObj:GetHyperlinkName(@w:name)=1 and not(substring(@w:name,1,13)='Abbreviations') and not(substring(@w:name,1,11)='AcronymsYes') and not(substring(@w:name,1,10)='AcronymsNo')">
-                    <xsl:variable name="aquote">"</xsl:variable>
                     <xsl:choose>
                         <!--If hyperling in Table of content-->
                         <xsl:when test="not(contains(@w:name,'_Toc'))">
                             <xsl:variable name="flagRun" select="myObj:TestRun()"/>
                             <xsl:variable name="initialize" select="myObj:SetHyperLinkFlag()"/>
+							<xsl:call-template name="CloseAllStyleTag" />
                             <xsl:if test="$initialize=1">
                                 <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','a ','id=',$aquote,myObj:EscapeSpecial(@w:name),$aquote,'&gt;')"/>
                                 <xsl:variable name="storeId" select="myObj:StroreId(@w:id)"/>
@@ -937,7 +931,7 @@
                         </xsl:when>
                     </xsl:choose>
                 </xsl:if>
-            </xsl:if>
+            </xsl:if> 
             <!--Checking for BookMarkEnd -->
             <xsl:if test="name()='w:bookmarkEnd'">
                 <xsl:variable name="seperate">
@@ -955,6 +949,7 @@
                 <!--Checking whether BookMarkEnd is related to Abbreviations or not -->
                 <xsl:if test="$seperate='AbbrTrue'">
                     <!--checking    condition to close abbr Tag -->
+					<xsl:call-template name="CloseAllStyleTag" />
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/abbr','&gt;')"/>
                     <xsl:variable name="abrSet" select="myObj:ReSetAbbrAcrFlag()"/>
                     <xsl:if test="myObj:CountAbrAcr() &gt; 0">
@@ -963,6 +958,7 @@
                 </xsl:if>
                 <!--Checking whether BookMarkEnd is related to Acronyms or not -->
                 <xsl:if test="$seperate='AcrTrue'">
+					<xsl:call-template name="CloseAllStyleTag" />
                     <!--checking    condition to close acronym Tag -->
                     <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/acronym','&gt;')"/>
                     <xsl:variable name="acrSet" select="myObj:ReSetAbbrAcrFlag()"/>
@@ -975,6 +971,7 @@
                     <xsl:if test="myObj:CheckId(@w:id)=1">
                         <xsl:variable name="flagRun" select="myObj:SetTestRun()"/>
                         <xsl:if test="not(../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading'])">
+							<xsl:call-template name="CloseAllStyleTag" />
                             <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/a','&gt;')"/>
                         </xsl:if>
                         <xsl:if test="../w:pPr/w:pStyle[substring(@w:val,1,7)='Heading']">
