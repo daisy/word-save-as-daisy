@@ -77,7 +77,7 @@ This release includes the following changes :
 - Non-docx document opened in word are now accepted, as long as word can create a copy of them and upgrade it to docx format.
 - Language detection has been reworked to better detect the different languages used in the document and fix paragraph and text language markup.
   - Credits to @ways2read / Richard Orme for providing the code used in WordToEPUB
-- The underlying DAISY Pipeline 2 has been updated to version 1.14.19 :
+- The underlying DAISY Pipeline 2 has been updated:
   - The form to export the document to mp3 has been updated to reflect the new parameters of the pipeline 2 script.
 - Fixed cases where acronyms and abbreviations were breaking validity of the result.
 - Fixed an issue where a title in table was converted as a list (for now converted as paragraph)
