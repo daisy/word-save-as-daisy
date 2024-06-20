@@ -11,6 +11,7 @@ If Office is not found by the installer (like preinstalled or windows store vers
 
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
 - Or access to the [last release page](https://github.com/daisy/word-save-as-daisy/releases/latest)
+- Or test the [latest beta version](https://github.com/daisy/word-save-as-daisy/releases/tag/v2.8.6-beta)
 
 ## Report issues
 
@@ -69,6 +70,18 @@ This has been reported to Microsoft through their Feedback channel, but if anyon
 we would really appreciate it.
 
 # Changelog
+
+## 2.8.6 beta (June 2024)
+
+This release includes the following changes :
+- Non-docx document opened in word are now accepted, as long as word can create a copy of them and upgrade it to docx format.
+- Language detection has been reworked to better detect the different languages used in the document and fix paragraph and text language markup.
+  - Credits to @ways2read / Richard Orme for providing the code used in WordToEPUB
+- The underlying DAISY Pipeline 2 has been updated:
+  - The form to export the document to mp3 has been updated to reflect the changes of parameters for the pipeline 2 script.
+- Fixed cases where acronyms and abbreviations were breaking validity of the result.
+- Fixed an issue where a title in table was converted as a list (for now converted as paragraph)
+- Fixed an issue with pagenum generation where closing paragraph tags would be added in some cases without an opening tag.
 
 ## 2.8.5 beta (March 2024)
 

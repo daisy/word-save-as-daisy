@@ -58,7 +58,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
 
         private void ValueSelector_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            UpdateScriptParameterValue();
         }
     }
 

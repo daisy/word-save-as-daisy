@@ -169,7 +169,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
             object currentFile = currentDoc.FullName;
-            object tmpFileName = document.CopyPath;
+            object tmpFileName = Path.Combine(
+                    Path.GetDirectoryName(document.CopyPath),
+                    Path.GetFileNameWithoutExtension(document.CopyPath)+"."+Path.GetExtension((string)currentFile)
+                );
 
             if (File.Exists((string)tmpFileName)) {
                 File.Delete((string)tmpFileName);
@@ -192,7 +195,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             );
             // Upgrade the copy to docx for conversion
             copy.SaveAs2(
-                FileName: tmpFileName,
+                FileName: document.CopyPath,
                 AddToRecentFiles: false,
                 FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument
             );

@@ -12,7 +12,8 @@
  xmlns:v="urn:schemas-microsoft-com:vml"
  xmlns:dcmitype="http://purl.org/dc/dcmitype/"
  xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"
- xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v  vt dcmitype myObj">
+ xmlns:msxsl="urn:schemas-microsoft-com:xslt"
+ xmlns:myObj="urn:Daisy" exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v  vt dcmitype myObj msxsl">
     <!--Imports all the XSLT-->
     <xsl:import href="Common.xsl"/>
   <!--Implements Table of Contents-->
@@ -228,7 +229,7 @@
                         <meta name="dtb:uid" content="{$UID}"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                <meta name="dtb:generator" content="SaveAsDAISY 2.8.6, by the DAISY Consortium"/>
+                <meta name="dtb:generator" content="SaveAsDAISY 2.8.7, by the DAISY Consortium"/>
                 <!--Choose block for checking whether user has entered the Title of the document or not-->
                 <meta name="dc:Title" content="{$Title}"/>
                 <!--Choose block for checking whether user has entered the Creator of the document or not-->
@@ -267,67 +268,40 @@
                         <meta name="dc:Identifier" content="{$UID}"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                <meta name="dc:Language" content="{$doclang}"/>
-                <xsl:variable name="insertLangDefault" select="myObj:AddLanguage($doclang)"/>
-                <xsl:message terminate="no">progress:Parsing document languages</xsl:message>
-                <xsl:for-each select="document('word/document.xml')//w:body/w:p/w:r/w:rPr">
-                    <xsl:if test="w:lang">
-                        <xsl:choose>
-                            <xsl:when test="w:rFonts/@w:hint='cs'">
-                                <xsl:choose>
-                                    <xsl:when test="w:lang/@w:bidi">
-                                        <xsl:if test="myObj:AddLanguage(w:lang/@w:bidi)=1">
-                                            <meta name="dc:Language" content="{w:lang/@w:bidi}"/>
-                                        </xsl:if>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:if test="myObj:AddLanguage($doclangbidi)=1">
-                                            <meta name="dc:Language" content="{$doclangbidi}"/>
-                                        </xsl:if>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:when>
-                            <xsl:when test="w:rFonts/@w:hint='eastAsia'">
-                                <xsl:choose>
-                                    <xsl:when test="w:lang/@w:eastAsia">
-                                        <xsl:if test="myObj:AddLanguage(w:lang/@w:eastAsia)=1">
-                                            <meta name="dc:Language" content="{w:lang/@w:eastAsia}"/>
-                                        </xsl:if>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:if test="myObj:AddLanguage($doclangeastAsia)=1">
-                                            <meta name="dc:Language" content="{$doclangeastAsia}"/>
-                                        </xsl:if>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:when>
-                            <xsl:otherwise>
-                                <xsl:choose>
-                                    <xsl:when test="w:lang/@w:val">
-                                        <xsl:if test="myObj:AddLanguage(w:lang/@w:val)=1">
-                                            <meta name="dc:Language" content="{w:lang/@w:val}"/>
-                                        </xsl:if>
-                                    </xsl:when>
-                                    <xsl:when test="w:lang/@w:eastAsia">
-                                        <xsl:if test="myObj:AddLanguage(w:lang/@w:eastAsia)=1">
-                                            <meta name="dc:Language" content="{w:lang/@w:eastAsia}"/>
-                                        </xsl:if>
-                                    </xsl:when>
-                                    <xsl:when test="w:lang/@w:bidi">
-                                        <xsl:if test="myObj:AddLanguage(w:lang/@w:bidi)=1">
-                                            <meta name="dc:Language" content="{w:lang/@w:bidi}"/>
-                                        </xsl:if>
-                                    </xsl:when>
-                                    <xsl:otherwise>
-                                        <xsl:if test="myObj:AddLanguage($doclang)=1">
-                                            <meta name="dc:Language" content="{$doclang}"/>
-                                        </xsl:if>
-                                    </xsl:otherwise>
-                                </xsl:choose>
-                            </xsl:otherwise>
-                        </xsl:choose>
-                    </xsl:if>
-                </xsl:for-each>
+
+				<xsl:message terminate="no">progress:Parsing document languages</xsl:message>
+				<!-- Compute all content languages -->
+				<!-- deduce languages from paragraphes -->
+				<xsl:variable name="paragraphLanguages">
+					<xsl:for-each select="document('word/document.xml')//w:body//w:p">
+						<xsl:variable name="found">
+							<xsl:call-template name="GetParagraphLanguage">
+								<xsl:with-param name="paragraphNode" select="." />
+							</xsl:call-template>
+						</xsl:variable>
+						<lang val="{$found}" />
+					</xsl:for-each>
+				</xsl:variable>
+				<!-- Count languages -->
+				<xsl:variable name="uniqLanguages">
+					<xsl:for-each select="msxsl:node-set($paragraphLanguages)/lang">
+						<xsl:variable name="currentVal" select="@val"/>
+						<xsl:if test="count(preceding-sibling::lang[@val=$currentVal])=0">
+							<lang val="{$currentVal}"
+								count="{count(following-sibling::lang[@val=$currentVal]) + 1}" />
+						</xsl:if>
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:variable name="languagesSorted">
+					<xsl:for-each select="msxsl:node-set($uniqLanguages)/lang">
+						<xsl:sort select="@count" data-type="number" order="descending"/>
+						<lang val="{@val}" count="{@count}" />
+					</xsl:for-each>
+				</xsl:variable>
+				<xsl:for-each select="msxsl:node-set($languagesSorted)/lang">
+					<xsl:variable name="insertLangDefault" select="myObj:AddLanguage(@val)"/>
+					<meta name="dc:Language" content="{@val}"/>
+				</xsl:for-each>
                 <!--End of Head element-->
             </head>
             <!--Starting Book Element-->

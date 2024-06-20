@@ -19,7 +19,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private static StringValidator _DAISYFileNameFormat = new StringValidator
         {
-            AuthorisationPattern = new Regex(@"^[a-zA-Z0-9_\-\.]+\.docx$"),
+            AuthorisationPattern = new Regex(@"^[a-zA-Z0-9_\-\.]+$"),
             UnauthorizedValueMessage = "Your document file name contains unauthorized characters, that may be automatically replaced by underscores.\r\n" +
                         "Only Alphanumerical letters (a-z, A-Z, 0-9), hyphens (-), dots (.) " +
                             "and underscores (_) are allowed in DAISY file names." +

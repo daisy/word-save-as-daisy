@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 
 namespace Daisy.SaveAsDAISY.Conversion
@@ -33,9 +34,93 @@ namespace Daisy.SaveAsDAISY.Conversion
             Creator = "";
             Title = "";
             Publisher = "";
-            HasRevisions = false;
+            HasRevisions = false;            
         }
-        
+
+        // Richard use caracter check to determine the script
+        // taking from https://learn.microsoft.com/en-us/dotnet/standard/base-types/character-classes-in-regular-expressions)
+        // instead of the shorthand declared in .net
+        // (goal is to adapt that in xslts after for conversion language evaluation)
+        // EastAsia codepoints 
+        /*
+         * 1100 - 11FF IsHangulJamo 
+         * 1720 - 173F IsHanunoo 
+         * 3040 - 309F IsHiragana  
+         * 30A0 - 30FF IsKatakana 
+         * 3100 - 312F IsBopomofo 
+         * 3130 - 318F IsHangulCompatibilityJamo 
+         * 31A0 - 31BF IsBopomofoExtended 
+         * 31F0 - 31FF IsKatakanaPhoneticExtensions 
+         * 4DC0 - 4DFF IsYijingHexagramSymbols 
+         * A000 - A48F IsYiSyllables 
+         * A490 - A4CF IsYiRadicals 
+         * AC00 - D7AF IsHangulSyllables 
+         */
+        private static readonly string EastAsiaPattern = "[\\[\\]\\(\\)\\{\\}=\\+\\-_;\\.~\\$\\*\\%\\&\"',0123456789!\\?@#:<>\\/\\|]*[" +
+            "\u1100-\u11FF" +
+            "\u1720-\u173F" +
+            "\u3040-\u309F" +
+            "\u30A0-\u30FF" +
+            "\u3100-\u312F" +
+            "\u3130-\u318F" +
+            "\u31A0-\u31BF" +
+            "\u31F0-\u31FF" +
+            "\u4DC0-\u4DFF" +
+            "\u4E00-\u9FFF" +
+            "\uA000-\uA48F" +
+            "\uA490-\uA4CF" +
+            "\uAC00-\uD7AF" +
+        "]+.*";
+        private static readonly Regex IsEastAsia = new Regex(EastAsiaPattern, RegexOptions.Compiled);
+        // Bidi codepoints
+        /*
+         * 0590 - 05FF IsHebrew
+         * 0600 - 06FF IsArabic
+         * 0700 - 074F IsSyriac
+         * 0780 - 07BF IsThaana
+         * 0980 - 09FF IsBengali
+         * 0900 - 097F IsDevanagari
+         * 0A00 - 0A7F IsGurmukhi
+         * 0A80 - 0AFF IsGujarati
+         * 0B00 - 0B7F IsOriya
+         * 0B80 - 0BFF IsTamil
+         * 0C00 - 0C7F IsTelugu
+         * 0C80 - 0CFF IsKannada
+         * 0D00 - 0D7F IsMalayalam
+         * 0D80 - 0DFF IsSinhala
+         * 0E00 - 0E7F IsThai
+         * 0E80 - 0EFF IsLao
+         * 0F00 - 0FFF IsTibetan
+         * 1000 - 109F IsMyanmar
+         * 10A0 - 10FF IsGeorgian
+         * FB50 - FDFF IsArabicPresentationForms-A
+         * FE70 - FEFF IsArabicPresentationForms-B
+         */
+        private static readonly string BidiPattern = "[\\[\\]\\(\\)\\{\\}=\\+\\-_;\\.~\\$\\*\\%\\&\"',0123456789!\\?@#:<>\\/\\|]*[" +
+            "\u0590-\u05FF" +
+            "\u0600-\u06FF" +
+            "\u0700-\u074F" +
+            "\u0780-\u07BF" +
+            "\u0980-\u09FF" +
+            "\u0900-\u097F" +
+            "\u0A00-\u0A7F" +
+            "\u0A80-\u0AFF" +
+            "\u0B00-\u0B7F" +
+            "\u0B80-\u0BFF" +
+            "\u0C00-\u0C7F" +
+            "\u0C80-\u0CFF" +
+            "\u0D00-\u0D7F" +
+            "\u0D80-\u0DFF" +
+            "\u0E00-\u0E7F" +
+            "\u0E80-\u0EFF" +
+            "\u0F00-\u0FFF" +
+            "\u1000-\u109F" +
+            "\u10A0-\u10FF" +
+            "\uFB50-\uFDFF" +
+            "\uFE70-\uFEFF" +
+        "]+.*";
+        private static readonly Regex IsBidi = new Regex(BidiPattern, RegexOptions.Compiled);
+
         /// <summary>
         /// Extract propertes from the copy. <br/>
         /// needs to be called by document preprocessor after it has created the copy but before
@@ -121,58 +206,187 @@ namespace Daisy.SaveAsDAISY.Conversion
                         // TODO extract list of languages and sort them by their count of presence in document
                         // the count is obtained by checking each runner in word and counting each language
                         // in it
+                        // NP 2024/06/12 : Richard had a VB code used in WordToEpub to evaluate more accurately the language of a run
+                        // I try to adapt the logic here
                         Languages = new List<string>();
                         List<int> languagesCount = new List<int>();
                         if (stylesDocument != null && wordContentDocument != null) {
-                            //get default languages for styles
+                            string defaultLatin = "";
+                            string defaultEastAsia = "";
+                            string defaultComplex = "";
+                            //get default languages for the document
                             XmlNodeList defaultRunnerlanguages = stylesDocument.SelectNodes(
                                 "//w:styles/w:docDefaults/w:rPrDefault/w:rPr/w:lang",
                                 nsManager
                             );
+                            if (defaultRunnerlanguages.Count > 0) {
+                                defaultLatin = defaultRunnerlanguages[0].Attributes["w:val"].Value;
+                                if(defaultRunnerlanguages[0].Attributes["w:eastAsia"] != null) {
+                                    defaultEastAsia = defaultRunnerlanguages[0].Attributes["w:eastAsia"].Value;
+                                } else {
+                                    defaultEastAsia = defaultLatin;
+                                }
+                                if (defaultRunnerlanguages[0].Attributes["w:bidi"] != null) {
+                                    defaultComplex = defaultRunnerlanguages[0].Attributes["w:bidi"].Value;
+                                } else {
+                                    defaultComplex = defaultLatin;
+                                }
+                            }
+
+
+                            // get languages for style "Normal" style
+                            // According to Richard's code :
+                            // "If Normal has a language setting then this should be used as the default rather than the default para style" 
+                            XmlNodeList NormalStylelanguages = stylesDocument.SelectNodes(
+                                "//w:styles/w:style[@w:type='paragraph' and @w:styleId='Normal']/w:rPr/w:lang",
+                                nsManager
+                            );
+                            if (NormalStylelanguages.Count > 0) {
+                                if(NormalStylelanguages[0].Attributes["w:val"] != null) {
+                                    defaultLatin = NormalStylelanguages[0].Attributes["w:val"].Value;
+                                }
+                                if (NormalStylelanguages[0].Attributes["w:eastAsia"] != null) {
+                                    defaultEastAsia = NormalStylelanguages[0].Attributes["w:eastAsia"].Value;
+                                }
+                                if (NormalStylelanguages[0].Attributes["w:bidi"] != null) {
+                                    defaultComplex = NormalStylelanguages[0].Attributes["w:bidi"].Value;
+                                }
+                            }
+
+                            XmlNodeList defaultCharacterStyleLang = stylesDocument.SelectNodes(
+                                "//w:styles/w:style[w:type='character' and w:default='1']/w:rPr/w:lang",
+                                nsManager
+                            );
+
                             // for each paragraph in document
                             XmlNodeList paragraph = wordContentDocument.SelectNodes(
-                                "//w:body/w:p",
+                                "//w:p",
                                 nsManager
                             );
                             foreach ( XmlNode paragraphNode in paragraph ) {
+                                // default paragraph langs from default
+                                string paragraphLatin = defaultLatin;
+                                string paragraphEastAsia = defaultEastAsia;
+                                string paragraphComplex = defaultComplex;
+                                // Check style-specific languages
+                                
+                                XmlNodeList styleId = paragraphNode.SelectNodes("./w:pPr/w:pStyle/@w:val", nsManager);
+                                if (styleId.Count > 0) {
+                                    string styleVal = styleId[0].Value;
+                                    //character
+                                    // 
+                                    XmlNodeList styleLanguages = stylesDocument.SelectNodes(
+                                        $"//w:styles/w:style[@w:type='paragraph' and @w:styleId='{styleVal}']/w:rPr/w:lang",
+                                        nsManager
+                                    );
+                                    // Paragraph style has a language setting
+                                    if (styleLanguages.Count > 0) {
+                                        if (styleLanguages[0].Attributes["w:val"] != null) {
+                                            paragraphLatin = styleLanguages[0].Attributes["w:val"].Value;
+                                        }
+                                        if (styleLanguages[0].Attributes["w:eastAsia"] != null) {
+                                            paragraphEastAsia = styleLanguages[0].Attributes["w:eastAsia"].Value;
+                                        }
+                                        if (styleLanguages[0].Attributes["w:bidi"] != null) {
+                                            paragraphComplex = styleLanguages[0].Attributes["w:bidi"].Value;
+                                        }
+                                    }
+                                }
                                 XmlNodeList paragraphLanguages = paragraphNode.SelectNodes("./w:pPr/w:rPr/w:lang", nsManager);
+                                if(paragraphLanguages.Count > 0) {
+                                    // Parapgraph has a language setting for its runners
+                                    if (paragraphLanguages[0].Attributes["w:val"] != null) {
+                                        paragraphLatin = paragraphLanguages[0].Attributes["w:val"].Value;
+                                    }
+                                    if (paragraphLanguages[0].Attributes["w:eastAsia"] != null) {
+                                        paragraphEastAsia = paragraphLanguages[0].Attributes["w:eastAsia"].Value;
+                                    }
+                                    if (paragraphLanguages[0].Attributes["w:bidi"] != null) {
+                                        paragraphComplex = paragraphLanguages[0].Attributes["w:bidi"].Value;
+                                    }
+                                }
+
                                 XmlNodeList runners = paragraphNode.SelectNodes("./w:r", nsManager);
                                 foreach (XmlNode run in runners) {
-                                    // Check which lang node is applied to a runner,
-                                    // from runner level up to style definition level
+                                    // Default to the paragraph languages
+                                    string runLatin = paragraphLatin;
+                                    string runEastAsia = paragraphEastAsia;
+                                    string runComplex = paragraphComplex;
+                                    string runScript = "Latin";
+                                    string runText = run.InnerText.Trim();
+                                    
+                                    if (IsEastAsia.IsMatch(runText)) {
+                                        runScript = "EastAsia";
+                                    } else if (IsBidi.IsMatch(runText)) {
+                                        runScript = "Complex";
+                                    }
+
                                     XmlNode langNode = null;
                                     XmlNodeList runLanguages = run.SelectNodes("./w:rPr/w:lang", nsManager);
-                                    if( runLanguages.Count > 0 ) {
-                                        langNode = runLanguages[0];
-                                    } else if (paragraphLanguages.Count > 0) {
-                                        // No runner lang defined, increment counter based on paragraph properties
-                                        langNode = paragraphLanguages[0];
-                                    } else if (defaultRunnerlanguages.Count > 0) {
-                                        // no definition at paragraph level, use default props
-                                        langNode = defaultRunnerlanguages[0];
-                                    }
-                                    if (langNode != null) {
-                                        // check val by default
-                                        XmlAttribute langToAdd = langNode.Attributes["w:val"];
-                                        // else check eastAsia
-                                        if( langToAdd == null ) {
-                                            langToAdd = langNode.Attributes["w:eastAsia"];
+                                    if (runLanguages.Count > 0) {
+                                        // Check languages defined in runner properties
+                                        if (runLanguages[0].Attributes["w:val"] != null) {
+                                            runLatin = runLanguages[0].Attributes["w:val"].Value;
                                         }
-                                        // else check bidirectionnal
-                                        if( langToAdd == null ) {
-                                            langToAdd = langNode.Attributes["w:bidi"];
+                                        if (runLanguages[0].Attributes["w:eastAsia"] != null) {
+                                            runEastAsia = runLanguages[0].Attributes["w:eastAsia"].Value;
                                         }
-                                        // if any found, increment
-                                        if (langToAdd != null) {
-                                            int langId = Languages.IndexOf(langToAdd.Value);
-                                            if (langId == -1) {
-                                                Languages.Add(langToAdd.Value);
-                                                languagesCount.Add(1);
-                                            } else {
-                                                languagesCount[langId] += 1;
+                                        if (runLanguages[0].Attributes["w:bidi"] != null) {
+                                            runComplex = runLanguages[0].Attributes["w:bidi"].Value;
+                                        }
+                                    } else {
+                                        // check for runner styles
+                                        // <w:rPr> <w:rStyle w:val="TestCharacterStyle" />
+                                        XmlNodeList runStyleId = run.SelectNodes("./w:rPr/w:rStyle/@w:val", nsManager);
+                                        if (runStyleId.Count > 0) {
+                                            XmlAttribute xmlNode = (XmlAttribute)runStyleId[0];
+                                            string styleVal = xmlNode.Value;
+                                            XmlNodeList styleLanguages = stylesDocument.SelectNodes(
+                                                $"//w:styles/w:style[@w:type='character' and @w:styleId='{styleVal}']/w:rPr/w:lang",
+                                                nsManager
+                                            );
+                                            if(styleLanguages.Count > 0) {
+                                                if (styleLanguages[0].Attributes["w:val"] != null) {
+                                                    runLatin = styleLanguages[0].Attributes["w:val"].Value;
+                                                }
+                                                if (styleLanguages[0].Attributes["w:eastAsia"] != null) {
+                                                    runEastAsia = styleLanguages[0].Attributes["w:eastAsia"].Value;
+                                                }
+                                                if (styleLanguages[0].Attributes["w:bidi"] != null) {
+                                                    runComplex = styleLanguages[0].Attributes["w:bidi"].Value;
+                                                }
                                             }
-                                        }
+                                        } else {
+                                            // Check if default character style has a language associated
+                                            if (defaultCharacterStyleLang.Count > 0) {
+                                                if (defaultCharacterStyleLang[0].Attributes["w:val"] != null) {
+                                                    runLatin = defaultCharacterStyleLang[0].Attributes["w:val"].Value;
+                                                }
+                                                if (defaultCharacterStyleLang[0].Attributes["w:eastAsia"] != null) {
+                                                    runEastAsia = defaultCharacterStyleLang[0].Attributes["w:eastAsia"].Value;
+                                                }
+                                                if (defaultCharacterStyleLang[0].Attributes["w:bidi"] != null) {
+                                                    runComplex = defaultCharacterStyleLang[0].Attributes["w:bidi"].Value;
+                                                }
+                                            }
+                                        } // Else the paragraph styling is used
                                     }
+                                    // Default to latin
+                                    string langToAdd = runLatin;
+                                    if(runScript == "EastAsia") {
+                                        langToAdd = runEastAsia;
+                                    } else if (runScript == "Complex") {
+                                        langToAdd = runComplex;
+                                    }
+
+                                    int langId = Languages.IndexOf(langToAdd);
+                                    if (langId == -1) {
+                                        Languages.Add(langToAdd);
+                                        languagesCount.Add(runText.Length);
+                                    } else {
+                                        languagesCount[langId] += runText.Length;
+                                    }
+
                                 }
                             }
                         }

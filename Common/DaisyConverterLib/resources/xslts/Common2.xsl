@@ -56,7 +56,8 @@ xmlns:v="urn:schemas-microsoft-com:vml"
         <!--Pushing level into the stack-->
         <xsl:variable name="headingIncrementCounters" select="myObj:IncrementHeadingCounters($levelValue,substring-after($txt,'!'),$abValue)"/>
         <xsl:variable name="copyCounter" select="myObj:CopyToBaseCounter(substring-after($txt,'!'))"/>
-        <xsl:variable name="level" select="myObj:PushLevel($levelValue)"/>        <xsl:choose>
+        <xsl:variable name="level" select="myObj:PushLevel($levelValue)"/>
+		<xsl:choose>
             <!--Checking the level value-->
             <xsl:when test="$level &lt; 7">
                 <!--Levels upto 6-->
@@ -165,21 +166,24 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:when>
         </xsl:choose>
     </xsl:template>
+	
+	<!-- Start a heading -->
 	<xsl:template name="openHeading">
 		<xsl:param name="level"/>
 		<xsl:message terminate="no">debug in openHeading</xsl:message>
-		<xsl:choose>
-			<xsl:when test="(w:r/w:rPr/w:lang) or (w:r/w:rPr/w:rFonts/@w:hint)">
-				<xsl:call-template name="LanguagesPara">
-					<xsl:with-param name="Attribute" select="'1'"/>
-					<xsl:with-param name="level" select="concat('h',$level)"/>
-				</xsl:call-template>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('h',$level),'&gt;')"/>
-			</xsl:otherwise>
-		</xsl:choose>
+		<xsl:variable name="headingLanguage">
+			<xsl:call-template name="GetParagraphLanguage">
+				<xsl:with-param name="paragraphNode" select="."/>
+			</xsl:call-template>
+		</xsl:variable>
+		<xsl:variable name="attributes">
+			<xsl:if test="not($Language=$headingLanguage)">
+				<xsl:text> xml:lang="</xsl:text><xsl:value-of select="$headingLanguage"/><xsl:text>"</xsl:text>
+			</xsl:if>
+		</xsl:variable>
+		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('h',$level,$attributes),'&gt;')" />
 	</xsl:template>
+	
     <xsl:template name="TempLevelSpan">
         <xsl:param name="verhead"/>
         <xsl:param name="custom"/>
@@ -387,11 +391,10 @@ xmlns:v="urn:schemas-microsoft-com:vml"
             </xsl:when>
             <!-- NP 20220503 : using CloseLevel to also close paragraph -->
             <xsl:when test="$CurrentLevel = -1">
-                <xsl:message terminate="no">debug:Closing paragraph</xsl:message>
 				<!-- NP 20240109 : close all inlines before closing paragraph -->
 				<xsl:call-template name="CloseAllStyleTag"/>
                 <!--Close that level-->
-                <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                 <!--  insert footnotes after the paragraph if inlined footnotes in the current level is requested
                         current level selection being computed as 
                             the 0 level selector
@@ -741,7 +744,6 @@ xmlns:v="urn:schemas-microsoft-com:vml"
     </xsl:template>
     <!--Template for default Page number-->
     <xsl:template name="DefaultPageNum">
-        <xsl:message terminate="no">debug in DefaultPageNum</xsl:message>
         <xsl:if test="myObj:ReturnPageNum()&lt;=1">
             <xsl:variable name="increment" select="myObj:IncrementPage()"/>
         </xsl:if>
@@ -960,7 +962,7 @@ xmlns:v="urn:schemas-microsoft-com:vml"
                     <xsl:if test="(preceding-sibling::w:p[1]/w:r/w:rPr/w:rtl) or (preceding-sibling::w:p[1]/w:pPr/w:bidi)">
 						<!-- NP 20240109 : close all inlines before closing paragraph -->
 				        <xsl:call-template name="CloseAllStyleTag"/>
-                        <xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
+						<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','/p','&gt;')"/>
                         <!--<xsl:call-template name="CloseLevel">
                             <xsl:with-param name="CurrentLevel" select="-1"/>
                             <xsl:with-param name="verfoot" select="$VERSION"/>

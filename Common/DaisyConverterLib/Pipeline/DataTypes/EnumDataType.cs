@@ -110,7 +110,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private bool SetSelectedIndexAndUpdateScript(int index)
         {
-            if (index > 0 && index < valuesList.Count)
+            if (index >= 0 && index < valuesList.Count)
             {
                 selectedIndex = index;
                 UpdateScript(SelectedItemValue);

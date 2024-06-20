@@ -6,7 +6,7 @@ param(
 	[switch]$refreshpipeline = $false
 )
 
-$currentVersion = "2.8.6"
+$currentVersion = "2.8.7"
 $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
 
 # Create the wix directory tree for a path
@@ -115,9 +115,19 @@ if($version) {
 }
 
 if($refreshpipeline) {
+    $_oldroot = Join-Path $PSScriptRoot "Lib"
+    # rebuild the daisy pipeline from the engine (needs https://github.com/daisy/pipeline-assembly/pull/221 to be merged first)
+    # - remove the daisy-pipeline folder in Lib if it exists
+    #if(Test-Path $(Join-Path $_oldroot "daisy-pipeline")) {
+	#	Remove-Item -Path $(Join-Path $_oldroot "daisy-pipeline") -Recurse -Force
+	#}
+    # - rebuild de engine
+    #Start-Process -FilePath "engine\make.exe" -ArgumentList "-C engine dir-word-addin" -Wait
+    # copy the daisy-pipeline directory that is under engine\target\assembly-*-win into $_oldroot
+    #Copy-Item -Path $(Join-Path $PSScriptRoot "engine\target\assembly-*-win\daisy-pipeline") -Destination $_oldroot -Recurse
+
     # regenerate and update the wix project "product.wxs"
     # - compute wix components and references for daisy-pipeline folder in Lib
-    $_oldroot = Join-Path $PSScriptRoot "Lib"
     $_cont, $_refs = Update-WixTree `
         -oldroot $_oldroot `
         -path $(Join-Path $_oldroot "daisy-pipeline") `
@@ -127,19 +137,20 @@ if($refreshpipeline) {
         -indent "    "
     # Replace the text in range between markers (also replacing start markers)
     $refMarker = "<!--daisy-pipeline refs-->"
+    $dirMarker = "<!--daisy-pipeline-->"
 
 
     $wixProductContent = Get-Content -Raw $wixProductPath
     $dirMarkerStart = $wixProductContent.IndexOf("<Directory Id=`"_daisy_pipeline`"")
-    $dirMarkerEnd = $wixProductContent.IndexOf("<!--daisy-pipeline-->") + "<!--daisy-pipeline-->".Length #because this marker is readded by the print-wix function
+    $dirMarkerEnd = $wixProductContent.IndexOf($dirMarker) + $dirMarker.Length #because this marker is readded by the print-wix function
     $refMarkerStart = $wixProductContent.IndexOf("<ComponentRef Id=`"_daisy_pipeline_files`"/>")
-    $refMarkerEnd = $wixProductContent.IndexOf("<!--daisy-pipeline refs-->")
+    $refMarkerEnd = $wixProductContent.IndexOf($refMarker)
     $beforeDirectoryStart = $wixProductContent.Substring(0, $dirMarkerStart)
     $betweenDirectoryEndAndRefStart = $wixProductContent.Substring($dirMarkerEnd + 1, $refMarkerStart - $dirMarkerEnd - 1)
     $afterRefEnd = $wixProductContent.Substring($refMarkerEnd)
     if(($dirMarkerStart -gt -1) -and ($dirMarkerEnd -gt -1) -and ($refMarkerStart -gt -1) -and ($refMarkerEnd -gt -1)){
         Set-Content -Path $wixProductPath `
-            -Value "$beforeDirectoryStart$_cont$betweenDirectoryEndAndRefStart$_refs$("    " * 3)$refMarker$afterRefEnd" `
+            -Value "$beforeDirectoryStart$_cont$betweenDirectoryEndAndRefStart$_refs$("    " * 3)$afterRefEnd" `
             -Encoding UTF8
     } else {
         Write-Host "Can't update wix project, could not find every markers in content'"

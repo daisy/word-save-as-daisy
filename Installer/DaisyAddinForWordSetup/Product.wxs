@@ -9,7 +9,7 @@
         -->
     
     <!-- Preprocessor variables, update following your addin assemblies version -->
-    <?define AddinVersion = "2.8.6.0" ?>
+    <?define AddinVersion = "2.8.7.0" ?>
     
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
@@ -24,13 +24,13 @@
     <?endif ?>
     
     <!--Change this ID for update -->
-    <Product Id="16B8D4E8-ABA0-4EBA-BFE9-CC09F474E72B" 
+    <Product Id="78B437E9-0607-4346-8C15-1119B529817A" 
             Name="SaveAsDAISY add-in version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
         <!--Change this ID for update -->
-        <Package Id="CF789525-086B-4C2E-AEAC-7D41518D8120"
+        <Package Id="C0A423E8-0E1A-421F-9013-276AF3E2809C"
 				 Compressed="yes"
 				 InstallPrivileges="limited"
 				 InstallerVersion="200" />
@@ -272,23 +272,23 @@
               both x86 and x64 msi can then use the same cab for install
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 						<Directory Id="_daisy_pipeline" Name="daisy-pipeline">
-                            <Component Id="_daisy_pipeline_files" Guid="44c5f6ed-e1c6-42e3-b084-5796ecaeb579">
+                            <Component Id="_daisy_pipeline_files" Guid="2b9e6a0c-f800-46c2-99aa-778ad38581d0">
                                 <File DiskId="2" Id="_daisy_pipeline_NOTICE.txt" Name="NOTICE.txt" Source="$(var.SolutionDir)Lib\daisy-pipeline\NOTICE.txt" />
                                 <File DiskId="2" Id="_daisy_pipeline_README.txt" Name="README.txt" Source="$(var.SolutionDir)Lib\daisy-pipeline\README.txt" />
                             </Component>
                             <Directory Id="_daisy_pipeline_bin" Name="bin">
-                                <Component Id="_daisy_pipeline_bin_files" Guid="8c0df57d-bedf-4088-831e-39f8be5ca85c">
+                                <Component Id="_daisy_pipeline_bin_files" Guid="5d1f59cb-da4c-4020-bdec-f26ecab1ff17">
                                     <File DiskId="2" Id="_daisy_pipeline_bin_checkJavaVersion.bat" Name="checkJavaVersion.bat" Source="$(var.SolutionDir)Lib\daisy-pipeline\bin\checkJavaVersion.bat" />
                                     <File DiskId="2" Id="_daisy_pipeline_bin_pipeline2.bat" Name="pipeline2.bat" Source="$(var.SolutionDir)Lib\daisy-pipeline\bin\pipeline2.bat" />
                                 </Component>
                             </Directory><!--bin-->
                             <Directory Id="_daisy_pipeline_cli" Name="cli">
-                                <Component Id="_daisy_pipeline_cli_files" Guid="f26e60ff-891e-465a-b3fa-5bf20fc449c7">
+                                <Component Id="_daisy_pipeline_cli_files" Guid="b1585379-6be5-4d1a-8705-49cefd0f1617">
                                     <File DiskId="2" Id="_daisy_pipeline_cli_config.yml" Name="config.yml" Source="$(var.SolutionDir)Lib\daisy-pipeline\cli\config.yml" />
                                 </Component>
                             </Directory><!--cli-->
                             <Directory Id="_daisy_pipeline_etc" Name="etc">
-                                <Component Id="_daisy_pipeline_etc_files" Guid="c7634de6-5e6d-47a8-b0b9-1d86cc7279e9">
+                                <Component Id="_daisy_pipeline_etc_files" Guid="9be532bb-7f73-4c95-9ffc-cc12221d7306">
                                     <File DiskId="2" Id="_daisy_pipeline_etc_felix.properties" Name="felix.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\etc\felix.properties" />
                                     <File DiskId="2" Id="_daisy_pipeline_etc_logback.xml" Name="logback.xml" Source="$(var.SolutionDir)Lib\daisy-pipeline\etc\logback.xml" />
                                     <File DiskId="2" Id="_daisy_pipeline_etc_logging.properties" Name="logging.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\etc\logging.properties" />
@@ -297,11 +297,11 @@
                                 </Component>
                             </Directory><!--etc-->
                             <Directory Id="_daisy_pipeline_jre" Name="jre">
-                                <Component Id="_daisy_pipeline_jre_files" Guid="55a6a55e-f7da-4c35-8019-bd19e3d21600">
+                                <Component Id="_daisy_pipeline_jre_files" Guid="675ee631-e9e4-4102-a9bb-42a6035fe414">
                                     <File DiskId="2" Id="_daisy_pipeline_jre_release" Name="release" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\release" />
                                 </Component>
                                 <Directory Id="_daisy_pipeline_jre_bin" Name="bin">
-                                    <Component Id="_daisy_pipeline_jre_bin_files" Guid="93c733c5-5b67-4601-be0b-fad1ef655751">
+                                    <Component Id="_daisy_pipeline_jre_bin_files" Guid="eddd231e-5dc5-4c79-ac9f-e530a41c1a33">
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_api_ms_win_core_console_l1_1_0.dll" Name="api-ms-win-core-console-l1-1-0.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\bin\api-ms-win-core-console-l1-1-0.dll" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_api_ms_win_core_datetime_l1_1_0.dll" Name="api-ms-win-core-datetime-l1-1-0.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\bin\api-ms-win-core-datetime-l1-1-0.dll" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_api_ms_win_core_debug_l1_1_0.dll" Name="api-ms-win-core-debug-l1-1-0.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\bin\api-ms-win-core-debug-l1-1-0.dll" />
@@ -379,42 +379,42 @@
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_zip.dll" Name="zip.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\bin\zip.dll" />
                                     </Component>
                                     <Directory Id="_daisy_pipeline_jre_bin_server" Name="server">
-                                        <Component Id="_daisy_pipeline_jre_bin_server_files" Guid="c368b612-4805-4c04-8291-8856c70a1d0b">
+                                        <Component Id="_daisy_pipeline_jre_bin_server_files" Guid="afd601f6-0767-44be-85ec-6053ac5e5182">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_bin_server_jvm.dll" Name="jvm.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\bin\server\jvm.dll" />
                                         </Component>
                                     </Directory><!--server-->
                                 </Directory><!--bin-->
                                 <Directory Id="_daisy_pipeline_jre_conf" Name="conf">
-                                    <Component Id="_daisy_pipeline_jre_conf_files" Guid="53f91e6a-9bb0-43f0-a258-c460ffa1f52d">
+                                    <Component Id="_daisy_pipeline_jre_conf_files" Guid="237f7119-6a4d-4b0b-81d3-b8827a920577">
                                         <File DiskId="2" Id="_daisy_pipeline_jre_conf_logging.properties" Name="logging.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\logging.properties" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_conf_net.properties" Name="net.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\net.properties" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_conf_sound.properties" Name="sound.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\sound.properties" />
                                     </Component>
                                     <Directory Id="_daisy_pipeline_jre_conf_management" Name="management">
-                                        <Component Id="_daisy_pipeline_jre_conf_management_files" Guid="4e4c9d96-1f45-4310-9533-8a7585c8b035">
+                                        <Component Id="_daisy_pipeline_jre_conf_management_files" Guid="3b480bc3-e049-440d-9842-ff449527d6a9">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_conf_management_jmxremote.access" Name="jmxremote.access" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\management\jmxremote.access" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_conf_management_jmxremote.password.template" Name="jmxremote.password.template" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\management\jmxremote.password.template" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_conf_management_management.properties" Name="management.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\management\management.properties" />
                                         </Component>
                                     </Directory><!--management-->
                                     <Directory Id="_daisy_pipeline_jre_conf_security" Name="security">
-                                        <Component Id="_daisy_pipeline_jre_conf_security_files" Guid="9beb3216-afbd-4cd8-94a6-012ca0e6fdf5">
+                                        <Component Id="_daisy_pipeline_jre_conf_security_files" Guid="2e7cf4da-791d-4bcb-8b1a-273ee004ae11">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_conf_security_java.policy" Name="java.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\security\java.policy" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_conf_security_java.security" Name="java.security" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\security\java.security" />
                                         </Component>
                                         <Directory Id="_daisy_pipeline_jre_conf_security_policy" Name="policy">
-                                            <Component Id="_daisy_pipeline_jre_conf_security_policy_files" Guid="6f625dba-d263-4f98-9c62-484e6f1d694e">
+                                            <Component Id="_daisy_pipeline_jre_conf_security_policy_files" Guid="a8fb57d9-f768-4d06-ac52-5875bdde3d1c">
                                                 <File DiskId="2" Id="_daisy_pipeline_jre_conf_security_policy_README.txt" Name="README.txt" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\security\policy\README.txt" />
                                             </Component>
                                             <Directory Id="_daisy_pipeline_jre_conf_security_policy_limited" Name="limited">
-                                                <Component Id="_daisy_pipeline_jre_conf_security_policy_limited_files" Guid="c6aca2ec-fcba-4d45-8cc7-cfb52101cf07">
+                                                <Component Id="_daisy_pipeline_jre_conf_security_policy_limited_files" Guid="31c2e55e-0bf8-47af-8766-df45a63a13f3">
                                                     <File DiskId="2" Id="_daisy_pipeline_jre_conf_security_policy_limited_default_local.policy" Name="default_local.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\security\policy\limited\default_local.policy" />
                                                     <File DiskId="2" Id="_daisy_pipeline_jre_conf_security_policy_limited_default_US_export.policy" Name="default_US_export.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\security\policy\limited\default_US_export.policy" />
                                                     <File DiskId="2" Id="_daisy_pipeline_jre_conf_security_policy_limited_exempt_local.policy" Name="exempt_local.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\security\policy\limited\exempt_local.policy" />
                                                 </Component>
                                             </Directory><!--limited-->
                                             <Directory Id="_daisy_pipeline_jre_conf_security_policy_unlimited" Name="unlimited">
-                                                <Component Id="_daisy_pipeline_jre_conf_security_policy_unlimited_files" Guid="a14a067d-52b4-4204-81e3-255ed3eab7bd">
+                                                <Component Id="_daisy_pipeline_jre_conf_security_policy_unlimited_files" Guid="5b81e0d4-0dd3-4cf4-9e91-c95c2470df6f">
                                                     <File DiskId="2" Id="_daisy_pipeline_jre_conf_security_policy_unlimited_default_local.policy" Name="default_local.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\security\policy\unlimited\default_local.policy" />
                                                     <File DiskId="2" Id="_daisy_pipeline_jre_conf_security_policy_unlimited_default_US_export.policy" Name="default_US_export.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\conf\security\policy\unlimited\default_US_export.policy" />
                                                 </Component>
@@ -424,7 +424,7 @@
                                 </Directory><!--conf-->
                                 <Directory Id="_daisy_pipeline_jre_legal" Name="legal">
                                     <Directory Id="_daisy_pipeline_jre_legal_java.base" Name="java.base">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.base_files" Guid="28a8aead-eb21-455b-8977-1be9d63663f2">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.base_files" Guid="013de3ef-a40e-4c24-98f0-009a3300d4f5">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.base_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.base\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.base_aes.md" Name="aes.md" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.base\aes.md" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.base_asm.md" Name="asm.md" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.base\asm.md" />
@@ -440,14 +440,14 @@
                                         </Component>
                                     </Directory><!--java.base-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.datatransfer" Name="java.datatransfer">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.datatransfer_files" Guid="5cd8a892-2704-439c-b3ed-81f86cd461de">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.datatransfer_files" Guid="594b05d4-958d-4016-bc9b-2cf234f26765">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.datatransfer_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.datatransfer\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.datatransfer_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.datatransfer\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.datatransfer_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.datatransfer\LICENSE" />
                                         </Component>
                                     </Directory><!--java.datatransfer-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.desktop" Name="java.desktop">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.desktop_files" Guid="a2b0d7d5-ba5e-4cb6-a24a-3891bcedd874">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.desktop_files" Guid="019b482b-8df6-4957-a2b7-0b826b27c9c9">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.desktop_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.desktop\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.desktop_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.desktop\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.desktop_colorimaging.md" Name="colorimaging.md" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.desktop\colorimaging.md" />
@@ -462,84 +462,84 @@
                                         </Component>
                                     </Directory><!--java.desktop-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.instrument" Name="java.instrument">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.instrument_files" Guid="484823a8-6062-474c-95a2-9fe0ea7143a5">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.instrument_files" Guid="bd1749fe-e8ae-4f57-8656-24aa4bb4b136">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.instrument_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.instrument\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.instrument_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.instrument\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.instrument_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.instrument\LICENSE" />
                                         </Component>
                                     </Directory><!--java.instrument-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.logging" Name="java.logging">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.logging_files" Guid="da8a0fd9-e488-4fc8-82c3-f13a5855398b">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.logging_files" Guid="c6e63a2c-1414-455c-a65c-fd574685464c">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.logging_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.logging\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.logging_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.logging\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.logging_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.logging\LICENSE" />
                                         </Component>
                                     </Directory><!--java.logging-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.management" Name="java.management">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.management_files" Guid="cd7b186d-ebb7-46be-b1e8-a7756bd62c9b">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.management_files" Guid="de798ce4-aab8-4465-b631-996043de50ce">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.management_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.management\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.management_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.management\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.management_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.management\LICENSE" />
                                         </Component>
                                     </Directory><!--java.management-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.management.rmi" Name="java.management.rmi">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.management.rmi_files" Guid="725b74aa-60e8-42d9-a1f5-3fe7d062b655">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.management.rmi_files" Guid="5d304dca-4b3d-4f7c-ab69-2193cd15660f">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.management.rmi_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.management.rmi\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.management.rmi_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.management.rmi\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.management.rmi_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.management.rmi\LICENSE" />
                                         </Component>
                                     </Directory><!--java.management.rmi-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.naming" Name="java.naming">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.naming_files" Guid="2be82ef7-e275-4b92-b9b3-1fed4bdbf004">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.naming_files" Guid="fd41d68d-e67b-43c0-b3d9-8e22af918ea5">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.naming_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.naming\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.naming_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.naming\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.naming_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.naming\LICENSE" />
                                         </Component>
                                     </Directory><!--java.naming-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.prefs" Name="java.prefs">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.prefs_files" Guid="da9935b4-2c27-487f-bca9-8fbc1ae2ab81">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.prefs_files" Guid="6f267f67-523d-49a8-8e2a-bddd8897ccf2">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.prefs_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.prefs\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.prefs_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.prefs\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.prefs_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.prefs\LICENSE" />
                                         </Component>
                                     </Directory><!--java.prefs-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.rmi" Name="java.rmi">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.rmi_files" Guid="92154ae5-4310-4538-bf7e-c22ef97bfa8f">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.rmi_files" Guid="36947b22-817f-424e-a6c8-5539642a9fd5">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.rmi_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.rmi\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.rmi_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.rmi\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.rmi_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.rmi\LICENSE" />
                                         </Component>
                                     </Directory><!--java.rmi-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.security.jgss" Name="java.security.jgss">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.security.jgss_files" Guid="4648d493-0cda-4504-baed-a7a9646efc85">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.security.jgss_files" Guid="d3ebce84-7d12-4b10-830c-a8e76cbab974">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.security.jgss_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.security.jgss\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.security.jgss_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.security.jgss\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.security.jgss_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.security.jgss\LICENSE" />
                                         </Component>
                                     </Directory><!--java.security.jgss-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.security.sasl" Name="java.security.sasl">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.security.sasl_files" Guid="2efc43a0-3abe-45b6-b5bb-96c6832dc33a">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.security.sasl_files" Guid="49075632-267d-406d-b2e0-f2017f5810f9">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.security.sasl_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.security.sasl\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.security.sasl_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.security.sasl\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.security.sasl_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.security.sasl\LICENSE" />
                                         </Component>
                                     </Directory><!--java.security.sasl-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.sql" Name="java.sql">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.sql_files" Guid="130f2686-c698-4734-a3fd-2c7dd9e4590f">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.sql_files" Guid="1c12d8a5-f574-4652-9344-3217e9a97162">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.sql_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.sql\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.sql_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.sql\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.sql_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.sql\LICENSE" />
                                         </Component>
                                     </Directory><!--java.sql-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.transaction.xa" Name="java.transaction.xa">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.transaction.xa_files" Guid="881777c5-9c15-49ee-b6e3-57819f364537">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.transaction.xa_files" Guid="d6f79add-4484-4ee0-bb2d-83b0ca6a0a49">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.transaction.xa_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.transaction.xa\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.transaction.xa_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.transaction.xa\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.transaction.xa_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.transaction.xa\LICENSE" />
                                         </Component>
                                     </Directory><!--java.transaction.xa-->
                                     <Directory Id="_daisy_pipeline_jre_legal_java.xml" Name="java.xml">
-                                        <Component Id="_daisy_pipeline_jre_legal_java.xml_files" Guid="f7f7f9fe-b5f0-4a50-9ee1-95a9312c071a">
+                                        <Component Id="_daisy_pipeline_jre_legal_java.xml_files" Guid="e3e149d7-a369-4dfd-8ffe-11a6dd457d5c">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.xml_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.xml\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.xml_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.xml\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_java.xml_bcel.md" Name="bcel.md" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\java.xml\bcel.md" />
@@ -551,21 +551,21 @@
                                         </Component>
                                     </Directory><!--java.xml-->
                                     <Directory Id="_daisy_pipeline_jre_legal_jdk.crypto.ec" Name="jdk.crypto.ec">
-                                        <Component Id="_daisy_pipeline_jre_legal_jdk.crypto.ec_files" Guid="47fa2fa1-0bc3-422d-a27a-1f54a7c52795">
+                                        <Component Id="_daisy_pipeline_jre_legal_jdk.crypto.ec_files" Guid="2d7e01a7-1345-4f65-9434-e93092120f6f">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.crypto.ec_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.crypto.ec\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.crypto.ec_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.crypto.ec\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.crypto.ec_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.crypto.ec\LICENSE" />
                                         </Component>
                                     </Directory><!--jdk.crypto.ec-->
                                     <Directory Id="_daisy_pipeline_jre_legal_jdk.management.agent" Name="jdk.management.agent">
-                                        <Component Id="_daisy_pipeline_jre_legal_jdk.management.agent_files" Guid="278b2151-5e01-4d02-9429-6f8a7e04b597">
+                                        <Component Id="_daisy_pipeline_jre_legal_jdk.management.agent_files" Guid="72b3f732-8339-40d7-8695-aad86414304c">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.management.agent_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.management.agent\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.management.agent_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.management.agent\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.management.agent_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.management.agent\LICENSE" />
                                         </Component>
                                     </Directory><!--jdk.management.agent-->
                                     <Directory Id="_daisy_pipeline_jre_legal_jdk.zipfs" Name="jdk.zipfs">
-                                        <Component Id="_daisy_pipeline_jre_legal_jdk.zipfs_files" Guid="c4199560-dcd1-4cf2-a4a2-9e784250c9ce">
+                                        <Component Id="_daisy_pipeline_jre_legal_jdk.zipfs_files" Guid="5f1d3304-58bb-4967-86cc-2c6aa7255c1a">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.zipfs_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.zipfs\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.zipfs_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.zipfs\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_legal_jdk.zipfs_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\legal\jdk.zipfs\LICENSE" />
@@ -573,7 +573,7 @@
                                     </Directory><!--jdk.zipfs-->
                                 </Directory><!--legal-->
                                 <Directory Id="_daisy_pipeline_jre_lib" Name="lib">
-                                    <Component Id="_daisy_pipeline_jre_lib_files" Guid="b857dd79-294a-4422-b4a7-559f18653196">
+                                    <Component Id="_daisy_pipeline_jre_lib_files" Guid="063d8ec4-e2b7-4ebb-a8fa-0ebfef4def83">
                                         <File DiskId="2" Id="_daisy_pipeline_jre_lib_classlist" Name="classlist" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\lib\classlist" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_lib_fontconfig.bfc" Name="fontconfig.bfc" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\lib\fontconfig.bfc" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_lib_fontconfig.properties.src" Name="fontconfig.properties.src" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\lib\fontconfig.properties.src" />
@@ -588,7 +588,7 @@
                                         <File DiskId="2" Id="_daisy_pipeline_jre_lib_tzmappings" Name="tzmappings" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\lib\tzmappings" />
                                     </Component>
                                     <Directory Id="_daisy_pipeline_jre_lib_security" Name="security">
-                                        <Component Id="_daisy_pipeline_jre_lib_security_files" Guid="08c7a363-0cdb-48b7-a24e-da4e3a0e6d14">
+                                        <Component Id="_daisy_pipeline_jre_lib_security_files" Guid="d9c779fd-762b-40d9-bb1a-e89ce757c63c">
                                             <File DiskId="2" Id="_daisy_pipeline_jre_lib_security_blocked.certs" Name="blocked.certs" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\lib\security\blocked.certs" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_lib_security_cacerts" Name="cacerts" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\lib\security\cacerts" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre_lib_security_default.policy" Name="default.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre\lib\security\default.policy" />
@@ -598,11 +598,11 @@
                                 </Directory><!--lib-->
                             </Directory><!--jre-->
                             <Directory Id="_daisy_pipeline_jre32" Name="jre32">
-                                <Component Id="_daisy_pipeline_jre32_files" Guid="0d978628-f107-47bc-a209-2a970bed0677">
+                                <Component Id="_daisy_pipeline_jre32_files" Guid="4955b0ec-8dfb-44f0-aa4e-5146503ddf81">
                                     <File DiskId="2" Id="_daisy_pipeline_jre32_release" Name="release" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\release" />
                                 </Component>
                                 <Directory Id="_daisy_pipeline_jre32_bin" Name="bin">
-                                    <Component Id="_daisy_pipeline_jre32_bin_files" Guid="0f265cf6-01f7-436a-9628-fc3cf6efac50">
+                                    <Component Id="_daisy_pipeline_jre32_bin_files" Guid="2760f3ef-9443-490f-9a97-427cfac097a5">
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_bin_api_ms_win_core_console_l1_1_0.dll" Name="api-ms-win-core-console-l1-1-0.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\bin\api-ms-win-core-console-l1-1-0.dll" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_bin_api_ms_win_core_datetime_l1_1_0.dll" Name="api-ms-win-core-datetime-l1-1-0.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\bin\api-ms-win-core-datetime-l1-1-0.dll" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_bin_api_ms_win_core_debug_l1_1_0.dll" Name="api-ms-win-core-debug-l1-1-0.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\bin\api-ms-win-core-debug-l1-1-0.dll" />
@@ -680,47 +680,47 @@
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_bin_zip.dll" Name="zip.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\bin\zip.dll" />
                                     </Component>
                                     <Directory Id="_daisy_pipeline_jre32_bin_client" Name="client">
-                                        <Component Id="_daisy_pipeline_jre32_bin_client_files" Guid="b718ad96-0f33-4c9c-8360-3ce1f2fff980">
+                                        <Component Id="_daisy_pipeline_jre32_bin_client_files" Guid="701381b9-c5f1-4730-99de-7af01bbecdfb">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_bin_client_jvm.dll" Name="jvm.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\bin\client\jvm.dll" />
                                         </Component>
                                     </Directory><!--client-->
                                     <Directory Id="_daisy_pipeline_jre32_bin_server" Name="server">
-                                        <Component Id="_daisy_pipeline_jre32_bin_server_files" Guid="856db158-28a5-4003-82b7-291e6929106c">
+                                        <Component Id="_daisy_pipeline_jre32_bin_server_files" Guid="8cd0c8b9-555e-4ef6-bf77-9d9636854ed2">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_bin_server_jvm.dll" Name="jvm.dll" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\bin\server\jvm.dll" />
                                         </Component>
                                     </Directory><!--server-->
                                 </Directory><!--bin-->
                                 <Directory Id="_daisy_pipeline_jre32_conf" Name="conf">
-                                    <Component Id="_daisy_pipeline_jre32_conf_files" Guid="eeab02b3-0f8a-42dd-836e-426d831cc226">
+                                    <Component Id="_daisy_pipeline_jre32_conf_files" Guid="e1fe18ad-55b6-4d29-88da-e68811126a22">
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_conf_logging.properties" Name="logging.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\logging.properties" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_conf_net.properties" Name="net.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\net.properties" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_conf_sound.properties" Name="sound.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\sound.properties" />
                                     </Component>
                                     <Directory Id="_daisy_pipeline_jre32_conf_management" Name="management">
-                                        <Component Id="_daisy_pipeline_jre32_conf_management_files" Guid="2bd2f752-fa9d-4e4e-bdcf-573e603225af">
+                                        <Component Id="_daisy_pipeline_jre32_conf_management_files" Guid="db16802e-d18f-4856-8391-255eaa490873">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_conf_management_jmxremote.access" Name="jmxremote.access" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\management\jmxremote.access" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_conf_management_jmxremote.password.template" Name="jmxremote.password.template" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\management\jmxremote.password.template" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_conf_management_management.properties" Name="management.properties" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\management\management.properties" />
                                         </Component>
                                     </Directory><!--management-->
                                     <Directory Id="_daisy_pipeline_jre32_conf_security" Name="security">
-                                        <Component Id="_daisy_pipeline_jre32_conf_security_files" Guid="161d652f-b611-456a-b1dd-85a27ffb7f1e">
+                                        <Component Id="_daisy_pipeline_jre32_conf_security_files" Guid="f5cac071-a47a-4e0f-b6b5-c87a00febea3">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_conf_security_java.policy" Name="java.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\security\java.policy" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_conf_security_java.security" Name="java.security" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\security\java.security" />
                                         </Component>
                                         <Directory Id="_daisy_pipeline_jre32_conf_security_policy" Name="policy">
-                                            <Component Id="_daisy_pipeline_jre32_conf_security_policy_files" Guid="a459dfc9-0ca3-4967-a479-7dd2a829558f">
+                                            <Component Id="_daisy_pipeline_jre32_conf_security_policy_files" Guid="eab724c6-3c7e-401b-a2a5-ef0f363a1ea6">
                                                 <File DiskId="2" Id="_daisy_pipeline_jre32_conf_security_policy_README.txt" Name="README.txt" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\security\policy\README.txt" />
                                             </Component>
                                             <Directory Id="_daisy_pipeline_jre32_conf_security_policy_limited" Name="limited">
-                                                <Component Id="_daisy_pipeline_jre32_conf_security_policy_limited_files" Guid="8a15f1dd-4bd6-46b7-81de-f5d4fdae9824">
+                                                <Component Id="_daisy_pipeline_jre32_conf_security_policy_limited_files" Guid="15e1be8d-a8f7-43f7-8b6b-ff4f235f52b7">
                                                     <File DiskId="2" Id="_daisy_pipeline_jre32_conf_security_policy_limited_default_local.policy" Name="default_local.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\security\policy\limited\default_local.policy" />
                                                     <File DiskId="2" Id="_daisy_pipeline_jre32_conf_security_policy_limited_default_US_export.policy" Name="default_US_export.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\security\policy\limited\default_US_export.policy" />
                                                     <File DiskId="2" Id="_daisy_pipeline_jre32_conf_security_policy_limited_exempt_local.policy" Name="exempt_local.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\security\policy\limited\exempt_local.policy" />
                                                 </Component>
                                             </Directory><!--limited-->
                                             <Directory Id="_daisy_pipeline_jre32_conf_security_policy_unlimited" Name="unlimited">
-                                                <Component Id="_daisy_pipeline_jre32_conf_security_policy_unlimited_files" Guid="94a18ac8-4e77-48f4-8930-06d0d706f992">
+                                                <Component Id="_daisy_pipeline_jre32_conf_security_policy_unlimited_files" Guid="f310150d-7da2-4fcc-b2af-02906b512315">
                                                     <File DiskId="2" Id="_daisy_pipeline_jre32_conf_security_policy_unlimited_default_local.policy" Name="default_local.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\security\policy\unlimited\default_local.policy" />
                                                     <File DiskId="2" Id="_daisy_pipeline_jre32_conf_security_policy_unlimited_default_US_export.policy" Name="default_US_export.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\conf\security\policy\unlimited\default_US_export.policy" />
                                                 </Component>
@@ -730,7 +730,7 @@
                                 </Directory><!--conf-->
                                 <Directory Id="_daisy_pipeline_jre32_legal" Name="legal">
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.base" Name="java.base">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.base_files" Guid="1b4bb8c7-21ab-4f03-8d49-f38c4d7b9b9f">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.base_files" Guid="544b4d9c-e3ec-4793-9ed2-00dd56e6f9d8">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.base_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.base\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.base_aes.md" Name="aes.md" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.base\aes.md" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.base_asm.md" Name="asm.md" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.base\asm.md" />
@@ -746,14 +746,14 @@
                                         </Component>
                                     </Directory><!--java.base-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.datatransfer" Name="java.datatransfer">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.datatransfer_files" Guid="8efe6c6b-64d2-4d9d-8843-863d26c17179">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.datatransfer_files" Guid="9c7a1a08-77ad-44a0-b6ce-29f9f056d140">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.datatransfer_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.datatransfer\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.datatransfer_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.datatransfer\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.datatransfer_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.datatransfer\LICENSE" />
                                         </Component>
                                     </Directory><!--java.datatransfer-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.desktop" Name="java.desktop">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.desktop_files" Guid="d94617fa-ddef-4e0f-8ea6-78193141cb43">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.desktop_files" Guid="20991906-6d46-41f3-bcd7-770cec967293">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.desktop_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.desktop\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.desktop_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.desktop\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.desktop_colorimaging.md" Name="colorimaging.md" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.desktop\colorimaging.md" />
@@ -768,84 +768,84 @@
                                         </Component>
                                     </Directory><!--java.desktop-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.instrument" Name="java.instrument">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.instrument_files" Guid="acfa849c-47f7-4d1f-b29a-782dcca84924">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.instrument_files" Guid="8113b955-96e2-46c1-9f96-beb31966003d">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.instrument_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.instrument\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.instrument_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.instrument\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.instrument_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.instrument\LICENSE" />
                                         </Component>
                                     </Directory><!--java.instrument-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.logging" Name="java.logging">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.logging_files" Guid="f801d616-b9bf-4bf4-90b2-063e4c4e1d4b">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.logging_files" Guid="165ad34f-ba30-4234-882c-0aeb794d4a3c">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.logging_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.logging\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.logging_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.logging\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.logging_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.logging\LICENSE" />
                                         </Component>
                                     </Directory><!--java.logging-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.management" Name="java.management">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.management_files" Guid="5b741bc9-25b6-48e7-b84c-4396a4e1148e">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.management_files" Guid="52758239-6ed6-4892-9625-f8da1fb0be6f">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.management_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.management\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.management_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.management\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.management_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.management\LICENSE" />
                                         </Component>
                                     </Directory><!--java.management-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.management.rmi" Name="java.management.rmi">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.management.rmi_files" Guid="3e944ef8-708e-4774-81f1-3e5df4b204fb">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.management.rmi_files" Guid="c8494cc9-1760-47ab-a839-9eb7ea3fbc93">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.management.rmi_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.management.rmi\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.management.rmi_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.management.rmi\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.management.rmi_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.management.rmi\LICENSE" />
                                         </Component>
                                     </Directory><!--java.management.rmi-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.naming" Name="java.naming">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.naming_files" Guid="f3b583a6-95f4-428e-8081-629cce876409">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.naming_files" Guid="6a0a8c5b-b1fd-48dd-972b-e03b01b39248">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.naming_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.naming\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.naming_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.naming\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.naming_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.naming\LICENSE" />
                                         </Component>
                                     </Directory><!--java.naming-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.prefs" Name="java.prefs">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.prefs_files" Guid="13ea36ed-2e7b-4626-98e7-620d5be926fa">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.prefs_files" Guid="af8d864f-dd46-470d-afa9-fe07ef9a8b4f">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.prefs_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.prefs\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.prefs_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.prefs\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.prefs_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.prefs\LICENSE" />
                                         </Component>
                                     </Directory><!--java.prefs-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.rmi" Name="java.rmi">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.rmi_files" Guid="212d389c-4a73-4223-91ae-1385a9fd3187">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.rmi_files" Guid="af453962-fde4-4883-acb6-2855b66f6367">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.rmi_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.rmi\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.rmi_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.rmi\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.rmi_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.rmi\LICENSE" />
                                         </Component>
                                     </Directory><!--java.rmi-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.security.jgss" Name="java.security.jgss">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.security.jgss_files" Guid="e7d8ae89-2066-4e41-80fa-59b0cab12f14">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.security.jgss_files" Guid="1ffc2fc6-442b-4f29-85b6-2b045d9fbaee">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.security.jgss_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.security.jgss\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.security.jgss_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.security.jgss\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.security.jgss_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.security.jgss\LICENSE" />
                                         </Component>
                                     </Directory><!--java.security.jgss-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.security.sasl" Name="java.security.sasl">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.security.sasl_files" Guid="00c74488-c58b-4375-9059-86f0963a8526">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.security.sasl_files" Guid="88d4f43a-859c-45d9-a6dd-8ea80212961b">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.security.sasl_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.security.sasl\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.security.sasl_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.security.sasl\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.security.sasl_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.security.sasl\LICENSE" />
                                         </Component>
                                     </Directory><!--java.security.sasl-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.sql" Name="java.sql">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.sql_files" Guid="072c531c-9988-451b-b66c-83eb0a952c88">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.sql_files" Guid="b6172b68-9474-44af-8fc7-b4c38d2215c1">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.sql_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.sql\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.sql_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.sql\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.sql_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.sql\LICENSE" />
                                         </Component>
                                     </Directory><!--java.sql-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.transaction.xa" Name="java.transaction.xa">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.transaction.xa_files" Guid="5fb23004-2345-4bb0-9840-98159cbd8938">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.transaction.xa_files" Guid="6af4fdc0-1b27-4189-8747-50002124d7bf">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.transaction.xa_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.transaction.xa\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.transaction.xa_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.transaction.xa\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.transaction.xa_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.transaction.xa\LICENSE" />
                                         </Component>
                                     </Directory><!--java.transaction.xa-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_java.xml" Name="java.xml">
-                                        <Component Id="_daisy_pipeline_jre32_legal_java.xml_files" Guid="f0713053-4bf0-4b0e-9e30-978a52ce444d">
+                                        <Component Id="_daisy_pipeline_jre32_legal_java.xml_files" Guid="87f6fb86-9bc1-4028-b092-a3361c3a3491">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.xml_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.xml\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.xml_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.xml\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_java.xml_bcel.md" Name="bcel.md" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\java.xml\bcel.md" />
@@ -857,21 +857,21 @@
                                         </Component>
                                     </Directory><!--java.xml-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_jdk.crypto.ec" Name="jdk.crypto.ec">
-                                        <Component Id="_daisy_pipeline_jre32_legal_jdk.crypto.ec_files" Guid="801c562d-1599-47f1-92b3-308a9100387d">
+                                        <Component Id="_daisy_pipeline_jre32_legal_jdk.crypto.ec_files" Guid="c34fc0e7-21bd-469a-b128-4b4bf5c1248b">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.crypto.ec_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.crypto.ec\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.crypto.ec_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.crypto.ec\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.crypto.ec_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.crypto.ec\LICENSE" />
                                         </Component>
                                     </Directory><!--jdk.crypto.ec-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_jdk.management.agent" Name="jdk.management.agent">
-                                        <Component Id="_daisy_pipeline_jre32_legal_jdk.management.agent_files" Guid="e547f540-cff8-4a55-b96c-0a94491ad2f9">
+                                        <Component Id="_daisy_pipeline_jre32_legal_jdk.management.agent_files" Guid="9077653a-506b-4916-b116-1543230161aa">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.management.agent_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.management.agent\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.management.agent_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.management.agent\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.management.agent_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.management.agent\LICENSE" />
                                         </Component>
                                     </Directory><!--jdk.management.agent-->
                                     <Directory Id="_daisy_pipeline_jre32_legal_jdk.zipfs" Name="jdk.zipfs">
-                                        <Component Id="_daisy_pipeline_jre32_legal_jdk.zipfs_files" Guid="0ff41aa8-c76e-40e3-bef1-881b3207ff11">
+                                        <Component Id="_daisy_pipeline_jre32_legal_jdk.zipfs_files" Guid="d30f59bc-46e2-415e-b452-3d7b86742b2c">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.zipfs_ADDITIONAL_LICENSE_INFO" Name="ADDITIONAL_LICENSE_INFO" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.zipfs\ADDITIONAL_LICENSE_INFO" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.zipfs_ASSEMBLY_EXCEPTION" Name="ASSEMBLY_EXCEPTION" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.zipfs\ASSEMBLY_EXCEPTION" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_legal_jdk.zipfs_LICENSE" Name="LICENSE" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\legal\jdk.zipfs\LICENSE" />
@@ -879,7 +879,7 @@
                                     </Directory><!--jdk.zipfs-->
                                 </Directory><!--legal-->
                                 <Directory Id="_daisy_pipeline_jre32_lib" Name="lib">
-                                    <Component Id="_daisy_pipeline_jre32_lib_files" Guid="d43fde9d-8bdb-47a4-bbee-73915ae6b6fd">
+                                    <Component Id="_daisy_pipeline_jre32_lib_files" Guid="c2ebe58f-6b83-4f92-b7a8-55b454e4aa7a">
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_lib_classlist" Name="classlist" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\lib\classlist" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_lib_fontconfig.bfc" Name="fontconfig.bfc" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\lib\fontconfig.bfc" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_lib_fontconfig.properties.src" Name="fontconfig.properties.src" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\lib\fontconfig.properties.src" />
@@ -894,7 +894,7 @@
                                         <File DiskId="2" Id="_daisy_pipeline_jre32_lib_tzmappings" Name="tzmappings" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\lib\tzmappings" />
                                     </Component>
                                     <Directory Id="_daisy_pipeline_jre32_lib_security" Name="security">
-                                        <Component Id="_daisy_pipeline_jre32_lib_security_files" Guid="0dacfca3-6512-487e-8fd1-a41dd4741ae7">
+                                        <Component Id="_daisy_pipeline_jre32_lib_security_files" Guid="c71649ff-f03d-47fe-9e29-a310656addf5">
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_lib_security_blocked.certs" Name="blocked.certs" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\lib\security\blocked.certs" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_lib_security_cacerts" Name="cacerts" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\lib\security\cacerts" />
                                             <File DiskId="2" Id="_daisy_pipeline_jre32_lib_security_default.policy" Name="default.policy" Source="$(var.SolutionDir)Lib\daisy-pipeline\jre32\lib\security\default.policy" />
@@ -905,7 +905,7 @@
                             </Directory><!--jre32-->
                             <Directory Id="_daisy_pipeline_system" Name="system">
                                 <Directory Id="_daisy_pipeline_system_common" Name="common">
-                                    <Component Id="_daisy_pipeline_system_common_files" Guid="f092e3af-01fe-4f63-9647-ebac4d01fbe8">
+                                    <Component Id="_daisy_pipeline_system_common_files" Guid="7108f954-bcfe-4471-bc7c-8859f7c196fe">
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_ch.qos.logback.logback_classic_1.0.11.jar" Name="ch.qos.logback.logback-classic-1.0.11.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\ch.qos.logback.logback-classic-1.0.11.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_ch.qos.logback.logback_core_1.0.11.jar" Name="ch.qos.logback.logback-core-1.0.11.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\ch.qos.logback.logback-core-1.0.11.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_com.google.guava.guava_24.1.1_android.jar" Name="com.google.guava.guava-24.1.1-android.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\com.google.guava.guava-24.1.1-android.jar" />
@@ -916,23 +916,21 @@
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_commons_io.commons_io_2.6.jar" Name="commons-io.commons-io-2.6.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\commons-io.commons-io-2.6.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_javax.xml.crypto.jsr105_api_1.0.1.jar" Name="javax.xml.crypto.jsr105-api-1.0.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\javax.xml.crypto.jsr105-api-1.0.1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_javax.xml.parsers.jaxp_api_1.4.5.jar" Name="javax.xml.parsers.jaxp-api-1.4.5.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\javax.xml.parsers.jaxp-api-1.4.5.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_net.java.dev.jna.jna_5.2.0.jar" Name="net.java.dev.jna.jna-5.2.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\net.java.dev.jna.jna-5.2.0.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_net.java.dev.jna.jna_5.14.0.jar" Name="net.java.dev.jna.jna-5.14.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\net.java.dev.jna.jna-5.14.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_nu.validator.htmlparser.htmlparser_1.4.jar" Name="nu.validator.htmlparser.htmlparser-1.4.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\nu.validator.htmlparser.htmlparser-1.4.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.apache.commons.commons_compress_1.20.jar" Name="org.apache.commons.commons-compress-1.20.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.apache.commons.commons-compress-1.20.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.apache.commons.commons_lang3_3.9.jar" Name="org.apache.commons.commons-lang3-3.9.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.apache.commons.commons-lang3-3.9.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.apache.commons.commons_text_1.10.0.jar" Name="org.apache.commons.commons-text-1.10.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.apache.commons.commons-text-1.10.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.apache.httpcomponents.httpclient_osgi_4.5.2.jar" Name="org.apache.httpcomponents.httpclient-osgi-4.5.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.apache.httpcomponents.httpclient-osgi-4.5.2.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.apache.httpcomponents.httpcore_osgi_4.4.5.jar" Name="org.apache.httpcomponents.httpcore-osgi-4.4.5.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.apache.httpcomponents.httpcore-osgi-4.4.5.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.apache.poi.poi_ooxml_5.0.0.jar" Name="org.apache.poi.poi-ooxml-5.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.apache.poi.poi-ooxml-5.0.0.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.apache.poi.poi_scratchpad_5.0.0.jar" Name="org.apache.poi.poi-scratchpad-5.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.apache.poi.poi-scratchpad-5.0.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.apache.servicemix.bundles.org.apache.servicemix.bundles.antlr_runtime_3.5.2_1.jar" Name="org.apache.servicemix.bundles.org.apache.servicemix.bundles.antlr-runtime-3.5.2_1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.apache.servicemix.bundles.org.apache.servicemix.bundles.antlr-runtime-3.5.2_1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.codehaus.woodstox.stax2_api_3.1.1.jar" Name="org.codehaus.woodstox.stax2-api-3.1.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.codehaus.woodstox.stax2-api-3.1.1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.codehaus.woodstox.woodstox_core_lgpl_4.1.2.jar" Name="org.codehaus.woodstox.woodstox-core-lgpl-4.1.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.codehaus.woodstox.woodstox-core-lgpl-4.1.2.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.bindings.jhyphen_1.0.2.jar" Name="org.daisy.bindings.jhyphen-1.0.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.bindings.jhyphen-1.0.2.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.braille.braille_css_1.24.1.jar" Name="org.daisy.braille.braille-css-1.24.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.braille.braille-css-1.24.1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.dotify.dotify.library_1.0.7.jar" Name="org.daisy.dotify.dotify.library-1.0.7.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.dotify.dotify.library-1.0.7.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.libs.com.xmlcalabash_1.1.20_p15_98.jar" Name="org.daisy.libs.com.xmlcalabash-1.1.20-p15-98.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.libs.com.xmlcalabash-1.1.20-p15-98.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.libs.io.bit3.jsass_5.10.4_p1.jar" Name="org.daisy.libs.io.bit3.jsass-5.10.4-p1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.libs.io.bit3.jsass-5.10.4-p1.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.libs.com.xmlcalabash_1.1.20_p16_98.jar" Name="org.daisy.libs.com.xmlcalabash-1.1.20-p16-98.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.libs.com.xmlcalabash-1.1.20-p16-98.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.libs.io.bit3.jsass_5.11.1_p1.jar" Name="org.daisy.libs.io.bit3.jsass-5.11.1-p1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.libs.io.bit3.jsass-5.11.1-p1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.libs.jing_20151127.0.1.jar" Name="org.daisy.libs.jing-20151127.0.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.libs.jing-20151127.0.1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.libs.jnaerator_0.11_p1.jar" Name="org.daisy.libs.jnaerator-0.11-p1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.libs.jnaerator-0.11-p1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.libs.jstyleparser_1.20_p21.jar" Name="org.daisy.libs.jstyleparser-1.20-p21.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.libs.jstyleparser-1.20-p21.jar" />
@@ -940,22 +938,22 @@
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.calabash_adapter_6.1.0.jar" Name="org.daisy.pipeline.calabash-adapter-6.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.calabash-adapter-6.1.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.common_utils_6.0.0.jar" Name="org.daisy.pipeline.common-utils-6.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.common-utils-6.0.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.framework_core_8.0.1.jar" Name="org.daisy.pipeline.framework-core-8.0.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.framework-core-8.0.1.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.logging_appender_2.1.2.jar" Name="org.daisy.pipeline.logging-appender-2.1.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.logging-appender-2.1.2.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.logging_appender_2.1.3_SNAPSHOT.jar" Name="org.daisy.pipeline.logging-appender-2.1.3-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.logging-appender-2.1.3-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules_registry_4.1.2.jar" Name="org.daisy.pipeline.modules-registry-4.1.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules-registry-4.1.2.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.ace_adapter_1.0.8.jar" Name="org.daisy.pipeline.modules.ace-adapter-1.0.8.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.ace-adapter-1.0.8.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.asciimath_utils_1.0.10.jar" Name="org.daisy.pipeline.modules.asciimath-utils-1.0.10.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.asciimath-utils-1.0.10.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.audio_common_5.1.3.jar" Name="org.daisy.pipeline.modules.audio-common-5.1.3.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.audio-common-5.1.3.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.audio_encoder_lame_3.0.9.jar" Name="org.daisy.pipeline.modules.audio-encoder-lame-3.0.9.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.audio-encoder-lame-3.0.9.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.braille_common_4.0.0.jar" Name="org.daisy.pipeline.modules.braille.braille-common-4.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.braille-common-4.0.0.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.braille_common_4.1.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.braille.braille-common-4.1.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.braille-common-4.1.0-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.braille_css_utils_3.1.0.jar" Name="org.daisy.pipeline.modules.braille.braille-css-utils-3.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.braille-css-utils-3.1.0.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.dotify_utils_6.2.2.jar" Name="org.daisy.pipeline.modules.braille.dotify-utils-6.2.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.dotify-utils-6.2.2.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.dtbook_to_pef_10.0.1.jar" Name="org.daisy.pipeline.modules.braille.dtbook-to-pef-10.0.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.dtbook-to-pef-10.0.1.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.epub3_to_pef_7.0.1.jar" Name="org.daisy.pipeline.modules.braille.epub3-to-pef-7.0.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.epub3-to-pef-7.0.1.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.html_to_pef_7.0.1.jar" Name="org.daisy.pipeline.modules.braille.html-to-pef-7.0.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.html-to-pef-7.0.1.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.dotify_utils_6.2.3_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.braille.dotify-utils-6.2.3-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.dotify-utils-6.2.3-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.dtbook_to_pef_10.1.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.braille.dtbook-to-pef-10.1.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.dtbook-to-pef-10.1.0-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.epub3_to_pef_7.1.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.braille.epub3-to-pef-7.1.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.epub3-to-pef-7.1.0-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.html_to_pef_7.1.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.braille.html-to-pef-7.1.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.html-to-pef-7.1.0-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.libhyphen_utils_3.2.1_windows.jar" Name="org.daisy.pipeline.modules.braille.libhyphen-utils-3.2.1-windows.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.libhyphen-utils-3.2.1-windows.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.libhyphen_utils_3.2.1.jar" Name="org.daisy.pipeline.modules.braille.libhyphen-utils-3.2.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.libhyphen-utils-3.2.1.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.libhyphen_utils_3.3.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.braille.libhyphen-utils-3.3.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.libhyphen-utils-3.3.0-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.liblouis_utils_6.0.2_windows.jar" Name="org.daisy.pipeline.modules.braille.liblouis-utils-6.0.2-windows.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.liblouis-utils-6.0.2-windows.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.liblouis_utils_6.1.0.jar" Name="org.daisy.pipeline.modules.braille.liblouis-utils-6.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.liblouis-utils-6.1.0.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.liblouis_utils_6.2.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.braille.liblouis-utils-6.2.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.liblouis-utils-6.2.0-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.pef_utils_6.0.0.jar" Name="org.daisy.pipeline.modules.braille.pef-utils-6.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.pef-utils-6.0.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.texhyph_utils_3.0.3.jar" Name="org.daisy.pipeline.modules.braille.texhyph-utils-3.0.3.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.texhyph-utils-3.0.3.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.braille.zedai_to_pef_6.2.0.jar" Name="org.daisy.pipeline.modules.braille.zedai-to-pef-6.2.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.braille.zedai-to-pef-6.2.0.jar" />
@@ -963,15 +961,15 @@
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.css_utils_5.2.0.jar" Name="org.daisy.pipeline.modules.css-utils-5.2.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.css-utils-5.2.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy202_to_daisy3_1.0.6.jar" Name="org.daisy.pipeline.modules.daisy202-to-daisy3-1.0.6.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy202-to-daisy3-1.0.6.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy202_to_epub3_2.1.0.jar" Name="org.daisy.pipeline.modules.daisy202-to-epub3-2.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy202-to-epub3-2.1.0.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy202_to_mp3_1.1.3.jar" Name="org.daisy.pipeline.modules.daisy202-to-mp3-1.1.3.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy202-to-mp3-1.1.3.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy202_to_mp3_1.1.4_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.daisy202-to-mp3-1.1.4-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy202-to-mp3-1.1.4-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy202_utils_1.6.2.jar" Name="org.daisy.pipeline.modules.daisy202-utils-1.6.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy202-utils-1.6.2.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy202_validator_2.0.10.jar" Name="org.daisy.pipeline.modules.daisy202-validator-2.0.10.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy202-validator-2.0.10.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy3_to_daisy202_2.1.2.jar" Name="org.daisy.pipeline.modules.daisy3-to-daisy202-2.1.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy3-to-daisy202-2.1.2.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy3_to_epub3_3.1.0.jar" Name="org.daisy.pipeline.modules.daisy3-to-epub3-3.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy3-to-epub3-3.1.0.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy3_to_mp3_1.2.4.jar" Name="org.daisy.pipeline.modules.daisy3-to-mp3-1.2.4.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy3-to-mp3-1.2.4.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy3_to_mp3_1.2.5_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.daisy3-to-mp3-1.2.5-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy3-to-mp3-1.2.5-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.daisy3_utils_4.1.4.jar" Name="org.daisy.pipeline.modules.daisy3-utils-4.1.4.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.daisy3-utils-4.1.4.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.dtbook_break_detection_2.0.5.jar" Name="org.daisy.pipeline.modules.dtbook-break-detection-2.0.5.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.dtbook-break-detection-2.0.5.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.dtbook_to_daisy3_3.4.0.jar" Name="org.daisy.pipeline.modules.dtbook-to-daisy3-3.4.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.dtbook-to-daisy3-3.4.0.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.dtbook_to_daisy3_3.4.1_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.dtbook-to-daisy3-3.4.1-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.dtbook-to-daisy3-3.4.1-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.dtbook_to_epub3_2.5.0.jar" Name="org.daisy.pipeline.modules.dtbook-to-epub3-2.5.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.dtbook-to-epub3-2.5.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.dtbook_to_html_4.0.3.jar" Name="org.daisy.pipeline.modules.dtbook-to-html-4.0.3.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.dtbook-to-html-4.0.3.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.dtbook_to_odt_2.1.10.jar" Name="org.daisy.pipeline.modules.dtbook-to-odt-2.1.10.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.dtbook-to-odt-2.1.10.jar" />
@@ -985,7 +983,7 @@
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.epub2_to_epub3_1.1.0.jar" Name="org.daisy.pipeline.modules.epub2-to-epub3-1.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.epub2-to-epub3-1.1.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.epub3_to_daisy202_2.2.6.jar" Name="org.daisy.pipeline.modules.epub3-to-daisy202-2.2.6.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.epub3-to-daisy202-2.2.6.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.epub3_to_daisy3_1.0.8.jar" Name="org.daisy.pipeline.modules.epub3-to-daisy3-1.0.8.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.epub3-to-daisy3-1.0.8.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.epub3_to_epub3_4.2.0.jar" Name="org.daisy.pipeline.modules.epub3-to-epub3-4.2.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.epub3-to-epub3-4.2.0.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.epub3_to_epub3_4.2.1_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.epub3-to-epub3-4.2.1-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.epub3-to-epub3-4.2.1-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.epub3_to_html_1.0.0.jar" Name="org.daisy.pipeline.modules.epub3-to-html-1.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.epub3-to-html-1.0.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.epub3_tts_4.0.0.jar" Name="org.daisy.pipeline.modules.epub3-tts-4.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.epub3-tts-4.0.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.epub3_validator_2.0.6.jar" Name="org.daisy.pipeline.modules.epub3-validator-2.0.6.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.epub3-validator-2.0.6.jar" />
@@ -995,7 +993,7 @@
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.html_break_detection_1.4.1.jar" Name="org.daisy.pipeline.modules.html-break-detection-1.4.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.html-break-detection-1.4.1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.html_to_dtbook_2.0.5.jar" Name="org.daisy.pipeline.modules.html-to-dtbook-2.0.5.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.html-to-dtbook-2.0.5.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.html_to_epub3_2.4.0.jar" Name="org.daisy.pipeline.modules.html-to-epub3-2.4.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.html-to-epub3-2.4.0.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.html_utils_6.2.4.jar" Name="org.daisy.pipeline.modules.html-utils-6.2.4.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.html-utils-6.2.4.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.html_utils_6.3.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.html-utils-6.3.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.html-utils-6.3.0-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.image_utils_1.0.7.jar" Name="org.daisy.pipeline.modules.image-utils-1.0.7.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.image-utils-1.0.7.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.mathml_to_ssml_2.0.0.jar" Name="org.daisy.pipeline.modules.mathml-to-ssml-2.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.mathml-to-ssml-2.0.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.mathml_utils_1.0.2.jar" Name="org.daisy.pipeline.modules.mathml-utils-1.0.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.mathml-utils-1.0.2.jar" />
@@ -1007,26 +1005,23 @@
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.nlp_ruled_lexer_1.0.4.jar" Name="org.daisy.pipeline.modules.nlp-ruled-lexer-1.0.4.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.nlp-ruled-lexer-1.0.4.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.odf_utils_1.0.3.jar" Name="org.daisy.pipeline.modules.odf-utils-1.0.3.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.odf-utils-1.0.3.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.smil_utils_4.0.1.jar" Name="org.daisy.pipeline.modules.smil-utils-4.0.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.smil-utils-4.0.1.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_acapela_3.1.3.jar" Name="org.daisy.pipeline.modules.tts-adapter-acapela-3.1.3.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-acapela-3.1.3.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_azure_1.1.0.jar" Name="org.daisy.pipeline.modules.tts-adapter-azure-1.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-azure-1.1.0.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_cereproc_1.1.5.jar" Name="org.daisy.pipeline.modules.tts-adapter-cereproc-1.1.5.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-cereproc-1.1.5.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_espeak_3.0.11.jar" Name="org.daisy.pipeline.modules.tts-adapter-espeak-3.0.11.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-espeak-3.0.11.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_google_1.2.0.jar" Name="org.daisy.pipeline.modules.tts-adapter-google-1.2.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-google-1.2.0.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_qfrency_1.0.9.jar" Name="org.daisy.pipeline.modules.tts-adapter-qfrency-1.0.9.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-qfrency-1.0.9.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_sapinative_3.1.6.jar" Name="org.daisy.pipeline.modules.tts-adapter-sapinative-3.1.6.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-sapinative-3.1.6.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_common_7.0.0.jar" Name="org.daisy.pipeline.modules.tts-common-7.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-common-7.0.0.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_acapela_3.1.4_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.tts-adapter-acapela-3.1.4-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-acapela-3.1.4-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_azure_1.1.1_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.tts-adapter-azure-1.1.1-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-azure-1.1.1-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_cereproc_1.1.6_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.tts-adapter-cereproc-1.1.6-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-cereproc-1.1.6-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_espeak_3.0.12_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.tts-adapter-espeak-3.0.12-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-espeak-3.0.12-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_google_1.2.1_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.tts-adapter-google-1.2.1-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-google-1.2.1-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_qfrency_1.0.10_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.tts-adapter-qfrency-1.0.10-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-qfrency-1.0.10-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_adapter_sapinative_3.1.7_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.tts-adapter-sapinative-3.1.7-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-adapter-sapinative-3.1.7-SNAPSHOT.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.tts_common_7.1.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.tts-common-7.1.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.tts-common-7.1.0-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.validation_utils_2.0.0.jar" Name="org.daisy.pipeline.modules.validation-utils-2.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.validation-utils-2.0.0.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.word_to_dtbook_1.0.0_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.word-to-dtbook-1.0.0-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.word-to-dtbook-1.0.0-SNAPSHOT.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.zedai_to_epub3_2.5.0.jar" Name="org.daisy.pipeline.modules.zedai-to-epub3-2.5.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.zedai-to-epub3-2.5.0.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.zedai_to_epub3_2.5.1_SNAPSHOT.jar" Name="org.daisy.pipeline.modules.zedai-to-epub3-2.5.1-SNAPSHOT.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.zedai-to-epub3-2.5.1-SNAPSHOT.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.zedai_to_html_2.5.0.jar" Name="org.daisy.pipeline.modules.zedai-to-html-2.5.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.zedai-to-html-2.5.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.zedai_utils_1.2.1.jar" Name="org.daisy.pipeline.modules.zedai-utils-1.2.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.zedai-utils-1.2.1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.modules.zip_utils_2.1.7.jar" Name="org.daisy.pipeline.modules.zip-utils-2.1.7.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.modules.zip-utils-2.1.7.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.saxon_adapter_4.3.0.jar" Name="org.daisy.pipeline.saxon-adapter-4.3.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.saxon-adapter-4.3.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.daisy.pipeline.xproc_api_8.1.0.jar" Name="org.daisy.pipeline.xproc-api-8.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.daisy.pipeline.xproc-api-8.1.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.json.json_20200518.jar" Name="org.json.json-20200518.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.json.json-20200518.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.liblouis.liblouis_java_5.0.2.jar" Name="org.liblouis.liblouis-java-5.0.2.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.liblouis.liblouis-java-5.0.2.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.libreoffice.libreoffice_7.4.7.jar" Name="org.libreoffice.libreoffice-7.4.7.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.libreoffice.libreoffice-7.4.7.jar" />
-                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.libreoffice.unoloader_7.4.7.jar" Name="org.libreoffice.unoloader-7.4.7.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.libreoffice.unoloader-7.4.7.jar" />
+                                        <File DiskId="2" Id="_daisy_pipeline_system_common_org.liblouis.liblouis_java_5.1.0.jar" Name="org.liblouis.liblouis-java-5.1.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.liblouis.liblouis-java-5.1.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.sharegov.mjson_1.4.1.jar" Name="org.sharegov.mjson-1.4.1.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.sharegov.mjson-1.4.1.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.slf4j.jcl_over_slf4j_1.7.32.jar" Name="org.slf4j.jcl-over-slf4j-1.7.32.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.slf4j.jcl-over-slf4j-1.7.32.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_common_org.slf4j.jul_to_slf4j_1.7.32.jar" Name="org.slf4j.jul-to-slf4j-1.7.32.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\common\org.slf4j.jul-to-slf4j-1.7.32.jar" />
@@ -1036,7 +1031,7 @@
                                     </Component>
                                 </Directory><!--common-->
                                 <Directory Id="_daisy_pipeline_system_no_osgi" Name="no-osgi">
-                                    <Component Id="_daisy_pipeline_system_no_osgi_files" Guid="2ca91090-c130-4497-bfe7-40f7c40ac0da">
+                                    <Component Id="_daisy_pipeline_system_no_osgi_files" Guid="2c86a051-47a1-40db-bacd-b9aa761f1859">
                                         <File DiskId="2" Id="_daisy_pipeline_system_no_osgi_com.nwalsh.nwalsh_annotations_1.0.0.jar" Name="com.nwalsh.nwalsh-annotations-1.0.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\no-osgi\com.nwalsh.nwalsh-annotations-1.0.0.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_no_osgi_org.atteo.classindex.classindex_3.3.jar" Name="org.atteo.classindex.classindex-3.3.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\no-osgi\org.atteo.classindex.classindex-3.3.jar" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_no_osgi_org.daisy.pipeline.ds_to_spi_runtime_1.2.0.jar" Name="org.daisy.pipeline.ds-to-spi-runtime-1.2.0.jar" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\no-osgi\org.daisy.pipeline.ds-to-spi-runtime-1.2.0.jar" />
@@ -1045,7 +1040,7 @@
                                     </Component>
                                 </Directory><!--no-osgi-->
                                 <Directory Id="_daisy_pipeline_system_simple_api" Name="simple-api">
-                                    <Component Id="_daisy_pipeline_system_simple_api_files" Guid="c2ab9491-6d73-4345-91d0-0bf377ffae10">
+                                    <Component Id="_daisy_pipeline_system_simple_api_files" Guid="7d07f006-772c-4037-a536-b97873eb9d3a">
                                         <File DiskId="2" Id="_daisy_pipeline_system_simple_api_SimpleAPI_SPI.class" Name="SimpleAPI_SPI.class" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\simple-api\SimpleAPI_SPI.class" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_simple_api_SimpleAPI.class" Name="SimpleAPI.class" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\simple-api\SimpleAPI.class" />
                                         <File DiskId="2" Id="_daisy_pipeline_system_simple_api_SimpleAPI_1.class" Name="SimpleAPI$1.class" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\simple-api\SimpleAPI$1.class" />
@@ -1054,7 +1049,7 @@
                                     </Component>
                                     <Directory Id="_daisy_pipeline_system_simple_api_META_INF" Name="META-INF">
                                         <Directory Id="_daisy_pipeline_system_simple_api_META_INF_services" Name="services">
-                                            <Component Id="_daisy_pipeline_system_simple_api_META_INF_services_files" Guid="c3dc22b8-072c-4260-bcbf-4a2a31d32481">
+                                            <Component Id="_daisy_pipeline_system_simple_api_META_INF_services_files" Guid="492a31e1-c943-4448-aa54-da220eec2675">
                                                 <File DiskId="2" Id="_daisy_pipeline_system_simple_api_META_INF_services_org.daisy.common.spi.CreateOnStart" Name="org.daisy.common.spi.CreateOnStart" Source="$(var.SolutionDir)Lib\daisy-pipeline\system\simple-api\META-INF\services\org.daisy.common.spi.CreateOnStart" />
                                             </Component>
                                         </Directory><!--services-->
@@ -1062,10 +1057,6 @@
                                 </Directory><!--simple-api-->
                             </Directory><!--system-->
                         </Directory><!--daisy-pipeline-->
-
-
-
-
 
 
 
@@ -1178,7 +1169,7 @@
             <ComponentRef Id="_daisy_pipeline_system_no_osgi_files"/>
             <ComponentRef Id="_daisy_pipeline_system_simple_api_files"/>
             <ComponentRef Id="_daisy_pipeline_system_simple_api_META_INF_services_files"/>
-            <!--daisy-pipeline refs--><!--daisy-pipeline refs--><!--daisy-pipeline refs--><!--daisy-pipeline refs--><!--daisy-pipeline refs--><!--daisy-pipeline refs--><!--daisy-pipeline refs-->
+            <!--daisy-pipeline refs--><!--daisy-pipeline refs--><!--daisy-pipeline refs-->
 
 		</Feature>
         
@@ -1215,7 +1206,3 @@
 
     </Product>
 </Wix>
-
-
-
-

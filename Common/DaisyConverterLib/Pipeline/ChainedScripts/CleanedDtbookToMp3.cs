@@ -106,41 +106,29 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 },
                 // From DAISY3 to MP3 script
                 {
-                  "player-type",
+                  "folder-depth",
                   new ScriptParameter(
-                    "player-type",
-                    "The type of MegaVoice Envoy device.",
+                    "folder-depth",
+                    "Folder depth",
                     new EnumDataType(
                         new Dictionary<string,object>(){
-                            {"Type 1", "1"},
-                            {"Type 2", "2"},
-                        }, "Type 1"),
+                            {"1", "1"},
+                            {"2", "2"},
+                            {"3", "3"},
+                        }, "1"),
                     "1",
                     false,
-                    "Possible values: \r\n" +
-                    " - Type 1: This produces a folder structure that is four levels deep." +
-                    " At the top level there can be up to 8 folders." +
-                    " Each of these folders can have up to 20 sub-folders." +
-                    " The sub-folders can have up to 999 sub-sub-folders, each of which can contain up to 999 MP3 files.\r\n" +
-                    " - Type 2: This produces a folder structure that is two levels deep. On the top level there can be up to 999 folders, and each of these folders can have up to 999 MP3 files."
+                    "The number of folder levels in the produced folder structure.\n\n" +
+                    "The book is always, if possible, contained in a single top - level folder with MP3 files or\n" +
+                    "sub - folders(files for folder depth 1, sub - folders for folder depths greater than 1) that correspond\n" +
+                    "with top-level sections of the book.\n\n" +
+                    "If there are more top - level sections than the maximum number of files / folders that a top - level\n" +
+                    "folder can contain, the book is divided over multiple top-level folders.Similarly, if the number of\n" +
+                    "level - two sections within a top-level section exceeds the maximum number of files / folders that a\n" +
+                    "level - two folder can contain, the top-level section is divided over multiple level-two folders."
+
                   )
                 },
-                {
-                  "book-folder-level",
-                  new ScriptParameter(
-                    "book-folder-level",
-                    "Book folder level",
-                    new IntegerDataType(0,3,1),
-                    1,
-                    false,
-                    "The folder level corresponding with the book, expressed as a 0-based number.\r\n" +
-                    "Value `0` means that top-level folders correspond with top-level sections of the book.\r\n" +
-                    "Value `1` means that the book is contained in a single top-level folder (if it is not too big) with" +
-                    " sub - folders that correspond with top-level sections of the book." +
-                    " Must be a non-negative integer value, less than or equal to 3 for type 1 players, and less than or" +
-                    " equal to 1 for type 2 players."
-                  )
-                }
             };
         }
 
@@ -210,7 +198,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
 #endif
             
             dtbookToDaisy3.ExecuteScript(dtbookToDaisy3.Parameters["input"].ParameterValue.ToString());
-
+            foreach (var kv in this._parameters) {
+                if (daisy3ToMp3.Parameters.ContainsKey(kv.Key) && kv.Key != "output") // avoid copy daisy3 to mp3 output as it is not the same named option
+                {
+                    daisy3ToMp3.Parameters[kv.Key] = kv.Value;
+                }
+            }
             try
             {
                 daisy3ToMp3.Parameters["input"].ParameterValue = Directory.GetFiles(daisy3TempDir.FullName, "*.opf", SearchOption.AllDirectories)[0];

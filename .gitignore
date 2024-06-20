@@ -165,3 +165,4 @@ Tests/RegressionTests/testfiles/copyrighted/**
 Tests/RegressionTests/testfiles/expected/**
 !Tests/RegressionTests/testfiles/expected/.gitkeep
 
+_issues/
