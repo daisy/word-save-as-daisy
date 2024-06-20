@@ -6,7 +6,7 @@ param(
 	[switch]$refreshpipeline = $false
 )
 
-$currentVersion = "2.8.6"
+$currentVersion = "2.8.7"
 $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
 
 # Create the wix directory tree for a path

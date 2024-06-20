@@ -229,7 +229,7 @@
                         <meta name="dtb:uid" content="{$UID}"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                <meta name="dtb:generator" content="SaveAsDAISY 2.8.6, by the DAISY Consortium"/>
+                <meta name="dtb:generator" content="SaveAsDAISY 2.8.7, by the DAISY Consortium"/>
                 <!--Choose block for checking whether user has entered the Title of the document or not-->
                 <meta name="dc:Title" content="{$Title}"/>
                 <!--Choose block for checking whether user has entered the Creator of the document or not-->
