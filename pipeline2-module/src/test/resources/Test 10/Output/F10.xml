@@ -88,36 +88,36 @@
 <p>Department budget is allocated to the projects of that department.</p>
 <p>Cash flow accounting of the project is carried out by registration of receipts and expenditure of financial documents (contracts, orders, invoices, etc.). Project costs are written off on defined cost centers. Owners of this cost centers are companies of the holding.</p>
 <p>System features:</p>
-<p xml:lang="en-US">to combine the projects of different departments to super projects on corporate level;</p>
-<p xml:lang="en-US">to manage long-term projects budget in the several fiscal years;</p>
-<p xml:lang="en-US">to control debtor /creditor partners’ accounts, which are involved in the order execution;</p>
-<p xml:lang="en-US">to get detailed statistical and analytical information for the fiscal year with the monthly split by projects, cost centers, orders, invoices etc;</p>
-<p xml:lang="en-US">to inform the users about the important events through the automated messaging;</p>
-<p xml:lang="en-US">to  manage referenced data;</p>
-<p xml:lang="en-US">flexible system of rights and data permission.</p>
+<p>to combine the projects of different departments to super projects on corporate level;</p>
+<p>to manage long-term projects budget in the several fiscal years;</p>
+<p>to control debtor /creditor partners’ accounts, which are involved in the order execution;</p>
+<p>to get detailed statistical and analytical information for the fiscal year with the monthly split by projects, cost centers, orders, invoices etc;</p>
+<p>to inform the users about the important events through the automated messaging;</p>
+<p>to  manage referenced data;</p>
+<p>flexible system of rights and data permission.</p>
 <p></p>
 <p><strong >Technical details</strong></p>
 <p>DBMS: <strong >Oracle Database 11g</strong> </p>
 <p>Programming language: <strong >Java</strong></p>
 <p>Application server: <strong >JBoss Application Server 5.0</strong></p>
 <p>Technologies used:</p>
-<p xml:lang="en-US"><strong >J2EE</strong> – component model of application,</p>
-<p xml:lang="en-US"><strong >EJB 3 (Hibernate)</strong> – access to the data base,</p>
-<p xml:lang="en-US"><strong >JSP, Struts 2, Tiles, JavaScript</strong> – user interface implementation,</p>
-<p xml:lang="en-US"><strong >Quartz</strong> – implementation of scheduled tasks,</p>
-<p xml:lang="en-US"><strong >JUnit</strong> – modular automatic tests platform.</p>
+<p><strong >J2EE</strong> – component model of application,</p>
+<p><strong >EJB 3 (Hibernate)</strong> – access to the data base,</p>
+<p><strong >JSP, Struts 2, Tiles, JavaScript</strong> – user interface implementation,</p>
+<p><strong >Quartz</strong> – implementation of scheduled tasks,</p>
+<p><strong >JUnit</strong> – modular automatic tests platform.</p>
 <p></p>
 <p><strong >Quality assurance </strong></p>
 <p>The quality assurance of implemented functionality has been supported by:</p>
-<p xml:lang="en-US">Code Review</p>
-<p xml:lang="en-US">Unit Tests</p>
-<p xml:lang="en-US">Manual Functional Testing </p>
+<p>Code Review</p>
+<p>Unit Tests</p>
+<p>Manual Functional Testing </p>
 <p></p>
 <p><strong >Project team</strong></p>
 <p>Project team had 2 members: </p>
-<p xml:lang="en-US">6 developers was working on implementation of functionality and unit test development</p>
-<p xml:lang="en-US">1 development manager (coordination with Customer, planning, development management)</p>
-<p xml:lang="en-US">1 architect (design for reporting module, developers support)</p>
+<p>6 developers was working on implementation of functionality and unit test development</p>
+<p>1 development manager (coordination with Customer, planning, development management)</p>
+<p>1 architect (design for reporting module, developers support)</p>
 <p></p>
 <p><strong >Terms</strong></p>
 <p>The project terms was about 7 months</p>
@@ -180,7 +180,7 @@
 </td><td ><p>some style remarks (marked without comments). One can fill that it is a translation, not an original.</p>
 </td></tr>
                <tr><td ><p>2009-08-20</p>
-</td><td ><p xml:lang="ru-RU">Sinkevich V.</p>
+</td><td ><p>Sinkevich V.</p>
 </td><td ><p>Style corrected.</p>
 </td></tr>
                <tr><td ><p>2009-08-21</p>
@@ -188,7 +188,7 @@
 </td><td ><p>Approved on a condition that description will be fixed</p>
 </td></tr>
                <tr><td ><p>2009-09-29</p>
-</td><td ><p xml:lang="ru-RU">Sinkevich V.</p>
+</td><td ><p>Sinkevich V.</p>
 </td><td ><p>KPI added, marked with yellow background.</p>
 </td></tr>
                <tr><td ><p>2009-12-01</p>

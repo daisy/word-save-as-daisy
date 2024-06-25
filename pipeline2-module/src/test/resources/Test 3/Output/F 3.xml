@@ -105,7 +105,7 @@
 </td><td ><p>Functions </p>
 </td></tr>
             </tbody>
-         </table></level3><level3><h3>2.1.2. Metadata Tab
+         </table></level3><level3><h3 xml:lang="ru-RU">2.1.2. Metadata Tab
 </h3><p></p>
 <table border="1">
             <col align="center"/>
@@ -209,7 +209,7 @@
 </td><td ><p>Functions </p>
 </td></tr>
             </tbody>
-         </table></level3><level3><h3>2.1.3. Log Tab
+         </table></level3><level3><h3 xml:lang="ru-RU">2.1.3. Log Tab
 </h3><p></p>
 <table border="1">
             <col align="center"/>
@@ -284,7 +284,7 @@
 </td><td ><p>Functions </p>
 </td></tr>
             </tbody>
-         </table></level2><level2><h2>2.3. Verifying Function scenarios requirement according to specification
+         </table></level2><level2><h2 xml:lang="ru-RU">2.3. Verifying Function scenarios requirement according to specification
 </h2><p></p>
 <table border="1">
             <col align="center"/>
@@ -365,7 +365,7 @@
 </td><td ><p>Conforms</p>
 </td></tr>
             </tbody>
-         </table></level2></level1><level1><h1>3. Stress Tests
+         </table></level2></level1><level1><h1 xml:lang="ru-RU">3. Stress Tests
 </h1><p></p>
 <table border="1">
             <col align="center"/>
@@ -377,7 +377,7 @@
 </td><td ><p>The action of system conforms to specification</p>
 </td></tr>
             </tbody>
-         </table></level1><level1><h1>4. Smoke/Acceptance Test
+         </table></level1><level1><h1 xml:lang="ru-RU">4. Smoke/Acceptance Test
 </h1><p></p>
 <table border="1">
             <col align="right"/>
@@ -555,7 +555,7 @@
 <p></p>
 </level1><level1><h1>5. Conclusion
 </h1><p></p>
-<p xml:lang="en-GB">Consequently of testing a system was detected next mistakes: 1) the view of Main menu and Metadata are not correct; 2) the button ‘Save settings’ is not correct; 3) not message about hierarchy of folder; 4) not ‘warning’ in the Mapping grid when loaded files with size greater than 50 MB. All mistakes were removed. </p>
+<p>Consequently of testing a system was detected next mistakes: 1) the view of Main menu and Metadata are not correct; 2) the button ‘Save settings’ is not correct; 3) <span xml:lang="en-GB">not message about hierarchy of folder; 4) </span>not ‘warning’ in the Mapping grid when loaded files with size greater than 50 MB. All mistakes were removed. </p>
 <p>The Product Content Cue is ready for construction QA-analysis.</p>
 <p></p>
 <p></p>

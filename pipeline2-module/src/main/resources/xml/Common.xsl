@@ -593,15 +593,12 @@
 						<xsl:with-param name="paragraphNode" select="."/>
 					</xsl:call-template>
 				</xsl:variable>
-				<xsl:message terminate="no">progress:Paragraph Language: <xsl:value-of select="$paragraphLanguage"/> VS <xsl:value-of select="$documentLanguages/*:lang[1]/@*:val"/></xsl:message>
 				<!-- NP 2024/06/14 change language handling -->
 				<xsl:variable name="LangAttribute">
 					<xsl:if test="not($paragraphLanguage=$documentLanguages/*:lang[1]/@*:val)">
 						<xsl:value-of select="concat(' xml:lang=&quot;',$paragraphLanguage,'&quot;')"/>
 					</xsl:if>
 				</xsl:variable>
-				<xsl:message terminate="no">progress:Paragraph Language test: <xsl:value-of select="$LangAttribute"/></xsl:message>
-				
 				<xsl:if test="($custom='Custom' and not(w:r/w:rPr/w:rStyle[@w:val='PageNumberDAISY'])) or (not($custom='Custom'))">
 					<xsl:value-of disable-output-escaping="yes" select="concat('&lt;','p',$LangAttribute,'&gt;')"/>
 				</xsl:if>

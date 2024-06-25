@@ -17,7 +17,7 @@
          <doctitle>Help</doctitle>
          <docauthor>Balandin Vyacheslav</docauthor>
       </frontmatter>
-      <bodymatter id="bodymatter_0001"><level1><table xmlns:xs="http://www.w3.org/2001/XMLSchema" border="1">
+      <bodymatter id="bodymatter_0001"><level1><table border="1">
             <thead>
                <tr>
                   <th><p><strong >Date</strong></p>
@@ -40,7 +40,7 @@
             </tbody>
          </table><p></p>
 <p>Search word combinations:</p>
-<table xmlns:xs="http://www.w3.org/2001/XMLSchema" border="1">
+<table border="1">
             <tbody>
                <tr><td ><p>environment</p>
 </td></tr>
@@ -55,9 +55,9 @@
 <p></p>
 <p xml:lang="en-GB">In an underdeveloped country, don't drink the water; in a developed country, don't breathe the air.</p>
 </level1><level1><h1>  Help the world go green
-</h1><table xmlns:xs="http://www.w3.org/2001/XMLSchema" border="1">
+</h1><table border="1">
             <tbody>
-               <tr><td ><p><imggroup>
+               <tr><td ><p xml:lang="en-GB"><imggroup>
                      <img id="rId61" src="F1-42-21112966.jpg" alt=""/>
                   </imggroup></p>
 </td><td ><p></p>
@@ -74,22 +74,22 @@
 <p></p>
 <p>Our company eagerly supported the movement. Undoubtedly, not everyone was ready to use their legs according to the intended purpose. But still I’m happy with the result. Actually our company supports the green movement on the regular basis because the majority of our team members daily get to work by bus, on foot or ride a bicycle. And on September 22<sup >nd</sup> many of our car owners left their vehicles at home and stepped on their way to green office. </p>
 <p></p>
-<p><imggroup xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<p><imggroup>
             <img id="rId72"
                  src="F1-Picture%204.jpg"
                  alt="C:\Documents and Settings\shpileuskaya_c\Рабочий стол\Фото\CarFree Day\Игорь.jpg"/>
          </imggroup> 
-         <imggroup xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <imggroup>
             <img id="rId83"
                  src="F1-Picture%202.jpg"
                  alt="C:\Documents and Settings\shpileuskaya_c\Рабочий стол\Фото\CarFree Day\Володя.jpg"/>
          </imggroup> </p>
-<p><imggroup xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<p><imggroup>
             <img id="rId94"
                  src="F1-Picture%201.jpg"
                  alt="C:\Documents and Settings\shpileuskaya_c\Рабочий стол\Фото\CarFree Day\Катя.jpg"/>
          </imggroup> 
-         <imggroup xmlns:xs="http://www.w3.org/2001/XMLSchema">
+         <imggroup>
             <img id="rId105"
                  src="F1-Picture%206.jpg"
                  alt="C:\Documents and Settings\shpileuskaya_c\Рабочий стол\Фото\CarFree Day\40.jpg"/>

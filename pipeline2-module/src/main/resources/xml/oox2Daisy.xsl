@@ -93,8 +93,29 @@
 		select="document(concat('jar:',$InputFile,'!/word/endnotes.xml'))" />
 	
 	<xsl:variable name="documentLanguages">
-		<!-- Compute all content languages -->
-		<!-- deduce languages from paragraphes -->
+		<!-- Compute runners languages -->
+		<xsl:variable name="runnerLanguages">
+			<xsl:for-each select="$documentXml//w:body//w:r">
+				<xsl:variable name="found">
+					<xsl:call-template name="GetRunLanguage">
+						<xsl:with-param name="runNode" select="." />
+					</xsl:call-template>
+				</xsl:variable>
+				<lang val="{$found}" />
+			</xsl:for-each>
+		</xsl:variable>
+		<!-- keep uniq runner language
+		   Note : we don't count runners occurences here to later weight languages as many runners can be empty texts.
+		   We prioritize paragraph based evaluation to deduce document languages importance -->
+		<xsl:variable name="uniqRunnerLanguages">
+			<xsl:for-each select="$runnerLanguages/*:lang">
+				<xsl:variable name="currentVal" select="@*:val"/>
+				<xsl:if test="count(preceding-sibling::*:lang[@*:val=$currentVal])=0">
+					<lang val="{$currentVal}" />
+				</xsl:if>
+			</xsl:for-each>
+		</xsl:variable>
+		<!-- Compute languages of paragraphes -->
 		<xsl:variable name="paragraphLanguages">
 			<xsl:for-each select="$documentXml//w:body//w:p">
 				<xsl:variable name="found">
@@ -103,6 +124,10 @@
 					</xsl:call-template>
 				</xsl:variable>
 				<lang val="{$found}" />
+			</xsl:for-each>
+			<!-- merge paragraph and runners languages -->
+			<xsl:for-each select="$uniqRunnerLanguages/*:lang">
+				<lang val="{@*:val}" />
 			</xsl:for-each>
 		</xsl:variable>
 		<xsl:message terminate="no">progress:Document languages <xsl:value-of select="count($paragraphLanguages/*:lang)" /></xsl:message>

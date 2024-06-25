@@ -11,6 +11,7 @@
       <meta name="dc:Identifier" content="9"/>
       <meta name="dc:Language" content="en-US"/>
       <meta name="dc:Language" content="en-GB"/>
+      <meta name="dc:Language" content="ru-RU"/>
    </head>
    <book showin="blp">
       <frontmatter>
@@ -25,7 +26,7 @@
 </td></tr>
             </tbody>
          </table><p></p>
-<p xml:lang="en-GB">Imagine you are the president of an international holding with many subsidiary companies in different countries of the world. Every company requires constant attention to make sure that it runs according to the strategy plan and take measures if it doesn’t. How are you going to monitor the development process of your umpteenth companies? AuReS races to rescue!</p>
+<p>Imagine you are the president of an international holding with many subsidiary companies in different countries of the world. Every company requires constant attention to make sure that it runs according to the strategy plan and take measures if it doesn’t. How are you going to monitor the development process of your umpteenth companies? AuReS races to rescue!</p>
 <p></p>
 <p>AuReS is an automated reporting system developed by Gersis Software for an international holding company with a multilevel structure. The holding includes 25 subsidiary companies located in different regions and countries.</p>
 <p></p>
@@ -55,7 +56,7 @@
 <p>AuReS is provided with a comprehensive support service including hot line, FAQ section, glossary, methodological assistance and operating help sections. So the user will never feel helpless. Numerous optional features are supported: text formatting, numerical value scaling, currency rate, etc. The system supports multicurrency calculation that is of great convenience for the international holding company. </p>
 <p></p>
 <p>AuReS is operated at different management levels (holding, region, company). It is possible because of individual login system and differentiated data access. It ensures data security and system stability. The system promptly reacts to all the changes and alterations; it is easily adopted and operated. Working with AuRes you feel it understands and anticipates your needs.</p>
-<p></p>
+<p xml:lang="ru-RU"></p>
 <p xml:lang="en-GB">Technical details<br/><strong ><br/></strong>DBMS: <strong >MySQL<br/></strong>Programming language: <strong >Java<br/></strong>Application server: <strong >Tomcat Application Server 6.0.2.0</strong><br/></p>
 <p>Technologies used:</p>
 <list type="ul"><li><p><strong >J2EE</strong> – component model application,</p>
