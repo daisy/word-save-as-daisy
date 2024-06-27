@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.daisy.pipeline.modules</groupId>
 		<artifactId>modules-parent</artifactId>
-		<version>1.14.23</version>
+		<version>1.14.26-SNAPSHOT</version>
 	</parent>
 
 	<groupId>org.daisy.pipeline.modules</groupId>
@@ -61,15 +61,24 @@
 			<artifactId>unoloader</artifactId>
 			<version>7.4.7</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.daisy.libs</groupId>
+			<artifactId>com.xmlcalabash</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.daisy.pipeline</groupId>
+			<artifactId>calabash-adapter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.daisy.libs</groupId>
+			<artifactId>saxon-he</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.daisy.pipeline</groupId>
 			<artifactId>saxon-adapter</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>org.daisy.pipeline</groupId>
-			<artifactId>calabash-adapter</artifactId>
-		</dependency>
 
 		<dependency>
 			<groupId>org.daisy.pipeline</groupId>
@@ -88,13 +97,12 @@
 	<properties>
 		<expose-services>
 			org.daisy.pipeline.modules.impl.Module_word_to_dtbook,
-			org.daisy.pipeline.word_to_dtbook.impl.DaisyClass$Provider,
-			org.daisy.pipeline.script.impl.XProcScript_word_to_dtbook
-			<!--,
-			org.daisy.pipeline.datatypes.impl.Datatype_px_word_to_dtbook_script_pagenumstyle,
-			org.daisy.pipeline.datatypes.impl.Datatype_px_word_to_dtbook_script_imagesizeoption,
-			org.daisy.pipeline.datatypes.impl.Datatype_px_word_to_dtbook_script_footnotesnumbering,
-			org.daisy.pipeline.datatypes.impl.Datatype_px_word_to_dtbook_script_footnotesposition-->
+			org.daisy.pipeline.script.impl.XProcScript_word_to_dtbook,
+			org.daisy.pipeline.datatypes.impl.Datatype_px_word_to_dtbook_script_PagenumStyle,
+			org.daisy.pipeline.datatypes.impl.Datatype_px_word_to_dtbook_script_ImageSizeOption,
+			org.daisy.pipeline.datatypes.impl.Datatype_px_word_to_dtbook_script_FootnotesNumbering,
+			org.daisy.pipeline.datatypes.impl.Datatype_px_word_to_dtbook_script_FootnotesPosition,
+			org.daisy.pipeline.word_to_dtbook.impl.DaisyClass$Provider
 		</expose-services>
 	</properties>
 
