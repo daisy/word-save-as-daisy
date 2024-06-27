@@ -592,5 +592,6 @@
 				</book>
 			</dtbook>
 		</xsl:result-document>
+		<xsl:sequence select="d:End($myObj)" />
 	</xsl:template>
 </xsl:stylesheet>

@@ -272,6 +272,16 @@ public class DaisyClass {
 		}
 	}
 
+	public void End(){
+		if(!pack.isClosed()){
+			try{
+				pack.close();
+			} catch (Exception e){
+
+			}
+		}
+	}
+
 	/**
 	 * - In the input document name (inputName), replace all spaces by underscore
 	 * - If the output is set to the %APPDATA%/SaveAsDaisy folder and if a png image ending by the "id"
