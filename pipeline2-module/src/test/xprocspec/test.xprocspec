@@ -292,5 +292,33 @@
             href="../resources/Test%2010/Output/F10.xml"/>
       </x:expect>
     </x:scenario>
+    <x:scenario label="Test 11">
+      <x:call>
+        <x:option
+                name="source"
+                select="resolve-uri('../resources/Test%2011/Input/default_sample_for_dtbook_conversion.docx')"/>
+        <x:option name="Title" select="'Default sample for dtbook conversion'"/>
+        <x:option name="Creator" select="'Nicolas Pavie'"/>
+        <x:option name="Publisher" select="'Association Valentin Haüy'"/>
+        <x:option name="UID" select="'11'"/>
+        <x:option name="result" select="concat($temp-dir,'FromSingleDocx/11/Output/')"/>
+        <x:option name="acceptRevisions" select="'true'"/>
+        <x:option name="disableDateGeneration" select="true()" />
+      </x:call>
+      <x:context label="directory">
+        <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/11/Output/"/>
+      </x:context>
+      <x:expect label="directory" type="compare">
+        <x:document type="directory" href="../resources/Test%2011/Output/"/>
+      </x:expect>
+      <x:context label="result">
+        <x:document type="file" base-uri="temp-dir" href="FromSingleDocx/11/Output/default_sample_for_dtbook_conversion.xml"/>
+      </x:context>
+      <x:expect label="result" type="compare">
+        <x:document
+                type="file"
+                href="../resources/Test%2011/Output/default_sample_for_dtbook_conversion.xml"/>
+      </x:expect>
+    </x:scenario>
   </x:scenario>
 </x:description>

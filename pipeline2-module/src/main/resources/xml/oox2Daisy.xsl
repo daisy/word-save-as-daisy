@@ -55,14 +55,14 @@
 	<xsl:param name="disableDateGeneration" as="xs:boolean" select="false()" />
 	
 	<!-- NP 2024/02/13 :
-						Probleme with language evaluation in word.
-						I could not find the exact spot where word stores the document proofing language 
-						It seems the default language of the document is actually stored in the default paragraph style but it seems imprecise
-						The only viable solution i see for now is checking for languages declared in styles and content (including bidi and eastAsia ones)
-						and ask the user which one is the document defaults.
-						For the rest of the document, when creating container with associated lang, 
-						we should add xml:lang attribute on elements that have a different language declared
-						compared to its parent
+		Probleme with language evaluation in word.
+		I could not find the exact spot where word stores the document proofing language
+		It seems the default language of the document is actually stored in the default paragraph style but it seems imprecise
+		The only viable solution i see for now is checking for languages declared in styles and content (including bidi and eastAsia ones)
+		and ask the user which one is the document defaults.
+		For the rest of the document, when creating container with associated lang,
+		we should add xml:lang attribute on elements that have a different language declared
+		compared to its parent
 	-->
 	
 	
@@ -156,14 +156,14 @@
 	<!--Imports all the XSLT-->
 	<xsl:import href="Common.xsl"/>
 	<!--Implements Table of Contents-->
-	<xsl:import href ="TOC.xsl"/>
+	<xsl:import href="TOC.xsl"/>
 	<!--Implements Paragraph-->
 	<!--Implements Table and Frontmatter-->
-	<xsl:import href ="Common2.xsl"/>
+	<xsl:import href="Common2.xsl"/>
 	<!--Implements Lists and levels-->
-	<xsl:import href ="Common3.xsl"/>
+	<xsl:import href="Common3.xsl"/>
 	<!--Implements Maths-->
-	<xsl:import href ="OOML2MML.xsl"/>
+	<xsl:import href="OOML2MML.xsl"/>
 	
 	
 	<xsl:output method="xml" indent="no" />

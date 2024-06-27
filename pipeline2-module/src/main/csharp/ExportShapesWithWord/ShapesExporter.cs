@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
 using System.Drawing;
 using System.IO;
-
-
 using MSword = Microsoft.Office.Interop.Word;
 using System.Threading;
 using System.Windows.Forms;
-using Microsoft.Office.Interop.Word;
 
 namespace Daisy.SaveAsDAISY.Exporter
 {
@@ -100,11 +95,9 @@ namespace Daisy.SaveAsDAISY.Exporter
                             foreach (MSword.Shape shape in currentDoc.Shapes)
                             {
                                 string name = shape.Name.ToString();
-                                string type = shape.Type.ToString();
                                 if (!shape.Name.Contains("Text Box"))
                                 {
                                     shape.Select(ref missing);
-                                    string bookmark = "Shape_" + shape.ID.ToString();
                                     string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
                                     WordInstance.Selection.CopyAsPicture();
                                     try
@@ -126,12 +119,11 @@ namespace Daisy.SaveAsDAISY.Exporter
                                     }
                                     catch (ClipboardDataException cde)
                                     {
-                                        warnings.Add("- Shape " + shape.ID.ToString() + ": " + cde.Message);
+                                        warnings.Add($"- Shape {shape.ID.ToString()} {name}: {cde.Message}");
                                     }
                                     catch (Exception e)
                                     {
-                                        warnings.Add("- Shape " + shape.ID.ToString() + ": " + e.Message);
-                                        throw e;
+                                        warnings.Add($"- Shape {shape.ID.ToString()} {name}: {e.Message}");
                                     }
                                     finally
                                     {
@@ -147,33 +139,33 @@ namespace Daisy.SaveAsDAISY.Exporter
                                 {
                                     foreach (MSword.InlineShape item in rng.InlineShapes)
                                     {
-                                        string type = item.Type.ToString();
-                                        if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture")))
-                                        {
-                                            MSword.Shape shape = item.ConvertToShape();
-                                            string bookmark = "Shape_" + shape.ID.ToString();
-                                            string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
-                                            try
-                                            {
-                                                byte[] buffer = (byte[])item.Range.EnhMetaFileBits;
-                                                convertEmfBufferToPng(buffer, shapeOutputPath);
-                                                Console.WriteLine("Exported inlined shape " + shapeOutputPath);
-                                                shapesPath.Add(shapeOutputPath);
-                                            }
-                                            catch (ClipboardDataException cde)
-                                            {
-                                                warnings.Add("- InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
-                                            }
-                                            catch (Exception e)
-                                            {
-                                                throw e;
-                                            }
-                                            finally
-                                            {
-                                                Clipboard.Clear();
+                                        try {
+                                            string type = item.Type.ToString();
+                                            if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
+                                                MSword.Shape shape = item.ConvertToShape();
+                                                string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
+                                                try {
+                                                    byte[] buffer = (byte[])item.Range.EnhMetaFileBits;
+                                                    convertEmfBufferToPng(buffer, shapeOutputPath);
+                                                    Console.WriteLine("Exported inlined shape " + shapeOutputPath);
+                                                    shapesPath.Add(shapeOutputPath);
+                                                }
+                                                catch (ClipboardDataException cde) {
+                                                    warnings.Add($"- InlineShape {shape.ID.ToString()} with AltText \"{item.AlternativeText.ToString()}\": {cde.Message}");
+                                                }
+                                                catch (Exception e) {
+                                                    warnings.Add($"- InlineShape {shape.ID.ToString()} with AltText \"{item.AlternativeText.ToString()}\": {e.Message}");
+                                                    //throw e;
+                                                } finally {
+                                                    Clipboard.Clear();
 
+                                                }
                                             }
+                                        } catch (Exception e)
+                                        {
+                                            warnings.Add($"- InlineShape with AltText \"{item.AlternativeText.ToString()}\" could not be converted to shape: {e.Message}");
                                         }
+                                        
                                     }
                                     rng = rng.NextStoryRange;
                                 }

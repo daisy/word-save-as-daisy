@@ -14,7 +14,15 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.nio.file.Files;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.List;
+import java.util.Deque;
+import java.util.ArrayDeque;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -238,7 +246,7 @@ public class DaisyClass {
 				}
 			}
 			copyOrOriginal = OPCPackage.open(copied);
-			/*try{
+			try{
 				WordShapesExporter.ProcessShapes(copied.toURI().toString(), output_Pipeline);
 			} catch (java.lang.Exception e){
 				LOGGER.info(e.getMessage());
@@ -248,7 +256,7 @@ public class DaisyClass {
 				} catch (Exception ex) {
 					LOGGER.info("Could not export shapes with openoffice, shapes will be ignored");
 				}
-			}*/
+			}
 		} catch (Exception e){
 			LOGGER.info("Could not copy the input for shapes treatment");
 			copyOrOriginal = OPCPackage.open(inputFile);
@@ -292,7 +300,7 @@ public class DaisyClass {
 				img_Flag = 1;
 				if (shapeFile.exists()) {
 					File outputPath = new File(outputFilename, fileName);
-					if (!shapeFile.equals(outputPath)) {
+					if (!shapeFile.equals(outputPath) && !outputPath.exists()) {
 						Files.copy(shapeFile.toPath(), outputPath.toPath());
 						shapeFile.delete();
 					}

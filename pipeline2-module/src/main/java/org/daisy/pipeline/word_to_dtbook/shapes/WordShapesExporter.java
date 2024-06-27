@@ -10,6 +10,8 @@ import java.nio.file.Files;
 
 public class WordShapesExporter {
     private static final Logger LOGGER = LoggerFactory.getLogger(WordShapesExporter.class);
+
+
     synchronized public static void ProcessShapes(String inputPath, String outputPath) throws Exception {
         String exeFileName = "ExportShapesWithWord.exe";
         // Write ExportShapesWithWord in a temp folder
@@ -52,12 +54,12 @@ public class WordShapesExporter {
                     new File(new URI(inputPath)).getAbsolutePath(),
                     new File(new URI(outputPath)).getAbsolutePath()
             );
+            procbuilder.redirectErrorStream();
+
         } catch (Exception e){
             throw new Exception("Could not export shapes with word", e);
         }
 
-        /*procbuilder.redirectOutput();
-        procbuilder.redirectError();*/
 
         Process exporter = procbuilder.start();
         BufferedReader stdOut = new BufferedReader(new

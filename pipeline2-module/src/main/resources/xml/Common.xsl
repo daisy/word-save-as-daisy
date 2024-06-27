@@ -3391,8 +3391,8 @@
 						<xsl:if test="(w:pPr/w:bidi) or (w:r/w:rPr/w:rtl)">
 							<!--Variable holds the value which indicates that the image is bidirectionally oriented-->
 							<xsl:variable name="definitionlistBd" as="xs:string">
-								<xsl:call-template name="GetBdoLanguages">
-									<xsl:with-param name="runner" select="."/>
+								<xsl:call-template name="GetParagraphLanguage">
+									<xsl:with-param name="paragraphNode" select="."/>
 								</xsl:call-template>
 							</xsl:variable>
 							<xsl:value-of disable-output-escaping="yes" select="concat('&lt;bdo dir= &quot;rtl&quot; xml:lang=&quot;',$definitionlistBd,'&quot;&gt;')"/>

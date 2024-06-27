@@ -472,16 +472,13 @@
 				<xsl:when test="w:drawing/wp:anchor/a:graphic/a:graphicData/pic:pic/pic:blipFill/a:blip/@r:embed">
 					<xsl:sequence select="concat($Img_Id,d:GenerateImageId($myObj))"/>
 				</xsl:when>
+				<!--For chart and diagram, an inline/docPr/id is usually defined in the drawing and is used for ID resolution in export-->
+				<xsl:when test="w:drawing/wp:inline/a:graphic/a:graphicData/@uri='http://schemas.openxmlformats.org/drawingml/2006/diagram'
+							or w:drawing/wp:inline/a:graphic/a:graphicData/@uri='http://schemas.openxmlformats.org/drawingml/2006/chart'">
+					<xsl:sequence select="d:CheckShapeId($myObj,concat('Shape',w:drawing/wp:inline/wp:docPr/@id))"/>
+				</xsl:when>
 				<xsl:when test="w:drawing/wp:inline/wp:docPr/@id">
-					<xsl:variable name="id" as="xs:string" select="../w:bookmarkStart[last()]/@w:name"/>
-					<xsl:sequence select="d:CheckShapeId($myObj,$id)"/>
-				</xsl:when>
-				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Diagram')">
-					<xsl:sequence select="d:CheckShapeId($myObj,concat('Shape',substring-after(../../../../@id,'s')))"/>
-				</xsl:when>
-				<xsl:when test="contains(w:drawing/wp:inline/wp:docPr/@name,'Chart')">
-					<xsl:sequence select="d:sink(d:CheckShapeId($myObj,concat('Shape',../w:bookmarkStart[last()]/@w:name)))"/> <!-- empty -->
-					<xsl:sequence select="''"/>
+					<xsl:sequence select="d:CheckShapeId($myObj,w:drawing/wp:inline/wp:docPr/@id)"/>
 				</xsl:when>
 				<xsl:otherwise>
 					<xsl:sequence select="''"/>
@@ -576,14 +573,14 @@
 						<!--attribute that holds the filename of the image returned for d:Image()-->
 						<xsl:choose>
 							<xsl:when test="$imgOpt='resize' and contains($Img_Id,'rId')">
-								<xsl:attribute name="src" select ="$imageTest"/>
+								<xsl:attribute name="src" select="$imageTest"/>
 								<!--attribute that holds the alternate text for the image-->
 								<xsl:attribute name="alt" select="$alttext"/>
 								<xsl:attribute name="width" select="round(($imageWidth) div (9525))"/> <!-- assuming 96 dpi -->
 								<xsl:attribute name="height" select="round(($imageHeight) div (9525))"/> <!-- assuming 96 dpi -->
 							</xsl:when>
 							<xsl:when test="$imgOpt='resample'  and contains($Img_Id,'rId')">
-								<xsl:attribute name="src" select ="$imageTest"/>
+								<xsl:attribute name="src" select="$imageTest"/>
 								<!--attribute that holds the alternate text for the image-->
 								<xsl:attribute name="alt" select="$alttext"/>
 							</xsl:when>
@@ -591,7 +588,7 @@
 								<xsl:attribute name="src">
 									<xsl:choose>
 										<xsl:when test="contains($Img_Id,'rId')">
-											<xsl:sequence select ="$imageTest"/>
+											<xsl:sequence select="$imageTest"/>
 										</xsl:when>
 										<xsl:otherwise>
 											<xsl:sequence select="$imageTest"/>
@@ -2133,6 +2130,9 @@
 			</xsl:when>
 			<xsl:otherwise>
 				<xsl:choose>
+					<!-- Required to avoid breaks in sentences that are written in complex script
+					like including numbers in indi or east asian text
+					Not sure if it is required or not -->
 					<xsl:when test="$runNode/preceding-sibling::w:r[1]/w:t">
 						<xsl:call-template name="GetRunLanguage">
 							<xsl:with-param name="runNode" select="$runNode/preceding-sibling::w:r[1]" />
@@ -2172,7 +2172,7 @@
 						<xsl:choose>
 							<!--Getting value from eastasia attribute in lang tag-->
 							<xsl:when test="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia">
-								<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia)"/>
+								<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia)[1]"/>
 							</xsl:when>
 							<!--Assinging default eastAsia language-->
 							<xsl:otherwise>
@@ -2186,7 +2186,7 @@
 							<!--Checking for bidirectional language-->
 							<xsl:when test="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi">
 								<!--Getting value from bidi attribute in lang tag-->
-								<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi)"/>
+								<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi)[1]"/>
 							</xsl:when>
 							<!--Assinging default bidirectional language-->
 							<xsl:otherwise>
@@ -2197,9 +2197,10 @@
 					<xsl:otherwise>
 						<xsl:choose>
 							<xsl:when test="$count_lang &gt;1">
+								<xsl:message terminate="no"> In $count_lang &gt;1</xsl:message>
 								<xsl:choose>
 									<xsl:when test="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val">
-										<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val)"/>
+										<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val)[1]"/>
 									</xsl:when>
 									<xsl:otherwise>
 										<xsl:sequence select="$defaultLatin"/>
@@ -2207,15 +2208,16 @@
 								</xsl:choose>
 							</xsl:when>
 							<xsl:when test="$count_lang=1">
+								<xsl:message terminate="no"> In $count_lang = 1</xsl:message>
 								<xsl:choose>
 									<xsl:when test="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val">
-										<xsl:sequence select="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val"/>
+										<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val)[1]"/>
 									</xsl:when>
 									<xsl:when test="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia">
-										<xsl:sequence select="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia"/>
+										<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:eastAsia)[1]"/>
 									</xsl:when>
 									<xsl:when test="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi">
-										<xsl:sequence select="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi"/>
+										<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:bidi)[1]"/>
 									</xsl:when>
 								</xsl:choose>
 							</xsl:when>
@@ -2356,56 +2358,7 @@
 			</xsl:when>
 		</xsl:choose>
 	</xsl:template>
-	
-	<xsl:template name="GetBdoLanguages">
-		<xsl:param name="runner"/>
-		<xsl:choose>
-			<!-- Complex Script Font -->
-			<xsl:when test="$runner/w:rPr/w:rFonts/@w:hint='cs'">
-				<xsl:choose>
-					<xsl:when test="$runner/w:rPr/w:lang/@w:bidi">
-						<xsl:value-of select="$runner/w:rPr/w:lang/@w:bidi"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="$defaultComplex"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<!-- East Asia Font -->
-			<xsl:when test="$runner/w:rPr/w:rFonts/@w:hint='eastAsia'">
-				<xsl:choose>
-					<xsl:when test="$runner/w:rPr/w:lang/@w:eastAsia">
-						<xsl:value-of select="$runner/w:rPr/w:lang/@w:eastAsia"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:value-of select="$defaultEastAsia"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:when>
-			<!-- Default Font -->
-			<xsl:otherwise>
-				<xsl:choose>
-					<!-- A bidirectionnal lang is set -->
-					<xsl:when test="$runner/w:rPr/w:lang/@w:bidi">
-						<xsl:value-of select="$runner/w:rPr/w:lang/@w:bidi"/>
-					</xsl:when>
-					<!-- An east asia lang is set -->
-					<xsl:when test="$runner/w:rPr/w:lang/@w:eastAsia">
-						<xsl:value-of select="$runner/w:rPr/w:lang/@w:eastAsia"/>
-					</xsl:when>
-					<!-- An alternative lang (but no bidi or east asia) is set -->
-					<xsl:when test="$runner/w:rPr/w:lang/@w:val">
-						<xsl:value-of select="$runner/w:rPr/w:lang/@w:val"/>
-					</xsl:when>
-					<!-- No lang set, return default doc lang -->
-					<xsl:otherwise>
-						<xsl:value-of select="$defaultLatin"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-	
+
 	<xsl:template name="TempCharacterStyle">
 		<xsl:param name ="characterStyle" as="xs:boolean"/>
 		<xsl:choose>
