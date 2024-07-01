@@ -8,6 +8,7 @@ using System.IO;
 using MSword = Microsoft.Office.Interop.Word;
 using System.Threading;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Daisy.SaveAsDAISY.Exporter
 {
@@ -17,8 +18,7 @@ namespace Daisy.SaveAsDAISY.Exporter
         string[] processShapes(string inputPath, string outputPath);
     }
 
-    [Guid("e221c30a-7683-4ca0-abdb-b42eceddfe88"),
-        ClassInterface(ClassInterfaceType.None)]
+    [Guid("e221c30a-7683-4ca0-abdb-b42eceddfe88"), ClassInterface(ClassInterfaceType.None)]
     public class ShapesExporter : IShapesExporter
     {
         public string[] processShapes(string inputFile, string outputPath)
@@ -27,199 +27,285 @@ namespace Daisy.SaveAsDAISY.Exporter
             try
             {
                 // Cleanup INETCACHE to avoid security notice
-                //DirectoryInfo inetcacheword = new DirectoryInfo(
-                //    Path.Combine(
-                //        System.Environment.GetEnvironmentVariable("LOCALAPPDATA"),
-                //        "Microsoft",
-                //        "Windows",
-                //        "INetCache",
-                //        "Content.Word"
-                //    )
-                //);
-                //if(inetcacheword.Exists) { 
-                //    FileInfo[] cachedFiles = inetcacheword.GetFiles();
-                //    foreach( FileInfo file in cachedFiles )
-                //    {
-                //        try
-                //        {
-                //            File.Delete(file.FullName);
-                //        } catch( Exception ex )
-                //        {
-                //            Console.WriteLine( "Warning - could not delete cached file " + file.Name);
-                //        }
-                //    }
-                //}
-                // Note for users documentation 
+                DirectoryInfo inetcacheword = new DirectoryInfo(
+                    Path.Combine(
+                        System.Environment.GetEnvironmentVariable("LOCALAPPDATA"),
+                        "Microsoft",
+                        "Windows",
+                        "INetCache",
+                        "Content.Word"
+                    )
+                );
+                if (inetcacheword.Exists) {
+                    FileInfo[] cachedFiles = inetcacheword.GetFiles();
+                    foreach (FileInfo file in cachedFiles) {
+                        try {
+                            File.Delete(file.FullName);
+                        }
+                        catch (Exception ex) {
+                            Console.WriteLine("Warning - could not delete cached file " + file.Name);
+                        }
+                    }
+                }
+                // Note for users documentation
                 // To avoid the raise of a security notice when launching the conversion
                 // It is recommended to clean the word cache and to set word to clean its cache on
                 // closing the Word application
                 // See
                 //System.Diagnostics.Process[] wordInstances = System.Diagnostics.Process.GetProcessesByName("WINWORD");
-                bool wordIsOpened = false;
-                MSword.Application app;
-                try
-                {
+                MSword.Application app = null;
+                try {
+                    Console.WriteLine("Trying to retrieve word current instance if it is opened... ");
                     app = (MSword.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
-                    wordIsOpened = true;
+                    app.Activate();
                 }
-                catch (COMException)
-                {
-                    app = new MSword.Application()
-                    {
-                        Visible = false,
-                        AutomationSecurity = Microsoft.Office.Core.MsoAutomationSecurity.msoAutomationSecurityForceDisable
-                    };
-                }
-                
-                // Open document in read-only
-                MSword.Document currentDoc = app.Documents.Open(
-                    Visible: false,
-                    FileName: inputFile,
-                    ReadOnly: true,
-                    AddToRecentFiles: false
-                );
-                Exception threadEx = null;
-                Thread staThread = new Thread(
-                    delegate () {
-                        try
+                catch (COMException ecom) {
+                    try {
+#if DEBUG
+                        Console.WriteLine($"Could not retrieve word instance: {ecom.Message}");
+#endif
+                        Console.WriteLine($"Trying to open word...");
+                        app = new MSword.Application()
                         {
-                            object missing = Type.Missing;
-
-                            List<string> warnings = new List<string>();
-                            String fileName = currentDoc.Name.ToString().Replace(" ", "_");
-                            MSword.Application WordInstance = currentDoc.Application;
-                            //WordInstance.Activate();
-
-                            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
-
-                            foreach (MSword.Shape shape in currentDoc.Shapes)
+                            Visible = false,
+                            AutomationSecurity = Microsoft
+                                .Office
+                                .Core
+                                .MsoAutomationSecurity
+                                .msoAutomationSecurityForceDisable
+                        };
+                    }
+                    catch (COMException e1) {
+                        throw new Exception(
+                            $"Could not retrieve or open Word application for export: {e1.Message}",
+                            e1
+                        );
+                    }
+                    catch (Exception e2) {
+                        throw new Exception(
+                            $"Could not retrieve or open Word application for export: {e2.Message}",
+                            e2
+                        );
+                    }
+                }
+               
+                if (app != null)
+                {
+                    Console.WriteLine($"Opening document in the background");
+                    // Open document in read-only
+                    MSword.Document currentDoc = app.Documents.Open(
+                        Visible: false,
+                        FileName: inputFile,
+                        ReadOnly: true,
+                        AddToRecentFiles: false
+                    );
+                    Exception threadEx = null;
+                    Thread staThread = new Thread(
+                        delegate()
+                        {
+                            try
                             {
-                                string name = shape.Name.ToString();
-                                if (!shape.Name.Contains("Text Box"))
-                                {
-                                    shape.Select(ref missing);
-                                    string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
-                                    WordInstance.Selection.CopyAsPicture();
-                                    try
-                                    {
-                                        System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                                        byte[] Ret;
-                                        MemoryStream ms = new MemoryStream();
-                                        image.Save(ms, ImageFormat.Png);
-                                        Ret = ms.ToArray();
-                                        FileStream fs = new FileStream(shapeOutputPath, FileMode.Create, FileAccess.Write);
+                                Console.WriteLine($"Starting shapes export ...");
+                                object missing = Type.Missing;
 
-                                        fs.Write(Ret, 0, Ret.Length);
-                                        fs.Flush();
-                                        fs.Dispose();
-                                        Console.WriteLine("Exported shape " + shapeOutputPath);
-                                        shapesPath.Add(shapeOutputPath);
-                                        //objectShapes.Add(pathShape);
-                                        //imageIds.Add(item.ID.ToString());
-                                    }
-                                    catch (ClipboardDataException cde)
+                                List<string> warnings = new List<string>();
+                                string fileName = currentDoc.Name.ToString().Replace(" ", "_");
+                                MSword.Application WordInstance = currentDoc.Application;
+                                //WordInstance.Activate();
+
+                                Process objProcess = Process.GetCurrentProcess();
+
+                                foreach (MSword.Shape shape in currentDoc.Shapes)
+                                {
+                                    string name = shape.Name.ToString();
+                                    if (!shape.Name.Contains("Text Box"))
                                     {
-                                        warnings.Add($"- Shape {shape.ID.ToString()} {name}: {cde.Message}");
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        warnings.Add($"- Shape {shape.ID.ToString()} {name}: {e.Message}");
-                                    }
-                                    finally
-                                    {
-                                        Clipboard.Clear();
+                                        shape.Select(ref missing);
+                                        string shapeOutputPath = Path.Combine(
+                                            outputPath,
+                                            Path.GetFileNameWithoutExtension(fileName)
+                                                + "-Shape"
+                                                + shape.ID.ToString()
+                                                + ".png"
+                                        );
+                                        WordInstance.Selection.CopyAsPicture();
+                                        try
+                                        {
+                                            Image image = ClipboardEx.GetEMF(
+                                                objProcess.MainWindowHandle
+                                            );
+                                            byte[] Ret;
+                                            MemoryStream ms = new MemoryStream();
+                                            image.Save(ms, ImageFormat.Png);
+                                            Ret = ms.ToArray();
+                                            FileStream fs = new FileStream(
+                                                shapeOutputPath,
+                                                FileMode.Create,
+                                                FileAccess.Write
+                                            );
+
+                                            fs.Write(Ret, 0, Ret.Length);
+                                            fs.Flush();
+                                            fs.Dispose();
+                                            Console.WriteLine("Exported shape " + shapeOutputPath);
+                                            shapesPath.Add(shapeOutputPath);
+                                            //objectShapes.Add(pathShape);
+                                            //imageIds.Add(item.ID.ToString());
+                                        }
+                                        catch (ClipboardDataException cde)
+                                        {
+                                            warnings.Add(
+                                                $"- Shape {shape.ID.ToString()} {name}: {cde.Message}"
+                                            );
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            warnings.Add(
+                                                $"- Shape {shape.ID.ToString()} {name}: {e.Message}"
+                                            );
+                                        }
+                                        finally
+                                        {
+                                            Clipboard.Clear();
+                                        }
                                     }
                                 }
-                            }
-                            MSword.Range rng;
-                            foreach (MSword.Range tmprng in currentDoc.StoryRanges)
-                            {
-                                rng = tmprng;
-                                while (rng != null)
+                                MSword.Range rng;
+                                foreach (MSword.Range tmprng in currentDoc.StoryRanges)
                                 {
-                                    foreach (MSword.InlineShape item in rng.InlineShapes)
+                                    rng = tmprng;
+                                    while (rng != null)
                                     {
-                                        try {
-                                            string type = item.Type.ToString();
-                                            if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
-                                                MSword.Shape shape = item.ConvertToShape();
-                                                string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
-                                                try {
-                                                    byte[] buffer = (byte[])item.Range.EnhMetaFileBits;
-                                                    convertEmfBufferToPng(buffer, shapeOutputPath);
-                                                    Console.WriteLine("Exported inlined shape " + shapeOutputPath);
-                                                    shapesPath.Add(shapeOutputPath);
-                                                }
-                                                catch (ClipboardDataException cde) {
-                                                    warnings.Add($"- InlineShape {shape.ID.ToString()} with AltText \"{item.AlternativeText.ToString()}\": {cde.Message}");
-                                                }
-                                                catch (Exception e) {
-                                                    warnings.Add($"- InlineShape {shape.ID.ToString()} with AltText \"{item.AlternativeText.ToString()}\": {e.Message}");
-                                                    //throw e;
-                                                } finally {
-                                                    Clipboard.Clear();
-
+                                        foreach (MSword.InlineShape item in rng.InlineShapes)
+                                        {
+                                            try
+                                            {
+                                                string type = item.Type.ToString();
+                                                if (
+                                                    (
+                                                        item.Type.ToString()
+                                                        != "wdInlineShapeEmbeddedOLEObject"
+                                                    )
+                                                    && (
+                                                        (
+                                                            item.Type.ToString()
+                                                            != "wdInlineShapePicture"
+                                                        )
+                                                    )
+                                                )
+                                                {
+                                                    MSword.Shape shape = item.ConvertToShape();
+                                                    string shapeOutputPath = Path.Combine(
+                                                        outputPath,
+                                                        Path.GetFileNameWithoutExtension(fileName)
+                                                            + "-Shape"
+                                                            + shape.ID.ToString()
+                                                            + ".png"
+                                                    );
+                                                    try
+                                                    {
+                                                        byte[] buffer = (byte[])
+                                                            item.Range.EnhMetaFileBits;
+                                                        convertEmfBufferToPng(
+                                                            buffer,
+                                                            shapeOutputPath
+                                                        );
+                                                        Console.WriteLine(
+                                                            "Exported inlined shape "
+                                                                + shapeOutputPath
+                                                        );
+                                                        shapesPath.Add(shapeOutputPath);
+                                                    }
+                                                    catch (ClipboardDataException cde)
+                                                    {
+                                                        warnings.Add(
+                                                            $"- InlineShape {shape.ID.ToString()} with AltText \"{item.AlternativeText.ToString()}\": {cde.Message}"
+                                                        );
+                                                    }
+                                                    catch (Exception e)
+                                                    {
+                                                        warnings.Add(
+                                                            $"- InlineShape {shape.ID.ToString()} with AltText \"{item.AlternativeText.ToString()}\": {e.Message}"
+                                                        );
+                                                        //throw e;
+                                                    }
+                                                    finally
+                                                    {
+                                                        Clipboard.Clear();
+                                                    }
                                                 }
                                             }
-                                        } catch (Exception e)
-                                        {
-                                            warnings.Add($"- InlineShape with AltText \"{item.AlternativeText.ToString()}\" could not be converted to shape: {e.Message}");
+                                            catch (Exception e)
+                                            {
+                                                warnings.Add(
+                                                    $"- InlineShape with AltText \"{item.AlternativeText.ToString()}\" could not be converted to shape: {e.Message}"
+                                                );
+                                            }
                                         }
-                                        
+                                        rng = rng.NextStoryRange;
                                     }
-                                    rng = rng.NextStoryRange;
                                 }
-                            }
-                            if (warnings.Count > 0)
-                            {
-                                string warningMessage = "Some shapes could not be exported from the document " + currentDoc.Name;
-                                foreach (string warning in warnings)
+                                if (warnings.Count > 0)
                                 {
-                                    warningMessage += "\r\n" + warning;
+                                    string warningMessage =
+                                        "Some shapes could not be exported from the document "
+                                        + currentDoc.Name;
+                                    foreach (string warning in warnings)
+                                    {
+                                        warningMessage += "\r\n" + warning;
+                                    }
+                                    throw new Exception(warningMessage);
                                 }
-                                throw new Exception(warningMessage);
                             }
+                            catch (Exception ex)
+                            {
+                                threadEx = ex;
+                            }
+                            Console.WriteLine("Done");
                         }
-                        catch (Exception ex)
-                        {
-                            threadEx = ex;
-                        }
-                    });
-                staThread.SetApartmentState(ApartmentState.STA);
-                staThread.Start();
-                staThread.Join();
-                currentDoc.Close(SaveChanges:false);
-                if(!wordIsOpened)
-                {
-                    app.Quit(SaveChanges:false);
+                    );
+                    staThread.SetApartmentState(ApartmentState.STA);
+                    staThread.Start();
+                    staThread.Join();
+                    Console.WriteLine("Closing document");
+                    currentDoc.Close(SaveChanges: false);
+                    if (!app.Visible) {
+                        Console.WriteLine("Closing word in background");
+                        app.Quit(SaveChanges: false);
+                    }
+                    if (threadEx != null)
+                    {
+                        throw threadEx;
+                    }
                 }
-                if (threadEx != null)
-                {
-                    throw threadEx;
-                }
-                
             }
             catch (Exception e)
             {
-                Console.WriteLine("An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
-                    "\r\n- " + e.Message +
-                    "\r\n" + e.StackTrace);
+                string message =
+                    "An error occured while preprocessing shapes and may prevent the rest of the conversion to success:";
+                Exception t = e;
+                while (t != null)
+                {
+                    message += "\r\n- " + t.Message;
+                    t = t.InnerException;
+                }
+                Console.WriteLine($"{message}\r\n{e.StackTrace}");
             }
             return shapesPath.ToArray();
         }
 
-
         #region utils
         static object missing = Type.Missing;
+
         // to duplicate the current doc and use the copy
         static object doNotAddToRecentFiles = false;
         static object notReadOnly = false;
+
         // visibility
         // object visible = true;
         static object notVisible = false;
         static object originalFormat = MSword.WdOriginalFormat.wdOriginalDocumentFormat;
         static object format = MSword.WdSaveFormat.wdFormatXMLDocument;
-
 
         /// <summary>
         /// Saves the meta file. (source : https://keestalkstech.com/2016/06/rasterizing-emf-files-png-net-csharp/)
@@ -236,7 +322,8 @@ namespace Daisy.SaveAsDAISY.Exporter
             float scale = 1f,
             Color? backgroundColor = null,
             ImageFormat format = null,
-            EncoderParameters parameters = null)
+            EncoderParameters parameters = null
+        )
         {
             if (source == null)
             {
@@ -251,11 +338,17 @@ namespace Daisy.SaveAsDAISY.Exporter
             {
                 var f = format ?? ImageFormat.Png;
 
-                //Determine default background color. 
-                //Not all formats support transparency. 
+                //Determine default background color.
+                //Not all formats support transparency.
                 if (backgroundColor == null)
                 {
-                    var transparentFormats = new ImageFormat[] { ImageFormat.Gif, ImageFormat.Png, ImageFormat.Wmf, ImageFormat.Emf };
+                    var transparentFormats = new ImageFormat[]
+                    {
+                        ImageFormat.Gif,
+                        ImageFormat.Png,
+                        ImageFormat.Wmf,
+                        ImageFormat.Emf
+                    };
                     var isTransparentFormat = transparentFormats.Contains(f);
 
                     backgroundColor = isTransparentFormat ? Color.Transparent : Color.White;
@@ -266,8 +359,14 @@ namespace Daisy.SaveAsDAISY.Exporter
 
                 //calculate the width and height based on the scale
                 //and the respective DPI
-                var width = (int)Math.Round((scale * img.Width / header.DpiX * 100), 0, MidpointRounding.ToEven);
-                var height = (int)Math.Round((scale * img.Height / header.DpiY * 100), 0, MidpointRounding.ToEven);
+                var width = (int)
+                    Math.Round((scale * img.Width / header.DpiX * 100), 0, MidpointRounding.ToEven);
+                var height = (int)
+                    Math.Round(
+                        (scale * img.Height / header.DpiY * 100),
+                        0,
+                        MidpointRounding.ToEven
+                    );
 
                 using (var bitmap = new Bitmap(width, height))
                 {
@@ -281,7 +380,8 @@ namespace Daisy.SaveAsDAISY.Exporter
                         g.DrawImage(img, 0, 0, bitmap.Width, bitmap.Height);
                     }
                     // crop image
-                    int xmin = bitmap.Width - 1, xmax = 0;
+                    int xmin = bitmap.Width - 1,
+                        xmax = 0;
                     // search min and max x
                     for (int y = 0; y < bitmap.Height; ++y)
                     {
@@ -302,7 +402,8 @@ namespace Daisy.SaveAsDAISY.Exporter
                         }
                     }
                     // search min y
-                    int ymin = bitmap.Height - 1, ymax = 0;
+                    int ymin = bitmap.Height - 1,
+                        ymax = 0;
                     for (int x = 0; x < bitmap.Width; ++x)
                     {
                         for (int y = 0; y <= ymin; ++y)
@@ -321,17 +422,19 @@ namespace Daisy.SaveAsDAISY.Exporter
                         }
                     }
 
-
                     //get codec based on GUID
-                    var codec = ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == f.Guid);
+                    var codec = ImageCodecInfo
+                        .GetImageEncoders()
+                        .FirstOrDefault(c => c.FormatID == f.Guid);
 
                     //bitmap.Save(destination, codec, parameters);
                     // cropping result
-                    bitmap.Clone(
-                        new System.Drawing.Rectangle(xmin, ymin, xmax - xmin, ymax - ymin),
-                        bitmap.PixelFormat
-                    ).Save(destination, codec, parameters);
-
+                    bitmap
+                        .Clone(
+                            new System.Drawing.Rectangle(xmin, ymin, xmax - xmin, ymax - ymin),
+                            bitmap.PixelFormat
+                        )
+                        .Save(destination, codec, parameters);
                 }
             }
         }
@@ -352,6 +455,5 @@ namespace Daisy.SaveAsDAISY.Exporter
             }
         }
         #endregion
-
     }
 }

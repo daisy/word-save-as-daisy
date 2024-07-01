@@ -31,7 +31,7 @@ namespace Daisy.SaveAsDAISY.Exporter
                     string input = args[0];
                     if (input.StartsWith("file:/"))
                     {
-                        input = new Uri(input).AbsolutePath;
+                        input = new Uri(input).LocalPath;
                     }
                     inputFile = new FileInfo(input);
                     if (!inputFile.Exists)
@@ -53,7 +53,7 @@ namespace Daisy.SaveAsDAISY.Exporter
                         string output = args[1];
                         if (output.StartsWith("file:/"))
                         {
-                            output = new Uri(output).AbsolutePath;
+                            output = new Uri(output).LocalPath;
                         }
                         outputFolder = Directory.CreateDirectory(output);
                     }
@@ -67,7 +67,7 @@ namespace Daisy.SaveAsDAISY.Exporter
                 }
                 catch (Exception ex)
                 {
-                    Console.Error.WriteLine("An error occured while exporting");
+                    Console.Error.WriteLine("An error occured while trying to export shapes");
                     Console.Error.WriteLine(ex.Message);
                     Console.Error.WriteLine(ex.StackTrace);
                     return 253;
