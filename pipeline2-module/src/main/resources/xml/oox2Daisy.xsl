@@ -26,8 +26,6 @@
 	<xsl:param name="InputFile" as="xs:string" />
 	<!-- Destination folder of .xml file (URI) -->
 	<xsl:param name="OutputDir" as="xs:string" />
-	<!-- Final destination folder (URI) -->
-	<xsl:param name="FinalOutputDir" as="xs:string" />
 	
 	<!--Implements Image,imagegroup,Note and Notereference-->
 	<!--Declaring Global paramaters-->
@@ -53,21 +51,10 @@
 	
 	<!-- For regression tests comparisons -->
 	<xsl:param name="disableDateGeneration" as="xs:boolean" select="false()" />
-	
-	<!-- NP 2024/02/13 :
-		Probleme with language evaluation in word.
-		I could not find the exact spot where word stores the document proofing language
-		It seems the default language of the document is actually stored in the default paragraph style but it seems imprecise
-		The only viable solution i see for now is checking for languages declared in styles and content (including bidi and eastAsia ones)
-		and ask the user which one is the document defaults.
-		For the rest of the document, when creating container with associated lang,
-		we should add xml:lang attribute on elements that have a different language declared
-		compared to its parent
-	-->
-	
-	
+	<xsl:param name="extractShapes" as="xs:boolean" select="true()" />
+
 	<!-- New object to interact with saxon-->
-	<xsl:variable name="myObj" select="d:new($OriginalInputFile,$InputFile,$OutputDir,$FinalOutputDir)" />
+	<xsl:variable name="myObj" select="d:new($InputFile,$OutputDir,$extractShapes)" />
 	
 	<!-- Retrieve xml documents from the word file -->
 	<xsl:variable name="documentXml"

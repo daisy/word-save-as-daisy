@@ -80,7 +80,6 @@ public class DaisyClass {
 
 	/** Destination folder */
 	private final File outputFilename;
-	private final File output_Pipeline;
 	/** Input file name without extension and without spaces */
 	private final String inputName;
 
@@ -209,18 +208,17 @@ public class DaisyClass {
 	 *
 	 * Initialize the global variables to be modified by function calls from xslt stylesheets.
 	 *
-	 * @param inputName        Original location of input .docx file
-	 * @param input            Input .docx file (may or may not be the same as inputName; this one will be read)
+	 * @param input            Input .docx file
 	 * @param output           Destination folder of .xml file
-	 * @param output_Pipeline  Final destination folder
+	 * @param extractShapes	   Try to export shapes from the daisyclass.
+	 *                         Needs to be set to false for plugins that could block word from opening
 	 */
-	public DaisyClass(String inputName,
-	                  String input,
+	public DaisyClass(String input,
 	                  String output,
-	                  String output_Pipeline
+					  Boolean extractShapes
 	) throws InvalidFormatException {
 
-		this.inputName = GetFileNameWithoutExtension(new File(URI.create(inputName))).replace(" ", "_");
+		this.inputName = GetFileNameWithoutExtension(new File(URI.create(input))).replace(" ", "_");
 		outputFilename = new File(URI.create(output));
 		outputFilename.mkdirs();
 		File inputFile = new File(URI.create(input));
@@ -245,25 +243,26 @@ public class DaisyClass {
 					out.flush();
 				}
 			}
-			copyOrOriginal = OPCPackage.open(copied);
-			try{
-				WordShapesExporter.ProcessShapes(copied.toURI().toString(), output_Pipeline);
-			} catch (java.lang.Exception e){
-				LOGGER.info(e.getMessage());
-				LOGGER.info("Trying openoffice shapes export...");
-				try {
-					OOShapesExporter.ProcessShapes(copied.toURI().toString(), output_Pipeline);
-				} catch (Exception ex) {
-					LOGGER.info("Could not export shapes with openoffice, shapes will be ignored");
+			if(extractShapes){
+				try{
+					//throw new java.lang.Exception("Disabling WordShapesExporter for test");
+					WordShapesExporter.ProcessShapes(copied.toURI().toString(), outputFilename.toURI().toString());
+				} catch (java.lang.Exception e){
+					LOGGER.info(e.getMessage());
+					LOGGER.info("Trying openoffice shapes export...");
+					try {
+						OOShapesExporter.ProcessShapes(copied.toURI().toString(), outputFilename.toURI().toString());
+					} catch (Exception ex) {
+						LOGGER.info("Could not export shapes with openoffice, shapes will be ignored");
+					}
 				}
 			}
+			copyOrOriginal = OPCPackage.open(copied);
 		} catch (Exception e){
 			LOGGER.info("Could not copy the input for shapes treatment");
 			copyOrOriginal = OPCPackage.open(inputFile);
 		}
 		pack = copyOrOriginal;
-		this.output_Pipeline = new File(URI.create(output_Pipeline));
-		this.output_Pipeline.mkdirs();
 		for (int i = 0; i < 9; i++) {
 			startItem.add("");
 		}
@@ -290,35 +289,39 @@ public class DaisyClass {
 	 *   exists in %APPDATA%/SaveAsDAISY, move the image to the output folder
 	 */
 	public String CheckShapeId(String id) throws IOException {
-		id = inputName + "-" + id;
-		String fileName = id + ".png";
-		File shapesDirectory = System.getProperty("os.name").startsWith("Windows")
-			? new File(new File(System.getenv("APPDATA")), "SaveAsDAISY")
-			: new File("/shapes");
-		File shapeFile = new File(shapesDirectory, fileName);
-		if (outputFilename.equals(shapesDirectory)) {
-			img_Flag = 1;
+		String fileName = inputName + "-" + id + ".png";
+
+		File expectedShapeFile = new File(outputFilename, fileName);
+		if(!expectedShapeFile.exists()){
+			// Check for files exported by the SaveAsDAISY Addin
+			File shapesDirectory = System.getProperty("os.name").startsWith("Windows")
+					? new File(new File(System.getenv("APPDATA")), "SaveAsDAISY")
+					: new File("/shapes");
+			File shapeFile = new File(shapesDirectory, fileName);
 			if (shapeFile.exists()) {
-				File outputPath = new File(output_Pipeline, fileName);
-				Files.copy(shapeFile.toPath(), outputPath.toPath());
-			}
-		} else {
-			File tempPath = System.getProperty("os.name").startsWith("Windows")
-				? new File(new File(System.getenv("APPDATA")), "Local/Temp")
-				: new File("/tmp");
-			if (!outputFilename.equals(tempPath)) {
+				Files.copy(shapeFile.toPath(), expectedShapeFile.toPath());
+				shapeFile.delete();
 				img_Flag = 1;
+			} else {
+				File tempPath = System.getProperty("os.name").startsWith("Windows")
+						? new File(new File(System.getenv("APPDATA")), "Local/Temp")
+						: new File("/tmp");
+				shapeFile = new File(tempPath, fileName);
 				if (shapeFile.exists()) {
-					File outputPath = new File(outputFilename, fileName);
-					if (!shapeFile.equals(outputPath) && !outputPath.exists()) {
-						Files.copy(shapeFile.toPath(), outputPath.toPath());
-						shapeFile.delete();
-					}
+					img_Flag = 1;
+					Files.copy(shapeFile.toPath(), expectedShapeFile.toPath());
+					shapeFile.delete();
 				}
 			}
+		} else {
+			img_Flag = 1;
 		}
 		id = id.replace(" ", "_");
 		return id;
+	}
+
+	public String ShapeFileName(String id) {
+		return ImageProcessing.UriEscape(inputName + "-" + id + ".png");
 	}
 
 	public String CheckImage(String img) {
@@ -1021,7 +1024,7 @@ public class DaisyClass {
 	/**
 	 * Function returns the target string of an anchor
 	 */
-	public String Anchor(String inNum, String flagNote) {
+	public String Anchor(String inNum, String flagNote) throws InvalidFormatException {
 		PackageRelationship wordRelationship = null;
 		for (PackageRelationship searchRelation : pack.getRelationshipsByType(wordRelationshipType)) {
 			wordRelationship = searchRelation;
@@ -1041,6 +1044,7 @@ public class DaisyClass {
 				} catch (Exception e){
 					return "";
 				}
+				break;
 			case "endnote":
 				mainPartxml = pack.getPart(wordRelationship);
 				try{
@@ -1051,13 +1055,14 @@ public class DaisyClass {
 				} catch (Exception e){
 					return "";
 				}
+				break;
 			default:
 				anchorRelationshipFile = wordRelationship;
 				break;
 		}
 
 		if(anchorRelationshipFile != null){
-			mainPartxml = pack.getPart(anchorRelationshipFile);
+			mainPartxml = anchorRelationshipFile.getSource().getRelatedPart(anchorRelationshipFile);
 			PackageRelationship anchorRelationship = mainPartxml.getRelationship(inNum);
 			uri = anchorRelationship.getTargetURI().toString();
 			// don't encode apos

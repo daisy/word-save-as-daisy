@@ -26,11 +26,6 @@
 		</p:documentation>
 	</p:option>
 
-	<p:option name="document-output-file" select="concat(
-		$result,
-		replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1.xml'),',','_')
-	)"/>
-
 	<p:option name="Title" select="''" required="false">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document title</h2>
@@ -183,6 +178,18 @@
 	<!-- hidden option for tests -->
 	<p:option name="disableDateGeneration" cx:as="xs:boolean" select="false()" px:hidden="true" />
 
+	<!-- hidden option to allow saveasdaisy to deactivate shapes extraction
+	     This is to avoid word being blocked by one or more dialog managed by the addin.
+	 -->
+	<p:option name="extractShapes" cx:as="xs:boolean" select="true()">
+		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
+			<h2 px:role="name">Extract vector shapes</h2>
+			<p px:role="desc">Try to export inline shapes like diagrams or charts during conversion.
+			This requires Microsoft word available on your system.
+			(Beware that word must not be blocked by any dialog or the process might crash or get stuck indefinitely)</p>
+		</p:documentation>
+	</p:option>
+
 	<p:xslt template-name="main" name="convert-to-dtbook" cx:serialize="true">
 		<p:input port="source">
 			<p:empty/>
@@ -190,10 +197,8 @@
 		<p:input port="stylesheet">
 			<p:document href="oox2Daisy.xsl"/>
 		</p:input>
-		<p:with-param name="OriginalInputFile" select="$source"/>
 		<p:with-param name="InputFile" select="$source"/>
 		<p:with-param name="OutputDir" select="$result"/>
-		<p:with-param name="FinalOutputDir" select="$result"/>
 		<p:with-param name="Title" select="$Title"/>
 		<p:with-param name="Creator" select="$Creator"/>
 		<p:with-param name="Publisher" select="$Publisher"/>
@@ -213,9 +218,13 @@
 		<p:with-param name="FootnotesNumberingPrefix" select="$FootnotesNumberingPrefix"/>
 		<p:with-param name="FootnotesNumberingSuffix" select="$FootnotesNumberingSuffix"/>
 		<p:with-param name="disableDateGeneration" select="$disableDateGeneration"/>
+		<p:with-param name="extractShapes" select="$extractShapes"/>
 	</p:xslt>
 	<p:store name="store-xml">
-		<p:with-option name="href" select="$document-output-file"/>
+		<p:with-option name="href" select="concat(
+		$result,
+		replace(replace($source,'^.*/([^/]*?)(\.[^/\.]*)?$','$1.xml'),',','_')
+	)"/>
 	</p:store>
 
 
