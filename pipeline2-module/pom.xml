@@ -52,14 +52,14 @@
 		<dependency>
 			<groupId>org.libreoffice</groupId>
 			<artifactId>libreoffice</artifactId>
-			<version>7.4.7</version>
+			<version>24.2.3</version>
 			<scope>compile</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.libreoffice/unoloader -->
 		<dependency>
 			<groupId>org.libreoffice</groupId>
 			<artifactId>unoloader</artifactId>
-			<version>7.4.7</version>
+			<version>24.2.3</version>
 		</dependency>
 
 		<dependency>
