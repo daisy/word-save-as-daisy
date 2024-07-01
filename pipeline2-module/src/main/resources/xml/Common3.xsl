@@ -556,10 +556,9 @@
 								<xsl:sequence select ="d:Image($myObj,$Img_Id,$imageName)"/>
 							</xsl:when>
 							<xsl:otherwise>
-								<xsl:sequence select="concat($imageId,'.png')"/>
+								<xsl:sequence select="d:ShapeFileName($myObj,$imageId)"/>
 							</xsl:otherwise>
 						</xsl:choose>
-						
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:variable>
