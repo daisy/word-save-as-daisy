@@ -304,6 +304,7 @@
         <x:option name="result" select="concat($temp-dir,'FromSingleDocx/11/Output/')"/>
         <x:option name="acceptRevisions" select="'true'"/>
         <x:option name="disableDateGeneration" select="true()" />
+        <x:option name="extractShapes" select="true()" />
       </x:call>
       <x:context label="directory">
         <x:document type="directory" base-uri="temp-dir" href="FromSingleDocx/11/Output/"/>
