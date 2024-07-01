@@ -230,6 +230,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         false // from settings
                     )
                 },
+                {
+                    "extractShapes",
+                    new ScriptParameter(
+                        "extractShapes",
+                        "extractShapes",
+                        new BoolDataType(),
+                        false,
+                        false,
+                        "",
+                        false // hidden
+                    )
+                },
             };
         }
     }

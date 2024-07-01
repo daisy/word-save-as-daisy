@@ -313,16 +313,21 @@
     <PreBuildEvent>
     </PreBuildEvent>
     <PostBuildEvent>REM - Copy resources needed for debugging
+
 REM --- XSLTs for word to dtbook conversion
+
 
 
 IF EXIST "$(TargetDir)resources" rd /S /Q "$(TargetDir)resources"
 
 
+
 xcopy /E /Y "$(SolutionDir)Converter\bin\$(ConfigurationName)\resources"  "$(TargetDir)resources\"
 
 
+
 REM --- pipeline for dtbook to daisy
+
 IF EXIST "$(TargetDir)daisy-pipeline" rd /S /Q "$(TargetDir)daisy-pipeline"
 
 

@@ -249,6 +249,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                         false // from settings
                     )
                 },
+                {
+                    "extractShapes",
+                    new ScriptParameter(
+                        "extractShapes",
+                        "extractShapes",
+                        new BoolDataType(),
+                        false,
+                        false,
+                        "",
+                        false // hidden
+                    )
+                },
             };
         }
 
@@ -259,7 +271,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
             string finalOutput = Path.Combine(
                 Parameters["output"].ParameterValue.ToString(),
                 string.Format(
-                    "{0}_EPUB3_{1}",
+                    "{0}_DTBookXML_{1}",
                     Path.GetFileNameWithoutExtension(inputPath),
                     DateTime.Now.ToString("yyyyMMddHHmmssffff")
                 )
@@ -296,7 +308,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
             catch {
                 throw new FileNotFoundException("Could not find result of cleaning process in result folder", tempDir.FullName);
             }
-            dtbookCleaner.Parameters["output"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "EPUB3")).FullName;
+            dtbookCleaner.Parameters["output"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "DTBook XML")).FullName;
             
 #if DEBUG
             this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Cleaning " + dtbookCleaner.Parameters["input"].ParameterValue + " dtbook XML into " + dtbookCleaner.Parameters["output"].ParameterValue));
