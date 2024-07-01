@@ -57,7 +57,7 @@ namespace Daisy.SaveAsDAISY.Exporter
                 try {
                     Console.WriteLine("Trying to retrieve word current instance if it is opened... ");
                     app = (MSword.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Word.Application");
-                    app.Activate();
+                    //app.Activate();
                 }
                 catch (COMException ecom) {
                     try {
