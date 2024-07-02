@@ -1063,8 +1063,15 @@ public class DaisyClass {
 		}
 
 		if(anchorRelationshipFile != null){
-			mainPartxml = anchorRelationshipFile.getSource().getRelatedPart(anchorRelationshipFile);
-			PackageRelationship anchorRelationship = mainPartxml.getRelationship(inNum);
+			PackageRelationship anchorRelationship;
+			mainPartxml = pack.getPart(anchorRelationshipFile);
+			if(mainPartxml == null){
+				// fallback for footnotes and endnotes where the pack does
+				// resolve correctly the underlying file
+				mainPartxml = anchorRelationshipFile.getSource().getRelatedPart(anchorRelationshipFile);
+			}
+			anchorRelationship = mainPartxml.getRelationship(inNum);
+
 			uri = anchorRelationship.getTargetURI().toString();
 			// don't encode apos
 			uri = uri.replaceAll("%27", "'");
