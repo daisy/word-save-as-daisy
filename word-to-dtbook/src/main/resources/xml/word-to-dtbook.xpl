@@ -181,12 +181,13 @@
 	<!-- hidden option to allow saveasdaisy to deactivate shapes extraction
 	     This is to avoid word being blocked by one or more dialog managed by the addin.
 	 -->
-	<p:option name="extractShapes" cx:as="xs:boolean" select="true()">
+	<p:option name="extractShapes" cx:as="xs:boolean" select="false()">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
-			<h2 px:role="name">Extract vector shapes</h2>
-			<p px:role="desc">Try to export inline shapes like diagrams or charts during conversion.
-			This requires Microsoft word available on your system.
-			(Beware that word must not be blocked by any dialog or the process might crash or get stuck indefinitely)</p>
+			<h2 px:role="name">Extract vector shapes (Experimental)</h2>
+			<p px:role="desc">Try to export inline shapes like diagrams or charts during conversion using Microsoft Word.
+				If deactivated, those shapes will be replaced by their name and description in the result.
+
+				Proceed with caution : Word must not be blocked by any dialog bound to it, or the process might crash or get stuck indefinitely</p>
 		</p:documentation>
 	</p:option>
 
