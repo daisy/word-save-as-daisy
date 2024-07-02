@@ -88,15 +88,15 @@
   <ItemGroup>
     <Reference Include="extensibility, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\extensibility.dll</HintPath>
+      <HintPath>..\resources\extensibility.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Word, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\word2007\Microsoft.Office.Interop.Word.dll</HintPath>
+      <HintPath>..\resources\word2007\Microsoft.Office.Interop.Word.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Vbe.Interop, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\word2007\Microsoft.Vbe.Interop.dll</HintPath>
+      <HintPath>..\resources\word2007\Microsoft.Vbe.Interop.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework, Version=3.12.0.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
       <HintPath>..\..\packages\NUnit.3.12.0\lib\net45\nunit.framework.dll</HintPath>
@@ -104,18 +104,18 @@
     </Reference>
     <Reference Include="OFFICE, Version=12.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\word2007\OFFICE.DLL</HintPath>
+      <HintPath>..\resources\word2007\OFFICE.DLL</HintPath>
     </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\stdole.dll</HintPath>
+      <HintPath>..\resources\stdole.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\WindowsBase.dll</HintPath>
+      <HintPath>..\resources\WindowsBase.dll</HintPath>
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
   </ItemGroup>
@@ -247,10 +247,6 @@
     <ProjectReference Include="..\..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
       <Project>{8cb777eb-36ed-45d8-84ff-bdd64ad5026e}</Project>
       <Name>DaisyConverterLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Word2007\DaisyWord2007AddIn\DaisyWord2007AddIn.csproj">
-      <Project>{9B3A86F5-D5A5-4CC2-A995-2362A28D0EA9}</Project>
-      <Name>DaisyWord2007AddIn</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

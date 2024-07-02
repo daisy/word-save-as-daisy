@@ -5,9 +5,9 @@
 			https://wixtoolset.org//documentation/manual/v3/wixui/wixui_customizations.html
 		-->
 		<!--<Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Show Help" />-->
-		<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)images\bannrbmp.bmp" />
-		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)images\dlgbmp.bmp" />
-		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)License.rtf" />
+		<WixVariable Id="WixUIBannerBmp" Value="$(var.ProjectDir)resources\bannrbmp.bmp" />
+		<WixVariable Id="WixUIDialogBmp" Value="$(var.ProjectDir)resources\dlgbmp.bmp" />
+		<WixVariable Id="WixUILicenseRtf" Value="$(var.ProjectDir)resources\License.rtf" />
 		
 		<UI Id="MyUI">
 			<Property Id="WixAppFolder" Value="WixPerUserFolder" />

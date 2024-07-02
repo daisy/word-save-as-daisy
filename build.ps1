@@ -115,7 +115,7 @@ if($version) {
 }
 
 if($refreshpipeline) {
-    $_oldroot = Join-Path $PSScriptRoot "Lib"
+    $_oldroot = Join-Path $PSScriptRoot "resources"
     # rebuild the daisy pipeline from the engine (needs https://github.com/daisy/pipeline-assembly/pull/221 to be merged first)
     # - remove the daisy-pipeline folder in Lib if it exists
     #if(Test-Path $(Join-Path $_oldroot "daisy-pipeline")) {
@@ -131,7 +131,7 @@ if($refreshpipeline) {
     $_cont, $_refs = Update-WixTree `
         -oldroot $_oldroot `
         -path $(Join-Path $_oldroot "daisy-pipeline") `
-        -newroot "`$(var.SolutionDir)Lib" `
+        -newroot "`$(var.SolutionDir)resources" `
         -mediaId 2 `
         -level 6 `
         -indent "    "

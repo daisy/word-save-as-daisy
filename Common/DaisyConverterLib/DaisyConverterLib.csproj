@@ -314,9 +314,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="JNET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=95283358f4f60f4e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\JNET.dll</HintPath>
+    <Reference Include="JNET">
+      <HintPath>..\..\resources\JNET.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
