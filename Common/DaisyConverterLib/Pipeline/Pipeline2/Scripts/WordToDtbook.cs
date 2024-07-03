@@ -1,6 +1,7 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Events;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,36 +43,36 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "Output folder of the conversion to DTBook XML"
                     )
                 },
-                { "Title",
+                { "title",
                     new ScriptParameter(
-                        "Title",
+                        "title",
                         "Document title",
                         new StringDataType(),
                         "",
                         false
                     )
                 },
-                { "Creator",
+                { "creator",
                     new ScriptParameter(
-                        "Creator",
+                        "creator",
                         "Document creator or author",
                         new StringDataType(),
                         "",
                         false
                     )
                 },
-                { "Publisher",
+                { "publisher",
                     new ScriptParameter(
-                        "Publisher",
+                        "publisher",
                         "Document publisher",
                         new StringDataType(),
                         "",
                         false
                     )
                 },
-                { "UID",
+                { "uid",
                     new ScriptParameter(
-                        "UID",
+                        "uid",
                         "Document identifier",
                         new StringDataType(),
                         "",
@@ -79,9 +80,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "Identifier to be added as dtb:uid metadata"
                     )
                 },
-                { "Subject",
+                { "subject",
                     new ScriptParameter(
-                        "Subject",
+                        "subject",
                         "Subject(s)",
                         new StringDataType(),
                         "",
@@ -99,9 +100,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "If the document has revisions that are not accepted, consider them as accepted for the conversion"
                     )
                 },
-                { "PagenumStyle",
+                { "pagination",
                     new ScriptParameter(
-                        "PagenumStyle",
+                        "pagination",
                         "Pagination mode",
                         PageNumberingChoice.DataType,
                         PageNumberingChoice.Values[Instance.PagenumStyle],
@@ -243,6 +244,17 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
             };
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputDirectory"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException">if the file was not found</exception>
+        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        {
+            return Directory.GetFiles(inputDirectory.FullName, "*.docx", SearchOption.AllDirectories)[0];
         }
     }
 }

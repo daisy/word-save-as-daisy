@@ -107,18 +107,17 @@
 <p></p>
 <p></p>
 <p>This is a « SmartArt » insertion with caption</p>
-<p><imggroup>
-            <img id="Shape8"
-                 src="default_sample_for_dtbook_conversion-Shape8.png"
-                 alt="This a simple process illustration with 3 text box from left to right separated by arrows pointing to the right :&#xA;- sample&#xA;- Analysis&#xA;- text "/>
-         </imggroup></p>
+<p><span>Diagramme 8
+						:
+						This a simple process illustration with 3 text box from left to right separated by arrows pointing to the right :
+- sample
+- Analysis
+- text </span></p>
 <p>Smart art example 1</p>
 <p>Trying a chart</p>
-<p><imggroup>
-            <img id="Shape478211313"
-                 src="default_sample_for_dtbook_conversion-Shape478211313.png"
-                 alt="Simple chart for conversion tests"/>
-         </imggroup></p>
+<p><span>Graphique 3
+						:
+						Simple chart for conversion tests</span></p>
 </level2><level2><h2>  Equations
 </h2><p>This a test<noteref idref="#endnote-2" class="Endnote">2</noteref> with an basic equation</p>
 <p xml:lang="fr-FR"><mml:math>

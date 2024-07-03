@@ -128,9 +128,9 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Events\SilentEventsHandler.cs" />
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
-    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToMp3.cs" />
-    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToDaisy3.cs" />
-    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToEpub3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\WordToMp3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\WordToDaisy3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\WordToEpub3.cs" />
     <Compile Include="Pipeline\ChainedScripts\WordToCleanedDtbook.cs" />
     <Compile Include="Pipeline\DataTypes\MapDataType.cs" />
     <Compile Include="Pipeline\ParameterDataType.cs" />

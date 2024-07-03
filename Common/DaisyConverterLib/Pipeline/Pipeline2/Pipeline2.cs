@@ -331,8 +331,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 if (OnPipelineError != null)
                 {
-                    string errorMessage = e.Message;
-
+                    string errorMessage = $"Script {scriptName} returned the following error\r\n{e.Message}";
                     while (e.InnerException != null)
                     {
                         e = e.InnerException;
@@ -341,7 +340,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     errorMessage += "\r\n\r\n" + e.StackTrace;
                     OnPipelineError(errorMessage);
                 }
-                throw;
+                throw new Exception($"Script {scriptName} raised an error", e);
                 //return IntPtr.Zero;
             }
         }

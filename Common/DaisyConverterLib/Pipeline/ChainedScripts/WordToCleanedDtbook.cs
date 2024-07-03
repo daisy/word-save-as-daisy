@@ -14,21 +14,17 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
 
         private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
-        Script wordToDtbook;
-        Script dtbookCleaner;
+        List<Pipeline2Script> scripts;
 
         public WordToCleanedDtbook(IConversionEventsHandler e) : base(e)
         {
             this.niceName = "Export to DTBook XML";
-            wordToDtbook = new WordToDtbook(e);
-            dtbookCleaner = new DtbookCleaner(e);
-            // TODO : for now we consider the 3 global steps of the progression but some granularity within
-            // scripts could be taked in account
-            StepsCount = 4;
-            // set dtbook cleaner to apply default cleanups
-            dtbookCleaner.Parameters["tidy"].ParameterValue = true;
-            dtbookCleaner.Parameters["repair"].ParameterValue = true;
-            dtbookCleaner.Parameters["narrator"].ParameterValue = false;
+            scripts = new List<Pipeline2Script>() {
+                new WordToDtbook(e),
+                new DtbookCleaner(e)
+            };
+            StepsCount = scripts.Count;
+
             // use dtbook to epub3 parameters
             _parameters = new Dictionary<string, ScriptParameter>
             {
@@ -58,36 +54,36 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                         "Output folder of the conversion to DTBook XML"
                     )
                 },
-                { "Title",
+                { "title",
                     new ScriptParameter(
-                        "Title",
+                        "title",
                         "Document title",
                         new StringDataType(),
                         "",
                         false,"",false
                     )
                 },
-                { "Creator",
+                { "creator",
                     new ScriptParameter(
-                        "Creator",
+                        "creator",
                         "Document creator or author",
                         new StringDataType(),
                         "",
                         false,"",false
                     )
                 },
-                { "Publisher",
+                { "publisher",
                     new ScriptParameter(
-                        "Publisher",
+                        "publisher",
                         "Document publisher",
                         new StringDataType(),
                         "",
                         false,"",false
                     )
                 },
-                { "UID",
+                { "uid",
                     new ScriptParameter(
-                        "UID",
+                        "uid",
                         "Document identifier",
                         new StringDataType(),
                         "",
@@ -96,9 +92,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                         false
                     )
                 },
-                { "Subject",
+                { "subject",
                     new ScriptParameter(
-                        "Subject",
+                        "subject",
                         "Subject(s)",
                         new StringDataType(),
                         "",
@@ -118,148 +114,40 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                         false
                     )
                 },
-                { "PagenumStyle",
-                    new ScriptParameter(
-                        "PagenumStyle",
-                        "Pagination mode",
-                        PageNumberingChoice.DataType,
-                        PageNumberingChoice.Values[Instance.PagenumStyle],
-                        false,
-                        "Define how page numbers are computed and inserted in the result",
-                        false // from settings
-                    )
-                },
-                { "ImageSizeOption",
-                    new ScriptParameter(
-                        "ImageSizeOption",
-                        "Image resizing",
-                        ImageOptionChoice.DataType,
-                        ImageOptionChoice.Values[Instance.ImageOption],
-                        false,
-                        "",
-                        false // from settings
-                    )
-                },
-                { "DPI",
-                    new ScriptParameter(
-                        "DPI",
-                        "Image resampling value",
-                        new EnumDataType(new Dictionary<string, object>()
-                        {
-                            { "96", 96 },
-                            { "120", 120 },
-                            { "300", 300 }
-                        }, "96"),
-                        Instance.ImageResamplingValue,
-                        false,
-                        "Target resolution in dot-per-inch for image resampling, if resampling is requested",
-                        false // from settings
-                    )
+                {
+                  "repair",
+                  new ScriptParameter(
+                    "repair",
+                    "Repair the dtbook",
+                    new BoolDataType(true),
+                    true,
+                    true,
+                    ""
+                  )
                 },
                 {
-                    "CharacterStyles",
-                    new ScriptParameter(
-                        "CharacterStyles",
-                        "Translate character styles",
-                        new BoolDataType(false),
-                        false,
-                        false,
-                        "",
-                        false // from settings
-                    )
+                  "tidy",
+                  new ScriptParameter(
+                    "tidy",
+                    "Tidy up the dtbook",
+                    new BoolDataType(false),
+                    true,
+                    true,
+                    ""
+
+                  )
                 },
                 {
-                    "FootnotesPosition",
-                    new ScriptParameter(
-                        "FootnotesPosition",
-                        "Footnotes position",
-                        FootnotesPositionChoice.DataType,
-                        FootnotesPositionChoice.Values[Instance.FootnotesPosition],
-                        false,
-                        "Footnotes position in content",
-                        false // from settings
-                    )
-                },
-                {
-                    "FootnotesLevel",
-                    new ScriptParameter(
-                        "FootnotesLevel",
-                        "Footnotes insertion level",
-                        new EnumDataType(new Dictionary<string, object>()
-                        {
-                            { "0", 0 },
-                            { "1", 1 },
-                            { "2", 2 },
-                            { "3", 3 },
-                            { "4", 4 },
-                            { "5", 5 },
-                            { "6", 6 },
-                        }, "0"),
-                        Instance.FootnotesLevel,
-                        false,
-                        "Lowest level into which notes are inserted in content. 0 means the footnotes will be inserted as close as possible of its first call.",
-                        false // from settings
-                    )
-                },
-                {
-                    "FootnotesNumbering",
-                    new ScriptParameter(
-                        "FootnotesNumbering",
-                        "Footnotes numbering scheme",
-                        FootnotesNumberingChoice.DataType,
-                        FootnotesNumberingChoice.Values[Instance.FootnotesNumbering],
-                        false,
-                        "Customize footnotes numbering",
-                        false // from settings
-                    )
-                },
-                {
-                    "FootnotesStartValue",
-                    new ScriptParameter(
-                        "FootnotesStartValue",
-                        "Footnotes starting value",
-                        new IntegerDataType(min:1),
-                        Instance.FootnotesStartValue,
-                        false,
-                        "If footnotes numbering is required, start the notes numbering process from this value",
-                        false // from settings
-                    )
-                },
-                {
-                    "FootnotesNumberingPrefix",
-                    new ScriptParameter(
-                        "FootnotesNumberingPrefix",
-                        "Footnotes number prefix",
-                        new StringDataType(),
-                        Instance.FootnotesNumberingPrefix,
-                        false,
-                        "Add a prefix before the note's number if numbering is requested",
-                        false // from settings
-                    )
-                },
-                {
-                    "FootnotesNumberingSuffix",
-                    new ScriptParameter(
-                        "FootnotesNumberingSuffix",
-                        "Footnotes number suffix",
-                        new StringDataType(),
-                        Instance.FootnotesNumberingSuffix,
-                        false,
-                        "Add a text between the note's number and the note content.",
-                        false // from settings
-                    )
-                },
-                {
-                    "extractShapes",
-                    new ScriptParameter(
-                        "extractShapes",
-                        "extractShapes",
-                        new BoolDataType(),
-                        false,
-                        false,
-                        "",
-                        false // hidden
-                    )
+                  "narrator",
+                  new ScriptParameter(
+                    "narrator",
+                    "Prepare dtbook for pipeline 1 narrator",
+                    new BoolDataType(false),
+                    false,
+                    true,
+                    ""
+
+                  )
                 },
             };
         }
@@ -268,55 +156,62 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
         {
 
             // Create a directory using the document name
-            string finalOutput = Path.Combine(
+            DirectoryInfo finalOutput = new DirectoryInfo(
+                Path.Combine(
                 Parameters["output"].ParameterValue.ToString(),
                 string.Format(
                     "{0}_DTBookXML_{1}",
                     Path.GetFileNameWithoutExtension(inputPath),
                     DateTime.Now.ToString("yyyyMMddHHmmssffff")
                 )
-            );
+            ));
             // Remove and recreate result folder
             // Since the DaisyToEpub3 requires output folder to be empty
-            if (Directory.Exists(finalOutput)) {
-                Directory.Delete(finalOutput, true);
+            if (finalOutput.Exists) {
+                finalOutput.Delete(true);
+                finalOutput.Create();
             }
-            Directory.CreateDirectory(finalOutput);
-            // transfer parameters value
-            foreach (var kv in this._parameters) {
-                if (wordToDtbook.Parameters.ContainsKey(kv.Key)) {
-                    wordToDtbook.Parameters[kv.Key] = kv.Value;
+            
+            string input = inputPath;
+            DirectoryInfo outputDir = finalOutput;
+
+            for (int i = 0; i < scripts.Count; i++) {
+                if (i > 0) {
+                    // chain last output to next input for non-first scripts
+                    try {
+                        input = scripts[i].searchInputFromDirectory(outputDir);
+                    }
+                    catch {
+                        throw new FileNotFoundException($"Could not find result of previous script {scripts[i-1].Name} in intermediate folder", outputDir.FullName);
+                    }
                 }
-            }
+                // create a temporary output directory for all scripts except the last one
+                outputDir = i < scripts.Count - 1
+                         ? Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()))
+                         : finalOutput;
+                // transfer global parameters value except input and output (that could change between scripts)
+                foreach (var k in this._parameters.Keys.Except(new string[] { "input", "output" })) {
+                    if (scripts[i].Parameters.ContainsKey(k)) {
+                        scripts[i].Parameters[k] = this._parameters[k];
+                    }
+                }
 
-            DirectoryInfo tempDir = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()));
 #if DEBUG
-            this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Cleaning " + this._parameters["input"].ParameterValue + " into " + tempDir.FullName));
+                this.EventsHandler.onProgressMessageReceived(
+                    this,
+                    new DaisyEventArgs(
+                        $"Applying {scripts[i].Name} on {input} and storing into {outputDir.FullName}"
+                    )
+                );
 #else
-            this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Cleaning the DTBook XML... "));
+                this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Launching script {scripts[i].Name} ... "));
 #endif
-            wordToDtbook.Parameters["input"].ParameterValue = this._parameters["input"].ParameterValue;
-            wordToDtbook.Parameters["output"].ParameterValue = tempDir.FullName;
-            wordToDtbook.ExecuteScript(inputPath, true);
-
-            
-
-            // rebind input and output
-            try {
-                dtbookCleaner.Parameters["input"].ParameterValue = Directory.GetFiles(tempDir.FullName, "*.xml", SearchOption.AllDirectories)[0];
+                // rebind input and output
+                scripts[i].Parameters["input"].ParameterValue = input;
+                scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
+                scripts[i].ExecuteScript(inputPath, isQuite);
             }
-            catch {
-                throw new FileNotFoundException("Could not find result of cleaning process in result folder", tempDir.FullName);
-            }
-            dtbookCleaner.Parameters["output"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput, "DTBook XML")).FullName;
-            
-#if DEBUG
-            this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Cleaning " + dtbookCleaner.Parameters["input"].ParameterValue + " dtbook XML into " + dtbookCleaner.Parameters["output"].ParameterValue));
-#else
-            this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Converting DTBook XML to EPUB3..."));
-#endif
 
-            dtbookCleaner.ExecuteScript(dtbookCleaner.Parameters["input"].ParameterValue.ToString());
 
         }
     }

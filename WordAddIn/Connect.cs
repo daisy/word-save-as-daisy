@@ -730,64 +730,70 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         #region Single document conversion
 
-        public void ApplyScript(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
-        {
-            try
-            {
-                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                Converter converter = null;
-                if (conversionIntegrationTestSettings != null)
-                {
-                    ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
-                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
-                }
-                else
-                {
-                    ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
-                }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="pipelineScript"></param>
+        /// <param name="eventsHandler"></param>
+        /// <param name="conversionIntegrationTestSettings"></param>
+        //public void ApplyScriptOld(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
+        //{
+        //    try
+        //    {
+        //        IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+        //        WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
+        //        Converter converter = null;
+        //        if (conversionIntegrationTestSettings != null)
+        //        {
+        //            ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
+        //            converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
+        //        }
+        //        else
+        //        {
+        //            ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
+        //            converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
+        //        }
 
-                DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
-                if (conversionIntegrationTestSettings != null
-                        || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion)
-                {
+        //        DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
+        //        if (conversionIntegrationTestSettings != null
+        //                || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion)
+        //        {
                     
-                    ConversionResult result = converter.Convert(currentDocument);
-                    // Conversion test with 
-                    //ConversionResult result = converter.Convert2(currentDocument);
-                    if (result != null && result.Succeeded)
-                    {
-                        Process.Start(
-                            Directory.Exists(converter.ConversionParameters.OutputPath)
-                            ? converter.ConversionParameters.OutputPath
-                            : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
-                        );
-                    } else {
-                        MessageBox.Show(result.UnknownErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
+        //            ConversionResult result = converter.Convert(currentDocument);
+        //            // Conversion test with 
+        //            //ConversionResult result = converter.Convert2(currentDocument);
+        //            if (result != null && result.Succeeded)
+        //            {
+        //                Process.Start(
+        //                    Directory.Exists(converter.ConversionParameters.OutputPath)
+        //                    ? converter.ConversionParameters.OutputPath
+        //                    : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
+        //                );
+        //            } else {
+        //                MessageBox.Show(result.UnknownErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        //            }
 
-                }
-                else
-                {
-                    eventsHandler.onConversionCanceled();
-                }
+        //        }
+        //        else
+        //        {
+        //            eventsHandler.onConversionCanceled();
+        //        }
 
-                //applicationObject.ActiveDocument.Save();
-            }
-            catch (Exception e)
-            {
-                AddinLogger.Error(e);
-                if (conversionIntegrationTestSettings == null)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
+        //        //applicationObject.ActiveDocument.Save();
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        AddinLogger.Error(e);
+        //        if (conversionIntegrationTestSettings == null)
+        //        {
+        //            ExceptionReport report = new ExceptionReport(e);
+        //            report.ShowDialog();
+        //        }
 
-            }
-        }
+        //    }
+        //}
 
-        public void ApplyScript2(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
+        public void ApplyScript(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
         {
             try {
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
@@ -807,7 +813,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
                     //ConversionResult result = converter.Convert(currentDocument);
                     // Conversion test with 
-                    ConversionResult result = converter.Convert2(currentDocument);
+                    ConversionResult result = converter.ConvertWithPipeline2(currentDocument);
                     if (result != null && result.Succeeded) {
                         Process.Start(
                             Directory.Exists(converter.ConversionParameters.OutputPath)
@@ -834,34 +840,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
         }
 
-        public void SaveAsDTBookXML2(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null)
-        {
-            try {
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null
-                    ? (IConversionEventsHandler)new GraphicalEventsHandler()
-                    : new SilentEventsHandler();
-
-                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
-                    ? new DtbookCleaner(eventsHandler) :
-                    null;
-                //Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
-                //    ? new WordToCleanedDtbook(eventsHandler) :
-                //    null;
-                if (pipelineScript != null) {
-                    pipelineScript.EventsHandler = eventsHandler;
-                }
-                ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
-            }
-            catch (Exception e) {
-                AddinLogger.Error(e);
-                if (conversionIntegrationTestSettings == null) {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
-
-            }
-        }
-
         public void SaveAsDTBookXML(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null)
         {
             try
@@ -870,9 +848,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     ? (IConversionEventsHandler) new GraphicalEventsHandler() 
                     : new SilentEventsHandler();
 
-                //Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path) 
-                //    ? new DtbookCleaner(eventsHandler) : 
-                //    null;
                 Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
                     ? new WordToCleanedDtbook(eventsHandler) :
                     null;
@@ -880,7 +855,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 {
                     pipelineScript.EventsHandler = eventsHandler;
                 }
-                ApplyScript2(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
+                ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
             }
             catch (Exception e)
             {
@@ -899,12 +874,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="control"></param>
         public void SaveAsDAISY3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
-                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+               // IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
                 
                 Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
-                    ? new CleanedDtbookToDaisy3(eventsHandler) :
+                    ? new WordToDaisy3(eventsHandler) :
                     null;
                
                 
@@ -931,11 +906,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="conversionIntegrationTestSettings"></param>
         public void SaveAsEPUB3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
-
-                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                //IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
 
-                Script pipelineScript = new CleanedDtbookToEpub3(eventsHandler);
+                Script pipelineScript = new WordToEpub3(eventsHandler);
 
                 if (pipelineScript != null)
                 {
@@ -962,11 +936,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         {
             try
             {
-
-                IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
 
-                Script pipelineScript = new CleanedDtbookToMp3(eventsHandler);
+                Script pipelineScript = new WordToMp3(eventsHandler);
 
                 if (pipelineScript != null)
                 {
@@ -1024,7 +996,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             break;
                         }
                     }
-                    if(documents.Count > 0) converter.Convert(documents);
+                    if(documents.Count > 0) converter.ConvertWithPipeline2AndMerge(documents);
                 }
 
                 applicationObject.ActiveDocument.Save();
@@ -1040,7 +1012,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                Script pipelineScript = new CleanedDtbookToDaisy3(eventsHandler);
+                Script pipelineScript = new WordToDaisy3(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
@@ -1074,7 +1046,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             break;
                         }
                     }
-                    if (documents.Count > 0) converter.Convert(documents);
+                    if (documents.Count > 0) converter.ConvertWithPipeline2AndMerge(documents);
                 }
 
                 applicationObject.ActiveDocument.Save();
@@ -1092,7 +1064,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                Script pipelineScript = new CleanedDtbookToDaisy3(eventsHandler);
+                Script pipelineScript = new WordToDaisy3(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
                 WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
@@ -1126,7 +1098,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             break;
                         }
                     }
-                    if (documents.Count > 0) converter.Convert(documents);
+                    if (documents.Count > 0) converter.ConvertWithPipeline2AndMerge(documents);
                 }
 
                 applicationObject.ActiveDocument.Save();
