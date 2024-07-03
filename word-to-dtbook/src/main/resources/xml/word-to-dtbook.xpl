@@ -26,28 +26,28 @@
 		</p:documentation>
 	</p:option>
 
-	<p:option name="Title" select="''" required="false">
+	<p:option name="title" select="''" required="false">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document title</h2>
 		</p:documentation>
 	</p:option>
-	<p:option name="Creator" select="''" required="false">
+	<p:option name="creator" select="''" required="false">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document author</h2>
 		</p:documentation>
 	</p:option>
-	<p:option name="Publisher" select="''" required="false">
+	<p:option name="publisher" select="''" required="false">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document publisher</h2>
 		</p:documentation>
 	</p:option>
-	<p:option name="UID" select="''">
+	<p:option name="uid" select="''">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Document identifier</h2>
 			<p px:role="desc">Identifier to be added as dtb:uid metadata</p>
 		</p:documentation>
 	</p:option>
-	<p:option name="Subject" select="''">
+	<p:option name="subject" select="''">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Subject(s)</h2>
 			<p px:role="desc">Subject(s) to be added as dc:Subject metadata</p>
@@ -59,7 +59,7 @@
 			<p px:role="desc">If the document has revisions that are not accepted, consider them as accepted for the conversion.</p>
 		</p:documentation>
 	</p:option>
-	<p:option name="Version" select="'14'" px:hidden="true"/>
+	<p:option name="version" select="'14'" px:hidden="true"/>
 
 	<!-- discarding math type equations preprocessing
 	<p:option name="MathML" select="map{'wdTextFrameStory':[],
@@ -69,7 +69,7 @@
 	<!-- cx:as="map(xs:string,xs:string*)" -->
 	<p:option name="MasterSub" px:hidden="true" select="'false'" px:type="boolean" />
 	<!-- from settings  -->
-	<p:option name="PagenumStyle" select="'Custom'">
+	<p:option name="pagination" select="'Custom'">
 		<p:documentation xmlns="http://www.w3.org/1999/xhtml">
 			<h2 px:role="name">Pagination mode</h2>
 			<p px:role="desc">Define how page numbers are computed and inserted in the result</p>
@@ -200,14 +200,14 @@
 		</p:input>
 		<p:with-param name="InputFile" select="$source"/>
 		<p:with-param name="OutputDir" select="$result"/>
-		<p:with-param name="Title" select="$Title"/>
-		<p:with-param name="Creator" select="$Creator"/>
-		<p:with-param name="Publisher" select="$Publisher"/>
-		<p:with-param name="UID" select="$UID"/>
-		<p:with-param name="Subject" select="$Subject"/>
+		<p:with-param name="title" select="$title"/>
+		<p:with-param name="creator" select="$creator"/>
+		<p:with-param name="publisher" select="$publisher"/>
+		<p:with-param name="uid" select="$uid"/>
+		<p:with-param name="subject" select="$subject"/>
 		<p:with-param name="acceptRevisions" select="$acceptRevisions = 'true'"/>
-		<p:with-param name="Version" select="$Version"/>
-		<p:with-param name="Custom" select="$PagenumStyle"/>
+		<p:with-param name="version" select="$version"/>
+		<p:with-param name="pagination" select="$pagination"/>
 		<p:with-param name="MasterSub" select="$MasterSub='true'"/>
 		<p:with-param name="ImageSizeOption" select="$ImageSizeOption"/>
 		<p:with-param name="DPI" select="$DPI"/>

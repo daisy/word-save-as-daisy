@@ -102,14 +102,14 @@
 	</xsl:variable>
 	
 	<!--Declaring Global paramaters-->
-	<xsl:param name="Title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
-	<xsl:param name="Creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
-	<xsl:param name="Publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
-	<xsl:param name="UID" as="xs:string" select="''"/> <!--Holds Document unique id value-->
-	<xsl:param name="Subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
+	<xsl:param name="title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
+	<xsl:param name="creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
+	<xsl:param name="publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
+	<xsl:param name="uid" as="xs:string" select="''"/> <!--Holds Document unique id value-->
+	<xsl:param name="subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
 	<xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
-	<xsl:param name="Version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
-	<xsl:param name="Custom" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
+	<xsl:param name="version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
+	<xsl:param name="pagination" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
 	<xsl:param name="MasterSub" as="xs:boolean" select="false()"/>
 	<xsl:param name="ImageSizeOption" as="xs:string" select="'original'"/> <!-- resize|resample|original -->
 	<xsl:param name="DPI" as="xs:integer" select="96"/>
@@ -261,7 +261,7 @@
 									<xsl:otherwise>
 										<!--Calling template for checking style in the footnote text-->
 										<xsl:call-template name="ParagraphStyle">
-											<xsl:with-param name="VERSION" select="$verfoot"/>
+											<xsl:with-param name="version" select="$verfoot"/>
 											<xsl:with-param name="flagNote" select="'footnote'"/>
 											<xsl:with-param name="checkid" select="$checkid + 1"/>
 											<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -366,8 +366,8 @@
 				<!--Looping through each of the node to print text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
 					<xsl:if test="self::w:r">
-						<xsl:call-template name ="TempCharacterStyle">
-							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+						<xsl:call-template name="TempCharacterStyle">
+							<xsl:with-param name="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:for-each>
@@ -403,8 +403,8 @@
 				<!--Looping through each of the node to print text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
 					<xsl:if test="self::w:r">
-						<xsl:call-template name ="TempCharacterStyle">
-							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+						<xsl:call-template name="TempCharacterStyle">
+							<xsl:with-param name="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:for-each>
@@ -626,8 +626,8 @@
 									<xsl:for-each select="../preceding-sibling::node()[1]/node()">
 										<!--Printing the Caption value-->
 										<xsl:if test="self::w:r">
-											<xsl:call-template name ="TempCharacterStyle">
-												<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+											<xsl:call-template name="TempCharacterStyle">
+												<xsl:with-param name="characterStyle" select="$characterStyle"/>
 											</xsl:call-template>
 										</xsl:if>
 										<xsl:if test="self::w:fldSimple">
@@ -774,8 +774,8 @@
 				<!--Looping through each of the node to print the text to the output xml-->
 				<xsl:for-each select="$followingnodes[1]/node()">
 					<xsl:if test="self::w:r">
-						<xsl:call-template name ="TempCharacterStyle">
-							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+						<xsl:call-template name="TempCharacterStyle">
+							<xsl:with-param name="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
 					</xsl:if>
 				</xsl:for-each>
@@ -841,8 +841,8 @@
 			<xsl:variable name="caption" as="xs:string*">
 				<xsl:for-each select="../preceding-sibling::node()[1]/node()">
 					<xsl:if test="self::w:r">
-						<xsl:call-template name ="TempCharacterStyle">
-							<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+						<xsl:call-template name="TempCharacterStyle">
+							<xsl:with-param name="characterStyle" select="$characterStyle"/>
 						</xsl:call-template>
 					</xsl:if>
 					<xsl:if test="self::w:fldSimple">
@@ -2265,7 +2265,6 @@
 								</xsl:choose>
 							</xsl:when>
 							<xsl:when test="$count_lang=1">
-								<xsl:message terminate="no"> In $count_lang = 1</xsl:message>
 								<xsl:choose>
 									<xsl:when test="../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val">
 										<xsl:sequence select="(../following-sibling::w:p[1]/w:r/w:rPr/w:lang/@w:val)[1]"/>
@@ -2417,7 +2416,7 @@
 	</xsl:template>
 
 	<xsl:template name="TempCharacterStyle">
-		<xsl:param name ="characterStyle" as="xs:boolean"/>
+		<xsl:param name="characterStyle" as="xs:boolean"/>
 		<xsl:choose>
 			<xsl:when test="$characterStyle">
 				<xsl:choose>

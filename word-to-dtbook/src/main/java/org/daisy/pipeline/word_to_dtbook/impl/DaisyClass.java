@@ -62,27 +62,10 @@ import com.google.common.collect.ImmutableMap;
 public class DaisyClass {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DaisyClass.class);
-
-	@Component(
-		name = "DaisyClass",
-		service = { ExtensionFunctionProvider.class }
-	)
-	public static class Provider extends ReflexiveExtensionFunctionProvider {
-		public Provider() {
-			super(DaisyClass.class);
-		}
-	}
-
 	private static final String wordRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument";
 	private static final String footnotesRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/footnotes";
 	private static final String endnotesRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/endnotes";
 	private static final String numberRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering";
-
-	/** Destination folder */
-	private final File outputFilename;
-	/** Input file name without extension and without spaces */
-	private final String inputName;
-
 	private static final String wordNamespace = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 	private static final String CustomRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/customXml";
 	private static final String customPropRelationshipType = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties";
@@ -92,41 +75,56 @@ public class DaisyClass {
 	private static final Integer headingOneLvl = 1;
 	private static final Integer headingSixLvl = 6;
 	private static final String version2010 = "14.0", version2007 = "12.0", version2003 = "11.0", versionXP = "10.0";
+	private static final List<String> bulletChar = new ArrayList<>();
 
+	static {
+		bulletChar.add("\u2605");
+		bulletChar.add("\u25B6");
+		bulletChar.add("\u25A3");
+		bulletChar.add("\u25CF");
+		bulletChar.add("\u25C6");
+		bulletChar.add("\u25CB");
+		bulletChar.add("\u25B2");
+		bulletChar.add("\u25C8");
+		bulletChar.add("\u25C7");
+	}
+
+	/** Destination folder */
+	private final File outputFilename;
+	/** Input file name without extension and without spaces */
+	private final String inputName;
 	private final OPCPackage pack;
-
 	/** stack of document levels value */
 	private final Stack<Integer> stackList = new Stack<>();
-
-	/** stack of levels value for lists */
-	private Stack<String> lstackList = new Stack<>();
-
 	/** Stack of abbrevations (and acronyms) */
 	private final Stack<String> abbrstackList = new Stack<>();
-
+	private final Stack<String> abbrparastackList = new Stack<>();
+	private final Stack<String> abbrheadstackList = new Stack<>();
+	private final Stack<String> masteSubstackList = new Stack<>();
+	private final List<String> arrListLang = new ArrayList<>();
+	private final List<String> startItem = new ArrayList<>();
+	private final List<String> prevHeadId = new ArrayList<>();
+	private final Hashtable<String,List<String>> startHeadingItem = new Hashtable<>();
+	private final List<String> OverideNumList = new ArrayList<>();
+        /**
+         * Stack of character style ti apply on a groupe of letter or text
+         * This is call by CustomCharStyle template to handle
+         * italic (em), bold(strong), superscript(sup) and subscript(sub) groups of characters
+         */
+        Deque<String> characterStyle = new ArrayDeque<>();
+	/** stack of levels value for lists */
+	private Stack<String> lstackList = new Stack<>();
 	/** Stack of lists headings */
 	private Stack<String> listHeadingstackList = new Stack<>();
-
-	private final Stack<String> abbrparastackList = new Stack<>();
-
-	private final Stack<String> abbrheadstackList = new Stack<>();
-
-	private final Stack<String> masteSubstackList = new Stack<>();
-
 	private List<String> arrHyperlink = new ArrayList<>();
-
 	/**
 	 * Notes id
 	 */
 	private List<Integer> notesIdsQueue = new ArrayList<>();
-
 	/**
 	 * Notes level
 	 */
 	private List<Integer> notesLevelsQueue = new ArrayList<>();
-
-	private final List<String> arrListLang = new ArrayList<>();
-
 	private List<Integer> arrCaptionProdnote = new ArrayList<>();
 	private String strImageExt = "";
 	private String sectionPagetype = "";
@@ -145,51 +143,30 @@ public class DaisyClass {
 	private int listMasterSubFlag = 0;
 	private int checkSectionFront = 0;
 	private int chekTocOccur = 0;
-
 	/** Number of pages found before the toc */
 	private int pageToc = 1;
-
 	private int checkSection = 0;
-
 	private int checkSectionBody = 0;
-
 	private int sectionCounter = 0;
-
 	private int noteFlag = 0;
-
 	private int incrementPage = 0;
-
 	private int rowspan = 0;
 	private int set_tabToc = 0;
 	private int set_Toc = 0;
 	private int bdoflag = 0;
-
 	private int captionFlag = 0;
 	private int testRun = 0;
-
 	private int set = 0;
 	private int setbookmark = 0;
 	private int checkCverpage = 0;
-
 	private int pageId = 0;
-
 	private int sectionpageStart = 0;
-
 	private int codeFlag = 0;
-
 	private int conPageBreak = 0;
-
 	private int flagRowspan = 0;
-
 	private int linenumflag = 0;
-
 	private int tmpcount = 0;
 	private String prevHeadLvl = "";
-	private final List<String> startItem = new ArrayList<>();
-	private final List<String> prevHeadId = new ArrayList<>();
-	private final Hashtable<String,List<String>> startHeadingItem = new Hashtable<>();
-	private static final List<String> bulletChar = new ArrayList<>();
-	private final List<String> OverideNumList = new ArrayList<>();
 	private String prevNumId = "";
 	private String prevHeadNumId = "";
 	private String baseNumId = "";
@@ -198,10 +175,12 @@ public class DaisyClass {
 	private Hashtable<String,List<String>> headingCounters = new Hashtable<>();
 	private int objectId = 0;
 	private String headingInfo = "";
-	private int footNoteFlag = 0;
-	private int sidebarFlag = 0;
-	private int mainFlag = 0;
 	private boolean shapeIsExported = false;
+	private PageStylesValidator _pageStylesValidator = new PageStylesValidator();
+	private List<PageStyle> _currentParagraphStylse = new ArrayList<>();
+	private StringBuilder _pageStylesErrors = new StringBuilder();
+	private boolean _isAnyPageStyleApplied = false;
+	private String _currentMatterType = "";
 
 	/**
 	 * DaisyClass constructor.
@@ -269,6 +248,186 @@ public class DaisyClass {
 		for (int i = 0; i < 2; i++) {
 			prevHeadId.add("");
 		}
+	}
+
+	/**
+	 * Function which returns Upper Roman letter with respect to an integer
+	 */
+	public static String PageNumUpperRoman(int counter) {
+		int[] values = new int[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+		String[] numerals = new String[] { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
+		StringBuilder result = new StringBuilder();
+		int check = counter;
+		if (check == 0) {
+			check = 1;
+		}
+		for (int i = 0; i < values.length; i++) {
+			// If the number being converted is less than the test value, append
+			// the corresponding numeral or numeral pair to the resultant string
+			while (check >= values[i]) {
+				check -= values[i];
+				result.append(numerals[i]);
+			}
+		}
+		return result.toString();
+	}
+
+	/**
+	 * Function which returns Lower Roman letter with respect to an integer
+	 */
+	public static String PageNumLowerRoman(int counter) {
+		int[] values = new int[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+		String[] numerals = new String[] { "m", "cm", "d", "cd", "c", "xc", "l", "xl", "x", "ix", "v", "iv", "i" };
+		StringBuilder result = new StringBuilder();
+		int check = counter;
+		if (check == 0) {
+			check = 1;
+		}
+		for (int i = 0; i < values.length; i++) {
+			// If the number being converted is less than the test value, append
+			// the corresponding numeral or numeral pair to the resultant string
+			while (check >= values[i]) {
+				check -= values[i];
+				result.append(numerals[i]);
+			}
+		}
+		return result.toString();
+	}
+
+	/**
+	 * Function which returns Lower Alphabet with respect to an integer
+	 */
+	public static String PageNumLowerAlphabet(int counter) {
+		String[] numerals = new String[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
+		String lowerAlpha;
+		int check = counter;
+		/*if counter value is greater than 26,then checking the difference and getting the proper alphabet*/
+		if (check > 26) {
+			check = check - 26;
+			lowerAlpha = numerals[check - 1] + numerals[check - 1];
+		} else if (check != 0) {
+			lowerAlpha = numerals[check - 1];
+		} else {
+			lowerAlpha = numerals[0];
+		}
+		return lowerAlpha;
+	}
+
+	/**
+	 * Function which returns Upper Alphabet with respect to an integer
+	 */
+	public static String PageNumUpperAlphabet(int counter) {
+		String[] numerals = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
+		String upperAlpha;
+		int check = counter;
+		/*if counter value is greater than 26,then checking the difference and getting the proper alphabet*/
+		if (check > 26) {
+			check = check - 26;
+			upperAlpha = numerals[check - 1] + numerals[check - 1];
+		} else if (check != 0) {
+			upperAlpha = numerals[check - 1];
+		} else {
+			upperAlpha = numerals[0];
+		}
+		return upperAlpha;
+	}
+
+	/**
+	 * Function to get Unique ID
+	 */
+	public static long GenerateId() {
+		return new BigInteger(UUID.randomUUID().toString().substring(0, 8).getBytes()).longValue();
+	}
+
+	/**
+	 * Function to return special character
+	 */
+	public static String EscapeSpecial(String id) {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < id.length(); i++) {
+			if ((id.charAt(i) >= '0' && id.charAt(i) <= '9') || (id.charAt(i) >= 'A' && id.charAt(i) <= 'z')) {
+				sb.append(id.charAt(i));
+			}
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Function used to compare two Headings info
+	 */
+	public static int CompareHeading(String strA, String strB) {
+		int value = 0;
+		if (strA.substring(0, strA.length() - 1).equals(strB.substring(0, strB.length() - 1)))
+			value = 1;
+		return value;
+	}
+
+	private static String SpecificFormat(String lvlText, String numFormat, int iLvl) {
+		String tempString = "";
+		if (numFormat.equals("decimal") || numFormat.equals("decimalZero")) {
+			tempString = lvlText;
+		} else if (numFormat.equals("lowerLetter")) {
+			tempString = PageNumLowerAlphabet(Integer.parseInt(lvlText));
+		} else if (numFormat.equals("upperLetter")) {
+			tempString = PageNumUpperAlphabet(Integer.parseInt(lvlText));
+		} else if (numFormat.equals("upperRoman")) {
+			tempString = PageNumUpperRoman(Integer.parseInt(lvlText));
+		} else if (numFormat.equals("lowerRoman")) {
+			tempString = PageNumLowerRoman(Integer.parseInt(lvlText));
+		} else if (numFormat.equals("bullet")) {
+			tempString = bulletChar.get(iLvl);
+		} else if (numFormat.equals("none")) {
+			tempString = "";
+		} else {
+			tempString = lvlText;
+		}
+		return tempString;
+	}
+
+	private static boolean IsOffice2007Or2010(String version) {
+		return version.equals(version2007) || version.equals(version2010);
+	}
+
+	public static void sink(Object item) {}
+
+	private static String GetFileNameWithoutExtension(File f) {
+		String name = f.getName();
+		if (name.lastIndexOf('.') >= 0)
+			name = name.substring(0, name.lastIndexOf('.'));
+		return name;
+	}
+
+	private static String GetExtension(File f) {
+		if (f == null)
+			return null;
+		String name = f.getName();
+		if (name.lastIndexOf('.') >= 0)
+			return name.substring(name.lastIndexOf('.'));
+		else
+			return "";
+	}
+
+	private static XPathExpression compileXPathExpression(XPath xpath, String expression, final Map<String,String> namespaces)
+			throws XPathExpressionException {
+		if (namespaces != null)
+			xpath.setNamespaceContext(
+				new NamespaceContext() {
+					public String getNamespaceURI(String prefix) {
+						return namespaces.get(prefix); }
+					public String getPrefix(String namespaceURI) {
+						for (String prefix : namespaces.keySet())
+							if (namespaces.get(prefix).equals(namespaceURI))
+								return prefix;
+						return null; }
+					public Iterator<String> getPrefixes(String namespaceURI) {
+						List<String> prefixes = new ArrayList<String>();
+						for (String prefix : namespaces.keySet())
+							if (namespaces.get(prefix).equals(namespaceURI))
+								prefixes.add(prefix);
+						return prefixes.iterator(); }});
+		else
+			xpath.setNamespaceContext(null);
+		return xpath.compile(expression);
 	}
 
 	public void End(){
@@ -340,8 +499,6 @@ public class DaisyClass {
 		else
 			return "2"; // shape or image not found
 	}
-
-	
 
 	/**
 	 * Retrieve the next mathml for a story type.
@@ -629,89 +786,6 @@ public class DaisyClass {
 	}
 
 	/**
-	 * Function which returns Upper Roman letter with respect to an integer
-	 */
-	public static String PageNumUpperRoman(int counter) {
-		int[] values = new int[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-		String[] numerals = new String[] { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I" };
-		StringBuilder result = new StringBuilder();
-		int check = counter;
-		if (check == 0) {
-			check = 1;
-		}
-		for (int i = 0; i < values.length; i++) {
-			// If the number being converted is less than the test value, append
-			// the corresponding numeral or numeral pair to the resultant string
-			while (check >= values[i]) {
-				check -= values[i];
-				result.append(numerals[i]);
-			}
-		}
-		return result.toString();
-	}
-
-	/**
-	 * Function which returns Lower Roman letter with respect to an integer
-	 */
-	public static String PageNumLowerRoman(int counter) {
-		int[] values = new int[] { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
-		String[] numerals = new String[] { "m", "cm", "d", "cd", "c", "xc", "l", "xl", "x", "ix", "v", "iv", "i" };
-		StringBuilder result = new StringBuilder();
-		int check = counter;
-		if (check == 0) {
-			check = 1;
-		}
-		for (int i = 0; i < values.length; i++) {
-			// If the number being converted is less than the test value, append
-			// the corresponding numeral or numeral pair to the resultant string
-			while (check >= values[i]) {
-				check -= values[i];
-				result.append(numerals[i]);
-			}
-		}
-		return result.toString();
-	}
-
-
-	/**
-	 * Function which returns Lower Alphabet with respect to an integer
-	 */
-	public static String PageNumLowerAlphabet(int counter) {
-		String[] numerals = new String[] { "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z" };
-		String lowerAlpha;
-		int check = counter;
-		/*if counter value is greater than 26,then checking the difference and getting the proper alphabet*/
-		if (check > 26) {
-			check = check - 26;
-			lowerAlpha = numerals[check - 1] + numerals[check - 1];
-		} else if (check != 0) {
-			lowerAlpha = numerals[check - 1];
-		} else {
-			lowerAlpha = numerals[0];
-		}
-		return lowerAlpha;
-	}
-
-	/**
-	 * Function which returns Upper Alphabet with respect to an integer
-	 */
-	public static String PageNumUpperAlphabet(int counter) {
-		String[] numerals = new String[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
-		String upperAlpha;
-		int check = counter;
-		/*if counter value is greater than 26,then checking the difference and getting the proper alphabet*/
-		if (check > 26) {
-			check = check - 26;
-			upperAlpha = numerals[check - 1] + numerals[check - 1];
-		} else if (check != 0) {
-			upperAlpha = numerals[check - 1];
-		} else {
-			upperAlpha = numerals[0];
-		}
-		return upperAlpha;
-	}
-
-	/**
 	 * Function which returns the number of Sections in the document
 	 */
 	public String SectionCounter(String pageType, String pageStart) {
@@ -861,19 +935,19 @@ public class DaisyClass {
 
 	/**
 	 * Function to get Value of a particular Footnote.
-	 * NP : Only used as FootNoteId(0) to get the first footnote to 
+	 * NP : Only used as FootNoteId(0) to get the first footnote to
 	 * insert in content.
-	 * 
+	 *
 	 * @param i index of the footnote
 	 * @param level level of the footnote
-	 * 
+	 *
 	 */
 	public int FootNoteId(int i, int level) {
 		if (notesIdsQueue.size() > 0) {
 			// Search next footnote to include by checking if we are at the good level
 			// (we could be in a level3 while having a level2 notes as first to insert
 			// if we are inserting notes at end of levels)
-			
+
 			while (
 				i < notesIdsQueue.size() &&
 				(level > this.notesLevelsQueue.get(i))
@@ -997,13 +1071,6 @@ public class DaisyClass {
 		} else {
 			return caption;
 		}
-	}
-
-	/**
-	 * Function to get Unique ID
-	 */
-	public static long GenerateId() {
-		return new BigInteger(UUID.randomUUID().toString().substring(0, 8).getBytes()).longValue();
 	}
 
 	public int GetCheckLvlInt(Iterator<Node> checkLvl) {
@@ -1412,19 +1479,6 @@ public class DaisyClass {
 	public int AssingBookmark() {
 		setbookmark = 0;
 		return setbookmark;
-	}
-
-	/**
-	 * Function to return special character
-	 */
-	public static String EscapeSpecial(String id) {
-		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < id.length(); i++) {
-			if ((id.charAt(i) >= '0' && id.charAt(i) <= '9') || (id.charAt(i) >= 'A' && id.charAt(i) <= 'z')) {
-				sb.append(id.charAt(i));
-			}
-		}
-		return sb.toString();
 	}
 
 	/**
@@ -1843,16 +1897,6 @@ public class DaisyClass {
 	}
 
 	/**
-	 * Function used to compare two Headings info
-	 */
-	public static int CompareHeading(String strA, String strB) {
-		int value = 0;
-		if (strA.substring(0, strA.length() - 1).equals(strB.substring(0, strB.length() - 1)))
-			value = 1;
-		return value;
-	}
-
-	/**
 	 * Function used to set the Linenumber flag
 	 */
 	public String Setlinenumflag() {
@@ -2023,28 +2067,6 @@ public class DaisyClass {
 			text = lvlText.substring(0, lvlText.indexOf('%')) + temp;
 		}
 		return text + " ";
-	}
-
-	private static String SpecificFormat(String lvlText, String numFormat, int iLvl) {
-		String tempString = "";
-		if (numFormat.equals("decimal") || numFormat.equals("decimalZero")) {
-			tempString = lvlText;
-		} else if (numFormat.equals("lowerLetter")) {
-			tempString = PageNumLowerAlphabet(Integer.parseInt(lvlText));
-		} else if (numFormat.equals("upperLetter")) {
-			tempString = PageNumUpperAlphabet(Integer.parseInt(lvlText));
-		} else if (numFormat.equals("upperRoman")) {
-			tempString = PageNumUpperRoman(Integer.parseInt(lvlText));
-		} else if (numFormat.equals("lowerRoman")) {
-			tempString = PageNumLowerRoman(Integer.parseInt(lvlText));
-		} else if (numFormat.equals("bullet")) {
-			tempString = bulletChar.get(iLvl);
-		} else if (numFormat.equals("none")) {
-			tempString = "";
-		} else {
-			tempString = lvlText;
-		}
-		return tempString;
 	}
 
 	private List<String> AbstractFormat(String numId, XPath xpath, DocumentBuilder docBuilder)
@@ -2250,18 +2272,6 @@ public class DaisyClass {
 			text = lvlText.substring(0, lvlText.indexOf('%')) + temp;
 		}
 		return text + " ";
-	}
-
-	static {
-		bulletChar.add("\u2605");
-		bulletChar.add("\u25B6");
-		bulletChar.add("\u25A3");
-		bulletChar.add("\u25CF");
-		bulletChar.add("\u25C6");
-		bulletChar.add("\u25CB");
-		bulletChar.add("\u25B2");
-		bulletChar.add("\u25C8");
-		bulletChar.add("\u25C7");
 	}
 
 	public void IncrementHeadingCounters(String iLvlString, String numId, String absId) {
@@ -2640,15 +2650,6 @@ public class DaisyClass {
 		return listflag;
 	}
 
-	private static boolean IsOffice2007Or2010(String version) {
-		return version.equals(version2007) || version.equals(version2010);
-	}
-
-	private PageStylesValidator _pageStylesValidator = new PageStylesValidator();
-	private List<PageStyle> _currentParagraphStylse = new ArrayList<>();
-	private StringBuilder _pageStylesErrors = new StringBuilder();
-	private boolean _isAnyPageStyleApplied = false;
-
 	public String PushPageStyle(String pageStyle) {
 		_isAnyPageStyleApplied = true;
 		PageStyle pushingStyle = PageStylesValidator.GetPageStyle(pageStyle);
@@ -2677,8 +2678,6 @@ public class DaisyClass {
 		return _pageStylesErrors.toString();
 	}
 
-	private String _currentMatterType = "";
-
 	public String SetCurrentMatterType(String matterType) {
 		_currentMatterType = matterType;
 		return _currentMatterType;
@@ -2695,56 +2694,6 @@ public class DaisyClass {
 	public void ResetCurrentMatterType() {
 		_currentMatterType = "";
 	}
-
-	public static void sink(Object item) {}
-
-	private static String GetFileNameWithoutExtension(File f) {
-		String name = f.getName();
-		if (name.lastIndexOf('.') >= 0)
-			name = name.substring(0, name.lastIndexOf('.'));
-		return name;
-	}
-
-	private static String GetExtension(File f) {
-		if (f == null)
-			return null;
-		String name = f.getName();
-		if (name.lastIndexOf('.') >= 0)
-			return name.substring(name.lastIndexOf('.'));
-		else
-			return "";
-	}
-
-	private static XPathExpression compileXPathExpression(XPath xpath, String expression, final Map<String,String> namespaces)
-			throws XPathExpressionException {
-		if (namespaces != null)
-			xpath.setNamespaceContext(
-				new NamespaceContext() {
-					public String getNamespaceURI(String prefix) {
-						return namespaces.get(prefix); }
-					public String getPrefix(String namespaceURI) {
-						for (String prefix : namespaces.keySet())
-							if (namespaces.get(prefix).equals(namespaceURI))
-								return prefix;
-						return null; }
-					public Iterator<String> getPrefixes(String namespaceURI) {
-						List<String> prefixes = new ArrayList<String>();
-						for (String prefix : namespaces.keySet())
-							if (namespaces.get(prefix).equals(namespaceURI))
-								prefixes.add(prefix);
-						return prefixes.iterator(); }});
-		else
-			xpath.setNamespaceContext(null);
-		return xpath.compile(expression);
-	}
-
-	
-        /**
-         * Stack of character style ti apply on a groupe of letter or text
-         * This is call by CustomCharStyle template to handle 
-         * italic (em), bold(strong), superscript(sup) and subscript(sub) groups of characters
-         */
-        Deque<String> characterStyle = new ArrayDeque<>();
 
 		/**
 		 */
@@ -2769,4 +2718,14 @@ public class DaisyClass {
                 return "";
             } else return characterStyle.pop();
         }
+
+	@Component(
+		name = "DaisyClass",
+		service = { ExtensionFunctionProvider.class }
+	)
+	public static class Provider extends ReflexiveExtensionFunctionProvider {
+		public Provider() {
+			super(DaisyClass.class);
+		}
+	}
 }

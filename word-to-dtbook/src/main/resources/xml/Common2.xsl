@@ -17,14 +17,14 @@
 	exclude-result-prefixes="w pic wp dcterms xsi cp dc a r v dcmitype d xsl xs">
 	
 	<!--Declaring Global paramaters-->
-	<xsl:param name="Title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
-	<xsl:param name="Creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
-	<xsl:param name="Publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
-	<xsl:param name="UID" as="xs:string" select="''"/> <!--Holds Document unique id value-->
-	<xsl:param name="Subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
+	<xsl:param name="title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
+	<xsl:param name="creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
+	<xsl:param name="publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
+	<xsl:param name="uid" as="xs:string" select="''"/> <!--Holds Document unique id value-->
+	<xsl:param name="subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
 	<xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
-	<xsl:param name="Version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
-	<xsl:param name="Custom" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
+	<xsl:param name="version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
+	<xsl:param name="pagination" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
 	<xsl:param name="MasterSub" as="xs:boolean" select="false()"/>
 	<xsl:param name="ImageSizeOption" as="xs:string" select="'original'"/> <!-- resize|resample|original -->
 	<xsl:param name="DPI" as="xs:integer" select="96"/>
@@ -44,7 +44,7 @@
 		<!--Parameter check holds the value that checks for different level values-->
 		<xsl:param name="check" as="xs:boolean"/>
 		<xsl:param name="verhead" as="xs:string"/>
-		<xsl:param name="custom" as="xs:string"/>
+		<xsl:param name="pagination" as="xs:string"/>
 		<xsl:param name="mastersubhead" as="xs:boolean"/>
 		<xsl:param name="abValue" as="xs:string" select="''"/>
 		<xsl:param name="headingFormatAndTextAndID" as="xs:string"/> <!-- Special string with expected format : numberFormat|levelText|numberId -->
@@ -69,7 +69,7 @@
 				<!--Levels upto 6-->
 				<!--Creating level element-->
 				<xsl:value-of disable-output-escaping="yes" select="concat('&lt;level',$level,'&gt;')"/>
-				<xsl:if test="(d:GetPageNum($myObj)=0) and (d:CheckTocOccur($myObj)=1) and ($custom='Automatic')">
+				<xsl:if test="(d:GetPageNum($myObj)=0) and (d:CheckTocOccur($myObj)=1) and ($pagination='Automatic')">
 					<xsl:if test="preceding-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Cover Pages'">
 						<xsl:sequence select="d:sink(d:IncrementPage($myObj))"/> <!-- empty -->
 					</xsl:if>
@@ -79,7 +79,7 @@
 				</xsl:if>
 				<!--Checking whether heading is present in the document-->
 				<xsl:if test="$check">
-					<xsl:if test="$custom='Automatic'
+					<xsl:if test="$pagination='Automatic'
 						and (
 							(w:r/w:lastRenderedPageBreak)
 							or (
@@ -115,7 +115,7 @@
 					<!--Calling ParaHandler template for heading text-->
 					<xsl:call-template name="TempLevelSpan">
 						<xsl:with-param name="verhead" select="$verhead"/>
-						<xsl:with-param name="custom" select="$custom"/>
+						<xsl:with-param name="pagination" select="$pagination"/>
 						<xsl:with-param name="level" select="$level"/>
 						<xsl:with-param name="txt" as="xs:string" select="d:TextHeading(
 								$myObj,
@@ -153,7 +153,7 @@
 				<!--Calling ParaHandler template for heading text-->
 				<xsl:call-template name="TempLevelSpan">
 					<xsl:with-param name="verhead" select="$verhead"/>
-					<xsl:with-param name="custom" select="$custom"/>
+					<xsl:with-param name="pagination" select="$pagination"/>
 					<xsl:with-param name="level" select="$level"/>
 					<xsl:with-param name="txt" as="xs:string" select="d:TextHeading(
 							$myObj,
@@ -182,7 +182,6 @@
 	
 	<xsl:template name="openHeading">
 		<xsl:param name="level"/>
-		<xsl:message terminate="no">debug in openHeading</xsl:message>
 		<xsl:variable name="headingLanguage">
 			<xsl:call-template name="GetParagraphLanguage">
 				<xsl:with-param name="paragraphNode" select="."/>
@@ -196,12 +195,12 @@
 		<xsl:value-of disable-output-escaping="yes" select="concat('&lt;',concat('h',$level,$attributes),'&gt;')" />
 	</xsl:template>
 	
-	<xsl:template name ="TempLevelSpan">
+	<xsl:template name="TempLevelSpan">
 		<xsl:param name="verhead" as="xs:string"/>
-		<xsl:param name ="custom" as="xs:string"/>
+		<xsl:param name="pagination" as="xs:string"/>
 		<xsl:param name="level" as="xs:integer"/>
-		<xsl:param name ="txt" as="xs:string"/>
-		<xsl:param name ="mastersubhead" as="xs:boolean"/>
+		<xsl:param name="txt" as="xs:string"/>
+		<xsl:param name="mastersubhead" as="xs:boolean"/>
 		<xsl:param name="lvlcharStyle" as="xs:boolean"/>
 		<xsl:param name="sOperators" as="xs:string"/>
 		<xsl:param name="sMinuses" as="xs:string"/>
@@ -218,15 +217,15 @@
 						<span class="{concat('text-indent:', 'right=',$val_right,'in',';left=',$val_left,'in')}">
 							<xsl:call-template name="ParaHandler">
 								<xsl:with-param name="flag" select="'0'"/>
-								<xsl:with-param name="VERSION" select="$verhead"/>
-								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="version" select="$verhead"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="level" select="$level"/>
-								<xsl:with-param name ="txt" select="$txt"/>
+								<xsl:with-param name="txt" select="$txt"/>
 								<xsl:with-param name="sOperators" select="$sOperators"/>
 								<xsl:with-param name="sMinuses" select="$sMinuses"/>
 								<xsl:with-param name="sNumbers" select="$sNumbers"/>
 								<xsl:with-param name="sZeros" select="$sZeros"/>
-								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
+								<xsl:with-param name="mastersubpara" select="$mastersubhead"/>
 								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
 							</xsl:call-template>
 						</span>
@@ -238,15 +237,15 @@
 						<span class="{concat('text-indent:',';left=',$val_left,'in',';text-align:',$val1)}">
 							<xsl:call-template name="ParaHandler">
 								<xsl:with-param name="flag" select="'0'"/>
-								<xsl:with-param name="VERSION" select="$verhead"/>
-								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="version" select="$verhead"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="level" select="$level"/>
-								<xsl:with-param name ="txt" select="$txt"/>
+								<xsl:with-param name="txt" select="$txt"/>
 								<xsl:with-param name="sOperators" select="$sOperators"/>
 								<xsl:with-param name="sMinuses" select="$sMinuses"/>
 								<xsl:with-param name="sNumbers" select="$sNumbers"/>
 								<xsl:with-param name="sZeros" select="$sZeros"/>
-								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
+								<xsl:with-param name="mastersubpara" select="$mastersubhead"/>
 								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
 							</xsl:call-template>
 						</span>
@@ -257,15 +256,15 @@
 						<span class="{concat('text-indent:',$val_left,'in')}">
 							<xsl:call-template name="ParaHandler">
 								<xsl:with-param name="flag" select="'0'"/>
-								<xsl:with-param name="VERSION" select="$verhead"/>
-								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="version" select="$verhead"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="level" select="$level"/>
-								<xsl:with-param name ="txt" select="$txt"/>
+								<xsl:with-param name="txt" select="$txt"/>
 								<xsl:with-param name="sOperators" select="$sOperators"/>
 								<xsl:with-param name="sMinuses" select="$sMinuses"/>
 								<xsl:with-param name="sNumbers" select="$sNumbers"/>
 								<xsl:with-param name="sZeros" select="$sZeros"/>
-								<xsl:with-param name ="mastersubpara" select="$mastersubhead"/>
+								<xsl:with-param name="mastersubpara" select="$mastersubhead"/>
 								<xsl:with-param name="charparahandlerStyle" select="$lvlcharStyle"/>
 							</xsl:call-template>
 						</span>
@@ -277,8 +276,8 @@
 						<span class="{concat('text-indent:',$val_right,'in')}">
 							<xsl:call-template name="ParaHandler">
 								<xsl:with-param name="flag" select="'0'"/>
-								<xsl:with-param name="VERSION" select="$verhead"/>
-								<xsl:with-param name="custom" select="$custom"/>
+								<xsl:with-param name="version" select="$verhead"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="level" select="$level"/>
 								<xsl:with-param name="txt" select="$txt"/>
 								<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -295,8 +294,8 @@
 						<span class="{concat('text-align:',$val)}">
 							<xsl:call-template name="ParaHandler">
 								<xsl:with-param name="flag" select="'0'"/>
-								<xsl:with-param name="VERSION" select="$verhead"/>
-								<xsl:with-param name="custom" select="$custom"/>
+								<xsl:with-param name="version" select="$verhead"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="level" select="$level"/>
 								<xsl:with-param name="txt" select="$txt"/>
 								<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -311,8 +310,8 @@
 					<xsl:otherwise>
 						<xsl:call-template name="ParaHandler">
 							<xsl:with-param name="flag" select="'0'"/>
-							<xsl:with-param name="VERSION" select="$verhead"/>
-							<xsl:with-param name="custom" select="$custom"/>
+							<xsl:with-param name="version" select="$verhead"/>
+							<xsl:with-param name="pagination" select="$pagination"/>
 							<xsl:with-param name="level" select="$level"/>
 							<xsl:with-param name="txt" select="$txt"/>
 							<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -328,8 +327,8 @@
 			<xsl:otherwise>
 				<xsl:call-template name="ParaHandler">
 					<xsl:with-param name="flag" select="'0'"/>
-					<xsl:with-param name="VERSION" select="$verhead"/>
-					<xsl:with-param name="custom" select="$custom"/>
+					<xsl:with-param name="version" select="$verhead"/>
+					<xsl:with-param name="pagination" select="$pagination"/>
 					<xsl:with-param name="level" select="$level"/>
 					<xsl:with-param name="txt" select="$txt"/>
 					<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -493,12 +492,12 @@
 	
 	<!--Insert page break in list-->
 	<xsl:template name="PageInList">
-		<xsl:param name ="custom" as="xs:string"/>
+		<xsl:param name="pagination" as="xs:string"/>
 		
 		<xsl:for-each select ="./node()">
 			<xsl:if test="self::w:r">
 				<xsl:if test="((w:lastRenderedPageBreak) or (w:br/@w:type='page'))
-					and ($custom='Automatic') ">
+					and ($pagination='Automatic') ">
 					<xsl:choose>
 						<xsl:when test="not(w:t) and (w:lastRenderedPageBreak) and (w:br/@w:type='page')">
 							<xsl:if test="not(../following-sibling::w:sdt[1]/w:sdtPr/w:docPartObj/w:docPartGallery/@w:val='Table of Contents')">
@@ -551,7 +550,7 @@
 	<xsl:template name="addlist">
 		<xsl:param name="openId" as="xs:string"/>
 		<xsl:param name="openlvl" as="xs:integer"/>
-		<xsl:param name ="custom" as="xs:string"/>
+		<xsl:param name="pagination" as="xs:string"/>
 		<xsl:param name="numFmt" as="xs:string"/>
 		<xsl:param name="lText" as="xs:string"/>
 		<xsl:param name="lstcharStyle" as="xs:boolean"/>
@@ -573,7 +572,7 @@
 					or ($numFmt='decimalZero')">
 					<!--<xsl:value-of select="$txt"/>-->
 					<xsl:call-template name="ParagraphStyle">
-						<xsl:with-param name="custom" select="$custom"/>
+						<xsl:with-param name="pagination" select="$pagination"/>
 						<xsl:with-param name="txt" select="$txt"/>
 						<xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
 					</xsl:call-template>
@@ -581,7 +580,7 @@
 				<xsl:otherwise>
 					<xsl:sequence select="d:sink($txt)"/> <!-- empty-->
 					<xsl:call-template name="ParagraphStyle">
-						<xsl:with-param name="custom" select="$custom"/>
+						<xsl:with-param name="pagination" select="$pagination"/>
 						<!--<xsl:with-param name="txt" select="$txt"/>-->
 						<xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
 					</xsl:call-template>
@@ -607,7 +606,7 @@
 							or ($numFmt='upperLetter')
 							or ($numFmt='decimalZero')">
 							<xsl:call-template name="ParagraphStyle">
-								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="txt" select="$txt"/>
 								<xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
 							</xsl:call-template>
@@ -615,7 +614,7 @@
 						<xsl:otherwise>
 							<xsl:sequence select="d:sink($txt)"/> <!-- empty -->
 							<xsl:call-template name="ParagraphStyle">
-								<xsl:with-param name ="custom" select="$custom"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<!--<xsl:with-param name="txt" select="$txt"/>-->
 								<xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
 							</xsl:call-template>
@@ -630,7 +629,7 @@
 						<xsl:with-param name="rec" select="$reduceOne"/>
 					</xsl:call-template>
 					<xsl:value-of select="d:Increment2($myObj,$openlvl,$PeekLevel,$openId)"/> <!-- empty -->
-					<xsl:variable name ="txt" as="xs:string" select="d:TextList($myObj,$numFmt,$lText,$openId,$openlvl)"/>
+					<xsl:variable name="txt" as="xs:string" select="d:TextList($myObj,$numFmt,$lText,$openId,$openlvl)"/>
 					
 					<xsl:choose>
 						<xsl:when  test="($numFmt='lowerLetter')
@@ -639,14 +638,14 @@
 							or ($numFmt='upperLetter')
 							or ($numFmt='decimalZero')">
 							<xsl:call-template name="ParagraphStyle">
-								<xsl:with-param name="custom" select="$custom"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="txt" select="$txt"/>
 								<xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
 							</xsl:call-template>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:call-template name="ParagraphStyle">
-								<xsl:with-param name="custom" select="$custom"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<!--<xsl:with-param name="txt" select="$txt"/>-->
 								<xsl:with-param name="characterparaStyle" select="$lstcharStyle"/>
 							</xsl:call-template>
@@ -747,7 +746,7 @@
 	<!--Template to Close All nested List-->
 	<xsl:template name="CloseLastlist">
 		<xsl:param name="close" as="xs:integer"/>
-		<xsl:param name="custom" as="xs:string"/>
+		<xsl:param name="pagination" as="xs:string"/>
 		<!--Gets the current level of the stack  -->
 		<xsl:variable name="PeekLevel" as="xs:integer" select="d:ListPeekLevel($myObj)"/>
 		<!--Checking the current level with the PeekLevel in the stack-->
@@ -760,7 +759,7 @@
 				<!--Loop through until we have closed all the Lower levels-->
 				<xsl:call-template name="CloseLastlist">
 					<xsl:with-param name="close" select="$close"/>
-					<xsl:with-param name="custom" select="$custom"/>
+					<xsl:with-param name="pagination" select="$pagination"/>
 				</xsl:call-template>
 			</xsl:if>
 		</xsl:if>
@@ -870,10 +869,10 @@
 	<!--Template for Implementing Table-->
 	<xsl:template name="TableHandler">
 		<xsl:param name="parmVerTable" as="xs:string"/>
-		<xsl:param name="custom" as="xs:string"/>
+		<xsl:param name="pagination" as="xs:string"/>
 		<xsl:param name="mastersubtbl" as="xs:boolean"/>
 		<xsl:param name="characterStyle" as="xs:boolean"/>
-		<xsl:if test="$custom='Automatic'">
+		<xsl:if test="$pagination='Automatic'">
 			<xsl:for-each select="w:tr/w:tc">
 				<xsl:if test="(
 						(w:p/w:r/w:lastRenderedPageBreak) 
@@ -1028,8 +1027,8 @@
 									<th>
 										<!--Assinging value as Table head-->
 										<xsl:call-template name="ParagraphStyle">
-											<xsl:with-param name="custom" select="$custom"/>
-											<xsl:with-param name="VERSION" select="$parmVerTable"/>
+											<xsl:with-param name="pagination" select="$pagination"/>
+											<xsl:with-param name="version" select="$parmVerTable"/>
 											<xsl:with-param name="characterparaStyle" select="$characterStyle"/>
 										</xsl:call-template>
 									</th>
@@ -1058,8 +1057,8 @@
 									</xsl:if>
 									<xsl:for-each select="w:p">
 										<xsl:call-template name="ParagraphStyle">
-											<xsl:with-param name="custom" select="$custom"/>
-											<xsl:with-param name="VERSION" select="$parmVerTable"/>
+											<xsl:with-param name="pagination" select="$pagination"/>
+											<xsl:with-param name="version" select="$parmVerTable"/>
 											<xsl:with-param name="characterparaStyle" select="$characterStyle"/>
 										</xsl:call-template>
 									</xsl:for-each>
@@ -1129,21 +1128,21 @@
 											<xsl:value-of disable-output-escaping="yes" select="'&lt;td &gt;'"/>
 										</xsl:otherwise>
 									</xsl:choose>
-									<xsl:variable name ="var_heading" as="xs:string*">
+									<xsl:variable name="var_heading" as="xs:string*">
 										<xsl:for-each select="$stylesXml//w:styles/w:style/w:name[@w:val='heading 1']">
 											<xsl:sequence select="../@w:styleId"/>
 										</xsl:for-each>
 									</xsl:variable>
-									<xsl:variable name ="var_heading" as="xs:string?" select="string-join($var_heading,'')[not(.='')]"/>
+									<xsl:variable name="var_heading" as="xs:string?" select="string-join($var_heading,'')[not(.='')]"/>
 									<xsl:sequence select="d:sink(d:SetRowspan($myObj))"/> <!-- empty -->
 									<xsl:for-each select="w:p">
 										<!--Calling paragraph template whenever w:p element is encountered.-->
 										<xsl:call-template name="StyleContainer">
-											<xsl:with-param name="VERSION" select="$parmVerTable"/>
-											<xsl:with-param name ="custom" select="$custom"/>
-											<xsl:with-param name ="styleHeading" select="$var_heading"/>
-											<xsl:with-param name ="mastersubstyle" select="$mastersubtbl"/>
-											<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+											<xsl:with-param name="version" select="$parmVerTable"/>
+											<xsl:with-param name="pagination" select="$pagination"/>
+											<xsl:with-param name="styleHeading" select="$var_heading"/>
+											<xsl:with-param name="mastersubstyle" select="$mastersubtbl"/>
+											<xsl:with-param name="characterStyle" select="$characterStyle"/>
 										</xsl:call-template>
 									</xsl:for-each>
 									<!--Checking for nested table-->
@@ -1151,9 +1150,9 @@
 										<!--Calling template Tablehandler for nested tables-->
 										<xsl:call-template name="TableHandler">
 											<xsl:with-param name="parmVerTable" select="$parmVerTable"/>
-											<xsl:with-param name ="custom" select="$custom"/>
-											<xsl:with-param name ="mastersubtbl" select="$mastersubtbl"/>
-											<xsl:with-param name ="characterStyle" select="$characterStyle"/>
+											<xsl:with-param name="pagination" select="$pagination"/>
+											<xsl:with-param name="mastersubtbl" select="$mastersubtbl"/>
+											<xsl:with-param name="characterStyle" select="$characterStyle"/>
 										</xsl:call-template>
 									</xsl:for-each>
 									<!--Checking if not nested table then td is closed-->

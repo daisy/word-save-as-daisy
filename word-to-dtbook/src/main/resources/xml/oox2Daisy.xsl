@@ -20,23 +20,22 @@
 	exclude-result-prefixes="w pic wp dcterms xsi cp dc a r vt dcmitype xs d m mml">
 	
 	<xsl:output method="xml" encoding="UTF-8"/>
-	<!-- Original location of input .docx file (URI) -->
-	<xsl:param name="OriginalInputFile" as="xs:string" />
-	<!-- Input file (URI) (may or may not be the same as OriginalDocx; this one will be read) -->
+
+	<!-- Input file (URI) -->
 	<xsl:param name="InputFile" as="xs:string" />
 	<!-- Destination folder of .xml file (URI) -->
 	<xsl:param name="OutputDir" as="xs:string" />
 	
 	<!--Implements Image,imagegroup,Note and Notereference-->
 	<!--Declaring Global paramaters-->
-	<xsl:param name="Title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
-	<xsl:param name="Creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
-	<xsl:param name="Publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
-	<xsl:param name="UID" as="xs:string" select="''"/> <!--Holds Document unique id value-->
-	<xsl:param name="Subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
+	<xsl:param name="title" as="xs:string" select="''"/> <!--Holds Documents Title value-->
+	<xsl:param name="creator" as="xs:string" select="''"/> <!--Holds Documents creator value-->
+	<xsl:param name="publisher" as="xs:string" select="''"/> <!--Holds Documents Publisher value-->
+	<xsl:param name="uid" as="xs:string" select="''"/> <!--Holds Document unique id value-->
+	<xsl:param name="subject" as="xs:string" select="''"/> <!--Holds Documents Subject value-->
 	<xsl:param name="acceptRevisions" as="xs:boolean" select="true()"/>
-	<xsl:param name="Version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
-	<xsl:param name="Custom" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
+	<xsl:param name="version" as="xs:string" select="'14'"/> <!--Holds Documents version value-->
+	<xsl:param name="pagination" as="xs:string" select="'Custom'"/> <!-- Automatic|Custom -->
 	<xsl:param name="MasterSub" as="xs:boolean" select="false()"/>
 	<xsl:param name="ImageSizeOption" as="xs:string" select="'original'"/> <!-- resize|resample|original -->
 	<xsl:param name="DPI" as="xs:integer" select="96"/>
@@ -306,30 +305,30 @@
 					<xsl:variable name="Auto" as="xs:string" select="concat('AUTO-UID-',d:GenerateId())" />
 					<!--Choose block for checking whether user has entered the UID value or not-->
 					<xsl:choose>
-						<xsl:when test="string-length($UID) = 0">
+						<xsl:when test="string-length($uid) = 0">
 							<meta name="dtb:uid" content="{$Auto}"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<meta name="dtb:uid" content="{$UID}"/>
+							<meta name="dtb:uid" content="{$uid}"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<meta name="dtb:generator" content="DAISY Pipeline 2 word-to-dtbook 1.0.0"/>
 					<!--Choose block for checking whether user has entered the Title of the document or not-->
 					<xsl:choose>
 						<!--Taking Document Title value from core.xml-->
-						<xsl:when test="string-length($Title) = 0">
+						<xsl:when test="string-length($title) = 0">
 							<meta name="dc:Title" content="{$docPropsCoreXml//cp:coreProperties/dc:title/text()}"/>
 						</xsl:when>
 						<!--Taking the Title value entered by the user-->
 						<xsl:otherwise>
-							<meta name="dc:Title" content="{$Title}"/>
+							<meta name="dc:Title" content="{$title}"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					
 					<!--Choose block for checking whether user has entered the Creator of the document or not-->
 					<xsl:choose>
 						<!--Taking Document Creator value from core.xml-->
-						<xsl:when test="string-length($Creator) = 0">
+						<xsl:when test="string-length($creator) = 0">
 							<!--Note : Creators are separated with semi-colons in the property-->
 							<xsl:variable name="creatorFromPackage" select="$docPropsCoreXml//cp:coreProperties/dc:creator/text()" />
 							<xsl:if test="string-length($creatorFromPackage)!=0">
@@ -338,7 +337,7 @@
 						</xsl:when>
 						<!--Taking the Creator value entered by the user-->
 						<xsl:otherwise>
-							<meta name="dc:Creator" content="{$Creator}"/>
+							<meta name="dc:Creator" content="{$creator}"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					
@@ -349,7 +348,7 @@
 					<!--Choose block for checking whether user has entered the Publisher of the document or not-->
 					<xsl:choose>
 						<!--Taking Document publisher value from app.xml-->
-						<xsl:when test="string-length($Publisher) = 0">
+						<xsl:when test="string-length($publisher) = 0">
 							<xsl:variable name="publisherFromPackage" select="$docPropsAppXml//ep:Properties/ep:Company/text()" />
 							<xsl:if test="string-length($publisherFromPackage)!=0">
 								<meta name="dc:Publisher" content="{$publisherFromPackage}"/>
@@ -357,14 +356,14 @@
 						</xsl:when>
 						<!--Taking the Publisher value entered by the user-->
 						<xsl:otherwise>
-							<meta name="dc:Publisher" content="{$Publisher}"/>
+							<meta name="dc:Publisher" content="{$publisher}"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					
 					<!--Taking the value of dc:subject from core.xml file-->
 					<xsl:choose>
-						<xsl:when test="string-length($Subject)!=0">
-							<meta name="dc:Subject" content="{$Subject}"/>
+						<xsl:when test="string-length($subject)!=0">
+							<meta name="dc:Subject" content="{$subject}"/>
 						</xsl:when>
 						<xsl:otherwise>
 							<xsl:if test="string-length($documentSubject)!=0">
@@ -378,11 +377,11 @@
 					</xsl:if>
 					<!--Choose block for checking whether user has entered the UID value or not for implementing dc:identifier meta tag-->
 					<xsl:choose>
-						<xsl:when test="string-length($UID) = 0">
+						<xsl:when test="string-length($uid) = 0">
 							<meta name="dc:Identifier" content="{$Auto}"/>
 						</xsl:when>
 						<xsl:otherwise>
-							<meta name="dc:Identifier" content="{$UID}"/>
+							<meta name="dc:Identifier" content="{$uid}"/>
 						</xsl:otherwise>
 					</xsl:choose>
 					<xsl:for-each select="$documentLanguages/*:lang">
@@ -433,24 +432,24 @@
 						<doctitle>
 							<xsl:choose>
 								<!--Taking Document Title value from core.xml-->
-								<xsl:when test="string-length($Title) = 0">
+								<xsl:when test="string-length($title) = 0">
 									<xsl:value-of select="$docPropsCoreXml//cp:coreProperties/dc:title"/>
 								</xsl:when>
 								<!--Taking the Title value entered by the user-->
 								<xsl:otherwise>
-									<xsl:value-of select="$Title"/>
+									<xsl:value-of select="$title"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</doctitle>
 						<docauthor>
 							<xsl:choose>
 								<!--Taking Document creator value from core.xml-->
-								<xsl:when test="string-length($Creator) = 0">
+								<xsl:when test="string-length($creator) = 0">
 									<xsl:value-of select="$docPropsCoreXml//cp:coreProperties/dc:creator"/>
 								</xsl:when>
 								<!--Taking the Creator value entered by the user-->
 								<xsl:otherwise>
-									<xsl:value-of select="$Creator"/>
+									<xsl:value-of select="$creator"/>
 								</xsl:otherwise>
 							</xsl:choose>
 						</docauthor>
@@ -462,8 +461,8 @@
 							<xsl:message terminate="no">progress:Adding frontmatter content found in the document</xsl:message>
 							<xsl:call-template name="Matter">
 								<xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
-								<xsl:with-param name="version" select="$Version"/>
-								<xsl:with-param name="custom" select="$Custom"/>
+								<xsl:with-param name="version" select="$version"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="masterSub" select="$MasterSub"/>
 								<xsl:with-param name="sOperators" select="$sOperators"/>
 								<xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -481,8 +480,8 @@
 					<bodymatter id="bodymatter_0001">
 						<xsl:call-template name="Matter">
 							<xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
-							<xsl:with-param name="version" select="$Version"/>
-							<xsl:with-param name="custom" select="$Custom"/>
+							<xsl:with-param name="version" select="$version"/>
+							<xsl:with-param name="pagination" select="$pagination"/>
 							<xsl:with-param name="masterSub" select="$MasterSub"/>
 							<xsl:with-param name="sOperators" select="$sOperators"/>
 							<xsl:with-param name="sMinuses" select="$sMinuses"/>
@@ -534,13 +533,12 @@
 												<xsl:for-each select="$endnotesXml//w:endnotes/w:endnote">
 													<!--Checks for matching Id-->
 													<xsl:if test="@w:id=$endNoteId">
-														<xsl:message terminate="no">progress:Insert endnote <xsl:value-of select="$endNoteId"/> </xsl:message>
 														<!--Travering each element inside w:endnote in endnote.xml file-->
 														<xsl:for-each select="./node()">
 															<!--Checking for Paragraph element-->
 															<xsl:if test="self::w:p">
 																<xsl:call-template name="ParagraphStyle">
-																	<xsl:with-param name="VERSION" select="$Version"/>
+																	<xsl:with-param name="version" select="$version"/>
 																	<xsl:with-param name="flagNote" select="'endnote'"/>
 																	<xsl:with-param name="checkid" select="$endNoteId + 1"/>
 																	<xsl:with-param name="sOperators" select="$sOperators"/>
@@ -562,8 +560,8 @@
 							<xsl:message terminate="no">progress:Adding any rearmatter content found in the document</xsl:message>
 							<xsl:call-template name="Matter">
 								<xsl:with-param name="acceptRevisions" select="$acceptRevisions"/>
-								<xsl:with-param name="version" select="$Version"/>
-								<xsl:with-param name="custom" select="$Custom"/>
+								<xsl:with-param name="version" select="$version"/>
+								<xsl:with-param name="pagination" select="$pagination"/>
 								<xsl:with-param name="masterSub" select="$MasterSub"/>
 								<xsl:with-param name="sOperators" select="$sOperators"/>
 								<xsl:with-param name="sMinuses" select="$sMinuses"/>

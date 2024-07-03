@@ -22,7 +22,7 @@
 
   <!--template for frontmatter elements-->
   <xsl:template name="TableOfContents">
-    <xsl:param name="custom" as="xs:string"/>
+    <xsl:param name="pagination" as="xs:string"/>
     <xsl:message terminate="no">progress:Handling table of content</xsl:message>
 
       <!--checking for Table of content Element-->
@@ -148,7 +148,7 @@
               <xsl:value-of select="'print_toc'"/>
             </xsl:attribute>
             <xsl:sequence select="d:sink(d:CheckTocOccur($myObj))"/> <!-- empty -->
-            <xsl:if test="$custom='Automatic'">
+            <xsl:if test="$pagination='Automatic'">
               <!--Calling countpageTOC template to check number of pages before TOC-->
               <!--<xsl:call-template name="countpageTOC"/>-->
             </xsl:if>
@@ -199,7 +199,7 @@
                 </xsl:if>
               </xsl:for-each>
             </xsl:if>
-            <xsl:if test="(not(following-sibling::node()[1][w:r/w:rPr/w:rStyle[substring(@w:val,1,15)='PageNumberDAISY']]) and ($custom='Custom')) or (not($custom='Custom'))">
+            <xsl:if test="(not(following-sibling::node()[1][w:r/w:rPr/w:rStyle[substring(@w:val,1,15)='PageNumberDAISY']]) and ($pagination='Custom')) or (not($pagination='Custom'))">
               <xsl:value-of disable-output-escaping="yes" select="'&lt;/list&gt;'"/>
             </xsl:if>
           </level1>
