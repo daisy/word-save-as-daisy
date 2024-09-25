@@ -115,17 +115,11 @@ if($version) {
 }
 
 if($refreshpipeline) {
+    # recompute the pipeline using the engine make tool and a makefile in the root folder
+    Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\make.exe") -ArgumentList "clean" -Wait
+    Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\make.exe") -Wait
+    Start-Sleep 1
     $_oldroot = Join-Path $PSScriptRoot "resources"
-    # rebuild the daisy pipeline from the engine (needs https://github.com/daisy/pipeline-assembly/pull/221 to be merged first)
-    # - remove the daisy-pipeline folder in Lib if it exists
-    #if(Test-Path $(Join-Path $_oldroot "daisy-pipeline")) {
-	#	Remove-Item -Path $(Join-Path $_oldroot "daisy-pipeline") -Recurse -Force
-	#}
-    # - rebuild de engine
-    #Start-Process -FilePath "engine\make.exe" -ArgumentList "-C engine dir-word-addin" -Wait
-    # copy the daisy-pipeline directory that is under engine\target\assembly-*-win into $_oldroot
-    #Copy-Item -Path $(Join-Path $PSScriptRoot "engine\target\assembly-*-win\daisy-pipeline") -Destination $_oldroot -Recurse
-
     # regenerate and update the wix project "product.wxs"
     # - compute wix components and references for daisy-pipeline folder in Lib
     $_cont, $_refs = Update-WixTree `
