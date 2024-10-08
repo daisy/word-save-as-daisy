@@ -97,6 +97,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.TTSConfigFilePath = new System.Windows.Forms.TextBox();
             this.TTSConfigFileLabel = new System.Windows.Forms.Label();
             this.TTSConfigFileSelect = new System.Windows.Forms.OpenFileDialog();
+            this.DontNotify = new System.Windows.Forms.CheckBox();
             this.grpbox_pgnum.SuspendLayout();
             this.grpbox_charstyles.SuspendLayout();
             this.grpbox_ImageSizes.SuspendLayout();
@@ -438,12 +439,20 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.TTSConfigFileSelect.FileName = "SelectedTTSConfigFile";
             resources.ApplyResources(this.TTSConfigFileSelect, "TTSConfigFileSelect");
             // 
+            // DontNotify
+            // 
+            resources.ApplyResources(this.DontNotify, "DontNotify");
+            this.DontNotify.Name = "DontNotify";
+            this.DontNotify.UseVisualStyleBackColor = true;
+            this.DontNotify.CheckedChanged += new System.EventHandler(this.DontNotify_CheckedChanged);
+            // 
             // ConverterSettingsForm
             // 
             this.AcceptButton = this.btn_ok;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
+            this.Controls.Add(this.DontNotify);
             this.Controls.Add(this.FootnotesBox);
             this.Controls.Add(this.grpbox_ImageSizes);
             this.Controls.Add(this.grpbox_charstyles);
@@ -467,6 +476,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.TextToSpeechBox.ResumeLayout(false);
             this.TextToSpeechBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -506,5 +516,6 @@ namespace Daisy.SaveAsDAISY.Conversion
         private System.Windows.Forms.Label AzureKeyLabel;
         private System.Windows.Forms.TextBox AzureKeyValue;
         private System.Windows.Forms.OpenFileDialog TTSConfigFileSelect;
+        private System.Windows.Forms.CheckBox DontNotify;
     }
 }

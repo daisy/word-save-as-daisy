@@ -200,6 +200,8 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string azureSpeechRegion = ""; // region defined in the Azure console for the speech service
         private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
         private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
+        private string dontNotifySponsorship = ""; // notify the user about sponsorship
+
         
         /// <summary>
         /// Get the current settings as XML string
@@ -225,6 +227,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                       $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
                     : ""
                 ) +
+                $"\r\n\t<DontNotifySponsorship value=\"{dontNotifySponsorship}\" />" +
                 $"\r\n</Settings>";
         }
 
@@ -298,6 +301,10 @@ namespace Daisy.SaveAsDAISY.Conversion
                 ttsConfigFile = (TTSConfigSettings.Attributes["file"].InnerXml) ?? ttsConfigFile;
             }
 
+            XmlNode DontNotifySponsorshipSettings = settingsDocument.SelectSingleNode("//Settings/DontNotifySponsorship");
+            if (DontNotifySponsorshipSettings != null) {
+                dontNotifySponsorship = (DontNotifySponsorshipSettings.Attributes["value"].InnerXml) ?? dontNotifySponsorship;
+            }
 
 
         }
@@ -358,6 +365,17 @@ namespace Daisy.SaveAsDAISY.Conversion
         public string AzureSpeechKey { get => azureSpeechKey; set => azureSpeechKey = value; }
 
         public string TTSConfigFile { get => ttsConfigFile; set => ttsConfigFile = value; }
+
+        public bool DontNotifySponsorship {
+            get {
+                try {
+                    return dontNotifySponsorship.Length > 0 && bool.Parse(dontNotifySponsorship);
+                } catch (Exception) {
+                    return false;
+                }  
+            }
+            set => dontNotifySponsorship = value.ToString();
+        }
 
 
     }
