@@ -171,13 +171,13 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
             {
-                { Enum.Custom, "Custom" },
-                { Enum.Automatic, "Automatic" },
+                { Enum.Custom, "custom" },
+                { Enum.Automatic, "automatic" },
             };
             public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
             {
-                { "Custom", Enum.Custom },
-                { "Automatic", Enum.Automatic },
+                { "custom", Enum.Custom },
+                { "automatic", Enum.Automatic },
             };
             public static readonly EnumDataType DataType = new EnumDataType(
                 Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
@@ -272,7 +272,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             XmlNode PageNumbersNode = settingsDocument.SelectSingleNode("//Settings/PageNumbers");
             if (PageNumbersNode != null)
             {
-                pagenumStyle = (PageNumbersNode.Attributes["value"]?.InnerXml) ?? pagenumStyle;
+                pagenumStyle = ((PageNumbersNode.Attributes["value"]?.InnerXml) ?? pagenumStyle).ToLowerInvariant();
             }
 
             XmlNode FootnotesSettings = settingsDocument.SelectSingleNode("//Settings/Footnotes");

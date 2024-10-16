@@ -103,12 +103,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                         false
                     )
                 },
-                { "acceptRevisions",
+                { "accept-revisions",
                     new ScriptParameter(
-                        "acceptRevisions",
+                        "accept-revisions",
                         "Accept revisions",
-                        new BoolDataType(true),
-                        true,
+                        new BoolDataType(false),
+                        false,
                         false,
                         "If the document has revisions that are not accepted, consider them as accepted for the conversion",
                         false

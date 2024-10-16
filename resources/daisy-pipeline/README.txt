@@ -1,4 +1,4 @@
-              DAISY Pipeline 2 - 1.14.17 - January 22, 2024
+              DAISY Pipeline 2 - 1.14.19 - July 12, 2024
 ==============================================================================
 
 
@@ -72,10 +72,10 @@ The package includes:
 3. Release Notes
 ------------------------------------------------------------------------------
 
-The package includes the 1.14.17 version of the project.
+The package includes the 1.14.19 version of the project.
 
 See the release notes on this page:
-  https://github.com/daisy/pipeline-assembly/blob/master/NEWS.md#changes-in-release-v11417
+  https://github.com/daisy/pipeline-assembly/blob/master/NEWS.md#changes-in-release-v11419
 
 4. Prerequisites
 ------------------------------------------------------------------------------

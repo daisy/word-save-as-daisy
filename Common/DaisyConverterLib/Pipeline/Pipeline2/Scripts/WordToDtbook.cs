@@ -90,9 +90,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "Subject(s) to be added as dc:Subject metadata"
                     )
                 },
-                { "acceptRevisions",
+                { "accept-revisions",
                     new ScriptParameter(
-                        "acceptRevisions",
+                        "accept-revisions",
                         "Accept revisions",
                         new BoolDataType(true),
                         true,
@@ -111,9 +111,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         false // from settings
                     )
                 },
-                { "ImageSizeOption",
+                { "image-size",
                     new ScriptParameter(
-                        "ImageSizeOption",
+                        "image-size",
                         "Image resizing",
                         ImageOptionChoice.DataType,
                         ImageOptionChoice.Values[Instance.ImageOption],
@@ -122,9 +122,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         false // from settings
                     )
                 },
-                { "DPI",
+                { "dpi",
                     new ScriptParameter(
-                        "DPI",
+                        "dpi",
                         "Image resampling value",
                         new EnumDataType(new Dictionary<string, object>()
                         {
@@ -139,9 +139,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
-                    "CharacterStyles",
+                    "character-styles",
                     new ScriptParameter(
-                        "CharacterStyles",
+                        "character-styles",
                         "Translate character styles",
                         new BoolDataType(false),
                         false,
@@ -151,9 +151,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
-                    "FootnotesPosition",
+                    "footnotes-position",
                     new ScriptParameter(
-                        "FootnotesPosition",
+                        "footnotes-position",
                         "Footnotes position",
                         FootnotesPositionChoice.DataType,
                         FootnotesPositionChoice.Values[Instance.FootnotesPosition],
@@ -163,9 +163,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
-                    "FootnotesLevel",
+                    "footnotes-level",
                     new ScriptParameter(
-                        "FootnotesLevel",
+                        "footnotes-level",
                         "Footnotes insertion level",
                         new EnumDataType(new Dictionary<string, object>()
                         {
@@ -184,9 +184,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
-                    "FootnotesNumbering",
+                    "footnotes-numbering",
                     new ScriptParameter(
-                        "FootnotesNumbering",
+                        "footnotes-numbering",
                         "Footnotes numbering scheme",
                         FootnotesNumberingChoice.DataType,
                         FootnotesNumberingChoice.Values[Instance.FootnotesNumbering],
@@ -196,9 +196,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
-                    "FootnotesStartValue",
+                    "footnotes-start-value",
                     new ScriptParameter(
-                        "FootnotesStartValue",
+                        "footnotes-start-value",
                         "Footnotes starting value",
                         new IntegerDataType(min:1),
                         Instance.FootnotesStartValue,
@@ -208,9 +208,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
-                    "FootnotesNumberingPrefix",
+                    "footnotes-numbering-prefix",
                     new ScriptParameter(
-                        "FootnotesNumberingPrefix",
+                        "footnotes-numbering-prefix",
                         "Footnotes number prefix",
                         new StringDataType(),
                         Instance.FootnotesNumberingPrefix,
@@ -220,9 +220,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
-                    "FootnotesNumberingSuffix",
+                    "footnotes-numbering-suffix",
                     new ScriptParameter(
-                        "FootnotesNumberingSuffix",
+                        "footnotes-numbering-suffix",
                         "Footnotes number suffix",
                         new StringDataType(),
                         Instance.FootnotesNumberingSuffix,
@@ -232,10 +232,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
-                    "extractShapes",
+                    "extract-shapes",
                     new ScriptParameter(
-                        "extractShapes",
-                        "extractShapes",
+                        "extract-shapes",
+                        "Extract shapes",
                         new BoolDataType(),
                         false,
                         false,

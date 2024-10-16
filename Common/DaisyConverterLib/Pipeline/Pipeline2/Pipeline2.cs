@@ -1,11 +1,14 @@
 ﻿using Newtonsoft.Json.Linq;
 using org.daisy.jnet;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Web.SessionState;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -302,27 +305,85 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public PipelineErrorListener OnPipelineError => this.OnPipelineErrorEvent;
 
+        /// <summary>
+        /// Convert a C# raw-type object into a string representation of the corresponding Java object
+        /// </summary>
+        /// <param name="jni">JNI connection</param>
+        /// <param name="obj">Object to convert to java-like string</param>
+        /// <returns></returns>
+        private static string StringifyOption(JavaNativeInterface jni, object obj)
+        {
+            IntPtr javaClass;
+            string value = obj.ToString();
+            if (obj is string) {
+                javaClass = jni.GetJavaClass("java/lang/String");
+                value = jni.CallMethod<string>(
+                    javaClass,
+                    jni.NewObject(javaClass, "(Ljava/lang/String;)V", (string)obj),
+                    "toString", "()Ljava/lang/String;");
+            } else if (obj is long) {
+                javaClass = jni.GetJavaClass("java/lang/Long");
+                value = jni.CallMethod<string>(
+                    javaClass,
+                    jni.CallMethod<IntPtr>(javaClass, IntPtr.Zero, "valueOf", "(J)Ljava/lang/Long;", new object[1] { (long)obj }),
+                    "toString", "()Ljava/lang/String;");
+            } else if (obj is int) {
+                javaClass = jni.GetJavaClass("java/lang/Integer");
+                value = jni.CallMethod<string>(
+                    javaClass,
+                    jni.CallMethod<IntPtr>(javaClass, IntPtr.Zero, "valueOf", "(I)Ljava/lang/Integer;", new object[1] { (int)obj }),
+                    "toString", "()Ljava/lang/String;");
+            } else if (obj is short) {
+                javaClass = jni.GetJavaClass("java/lang/Short");
+                value = jni.CallMethod<string>(
+                    javaClass,
+                    jni.CallMethod<IntPtr>(javaClass, IntPtr.Zero, "valueOf", "(S)Ljava/lang/Short;", new object[1] { (short)obj }),
+                    "toString", "()Ljava/lang/String;");
+            } else if (obj is bool) {
+                javaClass = jni.GetJavaClass("java/lang/Boolean");
+                value = jni.CallMethod<string>(
+                    javaClass,
+                    jni.CallMethod<IntPtr>(javaClass, IntPtr.Zero, "valueOf", "(Z)Ljava/lang/Boolean;", new object[1] { (bool)obj }),
+                    "toString", "()Ljava/lang/String;");
+            } else if (obj is float) {
+                javaClass = jni.GetJavaClass("java/lang/Float");
+                value = jni.CallMethod<string>(
+                    javaClass,
+                    jni.CallMethod<IntPtr>(javaClass, IntPtr.Zero, "valueOf", "(F)Ljava/lang/Float;", new object[1] { (float)obj }),
+                    "toString", "()Ljava/lang/String;");
+            } else if (obj is double) {
+                javaClass = jni.GetJavaClass("java/lang/Double");
+                value = jni.CallMethod<string>(
+                    javaClass,
+                    jni.CallMethod<IntPtr>(javaClass, IntPtr.Zero, "valueOf", "(D)Ljava/lang/Double;", new object[1] { (double)obj }),
+                    "toString", "()Ljava/lang/String;");
+
+            }
+            return value;
+        }
+
         public IntPtr Start(string scriptName, Dictionary<string, object> options = null)
         {
             try
             {
-                IntPtr hashMap = jni.NewJavaWrapperObject(
-                    options != null ? options : new Dictionary<string, object>()
-                );
-
+                Dictionary<string, List<string>> stringifiedOptions = new Dictionary<string, List<string>>();
+                foreach (KeyValuePair<string, object> option in options)
+                {
+                    // Note : the hashmap expects list of strings as options valu
+                    stringifiedOptions[option.Key] = new List<string>() {
+                        //StringifyOption(jni, option.Value),
+                        option.Value.ToString() // possible only after referenced pipeline framework is updated to enable a more relaxed value check (https://github.com/daisy/pipeline-framework/commit/46dc1aeb6918da24640d327c7f6cd2b0c44b1dd5)
+                    };
+                }
+                IntPtr hashMap = jni.NewJavaWrapperObject(stringifiedOptions);
+                
                 IntPtr job = jni.CallMethod<IntPtr>(
                     SimpleAPIClass,
                     IntPtr.Zero,
                     "startJob",
                     "(Ljava/lang/String;Ljava/util/Map;)LSimpleAPI$CommandLineJob;",
                     scriptName,
-                    jni.CallMethod<IntPtr>(
-                        SimpleAPIClass,
-                        IntPtr.Zero,
-                        "stringifyOptions",
-                        "(Ljava/util/Map;)Ljava/util/Map;",
-                        hashMap
-                    )
+                    hashMap
                 );
 
                 return job;
