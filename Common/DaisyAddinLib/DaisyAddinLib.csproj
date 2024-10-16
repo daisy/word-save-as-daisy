@@ -534,7 +534,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="resources\about screen.png" />
   </ItemGroup>
   <ItemGroup>
