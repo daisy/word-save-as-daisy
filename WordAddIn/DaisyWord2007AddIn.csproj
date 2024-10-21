@@ -33,8 +33,9 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <TargetFrameworkProfile />
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -219,20 +220,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
-      <Project>{599773FF-1E86-4AC2-8B24-34BBAC707370}</Project>
-      <Name>DaisyAddinLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
-      <Project>{8cb777eb-36ed-45d8-84ff-bdd64ad5026e}</Project>
-      <Name>DaisyConverterLib</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Common\Localization\Localization.csproj">
-      <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
-      <Name>Localization</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="AliasesManagement.ja-JP.resx">
       <DependentUpon>AliasesManagement.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -308,6 +295,20 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="resources\customUI2007.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
+      <Project>{599773ff-1e86-4ac2-8b24-34bbac707370}</Project>
+      <Name>DaisyAddinLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
+      <Project>{8cb777eb-36ed-45d8-84ff-bdd64ad5026e}</Project>
+      <Name>DaisyConverterLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Localization\Localization.csproj">
+      <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
+      <Name>Localization</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSHARP.Targets" />
   <PropertyGroup>

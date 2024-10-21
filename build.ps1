@@ -153,7 +153,12 @@ if($refreshpipeline) {
 }
 
 # build the MSIs
+MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x86";
+MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x86";
 MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinForWordSetup /p:Configuration="Release" /p:Platform="x86";
+
+MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x64";
+MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x64";
 MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinForWordSetup /p:Configuration="Release" /p:Platform="x64";
 # build the installer
 MSBuild.exe DaisyConverter.sln /t:Installer\SaveAsDAISYInstaller /p:Configuration="Release" /p:Platform="Any CPU" /p:DefineConstants="UNIFIED";
