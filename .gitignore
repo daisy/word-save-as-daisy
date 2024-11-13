@@ -166,3 +166,6 @@ Tests/RegressionTests/testfiles/expected/**
 !Tests/RegressionTests/testfiles/expected/.gitkeep
 
 _issues/
+Installer/SaveAsDAISYInstaller/Resources/DaisyAddinForWordSetup_x64
+Installer/SaveAsDAISYInstaller/Resources/DaisyAddinForWordSetup_x86
+Installer/SaveAsDAISYInstaller/Resources/pipeline_cab
