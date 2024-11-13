@@ -109,7 +109,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public void NotifyDonationRequest()
         {
-            
+            if (ConverterSettings.Instance.DontNotifySponsorship) return;
+
             int remainingConversionBeforeNotify = 0; // notify
             if (File.Exists(NOTIFICATIONFILEPATH)) {
                 string previousConversionCounter = File.ReadAllText(NOTIFICATIONFILEPATH);
