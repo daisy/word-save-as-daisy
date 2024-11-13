@@ -267,6 +267,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 
             this.notesNumberingStartValue.Enabled = notesNumberingMap[(string)notesNumberingSelector.SelectedItem] == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
 
+            this.DontNotify.Checked = GlobaleSettings.DontNotifySponsorship;
+
         }
 
         private void btn_ok_Click(object sender, EventArgs e)
@@ -419,6 +421,11 @@ namespace Daisy.SaveAsDAISY.Conversion
                     GlobaleSettings.TTSConfigFile = TTSConfigFilePath.Text = TTSConfigFileSelect.FileName;
                 }
             };
+        }
+
+        private void DontNotify_CheckedChanged(object sender, EventArgs e)
+        {
+            GlobaleSettings.DontNotifySponsorship = DontNotify.Checked;
         }
     }
 }
