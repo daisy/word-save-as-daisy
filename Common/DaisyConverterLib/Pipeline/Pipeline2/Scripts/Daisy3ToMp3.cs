@@ -68,5 +68,16 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
                 },
             };
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="inputDirectory"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentOutOfRangeException">if the file was not found</exception>
+        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        {
+            return Directory.GetFiles(inputDirectory.FullName, "*.opf", SearchOption.AllDirectories)[0];
+        }
     }
 }

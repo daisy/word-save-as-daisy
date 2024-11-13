@@ -23,6 +23,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         protected Pipeline2Script(IConversionEventsHandler e)
             : base(e) { }
 
+        public abstract string searchInputFromDirectory(DirectoryInfo inputDirectory);
         //IntPtr currentJob = IntPtr.Zero;
 
         /// <summary>

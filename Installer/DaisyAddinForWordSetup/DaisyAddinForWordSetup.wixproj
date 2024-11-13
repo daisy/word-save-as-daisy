@@ -101,23 +101,7 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
-    <ProjectReference Include="..\..\CustomActionAddin\CustomActionAddin.csproj">
-      <Name>CustomActionAddin</Name>
-      <Project>{bb7510e0-87fb-4514-af94-3f21332fb236}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\DaisyAddin.CustomActions\DaisyAddin.CustomActions.csproj">
-      <Name>DaisyAddin.CustomActions</Name>
-      <Project>{fcb212d1-d9e6-483a-8e9e-24da0387620f}</Project>
-      <Private>True</Private>
-      <DoNotHarvest>True</DoNotHarvest>
-      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
-      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Word2007\DaisyWord2007AddIn\DaisyWord2007AddIn.csproj">
+    <ProjectReference Include="..\..\WordAddIn\DaisyWord2007AddIn.csproj">
       <Name>DaisyWord2007AddIn</Name>
       <Project>{9b3a86f5-d5a5-4cc2-a995-2362a28d0ea9}</Project>
       <Private>True</Private>
@@ -125,6 +109,32 @@
       <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
       <RefTargetDir>INSTALLFOLDER</RefTargetDir>
     </ProjectReference>
+    <ProjectReference Include="..\CustomActionAddin\CustomActionAddin.csproj">
+      <Name>CustomActionAddin</Name>
+      <Project>{bb7510e0-87fb-4514-af94-3f21332fb236}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+    <ProjectReference Include="..\DaisyAddin.CustomActions\DaisyAddin.CustomActions.csproj">
+      <Name>DaisyAddin.CustomActions</Name>
+      <Project>{fcb212d1-d9e6-483a-8e9e-24da0387620f}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="resources" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="resources\bannrbmp.bmp" />
+    <Content Include="resources\bannrbmp.xcf" />
+    <Content Include="resources\dlgbmp.bmp" />
+    <Content Include="resources\dlgbmp.xcf" />
+    <Content Include="resources\License.rtf" />
   </ItemGroup>
   <Import Project="$(WixTargetsPath)" />
   <PropertyGroup>

@@ -210,10 +210,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
                 parameters.Add("CharacterStyles", GlobalSettings.CharacterStyle);
 
-                if (GlobalSettings.PagenumStyle != " ")
-                {
-                    parameters.Add("Custom", GlobalSettings.PagenumStyle);
-                }
+                parameters.Add("Custom", PageNumberingChoice.Values[GlobalSettings.PagenumStyle]);
                 // 20220402 : adding footnotes positioning settings
                 // might be "page", "inline", "end" or "after"
                 parameters.Add("FootnotesPosition", FootnotesPositionChoice.Values[GlobalSettings.FootnotesPosition]);

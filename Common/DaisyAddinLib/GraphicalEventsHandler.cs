@@ -231,7 +231,7 @@ namespace Daisy.SaveAsDAISY
         public void onPostProcessingSuccess(ConversionParameters conversion)
         {
             TryShowMessage(
-                "Successfully processed or converted dtbook, result stored in "
+                "Successfully processed or converted document, result stored in "
                     + conversion.OutputPath,
                 true
             );
@@ -338,7 +338,7 @@ namespace Daisy.SaveAsDAISY
                 e = e.InnerException;
             }
             AddinLogger.Error("Errors reported during conversion by DAISY Pipeline 2: \r\n" + message);
-            TryShowMessage("Errors reported during conversion by DAISY Pipeline 2 : " + errors.Message, true);
+            TryShowMessage("Errors reported during conversion by DAISY Pipeline 2 : \r\n" + message, true);
         }
 
         public void onConversionSuccess()

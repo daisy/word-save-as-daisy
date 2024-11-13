@@ -37,7 +37,8 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
     <TargetFrameworkProfile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -71,6 +72,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <OutputPath>bin\x86\Release\</OutputPath>
     <Prefer32Bit>false</Prefer32Bit>
+    <RuntimeIdentifier>win-x86</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release to Client%28signed%29|AnyCPU' ">
     <OutputPath>bin\Release to Client%28signed%29\</OutputPath>
@@ -115,6 +117,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <Optimize>true</Optimize>
     <DefineConstants>TRACE</DefineConstants>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release to Client%28signed%29|x64'">
     <OutputPath>bin\x64\Release to Client%28signed%29\</OutputPath>
@@ -128,9 +131,10 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Events\SilentEventsHandler.cs" />
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
-    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToMp3.cs" />
-    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToDaisy3.cs" />
-    <Compile Include="Pipeline\ChainedScripts\CleanedDtbookToEpub3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\WordToMp3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\WordToDaisy3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\WordToEpub3.cs" />
+    <Compile Include="Pipeline\ChainedScripts\WordToCleanedDtbook.cs" />
     <Compile Include="Pipeline\DataTypes\MapDataType.cs" />
     <Compile Include="Pipeline\ParameterDataType.cs" />
     <Compile Include="Pipeline\Pipeline2\Pipeline2.cs" />
@@ -139,6 +143,7 @@
     <Compile Include="Pipeline\Pipeline2\Scripts\DtbookCleaner.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\DtbookToDaisy3.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\DtbookToEpub3.cs" />
+    <Compile Include="Pipeline\Pipeline2\Scripts\WordToDtbook.cs" />
     <Compile Include="Pipeline\Script.cs" />
     <Compile Include="Preprocessing\StringValidator.cs" />
     <Compile Include="Preprocessing\IDocumentPreprocessor.cs" />
@@ -177,6 +182,7 @@
     <EmbeddedResource Include="resources\source.xml" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="DaisyTranslatorPhaseTwo.snk" />
     <EmbeddedResource Include="resources\dtds\dtbook-2005-3.dtd">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -247,7 +253,6 @@
     <EmbeddedResource Include="resources\entities\mmlextra.ent">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -312,15 +317,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="JNET, Version=1.0.0.0, Culture=neutral, PublicKeyToken=95283358f4f60f4e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Lib\JNET.dll</HintPath>
-    </Reference>
-    <Reference Include="log4net, Version=2.0.14.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\log4net.2.0.14\lib\net45\log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="JNET">
+      <HintPath>..\..\resources\JNET.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -337,6 +335,14 @@
       <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
       <Name>Localization</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="log4net">
+      <Version>2.0.14</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.Targets" />
 </Project>
