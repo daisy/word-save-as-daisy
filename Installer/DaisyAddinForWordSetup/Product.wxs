@@ -167,7 +167,9 @@
                         <Component Id="Help.ico" Guid="63445A1D-55DA-4A13-9869-197355B04DD8">
                             <File Id="Help.ico" Name="Help.ico" Source="$(var.SolutionDir)resources\Help.ico" DiskId="1" KeyPath="yes" />
                         </Component>
-
+						<Component Id="daisy_high.ico" Guid="A539C228-C778-44B3-8615-AAF60B932544">
+							<File Id="daisy_high.ico" Name="daisy_high.ico" Source="$(var.SolutionDir)resources\images\logos\daisy_high.ico" DiskId="1" KeyPath="yes" />
+						</Component>
                         <!--Components for Office2007 and superior
                         
                         -->
@@ -195,6 +197,11 @@
                             <Class Id="{3F067A03-E801-3A50-9643-D8303F695EE4}" Context="InprocServer32" Description="Daisy.SaveAsDAISY.Addins.Word2007.frmValidate2007" ThreadingModel="both" ForeignServer="mscoree.dll">
                                 <ProgId Id="Daisy.SaveAsDAISY.Addins.Word2007.frmValidate2007" Description="Daisy.SaveAsDAISY.Addins.Word2007.frmValidate2007" />
                             </Class>
+							
+							<File Id="Microsoft.Toolkit.Uwp.Notifications.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Microsoft.Toolkit.Uwp.Notifications.dll" DiskId="1" />
+							<File Id="Newtonsoft.Json.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Newtonsoft.Json.dll" DiskId="1" />
+							<File Id="System.ValueTuple.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\System.ValueTuple.dll" DiskId="1" />
+							
                             <File Id="filE87E1845171015B8772E9D7B2E2B8495" KeyPath="yes" Source="$(var.DaisyWord2007AddIn.TargetPath)" />
                             <ProgId Id="Record" />
                             <RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
@@ -1094,6 +1101,7 @@
 			<!--Office 2007 and up-->
             <ComponentRef Id="Help.chm" />
             <ComponentRef Id="Help.ico" />
+			<ComponentRef Id="daisy_high.ico" />
             <ComponentRef Id="template2007.dotx" />
             
 

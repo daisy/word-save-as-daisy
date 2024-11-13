@@ -52,6 +52,7 @@ using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
 using System.Diagnostics;
+using Microsoft.Toolkit.Uwp.Notifications;
 
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
@@ -103,6 +104,40 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             
         }
 
+        private static readonly string NOTIFICATIONFILEPATH = Path.Combine(ConverterSettings.ApplicationDataFolder, "notify");
+        private static readonly string SPONSORSHIPURL = "https://inclusivepublishing.org/sponsorship/";
+
+        public void NotifyDonationRequest()
+        {
+            
+            int remainingConversionBeforeNotify = 0; // notify
+            if (File.Exists(NOTIFICATIONFILEPATH)) {
+                string previousConversionCounter = File.ReadAllText(NOTIFICATIONFILEPATH);
+                int.TryParse(previousConversionCounter, out remainingConversionBeforeNotify);
+            }
+            if (remainingConversionBeforeNotify > 0) {
+                remainingConversionBeforeNotify--;
+            } else {
+                string logoPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "daisy_high.ico");
+                try {
+                    // Notification for donations request to support the developement
+                    new ToastContentBuilder()
+                        .AddAttributionText("The DAISY Consortium")
+                        .AddAppLogoOverride(new Uri(logoPath))
+                        .AddText("If you find SaveAsDAISY useful, please help us by donating to support its ongoing maintenance.")
+                        .AddButton("Support our work", ToastActivationType.Background, SPONSORSHIPURL)
+                        .SetProtocolActivation(new Uri(SPONSORSHIPURL))
+                        .Show();
+                } catch (Exception e) {
+                    AddinLogger.Error(e);
+                }
+               
+               
+                remainingConversionBeforeNotify = 10;
+            }
+            File.WriteAllText(NOTIFICATIONFILEPATH, remainingConversionBeforeNotify.ToString());
+        }
+
         /// <summary>
         ///      Implements the OnConnection method of the IDTExtensibility2 interface.
         ///      Receives notification that the Add-in is being loaded.
@@ -124,7 +159,14 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 this.applicationObject.DocumentOpen += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentOpenEventHandler(applicationObject_DocumentOpen);
                 this.applicationObject.DocumentChange += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentChangeEventHandler(applicationObject_DocumentChange);
                 this.applicationObject.DocumentBeforeClose += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeCloseEventHandler(applicationObject_DocumentBeforeClose);
-                this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);              
+                this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);
+                
+                // Listen to notification activation
+                ToastNotificationManagerCompat.OnActivated += toastArgs =>
+                {
+                    File.WriteAllText(NOTIFICATIONFILEPATH, 50.ToString());
+                    Process.Start(SPONSORSHIPURL);
+                };
             } catch (Exception e) {
                 AddinLogger.Error(e);
                 MessageBox.Show(e.Message);
@@ -256,6 +298,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             this.applicationObject = null;
             this.addinLib = null;
 
+            // Discard notifications from the addin when word/the addin is closing
+            // (avoid a relaunch of word and the addin to handle the notification action)
+            ToastNotificationManagerCompat.Uninstall();
         }
         void applicationObject_DocumentBeforeClose(Microsoft.Office.Interop.Word.Document Doc, ref bool Cancel) {
         }
@@ -493,6 +538,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
 
         }
+
 
         public bool getEnabled(IRibbonControl control) {
             return this.ribbonButtonsEnabled(control) && !showViewTabBool;
@@ -856,6 +902,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     pipelineScript.EventsHandler = eventsHandler;
                 }
                 ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
+                NotifyDonationRequest();
             }
             catch (Exception e)
             {
@@ -866,6 +913,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 }
 
             }
+            
         }
 
         /// <summary>
@@ -888,6 +936,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     pipelineScript.EventsHandler = eventsHandler;
                 }
                 ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
+                NotifyDonationRequest();
             } catch (Exception e) {
                 AddinLogger.Error(e);
                 if (conversionIntegrationTestSettings == null) {
@@ -916,6 +965,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     pipelineScript.EventsHandler = eventsHandler;
                 }
                 ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
+                NotifyDonationRequest();
             } catch (Exception e) {
                 AddinLogger.Error(e);
                 if (conversionIntegrationTestSettings == null) {
