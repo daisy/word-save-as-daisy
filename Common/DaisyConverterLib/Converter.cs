@@ -132,8 +132,12 @@ namespace Daisy.SaveAsDAISY.Conversion
             // Note : allow preprocessing to be "silent"
             object preprocessedObject = DocumentPreprocessor.startPreprocessing(result, EventsHandler);
 
-            try
-            {
+            // Check for Master document status and ask if subdocuments should be converted too
+            // If yes :
+            // - fill the list of subdocuments in the result object
+            // - when creating the working copy, merge the subdocuments in the resulting working copy
+            
+            try {
                 do
                 {
                     switch (CurrentStatus)
@@ -192,69 +196,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                 ConversionParameters.TrackChanges = "NoTrack";
             }
 
-            // Only attempt to parse subdocument if no resourceId is provided or if nop attempt to parse was previously done 
-            if (ConversionParameters.ParseSubDocuments || resourceId == null)
-            {
-                EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Parsing subdocuments"));
-                SubdocumentsList subDocList = SubdocumentsManager.FindSubdocuments(
-                    result.CopyPath,
-                    result.InputPath);
-                result.HasSubDocuments = !subDocList.Empty;
-                if (subDocList.Errors.Count > 0)
-                {
-                    string errors = "Subdocuments convertion will be ignored due to the following errors found while extracting them:\r\n" + string.Join("\r\n", subDocList.Errors);
-                    EventsHandler.onPreprocessingWarning(errors);
-                    ConversionParameters.ParseSubDocuments = false;
-                }
-                else if (result.HasSubDocuments)
-                {
-                    ConversionParameters.ParseSubDocuments = false;
-                    if (EventsHandler != null)
-                    {
-                        ConversionParameters.ParseSubDocuments = EventsHandler.AskForTranslatingSubdocuments();
-                    }
-                    if (ConversionParameters.ParseSubDocuments)
-                    {
-                        foreach (SubdocumentInfo item in subDocList.Subdocuments)
-                        {
-                            if (CurrentStatus != ConversionStatus.Canceled)
-                            {
-                                DocumentParameters subDoc = null;
-                                try
-                                {
-                                    subDoc = this.PreprocessDocument(item.FileName, item.RelationshipId);
-                                }
-                                catch (Exception e)
-                                {
-                                    string errors = "Subdocuments convertion will be ignored due to the following errors found while preprocessing " + item.FileName + ":\r\n" + e.Message;
-                                    EventsHandler.onPreprocessingWarning(errors);
-                                    ConversionParameters.ParseSubDocuments = false;
-                                }
-                                if (subDoc != null)
-                                {
-                                    result.SubDocumentsToConvert.Add(subDoc);
-                                }
-                                else
-                                {
-                                    // Cancel sub documents conversion
-                                    result.SubDocumentsToConvert.Clear();
-                                    break;
-                                }
-
-                            }
-                            else
-                            {
-                                EventsHandler.onConversionCanceled();
-                                return null;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    ConversionParameters.ParseSubDocuments = false;
-                }
-            }
+            // For now, subdocuments are merged into the master document
+            // if the user confirmed he wants them converted in preprocessing
+            ConversionParameters.ParseSubDocuments = false;
             CurrentStatus = ConversionStatus.PreprocessingSucceeded;
             EventsHandler.onPreprocessingSuccess();
             return result;

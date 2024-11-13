@@ -171,7 +171,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             object currentFile = currentDoc.FullName;
             object tmpFileName = Path.Combine(
                     Path.GetDirectoryName(document.CopyPath),
-                    Path.GetFileNameWithoutExtension(document.CopyPath)+"."+Path.GetExtension((string)currentFile)
+                    Path.GetFileNameWithoutExtension(document.CopyPath)+Path.GetExtension((string)currentFile)
                 );
 
             if (File.Exists((string)tmpFileName)) {
@@ -199,6 +199,48 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 AddToRecentFiles: false,
                 FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument
             );
+            // Check if the document is a master document
+            if (currentDoc.Subdocuments.Count > 0) {
+                // if so, ask the user if he wants to also convert the subdocuments
+                bool? convertSubs = eventsHandler?.AskForTranslatingSubdocuments();
+                try {
+                    if ((convertSubs.HasValue && convertSubs.Value) || !convertSubs.HasValue) {
+                        // If yes (or if no event handler is defined),
+                        // merge the subdocuments into the master document
+                        for (int i = 1; i <= currentDoc.Subdocuments.Count; i++) {
+                            string documentPath = currentDoc.Subdocuments[i].Name; // has the full path of the file
+                            
+                            MSword.Document subdocCopy = currentInstance.Documents.Open(
+                                FileName: documentPath,
+                                Visible: false
+                            );
+                            
+                            MSword.Range target = copy.Subdocuments[1].Range;
+                            copy.Subdocuments[1].Delete();
+                            target.Delete();
+                            subdocCopy.Content.Copy();
+                            target.Paste();
+                            subdocCopy.Close(
+                                SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
+                                OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
+                            );
+                        }
+                        copy.Save();
+                    }
+                } catch (Exception e) {
+                    MessageBox.Show($"An error occured while merging subdocuments: {e.Message}\r\n" +
+                        $"The document will be converted without them.");
+                    copy.Close(
+                        SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
+                        OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
+                    );
+                    copy = currentInstance.Documents.Open(
+                        FileName: document.CopyPath,
+                        Visible: false
+                    );
+                }
+                
+            }
 
             // Note : using the recommended "copy document into another one" way of 
             // cloning found on forums can provoque clipboard issue ...
