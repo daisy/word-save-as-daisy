@@ -129,8 +129,18 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             }
                         }
                     }
+                    if (xmin > xmax) {
+                        var temp = xmax;
+                        xmax = Math.Max(xmin, xmax);
+                        xmin = Math.Min(xmin, temp);
+                    }
+                    if (ymin > ymax) {
+                        var temp = ymax;
+                        ymax = Math.Max(ymin, ymax);
+                        ymin = Math.Min(ymin, temp);
+                    }
 
-                    
+
                     //get codec based on GUID
                     var codec = ImageCodecInfo.GetImageEncoders().FirstOrDefault(c => c.FormatID == f.Guid);
 
@@ -413,6 +423,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                     foreach (MSword.InlineShape item in rng.InlineShapes) {
                                         string type = item.Type.ToString();
                                         if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
+                                            item.Select();
                                             MSword.Shape shape = item.ConvertToShape();
                                             string bookmark = "Shape_" + shape.ID.ToString();
                                             string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
@@ -420,6 +431,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                             //item.Range.Bookmarks.Add(bookmark, ref range);
                                             //item.Select();
                                             //item.Range.CopyAsPicture();
+                                            /* does not work anymore with a recent word update
+                                             * - the EnhMetaFileBits now only contains empty data ...
                                             try {
                                                 byte[] buffer = (byte[])item.Range.EnhMetaFileBits;
                                                 convertEmfBufferToPng(buffer, shapeOutputPath);
@@ -429,7 +442,28 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                                 //objectShapes.Add(shapeOutputPath);
                                                 //imageIds.Add(shape.ID.ToString());
                                                 //inlineShapes.Add(shapeOutputPath);
-                                            } catch (ClipboardDataException cde) {
+                                            }*/
+                                            WordInstance.Selection.CopyAsPicture();
+                                            try {
+
+                                                System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                                                byte[] Ret;
+                                                MemoryStream ms = new MemoryStream();
+                                                image.Save(ms, ImageFormat.Png);
+                                                Ret = ms.ToArray();
+                                                FileStream fs = new FileStream(shapeOutputPath, FileMode.Create, FileAccess.Write);
+
+                                                fs.Write(Ret, 0, Ret.Length);
+                                                fs.Flush();
+                                                fs.Dispose();
+
+                                                eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
+                                                    "Exported shape " + shapeOutputPath
+                                                ));
+                                                //objectShapes.Add(pathShape);
+                                                //imageIds.Add(item.ID.ToString());
+                                            }
+                                            catch (ClipboardDataException cde) {
                                                 warnings.Add("- InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
                                             } catch (Exception e) {
                                                 throw e;
