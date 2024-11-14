@@ -6,20 +6,32 @@ SaveAsDAISY is available for Windows only.
 We provide an unified installer that detects standard installations of Microsoft Office.
 If Office is not found by the installer (like preinstalled or windows store versions of MS Office), it will request which architecture (32bits or 64bits) you want the addin to be installed for.
 
-
 ## Latest stable version: 2.7.2 beta (released on September, 2022)
 
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
 - Or access to the [last release page](https://github.com/daisy/word-save-as-daisy/releases/latest)
-- Or test the [latest beta version](https://github.com/daisy/word-save-as-daisy/releases/tag/v2.8.6-beta)
+
+## Latest test version: 2.9.0 beta (released on November, 2024)
+
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.9.0-beta/SaveAsDAISYInstaller-2.9.0-beta.exe)
+- Or access the [last pre-release version page](https://github.com/daisy/word-save-as-daisy/releases/tag/v2.9.0-beta)
 
 ## Report issues
 
-If you have an issue with the installers or with the add-in, please contact the development team by mail to [daisy-pipeline@mail.daisy.org](mailto:daisy-pipeline@mail.daisy.org), or check our [github repository](https://github.com/daisy/word-save-as-daisy/issues).
+If you have an issue with the installers or with the add-in, please contact the development team by mail to [daisy-pipeline@mail.daisy.org](mailto:daisy-pipeline@mail.daisy.org), or check the [addin github repository](https://github.com/daisy/word-save-as-daisy/issues) or the [DAISY Pipeline github repository](https://github.com/daisy/pipeline/issues).
 
-Any constructive feedbacks are also welcome to help us improve the add-in :-)
+Any constructive feedbacks are also welcome to help us improve the DAISY Pipeline and the add-in.
 
 ## Feedbacks / Known issues
+
+### Reuse pipeline app text-to-speech configuration
+
+If you happen to also have the [DAISY Pipeline app]() installed, you can use the text-to-speech configuration file of the app for the addin conversion :
+When browsing for a Text-to-speech configuration in the conversion form, look for the file `%APPDATA%\pipeline-ui\ttsConfig.xml` in your explorer (Or `C:\Users\<YourUserName>\AppData\Roaming\pipeline-ui\ttsConfig.xml`) and select it. 
+
+Be aware that the SaveAsDAISY Addin does not currently support the connexion to Azure or Google text-to-speech engines.
+In the case you would need to use those text-to-speech engines, we currently recommend to export your document as Dtbook XML with the addin,
+and then use the DAISY Pipeline App to perform the conversion to other formats.
 
 ### The accessibility ribbon does not appear after successfull installation
 
@@ -71,7 +83,23 @@ we would really appreciate it.
 
 # Changelog
 
-## 2.8.6 beta (June 2024)
+## 2.9 beta (November 2024 pre-release)
+
+This release introduce a major change in the addin with the latest update of the DAISY Pipeline 2 : 
+The conversion of the Word document into a dtbook XML is now handled by the new "word-to-dtbook" script, which is the portage of the addin conversion logic into the DAISY pipeline 2.
+
+The addin still handles vectorial shapes extraction from the document (as support of those shapes by the script is still experimental), as well as Master and Sub documents merging.
+
+For more information on what's new with the underlying DAISY Pipeline 2 update, please check the [pipeline release notes](https://github.com/daisy/pipeline-assembly/blob/master/NEWS.md#changes-in-release-v11420)
+
+The release also includes a sponsorship notification with a link to the [donation page](https://inclusivepublishing.org/sponsorship/).
+If you find this addin or other products of the DAISY Consortium useful, please consider donating !
+
+This sponsorship notification can be deactivated using a new "Disable sponsorship notification" checkbox in the addin settings form.
+
+**Full Changelog**: https://github.com/daisy/word-save-as-daisy/compare/v2.8.6-beta...v2.9.0-beta
+
+## 2.8.6 beta (June 2024 pre-release)
 
 This release includes the following changes :
 - Non-docx document opened in word are now accepted, as long as word can create a copy of them and upgrade it to docx format.
@@ -83,7 +111,7 @@ This release includes the following changes :
 - Fixed an issue where a title in table was converted as a list (for now converted as paragraph)
 - Fixed an issue with pagenum generation where closing paragraph tags would be added in some cases without an opening tag.
 
-## 2.8.5 beta (March 2024)
+## 2.8.5 beta (March 2024 pre-release)
 
 This minor release includes the following changes :
 - Clarify an error message for exception raised by the Microsoft package parsing libraryr when navigating in a document: 
@@ -93,7 +121,7 @@ This minor release includes the following changes :
   - The output folder is also automatically created if not found. 
 
 
-## 2.8.4 beta (February 2024)
+## 2.8.4 beta (February 2024 pre-release)
 
 This minor release includes the following changes :
 - For automatic pagination, inline pagenum elements in paragraph (fixes [#40](https://github.com/daisy/word-save-as-daisy/issues/40))
@@ -104,13 +132,13 @@ This minor release includes the following changes :
 - Fixed a language test for bidirectionnal elements
 
 
-## 2.8.3 beta (January 2024)
+## 2.8.3 beta (January 2024 pre-release)
 
 This minor release includes the following changes :
 - Fixed an issue with inlined element not being closed correctly before inserting pagenum
 - The underlying DAISY Pipeline 2 has been update to version 1.14.17-p1 
 
-## 2.8.2 beta (December 2023)
+## 2.8.2 beta (December 2023 pre-release)
 
 This major release marks a change in the underlying conversion process 
 to dtbook XML and packaged format,
