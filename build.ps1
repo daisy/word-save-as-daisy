@@ -3,7 +3,8 @@
 
 param(
 	[string]$version = "",
-	[switch]$refreshpipeline = $false
+	[switch]$refreshpipeline = $false,
+    [switch]$nobuild = $false
 )
 
 $currentVersion = "2.8.7"
@@ -93,7 +94,7 @@ if($version) {
         #   - search and replace occurences of previous versions by new version
         # Search in replace in the required parts of the project
         Update-Version -path $(Join-Path $PSScriptRoot "Common") -oldVersion $currentVersion -newVersion $version
-        Update-Version -path $(Join-Path $PSScriptRoot "Word2007") -oldVersion $currentVersion -newVersion $version
+        Update-Version -path $(Join-Path $PSScriptRoot "WordAddin") -oldVersion $currentVersion -newVersion $version
         Update-Version -path $(Join-Path $PSScriptRoot "Installer") -oldVersion $currentVersion -newVersion $version
         Update-Version -path $(Join-Path $PSScriptRoot "CustomActionAddin") -oldVersion $currentVersion -newVersion $version
         
@@ -152,6 +153,9 @@ if($refreshpipeline) {
     
 }
 
+if($nobuild) {
+    exit
+}
 # build the MSIs
 MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x86";
 MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x86";
