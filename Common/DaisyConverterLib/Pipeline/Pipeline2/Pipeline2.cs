@@ -371,8 +371,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                 {
                     // Note : the hashmap expects list of strings as options valu
                     stringifiedOptions[option.Key] = new List<string>() {
-                        //StringifyOption(jni, option.Value),
-                        option.Value.ToString() // possible only after referenced pipeline framework is updated to enable a more relaxed value check (https://github.com/daisy/pipeline-framework/commit/46dc1aeb6918da24640d327c7f6cd2b0c44b1dd5)
+                        StringifyOption(jni, option.Value),
+                        //option.Value.ToString() // possible only after referenced pipeline framework is updated to enable a more relaxed value check (https://github.com/daisy/pipeline-framework/commit/46dc1aeb6918da24640d327c7f6cd2b0c44b1dd5)
                     };
                 }
                 IntPtr hashMap = jni.NewJavaWrapperObject(stringifiedOptions);
