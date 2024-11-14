@@ -9,7 +9,7 @@
         -->
     
     <!-- Preprocessor variables, update following your addin assemblies version -->
-    <?define AddinVersion = "2.8.7.0" ?>
+    <?define AddinVersion = "2.9.0.0" ?>
     
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
@@ -24,13 +24,13 @@
     <?endif ?>
     
     <!--Change this ID for update -->
-    <Product Id="78B437E9-0607-4346-8C15-1119B529817A" 
+    <Product Id="C0639E24-E1E8-4539-9F34-428B3FC66A3B" 
             Name="SaveAsDAISY add-in version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
         <!--Change this ID for update -->
-        <Package Id="C0A423E8-0E1A-421F-9013-276AF3E2809C"
+        <Package Id="20261AF2-0BC2-4EC2-9E8B-43E2BA7EC03D"
 				 Compressed="yes"
 				 InstallPrivileges="limited"
 				 InstallerVersion="200" />
