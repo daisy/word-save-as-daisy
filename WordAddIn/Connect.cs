@@ -401,6 +401,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             { "ExportToDaisy3OfficeButton", "Singlexml.png" },
             { "ExportToEpub3OfficeButton", "speaker.jpg" },
             { "ExportToMP3OfficeButton", "speaker.jpg" },
+            { "ExportToDaisy202OfficeButton", "speaker.jpg" },
             { "DaisyMultiple", "Multiplexml.png" },
             { "DaisyDTBookMultiple", "subfolder.png" },
             { "ExportTabMenu", "speaker.jpg" },
@@ -408,6 +409,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             { "ExportToDaisy3TabButton", "speaker.jpg" },
             { "ExportToEpub3TabButton", "speaker.jpg" },
             { "ExportToMP3TabButton", "speaker.jpg" },
+            { "ExportToDaisy202TabButton", "speaker.jpg" },
             { "DtbookTabMultiple", "Multiplexml.png" },
             { "DaisyTabMultiple", "Multiplexml.png" },
             { "EpubTabMultiple", "subfolder.png" },
@@ -947,6 +949,38 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
             }
             
+        }
+
+        /// <summary>
+        /// UI Call : request conversion of the current active document to DAISY book
+        /// </summary>
+        /// <param name="control"></param>
+        public void SaveAsDAISY202(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null)
+        {
+            try {
+                // IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
+
+                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
+                    ? new WordToDaisy202(eventsHandler) :
+                    null;
+
+                if (pipelineScript != null) {
+                    pipelineScript.EventsHandler = eventsHandler;
+                }
+                ApplyScript(pipelineScript, eventsHandler, conversionIntegrationTestSettings);
+                NotifyDonationRequest();
+            }
+            catch (Exception e) {
+                AddinLogger.Error(e);
+                if (conversionIntegrationTestSettings == null) {
+                    ExceptionReport report = new ExceptionReport(e);
+                    report.ShowDialog();
+                }
+
+            }
+
         }
 
         /// <summary>

@@ -141,6 +141,12 @@
   <data name="ExportTabMenu" xml:space="preserve">
     <value>Select a DAISY format to save the document into</value>
   </data>
+  <data name="ExportToDaisy202OfficeButton" xml:space="preserve">
+    <value>DAISY 2.02 book with text and/or audio</value>
+  </data>
+  <data name="ExportToDaisy202TabButton" xml:space="preserve">
+    <value>DAISY 2.02 book with text and/or audio</value>
+  </data>
   <data name="ExportToDaisy3OfficeButton" xml:space="preserve">
     <value>DAISY3 book with text and/or audio</value>
   </data>

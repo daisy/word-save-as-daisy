@@ -36,6 +36,13 @@
 				        getImage="iconSelector"
 				        getDescription="getRibbonDescription"
 				        getScreentip="getRibbonDescription"/>
+				<button id="ExportToDaisy202OfficeButton"
+				        getLabel="getRibbonLabel"
+				        onAction="SaveAsDaisy202"
+				        getEnabled="ribbonButtonsEnabled"
+				        getImage="iconSelector"
+				        getDescription="getRibbonDescription"
+				        getScreentip="getRibbonDescription"/>
 			</menu>
 		</officeMenu>
 		<tabs>
@@ -71,6 +78,13 @@
 						<button id="ExportToMP3TabButton"
 						        getLabel="getRibbonLabel"
 						        onAction="SaveAsMP3"
+						        getEnabled="ribbonButtonsEnabled"
+						        getImage="iconSelector"
+						        getDescription="getRibbonDescription"
+						        getScreentip="getRibbonDescription"/>
+						<button id="ExportToDaisy202TabButton"
+						        getLabel="getRibbonLabel"
+						        onAction="SaveAsDaisy202"
 						        getEnabled="ribbonButtonsEnabled"
 						        getImage="iconSelector"
 						        getDescription="getRibbonDescription"

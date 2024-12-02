@@ -141,6 +141,12 @@
   <data name="ExportTabMenu" xml:space="preserve">
     <value>S&amp;ave as DAISY</value>
   </data>
+  <data name="ExportToDaisy202OfficeButton" xml:space="preserve">
+    <value>DAISY 2.02 (experimental)</value>
+  </data>
+  <data name="ExportToDaisy202TabButton" xml:space="preserve">
+    <value>DAISY 2.02 (experimental)</value>
+  </data>
   <data name="ExportToDaisy3OfficeButton" xml:space="preserve">
     <value>&amp;DAISY3</value>
   </data>

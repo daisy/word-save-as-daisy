@@ -133,6 +133,24 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à DAISY 2.02 (experimental).
+        /// </summary>
+        public static string ExportToDaisy202OfficeButton {
+            get {
+                return ResourceManager.GetString("ExportToDaisy202OfficeButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à DAISY 2.02 (experimental).
+        /// </summary>
+        public static string ExportToDaisy202TabButton {
+            get {
+                return ResourceManager.GetString("ExportToDaisy202TabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à &amp;DAISY3.
         /// </summary>
         public static string ExportToDaisy3OfficeButton {

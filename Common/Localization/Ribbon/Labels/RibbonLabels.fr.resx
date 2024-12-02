@@ -141,6 +141,12 @@
   <data name="ExportTabMenu" xml:space="preserve">
     <value>Exporter en format DAISY</value>
   </data>
+  <data name="ExportToDaisy202OfficeButton" xml:space="preserve">
+    <value>DAISY 2.02 (experimental)</value>
+  </data>
+  <data name="ExportToDaisy202TabButton" xml:space="preserve">
+    <value>DAISY 2.02 (experimental)</value>
+  </data>
   <data name="ExportToDaisy3OfficeButton" xml:space="preserve">
     <value>&amp;DAISY3</value>
   </data>
@@ -152,6 +158,12 @@
   </data>
   <data name="ExportToEpub3TabButton" xml:space="preserve">
     <value>&amp;EPUB3 (experimental)</value>
+  </data>
+  <data name="ExportToMP3OfficeButton" xml:space="preserve">
+    <value>&amp;Megavoice MP3 (experimental)</value>
+  </data>
+  <data name="ExportToMP3TabButton" xml:space="preserve">
+    <value>&amp;Megavoice MP3 (experimental)</value>
   </data>
   <data name="ExportToXMLOfficeButton" xml:space="preserve">
     <value>DAISY &amp;XML</value>
