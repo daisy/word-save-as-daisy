@@ -1,14 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using org.daisy.jnet;
+﻿using org.daisy.jnet;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Web.SessionState;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -151,9 +146,12 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
 
             try {
+                if (Directory.Exists(LogsFolder)) {
+                    Directory.CreateDirectory(LogsFolder);
+                }
                 string systemOut = Path.Combine(LogsFolder, "sysOut.log");
                 string systemErr = Path.Combine(LogsFolder, "sysErr.log");
-
+                
                 IntPtr JavaSystem = jni.GetJavaClass("java/lang/System");
                 jni.CallVoidMethod(
                     JavaSystem,
