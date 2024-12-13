@@ -1,4 +1,0 @@
-# Keep input, output and expected empty for now
-testfiles/input/**/*
-testfiles/excepted/**/*
-testfiles/output/**/*
