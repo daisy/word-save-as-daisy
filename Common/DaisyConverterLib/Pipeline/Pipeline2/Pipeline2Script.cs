@@ -234,11 +234,16 @@ namespace Daisy.SaveAsDAISY.Conversion
             List<string> errors;
             while (checkStatus)
             {
+
                 job = job == null ? engine.LaunchJob(jobStart) : engine.FetchJobDetails(job);
-                this.EventsHandler.onFeedbackMessageReceived(
-                    this,
-                    new DaisyEventArgs("App > " + job.Messages.ToString())
-                );
+                string messages = job.GetNewMessages("App > ");
+                if (messages.Length > 0)
+                {
+                    this.EventsHandler.onFeedbackMessageReceived(
+                        this,
+                        new DaisyEventArgs(messages)
+                    );
+                }
                 switch (job.Status.ToLower())
                 {
                     case "success":
