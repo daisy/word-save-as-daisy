@@ -129,6 +129,7 @@
   <ItemGroup>
     <Compile Include="AddinLogger.cs" />
     <Compile Include="Converter.cs" />
+    <Compile Include="Events\ConsoleEventsHandler.cs" />
     <Compile Include="Events\SilentEventsHandler.cs" />
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
     <Compile Include="Pipeline\ChainedScripts\WordToDaisy202.cs" />
