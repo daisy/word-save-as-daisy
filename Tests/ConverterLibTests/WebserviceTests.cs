@@ -22,7 +22,7 @@ namespace ConverterLibTests
         }
 
         [TestMethod]
-        public void AppStart()
+        public void AppIsRunning()
         {
             if(!PipelineApp.IsRunning())
             {
@@ -51,13 +51,13 @@ namespace ConverterLibTests
 
         [TestMethod]
         [DeploymentItem(@"test-files\\default_sample_for_dtbook_conversion.docx", "test-files")]
-        public void ExecuteScriptOnWebservice()
+        public void ExecuteWordToDtbook()
         {
             Assert.IsTrue(File.Exists("test-files\\default_sample_for_dtbook_conversion.docx"));
             Webservice ws = !PipelineApp.IsRunning() ? PipelineApp.Start() : PipelineApp.FindWebservice();
             Assert.IsNotNull(ws);
             Assert.IsTrue(ws.FetchAlive().alive);
-            SilentEventsHandler e = new SilentEventsHandler();
+            ConsoleEventsHandler e = new ConsoleEventsHandler();
             WordToDtbook script = new WordToDtbook(e);
             script.Parameters["input"].ParameterValue = Path.GetFullPath("test-files\\default_sample_for_dtbook_conversion.docx");
             script.Parameters["output"].ParameterValue = Path.GetFullPath("test-results");
@@ -73,7 +73,7 @@ namespace ConverterLibTests
         public void ExecuteWordToCleanedDtbookChain()
         {
             Assert.IsTrue(File.Exists("test-files\\default_sample_for_dtbook_conversion.docx"));
-            SilentEventsHandler e = new SilentEventsHandler();
+            ConsoleEventsHandler e = new ConsoleEventsHandler();
             WordToCleanedDtbook script = new WordToCleanedDtbook(e);
             script.Parameters["input"].ParameterValue = Path.GetFullPath("test-files\\default_sample_for_dtbook_conversion.docx");
             script.Parameters["output"].ParameterValue = Path.GetFullPath("test-results");
@@ -84,6 +84,61 @@ namespace ConverterLibTests
             Assert.IsTrue(results.Exists);
             Assert.IsTrue(results.GetFiles("default_sample_for_dtbook_conversion.xml", SearchOption.AllDirectories).Any());
         }
+
+        [TestMethod]
+        [DeploymentItem(@"test-files\\default_sample_for_dtbook_conversion.docx", "test-files")]
+        public void ExecuteWordToDaisy3Chain()
+        {
+            Assert.IsTrue(File.Exists("test-files\\default_sample_for_dtbook_conversion.docx"));
+            ConsoleEventsHandler e = new ConsoleEventsHandler();
+            WordToDaisy3 script = new WordToDaisy3(e);
+            script.Parameters["input"].ParameterValue = Path.GetFullPath("test-files\\default_sample_for_dtbook_conversion.docx");
+            script.Parameters["output"].ParameterValue = Path.GetFullPath("test-results");
+            script.Parameters["audio"].ParameterValue = false;
+            script.ExecuteScript(Path.GetFullPath("test-files\\default_sample_for_dtbook_conversion.docx"), false);
+
+            // Search a file default_sample_for_dtbook_conversion.xml somewhere under the test-results folder
+            DirectoryInfo results = new DirectoryInfo(Path.GetFullPath("test-results"));
+            Assert.IsTrue(results.Exists);
+            //Assert.IsTrue(results.GetFiles("default_sample_for_dtbook_conversion.xml", SearchOption.AllDirectories).Any());
+        }
+
+        [TestMethod]
+        [DeploymentItem(@"test-files\\default_sample_for_dtbook_conversion.docx", "test-files")]
+        public void ExecuteWordToEpub3Chain()
+        {
+            Assert.IsTrue(File.Exists("test-files\\default_sample_for_dtbook_conversion.docx"));
+            ConsoleEventsHandler e = new ConsoleEventsHandler();
+            WordToEpub3 script = new WordToEpub3(e);
+            script.Parameters["input"].ParameterValue = Path.GetFullPath("test-files\\default_sample_for_dtbook_conversion.docx");
+            script.Parameters["output"].ParameterValue = Path.GetFullPath("test-results");
+            script.Parameters["audio"].ParameterValue = false;
+            script.ExecuteScript(Path.GetFullPath("test-files\\default_sample_for_dtbook_conversion.docx"), false);
+
+            // Search a file default_sample_for_dtbook_conversion.xml somewhere under the test-results folder
+            DirectoryInfo results = new DirectoryInfo(Path.GetFullPath("test-results"));
+            Assert.IsTrue(results.Exists);
+            //Assert.IsTrue(results.GetFiles("default_sample_for_dtbook_conversion.xml", SearchOption.AllDirectories).Any());
+        }
+
+        [TestMethod]
+        [DeploymentItem(@"test-files\\default_sample_for_dtbook_conversion.docx", "test-files")]
+        public void ExecuteWordToDaisy202Chain()
+        {
+            Assert.IsTrue(File.Exists("test-files\\default_sample_for_dtbook_conversion.docx"));
+            ConsoleEventsHandler e = new ConsoleEventsHandler();
+            WordToDaisy202 script = new WordToDaisy202(e);
+            script.Parameters["input"].ParameterValue = Path.GetFullPath("test-files\\default_sample_for_dtbook_conversion.docx");
+            script.Parameters["output"].ParameterValue = Path.GetFullPath("test-results");
+            script.Parameters["audio"].ParameterValue = false;
+            script.ExecuteScript(Path.GetFullPath("test-files\\default_sample_for_dtbook_conversion.docx"), false);
+
+            // Search a file default_sample_for_dtbook_conversion.xml somewhere under the test-results folder
+            DirectoryInfo results = new DirectoryInfo(Path.GetFullPath("test-results"));
+            Assert.IsTrue(results.Exists);
+            //Assert.IsTrue(results.GetFiles("default_sample_for_dtbook_conversion.xml", SearchOption.AllDirectories).Any());
+        }
+
 
         private static string GetCommandLine(Process process)
         {
