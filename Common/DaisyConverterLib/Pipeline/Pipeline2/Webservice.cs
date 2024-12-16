@@ -67,14 +67,15 @@ namespace Daisy.SaveAsDAISY.Conversion
         public string Level;
         public string Content;
         public int Sequence;
-        public string Timestamp;
+        public DateTime Timestamp;
         public List<Message> Messages = new List<Message>();
-
+        
         public static Message From(XmlElement messageNode)
         {
+            DateTime _ts = new DateTime();
             string timestamp = messageNode.GetAttribute("timeStamp");
             try {
-                timestamp = new DateTime(long.Parse(messageNode.GetAttribute("timeStamp"))).ToString("o");
+                _ts = new DateTime(long.Parse(timestamp));
             }
             catch (Exception e) {
                 Console.WriteLine(e);
@@ -85,7 +86,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 Level = messageNode.GetAttribute("level"),
                 Content = messageNode.GetAttribute("content"),
                 Sequence = int.Parse(messageNode.GetAttribute("sequence")),
-                Timestamp = timestamp,
+                Timestamp = _ts,
                 Messages = new List<Message>()
             };
 
@@ -97,7 +98,21 @@ namespace Daisy.SaveAsDAISY.Conversion
         }
         public override string ToString()
         {
-            return $"\r\n{Timestamp} > {Content}{string.Join(" ", Messages)}";
+            return $"{Timestamp.ToString("HH:mm:ss.fff")} : {Content}";
+        }
+
+        /// <summary>
+        /// Flatten the messages tree into a single list
+        /// </summary>
+        /// <returns></returns>
+        public List<Message> Flatten()
+        {
+            List<Message> _messages = new List<Message>();
+            _messages.Add(this);
+            foreach (Message m in Messages) {
+                _messages.AddRange(m.Flatten());
+            }
+            return _messages;
         }
 
     }
@@ -117,6 +132,34 @@ namespace Daisy.SaveAsDAISY.Conversion
         public string Nicename;
         public string ScriptHref;
         public string Href;
+
+        public DateTime lastMessageTimestamp = new DateTime();
+
+        public string GetNewMessages(string prefix = "")
+        {
+            if(Messages.Count == 0)
+                return string.Empty;
+            // Flatten message list and keep only the new messages
+            List<Message> messages = Messages.Aggregate(
+                    new List<Message>(),
+                    (res, next) => {
+                        res.AddRange(next.Flatten());
+                        return res;
+                    },
+                    (res) => res
+                )
+                .Where(m => m.Timestamp > lastMessageTimestamp)
+                .OrderBy(m => m.Timestamp)
+                .ToList();
+
+            if (messages.Count == 0)
+                return string.Empty;
+
+            lastMessageTimestamp = messages.Last().Timestamp;
+            return prefix + string.Join($"\r\n{prefix}",
+                messages.Select(m => m.ToString())
+            );
+        }
 
         public static JobData[] FromJobs(string xml)
         {
@@ -311,6 +354,8 @@ namespace Daisy.SaveAsDAISY.Conversion
         public ScriptInput[] inputs;
         public ScriptOption[] options;
 
+        private ScriptData() { }
+
         public static ScriptData[] fromScriptsXML(string xml)
         {
             XmlDocument doc = new XmlDocument();
@@ -403,17 +448,27 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public static JobRequest fromScript(Webservice ws, Pipeline2Script s)
         {
-            ScriptData matching = ws.FetchScripts().First(script => script.Id == s.Name);
+
+            ScriptData matching = ws.FetchScripts().FirstOrDefault(script => script.Id == s.Name);
+            if (matching == null) {
+                throw new Exception($"Script {s.Name} not found in the pipeline");
+            }
             JobRequest baseRequest = matching.makeRequest();
             
             foreach(var i in baseRequest.Inputs) {
-                var kv = s.Parameters.First(p => p.Value.Name == i.Name);
+                var kv = s.Parameters.FirstOrDefault(p => p.Value.Name == i.Name);
+                if (kv.Value == null) {
+                    continue;
+                }
                 i.Value = kv.Value.ParameterDataType is PathDataType && kv.Value.ParameterValue.ToString().Length > 0 ? new System.Uri(kv.Value.ParameterValue.ToString()).AbsoluteUri :
                     kv.Value.ParameterValue is string ? kv.Value.ParameterValue : kv.Value.ParameterValue.ToString().ToLower();
             }
 
             foreach (var i in baseRequest.Options) {
-                var kv = s.Parameters.First(p => p.Value.Name == i.Name);
+                var kv = s.Parameters.FirstOrDefault(p => p.Value.Name == i.Name);
+                if(kv.Value == null) {
+                    continue;
+                }
                 i.Value = kv.Value.ParameterDataType is PathDataType && kv.Value.ParameterValue.ToString().Length > 0 ? new System.Uri(kv.Value.ParameterValue.ToString()).AbsoluteUri :
                     kv.Value.ParameterValue is string ? kv.Value.ParameterValue : kv.Value.ParameterValue.ToString().ToLower();
             }
@@ -565,7 +620,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         public JobData FetchJobDetails(JobData j) {
-            return this.client.GetAsync($"{j.Href}")
+            JobData result = this.client.GetAsync($"{j.Href}")
                 .ContinueWith((response) => {
                     if (!response.Result.IsSuccessStatusCode)
                         throw new Exception($"Failed to fetch script details from {j.Href} : {response.Result.StatusCode}");
@@ -573,6 +628,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                 })
                 .ContinueWith((text) => JobData.FromJob(text.Result))
                 .Result;
+            result.lastMessageTimestamp = j.lastMessageTimestamp;
+            return result;
         }
 
         /// <summary>
