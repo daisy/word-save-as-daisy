@@ -36,6 +36,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 TryExecuteOnAppWebservice(inputPath, isQuite);
             }
+            catch (JobException e) {
+                throw e;
+            }
             catch (Exception e)
             {
                 this.EventsHandler.onFeedbackMessageReceived(
