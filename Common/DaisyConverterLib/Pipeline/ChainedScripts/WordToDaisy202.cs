@@ -143,7 +143,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                                 { "Report validation issues", "report" },
                                 { "Abort on validation issues", "abort" },
                             }, "Abort on validation issues"),
-                        "report",
+                        "off",
                         false,
                         "Whether to abort on validation issues."
                     )
@@ -250,6 +250,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                         scripts[i].Parameters[k] = this._parameters[k];
                     }
                 }
+                if (scripts[i].Parameters.ContainsKey("validation") &&
+                    scripts[i].Parameters.ContainsKey("validation-report") &&
+                    scripts[i].Parameters["validation"].ParameterValue.ToString() == "report"
+                ) {
+                    scripts[i].Parameters["validation-report"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput.FullName, "report")).FullName;
+                }
+                if (scripts[i].Parameters.ContainsKey("include-tts-log") &&
+                    scripts[i].Parameters.ContainsKey("tts-log") &&
+                    (bool)scripts[i].Parameters["include-tts-log"].ParameterValue == true
+                ) {
+                    scripts[i].Parameters["tts-log"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput.FullName, "tts-log")).FullName;
+                }
 
 #if DEBUG
                 this.EventsHandler.onProgressMessageReceived(
@@ -259,7 +271,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     )
                 );
 #else
-                this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Launching script {scripts[i].Name} ... "));
+                this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Applying script {scripts[i].Name} ... "));
 #endif
                 // rebind input and output
                 scripts[i].Parameters["input"].ParameterValue = input;

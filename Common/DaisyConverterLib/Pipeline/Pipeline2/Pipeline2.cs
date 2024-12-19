@@ -79,7 +79,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "-Dorg.daisy.pipeline.logdir", LogsFolder.Replace("\\", "/") },
                 { "-Dorg.daisy.pipeline.mode", "cli" }
             };
-            if (GlobaleSettings.AzureSpeechKey != "")
+            if (GlobaleSettings.AzureSpeechKey != "" && GlobaleSettings.AzureSpeechRegion != "")
             {
                 SystemProps["-Dorg.daisy.pipeline.tts.azure.key"] = GlobaleSettings.AzureSpeechKey;
                 SystemProps["-Dorg.daisy.pipeline.tts.azure.region"] =
