@@ -159,6 +159,12 @@
   <data name="ExportToEpub3TabButton" xml:space="preserve">
     <value>Livre EPUB3</value>
   </data>
+  <data name="ExportToMP3OfficeButton" xml:space="preserve">
+    <value>Arborescence de fichiers MP3 compatible avec les lecteurs Megavoice</value>
+  </data>
+  <data name="ExportToMP3TabButton" xml:space="preserve">
+    <value>Arborescence de fichiers MP3 compatible avec les lecteurs Megavoice</value>
+  </data>
   <data name="ExportToXMLOfficeButton" xml:space="preserve">
     <value>Exporter le document en XML DTBook</value>
   </data>

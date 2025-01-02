@@ -159,6 +159,12 @@
   <data name="ExportToEpub3TabButton" xml:space="preserve">
     <value>EPUB3 book</value>
   </data>
+  <data name="ExportToMP3OfficeButton" xml:space="preserve">
+    <value>MP3 fileset compatible with megavoice readers</value>
+  </data>
+  <data name="ExportToMP3TabButton" xml:space="preserve">
+    <value>MP3 fileset compatible with megavoice readers</value>
+  </data>
   <data name="ExportToXMLOfficeButton" xml:space="preserve">
     <value>Export the document as DAISY XML (dtbook dtd)</value>
   </data>

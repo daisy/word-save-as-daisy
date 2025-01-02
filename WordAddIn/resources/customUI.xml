@@ -29,7 +29,7 @@
 				        getImage="iconSelector"
 				        getDescription="getRibbonDescription"
 				        getScreentip="getRibbonDescription"/>
-				<button id="ExportToMP33OfficeButton"
+				<button id="ExportToMP3OfficeButton"
 				        getLabel="getRibbonLabel"
 				        onAction="SaveAsMP3"
 				        getEnabled="ribbonButtonsEnabled"
