@@ -17,7 +17,6 @@ engine/target/assembly-$(ENGINE_VERSION)-$(zip_classifier).zip : \
 	                                "--", "--without-osgi",          \
 			                        "--with-simple-api",             \
 			                        "--without-cli",                 \
-			                        "--without-updater",             \
 			                        "--without-webservice",          \
 			                        "--without-persistence");
 

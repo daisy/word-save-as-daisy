@@ -7,9 +7,10 @@ namespace Daisy.SaveAsDAISY.Forms
 {
 	public class AddInHelper
 	{
-		#region constants
+        #region constants
 
-		public const int DaisyStylesCount = 38;
+        // NP 2025/05/20 : adding 4 new styles for optional and required sidebar content and headers
+        public const int DaisyStylesCount = 42;
 
 		#endregion
 		
