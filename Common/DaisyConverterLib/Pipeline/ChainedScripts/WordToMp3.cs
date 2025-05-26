@@ -198,7 +198,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 Path.Combine(
                 Parameters["output"].ParameterValue.ToString(),
                 string.Format(
-                    "{0}_DTBookXML_{1}",
+                    "{0}_MegaVoiceMP3_{1}",
                     Path.GetFileNameWithoutExtension(inputPath),
                     DateTime.Now.ToString("yyyyMMddHHmmssffff")
                 )
