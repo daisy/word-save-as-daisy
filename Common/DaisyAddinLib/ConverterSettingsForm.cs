@@ -261,9 +261,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             notesNumberingStartValue.Text = GlobaleSettings.FootnotesStartValue.ToString();
             notesNumberPrefixValue.Text = GlobaleSettings.FootnotesNumberingPrefix;
             notesNumberSuffixValue.Text = GlobaleSettings.FootnotesNumberingSuffix;
-            TTSConfigFilePath.Text = GlobaleSettings.TTSConfigFile;
-            AzureKeyValue.Text = GlobaleSettings.AzureSpeechKey;
-            AzureRegionValue.SelectedItem = AzureRegionRevertDictionnary[GlobaleSettings.AzureSpeechRegion ?? ""];
+            //TTSConfigFilePath.Text = GlobaleSettings.TTSConfigFile;
+            //AzureKeyValue.Text = GlobaleSettings.AzureSpeechKey;
+            //AzureRegionValue.SelectedItem = AzureRegionRevertDictionnary[GlobaleSettings.AzureSpeechRegion ?? ""];
 
             this.notesNumberingStartValue.Enabled = notesNumberingMap[(string)notesNumberingSelector.SelectedItem] == ConverterSettings.FootnotesNumberingChoice.Enum.Number;
 
@@ -328,9 +328,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                 GlobaleSettings.FootnotesNumberingPrefix = notesNumberPrefixValue.Text;
                 GlobaleSettings.FootnotesNumberingSuffix = notesNumberSuffixValue.Text;
                 
-                GlobaleSettings.TTSConfigFile = TTSConfigFilePath.Text;
-                GlobaleSettings.AzureSpeechKey = AzureKeyValue.Text;
-                GlobaleSettings.AzureSpeechRegion = AzureRegionDictionnary[(string)(AzureRegionValue.SelectedItem ?? "")];
+                //GlobaleSettings.TTSConfigFile = TTSConfigFilePath.Text;
+                //GlobaleSettings.AzureSpeechKey = AzureKeyValue.Text;
+                //GlobaleSettings.AzureSpeechRegion = AzureRegionDictionnary[(string)(AzureRegionValue.SelectedItem ?? "")];
 
                 // Save
                 GlobaleSettings.Save();

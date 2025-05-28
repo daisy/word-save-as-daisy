@@ -337,7 +337,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="btn_ok.Location" type="System.Drawing.Point, System.Drawing">
-    <value>531, 646</value>
+    <value>531, 528</value>
   </data>
   <data name="btn_ok.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -346,7 +346,7 @@
     <value>100, 28</value>
   </data>
   <data name="btn_ok.TabIndex" type="System.Int32, mscorlib">
-    <value>10</value>
+    <value>19</value>
   </data>
   <data name="btn_ok.Text" xml:space="preserve">
     <value>OK</value>
@@ -466,7 +466,7 @@
     <value>Bottom, Right</value>
   </data>
   <data name="btnCancel.Location" type="System.Drawing.Point, System.Drawing">
-    <value>423, 646</value>
+    <value>423, 528</value>
   </data>
   <data name="btnCancel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
@@ -475,7 +475,7 @@
     <value>100, 28</value>
   </data>
   <data name="btnCancel.TabIndex" type="System.Int32, mscorlib">
-    <value>14</value>
+    <value>18</value>
   </data>
   <data name="btnCancel.Text" xml:space="preserve">
     <value>Cancel</value>
@@ -709,7 +709,7 @@
     <value>514, 24</value>
   </data>
   <data name="notesPositionSelector.TabIndex" type="System.Int32, mscorlib">
-    <value>0</value>
+    <value>10</value>
   </data>
   <data name="notesPositionSelector.Text" xml:space="preserve">
     <value>End of pages</value>
@@ -787,7 +787,7 @@
     <value>514, 24</value>
   </data>
   <data name="notesLevelSelector.TabIndex" type="System.Int32, mscorlib">
-    <value>3</value>
+    <value>11</value>
   </data>
   <data name="notesLevelSelector.Text" xml:space="preserve">
     <value>Note reference level</value>
@@ -850,7 +850,7 @@
     <value>496, 24</value>
   </data>
   <data name="notesNumberingSelector.TabIndex" type="System.Int32, mscorlib">
-    <value>5</value>
+    <value>12</value>
   </data>
   <data name="notesNumberingSelector.Text" xml:space="preserve">
     <value>Don't add a numeric prefix</value>
@@ -910,7 +910,7 @@
     <value>496, 22</value>
   </data>
   <data name="notesNumberingStartValue.TabIndex" type="System.Int32, mscorlib">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="&gt;&gt;notesNumberingStartValue.Name" xml:space="preserve">
     <value>notesNumberingStartValue</value>
@@ -961,7 +961,7 @@
     <value>496, 22</value>
   </data>
   <data name="notesNumberPrefixValue.TabIndex" type="System.Int32, mscorlib">
-    <value>8</value>
+    <value>14</value>
   </data>
   <data name="&gt;&gt;notesNumberPrefixValue.Name" xml:space="preserve">
     <value>notesNumberPrefixValue</value>
@@ -1015,7 +1015,7 @@
     <value>496, 22</value>
   </data>
   <data name="notesNumberSuffixValue.TabIndex" type="System.Int32, mscorlib">
-    <value>9</value>
+    <value>15</value>
   </data>
   <data name="&gt;&gt;notesNumberSuffixValue.Name" xml:space="preserve">
     <value>notesNumberSuffixValue</value>
@@ -1031,6 +1031,120 @@
   </data>
   <data name="TextToSpeechBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyValue.Name" xml:space="preserve">
+    <value>AzureKeyValue</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyValue.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyValue.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyLabel.Name" xml:space="preserve">
+    <value>AzureKeyLabel</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyLabel.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;AzureKeyLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionValue.Name" xml:space="preserve">
+    <value>AzureRegionValue</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionValue.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionValue.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionValue.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionLabel.Name" xml:space="preserve">
+    <value>AzureRegionLabel</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionLabel.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;AzureRegionLabel.ZOrder" xml:space="preserve">
+    <value>3</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileBrowse.Name" xml:space="preserve">
+    <value>TTSConfigFileBrowse</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileBrowse.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileBrowse.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileBrowse.ZOrder" xml:space="preserve">
+    <value>4</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFilePath.Name" xml:space="preserve">
+    <value>TTSConfigFilePath</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFilePath.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFilePath.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFilePath.ZOrder" xml:space="preserve">
+    <value>5</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileLabel.Name" xml:space="preserve">
+    <value>TTSConfigFileLabel</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileLabel.Parent" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;TTSConfigFileLabel.ZOrder" xml:space="preserve">
+    <value>6</value>
+  </data>
+  <data name="TextToSpeechBox.Enabled" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="TextToSpeechBox.Location" type="System.Drawing.Point, System.Drawing">
+    <value>7, 508</value>
+  </data>
+  <data name="TextToSpeechBox.Size" type="System.Drawing.Size, System.Drawing">
+    <value>624, 0</value>
+  </data>
+  <data name="TextToSpeechBox.TabIndex" type="System.Int32, mscorlib">
+    <value>16</value>
+  </data>
+  <data name="TextToSpeechBox.Text" xml:space="preserve">
+    <value>Speech synthesis</value>
+  </data>
+  <data name="TextToSpeechBox.Visible" type="System.Boolean, mscorlib">
+    <value>False</value>
+  </data>
+  <data name="&gt;&gt;TextToSpeechBox.Name" xml:space="preserve">
+    <value>TextToSpeechBox</value>
+  </data>
+  <data name="&gt;&gt;TextToSpeechBox.Type" xml:space="preserve">
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;TextToSpeechBox.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;TextToSpeechBox.ZOrder" xml:space="preserve">
+    <value>5</value>
   </data>
   <data name="AzureKeyValue.AccessibleDescription" xml:space="preserve">
     <value>One of the two keys provided in your Azure Speech Service resource panel</value>
@@ -1482,30 +1596,6 @@
   <data name="&gt;&gt;TTSConfigFileLabel.ZOrder" xml:space="preserve">
     <value>6</value>
   </data>
-  <data name="TextToSpeechBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>7, 508</value>
-  </data>
-  <data name="TextToSpeechBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>624, 131</value>
-  </data>
-  <data name="TextToSpeechBox.TabIndex" type="System.Int32, mscorlib">
-    <value>16</value>
-  </data>
-  <data name="TextToSpeechBox.Text" xml:space="preserve">
-    <value>Speech synthesis</value>
-  </data>
-  <data name="&gt;&gt;TextToSpeechBox.Name" xml:space="preserve">
-    <value>TextToSpeechBox</value>
-  </data>
-  <data name="&gt;&gt;TextToSpeechBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;TextToSpeechBox.Parent" xml:space="preserve">
-    <value>$this</value>
-  </data>
-  <data name="&gt;&gt;TextToSpeechBox.ZOrder" xml:space="preserve">
-    <value>5</value>
-  </data>
   <metadata name="TTSConfigFileSelect.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
@@ -1552,7 +1642,7 @@
     <value>8, 16</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>643, 687</value>
+    <value>643, 569</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>
