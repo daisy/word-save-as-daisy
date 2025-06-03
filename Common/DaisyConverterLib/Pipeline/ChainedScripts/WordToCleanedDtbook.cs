@@ -154,65 +154,68 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
 
         public override void ExecuteScript(string inputPath, bool isQuite)
         {
-
-            // Create a directory using the document name
-            DirectoryInfo finalOutput = new DirectoryInfo(
-                Path.Combine(
-                Parameters["output"].ParameterValue.ToString(),
-                string.Format(
-                    "{0}_DTBookXML_{1}",
-                    Path.GetFileNameWithoutExtension(inputPath),
-                    DateTime.Now.ToString("yyyyMMddHHmmssffff")
-                )
-            ));
-            // Remove and recreate result folder
-            // Since the DaisyToEpub3 requires output folder to be empty
-            if (finalOutput.Exists) {
-                finalOutput.Delete(true);
-                finalOutput.Create();
-            }
-            
-            string input = inputPath;
-            DirectoryInfo outputDir = finalOutput;
-
-            for (int i = 0; i < scripts.Count; i++) {
-                if (i > 0) {
-                    // chain last output to next input for non-first scripts
-                    try {
-                        input = scripts[i].searchInputFromDirectory(outputDir);
-                    }
-                    catch {
-                        throw new FileNotFoundException($"Could not find result of previous script {scripts[i-1].Name} in intermediate folder", outputDir.FullName);
-                    }
+            try {
+                // Create a directory using the document name
+                DirectoryInfo finalOutput = new DirectoryInfo(
+                    Path.Combine(
+                    Parameters["output"].ParameterValue.ToString(),
+                    string.Format(
+                        "{0}_DTBookXML_{1}",
+                        Path.GetFileNameWithoutExtension(inputPath),
+                        DateTime.Now.ToString("yyyyMMddHHmmssffff")
+                    )
+                ));
+                // Remove and recreate result folder
+                // Since the DaisyToEpub3 requires output folder to be empty
+                if (finalOutput.Exists) {
+                    finalOutput.Delete(true);
+                    finalOutput.Create();
                 }
-                // create a temporary output directory for all scripts except the last one
-                outputDir = i < scripts.Count - 1
-                         ? Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()))
-                         : finalOutput;
-                // transfer global parameters value except input and output (that could change between scripts)
-                foreach (var k in this._parameters.Keys.Except(new string[] { "input", "output" })) {
-                    if (scripts[i].Parameters.ContainsKey(k)) {
-                        scripts[i].Parameters[k] = this._parameters[k];
+
+                string input = inputPath;
+                DirectoryInfo outputDir = finalOutput;
+
+                for (int i = 0; i < scripts.Count; i++) {
+                    if (i > 0) {
+                        // chain last output to next input for non-first scripts
+                        try {
+                            input = scripts[i].searchInputFromDirectory(outputDir);
+                        }
+                        catch {
+                            throw new FileNotFoundException($"Could not find result of previous script {scripts[i - 1].Name} in intermediate folder", outputDir.FullName);
+                        }
                     }
-                }
+                    // create a temporary output directory for all scripts except the last one
+                    outputDir = i < scripts.Count - 1
+                             ? Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()))
+                             : finalOutput;
+                    // transfer global parameters value except input and output (that could change between scripts)
+                    foreach (var k in this._parameters.Keys.Except(new string[] { "input", "output" })) {
+                        if (scripts[i].Parameters.ContainsKey(k)) {
+                            scripts[i].Parameters[k] = this._parameters[k];
+                        }
+                    }
 
 #if DEBUG
-                this.EventsHandler.onProgressMessageReceived(
-                    this,
-                    new DaisyEventArgs(
-                        $"Applying {scripts[i].Name} on {input} and storing into {outputDir.FullName}"
-                    )
-                );
+                    this.EventsHandler.onProgressMessageReceived(
+                        this,
+                        new DaisyEventArgs(
+                            $"Applying {scripts[i].Name} on {input} and storing into {outputDir.FullName}"
+                        )
+                    );
 #else
                 this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Launching script {scripts[i].Name} ... "));
 #endif
-                // rebind input and output
-                scripts[i].Parameters["input"].ParameterValue = input;
-                scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
-                scripts[i].ExecuteScript(inputPath, isQuite);
+                    // rebind input and output
+                    scripts[i].Parameters["input"].ParameterValue = input;
+                    scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
+                    scripts[i].ExecuteScript(inputPath, isQuite);
+                }
             }
-
-
+            catch (Exception ex) {
+                this.EventsHandler.OnConversionError(new Exception("An error occurred while executing the Word to DTBook XML conversion pipeline.", ex));
+            }
+            
         }
     }
 }

@@ -210,9 +210,13 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 lock (padlock)
                 {
-                    if (instance == null)
-                    {
-                        instance = new Pipeline2();
+                    if (instance == null) {
+                        try {
+                            instance = new Pipeline2();
+                        }
+                        catch (Exception ex) {
+                            throw new Exception("An error occured while initializing DAISY Pipeline 2", ex);
+                        }
                     }
                     return instance;
                 }
@@ -225,7 +229,12 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 if (instance != null)
                 {
-                    instance.Dispose();
+                    try {
+                        instance.Dispose();
+                    }
+                    catch (Exception ex) {
+                        throw new Exception("An error occured while disposing DAISY Pipeline 2", ex);
+                    }
                     instance = null;
                 }
             }

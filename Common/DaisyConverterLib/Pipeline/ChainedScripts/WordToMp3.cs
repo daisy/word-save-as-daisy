@@ -12,12 +12,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
         private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
         List<Pipeline2Script> scripts;
-
-        Script wordToDtbook;
-        Script dtbookCleaner;
-        Script dtbookToDaisy3;
-        Script daisy3ToMp3;
-
         public WordToMp3(IConversionEventsHandler e): base(e) {
             this.niceName = "Export to Megavoice MP3 fileset";
             scripts = new List<Pipeline2Script>() {
@@ -191,75 +185,80 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             };
         }
 
-        public override void ExecuteScript(string inputPath, bool isQuite) {
+        public override void ExecuteScript(string inputPath, bool isQuite)
+        {
+            try {
+                // Create a directory using the document name
+                DirectoryInfo finalOutput = new DirectoryInfo(
+                    Path.Combine(
+                    Parameters["output"].ParameterValue.ToString(),
+                    string.Format(
+                        "{0}_MegaVoiceMP3_{1}",
+                        Path.GetFileNameWithoutExtension(inputPath),
+                        DateTime.Now.ToString("yyyyMMddHHmmssffff")
+                    )
+                ));
+                // Remove and recreate result folder
+                // Since the DaisyToEpub3 requires output folder to be empty
+                if (finalOutput.Exists) {
+                    finalOutput.Delete(true);
+                    finalOutput.Create();
+                }
 
-            // Create a directory using the document name
-            DirectoryInfo finalOutput = new DirectoryInfo(
-                Path.Combine(
-                Parameters["output"].ParameterValue.ToString(),
-                string.Format(
-                    "{0}_MegaVoiceMP3_{1}",
-                    Path.GetFileNameWithoutExtension(inputPath),
-                    DateTime.Now.ToString("yyyyMMddHHmmssffff")
-                )
-            ));
-            // Remove and recreate result folder
-            // Since the DaisyToEpub3 requires output folder to be empty
-            if (finalOutput.Exists) {
-                finalOutput.Delete(true);
-                finalOutput.Create();
-            }
+                string input = inputPath;
+                DirectoryInfo outputDir = finalOutput;
 
-            string input = inputPath;
-            DirectoryInfo outputDir = finalOutput;
-
-            for (int i = 0; i < scripts.Count; i++) {
-                if (i > 0) {
-                    // chain last output to next input for non-first scripts
-                    try {
-                        input = scripts[i].searchInputFromDirectory(outputDir);
+                for (int i = 0; i < scripts.Count; i++) {
+                    if (i > 0) {
+                        // chain last output to next input for non-first scripts
+                        try {
+                            input = scripts[i].searchInputFromDirectory(outputDir);
+                        }
+                        catch {
+                            throw new FileNotFoundException($"Could not find result of previous script {scripts[i - 1].Name} in intermediate folder", outputDir.FullName);
+                        }
                     }
-                    catch {
-                        throw new FileNotFoundException($"Could not find result of previous script {scripts[i - 1].Name} in intermediate folder", outputDir.FullName);
+                    // create a temporary output directory for all scripts except the last one
+                    outputDir = i < scripts.Count - 1
+                             ? Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()))
+                             : finalOutput;
+                    // transfer global parameters value except input and output (that could change between scripts)
+                    foreach (var k in this._parameters.Keys.Except(new string[] { "input", "output" })) {
+                        if (scripts[i].Parameters.ContainsKey(k)) {
+                            scripts[i].Parameters[k] = this._parameters[k];
+                        }
                     }
-                }
-                // create a temporary output directory for all scripts except the last one
-                outputDir = i < scripts.Count - 1
-                         ? Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()))
-                         : finalOutput;
-                // transfer global parameters value except input and output (that could change between scripts)
-                foreach (var k in this._parameters.Keys.Except(new string[] { "input", "output" })) {
-                    if (scripts[i].Parameters.ContainsKey(k)) {
-                        scripts[i].Parameters[k] = this._parameters[k];
+                    if (scripts[i].Parameters.ContainsKey("validation") &&
+                        scripts[i].Parameters.ContainsKey("validation-report") &&
+                        scripts[i].Parameters["validation"].ParameterValue.ToString() == "report"
+                    ) {
+                        scripts[i].Parameters["validation-report"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput.FullName, "report")).FullName;
                     }
-                }
-                if (scripts[i].Parameters.ContainsKey("validation") &&
-                    scripts[i].Parameters.ContainsKey("validation-report") &&
-                    scripts[i].Parameters["validation"].ParameterValue.ToString() == "report"
-                ) {
-                    scripts[i].Parameters["validation-report"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput.FullName, "report")).FullName;
-                }
-                if (scripts[i].Parameters.ContainsKey("include-tts-log") &&
-                    scripts[i].Parameters.ContainsKey("tts-log") &&
-                    (bool)scripts[i].Parameters["include-tts-log"].ParameterValue == true
-                ) {
-                    scripts[i].Parameters["tts-log"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput.FullName, "tts-log")).FullName;
-                }
+                    if (scripts[i].Parameters.ContainsKey("include-tts-log") &&
+                        scripts[i].Parameters.ContainsKey("tts-log") &&
+                        (bool)scripts[i].Parameters["include-tts-log"].ParameterValue == true
+                    ) {
+                        scripts[i].Parameters["tts-log"].ParameterValue = Directory.CreateDirectory(Path.Combine(finalOutput.FullName, "tts-log")).FullName;
+                    }
 
 #if DEBUG
-                this.EventsHandler.onProgressMessageReceived(
-                    this,
-                    new DaisyEventArgs(
-                        $"Applying {scripts[i].Name} on {input} and storing into {outputDir.FullName}"
-                    )
-                );
+                    this.EventsHandler.onProgressMessageReceived(
+                        this,
+                        new DaisyEventArgs(
+                            $"Applying {scripts[i].Name} on {input} and storing into {outputDir.FullName}"
+                        )
+                    );
 #else
-                this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Launching script {scripts[i].Name} ... "));
+                    this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Launching script {scripts[i].Name} ... "));
 #endif
-                // rebind input and output
-                scripts[i].Parameters["input"].ParameterValue = input;
-                scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
-                scripts[i].ExecuteScript(inputPath, isQuite);
+                    // rebind input and output
+                    scripts[i].Parameters["input"].ParameterValue = input;
+                    scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
+                    scripts[i].ExecuteScript(inputPath, isQuite);
+                }
+            }
+            catch (Exception ex) {
+                this.EventsHandler.OnConversionError(new Exception("An error occurred while executing the Word to EPUB 3 conversion pipeline.", ex));
             }
         }
     }

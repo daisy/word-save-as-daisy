@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Daisy.SaveAsDAISY.Conversion.Events;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
-using org.daisy.jnet;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
