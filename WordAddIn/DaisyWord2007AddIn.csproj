@@ -126,6 +126,8 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
       <HintPath>..\resources\word2007\OFFICE.DLL</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
     <Reference Include="stdole, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\resources\stdole.dll</HintPath>
@@ -300,6 +302,10 @@
     <ProjectReference Include="..\Common\DaisyAddinLib\DaisyAddinLib.csproj">
       <Project>{599773ff-1e86-4ac2-8b24-34bbac707370}</Project>
       <Name>DaisyAddinLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\DaisyAddinWPFLib\DaisyAddinWPFLib.csproj">
+      <Project>{8fdeb36e-8feb-46f6-9ed9-a57c5c5ab713}</Project>
+      <Name>DaisyAddinWPFLib</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\DaisyConverterLib\DaisyConverterLib.csproj">
       <Project>{8cb777eb-36ed-45d8-84ff-bdd64ad5026e}</Project>

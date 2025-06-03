@@ -53,6 +53,7 @@ using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
 using System.Diagnostics;
 using Microsoft.Toolkit.Uwp.Notifications;
+using Daisy.SaveAsDAISY.WPF;
 
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
@@ -93,7 +94,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         ///	Place your initialization code within this method.
         /// </summary>
         public Connect() {
-            AddinLogger.Info("Initialize addin");
             try {
                 this.addinLib = new AddinResources();
             } catch (Exception e) {
@@ -480,8 +480,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
 
         public void GetDaisySettings(IRibbonControl control) {
-            ConverterSettingsForm daisyfrm = new ConverterSettingsForm();
-            daisyfrm.ShowDialog();
+            //ConverterSettingsForm daisyfrm = new ConverterSettingsForm();
+            //daisyfrm.ShowDialog();
+            Daisy.SaveAsDAISY.WPF.Settings settings = new Daisy.SaveAsDAISY.WPF.Settings();
+            settings.ShowDialog();
         }
 
 
@@ -773,8 +775,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// </summary>
         /// <param name="control"></param>
         public void AboutUI(IRibbonControl control) {
-            About abtForm = new About();
-            abtForm.ShowDialog();
+            Daisy.SaveAsDAISY.WPF.About aboutWindow = new Daisy.SaveAsDAISY.WPF.About();
+            aboutWindow.ShowDialog();
+            //About abtForm = new About();
+            //abtForm.ShowDialog();
         }
 
         #region Single document conversion
