@@ -525,15 +525,19 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
                 stringBuilder.Append("</input>");
             }
             foreach (var option in Options.Where(o => o.Value != null && o.Value.ToString().Trim() != "")) {
-                stringBuilder.Append($"<input name=\"{option.Name}\">");
-                if (option.Value is string) {
-                    stringBuilder.Append($"<item value=\"{option.Value.ToString().Trim()}\"/>");
+                stringBuilder.Append($"<option name=\"{option.Name}\">");
+                if (option.Value is bool) {
+                    stringBuilder.Append(option.Value.ToString().ToLower().Trim());
+                } else if (option.Value is string) {
+                    stringBuilder.Append(option.Value.ToString().Trim());
                 } else if (option.Value is List<string>) {
                     foreach (var value in (List<string>)option.Value) {
                         stringBuilder.Append($"<item value=\"{value.ToString().Trim()}\"/>");
                     }
+                } else {
+                    stringBuilder.Append(option.Value.ToString().Trim());
                 }
-                stringBuilder.Append("</input>");
+                stringBuilder.Append("</option>");
             }
             stringBuilder.Append("</jobRequest>");
             return stringBuilder.ToString();
