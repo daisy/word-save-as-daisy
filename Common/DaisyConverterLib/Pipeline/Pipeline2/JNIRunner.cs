@@ -537,87 +537,98 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
             return instance;
         }
 
-        new public void StartJob(string scriptName, Dictionary<string, object> options = null)
+        public override void StartJob(string scriptName, Dictionary<string, object> options = null, string outputPath = "")
         {
             try {
+                IntPtr currentJob = Start(scriptName, options);
 
-            } catch (Exception e) {
-
-            }
-            IntPtr currentJob = Start(scriptName, options);
-
-            if (currentJob != IntPtr.Zero) {
-                bool checkStatus = true;
-                List<string> errors;
-                while (checkStatus) {
-                    foreach (string message in getNewMessages(currentJob)) {
-                        EventsHandler.onFeedbackMessageReceived(
-                            this,
-                            new DaisyEventArgs("DP2 > " + message)
-                        );
-                    }
-                    //Console.WriteLine(pipeline.getProgress(messages));
-                    // TODO need to get jobs log
-                    //Console.WriteLine("checking status");
-                    switch (getStatus(currentJob)) {
-                        case JobStatus.Idle:
-                            break;
-                        case JobStatus.Running:
-                            break;
-                        case JobStatus.Success:
-                            checkStatus = false;
-                            break;
-                        case JobStatus.Error:
-                            errors = getErros(currentJob);
-                            string errorMessage =
-                                " DP2 > "
-                                + scriptName
-                                + " conversion job has finished in error :\r\n"
-                                + string.Join("\r\n", errors);
-                            throw new JobException(errorMessage);
-                        case JobStatus.Fail:
-                            // open jobs folder
-                            errors = getErros(currentJob);
-                            string failedMessage =
-                                " DP2 > "
-                                + scriptName
-                                + " conversion job failed :\r\n"
-                                + string.Join("\r\n", errors);
-                            throw new JobException(failedMessage);
-                        default:
-                            break;
-                    }
-                    System.Threading.Thread.Sleep(1000);
+                if (currentJob != IntPtr.Zero) {
+                    bool checkStatus = true;
+                    List<string> errors;
+                    while (checkStatus) {
+                        foreach (string message in getNewMessages(currentJob)) {
+                            EventsHandler.onFeedbackMessageReceived(
+                                this,
+                                new DaisyEventArgs("DP2 > " + message)
+                            );
+                        }
+                        //Console.WriteLine(pipeline.getProgress(messages));
+                        // TODO need to get jobs log
+                        //Console.WriteLine("checking status");
+                        switch (getStatus(currentJob)) {
+                            case JobStatus.Idle:
+                                break;
+                            case JobStatus.Running:
+                                break;
+                            case JobStatus.Success:
+                                checkStatus = false;
+                                break;
+                            case JobStatus.Error:
+                                errors = getErros(currentJob);
+                                string errorMessage =
+                                    " DP2 > "
+                                    + scriptName
+                                    + " conversion job has finished in error :\r\n"
+                                    + string.Join("\r\n", errors);
+                                throw new JobException(errorMessage);
+                            case JobStatus.Fail:
+                                // open jobs folder
+                                errors = getErros(currentJob);
+                                string failedMessage =
+                                    " DP2 > "
+                                    + scriptName
+                                    + " conversion job failed :\r\n"
+                                    + string.Join("\r\n", errors);
+                                throw new JobException(failedMessage);
+                            default:
+                                break;
+                        }
+                        System.Threading.Thread.Sleep(1000);
 #if DEBUG
-                    // Kill the instance and running jvm for pipeline debugging
-                    try {
-                        //Pipeline2.KillInstance();
-                    }
-                    catch (Exception e) {
-                        throw;
-                    }
-                    //
+                        // Kill the instance and running jvm for pipeline debugging
+                        try {
+                            //Pipeline2.KillInstance();
+                        }
+                        catch (Exception e) {
+                            throw;
+                        }
+                        //
 #else
                     if (!isQuite && !string.IsNullOrEmpty(output))
                         System.Diagnostics.Process.Start(output);
 #endif
+                    }
+                } else {
+                    throw new Exception(
+                        "DP2 > An unknown error occured while launching the script "
+                            + scriptName
+                            + " with the parameters "
+                            + options.Aggregate(
+                                "",
+                                (result, keyvalue) =>
+                                    result
+                                    + keyvalue.Key
+                                    + "="
+                                    + keyvalue.Value.ToString()
+                                    + "\r\n"
+                            )
+                    );
                 }
-            } else {
-                throw new Exception(
-                    "DP2 > An unknown error occured while launching the script "
-                        + scriptName
-                        + " with the parameters "
-                        + options.Aggregate(
-                            "",
-                            (result, keyvalue) =>
-                                result
-                                + keyvalue.Key
-                                + "="
-                                + keyvalue.Value.ToString()
-                                + "\r\n"
-                        )
-                );
+            } catch (Exception e) {
+                throw new Exception("DP2 > An error occured while launching the script "
+                            + scriptName
+                            + " with the parameters "
+                            + options.Aggregate(
+                                "",
+                                (result, keyvalue) =>
+                                    result
+                                    + keyvalue.Key
+                                    + "="
+                                    + keyvalue.Value.ToString()
+                                    + "\r\n"
+                            ), e);
             }
+            
         }
     }
 }
