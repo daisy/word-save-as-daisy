@@ -77,6 +77,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
         /// <exception cref="ArgumentOutOfRangeException">if the file was not found</exception>
         public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
         {
+            return SearchInputFromDirectory(inputDirectory);
+        }
+
+        public static string SearchInputFromDirectory(DirectoryInfo inputDirectory)
+        {
             return Directory.GetFiles(inputDirectory.FullName, "*.opf", SearchOption.AllDirectories)[0];
         }
     }
