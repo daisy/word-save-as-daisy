@@ -13,13 +13,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
 
         private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
-        List<Pipeline2Script> scripts;
-
+        List<Script> scripts;
 
         public WordToDaisy202(IConversionEventsHandler e) : base(e)
         {
             this.niceName = "Export to DAISY 2.02";
-            scripts = new List<Pipeline2Script>()
+            scripts = new List<Script>()
             {
                 new WordToDtbook(e),
                 new DtbookCleaner(e),
@@ -278,8 +277,15 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
                     scripts[i].ExecuteScript(inputPath, isQuite);
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 this.EventsHandler.OnConversionError(new Exception("An error occurred while executing the Word to DAISY 2.02 conversion pipeline.", ex));
             }
+        }
+
+        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

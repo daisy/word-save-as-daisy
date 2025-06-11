@@ -12,11 +12,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
         private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
 
-        List<Pipeline2Script> scripts;
+        List<Script> scripts;
         public WordToEpub3(IConversionEventsHandler e): base(e) {
             this.niceName = "Export to EPUB3";
 
-            scripts = new List<Pipeline2Script>() {
+            scripts = new List<Script>() {
                 new WordToDtbook(e),
                 new DtbookCleaner(e),
                 new DtbookToEpub3(e)
@@ -275,6 +275,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             catch (Exception ex) {
                 this.EventsHandler.OnConversionError(new Exception("An error occurred while executing the Word to EPUB 3 conversion pipeline.", ex));
             }
+        }
+
+        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,16 +1,19 @@
-﻿using org.daisy.jnet;
+﻿using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
+using org.daisy.jnet;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace Daisy.SaveAsDAISY.Conversion
+namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
 {
     /// <summary>
-    /// Pipeline 2 launcher
+    /// Pipeline 2 launcher through JNI
     /// </summary>
-    public class Pipeline2
+    public class JNIRunner : ScriptRunner
     {
         private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
@@ -35,7 +38,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         #region Singleton initialisation
 
-        private static Pipeline2 instance = null;
+        private static JNIRunner instance = null;
 
         // for thread safety
         private static readonly object padlock = new object();
@@ -47,7 +50,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             );
         }
 
-        private Pipeline2()
+        private JNIRunner()
         {
             // use jnet to execute the conversion on the inputPath
             // check for arch specific jre based on how the jre folders are created by the daisy/pipeline-assembly project (lite-bridge version)
@@ -88,7 +91,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
             List<string> JarPathes = ClassFolders.Aggregate(
                 new List<string>(),
-                (List<string> classPath, string path) =>
+                (classPath, path) =>
                 {
                     return Directory.Exists(path)
                         ? classPath
@@ -111,7 +114,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 .Concat(
                     SystemProps.Aggregate(
                         new List<string>(),
-                        (List<string> opts, KeyValuePair<string, string> opt) =>
+                        (opts, opt) =>
                         {
                             opts.Add(opt.Key.ToString() + "=" + opt.Value.ToString());
                             return opts;
@@ -204,7 +207,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             jni = null;
         }
 
-        public static Pipeline2 Instance
+        public static JNIRunner Instance
         {
             get
             {
@@ -212,7 +215,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 {
                     if (instance == null) {
                         try {
-                            instance = new Pipeline2();
+                            instance = new JNIRunner();
                         }
                         catch (Exception ex) {
                             throw new Exception("An error occured while initializing DAISY Pipeline 2", ex);
@@ -297,7 +300,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public void SetPipelineOutputListener(PipelineOutputListener onPipelineOutput)
         {
-            this.OnPipelineOutputEvent = onPipelineOutput;
+            OnPipelineOutputEvent = onPipelineOutput;
         }
 
         public PipelineOutputListener OnPipelineOutput => OnPipelineOutputEvent;
@@ -307,10 +310,10 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public void SetPipelineErrorListener(PipelineErrorListener onPipelineError)
         {
-            this.OnPipelineErrorEvent = onPipelineError;
+            OnPipelineErrorEvent = onPipelineError;
         }
 
-        public PipelineErrorListener OnPipelineError => this.OnPipelineErrorEvent;
+        public PipelineErrorListener OnPipelineError => OnPipelineErrorEvent;
 
         /// <summary>
         /// Convert a C# raw-type object into a string representation of the corresponding Java object
@@ -413,18 +416,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-        /// <summary>
-        /// Possible status for a pipeline job
-        /// </summary>
-        public enum JobStatus
-        {
-            IDLE,
-            RUNNING,
-            SUCCESS,
-            ERROR,
-            FAIL,
-            UNKNOWN
-        }
 
         /// <summary>
         /// Retrieve the current status of a pipeline job
@@ -450,18 +441,17 @@ namespace Daisy.SaveAsDAISY.Conversion
             );
             switch (status)
             {
-                case "IDLE":
-                    return JobStatus.IDLE;
                 case "RUNNING":
-                    return JobStatus.RUNNING;
+                    return JobStatus.Running;
                 case "SUCCESS":
-                    return JobStatus.SUCCESS;
+                    return JobStatus.Success;
                 case "ERROR":
-                    return JobStatus.ERROR;
+                    return JobStatus.Error;
                 case "FAIL":
-                    return JobStatus.FAIL;
+                    return JobStatus.Fail;
+                case "IDLE":
                 default:
-                    return JobStatus.UNKNOWN;
+                    return JobStatus.Idle;
             }
         }
 
@@ -525,6 +515,109 @@ namespace Daisy.SaveAsDAISY.Conversion
                 messages.Add(message);
             }
             return messages;
+        }
+
+        private IConversionEventsHandler EventsHandler = null;
+        new public static ScriptRunner GetInstance(IConversionEventsHandler events = null)
+        {
+            JNIRunner instance = Instance;
+            instance.EventsHandler = events ?? new SilentEventsHandler();
+            instance.SetPipelineErrorListener(
+                (message) =>
+                {
+                    instance.EventsHandler.OnConversionError(new Exception("Pipeline 2 returned the following error message :\r\n" + message));
+                }
+            );
+            Instance.SetPipelineOutputListener(
+                (message) =>
+                {
+                    instance.EventsHandler.onFeedbackMessageReceived(instance, new DaisyEventArgs(message));
+                }
+            );
+            return instance;
+        }
+
+        new public void StartJob(string scriptName, Dictionary<string, object> options = null)
+        {
+            try {
+
+            } catch (Exception e) {
+
+            }
+            IntPtr currentJob = Start(scriptName, options);
+
+            if (currentJob != IntPtr.Zero) {
+                bool checkStatus = true;
+                List<string> errors;
+                while (checkStatus) {
+                    foreach (string message in getNewMessages(currentJob)) {
+                        EventsHandler.onFeedbackMessageReceived(
+                            this,
+                            new DaisyEventArgs("DP2 > " + message)
+                        );
+                    }
+                    //Console.WriteLine(pipeline.getProgress(messages));
+                    // TODO need to get jobs log
+                    //Console.WriteLine("checking status");
+                    switch (getStatus(currentJob)) {
+                        case JobStatus.Idle:
+                            break;
+                        case JobStatus.Running:
+                            break;
+                        case JobStatus.Success:
+                            checkStatus = false;
+                            break;
+                        case JobStatus.Error:
+                            errors = getErros(currentJob);
+                            string errorMessage =
+                                " DP2 > "
+                                + scriptName
+                                + " conversion job has finished in error :\r\n"
+                                + string.Join("\r\n", errors);
+                            throw new JobException(errorMessage);
+                        case JobStatus.Fail:
+                            // open jobs folder
+                            errors = getErros(currentJob);
+                            string failedMessage =
+                                " DP2 > "
+                                + scriptName
+                                + " conversion job failed :\r\n"
+                                + string.Join("\r\n", errors);
+                            throw new JobException(failedMessage);
+                        default:
+                            break;
+                    }
+                    System.Threading.Thread.Sleep(1000);
+#if DEBUG
+                    // Kill the instance and running jvm for pipeline debugging
+                    try {
+                        //Pipeline2.KillInstance();
+                    }
+                    catch (Exception e) {
+                        throw;
+                    }
+                    //
+#else
+                    if (!isQuite && !string.IsNullOrEmpty(output))
+                        System.Diagnostics.Process.Start(output);
+#endif
+                }
+            } else {
+                throw new Exception(
+                    "DP2 > An unknown error occured while launching the script "
+                        + scriptName
+                        + " with the parameters "
+                        + options.Aggregate(
+                            "",
+                            (result, keyvalue) =>
+                                result
+                                + keyvalue.Key
+                                + "="
+                                + keyvalue.Value.ToString()
+                                + "\r\n"
+                        )
+                );
+            }
         }
     }
 }

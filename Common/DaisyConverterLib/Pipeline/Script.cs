@@ -1,6 +1,7 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Events;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -106,6 +107,13 @@ namespace Daisy.SaveAsDAISY.Conversion {
         ///  executes script
         /// </summary>
         public abstract void ExecuteScript(string inputPath, bool isQuite);
+
+        /// <summary>
+        /// Searches for input file in the given directory.
+        /// </summary>
+        /// <param name="inputDirectory"></param>
+        /// <returns></returns>
+        public abstract string searchInputFromDirectory(DirectoryInfo inputDirectory);
 
         /// <summary>
         /// Number of steps for progression

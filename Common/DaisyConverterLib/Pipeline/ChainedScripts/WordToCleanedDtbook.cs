@@ -11,15 +11,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
 {
     public class WordToCleanedDtbook : Script
     {
-
-        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
-
-        List<Pipeline2Script> scripts;
+        List<Script> scripts;
 
         public WordToCleanedDtbook(IConversionEventsHandler e) : base(e)
         {
             this.niceName = "Export to DTBook XML";
-            scripts = new List<Pipeline2Script>() {
+            scripts = new List<Script>() {
                 new WordToDtbook(e),
                 new DtbookCleaner(e)
             };
@@ -216,6 +213,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                 this.EventsHandler.OnConversionError(new Exception("An error occurred while executing the Word to DTBook XML conversion pipeline.", ex));
             }
             
+        }
+
+        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        {
+            throw new NotImplementedException();
         }
     }
 }

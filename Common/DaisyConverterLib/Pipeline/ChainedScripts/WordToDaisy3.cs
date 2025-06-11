@@ -12,13 +12,13 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
 
         private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
-        List<Pipeline2Script> scripts;
+        List<Script> scripts;
 
 
         public WordToDaisy3(IConversionEventsHandler e) : base(e)
         {
             this.niceName = "Export to DAISY3";
-            scripts = new List<Pipeline2Script>()
+            scripts = new List<Script>()
             {
                 new WordToDtbook(e),
                 new DtbookCleaner(e),
@@ -254,6 +254,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             catch (Exception ex) {
                 this.EventsHandler.OnConversionError(new Exception("An error occurred while executing the Word to DAISY 3 conversion pipeline.", ex));
             }
+        }
+
+        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        {
+            throw new NotImplementedException();
         }
     }
 }

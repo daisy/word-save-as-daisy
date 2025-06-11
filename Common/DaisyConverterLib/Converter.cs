@@ -1,13 +1,12 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -285,7 +284,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
                     ConversionParameters.PostProcessor.ExecuteScript(document.CopyPath);
                 }
-                catch (Pipeline2Script.JobException je) {
+                catch (JobException je) {
                     // Job finished in error, not sure if i should  return a failed result
                     // or throw back to allow a report
                     this.EventsHandler.onPostProcessingError(
@@ -406,7 +405,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 try {
                     ConversionParameters.PostProcessor.ExecuteScript(ConversionParameters.OutputPath);
                 }
-                catch (Pipeline2Script.JobException je) {
+                catch (JobException je) {
                     // Job finished in error, not sure if i should  return a failed result
                     // or throw back to allow a report
                     this.EventsHandler.onPostProcessingError(
@@ -532,7 +531,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 {
                     ConversionParameters.PostProcessor.ExecuteScript(document.OutputPath);
                 }
-                catch (Pipeline2Script.JobException je) {
+                catch (JobException je) {
                     // Job finished in error, not sure if i should  return a failed result
                     // or throw back to allow a report
                     this.EventsHandler.onPostProcessingError(
@@ -708,7 +707,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     try {
                         ConversionParameters.PostProcessor.ExecuteScript(ConversionParameters.OutputPath);
                     }
-                    catch (Pipeline2Script.JobException je) {
+                    catch (JobException je) {
                         // Job finished in error, not sure if i should  return a failed result
                         // or throw back to allow a report
                         this.EventsHandler.onPostProcessingError(
