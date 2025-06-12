@@ -22,49 +22,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
         private AppRunner(IConversionEventsHandler events = null)
         {
             this.events = events ?? new SilentEventsHandler();
-            if (!ConverterHelper.PipelineAppIsInstalled()) {
-                throw new InvalidOperationException("DAISY Pipeline application is not installed.");
-            }
-            // Check if the app is running
-            // Recherche tous les processus dont le nom correspond à "DAISY Pipeline"
-            // (sans l'extension .exe, car ProcessName ne la contient jamais)
-            var processes = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(ConverterHelper.PipelineAppPath));
-            if(processes.Length == 0) {
-                // If not running, start the app
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = ConverterHelper.PipelineAppPath,
-                    Arguments = "--bg --hidden",
-                    UseShellExecute = true, // Important pour détacher du parent
-                    CreateNoWindow = true,  // Pas de fenêtre de console
-                    WindowStyle = ProcessWindowStyle.Hidden // Optionnel, pour cacher la fenêtre si c'est une GUI
-                };
-                Process.Start(startInfo);
-            }
-            int attempt = 10;
-            do {
-                attempt--;
-                try {
-                    _webservice = getAppWebservice();
-                    AliveData data = _webservice.Alive().Result;
-                    if(data == null || !data.Alive) {
-                        _webservice = null;
-                    }
-                } catch (AggregateException e) {
-                    _webservice = null;
-                    // If the app is not ready yet, wait a bit
-                    System.Threading.Thread.Sleep(1000);
-                }
-                catch (Exception e) {
-                    _webservice = null;
-                    // If the app is not ready yet, wait a bit
-                    System.Threading.Thread.Sleep(1000);
-                }
-            } while(_webservice == null && attempt > 0);
-            if(_webservice == null) {
-                throw new InvalidOperationException("Could not connect to DAISY Pipeline app webservice after 10 attempts");
-            }
+            LaunchApp();
+            EnsureWebserviceAlive();
         }
+
+        
 
         private static readonly Regex SeekWebserviceHost = new Regex(@"[""\']?host[""']?\s*:\s*[""']?([^""',]+)[""']?\s*\}?,?", RegexOptions.Compiled);
         private static readonly Regex SeekWebservicePort = new Regex(@"[""\']?port[""']?\s*:\s*[""']?([^""',]+)[""']?\s*\}?,?", RegexOptions.Compiled);
@@ -78,13 +40,30 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
             return new Webservice(host, int.Parse(port), path);
         }
 
+        private static AppRunner instance = null;
+
+        // for thread safety
+        private static readonly object padlock = new object();
+
         public static new ScriptRunner GetInstance(IConversionEventsHandler events = null) {
-            return new AppRunner(events);
+            lock (padlock) {
+                if (instance == null) {
+                    try {
+                        instance = new AppRunner(events);
+                    }
+                    catch (Exception ex) {
+                        throw new Exception("An error occured while launching or connecting to DAISY Pipeline App", ex);
+                    }
+                }
+                return instance;
+            }
         }
         public override void StartJob(string scriptName, Dictionary<string, object> options = null, string outputPath = "") {
             
             try {
-                JobData data = _webservice.LaunchJob(scriptName, options).Result;
+                LaunchApp(); // ensure the app is running if it as been closed
+                EnsureWebserviceAlive(); // ensure webservice is alive
+                JobData data = _webservice.LaunchJob(scriptName, options);
                 List<JobStatus> running = new List<JobStatus>() {
                     JobStatus.Idle, JobStatus.Running
                 };
@@ -117,6 +96,113 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
             catch (AggregateException e) {
                 events.OnConversionError(new Exception("An error occured during the job launch or its monitoring", e));
             }
+        }
+
+        /// <summary>
+        /// Check if the app is installed and launch it if it is not already running.
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
+        private void LaunchApp()
+        {
+            if (!ConverterHelper.PipelineAppIsInstalled()) {
+                throw new InvalidOperationException("DAISY Pipeline application is not installed.");
+            }
+            // Check if the app is running
+            var processes = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(ConverterHelper.PipelineAppPath));
+            if (processes.Length == 0) {
+                events.onProgressMessageReceived(this, new DaisyEventArgs("Starting DAISY Pipeline app..."));
+                // If not running, start the app
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = ConverterHelper.PipelineAppPath,
+                    Arguments = "--bg --hidden",
+                    UseShellExecute = true, 
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+                Process.Start(startInfo);
+                // Wait a second that the electorn app context is initialized
+                Thread.Sleep(1000);
+            }
+        }
+
+        /// <summary>
+        /// Ensure webservice is (still) alive
+        /// </summary>
+        /// <exception cref="InvalidOperationException"></exception>
+        private void EnsureWebserviceAlive()
+        {
+            int attempt = 10;
+            do {
+                attempt--;
+                try {
+                    _webservice = getAppWebservice();
+                    AliveData data = _webservice.Alive();
+                    if (data == null || !data.Alive) {
+                        _webservice = null;
+                    }
+                }
+                catch (AggregateException e) {
+                    _webservice = null;
+                    System.Threading.Thread.Sleep(1000);
+                }
+                catch (Exception e) {
+                    _webservice = null;
+                    System.Threading.Thread.Sleep(1000);
+                }
+            } while (_webservice == null && attempt > 0);
+            if (_webservice == null) {
+                //events.OnConversionError(new InvalidOperationException("Could not connect to DAISY Pipeline app webservice after 10 attempts"));
+                throw new InvalidOperationException("Could not connect to DAISY Pipeline app webservice after 10 attempts");
+            }
+        }
+
+        /// <summary>
+        /// Open the DAISY Pipeline app "Browse voices" settings.
+        /// </summary>
+        public void BrowseVoices() {
+            LaunchApp();
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = ConverterHelper.PipelineAppPath,
+                Arguments = "browse-voices",
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            Process.Start(startInfo);
+        }
+
+        /// <summary>
+        /// Open the DAISY Pipeline app "Preferred voices" settings.
+        /// </summary>
+        public void PreferredVoices() {
+            LaunchApp();
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = ConverterHelper.PipelineAppPath,
+                Arguments = "preferred-voices",
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            Process.Start(startInfo);
+        }
+
+        /// <summary>
+        /// Open the DAISY Pipeline app "Engines" settings.
+        /// </summary>
+        public void TTSEngines() {
+            LaunchApp();
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = ConverterHelper.PipelineAppPath,
+                Arguments = "engines",
+                UseShellExecute = true,
+                CreateNoWindow = true,
+                WindowStyle = ProcessWindowStyle.Hidden
+            };
+            Process.Start(startInfo);
         }
     }
 }

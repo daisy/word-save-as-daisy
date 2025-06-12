@@ -36,7 +36,9 @@ namespace Daisy.SaveAsDAISY.Conversion {
 				)).FullName; }
 		}
 
-		public static string PipelineAppPath {
+		public static readonly string PipelineAppReleaseURL = "https://github.com/daisy/pipeline-ui/releases/latest";
+
+        public static string PipelineAppPath {
             get
             {
                 return Path.Combine(

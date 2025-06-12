@@ -82,12 +82,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                 { "-Dorg.daisy.pipeline.logdir", LogsFolder.Replace("\\", "/") },
                 { "-Dorg.daisy.pipeline.mode", "cli" }
             };
-            if (GlobaleSettings.AzureSpeechKey != "" && GlobaleSettings.AzureSpeechRegion != "")
-            {
-                SystemProps["-Dorg.daisy.pipeline.tts.azure.key"] = GlobaleSettings.AzureSpeechKey;
-                SystemProps["-Dorg.daisy.pipeline.tts.azure.region"] =
-                    GlobaleSettings.AzureSpeechRegion;
-            }
+            //if (GlobaleSettings.AzureSpeechKey != "" && GlobaleSettings.AzureSpeechRegion != "")
+            //{
+            //    SystemProps["-Dorg.daisy.pipeline.tts.azure.key"] = GlobaleSettings.AzureSpeechKey;
+            //    SystemProps["-Dorg.daisy.pipeline.tts.azure.region"] =
+            //        GlobaleSettings.AzureSpeechRegion;
+            //}
 
             List<string> JarPathes = ClassFolders.Aggregate(
                 new List<string>(),
@@ -585,6 +585,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                         }
                         System.Threading.Thread.Sleep(1000);
 #if DEBUG
+                        System.Diagnostics.Process.Start(outputPath);
                         // Kill the instance and running jvm for pipeline debugging
                         try {
                             //Pipeline2.KillInstance();
@@ -594,8 +595,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                         }
                         //
 #else
-                    if (!isQuite && !string.IsNullOrEmpty(output))
-                        System.Diagnostics.Process.Start(output);
+                    if (!string.IsNullOrEmpty(outputPath))
+                        System.Diagnostics.Process.Start(outputPath);
 #endif
                     }
                 } else {

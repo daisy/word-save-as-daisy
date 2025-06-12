@@ -197,12 +197,12 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string footnotesStartValue = "1"; // number to be used
         private string footnotesNumberingPrefix = ""; // prefix to be added before the numbering
         private string footnotesNumberingSuffix = ""; // suffix to be added between the number and the text
-        private string azureSpeechRegion = ""; // region defined in the Azure console for the speech service
-        private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
+        //private string azureSpeechRegion = ""; // region defined in the Azure console for the speech service
+        //private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
         private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
         private string dontNotifySponsorship = ""; // notify the user about sponsorship
+        private bool useDAISYPipelineApp = true; // use the pipeline app to run the conversion instead of the embedded engine
 
-        
         /// <summary>
         /// Get the current settings as XML string
         /// </summary>
@@ -222,12 +222,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t\tnumberPrefix=\"{footnotesNumberingPrefix}\" " +
                 $"\r\n\t\tnumberSuffix=\"{footnotesNumberingSuffix}\" />" +
                 $"\r\n\t<TTSConfig file=\"{ttsConfigFile}\" />" +
-                (withPrivateData
-                    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
-                      $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
-                    : ""
-                ) +
+                //(withPrivateData
+                //    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
+                //      $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
+                //    : ""
+                //) +
                 $"\r\n\t<DontNotifySponsorship value=\"{dontNotifySponsorship}\" />" +
+                $"\r\n\t<UsePipelineApp value=\"{useDAISYPipelineApp.ToString().ToLower()}\" />" +
                 $"\r\n</Settings>";
         }
 
@@ -236,12 +237,10 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public void CreateDefaultSettings()
         {
-            if (!Directory.Exists(ApplicationDataFolder))
-            {
+            if (!Directory.Exists(ApplicationDataFolder)) {
                 Directory.CreateDirectory(ApplicationDataFolder);
             }
-            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
-            {
+            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile))) {
                 writer.Write(AsXML());
                 writer.Flush();
             }
@@ -252,35 +251,30 @@ namespace Daisy.SaveAsDAISY.Conversion
         private ConverterSettings()
         {
             XmlDocument settingsDocument = new XmlDocument();
-            if (!File.Exists(ConverterSettingsFile))
-            {
+            if (!File.Exists(ConverterSettingsFile)) {
                 // Save the default settings
                 Save();
             }
 
             settingsDocument.Load(ConverterSettingsFile);
             XmlNode ImageSizesNode = settingsDocument.SelectSingleNode("//Settings/ImageSizes");
-            if (ImageSizesNode != null)
-            {
+            if (ImageSizesNode != null) {
                 imgoption = (ImageSizesNode.Attributes["value"]?.InnerXml) ?? imgoption;
                 resampleValue = (ImageSizesNode.Attributes["samplingvalue"]?.InnerXml) ?? imgoption;
             }
 
             XmlNode CharacterStylesNode = settingsDocument.SelectSingleNode("//Settings/CharacterStyles");
-            if (CharacterStylesNode != null)
-            {
+            if (CharacterStylesNode != null) {
                 characterStyle = (CharacterStylesNode.Attributes["value"]?.InnerXml) ?? characterStyle;
             }
 
             XmlNode PageNumbersNode = settingsDocument.SelectSingleNode("//Settings/PageNumbers");
-            if (PageNumbersNode != null)
-            {
+            if (PageNumbersNode != null) {
                 pagenumStyle = ((PageNumbersNode.Attributes["value"]?.InnerXml) ?? pagenumStyle).ToLowerInvariant();
             }
 
             XmlNode FootnotesSettings = settingsDocument.SelectSingleNode("//Settings/Footnotes");
-            if (FootnotesSettings != null)
-            {
+            if (FootnotesSettings != null) {
                 footnotesLevel = (FootnotesSettings.Attributes["level"].InnerXml) ?? footnotesLevel;
                 footnotesPosition = (FootnotesSettings.Attributes["position"]?.InnerXml) ?? footnotesPosition;
                 footnotesNumbering = (FootnotesSettings.Attributes["numbering"]?.InnerXml) ?? footnotesNumbering;
@@ -289,21 +283,24 @@ namespace Daisy.SaveAsDAISY.Conversion
                 footnotesNumberingSuffix = (FootnotesSettings.Attributes["numberSuffix"]?.InnerXml) ?? footnotesNumberingSuffix;
             }
 
-            XmlNode AzureSettings = settingsDocument.SelectSingleNode("//Settings/Azure");
-            if(AzureSettings != null)
-            {
-                azureSpeechRegion = (AzureSettings.Attributes["region"].InnerXml) ?? azureSpeechRegion;
-                azureSpeechKey = (AzureSettings.Attributes["key"].InnerXml) ?? azureSpeechKey;
-            }
+            //XmlNode AzureSettings = settingsDocument.SelectSingleNode("//Settings/Azure");
+            //if (AzureSettings != null) {
+            //    azureSpeechRegion = (AzureSettings.Attributes["region"].InnerXml) ?? azureSpeechRegion;
+            //    azureSpeechKey = (AzureSettings.Attributes["key"].InnerXml) ?? azureSpeechKey;
+            //}
             XmlNode TTSConfigSettings = settingsDocument.SelectSingleNode("//Settings/TTSConfig");
-            if (TTSConfigSettings != null)
-            {
+            if (TTSConfigSettings != null) {
                 ttsConfigFile = (TTSConfigSettings.Attributes["file"].InnerXml) ?? ttsConfigFile;
             }
 
             XmlNode DontNotifySponsorshipSettings = settingsDocument.SelectSingleNode("//Settings/DontNotifySponsorship");
             if (DontNotifySponsorshipSettings != null) {
                 dontNotifySponsorship = (DontNotifySponsorshipSettings.Attributes["value"].InnerXml) ?? dontNotifySponsorship;
+            }
+            XmlNode UsePipelineAppSettings = settingsDocument.SelectSingleNode("//Settings/UsePipelineApp");
+            if (UsePipelineAppSettings != null) {
+                var nodeValue = UsePipelineAppSettings.Attributes["value"]?.InnerXml;
+                useDAISYPipelineApp = ConverterHelper.PipelineAppIsInstalled() && (nodeValue == null ? useDAISYPipelineApp : nodeValue == "true");
             }
 
 
@@ -314,12 +311,10 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         public void Save()
         {
-            if (!Directory.Exists(ApplicationDataFolder))
-            {
+            if (!Directory.Exists(ApplicationDataFolder)) {
                 Directory.CreateDirectory(ApplicationDataFolder);
             }
-            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
-            {
+            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile))) {
                 writer.Write(AsXML(true));
                 writer.Flush();
             }
@@ -360,23 +355,28 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public string FootnotesNumberingSuffix { get => footnotesNumberingSuffix; set => footnotesNumberingSuffix = value; }
 
-        public string AzureSpeechRegion { get => azureSpeechRegion; set => azureSpeechRegion = value; }
+        //public string AzureSpeechRegion { get => azureSpeechRegion; set => azureSpeechRegion = value; }
 
-        public string AzureSpeechKey { get => azureSpeechKey; set => azureSpeechKey = value; }
+        //public string AzureSpeechKey { get => azureSpeechKey; set => azureSpeechKey = value; }
 
         public string TTSConfigFile { get => ttsConfigFile; set => ttsConfigFile = value; }
 
         public bool DontNotifySponsorship {
-            get {
+            get
+            {
                 try {
                     return dontNotifySponsorship.Length > 0 && bool.Parse(dontNotifySponsorship);
-                } catch (Exception) {
+                }
+                catch (Exception) {
                     return false;
-                }  
+                }
             }
             set => dontNotifySponsorship = value.ToString();
         }
 
-
+        public bool UseDAISYPipelineApp {
+            get => useDAISYPipelineApp;
+            set => useDAISYPipelineApp = value;
+        }
     }
 }

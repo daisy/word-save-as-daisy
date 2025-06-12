@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Daisy.SaveAsDAISY.Conversion.Events;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2; 
 
@@ -9,6 +10,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
     /// </summary>
     public abstract class Pipeline2Script : Script
     {
+        private ConverterSettings _settings = ConverterSettings.Instance;
+
         protected Pipeline2Script(IConversionEventsHandler e)
             : base(e) { }
 
@@ -44,7 +47,16 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 parameters[v.Value.Name] = v.Value.ParameterValue;
             }
 
-            JNIRunner.GetInstance(EventsHandler).StartJob(Name, parameters);
+            ScriptRunner runner;
+            try {
+                runner = _settings.UseDAISYPipelineApp ? AppRunner.GetInstance(EventsHandler) : JNIRunner.GetInstance(EventsHandler);
+            } catch (System.Exception ex) {
+                EventsHandler.onPostProcessingError(
+                    new Exception("An error occurred while launching the pipeline, fall back to / retry embedded engine", ex)
+                );
+                runner = JNIRunner.GetInstance(EventsHandler);
+            }
+            runner.StartJob(Name, parameters, Parameters["output"].ParameterValue.ToString());
 
         }
     }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Xml;
@@ -57,18 +56,14 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             else throw new Exception($"Invalid response: expected root element '{rootElementName}' not found.");
         }
 
-        public async Task<AliveData> Alive()
+        public AliveData Alive()
         {
             try {
-                var response = await connection.GetAsync(connection.BaseAddress + ENDPOINTS.ALIVE);
+                var response = connection.GetAsync(connection.BaseAddress + ENDPOINTS.ALIVE).Result;
                 if (!response.IsSuccessStatusCode) {
                     return new AliveData() { Alive = false };
                 }
-
-
-                XmlDocument doc = new XmlDocument();
-                doc.LoadXml(await response.Content.ReadAsStringAsync());
-                XmlElement aliveElement = ParseXml(await response.Content.ReadAsStringAsync(), "alive");
+                XmlElement aliveElement = ParseXml(response.Content.ReadAsStringAsync().Result, "alive");
                 return new AliveData()
                 {
                     Alive = true,
@@ -78,24 +73,24 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 };
 
             }
-            catch (Exception e) {
+            catch (AggregateException e) {
                 AddinLogger.Error(new Exception($"Error checking webservice alive status", e));
                 return new AliveData() { Alive = false };
             }
         }
 
-        public async Task<List<ScriptDefinition>> GetScripts()
+        public List<ScriptDefinition> GetScripts()
         {
             if (scripts != null) return scripts;
             try {
-                var response = await connection.GetAsync(connection.BaseAddress + ENDPOINTS.SCRIPTS);
+                var response = connection.GetAsync(connection.BaseAddress + ENDPOINTS.SCRIPTS).Result;
                 scripts = new List<ScriptDefinition>();
-                XmlElement scriptsElm = ParseXml(await response.Content.ReadAsStringAsync(), "scripts");
+                XmlElement scriptsElm = ParseXml(response.Content.ReadAsStringAsync().Result, "scripts");
 
                 foreach (XmlElement scriptNode in scriptsElm.GetElementsByTagName("script")) {
                     scripts.Add(ScriptDefinition.FromXml(scriptNode));
                 }
-                scripts = Task.WhenAll(scripts.Select(s => GetScriptDetails(s))).Result.ToList();
+                scripts = scripts.Select(s => GetScriptDetails(s)).ToList();
                 
                 return scripts;
 
@@ -107,11 +102,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             }
         }
         
-        public async Task<ScriptDefinition> GetScriptDetails(ScriptDefinition s)
+        public ScriptDefinition GetScriptDetails(ScriptDefinition s)
         {   
             try {
-                var response = await connection.GetAsync(s.Href);
-                return ScriptDefinition.FromXml(ParseXml(await response.Content.ReadAsStringAsync(), "script"));
+                var response = connection.GetAsync(s.Href).Result;
+                return ScriptDefinition.FromXml(ParseXml(response.Content.ReadAsStringAsync().Result, "script"));
             }
             catch (Exception e) {
                 AddinLogger.Error(new Exception($"Could not retrieve the details of script {s.Id} from the engine", e));
@@ -120,10 +115,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         }
 
 
-        public async Task<JobData> LaunchJob(string scriptName, Dictionary<string, object> options = null)
+        public JobData LaunchJob(string scriptName, Dictionary<string, object> options = null)
         {
             try {
-                var _scripts = await GetScripts();
+                var _scripts = GetScripts();
                 if (_scripts == null || !_scripts.Any()) {
                     throw new JobRequestError
                     {
@@ -169,7 +164,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                         }
                     }
                 }
-                return await LaunchJob(jobRequest);
+                return LaunchJob(jobRequest);
             } catch (Exception e) {
                 AddinLogger.Error(new Exception($"Error launching job for script '{scriptName}'", e));
                 throw e;
@@ -177,14 +172,15 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
 
         }
 
-        public async Task<JobData> LaunchJob(Types.JobRequest jobRequest)
+        public JobData LaunchJob(Types.JobRequest jobRequest)
         {
             try {
-                var response = await connection.PostAsync(connection.BaseAddress + ENDPOINTS.JOBS, 
-                    new StringContent(jobRequest.ToXmlString(), System.Text.Encoding.UTF8, "application/xml"));
+                var response = connection.PostAsync(connection.BaseAddress + ENDPOINTS.JOBS, 
+                    new StringContent(jobRequest.ToXmlString(), System.Text.Encoding.UTF8, "application/xml")
+                    ).Result;
 
                 XmlDocument doc = new XmlDocument();
-                doc.LoadXml(await response.Content.ReadAsStringAsync());
+                doc.LoadXml(response.Content.ReadAsStringAsync().Result);
                 if(doc.DocumentElement == null) {
                     throw new Exception("Invalid response: expected root element 'job' not found.");
                 }
