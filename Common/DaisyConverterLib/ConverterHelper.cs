@@ -36,7 +36,32 @@ namespace Daisy.SaveAsDAISY.Conversion {
 				)).FullName; }
 		}
 
-        
+		public static string PipelineAppPath {
+            get
+            {
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                    "Programs", "pipeline-ui", "DAISY Pipeline.exe"
+                );
+            }
+        }
+
+        public static string PipelineAppDataPath {
+            get
+            {
+                return Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                    "pipeline-ui"
+                );
+            }
+        }
+
+        public static bool PipelineAppIsInstalled()
+        {
+            return File.Exists(PipelineAppPath);
+        }
+
+
 
         public static bool DocumentIsOpen(string documentPath) {
 			try {
