@@ -6,212 +6,202 @@
         xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
         mc:Ignorable="d"
         Title="SaveAsDAISY Settings"
-        Width="500"
-        ResizeMode="NoResize"
-        Height="630">
-    <Grid Margin="0,0,0,5">
-        <Label Content="Page numbering"
-               Height="26"
-               VerticalAlignment="Top"
-               HorizontalAlignment="Left"
-               Width="114"
-               Margin="10,10,0,0"
-               x:Name="PageNumberingLabel" />
-        <ComboBox Margin="129,10,10,0"
-                  Height="26"
-                  VerticalAlignment="Top"
-                  x:Name="PageNumbering"
-                  AutomationProperties.LabeledBy="{Binding ElementName=PageNumberingLabel}" />
-        <CheckBox Height="26"
-                  VerticalContentAlignment="Center"
-                  Content="Translate character styles"
-                  Margin="10,41,10,0"
-                  VerticalAlignment="Top"
-                  HorizontalContentAlignment="Left"
+        Width="500">
+    <StackPanel>
+        <Grid>
+            <Label Content="Page numbering"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Margin="5"
+                   x:Name="PageNumberingLabel" />
+            <ComboBox Margin="130,5,5,5"
+                      VerticalAlignment="Center"
+                      x:Name="PageNumbering"
+                      AutomationProperties.LabeledBy="{Binding ElementName=PageNumberingLabel}" />
+        </Grid>
+        <CheckBox Content="Translate character styles"
+                  Margin="10,5,5,5"
                   x:Name="TranslateCharacteStyles" />
-        <Label Content="Image size options"
-               HorizontalAlignment="Left"
-               Margin="10,72,0,0"
-               VerticalAlignment="Top"
-               Width="114"
-               x:Name="ImageSizeOptionsLabel" />
-        <ComboBox Margin="129,72,10,0"
-                  VerticalAlignment="Top"
-                  Height="26"
-                  x:Name="ImageSizeOptions"
-                  AutomationProperties.LabeledBy="{Binding ElementName=ImageSizeOptionsLabel}"
-                  SelectionChanged="ImageSizeOptions_SelectionChanged" />
-        <Label Content="Resampling (dpi)"
-               HorizontalAlignment="Left"
-               Margin="10,103,0,0"
-               VerticalAlignment="Top"
-               Height="26"
-               x:Name="ResamplingLabel" />
-        <ComboBox Margin="129,103,225,0"
-                  VerticalAlignment="Top"
-                  Height="26"
-                  x:Name="Resampling"
-                  AutomationProperties.LabeledBy="{Binding ElementName=ResamplingLabel}"
-                  IsEnabled="False" />
+        <Grid VerticalAlignment="Center">
+            <Label Content="Image size options"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   x:Name="ImageSizeOptionsLabel" />
+            <ComboBox Margin="130,5,5,5"
+                      VerticalAlignment="Center"
+                      x:Name="ImageSizeOptions"
+                      AutomationProperties.LabeledBy="{Binding ElementName=ImageSizeOptionsLabel}"
+                      SelectionChanged="ImageSizeOptions_SelectionChanged" />
+        </Grid>
+        <Grid>
+            <Label Content="Resampling (dpi)"
+                   HorizontalAlignment="Left"
+                   Margin="5"
+                   VerticalAlignment="Center"
+                   x:Name="ResamplingLabel" />
+            <ComboBox Margin="130,5,5,5"
+                      VerticalAlignment="Center"
+                      x:Name="Resampling"
+                      AutomationProperties.LabeledBy="{Binding ElementName=ResamplingLabel}"
+                      IsEnabled="False" />
+        </Grid>
         <CheckBox Content="Disable sponsorship notifications"
-                  Margin="10,134,10,0"
-                  VerticalAlignment="Top"
-                  Height="26"
-                  VerticalContentAlignment="Center"
+                  Margin="10,5,5,5"
                   x:Name="DisableSponsorhip" />
         <GroupBox Header="Footnotes customization"
-                  Margin="10,165,10,0"
-                  VerticalAlignment="Top">
-            <UniformGrid Columns="2"
-                         Rows="6">
-                <Label Content="Notes position"
-                       VerticalAlignment="Top"
-                       Margin="0,5,5,0"
-                       x:Name="NotesPositionLabel" />
-                <ComboBox Margin="0,5,5,0"
-                          VerticalAlignment="Top"
-                          Height="26"
-                          x:Name="NotesPosition"
-                          AutomationProperties.LabeledBy="{Binding ElementName=NotesPositionLabel}" />
-                <Label Content="Notes level"
-                       VerticalAlignment="Top"
-                       x:Name="NotesLevelLabel"
-                       Margin="0,5,5,0" />
-                <ComboBox VerticalAlignment="Top"
-                          Height="26"
-                          x:Name="NotesLevel"
-                          Margin="0,5,5,0"
-                          AutomationProperties.LabeledBy="{Binding ElementName=NotesLevelLabel}" />
-                <Label Content="Notes numbering"
-                       VerticalAlignment="Top"
-                       Margin="0,5,5,0"
-                       x:Name="NotesNumberingLabel" />
-                <ComboBox VerticalAlignment="Top"
-                          Height="26"
-                          x:Name="NotesNumbering"
-                          Margin="0,5,5,0"
-                          SelectionChanged="NotesNumbering_SelectionChanged"
-                          AutomationProperties.LabeledBy="{Binding ElementName=NotesNumberingLabel}" />
-                <Label Content="Start number"
-                       Margin="0,5,5,0"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       x:Name="StartNumberLabel"
-                       Width="142" />
-                <TextBox TextWrapping="Wrap"
-                         Margin="0,5,5,0"
-                         Text="___"
-                         VerticalAlignment="Top"
-                         x:Name="StartNumber"
-                         Height="26"
-                         AutomationProperties.LabeledBy="{Binding ElementName=StartNumberLabel}"
-                         PreviewTextInput="StartNumber_PreviewTextInput"
-                         DataObject.Pasting="StartNumber_Pasting" />
-                <Label Content="Number prefix"
-                       Margin="0,5,5,0"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       x:Name="NumberPrefixLabel"
-                       Width="142" />
-                <TextBox TextWrapping="Wrap"
-                         Margin="0,5,5,0"
-                         Text=""
-                         VerticalAlignment="Top"
-                         Height="26"
-                         x:Name="NumberPrefix"
-                         AutomationProperties.LabeledBy="{Binding ElementName=NumberPrefixLabel}" />
-                <Label Content="Notes text prefix"
-                       Margin="0,5,5,0"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       x:Name="NotesTextPrefixLabel"
-                       Width="142" />
-                <TextBox TextWrapping="Wrap"
-                         Margin="0,5,5,0"
-                         Text=""
-                         VerticalAlignment="Top"
-                         Height="26"
-                         x:Name="NotesTextPrefix"
-                         AutomationProperties.LabeledBy="{Binding ElementName=NotesTextPrefixLabel}" />
-            </UniformGrid>
+                  Margin="5"
+                  VerticalAlignment="Center">
+            <StackPanel>
+                <Grid>
+                    <Label Content="Notes position"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="2"
+                           x:Name="NotesPositionLabel"/>
+                    <ComboBox Margin="150,2,2,2"
+                              VerticalAlignment="Center"
+                              x:Name="NotesPosition"
+                              AutomationProperties.LabeledBy="{Binding ElementName=NotesPositionLabel}" />
+                </Grid>
+                <Grid>
+                    <Label Content="Notes level"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           x:Name="NotesLevelLabel"
+                           Margin="2"/>
+                    <ComboBox VerticalAlignment="Center"
+                              x:Name="NotesLevel"
+                              Margin="150,2,2,2"
+                              AutomationProperties.LabeledBy="{Binding ElementName=NotesLevelLabel}" />
+                </Grid>
+                <Grid>
+                    <Label Content="Notes numbering"
+                           VerticalAlignment="Center"
+                           Margin="2"
+                           x:Name="NotesNumberingLabel" />
+                    <ComboBox VerticalAlignment="Center"
+                              x:Name="NotesNumbering"
+                              Margin="150,2,2,2"
+                              SelectionChanged="NotesNumbering_SelectionChanged"
+                              AutomationProperties.LabeledBy="{Binding ElementName=NotesNumberingLabel}" />
+
+                </Grid>
+                <Grid>
+                    <Label Content="Start number"
+                           Margin="2"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           x:Name="StartNumberLabel" />
+                    <TextBox TextWrapping="Wrap"
+                             Margin="150,2,2,2"
+                             Text="___"
+                             VerticalAlignment="Center"
+                             x:Name="StartNumber"
+                             AutomationProperties.LabeledBy="{Binding ElementName=StartNumberLabel}"
+                             PreviewTextInput="StartNumber_PreviewTextInput"
+                             DataObject.Pasting="StartNumber_Pasting" />
+
+                </Grid>
+                <Grid>
+                    <Label Content="Number prefix"
+                           Margin="2"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           x:Name="NumberPrefixLabel"
+                           />
+                    <TextBox TextWrapping="Wrap"
+                             Margin="150,2,2,2"
+                             Text=""
+                             VerticalAlignment="Center"
+                             x:Name="NumberPrefix"
+                             AutomationProperties.LabeledBy="{Binding ElementName=NumberPrefixLabel}" />
+
+                </Grid>
+                <Grid>
+                    <Label Content="Notes text prefix"
+                           Margin="2"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           x:Name="NotesTextPrefixLabel"
+                            />
+                    <TextBox TextWrapping="Wrap"
+                             Margin="150,2,2,2"
+                             Text=""
+                             VerticalAlignment="Center"
+                             x:Name="NotesTextPrefix"
+                             AutomationProperties.LabeledBy="{Binding ElementName=NotesTextPrefixLabel}" />
+                </Grid>
+            </StackPanel>
         </GroupBox>
         <GroupBox Header="DAISY Pipeline engine"
-                  Margin="10,379,10,0"
-                  Height="140"
-                  VerticalAlignment="Top">
-            <Grid Height="109">
-                <StackPanel>
-                    <CheckBox Content="Use DAISY Pipeline App instead of embedded engine"
-                              VerticalAlignment="Top"
-                              Margin="5"
-                              x:Name="UseDAISYPipelineApp"
-                              Checked="UseDAISYPipelineApp_Checked"
-                              Unchecked="UseDAISYPipelineApp_Unchecked" />
-                    <UniformGrid Columns="3"
-                                 Height="23"
-                                 VerticalAlignment="Top">
-                        <Button Content="Browse voices"
-                                Width="100"
-                                x:Name="BrowseVoices"
-                                Click="BrowseVoices_Click"
-                                AutomationProperties.HelpText="Open DAISY Pipeline App voices browser"
-                                Height="20" />
-                        <Button Content="Preferred voices"
-                                x:Name="PreferredVoices"
-                                Click="PreferredVoices_Click"
-                                AutomationProperties.HelpText="Open DAISY Pipeline App preferred voices settings"
-                                Width="150"
-                                Height="20" />
-                        <Button Content="TTS engines"
-                                x:Name="TTSEngines"
-                                Click="TTSEngines_Click"
-                                AutomationProperties.HelpText="Open DAISY Pipeline App Text-to-speech engines settings"
-                                Height="20"
-                                Width="100" />
-                    </UniformGrid>
+                  Margin="5">
+            <StackPanel>
+                <CheckBox Content="Use DAISY Pipeline App instead of embedded engine"
+                          VerticalAlignment="Center"
+                          Margin="5"
+                          x:Name="UseDAISYPipelineApp"
+                          Checked="UseDAISYPipelineApp_Checked"
+                          Unchecked="UseDAISYPipelineApp_Unchecked" />
+                <UniformGrid Columns="3"
+                             Height="23"
+                             VerticalAlignment="Center">
+                    <Button Content="Browse voices"
+                            Width="100"
+                            x:Name="BrowseVoices"
+                            Click="BrowseVoices_Click"
+                            AutomationProperties.HelpText="Open DAISY Pipeline App voices browser"
+                            Height="20" />
+                    <Button Content="Preferred voices"
+                            x:Name="PreferredVoices"
+                            Click="PreferredVoices_Click"
+                            AutomationProperties.HelpText="Open DAISY Pipeline App preferred voices settings"
+                            Width="150"
+                            Height="20" />
+                    <Button Content="TTS engines"
+                            x:Name="TTSEngines"
+                            Click="TTSEngines_Click"
+                            AutomationProperties.HelpText="Open DAISY Pipeline App Text-to-speech engines settings"
+                            Height="20"
+                            Width="100" />
+                </UniformGrid>
+                <Label Content="Embedded engine Text-to-speech configuration"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       x:Name="TTSConfigFileLabel" />
+                <Grid>
+                    <TextBox TextWrapping="Wrap"
+                             Text=""
+                             VerticalAlignment="Center"
+                             x:Name="TTSConfigFile"
+                             Margin="0,0,77,0"
+                             AutomationProperties.LabeledBy="{Binding ElementName=TTSConfigFileLabel}" />
+                    <Button Content="Browse"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            AutomationProperties.HelpText="Browse for a configuration file"
+                            Width="72"
+                            x:Name="BrowseTTSConfigFile"
+                            Click="BrowseTTSConfigFile_Click" />
 
-                    <Label Content="Embedded engine Text-to-speech configuration"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           x:Name="TTSConfigFileLabel" />
-                    <Grid>
-                        <TextBox TextWrapping="Wrap"
-                                 Text=""
-                                 VerticalAlignment="Center"
-                                 Height="20"
-                                 x:Name="TTSConfigFile"
-                                 Margin="0,0,77,0"
-                                 AutomationProperties.LabeledBy="{Binding ElementName=TTSConfigFileLabel}" />
-                        <Button Content="Browse"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
-                                AutomationProperties.HelpText="Browse for a configuration file"
-                                Width="72"
-                                x:Name="BrowseTTSConfigFile"
-                                Click="BrowseTTSConfigFile_Click" />
-
-                    </Grid>
-                </StackPanel>
-            </Grid>
+                </Grid>
+            </StackPanel>
         </GroupBox>
         <StackPanel Orientation="Horizontal"
                     FlowDirection="RightToLeft"
-                    Height="40"
-                    VerticalAlignment="Top"
-                    Margin="5,524,5,5">
+                    VerticalAlignment="Bottom"
+                    Margin="5,0,5,5">
             <Button Content="OK"
                     x:Name="Save"
                     Click="Save_Click"
                     Width="75"
                     Margin="5"
-                    VerticalAlignment="Top" />
+                    VerticalAlignment="Center" />
             <Button Content="Cancel"
                     x:Name="Cancel"
                     Click="Cancel_Click"
                     Margin="5"
                     Width="75"
-                    VerticalAlignment="Top" />
+                    VerticalAlignment="Center" />
         </StackPanel>
-
-    </Grid>
+    </StackPanel>
 </Window>
