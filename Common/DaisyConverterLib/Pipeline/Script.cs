@@ -55,6 +55,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 
         protected Dictionary<string, ScriptParameter> _parameters;
+        
         /// <summary>
         /// List of parameters available in script
         /// </summary>
@@ -96,17 +97,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public string output = string.Empty;
 
         /// <summary>
-        /// Executes script normal.
+        /// Execute the script on the given input file path.
         /// </summary>
-        /// <param name="inputPath"></param>
-        public void ExecuteScript(string inputPath) {
-            ExecuteScript(inputPath, false);
-        }
+        /// <param name="input">input file path</param>
+        public abstract void ExecuteScript(string input);
 
-        /// <summary>
-        ///  executes script
-        /// </summary>
-        public abstract void ExecuteScript(string inputPath, bool isQuite);
 
         /// <summary>
         /// Searches for input file in the given directory.

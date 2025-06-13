@@ -22,12 +22,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         /// </summary>
         /// <param name="inputPath">path to use for script main input</param>
         /// <param name="isQuite"></param>
-        public override void ExecuteScript(string inputPath, bool isQuite)
+        public override void ExecuteScript(string input)
         {
             
             if (Parameters.ContainsKey("input") && (string)Parameters["input"].ParameterValue == "")
             {
-                Parameters["input"].ParameterValue = inputPath;
+                Parameters["input"].ParameterValue = input;
             }
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             foreach (KeyValuePair<string, ScriptParameter> v in Parameters)

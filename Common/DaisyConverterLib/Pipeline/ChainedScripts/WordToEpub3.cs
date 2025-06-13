@@ -201,7 +201,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             };
         }
 
-        public override void ExecuteScript(string inputPath, bool isQuite) {
+        public override void ExecuteScript(string inputPath) {
             try {
                 // Create a directory using the document name
                 DirectoryInfo finalOutput = new DirectoryInfo(
@@ -269,7 +269,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                     // rebind input and output
                     scripts[i].Parameters["input"].ParameterValue = input;
                     scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
-                    scripts[i].ExecuteScript(inputPath, isQuite);
+                    scripts[i].ExecuteScript(inputPath);
                 }
             }
             catch (Exception ex) {
