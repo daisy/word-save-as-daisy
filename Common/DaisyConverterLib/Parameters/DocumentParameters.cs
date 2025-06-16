@@ -31,7 +31,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             InlineShapes = new List<string>();
             InlineIds = new List<string>();
             SubDocumentsToConvert = new List<DocumentParameters>();
-            Creator = "";
+            Author = "";
             Title = "";
             Publisher = "";
             HasRevisions = false;            
@@ -134,7 +134,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     using (
                         Package pack = Package.Open(CopyPath, FileMode.Open, FileAccess.Read)
                     ) {
-                        Creator = pack.PackageProperties.Creator;
+                        Author = pack.PackageProperties.Creator;
                         Title = pack.PackageProperties.Title;
                         // Word xml  
                         XmlDocument wordContentDocument = getFirstDocumentFromRelationshipOrUri(
@@ -415,14 +415,37 @@ namespace Daisy.SaveAsDAISY.Conversion
             Sub
         }
 
-        public string Creator { get; private set; }
+        #region Document metadata
 
-        public string Title { get; private set; }
+        public string Title { get; set; }
 
-        public string Publisher { get; private set; }
+        public string Subtitle { get; set; }
 
-        public List<string> Languages { get; private set; }
+        public string Author { get; set; }
 
+        public string Contributor { get; set; }
+
+        public string Publisher { get; set; }
+
+        public string Rights { get; set; }
+
+        public string Identifier { get; set; }
+
+        public string IdentifierScheme { get; set; }
+
+        public string SourceOfPagination { get; set; }
+
+        public string SourceDate { get; set; }
+
+        public string Summary { get; set; }
+
+        public string Subject { get; set; }
+
+        public string AccessibilitySummary { get; set; }
+
+        public List<string> Languages { get; set; }
+
+        #endregion
 
         /// <summary>
         /// Word document type between :<br/>

@@ -169,7 +169,7 @@
                        VerticalAlignment="Center"
                        x:Name="TTSConfigFileLabel" />
                 <Grid>
-                    <TextBox TextWrapping="Wrap"
+                    <TextBox TextWrapping="NoWrap"
                              Text=""
                              VerticalAlignment="Center"
                              x:Name="TTSConfigFile"

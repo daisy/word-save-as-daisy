@@ -111,7 +111,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             // Analyze the copy to retrieve document properties
             mainDocument.updatePropertiesFromCopy();
-            Creator = mainDocument.Creator;
+            Creator = mainDocument.Author;
             Title = mainDocument.Title;
             Publisher = mainDocument.Publisher;
             Language = mainDocument.Languages[0];
