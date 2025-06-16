@@ -18,26 +18,24 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 { "input", new ScriptParameter(
                         "source",
                         "EPUB 3 Publication",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.input,
-                            PathDataType.FileOrDirectory.File,
+                        new PathData(
+                            PathData.InputOrOutput.input,
+                            PathData.FileOrDirectory.File,
                             "application/epub+zip"
                         ),
-                        "",
                         true,
                         "The package file of the input DTB.",
                         true,
-                        ScriptParameter.ParameterDirection.Input
+                        ParameterDirection.Input
                     )
                 },
                 {"output", new ScriptParameter(
                         "result",
                         "EPUB output directory",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         true,
                         "The produced EPUB."
                     )
@@ -45,13 +43,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 { "validation", new ScriptParameter(
                         "validation",
                         "Validation",
-                        new EnumDataType(
+                        new EnumData(
                             new Dictionary<string, object> {
                                 { "No validation", "off" },
                                 { "Report validation issues", "report" },
                                 { "Abort on validation issues", "abort" },
                             }, "Abort on validation issues"),
-                        "report",
                         false,
                         "Whether to abort on validation issues."
                     )
@@ -59,15 +56,14 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 { "validation-report", new ScriptParameter(
                         "validation-report",
                         "Validation reports",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         false,
                         "Output path of the validation reports",
                         false,
-                        ScriptParameter.ParameterDirection.Output
+                        ParameterDirection.Output
                     )
                 },
             };

@@ -12,7 +12,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
 {
     public partial class IntUserControl : BaseUserControl
     {
-        IntegerDataType m_IntDataType;
+        IntegerData m_IntDataType;
 
         public IntUserControl()
         {
@@ -28,12 +28,12 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
         public override void setLinkedParameter(ScriptParameter p)
         {
             base.setLinkedParameter(p);
-            m_IntDataType = (IntegerDataType)p.ParameterDataType;
+            m_IntDataType = (IntegerData)p.ParameterData;
             mListBokBox.AccessibleName = p.NiceName;
             mListBokBox.AccessibleDescription = p.Description;
             descriptionTooltip.SetToolTip(mListBokBox, p.Description);
 
-            IntegerDataType IntData = (IntegerDataType)p.ParameterDataType;
+            IntegerData IntData = (IntegerData)p.ParameterData;
 
             mListBokBox.Minimum = IntData.Min;
             mListBokBox.Maximum = IntData.Max;

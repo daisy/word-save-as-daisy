@@ -63,9 +63,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "resample", Enum.Resample},
             };
 
-            public static readonly EnumDataType DataType = new EnumDataType(
+            public static readonly EnumData DataType = new EnumData(
                 Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
-                Enum.Original.ToString() // Default value is now stored here
+                Values[Instance.ImageOption] // Default value is now stored here
             );
         }
 
@@ -105,10 +105,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "page", Enum.Page},
             };
 
-            public static readonly EnumDataType DataType = new EnumDataType(
-                Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
-                Enum.Inline.ToString() // Default value is now stored here
-            );
+            public static EnumData DataType()
+            {
+                return new EnumData(
+                    Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                    Values[Instance.FootnotesPosition] // Default value is now stored here
+                );
+            }
         }
 
         /// <summary>
@@ -147,10 +150,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "none", Enum.None},
             };
 
-            public static readonly EnumDataType DataType = new EnumDataType(
-                Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
-                Enum.None.ToString()
-            );
+            public static EnumData DataType()
+            {
+                return new EnumData(
+                    Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                    Values[Instance.FootnotesNumbering] // Default value is now stored here
+                );
+            }
         }
 
         public static class PageNumberingChoice
@@ -179,10 +185,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "custom", Enum.Custom },
                 { "automatic", Enum.Automatic },
             };
-            public static readonly EnumDataType DataType = new EnumDataType(
-                Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
-                Enum.Custom.ToString()
-            );
+            public static EnumData DataType()
+            {
+                return new EnumData(
+                    Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                    Values[Instance.PagenumStyle] // Default value is now stored here
+                );
+            }
         }
 
         #region Private fields with default values
@@ -190,10 +199,10 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string imgoption = ImageOptionChoice.DataType.Value.ToString();
         private string resampleValue = "96";
         private string characterStyle = "False";
-        private string pagenumStyle = PageNumberingChoice.DataType.Value.ToString();
+        private string pagenumStyle = PageNumberingChoice.Values[PageNumberingChoice.Enum.Custom];
         private string footnotesLevel = "0"; // 0 mean current paragraphe level, < 0 means parent level going upward, > 1 means absolute dtbook level
-        private string footnotesPosition = FootnotesPositionChoice.DataType.Value.ToString(); // Should be inline, end, or page
-        private string footnotesNumbering = FootnotesNumberingChoice.DataType.Value.ToString(); // should be number, none, or word
+        private string footnotesPosition = FootnotesPositionChoice.Values[FootnotesPositionChoice.Enum.Inline]; // Should be inline, end, or page
+        private string footnotesNumbering = FootnotesNumberingChoice.Values[FootnotesNumberingChoice.Enum.None]; // should be number, none, or word
         private string footnotesStartValue = "1"; // number to be used
         private string footnotesNumberingPrefix = ""; // prefix to be added before the numbering
         private string footnotesNumberingSuffix = ""; // suffix to be added between the number and the text

@@ -25,26 +25,27 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         public override void ExecuteScript(string input)
         {
             
-            if (Parameters.ContainsKey("input") && (string)Parameters["input"].ParameterValue == "")
+            if (Parameters.ContainsKey("input") && (string)Parameters["input"].Value == "")
             {
-                Parameters["input"].ParameterValue = input;
+                Parameters["input"].Value = input;
             }
             Dictionary<string, object> parameters = new Dictionary<string, object>();
             foreach (KeyValuePair<string, ScriptParameter> v in Parameters)
             {
+
                 // avoid passing empty values
                 if (
                     !v.Value.IsParameterRequired
                     && (
-                        v.Value.ParameterDataType is StringDataType
-                        || v.Value.ParameterDataType is PathDataType
+                        v.Value.ParameterData is StringData
+                        || v.Value.ParameterData is PathData
                     )
-                    && "" == (string)v.Value.ParameterValue
+                    && "" == (string)v.Value.Value
                 )
                 {
                     continue;
                 }
-                parameters[v.Value.Name] = v.Value.ParameterValue;
+                parameters[v.Value.Name] = v.Value.Value;
             }
 
             ScriptRunner runner;
@@ -56,7 +57,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 );
                 runner = JNIRunner.GetInstance(EventsHandler);
             }
-            runner.StartJob(Name, parameters, Parameters["output"].ParameterValue.ToString());
+            runner.StartJob(Name, parameters, Parameters["output"].Value.ToString());
 
         }
     }

@@ -29,11 +29,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     "input", new ScriptParameter(
                         "source",
                         "Input Docx file",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.input,
-                            PathDataType.FileOrDirectory.File
+                        new PathData(
+                            PathData.InputOrOutput.input,
+                            PathData.FileOrDirectory.File
                         ),
-                        "",
                         true,
                         "The document you want to convert."
                     )
@@ -42,11 +41,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     "output", new ScriptParameter(
                         "result",
                         "DTBook output",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         true,
                         "Output folder of the conversion to DTBook XML"
                     )
@@ -55,8 +53,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     new ScriptParameter(
                         "title",
                         "Document title",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,"",false
                     )
                 },
@@ -64,8 +61,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     new ScriptParameter(
                         "creator",
                         "Document creator or author",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,"",false
                     )
                 },
@@ -73,8 +69,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     new ScriptParameter(
                         "publisher",
                         "Document publisher",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,"",false
                     )
                 },
@@ -82,8 +77,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     new ScriptParameter(
                         "uid",
                         "Document identifier",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,
                         "Identifier to be added as dtb:uid metadata",
                         false
@@ -93,8 +87,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     new ScriptParameter(
                         "subject",
                         "Subject(s)",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,
                         "Subject(s) to be added as dc:Subject metadata",
                         false
@@ -104,8 +97,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     new ScriptParameter(
                         "accept-revisions",
                         "Accept revisions",
-                        new BoolDataType(false),
-                        false,
+                        new BoolData(false),
                         false,
                         "If the document has revisions that are not accepted, consider them as accepted for the conversion",
                         false
@@ -116,8 +108,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                   new ScriptParameter(
                     "repair",
                     "Repair the dtbook",
-                    new BoolDataType(true),
-                    true,
+                    new BoolData(true),
                     true,
                     ""
                   )
@@ -127,8 +118,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                   new ScriptParameter(
                     "tidy",
                     "Tidy up the dtbook",
-                    new BoolDataType(false),
-                    true,
+                    new BoolData(true),
                     true,
                     ""
 
@@ -139,8 +129,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                   new ScriptParameter(
                     "narrator",
                     "Prepare dtbook for pipeline 1 narrator",
-                    new BoolDataType(false),
-                    false,
+                    new BoolData(false),
                     true,
                     ""
 
@@ -155,7 +144,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                 // Create a directory using the document name
                 DirectoryInfo finalOutput = new DirectoryInfo(
                     Path.Combine(
-                    Parameters["output"].ParameterValue.ToString(),
+                    Parameters["output"].Value.ToString(),
                     string.Format(
                         "{0}_DTBookXML_{1}",
                         Path.GetFileNameWithoutExtension(inputPath),
@@ -204,8 +193,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                 this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Launching script {scripts[i].Name} ... "));
 #endif
                     // rebind input and output
-                    scripts[i].Parameters["input"].ParameterValue = input;
-                    scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
+                    scripts[i].Parameters["input"].Value = input;
+                    scripts[i].Parameters["output"].Value = outputDir.FullName;
                     scripts[i].ExecuteScript(inputPath);
                 }
             }

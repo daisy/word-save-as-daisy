@@ -268,19 +268,19 @@ namespace Daisy.SaveAsDAISY.Conversion
                 this.EventsHandler.onPostProcessingStart(ConversionParameters);
                 try {
                     if (ConversionParameters.PostProcessor.Parameters.ContainsKey("title"))
-                        ConversionParameters.PostProcessor.Parameters["title"].ParameterValue = ConversionParameters.Title;
+                        ConversionParameters.PostProcessor.Parameters["title"].Value = ConversionParameters.Title;
 
                     if (ConversionParameters.PostProcessor.Parameters.ContainsKey("creator"))
-                        ConversionParameters.PostProcessor.Parameters["creator"].ParameterValue = ConversionParameters.Creator;
+                        ConversionParameters.PostProcessor.Parameters["creator"].Value = ConversionParameters.Creator;
 
                     if (ConversionParameters.PostProcessor.Parameters.ContainsKey("publisher"))
-                        ConversionParameters.PostProcessor.Parameters["publisher"].ParameterValue = ConversionParameters.Publisher;
+                        ConversionParameters.PostProcessor.Parameters["publisher"].Value = ConversionParameters.Publisher;
 
                     if (ConversionParameters.PostProcessor.Parameters.ContainsKey("uid"))
-                        ConversionParameters.PostProcessor.Parameters["uid"].ParameterValue = ConversionParameters.UID;
+                        ConversionParameters.PostProcessor.Parameters["uid"].Value = ConversionParameters.UID;
 
                     if (ConversionParameters.PostProcessor.Parameters.ContainsKey("subject"))
-                        ConversionParameters.PostProcessor.Parameters["subject"].ParameterValue = ConversionParameters.Subject;
+                        ConversionParameters.PostProcessor.Parameters["subject"].Value = ConversionParameters.Subject;
 
                     ConversionParameters.PostProcessor.ExecuteScript(document.CopyPath);
                 }

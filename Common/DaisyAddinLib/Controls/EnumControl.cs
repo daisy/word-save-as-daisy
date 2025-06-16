@@ -11,7 +11,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
 {
     public partial class EnumControl : BaseUserControl
     {
-        private EnumDataType linkedEnumData;
+        private EnumData linkedEnumData;
 
         public EnumControl()
         {
@@ -28,14 +28,14 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
         public override void setLinkedParameter(ScriptParameter s)
         {
             base.setLinkedParameter(s);
-            linkedEnumData = (EnumDataType)s.ParameterDataType;
+            linkedEnumData = (EnumData)s.ParameterData;
             ValueSelector.AccessibleName = s.NiceName;
             ValueSelector.AccessibleDescription = s.Description;
             descriptionTooltip.SetToolTip(ValueSelector, s.Description);
             ValueSelector.Items.Clear();
             //base.DescriptionLabel = p.Description;
-            EnumDataType EnumData = (EnumDataType)s.ParameterDataType;
-            foreach (string a in EnumData.GetNiceNames)
+            EnumData enumData = (EnumData)s.ParameterData;
+            foreach (string a in enumData.GetNiceNames)
             {
                 ValueSelector.Items.Add(a);
             }

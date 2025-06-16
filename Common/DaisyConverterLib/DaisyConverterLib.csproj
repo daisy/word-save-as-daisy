@@ -136,9 +136,7 @@
     <Compile Include="Pipeline\ChainedScripts\WordToDaisy3.cs" />
     <Compile Include="Pipeline\ChainedScripts\WordToEpub3.cs" />
     <Compile Include="Pipeline\ChainedScripts\WordToCleanedDtbook.cs" />
-    <Compile Include="Pipeline\DataTypes\MapDataType.cs" />
     <Compile Include="Pipeline\JobException.cs" />
-    <Compile Include="Pipeline\ParameterDataType.cs" />
     <Compile Include="Pipeline\AppRunner.cs" />
     <Compile Include="Pipeline\ScriptRunner.cs" />
     <Compile Include="Pipeline\Pipeline2\JNIRunner.cs" />
@@ -171,11 +169,11 @@
     <Compile Include="PageStylesValidation\ValidationResult.cs" />
     <Compile Include="PageStylesValidation\PageStyle.cs" />
     <Compile Include="PageStylesValidation\PageStylesValidator.cs" />
-    <Compile Include="Pipeline\DataTypes\BoolDataType.cs" />
-    <Compile Include="Pipeline\DataTypes\EnumDataType.cs" />
-    <Compile Include="Pipeline\DataTypes\IntegerDataType.cs" />
-    <Compile Include="Pipeline\DataTypes\PathDataType.cs" />
-    <Compile Include="Pipeline\DataTypes\StringDataType.cs" />
+    <Compile Include="Pipeline\DataTypes\BoolData.cs" />
+    <Compile Include="Pipeline\DataTypes\EnumData.cs" />
+    <Compile Include="Pipeline\DataTypes\IntegerData.cs" />
+    <Compile Include="Pipeline\DataTypes\PathData.cs" />
+    <Compile Include="Pipeline\DataTypes\StringData.cs" />
     <Compile Include="Pipeline\ScriptParameter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShapesObjectExport.cs" />

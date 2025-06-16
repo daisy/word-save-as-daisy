@@ -26,9 +26,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             };
 
             // preset parameters for the cleaning script
-            scripts[1].Parameters["tidy"].ParameterValue = true;
-            scripts[1].Parameters["repair"].ParameterValue = true;
-            scripts[1].Parameters["narrator"].ParameterValue = true;
+            scripts[1].Parameters["tidy"].Value = true;
+            scripts[1].Parameters["repair"].Value = true;
+            scripts[1].Parameters["narrator"].Value = true;
 
             StepsCount = scripts.Count;
 
@@ -37,20 +37,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"input", new ScriptParameter(
                         "source",
                         "input",
-                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File),
-                        "",
+                        new PathData(PathData.InputOrOutput.input,PathData.FileOrDirectory.File),
                         true,
                         "input",
                         false,
-                        ScriptParameter.ParameterDirection.Input
+                        ParameterDirection.Input
                     )
                 },
                 { "title",
                     new ScriptParameter(
                         "title",
                         "Document title",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,"",false
                     )
                 },
@@ -58,8 +56,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                     new ScriptParameter(
                         "creator",
                         "Document creator or author",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,"",false
                     )
                 },
@@ -67,8 +64,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                     new ScriptParameter(
                         "uid",
                         "Document identifier",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,
                         "Identifier to be added as dtb:uid metadata",
                         false
@@ -78,8 +74,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                     new ScriptParameter(
                         "subject",
                         "Subject(s)",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,
                         "Subject(s) to be added as dc:Subject metadata",
                         false
@@ -89,8 +84,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                     new ScriptParameter(
                         "accept-revisions",
                         "Accept revisions",
-                        new BoolDataType(false),
-                        false,
+                        new BoolData(false),
                         false,
                         "If the document has revisions that are not accepted, consider them as accepted for the conversion",
                         false
@@ -104,8 +98,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"include-tts-log", new ScriptParameter(
                         "include-tts-log",
                         "include-tts-log",
-                        new BoolDataType(),
-                        false,
+                        new BoolData(),
                         false,
                         "Include tts log with the result",
                         true
@@ -114,22 +107,20 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"tts-log", new ScriptParameter(
                         "tts-log",
                         "TTS log output directory",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         false,
                         "TTS log output directory",
                          false,
-                        ScriptParameter.ParameterDirection.Output
+                        ParameterDirection.Output
                     )
                 },
                 {"publisher", new ScriptParameter(
                         "publisher",
                         "Publisher",
-                        new StringDataType(""),
-                        "",
+                        new StringData(""),
                         false,
                         "The agency responsible for making the Digital Talking Book available. If left blank, it will be retrieved from the DTBook meta-data.",
                         false
@@ -138,11 +129,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"output", new ScriptParameter(
                         "output-dir",
                         "Daisy3 output directory",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         true,
                         "The resulting DAISY 3 publication."
                     )
@@ -150,19 +140,22 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
-                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File, "", GlobaleSettings.TTSConfigFile ?? ""),
-                        GlobaleSettings.TTSConfigFile ?? "",
+                        new PathData(
+                            PathData.InputOrOutput.input,
+                            PathData.FileOrDirectory.File,
+                            "",
+                            GlobaleSettings.TTSConfigFile ?? ""
+                        ),
                         false,
                         "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
                         true,
-                        ScriptParameter.ParameterDirection.Input
+                        ParameterDirection.Input
                     )
                 },
                 {"audio", new ScriptParameter(
                         "audio",
                         "Enable text-to-speech",
-                        new BoolDataType(),
-                        true,
+                        new BoolData(true),
                         false,
                         "Whether to use a speech synthesizer to produce audio files."
                     )
@@ -170,8 +163,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"with-text", new ScriptParameter(
                         "with-text",
                         "With text",
-                        new BoolDataType(),
-                        true,
+                        new BoolData(true),
                         false,
                         "Includes DTBook in output, as opposed to audio only."
                     )
@@ -179,8 +171,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"word-detection", new ScriptParameter(
                         "word-detection",
                         "Apply word detection",
-                        new BoolDataType(),
-                        false,
+                        new BoolData(false),
                         false,
                         "Whether to detect and mark up words with <w> tags.\r\n" +
                         "\r\n" +
@@ -197,7 +188,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 // Create a directory using the document name
                 DirectoryInfo finalOutput = new DirectoryInfo(
                     Path.Combine(
-                    Parameters["output"].ParameterValue.ToString(),
+                    Parameters["output"].Value.ToString(),
                     string.Format(
                         "{0}_DAISY3_{1}",
                         Path.GetFileNameWithoutExtension(inputPath),
@@ -246,8 +237,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                     this.EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Launching script {scripts[i].Name} ... "));
     #endif
                     // rebind input and output
-                    scripts[i].Parameters["input"].ParameterValue = input;
-                    scripts[i].Parameters["output"].ParameterValue = outputDir.FullName;
+                    scripts[i].Parameters["input"].Value = input;
+                    scripts[i].Parameters["output"].Value = outputDir.FullName;
                     scripts[i].ExecuteScript(inputPath);
                 }
             }

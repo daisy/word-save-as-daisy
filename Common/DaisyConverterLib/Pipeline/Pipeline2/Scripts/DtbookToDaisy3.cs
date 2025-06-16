@@ -18,12 +18,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"input", new ScriptParameter(
                         "source",
                         "input",
-                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File),
-                        "",
+                        new PathData(PathData.InputOrOutput.input,PathData.FileOrDirectory.File),
                         true,
                         "input",
                         false,
-                        ScriptParameter.ParameterDirection.Input
+                        ParameterDirection.Input
                     )
                 },
                 //{"validation-status", new ScriptParameter(
@@ -34,8 +33,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"include-tts-log", new ScriptParameter(
                         "include-tts-log",
                         "include-tts-log",
-                        new BoolDataType(),
-                        false,
+                        new BoolData(false),
                         false,
                         "Include tts log with the result",
                         false
@@ -44,22 +42,20 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"tts-log", new ScriptParameter(
                         "tts-log",
                         "TTS log output directory",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         false,
                         "TTS log output directory",
                          true,
-                        ScriptParameter.ParameterDirection.Output
+                        ParameterDirection.Output
                     )
                 },
                 {"publisher", new ScriptParameter(
                         "publisher",
                         "Publisher",
-                        new StringDataType(""),
-                        "",
+                        new StringData(""),
                         false,
                         "The agency responsible for making the Digital Talking Book available. If left blank, it will be retrieved from the DTBook meta-data.",
                         false
@@ -68,11 +64,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"output", new ScriptParameter(
                         "output-dir",
                         "Daisy3 output directory",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         true,
                         "The resulting DAISY 3 publication."
                     )
@@ -80,19 +75,17 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
-                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File),
-                        "",
+                        new PathData(PathData.InputOrOutput.input,PathData.FileOrDirectory.File),
                         false,
                         "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
                         true,
-                        ScriptParameter.ParameterDirection.Input
+                        ParameterDirection.Input
                     )
                 },
                 {"audio", new ScriptParameter(
                         "audio",
                         "Enable text-to-speech",
-                        new BoolDataType(),
-                        true,
+                        new BoolData(true),
                         false,
                         "Whether to use a speech synthesizer to produce audio files."
                     )
@@ -100,8 +93,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"with-text", new ScriptParameter(
                         "with-text",
                         "With text",
-                        new BoolDataType(),
-                        true,
+                        new BoolData(true),
                         false,
                         "Includes DTBook in output, as opposed to audio only."
                     )
@@ -109,8 +101,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"word-detection", new ScriptParameter(
                         "word-detection",
                         "Apply word detection",
-                        new BoolDataType(),
-                        false,
+                        new BoolData(false),
                         false,
                         "Whether to detect and mark up words with <w> tags.\r\n" +
                         "\r\n" +

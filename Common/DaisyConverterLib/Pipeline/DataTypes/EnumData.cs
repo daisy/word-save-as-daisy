@@ -8,28 +8,13 @@ using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
-    public class EnumDataType : ParameterDataType
+    public class EnumData : ParameterDataBase
     {
         private List<object> valuesList;
         private List<string> valuesNameList;
         private int selectedIndex;
 
-
-
-        public EnumDataType(ScriptParameter p, XmlNode node) : base(p)
-        {
-            valuesList = new List<object>();
-            valuesNameList = new List<string>();
-            selectedIndex = -1;
-            PopulateListFromNode(node);
-
-            // select list node as default value if default  exists
-            if (p.ParameterValue != null && p.ParameterValue.ToString() != ""
-                && valuesList.Contains(p.ParameterValue))
-                selectedIndex = valuesList.BinarySearch(p.ParameterValue);
-        }
-
-        public EnumDataType(Dictionary<string, object> itemsList, string defaultKey = null) : base()
+        public EnumData(Dictionary<string, object> itemsList, string defaultKey = null) : base()
         {
             valuesList = new List<object>();
             valuesNameList = new List<string>();
@@ -43,19 +28,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             if (defaultKey != null && valuesNameList.Contains(defaultKey))
                 selectedIndex = valuesNameList.IndexOf(defaultKey);
         }
-
-        private void PopulateListFromNode(XmlNode DatatypeNode)
-        {
-            XmlNode EnumNode = DatatypeNode.FirstChild;
-            XmlNodeList nodeList = EnumNode.SelectNodes("item");
-
-            foreach (XmlNode n in nodeList)
-            {
-                valuesList.Add(n.Attributes.GetNamedItem("value").Value);
-                valuesNameList.Add(n.Attributes.GetNamedItem("nicename").Value);
-            }
-        }
-
 
         public List<object> GetValues { get { return valuesList; } }
         public List<string> GetNiceNames { get { return valuesNameList; } }
@@ -103,7 +75,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             get => SelectedItemValue;
             set
             {
-
                 SelectedItemValue = value;
             }
         }
@@ -113,7 +84,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             if (index >= 0 && index < valuesList.Count)
             {
                 selectedIndex = index;
-                UpdateScript(SelectedItemValue);
+                Value = SelectedItemValue;
                 return true;
             }
             else

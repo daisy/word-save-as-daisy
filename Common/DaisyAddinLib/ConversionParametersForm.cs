@@ -67,24 +67,25 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         BaseUserControl convertScriptParameterToControl(ScriptParameter param)
         {
-            Type paramType = param.ParameterDataType.GetType();
-            if (paramType == typeof(BoolDataType))
+            Type paramType = param.ParameterData.GetType();
+            if (paramType == typeof(BoolData))
             {
                 return new BoolControl(param);
             }
-            else if (paramType == typeof(EnumDataType))
+            else if (
+				paramType == typeof(EnumData))
             {
                 return new EnumControl(param);
             }
-            else if (paramType == typeof(IntegerDataType))
+            else if (paramType == typeof(IntegerData))
             {
                 return new IntUserControl(param);
             }
-            else if (paramType == typeof(PathDataType))
+            else if (paramType == typeof(PathData))
             {
                 return new PathControl(param);
             }
-            else if (paramType == typeof(StringDataType))
+            else if (paramType == typeof(StringData))
             {
                 return new StrUserControl(param);
             }
@@ -194,7 +195,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 // Link the original destination selection to the output script parameter
                 PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
                 ScriptParameter outputParameter = UpdatedConversionParameters.PostProcessor.Parameters["output"];
-                outputParameter.ParameterValue = prepopulateDaisyOutput != null
+                outputParameter.Value = prepopulateDaisyOutput != null
                                        ? prepopulateDaisyOutput.OutputPath
                                        : string.Empty;
                 DestinationControl.setLinkedParameter(outputParameter);
@@ -299,14 +300,14 @@ namespace Daisy.SaveAsDAISY.Conversion
 				var p = kv.Value;
 				if (p.IsParameterRequired && (kv.Key == "outputPath" || kv.Key == "output"))
 				{
-					PathDataType pathDataType = p.ParameterDataType as PathDataType;
+					PathData pathDataType = p.ParameterData as PathData;
 					if (pathDataType == null) continue;
 
 					if (pathDataType.IsFile)
 					{
 						try
 						{
-							FileInfo outputFileInfo = new FileInfo(p.ParameterValue.ToString());
+							FileInfo outputFileInfo = new FileInfo(p.Value.ToString());
 							if (!string.IsNullOrEmpty(pathDataType.FileExtension) && !pathDataType.FileExtension.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
 							{
 								MessageBox.Show(string.Format(Labels.SelectTypedOutputFile, pathDataType.FileExtension), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -328,8 +329,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 					{
 						try
 						{
-                            DirectoryInfo outputFolderInfo = new DirectoryInfo(p.ParameterValue.ToString());
-                            //outputFileOrFolder = p.ParameterValue.ToString();
+                            DirectoryInfo outputFolderInfo = new DirectoryInfo(p.Value.ToString());
+                            //outputFileOrFolder = p.Value.ToString();
                             //if (outputFolderInfo.Exists && outputFolderInfo.GetFiles().Length > 0)
                             //{
                             //    MessageBox.Show(string.Format(Labels.SelectEmptyFolder, outputFolderInfo.FullName), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -364,7 +365,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 					if (outputFileOrFolder != cleanOutputDirDlg.OutputDir)
 					{
 						outputFileOrFolder = cleanOutputDirDlg.OutputDir;
-						p.ParameterValue = cleanOutputDirDlg.OutputDir;
+						p.Value = cleanOutputDirDlg.OutputDir;
 					}
 
 					break;
