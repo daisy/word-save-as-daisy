@@ -69,6 +69,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             get { return _parameters; }
         }
 
+        public List<string> ExtractedShapes { get; set; } = new List<string>();
+
         protected string niceName = "";
 
         /// <summary>

@@ -278,6 +278,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 // launch the pipeline post processing
                 this.EventsHandler.onPostProcessingStart(_conversion);
                 try {
+                    _conversion.PipelineScript.ExtractedShapes = document.InlineShapes;
                     _conversion.PipelineScript.ExecuteScript(document.CopyPath);
                 }
                 catch (JobException je) {

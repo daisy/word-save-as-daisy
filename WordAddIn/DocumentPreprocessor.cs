@@ -380,6 +380,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus ProcessShapes(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            List<string> shapesPath = new List<string>();
             //List<string> objectShapes = new List<string>();
             //List<string> imageIds = new List<string>();
             //List<string> inlineShapes = new List<string>();
@@ -423,6 +424,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                         eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
                                             "Exported shape " + shapeOutputPath
                                         ));
+                                        shapesPath.Add(shapeOutputPath);
                                         //objectShapes.Add(pathShape);
                                         //imageIds.Add(item.ID.ToString());
                                     } catch (ClipboardDataException cde) {
@@ -450,41 +452,53 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                             //item.Select();
                                             //item.Range.CopyAsPicture();
                                             /* does not work anymore with a recent word update
-                                             * - the EnhMetaFileBits now only contains empty data ...
+                                             * - the EnhMetaFileBits now only contains empty data ... */
                                             try {
+                                                //shape.Select();
+                                                //WordInstance.Selection.CopyAsPicture();
                                                 byte[] buffer = (byte[])item.Range.EnhMetaFileBits;
                                                 convertEmfBufferToPng(buffer, shapeOutputPath);
                                                 eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
                                                     "Exported inlined shape " + shapeOutputPath
                                                 ));
+                                                shapesPath.Add(shapeOutputPath);
                                                 //objectShapes.Add(shapeOutputPath);
                                                 //imageIds.Add(shape.ID.ToString());
                                                 //inlineShapes.Add(shapeOutputPath);
-                                            }*/
-                                            WordInstance.Selection.CopyAsPicture();
-                                            try {
-
-                                                System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                                                byte[] Ret;
-                                                MemoryStream ms = new MemoryStream();
-                                                image.Save(ms, ImageFormat.Png);
-                                                Ret = ms.ToArray();
-                                                FileStream fs = new FileStream(shapeOutputPath, FileMode.Create, FileAccess.Write);
-
-                                                fs.Write(Ret, 0, Ret.Length);
-                                                fs.Flush();
-                                                fs.Dispose();
-
-                                                eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
-                                                    "Exported shape " + shapeOutputPath
-                                                ));
-                                                //objectShapes.Add(pathShape);
-                                                //imageIds.Add(item.ID.ToString());
                                             }
                                             catch (ClipboardDataException cde) {
                                                 warnings.Add("- InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
-                                            } catch (Exception e) {
-                                                throw e;
+                                                item.Select();
+                                                WordInstance.Selection.CopyAsPicture();
+                                                try {
+
+                                                    System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
+                                                    byte[] Ret;
+                                                    MemoryStream ms = new MemoryStream();
+                                                    image.Save(ms, ImageFormat.Png);
+                                                    Ret = ms.ToArray();
+                                                    FileStream fs = new FileStream(shapeOutputPath, FileMode.Create, FileAccess.Write);
+
+                                                    fs.Write(Ret, 0, Ret.Length);
+                                                    fs.Flush();
+                                                    fs.Dispose();
+
+                                                    eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
+                                                        "Exported shape " + shapeOutputPath
+                                                    ));
+                                                    shapesPath.Add(shapeOutputPath);
+                                                    //objectShapes.Add(pathShape);
+                                                    //imageIds.Add(item.ID.ToString());
+                                                }
+                                                catch (ClipboardDataException cde2) {
+                                                    warnings.Add("- Second attemp for InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + cde2.Message);
+                                                }
+                                                catch (Exception e) {
+                                                    warnings.Add("- Second attemp for InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + e.Message);
+                                                }
+                                            }
+                                            catch (Exception e) {
+                                                warnings.Add("- InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + e.Message);
                                             } finally {
                                                 Clipboard.Clear();
 
@@ -508,6 +522,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 staThread.SetApartmentState(ApartmentState.STA);
                 staThread.Start();
                 staThread.Join();
+                document.InlineShapes = shapesPath;
                 if (threadEx != null) {
                     throw threadEx;
                 }
