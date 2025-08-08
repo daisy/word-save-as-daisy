@@ -24,7 +24,19 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         /// <param name="isQuite"></param>
         public override void ExecuteScript(string input)
         {
-            
+            ScriptRunner runner;
+            bool useDAISYPipelineApp = _settings.UseDAISYPipelineApp;
+            try {
+                runner = useDAISYPipelineApp ? AppRunner.GetInstance(EventsHandler) : JNIRunner.GetInstance(EventsHandler);
+            }
+            catch (System.Exception ex) {
+                EventsHandler.onPostProcessingError(
+                    new Exception("An error occurred while launching the pipeline, fall back to / retry embedded engine", ex)
+                );
+                runner = JNIRunner.GetInstance(EventsHandler);
+                useDAISYPipelineApp = false;
+            }
+
             if (Parameters.ContainsKey("input") && (string)Parameters["input"].Value == "")
             {
                 Parameters["input"].Value = input;
@@ -45,20 +57,15 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 {
                     continue;
                 }
-                parameters[v.Value.Name] = v.Value.Value;
+                // NP 2025/08/08 : Pipeline app requires file uris, while JNIRunner/SimpleAPI requires system file path
+                if(useDAISYPipelineApp && v.Value.ParameterData is PathData path) {
+                    parameters[v.Value.Name] = new Uri(path.Value.ToString()).AbsoluteUri;
+                } else {
+                    parameters[v.Value.Name] = v.Value.Value;
+                }
             }
 
-            ScriptRunner runner;
-            try {
-                runner = _settings.UseDAISYPipelineApp ? AppRunner.GetInstance(EventsHandler) : JNIRunner.GetInstance(EventsHandler);
-            } catch (System.Exception ex) {
-                EventsHandler.onPostProcessingError(
-                    new Exception("An error occurred while launching the pipeline, fall back to / retry embedded engine", ex)
-                );
-                runner = JNIRunner.GetInstance(EventsHandler);
-            }
             runner.StartJob(Name, parameters, Parameters["output"].Value.ToString());
-
         }
     }
 }

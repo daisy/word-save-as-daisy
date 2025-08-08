@@ -179,8 +179,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         public JobData LaunchJob(Types.JobRequest jobRequest)
         {
             try {
+                string request = jobRequest.ToXmlString();
                 var response = connection.PostAsync(connection.BaseAddress + ENDPOINTS.JOBS, 
-                    new StringContent(jobRequest.ToXmlString(), System.Text.Encoding.UTF8, "application/xml")
+                    new StringContent(request, System.Text.Encoding.UTF8, "application/xml")
                     ).Result;
 
                 XmlDocument doc = new XmlDocument();
