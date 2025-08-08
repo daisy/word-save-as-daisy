@@ -268,6 +268,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     scripts[i].Parameters["output"].Value = outputDir.FullName;
                     scripts[i].ExecuteScript(inputPath);
                 }
+                System.Diagnostics.Process.Start(finalOutput.FullName);
             }
             catch (Exception ex) {
                 this.EventsHandler.OnConversionError(new Exception("An error occurred while executing the Word to DAISY 2.02 conversion pipeline.", ex));

@@ -223,6 +223,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             this.EventsHandler.onDocumentConversionStart(document, _conversion);
             xmlConversionCancel = new CancellationTokenSource();
             CurrentStatus = ConversionStatus.HasStartedConversion;
+            
+            PrepareForConversion(ref document);
 
             // If conversion is to be post processed output the xsl transfo to temp
             string outputDirectory = _conversion.OutputPath.EndsWith(".xml") ?

@@ -273,7 +273,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
 
         private static List<string> JavaOptions = new List<string>
         {
-            //"-server",
+            "-server",
             "-Dcom.sun.management.jmxremote",
             "--add-opens=java.base/java.security=ALL-UNNAMED",
             "--add-opens=java.base/java.net=ALL-UNNAMED",
@@ -580,21 +580,21 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                             default:
                                 break;
                         }
-                        System.Threading.Thread.Sleep(1000);
-#if DEBUG
-                        System.Diagnostics.Process.Start(outputPath);
-                        // Kill the instance and running jvm for pipeline debugging
-                        try {
-                            //Pipeline2.KillInstance();
-                        }
-                        catch (Exception e) {
-                            throw;
-                        }
-                        //
-#else
-                    if (!string.IsNullOrEmpty(outputPath))
-                        System.Diagnostics.Process.Start(outputPath);
-#endif
+//                        System.Threading.Thread.Sleep(1000);
+//#if DEBUG
+//                        System.Diagnostics.Process.Start(outputPath);
+//                        // Kill the instance and running jvm for pipeline debugging
+//                        try {
+//                            //Pipeline2.KillInstance();
+//                        }
+//                        catch (Exception e) {
+//                            throw;
+//                        }
+//                        //
+//#else
+//                    if (!string.IsNullOrEmpty(outputPath))
+//                        System.Diagnostics.Process.Start(outputPath);
+//#endif
                     }
                 } else {
                     throw new Exception(

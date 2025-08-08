@@ -147,17 +147,21 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                     List<string> inputsNames = script.Inputs.Select(p => p.Name).ToList();
                     List<string> optionsNames = script.Options.Select(p => p.Name).ToList();
                     foreach (var option in options) {
+                        string value = option.Value?.ToString() ?? "";
+                        if (option.Value is bool) {
+                            value = value.ToLower();
+                        }
                         if (inputsNames.Contains(option.Key)) {
                             jobRequest.Inputs.Add(new NameValue()
                             {
                                 Name = option.Key,
-                                Value = option.Value?.ToString() ?? ""
+                                Value = value
                             });
                         } else if (optionsNames.Contains(option.Key)) {
                             jobRequest.Options.Add(new NameValue()
                             {
                                 Name = option.Key,
-                                Value = option.Value?.ToString() ?? ""
+                                Value = value
                             });
                         } else {
                             //throw new Exception($"Option '{option.Key}' is not a valid input or option for script '{scriptName}'.");

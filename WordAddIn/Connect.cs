@@ -865,17 +865,17 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             preprocess.updateDocumentMetadata(ref doc, currentDocument);
                             await System.Threading.Tasks.Task.Run(() =>
                             {
-                                converter.PrepareForConversion(ref currentDocument);
                                 ConversionResult result = converter.ConvertWithPipeline2(currentDocument);
-                                if (result != null && result.Succeeded) {
-                                    Process.Start(
-                                        Directory.Exists(converter.ConversionParameters.OutputPath)
-                                        ? converter.ConversionParameters.OutputPath
-                                        : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
-                                    );
-                                } else {
-                                    MessageBox.Show(result.UnknownErrorMessage, "ConversionParametersForm failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                }
+                                // Note : this is replaced by opening the real result folder generated in chained scripts
+                                //if (result != null && result.Succeeded) {
+                                //    Process.Start(
+                                //        Directory.Exists(converter.ConversionParameters.OutputPath)
+                                //        ? converter.ConversionParameters.OutputPath
+                                //        : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
+                                //    );
+                                //} else {
+                                //    MessageBox.Show(result.UnknownErrorMessage, "ConversionParametersForm failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                //}
                             });  
                         }
                     }

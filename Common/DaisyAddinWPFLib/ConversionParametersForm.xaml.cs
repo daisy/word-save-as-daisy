@@ -126,6 +126,8 @@ namespace Daisy.SaveAsDAISY.WPF
                     UpdatedConversionParameters.PipelineScript.Parameters[kv.Key].Value = kv.Value;
                 }
             }
+            // Required for now to open the result global folder but not sure it is the best place to do it
+            // I also have the option to open the final result folder directly from the conversion script
             UpdatedConversionParameters.OutputPath = DestinationControl.ParameterValue;
             // TODO : keeping this for now but not sure if it would not be better to keep a "default" output path in addin settings
             new PrepopulateDaisyOutput(UpdatedConversionParameters.OutputPath).Save();
