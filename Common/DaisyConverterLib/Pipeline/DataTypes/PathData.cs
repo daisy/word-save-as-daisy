@@ -41,16 +41,18 @@ namespace Daisy.SaveAsDAISY.Conversion
         public override object Value
         {
             get {
-                if (ShouldExists(path)) {
-                    return path;
-                } else throw new System.Exception(path + " does not exist");
+                return path;
+                //if (ShouldExists(path)) {
+                //    return path;
+                //} else throw new System.Exception(path + " does not exist");
             }
             set
             {
-                if (ShouldExists((string)value))
-                {
-                    path = (string)value;
-                }
+                path = (string)value;
+                //if (ShouldExists((string)value))
+                //{
+                //    path = (string)value;
+                //}
                 //else throw new System.Exception("No_Path");
             }
         }
@@ -104,6 +106,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                     return ".epub";
                 case "application/oebps-package+xml":
                     return ".opf";
+                case "application/xml":
+                    return ".xml";
                 default:
                     return string.Empty;
             }

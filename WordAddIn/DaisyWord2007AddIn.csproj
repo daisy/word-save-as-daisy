@@ -143,6 +143,7 @@
     </Reference>
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xaml" />
     <Reference Include="System.XML">
       <HintPath>System.XML.dll</HintPath>
       <Name>System.XML</Name>

@@ -47,7 +47,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public StringValidator NameValidator { get; set; }
 
-        public Script PostProcessor { get; set; } = null;
+        public Script PipelineScript { get; set; } = null;
 
         /// <summary>
         /// Flag if changes should be tracked
@@ -80,13 +80,13 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <param name="filenameValidator">File name validator with regex matcher. If null, will default to dtbook XML filename pattern
         /// (see the one declared in ConverterHelper)</param>
         /// <param name="mainDocument">Document to retrieve conversion parameters from (Creator, Title and Publisher) </param>
-        public ConversionParameters(string wordVersion = null, Script pipelineScript = null, StringValidator filenameValidator = null, DocumentParameters mainDocument = null)
+        public ConversionParameters(string wordVersion = null, Script pipelineScript = null, StringValidator filenameValidator = null, DocumentProperties mainDocument = null)
         {
             Version = wordVersion;
             //ScriptPath = pipelineScript;
             if (pipelineScript != null)
             {
-                PostProcessor = pipelineScript;
+                PipelineScript = pipelineScript;
             }
             if (filenameValidator != null)
             {
@@ -107,7 +107,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-        public ConversionParameters usingMainDocument(DocumentParameters mainDocument)
+        public ConversionParameters usingMainDocument(DocumentProperties mainDocument)
         {
             // Analyze the copy to retrieve document properties
             mainDocument.updatePropertiesFromCopy();
@@ -166,10 +166,10 @@ namespace Daisy.SaveAsDAISY.Conversion
                     Version = (string)value; break;
                 case "PipelineOutput":
                     PipelineOutput = (string)value; break;
-                case "PostProcessor":
-                    PostProcessor = (Script)value; break;
+                case "PipelineScript":
+                    PipelineScript = (Script)value; break;
                 // Fields to be moved to document settings
-                case "TrackChanges":
+                case "AcceptRevisions":
                     TrackChanges = (string)value; break;
                 case "ParseSubDocuments":
                     ParseSubDocuments = (bool)value; break;

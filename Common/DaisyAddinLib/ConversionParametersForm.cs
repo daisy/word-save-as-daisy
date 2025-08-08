@@ -103,7 +103,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// </summary>
 		public string GetTitle { get { return TitleInput.Text; } }
 
-		public Script getParser { get { return UpdatedConversionParameters.PostProcessor; } }
+		public Script getParser { get { return UpdatedConversionParameters.PipelineScript; } }
 
 		/// <summary>
 		/// Return Creator information 
@@ -130,7 +130,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         /// <param name="document"></param>
         /// <param name="conversion"></param>
-        public ConversionParametersForm(DocumentParameters document, ConversionParameters conversion) {
+        public ConversionParametersForm(DocumentProperties document, ConversionParameters conversion) {
             // Copy current conversion settings
             UpdatedConversionParameters = conversion.usingMainDocument(document);
             
@@ -138,7 +138,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			tempInput = document.CopyPath ?? document.InputPath;
 
 			// if a script is defined in the parameters
-			useAScript = UpdatedConversionParameters.PostProcessor != null;
+			useAScript = UpdatedConversionParameters.PipelineScript != null;
 			if (useAScript) {
 				mInputPath = document.InputPath;
 
@@ -190,11 +190,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 
             } else {
                 //SwitchAdvancedSettingsButton.Visible = false;
-                this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
+                this.Text = UpdatedConversionParameters.PipelineScript.NiceName;
 
                 // Link the original destination selection to the output script parameter
                 PrepopulateDaisyOutput prepopulateDaisyOutput = PrepopulateDaisyOutput.Load();
-                ScriptParameter outputParameter = UpdatedConversionParameters.PostProcessor.Parameters["output"];
+                ScriptParameter outputParameter = UpdatedConversionParameters.PipelineScript.Parameters["output"];
                 outputParameter.Value = prepopulateDaisyOutput != null
                                        ? prepopulateDaisyOutput.OutputPath
                                        : string.Empty;
@@ -209,7 +209,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                                        ? prepopulateDaisyOutput.OutputPath
                                        : string.Empty;
 
-                foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters) {
+                foreach (var kv in UpdatedConversionParameters.PipelineScript.Parameters) {
                     ScriptParameter p = kv.Value;
 
                     // output is put in the dedicated output panel
@@ -295,7 +295,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 			}
 
 
-			foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters)
+			foreach (var kv in UpdatedConversionParameters.PipelineScript.Parameters)
 			{
 				var p = kv.Value;
 				if (p.IsParameterRequired && (kv.Key == "outputPath" || kv.Key == "output"))

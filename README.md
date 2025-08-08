@@ -9,5 +9,8 @@ The code available in this GitHub project has been initially copied from its ori
 
 The project is being updated to build with visual studio 2019, using the dotnet4 plugin and the wix toolser in its version 3.11.
 
-### Architecture
+## Notes
+
+In case of multiple crash of the addin, it might be registered in Word's addin blocklist.
+`HKEY_CURRENT_USER\Software\Microsoft\Office\16.0\Word\Resiliency\DisabledItem`
 

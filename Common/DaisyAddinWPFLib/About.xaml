@@ -31,11 +31,9 @@
                        RequestNavigate="Hyperlink_RequestNavigate">DAISY Consortium</Hyperlink>
         </TextBlock>
         <Button Content="Check for updates"
-                Margin="0,0,75,5"
+                Margin="180,0,75,5"
                 Height="26"
                 VerticalAlignment="Bottom"
-                HorizontalAlignment="Right"
-                Width="135"
                 Click="Updatesbutton_Click" />
         <Button Content="Close"
                 IsCancel="true"

@@ -46,9 +46,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             btn_Delete.Enabled = false;
             btn_Populate.Enabled = false;
             this.versionInfo = UpdatedConversionParameters.Version;
-            useAScript = UpdatedConversionParameters.PostProcessor != null;
+            useAScript = UpdatedConversionParameters.PipelineScript != null;
             if (useAScript) {
-                this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
+                this.Text = UpdatedConversionParameters.PipelineScript.NiceName;
             }
             
         }
@@ -190,18 +190,18 @@ namespace Daisy.SaveAsDAISY.Conversion
                     }
                 }
 
-                foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters) {
+                foreach (var kv in UpdatedConversionParameters.PipelineScript.Parameters) {
                     ScriptParameter p = kv.Value;
                     if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
 					{
-						PathDataType pathDataType = p.ParameterDataType as PathDataType;
+						PathData pathDataType = p.ParameterData as PathData;
 						if (pathDataType == null) continue;
 
 						if (pathDataType.IsFile)
 						{
 							try
 							{
-								FileInfo outputFileInfo = new FileInfo(p.ParameterValue.ToString());
+								FileInfo outputFileInfo = new FileInfo(p.Value.ToString());
 								if (!string.IsNullOrEmpty(pathDataType.FileExtension) &&
 								    !pathDataType.FileExtension.Equals(outputFileInfo.Extension, StringComparison.InvariantCultureIgnoreCase))
 								{
@@ -224,7 +224,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 						}
 						else
 						{
-							strBrtextBox = p.ParameterValue.ToString();
+							strBrtextBox = p.Value.ToString();
 						}
 						break;
 
@@ -248,11 +248,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 					if (strBrtextBox != cleanUpDialog.OutputDir)
 					{
 						strBrtextBox = cleanUpDialog.OutputDir;
-                        foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters) {
+                        foreach (var kv in UpdatedConversionParameters.PipelineScript.Parameters) {
                             ScriptParameter p = kv.Value;
                             if (p.IsParameterRequired && (p.Name == "outputPath" || p.Name == "output"))
 							{
-								p.ParameterValue = cleanUpDialog.OutputDir;
+								p.Value = cleanUpDialog.OutputDir;
 							}
 						}
 					}
@@ -518,7 +518,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             else
             {
-                this.Text = UpdatedConversionParameters.PostProcessor.NiceName;
+                this.Text = UpdatedConversionParameters.PipelineScript.NiceName;
                 groupBoxXml.Visible = false;
                 btnShow.Visible = true;
                 btnHide.Visible = false;
@@ -541,10 +541,10 @@ namespace Daisy.SaveAsDAISY.Conversion
                 oTableLayoutPannel.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
                 //shaby (end)  : Implementing TableLayoutPannel
 
-                foreach (var kv in UpdatedConversionParameters.PostProcessor.Parameters)
+                foreach (var kv in UpdatedConversionParameters.PipelineScript.Parameters)
                 {
                     ScriptParameter p = kv.Value;
-                    if (p.Name != "input" && p.ParameterDataType is PathDataType && p.IsParameterRequired)
+                    if (p.Name != "input" && p.ParameterData is PathData && p.IsParameterRequired)
                     {
                         Control c = (Control)new PathControl(p);
                         c.Anchor = AnchorStyles.Right;
@@ -558,13 +558,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                     else if (!p.IsParameterRequired)
                     {
 						//TODO: 
-						if (p.ParameterDataType is PathDataType)
+						if (p.ParameterData is PathData)
 							continue;
 
                         Control c =
-                            p.ParameterDataType is BoolDataType ? (Control)new BoolControl(p) :
-                            p.ParameterDataType is EnumDataType ? (Control)new EnumControl(p) :
-                            p.ParameterDataType is StringDataType ? (Control)new StrUserControl(p) :
+                            p.ParameterData is BoolData ? (Control)new BoolControl(p) :
+                            p.ParameterData is EnumData ? (Control)new EnumControl(p) :
+                            p.ParameterData is StringData ? (Control)new StrUserControl(p) :
                             (Control)new IntUserControl(p);
                         c.Anchor = AnchorStyles.Right;
                         oTableLayoutPannel.Controls.Add(c, oTableLayoutCurrentColumn, oTableLayoutCurrentRow);

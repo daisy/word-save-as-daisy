@@ -20,6 +20,14 @@ namespace Daisy.SaveAsDAISY.Conversion
             )
         );
 
+        public static string DefaultResultsFolder = Path.GetFullPath(
+            Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
+                "Documents",
+                "SaveAsDAISY Results"
+            )
+        );
+
         private static string ConverterSettingsFile = Path.Combine(ApplicationDataFolder, "DAISY_settingsVer21.xml");
 
         #region Singleton definition
@@ -63,10 +71,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "resample", Enum.Resample},
             };
 
-            public static readonly EnumData DataType = new EnumData(
-                Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
-                Values[Instance.ImageOption] // Default value is now stored here
-            );
+            public static EnumData DataType()
+            {
+                return new EnumData(
+                    Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                    Values[Instance.ImageOption]
+                );
+            }
         }
 
         /// <summary>
@@ -109,7 +120,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 return new EnumData(
                     Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
-                    Values[Instance.FootnotesPosition] // Default value is now stored here
+                    Values[Instance.FootnotesPosition]
                 );
             }
         }
@@ -154,7 +165,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 return new EnumData(
                     Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
-                    Values[Instance.FootnotesNumbering] // Default value is now stored here
+                    Values[Instance.FootnotesNumbering]
                 );
             }
         }
@@ -196,7 +207,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         #region Private fields with default values
 
-        private string imgoption = ImageOptionChoice.DataType.Value.ToString();
+        private string imgoption = ImageOptionChoice.Values[ImageOptionChoice.Enum.Original];
         private string resampleValue = "96";
         private string characterStyle = "False";
         private string pagenumStyle = PageNumberingChoice.Values[PageNumberingChoice.Enum.Custom];
@@ -211,7 +222,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
         private string dontNotifySponsorship = ""; // notify the user about sponsorship
         private bool useDAISYPipelineApp = true; // use the pipeline app to run the conversion instead of the embedded engine
-
+        private string resultsFolder = DefaultResultsFolder; // Default results folder
         /// <summary>
         /// Get the current settings as XML string
         /// </summary>
@@ -238,6 +249,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 //) +
                 $"\r\n\t<DontNotifySponsorship value=\"{dontNotifySponsorship}\" />" +
                 $"\r\n\t<UsePipelineApp value=\"{useDAISYPipelineApp.ToString().ToLower()}\" />" +
+                $"\r\n\t<ResultsFolder value=\"{resultsFolder}\" />" +
                 $"\r\n</Settings>";
         }
 
@@ -386,6 +398,19 @@ namespace Daisy.SaveAsDAISY.Conversion
         public bool UseDAISYPipelineApp {
             get => useDAISYPipelineApp;
             set => useDAISYPipelineApp = value;
+        }
+
+        public string ResultsFolder {
+            get => resultsFolder;
+            set {
+                resultsFolder = value ?? DefaultResultsFolder; // If null, use the default results folder
+                if (Directory.Exists(value)) {
+                    resultsFolder = value;
+                } else {
+                    resultsFolder = DefaultResultsFolder;
+                    //throw new DirectoryNotFoundException($"The results folder '{value}' does not exist.");
+                }
+            }
         }
     }
 }

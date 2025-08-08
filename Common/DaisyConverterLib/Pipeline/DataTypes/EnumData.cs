@@ -14,7 +14,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         private List<string> valuesNameList;
         private int selectedIndex;
 
-        public EnumData(Dictionary<string, object> itemsList, string defaultKey = null) : base()
+        public EnumData(Dictionary<string, object> itemsList, object defaultValue = null) : base()
         {
             valuesList = new List<object>();
             valuesNameList = new List<string>();
@@ -25,12 +25,12 @@ namespace Daisy.SaveAsDAISY.Conversion
                 valuesList.Add(item.Value);
             }
 
-            if (defaultKey != null && valuesNameList.Contains(defaultKey))
-                selectedIndex = valuesNameList.IndexOf(defaultKey);
+            if (defaultValue != null && valuesList.Contains(defaultValue))
+                selectedIndex = valuesList.IndexOf(defaultValue);
         }
 
-        public List<object> GetValues { get { return valuesList; } }
-        public List<string> GetNiceNames { get { return valuesNameList; } }
+        public List<object> Values { get { return valuesList; } }
+        public List<string> Keys { get { return valuesNameList; } }
 
         /// <summary>
         ///  Gets and sets the index of value selected.
@@ -49,7 +49,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public object SelectedItemValue
         {
-            get { return valuesList[selectedIndex]; }
+            get { return selectedIndex > -1 ? valuesList[selectedIndex] : null; }
             set
             {
                 if (value != null && valuesList.Contains(value))
@@ -84,7 +84,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             if (index >= 0 && index < valuesList.Count)
             {
                 selectedIndex = index;
-                Value = SelectedItemValue;
                 return true;
             }
             else

@@ -57,7 +57,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"language", new ScriptParameter(
                         "language",
                         "Language code",
-                        new StringData(),
+                        new EnumData(new Dictionary<string, object> { { "", "" } }, ""),
                         false,
                         "Language code of the input document."
                     )
@@ -127,7 +127,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                                 { "No validation", "off" },
                                 { "Report validation issues", "report" },
                                 { "Abort on validation issues", "abort" },
-                            }, "Abort on validation issues"),
+                            }, "abort"),
                         false,
                         "Whether to abort on validation issues."
                     )
@@ -169,7 +169,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                 {"tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
-                        new PathData(PathData.InputOrOutput.input,PathData.FileOrDirectory.File, "", GlobaleSettings.TTSConfigFile ?? ""),
+                        new PathData(PathData.InputOrOutput.input,PathData.FileOrDirectory.File, "application/xml", GlobaleSettings.TTSConfigFile ?? ""),
                         false,
                         "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
                         true,

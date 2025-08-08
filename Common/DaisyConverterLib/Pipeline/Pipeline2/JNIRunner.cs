@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
 {
@@ -82,12 +83,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                 { "-Dorg.daisy.pipeline.logdir", LogsFolder.Replace("\\", "/") },
                 { "-Dorg.daisy.pipeline.mode", "cli" }
             };
-            //if (GlobaleSettings.AzureSpeechKey != "" && GlobaleSettings.AzureSpeechRegion != "")
-            //{
-            //    SystemProps["-Dorg.daisy.pipeline.tts.azure.key"] = GlobaleSettings.AzureSpeechKey;
-            //    SystemProps["-Dorg.daisy.pipeline.tts.azure.region"] =
-            //        GlobaleSettings.AzureSpeechRegion;
-            //}
 
             List<string> JarPathes = ClassFolders.Aggregate(
                 new List<string>(),
@@ -572,14 +567,16 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                                     + string.Join("\r\n", errors);
                                 throw new JobException(errorMessage);
                             case JobStatus.Fail:
-                                // open jobs folder
+                                checkStatus = false;
                                 errors = getErros(currentJob);
                                 string failedMessage =
                                     " DP2 > "
                                     + scriptName
                                     + " conversion job failed :\r\n"
                                     + string.Join("\r\n", errors);
-                                throw new JobException(failedMessage);
+
+                                EventsHandler.onPostProcessingError(new JobException(failedMessage));
+                                break;
                             default:
                                 break;
                         }

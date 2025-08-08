@@ -132,7 +132,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                                 { "No validation", "off" },
                                 { "Report validation issues", "report" },
                                 { "Abort on validation issues", "abort" },
-                            }, "Abort on validation issues"),
+                            }, "abort"),
                         false,
                         "Whether to abort on validation issues."
                     )

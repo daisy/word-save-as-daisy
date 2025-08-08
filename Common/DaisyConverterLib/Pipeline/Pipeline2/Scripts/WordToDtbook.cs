@@ -106,7 +106,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "image-size",
                         "Image resizing",
-                        ImageOptionChoice.DataType,
+                        ImageOptionChoice.DataType(),
                         false,
                         "",
                         false // from settings
@@ -121,7 +121,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                             { "96", 96 },
                             { "120", 120 },
                             { "300", 300 }
-                        }, Instance.ImageResamplingValue.ToString()),
+                        }, Instance.ImageResamplingValue),
                         false,
                         "Target resolution in dot-per-inch for image resampling, if resampling is requested",
                         false // from settings
@@ -163,7 +163,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                             { "4", 4 },
                             { "5", 5 },
                             { "6", 6 },
-                        }, Instance.FootnotesLevel.ToString()),
+                        }, Instance.FootnotesLevel),
                         false,
                         "Lowest level into which notes are inserted in content. 0 means the footnotes will be inserted as close as possible of its first call.",
                         false // from settings

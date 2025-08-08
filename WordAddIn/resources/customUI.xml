@@ -139,6 +139,14 @@
 					        getImage="iconSelector"
 					        getEnabled="ribbonButtonsEnabled"/>
 				</group>
+				<group id="MetadataGroup"
+					   getLabel="getRibbonLabel">
+					<button id="DocumentMetadataTabButton"
+							getLabel="getRibbonLabel"
+							size="large"
+							onAction="DocumentMetadataUI"
+							getImage="iconSelector"/>
+				</group>
 				<group id="SettingsGroup"
 				       getLabel="getRibbonLabel">
 					<button id="SettingsTabButton"

@@ -81,6 +81,15 @@
             <Component Id="DaisyAddinLib.dll" Guid="8E8F0D07-E9DF-4426-920E-3047069249A5" Win64="$(var.Win64)">
                 <File Name="$(var.DaisyAddinLib.TargetFileName)" Source="$(var.DaisyAddinLib.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
+			<Component Id="DaisyAddinWPFLib.dll"
+					   Guid="B2FF2F6C-6DEB-47DD-88E9-CD238962E334"
+					   Win64="$(var.Win64)">
+				<File Name="$(var.DaisyAddinWPFLib.TargetFileName)"
+					  Source="$(var.DaisyAddinWPFLib.TargetPath)"
+					  DiskId="1"
+					  KeyPath="yes"
+					  Checksum="yes" />
+			</Component>
             <Component Id="DaisyConverterLib.dll" Guid="6A2E273F-22B9-4016-8A1F-B0A03B4DCB1B" Win64="$(var.Win64)">
                 <File Name="$(var.DaisyConverterLib.TargetFileName)" Source="$(var.DaisyConverterLib.TargetPath)" DiskId="1" KeyPath="yes" Checksum="yes" />
             </Component>
@@ -1097,6 +1106,7 @@
             
             <ComponentGroupRef Id="SharedLibraries"/>
             <ComponentRef Id="DaisyAddinLib.dll" />
+			<ComponentRef Id="DaisyAddinWPFLib.dll" />
 			<ComponentRef Id="Localization.dll" />
             <ComponentRef Id="DaisyConverterLib.dll" />
             <ComponentRef Id="WindowsBase.dll" />

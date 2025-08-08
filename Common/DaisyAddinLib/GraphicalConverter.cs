@@ -16,10 +16,9 @@ namespace Daisy.SaveAsDAISY.Forms {
 
         public GraphicalConverter(
             IDocumentPreprocessor preprocessor,
-            WordToDTBookXMLTransform documentConverter,
             ConversionParameters conversionParameters,
             GraphicalEventsHandler eventsHandler
-        ) : base(preprocessor, documentConverter, conversionParameters, eventsHandler) {
+        ) : base(preprocessor, conversionParameters, eventsHandler) {
             progressDialog = new ConversionProgress();
             progressDialog.setCancelClickListener(RequestConversionCancel);
             ((GraphicalEventsHandler)this.EventsHandler).LinkToProgressDialog(ref progressDialog);
@@ -30,7 +29,7 @@ namespace Daisy.SaveAsDAISY.Forms {
         /// </summary>
         /// <param name="currentDocument">Main document to extract conversion settings</param>
         /// <returns></returns>
-        public ConversionStatus requestUserParameters(DocumentParameters currentDocument) {
+        public ConversionStatus requestUserParameters(DocumentProperties currentDocument) {
             // reset progress bar
             progressDialog.InitializeProgress("Waiting for user settings");
             ConversionParametersForm conversionSetter = new ConversionParametersForm(currentDocument, ConversionParameters);

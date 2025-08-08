@@ -27,33 +27,32 @@
  */
 
 
-using Microsoft.Office.Interop.Word;
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
+using Daisy.SaveAsDAISY.Conversion;
+using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
+using Daisy.SaveAsDAISY.Forms;
+using Daisy.SaveAsDAISY.WPF;
 using Extensibility;
-using System.Reflection;
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
+using Microsoft.Toolkit.Uwp.Notifications;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO.Packaging;
-using System.Windows.Forms;
-using Microsoft.Office.Core;
-using System.Runtime.InteropServices;
-using MSword = Microsoft.Office.Interop.Word;
-using Daisy.SaveAsDAISY;
-using Daisy.SaveAsDAISY.Conversion;
-using System.Globalization;
-using Daisy.SaveAsDAISY.Conversion.Events;
-using System.Text.RegularExpressions;
-using Daisy.SaveAsDAISY.Forms;
-using Script = Daisy.SaveAsDAISY.Conversion.Script;
-using Daisy.SaveAsDAISY.Conversion.Pipeline;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
 using System.Diagnostics;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Daisy.SaveAsDAISY.WPF;
+using System.Globalization;
+using System.IO;
+using System.IO.Packaging;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Threading;
+using System.Xml;
+using Converter = Daisy.SaveAsDAISY.Conversion.Converter;
+using MSword = Microsoft.Office.Interop.Word;
+using Script = Daisy.SaveAsDAISY.Conversion.Script;
 
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
@@ -161,7 +160,23 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 this.applicationObject.DocumentChange += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentChangeEventHandler(applicationObject_DocumentChange);
                 this.applicationObject.DocumentBeforeClose += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeCloseEventHandler(applicationObject_DocumentBeforeClose);
                 this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);
-                
+
+               
+                // https://stackoverflow.com/a/12768858
+                //var formPreload = new Thread(() =>
+                //{   //Force runtime to pre-load all resources for secondary windows so they will load as fast as possible
+                //    new WPF.About();
+                //    new WPF.ConversionParametersForm(null, null);
+                //    new WPF.ConversionProgress();
+                //    new WPF.SettingsForm();
+                //    new WPF.Metadata();
+                //    new WPF.ExceptionReport();
+                //});
+                //formPreload.SetApartmentState(ApartmentState.STA);
+                //formPreload.Priority = ThreadPriority.Lowest;//We don't want prefetching to delay showing of primary window
+                //formPreload.Start();
+
+
                 // Listen to notification activation
                 ToastNotificationManagerCompat.OnActivated += toastArgs =>
                 {
@@ -426,7 +441,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             { "SettingsTabButton", "gear.png" },
             { "VersionDetailsTabButton", "version.png" },
             { "OpenManualTabButton", "help.png" },
-            { "DocumentationTabMenu", "speaker.jpg" }
+            { "DocumentationTabMenu", "speaker.jpg" },
+            { "DocumentMetadataTabButton", "version.jpg" }
         };
         public stdole.IPictureDisp iconSelector(IRibbonControl control) {
             try
@@ -482,7 +498,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public void GetDaisySettings(IRibbonControl control) {
             //ConverterSettingsForm daisyfrm = new ConverterSettingsForm();
             //daisyfrm.ShowDialog();
-            Daisy.SaveAsDAISY.WPF.Settings settings = new Daisy.SaveAsDAISY.WPF.Settings();
+            Daisy.SaveAsDAISY.WPF.SettingsForm settings = new Daisy.SaveAsDAISY.WPF.SettingsForm();
             settings.ShowDialog();
         }
 
@@ -781,86 +797,123 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             //abtForm.ShowDialog();
         }
 
+        /// <summary>
+        /// Access document properties
+        /// </summary>
+        /// <param name="control"></param>
+        public void DocumentMetadataUI(IRibbonControl control)
+        {
+            WPF.ConversionProgress.Instance.InitializeProgress("Analyzing document metadata");
+            WPF.ConversionProgress.Instance.Show();
+            object doc = this.applicationObject.ActiveDocument;
+            Daisy.SaveAsDAISY.WPF.Metadata metadata = new Daisy.SaveAsDAISY.WPF.Metadata(
+                new DocumentPreprocessor(applicationObject),
+                ref doc
+            );
+            metadata.ShowDialog();
+            WPF.ConversionProgress.Instance.Close();
+        }
+
         #region Single document conversion
 
+
+
         /// <summary>
-        /// 
+        /// New version of the export method
         /// </summary>
         /// <param name="pipelineScript"></param>
         /// <param name="eventsHandler"></param>
-        /// <param name="conversionIntegrationTestSettings"></param>
-        //public void ApplyScriptOld(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
-        //{
-        //    try
-        //    {
-        //        IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-        //        WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-        //        Converter converter = null;
-        //        if (conversionIntegrationTestSettings != null)
-        //        {
-        //            ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
-        //            converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
-        //        }
-        //        else
-        //        {
-        //            ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-        //            converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
-        //        }
+        public async void ApplyScript(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
+        {
+            Dispatcher uiThread = Dispatcher.CurrentDispatcher;
+            try {
+                object doc = this.applicationObject.ActiveDocument;
+                DocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
+                Converter converter = new WPFConverter(preprocess, conversion, (WPFEventsHandler)eventsHandler);
+                Exception catchedException = null;
+                Conversion.DocumentProperties currentDocument = await System.Threading.Tasks.Task.Run(() =>
+                {
+                    // need to change preprocess to NOT do right now the shapes extraction
+                    try {
+                        return converter.AnalyzeDocument(this.applicationObject.ActiveDocument.FullName);
+                    }
+                    catch (Exception e) {
+                        AddinLogger.Error(e);
+                        catchedException = e;
+                        return null;
+                    }
+                });
+                if(catchedException != null) {
+                    if (conversionIntegrationTestSettings == null) {
+                        WPF.ExceptionReport report = new WPF.ExceptionReport(catchedException);
+                        report.ShowDialog();
+                    }
+                }
+                else if (currentDocument != null) {
+                    try {
+                        WPF.ConversionParametersForm form = new WPF.ConversionParametersForm(
+                        preprocess,
+                        ref doc,
+                        conversion,
+                        currentDocument
+                    );
+                        if (form.ShowDialog()) {
+                            currentDocument = form.DocumentProps;
+                            converter.ConversionParameters = form.UpdatedConversionParameters;
+                            eventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Saving metadata in the document ..."));
+                            preprocess.updateDocumentMetadata(ref doc, currentDocument);
+                            await System.Threading.Tasks.Task.Run(() =>
+                            {
+                                converter.PrepareForConversion(ref currentDocument);
+                                ConversionResult result = converter.ConvertWithPipeline2(currentDocument);
+                                if (result != null && result.Succeeded) {
+                                    Process.Start(
+                                        Directory.Exists(converter.ConversionParameters.OutputPath)
+                                        ? converter.ConversionParameters.OutputPath
+                                        : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
+                                    );
+                                } else {
+                                    MessageBox.Show(result.UnknownErrorMessage, "ConversionParametersForm failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                }
+                            });  
+                        }
+                    }
+                    catch (Exception e) {
+                        AddinLogger.Error(e);
+                        if (conversionIntegrationTestSettings == null) {
+                            WPF.ExceptionReport report = new WPF.ExceptionReport(e);
+                            report.ShowDialog();
+                        }
+                    }
+                }
+            } 
+            catch (Exception e) {
+                    AddinLogger.Error(e);
+                    if (conversionIntegrationTestSettings == null) {
+                        WPF.ExceptionReport report = new WPF.ExceptionReport(e);
+                        report.ShowDialog();
+                    }
+            } finally {
+                WPF.ConversionProgress.Instance.Close();
+            }
 
-        //        DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
-        //        if (conversionIntegrationTestSettings != null
-        //                || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion)
-        //        {
-                    
-        //            ConversionResult result = converter.Convert(currentDocument);
-        //            // Conversion test with 
-        //            //ConversionResult result = converter.Convert2(currentDocument);
-        //            if (result != null && result.Succeeded)
-        //            {
-        //                Process.Start(
-        //                    Directory.Exists(converter.ConversionParameters.OutputPath)
-        //                    ? converter.ConversionParameters.OutputPath
-        //                    : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
-        //                );
-        //            } else {
-        //                MessageBox.Show(result.UnknownErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //            }
+        }
 
-        //        }
-        //        else
-        //        {
-        //            eventsHandler.onConversionCanceled();
-        //        }
-
-        //        //applicationObject.ActiveDocument.Save();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        AddinLogger.Error(e);
-        //        if (conversionIntegrationTestSettings == null)
-        //        {
-        //            ExceptionReport report = new ExceptionReport(e);
-        //            report.ShowDialog();
-        //        }
-
-        //    }
-        //}
-
-        public void ApplyScript(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
+        public void ApplyScriptV1(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
         {
             try {
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
                 Converter converter = null;
                 if (conversionIntegrationTestSettings != null) {
                     ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
-                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
+                    converter = new Converter(preprocess, conversion, eventsHandler);
                 } else {
                     ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
+                    converter = new GraphicalConverter(preprocess, conversion, (GraphicalEventsHandler)eventsHandler);
                 }
 
-                DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
+                Conversion.DocumentProperties currentDocument = converter.AnalyzeDocument(this.applicationObject.ActiveDocument.FullName);
                 if (conversionIntegrationTestSettings != null
                         || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
 
@@ -874,7 +927,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
                         );
                     } else {
-                        MessageBox.Show(result.UnknownErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(result.UnknownErrorMessage, "ConversionParametersForm failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                 } else {
@@ -898,7 +951,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             try
             {
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null 
-                    ? (IConversionEventsHandler) new GraphicalEventsHandler() 
+                    ? (IConversionEventsHandler) new WPFEventsHandler() 
                     : new SilentEventsHandler();
 
                 Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
@@ -930,7 +983,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public void SaveAsDAISY3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
                // IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
                 
                 Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
@@ -963,7 +1016,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         {
             try {
                 // IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
 
                 Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
@@ -995,7 +1048,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public void SaveAsEPUB3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
                 //IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
 
                 Script pipelineScript = new WordToEpub3(eventsHandler);
 
@@ -1025,7 +1078,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         {
             try
             {
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
 
                 Script pipelineScript = new WordToMp3(eventsHandler);
 
@@ -1062,17 +1115,16 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 Script pipelineScript = new DtbookCleaner(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                GraphicalConverter converter = new GraphicalConverter(preprocess, conversion, eventsHandler);
                 // Note : the current form for multiple also include conversion settings update
                 List<string> documentsPathes = converter.requestUserDocumentsList();
                 if(documentsPathes != null && documentsPathes.Count > 0) {
-                    List<DocumentParameters> documents = new List<DocumentParameters>();
+                    List<Conversion.DocumentProperties> documents = new List<Conversion.DocumentProperties>();
                    
                     foreach (string inputPath in documentsPathes) {
-                        DocumentParameters subDoc = null;
+                        Conversion.DocumentProperties subDoc = null;
                         try {
-                            subDoc = converter.PreprocessDocument(inputPath);
+                            subDoc = converter.AnalyzeDocument(inputPath);
                         } catch (Exception e) {
                             string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
                             eventsHandler.onPreprocessingError(inputPath, new Exception(errors, e));
@@ -1104,20 +1156,19 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 Script pipelineScript = new WordToDaisy3(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                GraphicalConverter converter = new GraphicalConverter(preprocess, conversion, eventsHandler);
                 // Note : the current form for multiple also include conversion settings update
                 List<string> documentsPathes = converter.requestUserDocumentsList();
                 if (documentsPathes != null && documentsPathes.Count > 0)
                 {
-                    List<DocumentParameters> documents = new List<DocumentParameters>();
+                    List<Conversion.DocumentProperties> documents = new List<Conversion.DocumentProperties>();
 
                     foreach (string inputPath in documentsPathes)
                     {
-                        DocumentParameters subDoc = null;
+                        Conversion.DocumentProperties subDoc = null;
                         try
                         {
-                            subDoc = converter.PreprocessDocument(inputPath);
+                            subDoc = converter.AnalyzeDocument(inputPath);
                         }
                         catch (Exception e)
                         {
@@ -1156,20 +1207,19 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 Script pipelineScript = new WordToDaisy3(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                GraphicalConverter converter = new GraphicalConverter(preprocess, conversion, eventsHandler);
                 // Note : the current form for multiple also include conversion settings update
                 List<string> documentsPathes = converter.requestUserDocumentsList();
                 if (documentsPathes != null && documentsPathes.Count > 0)
                 {
-                    List<DocumentParameters> documents = new List<DocumentParameters>();
+                    List<Conversion.DocumentProperties> documents = new List<Conversion.DocumentProperties>();
 
                     foreach (string inputPath in documentsPathes)
                     {
-                        DocumentParameters subDoc = null;
+                        Conversion.DocumentProperties subDoc = null;
                         try
                         {
-                            subDoc = converter.PreprocessDocument(inputPath);
+                            subDoc = converter.AnalyzeDocument(inputPath);
                         }
                         catch (Exception e)
                         {

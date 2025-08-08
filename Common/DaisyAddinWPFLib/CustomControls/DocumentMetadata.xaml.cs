@@ -1,4 +1,5 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 
@@ -10,68 +11,41 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
     public partial class DocumentMetadata : UserControl
     {
 
-        public DocumentParameters Document = new DocumentParameters("");
+        public DocumentProperties Document = new DocumentProperties("");
+
 
         public DocumentMetadata()
         {
             InitializeComponent();
+            this.DataContext = this;
         }
 
-        public DocumentMetadata(DocumentParameters d) : this()
-        {
-        }
-
-        public string DocumentTitle { get; set; }
-        public string DocumentAuthor { get; set; }
-        public string DocumentPublisher { get; set; }
-        public string DocumentIdentifier { get; set; }
-        public string DocumentIdentifierScheme { get; set; }
-        public string SelectedDocumentLanguage { get; set; }
-        public string DocumentContributor { get; set; }
-        public string DocumentSubtitle { get; set; }
-        public string DocumentRights { get; set; }
-        public string DocumentSummary { get; set; }
-        public string DocumentSubject { get; set; }
-        public string DocumentSource { get; set; }
-        public string DocumentAccessibilitySummary { get; set; }
-
-        public void LoadDocument(DocumentParameters d)
+        public DocumentMetadata(DocumentProperties d)
         {
             Document = d;
-            DocumentTitle = Document.Title;
-            DocumentAuthor = Document.Author;
-            DocumentPublisher = Document.Publisher;
-            DocumentIdentifier = Document.Identifier;
-            DocumentIdentifierScheme = Document.IdentifierScheme;
-            SelectedDocumentLanguage = Document.Languages[0];
-            DocumentContributor = Document.Contributor;
-            DocumentSubtitle = Document.Subtitle;
-            DocumentRights = Document.Rights;
-            DocumentSummary = Document.Summary;
-            DocumentSubject = Document.Subject;
-            DocumentSource = Document.SourceOfPagination;
-            DocumentAccessibilitySummary = Document.AccessibilitySummary;
+            InitializeComponent();
+            this.DataContext = this;
         }
 
-        public DocumentParameters GetUpdatedDocument()
-        {
-            Document.Title = DocumentTitle;
-            Document.Author = DocumentAuthor;
-            Document.Publisher = DocumentPublisher;
-            Document.Identifier = DocumentIdentifier;
-            Document.IdentifierScheme = DocumentIdentifierScheme;
-            Document.Languages = new System.Collections.Generic.List<string>()
-            {
-                SelectedDocumentLanguage,
-            }.Concat(Document.Languages.Where(l => l != SelectedDocumentLanguage)).ToList();
-            Document.Contributor = DocumentContributor;
-            Document.Subtitle = DocumentSubtitle;
-            Document.Rights = DocumentRights;
-            Document.Summary = DocumentSummary;
-            Document.Subject = DocumentSubject;
-            Document.SourceOfPagination = DocumentSource;
-            Document.AccessibilitySummary = DocumentAccessibilitySummary;
-            return Document;
-        }
+        //public void BindTo(DocumentProperties d)
+        //{
+        //    Document = d;
+        //}
+
+        public string DocumentTitle { get => Document.Title; set => Document.Title = value; }
+        public string DocumentAuthor { get => Document.Author; set => Document.Author = value; }
+        public string DocumentPublisher { get => Document.Publisher; set => Document.Publisher = value; }
+        public string DocumentIdentifier { get => Document.Identifier; set => Document.Identifier = value; }
+        public string DocumentIdentifierScheme { get => Document.IdentifierScheme; set => Document.IdentifierScheme = value; }
+        public string DocumentContributor { get => Document.Contributor; set => Document.Contributor = value; }
+        public string DocumentSubtitle { get => Document.Subtitle; set => Document.Subtitle = value; }
+        public string DocumentRights { get => Document.Rights; set => Document.Rights = value; }
+        public string DocumentSummary { get => Document.Summary; set => Document.Summary = value; }
+        public string DocumentSubject { get => Document.Subject; set => Document.Subject = value; }
+        public string DocumentSource { get => Document.SourceOfPagination; set => Document.SourceOfPagination = value; }
+        public string DocumentAccessibilitySummary { get => Document.AccessibilitySummary; set => Document.AccessibilitySummary = value; }
+
+
+
     }
 }

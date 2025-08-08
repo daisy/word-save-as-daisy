@@ -222,4 +222,10 @@
   <data name="VersionDetailsTabButton" xml:space="preserve">
     <value>&amp;Informations logiciel</value>
   </data>
+  <data name="MetadataGroup" xml:space="preserve">
+    <value>Métadonnées</value>
+  </data>
+  <data name="DocumentMetadataTabButton" xml:space="preserve">
+    <value>Métadonnées</value>
+  </data>
 </root>

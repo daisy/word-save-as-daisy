@@ -1,0 +1,21 @@
+﻿<Window x:Class="Daisy.SaveAsDAISY.WPF.Metadata"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
+        xmlns:cc="clr-namespace:Daisy.SaveAsDAISY.WPF.CustomControls"
+        mc:Ignorable="d"
+        Title="Accessibility metadata" SizeToContent="WidthAndHeight">
+    <StackPanel>
+        <cc:DocumentMetadata x:Name="MetadataForm"/>
+        <Button x:Name="SaveMetadata"
+                IsEnabled="False"
+                HorizontalAlignment="Right"
+                Padding="10,2,10,2"
+                Margin="5"
+                Click="SaveMetadata_Click">
+            Save
+        </Button>
+    </StackPanel>
+</Window>

@@ -1,27 +1,27 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
-
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
+using Microsoft.Win32;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
-using System.Collections;
-
-using MSword = Microsoft.Office.Interop.Word;
-using IConnectDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
+using System.Windows.Markup;
+using COMException = System.Runtime.InteropServices.COMException;
 using ConnectFORMATETC = System.Runtime.InteropServices.ComTypes.FORMATETC;
 using ConnectSTGMEDIUM = System.Runtime.InteropServices.ComTypes.STGMEDIUM;
-using COMException = System.Runtime.InteropServices.COMException;
+using IConnectDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
+using MSword = Microsoft.Office.Interop.Word;
 using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
-using Microsoft.Win32;
-using System.IO;
-using System.Threading;
-using System.Drawing.Imaging;
-using System.Drawing;
-using Microsoft.Office.Core;
-using System.Windows.Input;
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
@@ -176,7 +176,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             currentInstance = WordInstance;
         }
 
-        public ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
+        public ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
             object currentFile = currentDoc.FullName;
             object tmpFileName = Path.Combine(
@@ -203,6 +203,25 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 FileName: tmpFileName,
                 Visible: false
             );
+
+            if(ConverterSettings.Instance.PagenumStyle == ConverterSettings.PageNumberingChoice.Enum.Automatic) {
+                // TODO : freeze page breaks
+                eventsHandler?.onProgressMessageReceived(this, new DaisyEventArgs(
+                    "Computing page breaks"
+                ));
+                object missing = System.Reflection.Missing.Value;
+                object what = Microsoft.Office.Interop.Word.WdGoToItem.wdGoToPage;
+                object which = Microsoft.Office.Interop.Word.WdGoToDirection.wdGoToAbsolute;
+                object count = 1; //pagenumber
+                object count2 = (int)count + 1;
+
+                //Range startRange = doc.Selection.GoTo(ref what, ref which, ref count, ref missing);
+                //Range endRange = doc.Selection.GoTo(ref what, ref which, ref count2, ref missing);
+                //endRange.SetRange(startRange.Start, endRange.End);
+                //endRange.Select();
+                //return endRange;
+            }
+
             // Upgrade the copy to docx for conversion
             copy.SaveAs2(
                 FileName: document.CopyPath,
@@ -249,7 +268,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         Visible: false
                     );
                 }
-                
             }
 
             // Note : using the recommended "copy document into another one" way of 
@@ -272,7 +290,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             return ConversionStatus.PreprocessingSucceeded;
         }
 
-        public ConversionStatus ProcessEquations(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
+        public ConversionStatus ProcessEquations(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             Int16 showMsg = 0;
             MSword.Range rng;
             String storyName = "";
@@ -360,7 +378,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             return ConversionStatus.ProcessedMathML;
         }
 
-        public ConversionStatus ProcessShapes(ref object preprocessedObject, ref DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
+        public ConversionStatus ProcessShapes(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
             //List<string> objectShapes = new List<string>();
             //List<string> imageIds = new List<string>();
@@ -507,7 +525,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             return ConversionStatus.ProcessedShapes;
         }
 
-        public object startPreprocessing(DocumentParameters document, IConversionEventsHandler eventsHandler = null) {
+        public object startPreprocessing(Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             // reset the focus on the document (or open it as visible) in the word app if it is not a subdoc
             return currentInstance.Documents.Open(
                 FileName: document.InputPath,
@@ -524,11 +542,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 bool docIsRenamed = false;
                 if (!authorizedNamePattern.AuthorisationPattern.IsMatch(currentDoc.Name)) { // check only name (i assume it may still lead to problem if path has commas)
 
-                    DialogResult? userAnswer = eventsHandler?.documentMustBeRenamed(authorizedNamePattern);
-                    if (userAnswer.HasValue && userAnswer.Value == DialogResult.Yes) {
+                    bool? userAnswer = eventsHandler?.documentMustBeRenamed(authorizedNamePattern);
+                    if (userAnswer.HasValue && userAnswer.Value == true) {
                         docIsRenamed = eventsHandler.userIsRenamingDocument(ref preprocessedObject);
-                        if(!docIsRenamed) return ConversionStatus.Canceled;
-                    } else if (userAnswer.HasValue && userAnswer.Value == DialogResult.Cancel) {
+                        if (!docIsRenamed) return ConversionStatus.Canceled;
+                    } else if (!userAnswer.HasValue) {
                         return ConversionStatus.Canceled;// PreprocessingData.Canceled("User canceled a renaming request for an invalid docx filename");
                     }
                     // else the sanitize path in the DaisyAddinLib will replace commas by underscore.
@@ -933,6 +951,86 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 }
             }
         }
+        #endregion
+
+        #region Metadata
+
+        private string TryGetPropertyValue(Microsoft.Office.Core.DocumentProperties properties, string property)
+        {
+            try
+            {
+                return properties[property]?.Value?.ToString() ?? "";
+            }
+            catch (Exception)
+            {
+                // If the property is not available, return an empty string
+                return "";
+            }
+        }
+        private void TrySetPropertyValue(Microsoft.Office.Core.DocumentProperties properties, string property, string value)
+        {
+            try {
+                properties[property].Value = value;
+            }
+            catch (Exception) {
+                // If the property is not available, return an empty string
+                properties.Add(property, false, MsoDocProperties.msoPropertyTypeString, value);
+            }
+        }
+
+        public Conversion.DocumentProperties loadDocumentParameters(ref object documentObject)
+        {
+            MSword.Document currentDoc = (MSword.Document)documentObject;
+            Conversion.DocumentProperties result = new Conversion.DocumentProperties(currentDoc.FullName);
+            Microsoft.Office.Core.DocumentProperties properties = (Microsoft.Office.Core.DocumentProperties)currentDoc.BuiltInDocumentProperties;
+            Microsoft.Office.Core.DocumentProperties customProperties = (Microsoft.Office.Core.DocumentProperties)currentDoc.CustomDocumentProperties;
+            result.Title = TryGetPropertyValue(properties, "Title");
+            result.Author = TryGetPropertyValue(properties, "Author");
+            result.Subject = TryGetPropertyValue(properties, "Subject");
+            result.Publisher = TryGetPropertyValue(customProperties, "Publisher");
+            if(string.IsNullOrEmpty(result.Publisher)) {
+                // Fallback to the built-in property if custom property is not set
+                result.Publisher = TryGetPropertyValue(properties, "Company");
+            }
+            result.Identifier = TryGetPropertyValue(customProperties, "ISBN");
+            result.Contributor = TryGetPropertyValue(customProperties, "Contributor");
+            result.Summary = TryGetPropertyValue(customProperties, "Description");
+            result.SourceOfPagination = TryGetPropertyValue(customProperties, "Source");
+            result.AccessibilitySummary = TryGetPropertyValue(customProperties, "AccessibilitySummary");
+            result.Subtitle = TryGetPropertyValue(customProperties, "Subtitle");
+            result.Date = TryGetPropertyValue(customProperties, "Date");
+            result.Rights = TryGetPropertyValue(customProperties, "Rights");
+            result.SourceDate = TryGetPropertyValue(customProperties, "SourceDate");
+            result.HasRevisions = currentDoc.Revisions.Count > 0;
+            currentDoc.DetectLanguage();
+            return result;
+        }
+       
+
+        public void updateDocumentMetadata(ref object documentObject, Conversion.DocumentProperties data)
+        {
+            MSword.Document currentDoc = (MSword.Document)documentObject;
+            Microsoft.Office.Core.DocumentProperties properties = (Microsoft.Office.Core.DocumentProperties)currentDoc.BuiltInDocumentProperties;
+            Microsoft.Office.Core.DocumentProperties customProperties = (Microsoft.Office.Core.DocumentProperties)currentDoc.CustomDocumentProperties;
+            TrySetPropertyValue(properties, "Title", data.Title);
+            TrySetPropertyValue(properties, "Author", data.Author);
+            TrySetPropertyValue(properties, "Subject", data.Subject);
+            TrySetPropertyValue(properties, "Company", data.Publisher);
+
+            TrySetPropertyValue(customProperties, "Publisher", data.Publisher);
+            TrySetPropertyValue(customProperties, "ISBN", data.Identifier);
+            TrySetPropertyValue(customProperties, "Contributor", data.Contributor);
+            TrySetPropertyValue(customProperties, "Description", data.Summary);
+            TrySetPropertyValue(customProperties, "Source", data.SourceOfPagination);
+            TrySetPropertyValue(customProperties, "AccessibilitySummary", data.AccessibilitySummary);
+            TrySetPropertyValue(customProperties, "Subtitle", data.Subtitle);
+            TrySetPropertyValue(customProperties, "Date", data.Date);
+            TrySetPropertyValue(customProperties, "Rights", data.Rights);
+            TrySetPropertyValue(customProperties, "SourceDate", data.SourceDate);
+
+            currentDoc.Save();
+        }
+
         #endregion
     }
 }

@@ -35,12 +35,12 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
             ValueSelector.Items.Clear();
             //base.DescriptionLabel = p.Description;
             EnumData enumData = (EnumData)s.ParameterData;
-            foreach (string a in enumData.GetNiceNames)
+            foreach (string a in enumData.Keys)
             {
                 ValueSelector.Items.Add(a);
             }
             base.Size = this.Size;
-            if (linkedEnumData.SelectedIndex >= 0 && linkedEnumData.SelectedIndex < linkedEnumData.GetValues.Count)
+            if (linkedEnumData.SelectedIndex >= 0 && linkedEnumData.SelectedIndex < linkedEnumData.Values.Count)
                 ValueSelector.SelectedIndex = linkedEnumData.SelectedIndex;
         }
 

@@ -19,11 +19,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         }
 
 
-        public void onDocumentListConversionStart(List<DocumentParameters> documentLists, ConversionParameters conversion) {
+        public void onDocumentListConversionStart(List<DocumentProperties> documentLists, ConversionParameters conversion) {
 
         }
 
-        public void onDocumentConversionStart(DocumentParameters document, ConversionParameters conversion) {
+        public void onDocumentConversionStart(DocumentProperties document, ConversionParameters conversion) {
 
         }
 
@@ -31,11 +31,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
 
         }
 
-        public void onDocumentListConversionSuccess(List<DocumentParameters> documentLists, ConversionParameters conversion) {
+        public void onDocumentListConversionSuccess(List<DocumentProperties> documentLists, ConversionParameters conversion) {
 
         }
 
-        public void onDocumentConversionSuccess(DocumentParameters document, ConversionParameters conversion) {
+        public void onDocumentConversionSuccess(DocumentProperties document, ConversionParameters conversion) {
 
         }
 
@@ -97,9 +97,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
             return true;
         }
 
-        public DialogResult documentMustBeRenamed(StringValidator authorizedNamePattern) {
+        public bool? documentMustBeRenamed(StringValidator authorizedNamePattern) {
             // renamed automatically for silent mode, see the interface reference
-            return DialogResult.No;
+            return false;
         }
 
         public bool userIsRenamingDocument(ref object preprocessedObject) {
