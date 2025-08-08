@@ -118,9 +118,11 @@ if($version) {
 
 if($refreshpipeline) {
     # recompute the pipeline using the engine make tool and a makefile in the root folder
-    Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\make.exe") -ArgumentList "clean" -Wait
-    Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\make.exe") -Wait
-    Start-Sleep 1
+    # NP 2025 08 08 : problem with the new build system introduced by the pipeline ui (cleaning and rebuild raises errors, but initial build works)
+    # For now, i redo the build manually when needed
+    # Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\assembly\make.exe") -ArgumentList "clean" -Wait
+    # Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\assembly\make.exe") -Wait
+    # Start-Sleep 1
     $_oldroot = Join-Path $PSScriptRoot "resources"
     # regenerate and update the wix project "product.wxs"
     # - compute wix components and references for daisy-pipeline folder in Lib
