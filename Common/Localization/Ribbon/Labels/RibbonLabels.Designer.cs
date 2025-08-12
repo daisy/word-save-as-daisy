@@ -115,7 +115,7 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Metadata.
+        ///   Recherche une chaîne localisée semblable à Document metadata.
         /// </summary>
         public static string DocumentMetadataTabButton {
             get {

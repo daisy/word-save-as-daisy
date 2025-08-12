@@ -226,6 +226,6 @@
     <value>Métadonnées</value>
   </data>
   <data name="DocumentMetadataTabButton" xml:space="preserve">
-    <value>Métadonnées</value>
+    <value>Métadonnées du document</value>
   </data>
 </root>

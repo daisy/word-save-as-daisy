@@ -82,6 +82,18 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ManageAbbreviationsForm.xaml.cs">
+      <DependentUpon>ManageAbbreviationsForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ManageAcronymsForm.xaml.cs">
+      <DependentUpon>ManageAcronymsForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewAbreviationForm.xaml.cs">
+      <DependentUpon>NewAbreviationForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewAcronymForm.xaml.cs">
+      <DependentUpon>NewAcronymForm.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ConversionParametersForm.xaml.cs">
       <DependentUpon>ConversionParametersForm.xaml</DependentUpon>
     </Compile>
@@ -106,8 +118,8 @@
     <Compile Include="ExceptionReport.xaml.cs">
       <DependentUpon>ExceptionReport.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Metadata.xaml.cs">
-      <DependentUpon>Metadata.xaml</DependentUpon>
+    <Compile Include="DocumentMetadataForm.xaml.cs">
+      <DependentUpon>DocumentMetadataForm.xaml</DependentUpon>
     </Compile>
     <Compile Include="ConversionProgress.xaml.cs">
       <DependentUpon>ConversionProgress.xaml</DependentUpon>
@@ -124,6 +136,22 @@
     <Compile Include="About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Page Include="ManageAbbreviationsForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageAcronymsForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewAbreviationForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewAcronymForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ConversionParametersForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -156,7 +184,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Metadata.xaml">
+    <Page Include="DocumentMetadataForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,6 +240,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
     <COMReference Include="Microsoft.Office.Interop.Word">
       <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>8</VersionMajor>
