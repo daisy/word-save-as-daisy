@@ -63,39 +63,40 @@ namespace Daisy.SaveAsDAISY.WPF
                             elmAcronyms = (XmlElement)elmManage.ChildNodes[j];
                         }
                     }
-                    if (elmAcronyms == null) {
-                        elmAcronyms = dc.CreateElement("Acronyms");
-                        elmManage.AppendChild(elmAcronyms);
-                        hasChanged = true;
-                    }
-                    XmlNodeList list = elmAcronyms.ChildNodes;
-                    for (int j = list.Count - 1; j >= 0; j--) {
-                        AcronymItem item = new AcronymItem()
-                        {
-                            AcronymName = list.Item(j).Attributes.GetNamedItem("AcronymName")?.Value,
-                            OriginalText = list.Item(j).Attributes.GetNamedItem("OriginalText")?.Value,
-                            FullAcr = list.Item(j).Attributes.GetNamedItem("FullAcr")?.Value,
-                            PronouncedAsWord = list.Item(j).Attributes.GetNamedItem("AcronymName")?.Value.StartsWith("AcronymsYes") == true
-                        };
-                        if (!CurrentDocument.Bookmarks.Exists(item.AcronymName)) {
-                            // Abbreviation was removed from the document bookmarks, remove it from the XML part
-                            elmAcronyms.RemoveChild(elmAcronyms.ChildNodes[j]);
-                            hasChanged = true;
-                        } else {
-                            Acronyms.Add(item);
-                        }
-                    }
-
-                    foreach (object item in CurrentDocument.Bookmarks) {
-                        if (((Bookmark)item).Name.StartsWith("Acronyms", StringComparison.CurrentCulture)) {
-                            string name = ((Bookmark)item).Name;
-                            AcronymItem found = Acronyms.First((x) => x.AcronymName == name);
-                            if (found == null || (found != null && found.OriginalText != ((Bookmark)item).Range.Text.Trim())) {
-                                // The abbreviation is not in the XML part, remove the bookmark
-                                object val = name;
-                                CurrentDocument.Bookmarks.get_Item(ref val).Delete();
-                                Acronyms.Remove(found);
+                    if (elmAcronyms != null) {
+                        XmlNodeList list = elmAcronyms.ChildNodes;
+                        for (int j = list.Count - 1; j >= 0; j--) {
+                            AcronymItem item = new AcronymItem()
+                            {
+                                AcronymName = list.Item(j).Attributes.GetNamedItem("AcronymName")?.Value,
+                                OriginalText = list.Item(j).Attributes.GetNamedItem("OriginalText")?.Value,
+                                FullAcr = list.Item(j).Attributes.GetNamedItem("FullAcr")?.Value,
+                                PronouncedAsWord = list.Item(j).Attributes.GetNamedItem("AcronymName")?.Value.StartsWith("AcronymsYes") == true
+                            };
+                            if (!CurrentDocument.Bookmarks.Exists(item.AcronymName)) {
+                                // Abbreviation was removed from the document bookmarks, remove it from the XML part
+                                elmAcronyms.RemoveChild(elmAcronyms.ChildNodes[j]);
+                                hasChanged = true;
+                            } else {
+                                Acronyms.Add(item);
                             }
+                        }
+                        foreach (object item in CurrentDocument.Bookmarks) {
+                            if (((Bookmark)item).Name.StartsWith("Acronyms", StringComparison.CurrentCulture)) {
+                                string name = ((Bookmark)item).Name;
+                                AcronymItem found = Acronyms.First((x) => x.AcronymName == name);
+                                if (found == null || (found != null && found.OriginalText != ((Bookmark)item).Range.Text.Trim())) {
+                                    // The abbreviation is not in the XML part, remove the bookmark
+                                    object val = name;
+                                    CurrentDocument.Bookmarks.get_Item(ref val).Delete();
+                                    Acronyms.Remove(found);
+                                }
+                            }
+                        }
+                        if (Acronyms.Count == 0) {
+                            // If no acronyms are left, remove the Acronyms element
+                            elmManage.RemoveChild(elmAcronyms);
+                            hasChanged = true;
                         }
                     }
                     if (hasChanged) {
@@ -105,6 +106,7 @@ namespace Daisy.SaveAsDAISY.WPF
                     }
                 }
             }
+            Acronyms.Reverse();
             AcronymsList.ItemsSource = Acronyms;
         }
 
@@ -142,8 +144,6 @@ namespace Daisy.SaveAsDAISY.WPF
         {
             // Remove abreviation from list and update xml part
             AcronymItem item = (AcronymItem)AcronymsList.SelectedItem;
-            CustomXMLParts xmlparts = CurrentDocument.CustomXMLParts;
-
             // Remove bookmark from the document
             if (CurrentDocument.Bookmarks.Exists(item.AcronymName)) {
                 object val = item.AcronymName;
@@ -154,21 +154,21 @@ namespace Daisy.SaveAsDAISY.WPF
             // Remove abbreviation from the XML part
             if (xmlPart != null) {
                 XmlElement elmManage = (XmlElement)dc.FirstChild;
-                XmlElement elmAbbreviations = null;
+                XmlElement elmAcronyms = null;
                 for (int j = 0; j < elmManage.ChildNodes.Count; j++) {
                     if (elmManage.ChildNodes[j].Name == "Acronyms") {
-                        elmAbbreviations = (XmlElement)elmManage.ChildNodes[j];
+                        elmAcronyms = (XmlElement)elmManage.ChildNodes[j];
                     }
                 }
-                if (elmAbbreviations == null) {
-                    elmAbbreviations = dc.CreateElement("Acronyms");
-                    elmManage.AppendChild(elmAbbreviations);
+                if (elmAcronyms == null) {
+                    elmAcronyms = dc.CreateElement("Acronyms");
+                    elmManage.AppendChild(elmAcronyms);
                 }
 
-                XmlNodeList list = elmAbbreviations.ChildNodes;
+                XmlNodeList list = elmAcronyms.ChildNodes;
                 for (int j = list.Count - 1; j >= 0; j--) {
-                    if (list.Item(j).Attributes.GetNamedItem("AbbreviationName")?.Value == item.AcronymName) {
-                        elmAbbreviations.RemoveChild(elmAbbreviations.ChildNodes[j]);
+                    if (list.Item(j).Attributes.GetNamedItem("AcronymName")?.Value == item.AcronymName) {
+                        elmAcronyms.RemoveChild(elmAcronyms.ChildNodes[j]);
                         break;
                     }
                 }

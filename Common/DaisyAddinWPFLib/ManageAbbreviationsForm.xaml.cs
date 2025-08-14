@@ -59,51 +59,54 @@ namespace Daisy.SaveAsDAISY.WPF
                     XmlElement elmAbbreviations = null;
                     bool hasChanged = false;
                     for (int j = 0; j < elmManage.ChildNodes.Count; j++) {
-                        if (elmManage.ChildNodes[j].Name == "Acronyms") {
+                        if (elmManage.ChildNodes[j].Name == "Abbreviations") {
                             elmAbbreviations = (XmlElement)elmManage.ChildNodes[j];
                         }
                     }
-                    if (elmAbbreviations == null) {
-                        elmAbbreviations = dc.CreateElement("Acronyms");
-                        elmManage.AppendChild(elmAbbreviations);
-                        hasChanged = true;
-                    }
-                    XmlNodeList list = elmAbbreviations.ChildNodes;
-                    for (int j = list.Count - 1; j >= 0; j--) {
-                        AbbreviationItem item = new AbbreviationItem()
-                        {
-                            AbbreviationName = list.Item(j).Attributes.GetNamedItem("AbbreviationName")?.Value,
-                            OriginalText = list.Item(j).Attributes.GetNamedItem("OriginalText")?.Value,
-                            FullAbbr = list.Item(j).Attributes.GetNamedItem("FullAbbr")?.Value
-                        };
-                        if (!CurrentDocument.Bookmarks.Exists(item.AbbreviationName)) {
-                            // Abbreviation was removed from the document bookmarks, remove it from the XML part
-                            elmAbbreviations.RemoveChild(elmAbbreviations.ChildNodes[j]);
-                            hasChanged = true;
-                        } else {
-                            Abbreviations.Add(item);
-                        }
-                    }
-                    
-                    foreach (object item in CurrentDocument.Bookmarks) {
-                        if (((Bookmark)item).Name.StartsWith("Acronyms", StringComparison.CurrentCulture)) {
-                            string name = ((Bookmark)item).Name;
-                            AbbreviationItem found = Abbreviations.First((x) => x.AbbreviationName == name);
-                            if(found == null || (found != null && found.OriginalText != ((Bookmark)item).Range.Text.Trim())) {
-                                // The abbreviation is not in the XML part, remove the bookmark
-                                object val = name;
-                                CurrentDocument.Bookmarks.get_Item(ref val).Delete();
-                                Abbreviations.Remove(found);
+                    if (elmAbbreviations != null) {
+                        XmlNodeList list = elmAbbreviations.ChildNodes;
+                        for (int j = list.Count - 1; j >= 0; j--) {
+                            AbbreviationItem item = new AbbreviationItem()
+                            {
+                                AbbreviationName = list.Item(j).Attributes.GetNamedItem("AbbreviationName")?.Value,
+                                OriginalText = list.Item(j).Attributes.GetNamedItem("OriginalText")?.Value,
+                                FullAbbr = list.Item(j).Attributes.GetNamedItem("FullAbbr")?.Value
+                            };
+                            if (!CurrentDocument.Bookmarks.Exists(item.AbbreviationName)) {
+                                // Abbreviation was removed from the document bookmarks, remove it from the XML part
+                                elmAbbreviations.RemoveChild(elmAbbreviations.ChildNodes[j]);
+                                hasChanged = true;
+                            } else {
+                                Abbreviations.Add(item);
                             }
                         }
-                    }
-                    if(hasChanged) {
-                        // If the XML part has been modified, replace it in the document
-                        xmlPart.Delete();
-                        xmlPart = CurrentDocument.CustomXMLParts.Add(dc.InnerXml, System.Reflection.Missing.Value);
+
+                        foreach (object item in CurrentDocument.Bookmarks) {
+                            if (((Bookmark)item).Name.StartsWith("Abbreviations", StringComparison.CurrentCulture)) {
+                                string name = ((Bookmark)item).Name;
+                                AbbreviationItem found = Abbreviations.First((x) => x.AbbreviationName == name);
+                                if (found == null || (found != null && found.OriginalText != ((Bookmark)item).Range.Text.Trim())) {
+                                    // The abbreviation is not in the XML part, remove the bookmark
+                                    object val = name;
+                                    CurrentDocument.Bookmarks.get_Item(ref val).Delete();
+                                    Abbreviations.Remove(found);
+                                }
+                            }
+                        }
+                        if (Abbreviations.Count == 0) {
+                            // If no acronyms are left, remove the Acronyms element
+                            elmManage.RemoveChild(elmAbbreviations);
+                            hasChanged = true;
+                        }
+                        if (hasChanged) {
+                            // If the XML part has been modified, replace it in the document
+                            xmlPart.Delete();
+                            xmlPart = CurrentDocument.CustomXMLParts.Add(dc.InnerXml, System.Reflection.Missing.Value);
+                        }
                     }
                 }
             }
+            Abbreviations.Reverse();
             AbbreviationsList.ItemsSource = Abbreviations;
         }
 
@@ -141,7 +144,6 @@ namespace Daisy.SaveAsDAISY.WPF
         {
             // Remove abreviation from list and update xml part
             AbbreviationItem item = (AbbreviationItem)AbbreviationsList.SelectedItem;
-            CustomXMLParts xmlparts = CurrentDocument.CustomXMLParts;
 
             // Remove bookmark from the document
             if (CurrentDocument.Bookmarks.Exists(item.AbbreviationName)) {
@@ -155,12 +157,12 @@ namespace Daisy.SaveAsDAISY.WPF
                 XmlElement elmManage = (XmlElement)dc.FirstChild;
                 XmlElement elmAbbreviations = null;
                 for (int j = 0; j < elmManage.ChildNodes.Count; j++) {
-                    if (elmManage.ChildNodes[j].Name == "Acronyms") {
+                    if (elmManage.ChildNodes[j].Name == "Abbreviations") {
                         elmAbbreviations = (XmlElement)elmManage.ChildNodes[j];
                     }
                 }
                 if (elmAbbreviations == null) {
-                    elmAbbreviations = dc.CreateElement("Acronyms");
+                    elmAbbreviations = dc.CreateElement("Abbreviations");
                     elmManage.AppendChild(elmAbbreviations);
                 }
                 

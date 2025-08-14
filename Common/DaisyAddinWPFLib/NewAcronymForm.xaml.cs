@@ -74,24 +74,24 @@ namespace Daisy.SaveAsDAISY.WPF
                                 }
                             }
                             if (elmtAcronyms == null) {
-                                elmtAcronyms = customXml.CreateElement("Acronyms");
+                                elmtAcronyms = customXml.CreateElement("Acronyms", "http://Daisy-OpenXML/customxml");
                                 elmtManage.AppendChild(elmtAcronyms);
                             }
                         }
                     }
                     if (customXmlPartIndex == 0) {
                         // Prepare the custom XML document to be embeded in the current document
-                        XmlElement elmtManage = customXml.CreateElement("Manage");
+                        XmlElement elmtManage = customXml.CreateElement("Manage", "http://Daisy-OpenXML/customxml");
                         customXml.AppendChild(elmtManage);
                         elmtManage.SetAttribute("xmlns", "http://Daisy-OpenXML/customxml");
                         // Create the Acronyms storage element
-                        elmtAcronyms = customXml.CreateElement("Acronyms");
+                        elmtAcronyms = customXml.CreateElement("Acronyms", "http://Daisy-OpenXML/customxml");
                         elmtManage.AppendChild(elmtAcronyms);
                     }
 
+                    object val = System.Reflection.Missing.Value;
                     // If only the current selection is to be marked as occurence
                     if (ApplyEverywhere.IsChecked != true) {
-                        object val = System.Reflection.Missing.Value;
                         string nameBookmark = "Acronyms" 
                             + (PronouncedAsWord.IsChecked == true ? "Yes" : "No") 
                             + GenerateId().ToString();
@@ -99,7 +99,7 @@ namespace Daisy.SaveAsDAISY.WPF
                         currentDocument.Application.Selection.Bookmarks.Add(nameBookmark, ref val);
 
                         //Updating the CustomXML
-                        XmlElement elmtItem = customXml.CreateElement("Item");
+                        XmlElement elmtItem = customXml.CreateElement("Item", "http://Daisy-OpenXML/customxml");
                         elmtItem.SetAttribute("AcronymName", nameBookmark);
                         elmtItem.SetAttribute("FullAcr", FullFormTextBox.Text.TrimEnd());
                         elmtItem.SetAttribute("OriginalText", currentDocument.Application.Selection.Text.Trim());
@@ -130,9 +130,9 @@ namespace Daisy.SaveAsDAISY.WPF
                                 string nameBookmark = "Acronyms"
                                     + (PronouncedAsWord.IsChecked == true ? "Yes" : "No")
                                     + GenerateId().ToString();
-                                rngDoc.Bookmarks.Add(nameBookmark, ref missing);
+                                rngDoc.Bookmarks.Add(nameBookmark, ref val);
 
-                                XmlElement elmtItem = customXml.CreateElement("Item");
+                                XmlElement elmtItem = customXml.CreateElement("Item", "http://Daisy-OpenXML/customxml");
                                 elmtItem.SetAttribute("AcronymName", nameBookmark);
                                 elmtItem.SetAttribute("FullAcr", FullFormTextBox.Text.TrimEnd());
                                 elmtItem.SetAttribute("OriginalText", currentDocument.Application.Selection.Text.Trim());

@@ -72,18 +72,18 @@ namespace Daisy.SaveAsDAISY.WPF
                                 }
                             }
                             if(elmtAbbreviations == null) {
-                                elmtAbbreviations = customXml.CreateElement("Abbreviations");
+                                elmtAbbreviations = customXml.CreateElement("Abbreviations", "http://Daisy-OpenXML/customxml");
                                 elmtManage.AppendChild(elmtAbbreviations);
                             }
                         }
                     }
                     if (customXmlPartIndex == 0) {
                         // Prepare the custom XML document to be embeded in the current document
-                        XmlElement elmtManage = customXml.CreateElement("Manage");
+                        XmlElement elmtManage = customXml.CreateElement("Manage", "http://Daisy-OpenXML/customxml");
                         customXml.AppendChild(elmtManage);
                         elmtManage.SetAttribute("xmlns", "http://Daisy-OpenXML/customxml");
                         // Create the Abbreviations storage element
-                        elmtAbbreviations = customXml.CreateElement("Abbreviations");
+                        elmtAbbreviations = customXml.CreateElement("Abbreviations", "http://Daisy-OpenXML/customxml");
                         elmtManage.AppendChild(elmtAbbreviations);
                         // Also create the acronym elements manage by the same custom XML
                         // Will be done
@@ -99,7 +99,7 @@ namespace Daisy.SaveAsDAISY.WPF
                         currentDocument.Application.Selection.Bookmarks.Add(nameAbbr, ref val);
 
                         //Updating the CustomXML
-                        XmlElement elmtItem = customXml.CreateElement("Item");
+                        XmlElement elmtItem = customXml.CreateElement("Item", "http://Daisy-OpenXML/customxml");
                         elmtItem.SetAttribute("AbbreviationName", nameAbbr);
                         elmtItem.SetAttribute("FullAbbr", FullFormTextBox.Text.TrimEnd());
                         elmtItem.SetAttribute("OriginalText", currentDocument.Application.Selection.Text.Trim());
@@ -130,7 +130,7 @@ namespace Daisy.SaveAsDAISY.WPF
                                 string nameAbbr = "Abbreviations" + GenerateId().ToString();
                                 rngDoc.Bookmarks.Add(nameAbbr, ref missing);
 
-                                XmlElement elmtItem = customXml.CreateElement("Item");
+                                XmlElement elmtItem = customXml.CreateElement("Item", "http://Daisy-OpenXML/customxml");
                                 elmtItem.SetAttribute("AbbreviationName", nameAbbr);
                                 elmtItem.SetAttribute("FullAbbr", FullFormTextBox.Text.TrimEnd());
                                 elmtItem.SetAttribute("OriginalText", currentDocument.Application.Selection.Text.Trim());
