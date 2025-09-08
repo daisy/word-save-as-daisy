@@ -1204,10 +1204,6 @@
 					  DllEntry="DetectLatestMsWordVersion"
 					  Execute="immediate"
 					  Id="DetectLatestMsWordVersion" />
-		<CustomAction BinaryKey="DaisyAddinCustomActions"
-					  DllEntry="ProposeDPAppInstall"
-					  Execute="immediate"
-					  Id="ProposeDPAppInstall" />
         <InstallExecuteSequence>
             <!-- Prevent downgrading -->
             <Custom Action="NewerVersionDetected" After="FindRelatedProducts">NEWAPPFOUND</Custom>
@@ -1215,8 +1211,6 @@
             </Custom>
             <Custom Action="DetectLatestMsWordVersion" Before="LaunchConditions">NOT Installed</Custom>
             <RemoveExistingProducts Before="InstallInitialize" />
-			<Custom Action="ProposeDPAppInstall"
-					After="InstallFinalize">NOT REMOVE</Custom>
         </InstallExecuteSequence>
         <UI />
 		
