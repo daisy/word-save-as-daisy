@@ -33,6 +33,7 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
         //}
 
         public string DocumentTitle { get => Document.Title; set => Document.Title = value; }
+        public string DocumentDate { get => Document.Date; set => Document.Date = value; }
         public string DocumentAuthor { get => Document.Author; set => Document.Author = value; }
         public string DocumentPublisher { get => Document.Publisher; set => Document.Publisher = value; }
         public string DocumentIdentifier { get => Document.Identifier; set => Document.Identifier = value; }
@@ -44,6 +45,8 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
         public string DocumentSubject { get => Document.Subject; set => Document.Subject = value; }
         public string DocumentSource { get => Document.SourceOfPagination; set => Document.SourceOfPagination = value; }
         public string DocumentAccessibilitySummary { get => Document.AccessibilitySummary; set => Document.AccessibilitySummary = value; }
+
+        public string DocumentSourceDate { get => Document.SourceDate; set => Document.SourceDate = value; }
 
 
 

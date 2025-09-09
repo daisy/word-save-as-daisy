@@ -58,6 +58,33 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                 return instance;
             }
         }
+        Dictionary<Message, bool> printed = new Dictionary<Message, bool>();
+
+        List<Message> messagesFlattened(List<Message> l)
+        {
+            List<Message> res = new List<Message>();
+
+            if (l == null) return res;
+            if (l.Count == 0) return res;
+            foreach (Message m in l) {
+                res.Add(m);
+                if (m.Messages != null && m.Messages.Count > 0) {
+                    res.AddRange(messagesFlattened(m.Messages));
+                }
+            }
+            return res.OrderBy(m => m.Timestamp).ToList();
+        }
+
+        void printMessages(List<Message> messages, IConversionEventsHandler events) {
+            foreach (Message message in messagesFlattened(messages)) {
+                if (!printed.ContainsKey(message)) {
+                    printed[message] = true;
+                    events.onProgressMessageReceived(this, new DaisyEventArgs(message.Content));
+                }
+
+            }
+        }
+
         public override void StartJob(string scriptName, Dictionary<string, object> options = null, string outputPath = "") {
             
             try {
@@ -76,22 +103,27 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                     switch (data.Status) {
                         case JobStatus.Idle:
                         case JobStatus.Running:
-                            List<Message> messages = data.Messages;
+                            printMessages(data.Messages, events);
                             break;
                         case JobStatus.Success:
                             data = _webservice.DownloadResults(data, outputFolder.LocalPath).Result;
                             events.onProgressMessageReceived(this, new DaisyEventArgs(scriptName + " finished successfully"));
                             break;
+                        case JobStatus.Fail:
                         case JobStatus.Error:
+                            printMessages(data.Messages, events);
                             data = _webservice.DownloadResults(data, outputFolder.LocalPath).Result;
-                            events.OnConversionError(new Exception("The job finished in error, please consult the log file at " + data.Log));
-                            break;
+                            events.OnConversionError(new Exception("The job finished in status " + data.Status + ", please consult the log file at " + data.Log));
+                            throw new JobException("The job finished in " + data.Status + ", please consult the log file at " + data.Log);
                         default:
 
                             break;
                     }
                 } while (data.Status != null && running.Contains(data.Status.Value));
                 
+            }
+            catch(JobException) {
+                throw;
             }
             catch (AggregateException e) {
                 events.OnConversionError(new Exception("An error occured during the job launch or its monitoring", e));

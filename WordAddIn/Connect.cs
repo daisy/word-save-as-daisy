@@ -29,6 +29,7 @@
 
 using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
 using Daisy.SaveAsDAISY.Forms;
@@ -826,6 +827,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public async void ApplyScript(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
         {
             Dispatcher uiThread = Dispatcher.CurrentDispatcher;
+            ConversionResult result = ConversionResult.Success();
             try {
                 object doc = this.applicationObject.ActiveDocument;
                 DocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
@@ -851,6 +853,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     }
                 }
                 else if (currentDocument != null) {
+                    
                     try {
                         WPF.ConversionParametersForm form = new WPF.ConversionParametersForm(
                         preprocess,
@@ -863,20 +866,20 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             converter.ConversionParameters = form.UpdatedConversionParameters;
                             eventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Saving metadata in the document ..."));
                             preprocess.updateDocumentMetadata(ref doc, currentDocument);
-                            await System.Threading.Tasks.Task.Run(() =>
+                            result = await System.Threading.Tasks.Task.Run(() =>
                             {
-                                ConversionResult result = converter.ConvertWithPipeline2(currentDocument);
-                                // Note : this is replaced by opening the real result folder generated in chained scripts
-                                //if (result != null && result.Succeeded) {
-                                //    Process.Start(
-                                //        Directory.Exists(converter.ConversionParameters.OutputPath)
-                                //        ? converter.ConversionParameters.OutputPath
-                                //        : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
-                                //    );
-                                //} else {
-                                //    MessageBox.Show(result.UnknownErrorMessage, "ConversionParametersForm failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                //}
-                            });  
+                                try {
+                                    return converter.ConvertWithPipeline2(currentDocument);
+                                }
+                                catch (JobException jex) {
+                                    return ConversionResult.Fail(jex.Message);
+                                }
+                                catch (Exception e) {
+                                    AddinLogger.Error(e);
+                                    catchedException = e;
+                                    return ConversionResult.Fail(e.Message);
+                                }
+                            });
                         }
                     }
                     catch (Exception e) {
@@ -895,7 +898,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         report.ShowDialog();
                     }
             } finally {
-                WPF.ConversionProgress.Instance.Close();
+                if(result.Succeeded) {
+                    WPF.ConversionProgress.Instance.Close();
+                } else if(result.Failed) {
+                    MessageBox.Show(result.ErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
 
         }
@@ -927,7 +934,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
                         );
                     } else {
-                        MessageBox.Show(result.UnknownErrorMessage, "ConversionParametersForm failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(result.ErrorMessage, "ConversionParametersForm failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                 } else {

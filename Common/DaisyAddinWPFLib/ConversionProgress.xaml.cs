@@ -76,6 +76,7 @@ namespace Daisy.SaveAsDAISY.WPF
             //CurrentAction.UpdateLayout();
             //ProgressionTracker.UpdateLayout();
             //MessageTextArea.UpdateLayout();
+            MessageTextArea.ScrollToEnd();
             this.UpdateLayout();
         }
 

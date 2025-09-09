@@ -287,7 +287,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     this.EventsHandler.onPostProcessingError(
                         je
                     );
-                    return ConversionResult.Failed(je.Message);
+                    return ConversionResult.Fail(je.Message);
                 }
                 catch (Exception e) {
                     CurrentStatus = ConversionStatus.Error;

@@ -245,6 +245,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             }
             catch (Exception ex) {
                 this.EventsHandler.OnConversionError(new Exception("An error occurred while executing the Word to DAISY 3 conversion pipeline.", ex));
+                throw ex;
             }
         }
 

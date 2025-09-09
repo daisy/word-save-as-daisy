@@ -565,6 +565,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                                     + scriptName
                                     + " conversion job has finished in error :\r\n"
                                     + string.Join("\r\n", errors);
+                                EventsHandler.onPostProcessingError(new JobException(errorMessage));
                                 throw new JobException(errorMessage);
                             case JobStatus.Fail:
                                 checkStatus = false;
@@ -574,9 +575,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                                     + scriptName
                                     + " conversion job failed :\r\n"
                                     + string.Join("\r\n", errors);
-
                                 EventsHandler.onPostProcessingError(new JobException(failedMessage));
-                                break;
+                                throw new JobException(failedMessage);
                             default:
                                 break;
                         }
@@ -610,10 +610,15 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                                     + keyvalue.Value.ToString()
                                     + "\r\n"
                             )
+                        // + "Please try to run the conversion in DAISY Pipeline 2 application directly for more informations on the issue."
                     );
                 }
-            } catch (Exception e) {
-                throw new Exception("DP2 > An error occured while launching the script "
+            }
+            catch (JobException) {
+                throw;
+            }
+            catch (Exception e) {
+                throw new Exception("DP2 > A critical error occured while launching the script "
                             + scriptName
                             + " with the parameters "
                             + options.Aggregate(

@@ -7,16 +7,16 @@
 	{
 		public enum Type {
 			Success,
-			ValidationError,
 			Cancel,
-			UnknownError
+			Error
 		}
 
 		public bool Canceled { get => ResultType == Type.Cancel; }
 		public bool Succeeded { get => ResultType == Type.Success; }
 
+        public bool Failed { get => ResultType == Type.Error; }
 
-		private ConversionResult(Type resultType)
+        private ConversionResult(Type resultType)
 		{
 			ResultType = resultType;
 		}
@@ -39,39 +39,24 @@
 			return new ConversionResult(Type.Cancel);
 		}
 
-		/// <summary>
-		/// Creates invalid result.
-		/// </summary>
-		/// <param name="error"></param>
-		/// <returns></returns>
-		public static ConversionResult FailedOnValidation(string error)
-		{
-            return new ConversionResult(Type.ValidationError) {
-				ValidationErrorMessage = error
-			};
-		}
 
 		/// <summary>
 		/// Creates UnknownError result.
 		/// </summary>
 		/// <param name="errorMessage"></param>
 		/// <returns></returns>
-		public static ConversionResult Failed(string errorMessage)
+		public static ConversionResult Fail(string errorMessage)
 		{
-            return new ConversionResult(Type.UnknownError) {
-				UnknownErrorMessage = errorMessage
+            return new ConversionResult(Type.Error) {
+				ErrorMessage = errorMessage
 			};
 		}
 
 		/// <summary>
 		/// Error message.
 		/// </summary>
-		public string UnknownErrorMessage { get; set; }
+		public string ErrorMessage { get; set; }
 
-		/// <summary>
-		/// Validation error message.
-		/// </summary>
-		public string ValidationErrorMessage { get; set; }
 
 		/// <summary>
 		/// Result type.

@@ -99,7 +99,7 @@
                            x:Name="DocumentDateLabel" />
                     <DatePicker Margin="120,0,5,0"
                                 VerticalAlignment="Center"
-                                SelectedDateFormat="Long"
+                                SelectedDateFormat="Short"
                                 x:Name="DocumentDatePicker"
                                 AutomationProperties.LabeledBy="{Binding ElementName=DocumentDateLabel}"
                                 SelectedDate="{Binding Path=DocumentDate, Mode=TwoWay}" />
@@ -188,7 +188,7 @@
                            x:Name="SourceDateLabel" />
                     <DatePicker Margin="120,0,5,0"
                                 VerticalAlignment="Center"
-                                SelectedDateFormat="Long"
+                                SelectedDateFormat="Short"
                                 x:Name="SourceDatePicker"
                                 AutomationProperties.LabeledBy="{Binding ElementName=SourceDateLabel}"
                                 SelectedDate="{Binding Path=DocumentSourceDate, Mode=TwoWay}" />

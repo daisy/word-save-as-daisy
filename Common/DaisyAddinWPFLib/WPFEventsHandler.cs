@@ -295,18 +295,22 @@ namespace Daisy.SaveAsDAISY.WPF
 
         public void onConversionSuccess()
         {
+            TryShowMessage("Successfull conversion", false);
         }
 
         public void onPreprocessingWarning(string message)
         {
+            TryShowMessage(message, false);
         }
 
         public void onConversionWarning(string message)
         {
+            TryShowMessage(message, false);
         }
 
         public void onPostProcessingInfo(string message)
         {
+            TryShowMessage(message, false);
         }
 
     }
