@@ -18,37 +18,34 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 { "input", new ScriptParameter(
                         "source",
                         "OPF",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.input,
-                            PathDataType.FileOrDirectory.File,
+                        new PathData(
+                            PathData.InputOrOutput.input,
+                            PathData.FileOrDirectory.File,
                             "application/oebps-package+xml"
                         ),
-                        "",
                         true,
                         "The package file of the input DTB.",
                         true,
-                        ScriptParameter.ParameterDirection.Input
+                        ParameterDirection.Input
                     )
                 },
                 {"tts-log", new ScriptParameter(
                         "tts-log",
                         "TTS log output directory",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         false,
                         "TTS log output directory",
                          true,
-                        ScriptParameter.ParameterDirection.Output
+                        ParameterDirection.Output
                     )
                 },
                 {"language", new ScriptParameter(
                         "language",
                         "Language code",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,
                         "Language code of the input document."
                     )
@@ -56,11 +53,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"output", new ScriptParameter(
                         "result",
                         "EPUB output directory",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         true,
                         "The produced EPUB."
                     )
@@ -68,13 +64,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 { "validation", new ScriptParameter(
                         "validation",
                         "Validation",
-                        new EnumDataType(
+                        new EnumData(
                             new Dictionary<string, object> {
                                 { "No validation", "off" },
                                 { "Report validation issues", "report" },
                                 { "Abort on validation issues", "abort" },
-                            }, "Abort on validation issues"),
-                        "abort",
+                            }, "abort"),
                         false,
                         "Whether to abort on validation issues."
                     )
@@ -82,34 +77,20 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 { "validation-report", new ScriptParameter(
                         "validation-report",
                         "Validation reports",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         false,
                         "Output path of the validation reports",
                         false,
-                        ScriptParameter.ParameterDirection.Output
+                        ParameterDirection.Output
                     )
                 },
-                //{ "validation-status", new ScriptParameter(
-                //        "validation-report",
-                //        "Validation reports",
-                //        new PathDataType(
-                //            PathDataType.InputOrOutput.output,
-                //            PathDataType.FileOrDirectory.Directory
-                //        ),
-                //        "",
-                //        false,
-                //        ""
-                //    )
-                //},
                 {"nimas", new ScriptParameter(
                         "nimas",
                         "NIMAS input",
-                        new BoolDataType(),
-                        false,
+                        new BoolData(false),
                         false,
                         "Whether the input DTBook is a NIMAS 1.1-conformant XML content file.",
                         false // not sure this option should available in save as daisy
@@ -118,19 +99,17 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
-                        new PathDataType(PathDataType.InputOrOutput.input,PathDataType.FileOrDirectory.File),
-                        "",
+                        new PathData(PathData.InputOrOutput.input,PathData.FileOrDirectory.File),
                         false,
                         "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
                         true,
-                        ScriptParameter.ParameterDirection.Input
+                        ParameterDirection.Input
                     )
                 },
                 {"audio", new ScriptParameter(
                         "audio",
                         "Enable text-to-speech",
-                        new BoolDataType(),
-                        false,
+                        new BoolData(false),
                         false,
                         "Whether to use a speech synthesizer to produce audio files."
                     )

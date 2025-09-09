@@ -1,0 +1,50 @@
+﻿<Window x:Class="Daisy.SaveAsDAISY.WPF.ManageAbbreviationsForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
+        mc:Ignorable="d"
+        Title="Manage abbreviations" MinHeight="250" SizeToContent="Width">
+    <StackPanel Orientation="Horizontal">
+        <ListView x:Name="AbbreviationsList"
+                  SelectionChanged="Abbreviations_SelectionChanged">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Abbreviation"
+                                    Width="100"
+                                    DisplayMemberBinding="{Binding OriginalText}" />
+                    <GridViewColumn Header="Full form"
+                                    Width="300"
+                                    DisplayMemberBinding="{Binding FullAbbr}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <DockPanel>
+            <Button x:Name="SelectInDocument"
+                    Height="25"
+                    DockPanel.Dock="Top"
+                    Margin="5"
+                    Padding="10,2,10,2"
+                    VerticalAlignment="Top"
+                    Click="SelectInDocument_Click"
+                    >Select in document</Button>
+            <Button x:Name="UnmarkAbbreviation"
+                    Height="25"
+                    DockPanel.Dock="Top"
+                    Margin="5"
+                    Padding="10,2,10,2"
+                    VerticalAlignment="Top"
+                    Click="UnmarkAbbreviation_Click"
+                    >Unmark</Button>
+            <Button x:Name="CloseForm"
+                    Height="25"
+                    DockPanel.Dock="Bottom"
+                    Margin="5"
+                    Padding="10,2,10,2"
+                    VerticalAlignment="Bottom"
+                    Click="CloseForm_Click"
+                    >Close</Button>
+        </DockPanel>
+    </StackPanel>
+</Window>

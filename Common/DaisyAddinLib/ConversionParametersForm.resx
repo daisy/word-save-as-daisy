@@ -909,7 +909,7 @@ your document with the Word Accessibility Checker.
     <value>DestinationControl</value>
   </data>
   <data name="&gt;&gt;DestinationControl.Type" xml:space="preserve">
-    <value>Daisy.SaveAsDAISY.Forms.Controls.PathControl, DaisyAddinLib, Version=2.9.2.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
+    <value>Daisy.SaveAsDAISY.Forms.Controls.PathControl, DaisyAddinLib, Version=2.9.3.0, Culture=neutral, PublicKeyToken=b32eb409b38936d8</value>
   </data>
   <data name="&gt;&gt;DestinationControl.Parent" xml:space="preserve">
     <value>$this</value>
@@ -937,6 +937,9 @@ your document with the Word Accessibility Checker.
   </data>
   <data name="$this.Font" type="System.Drawing.Font, System.Drawing">
     <value>Calibri, 9pt</value>
+  </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
   <data name="$this.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms">
     <value>4, 4, 4, 4</value>

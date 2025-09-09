@@ -1,14 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using Microsoft.Win32;
+using System;
 using System.Diagnostics;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using Microsoft.Win32;
-using System.Text.RegularExpressions;
 using System.Globalization;
-using System.Reflection;
-using System.Resources;
-using System.Linq;
+using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
+using File = System.IO.File;
 
 // PLEASE DEFINE THE FOLLOWING COMPILATION SYMBOL 
 // X64INSTALLER : create the installer for Office 64 bits only
@@ -16,6 +16,9 @@ using System.Linq;
 
 namespace DaisyInstaller
 {
+    // possibility from DAISY Meeting:
+    // The installer could download the msi package from a web location instead of embedding it
+
     static class Program
     {
         /* Versions of offices to use for minimal and maximal version support
@@ -37,6 +40,8 @@ namespace DaisyInstaller
 
         public static float minimalVersionSupport = 11.0f;
         public static float maximalVersionSupport = 17.0f;
+
+        private static readonly string DAISY_APP_URL = "https://github.com/daisy/pipeline-ui/releases/download/1.9.0/daisy-pipeline-setup-1.9.0.exe";
 
         /// <summary>
         /// The main entry point for the application.
@@ -156,9 +161,84 @@ namespace DaisyInstaller
 #endif
 
                     // launch the msi
-                    Process.Start(daisySetupPath);
+                    var process = Process.Start(daisySetupPath);
+                    process.WaitForExit();
+                    bool installApp = true;
+                    // Offer to install the daisy pipeline app if not installed
+                    RegistryKey softwareKeys = Registry.CurrentUser.OpenSubKey(@"Software");
+                    foreach (string subKey in softwareKeys.GetSubKeyNames()) {
+                        RegistryKey software = softwareKeys.OpenSubKey(subKey);
+                        if (software.GetValue("ShortcutName") != null && software.GetValue("ShortcutName").ToString() == "DAISY Pipeline") {
+                            installApp = false;
+                            break;
+                        }
+                    }
+                    if (installApp) {
+                        if (MessageBox.Show("SaveAsDAISY can now use the DAISY Pipeline app as backend for the conversions.\r\n" +
+                                "Do you want to download and install the DAISY Pipeline app now?\r\n", "Download DAISY Pipeline app", MessageBoxButtons.YesNo,
+                                MessageBoxIcon.Question
+                            ) == DialogResult.Yes
+                        ) {
+                            Form progressDialog = new Form();
+                            progressDialog.Text = "Download DAISY Pipeline app";
+                            progressDialog.Width = 300;
+                            progressDialog.Height = 100;
+                            FlowLayoutPanel container = new FlowLayoutPanel() { 
+                                Dock = DockStyle.Fill, 
+                                AutoSize = true, 
+                                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                                AutoScroll = true,
+                                FlowDirection = FlowDirection.TopDown,
+                                WrapContents = false,
+                            };
+                            progressDialog.Controls.Add(container);
+                            
+                            Label label = new Label() { Text = "Downloading DAISY Pipeline app installer, please wait...", AutoSize = true, Dock = DockStyle.Top };
+                            //ProgressBar progressBar = new ProgressBar() { Dock = DockStyle.Bottom, Width = 290 };
+                            //progressBar.Maximum = 100;
 
-                } catch (Exception e) {
+                            container.Controls.Add(label);
+                            //container.Controls.Add(progressBar);
+
+                            //CustomActionProgress progress = new CustomActionProgress();
+                            progressDialog.Show();
+                            progressDialog.Refresh();
+                            progressDialog.Activate();
+                            progressDialog.Focus();
+                            try {
+                                // Download the install from DAISY Pipeline app
+                                string installerPath = Path.Combine(Path.GetTempPath(), "daisy-pipeline-setup.exe");
+                                if(File.Exists(installerPath)) File.Delete(installerPath);
+                                using (var client = new System.Net.WebClient()) {
+                                    ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
+                                    client.DownloadFile(DAISY_APP_URL, installerPath);
+                                    progressDialog.Close();
+                                    progressDialog = null;
+                                }
+                                ProcessStartInfo exec = new ProcessStartInfo() {
+                                    FileName = installerPath,
+                                    UseShellExecute = true,
+                                    Arguments = "/S" // silent install
+                                };
+                                process = System.Diagnostics.Process.Start(exec);
+
+                            }
+                            catch (Exception ex) {
+                                MessageBox.Show("An error occurred while trying to launch the DAISY Pipeline app installer.\r\n" +
+                                    ex.Message + "\r\n" +
+                                    "Please try to install it manually from \r\n" +
+                                    "https://github.com/daisy/pipeline-ui/releases/latest", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            } finally {
+                                if (progressDialog != null) progressDialog.Close();
+                            }
+
+                        } else {
+                            //session.Log("User declined to install the DAISY Pipeline app.");
+                        }
+                    }
+
+                }
+                catch (Exception e) {
                     MessageBox.Show(
                         "An error occured while installing the SaveAsDAISY add-in." +
                             "\r\n" + e.Message + "\r\n" + e.StackTrace,

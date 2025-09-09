@@ -21,12 +21,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "source",
                         "DTBook file(s)",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.input,
-                            PathDataType.FileOrDirectory.File,
-                            "application/x-dtbook+xml"
+                        new PathData(
+                            PathData.InputOrOutput.input,
+                            PathData.FileOrDirectory.File,
+                            "application/x-dtbook+xml",
+                            ""
                         ),
-                        "",
                         true,
                         "One or more DTBook files to be cleaned"
                     )
@@ -36,12 +36,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "result",
                         "DTBook XML output folder",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory,
-                            "application/x-dtbook+xml"
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory,
+                            "application/x-dtbook+xml",
+                            ""
                         ),
-                        "",
                         true,
                         "Cleaned DTBooks"
                     )
@@ -51,33 +51,17 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                   new ScriptParameter(
                     "repair",
                     "Repair the dtbook",
-                    new BoolDataType(true),
-                    true,
+                    new BoolData(true),
                     true,
                     ""
                   )
                 },
-                // Hidden for now, as not implemented in pipeline 2 script
-                //{
-                //  "fixCharset",
-                //  new ScriptParameter(
-                //    "fixCharset",
-                //    "Repair - Fix Charset",
-                //    new BoolDataType(false),
-                //    false,
-                //    false,
-                //    "",
-                //    false
-
-                //  )
-                //},
                 {
                   "tidy",
                   new ScriptParameter(
                     "tidy",
                     "Tidy up the dtbook",
-                    new BoolDataType(false),
-                    true,
+                    new BoolData(true),
                     true,
                     ""
 
@@ -88,8 +72,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                   new ScriptParameter(
                     "simplifyHeadingLayout",
                     "Tidy - Simplify headings layout",
-                    new BoolDataType(false),
-                    false,
+                    new BoolData(false),
                     false,
                     "",
                     false
@@ -101,8 +84,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                   new ScriptParameter(
                     "externalizeWhitespace",
                     "Tidy - Externalize whitespaces",
-                    new BoolDataType(false),
-                    false,
+                    new BoolData(false),
                     false,
                     "",
                     false
@@ -114,8 +96,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                   new ScriptParameter(
                     "documentLanguage",
                     "Tidy - Document language",
-                    new StringDataType(""),
-                    "",
+                    new StringData(""),
                     false,
                     "",
                     false
@@ -126,8 +107,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                   new ScriptParameter(
                     "narrator",
                     "Prepare dtbook for pipeline 1 narrator",
-                    new BoolDataType(false),
-                    false,
+                    new BoolData(false),
                     true,
                     ""
 
@@ -138,8 +118,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                   new ScriptParameter(
                     "publisher",
                     "Narrator - Publisher",
-                    new StringDataType(""),
-                    "",
+                    new StringData(""),
                     false,
                     "",
                     false
@@ -151,8 +130,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                   new ScriptParameter(
                     "ApplySentenceDetection",
                     "Apply sentences detection",
-                    new BoolDataType(false),
-                    false,
+                    new BoolData(false),
                     true,
                     ""
                   )
@@ -162,8 +140,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                   new ScriptParameter(
                     "WithDoctype",
                     "Include the doctype in resulting dtbook(s)",
-                    new BoolDataType(false),
-                    true,
+                    new BoolData(true),
                     false,
                     "",
                     false

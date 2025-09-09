@@ -27,33 +27,33 @@
  */
 
 
-using Microsoft.Office.Interop.Word;
-using System;
-using System.IO;
-using System.Text;
-using System.Xml;
+using Daisy.SaveAsDAISY.Conversion;
+using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
+using Daisy.SaveAsDAISY.Forms;
+using Daisy.SaveAsDAISY.WPF;
 using Extensibility;
-using System.Reflection;
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
+using Microsoft.Toolkit.Uwp.Notifications;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO.Packaging;
-using System.Windows.Forms;
-using Microsoft.Office.Core;
-using System.Runtime.InteropServices;
-using MSword = Microsoft.Office.Interop.Word;
-using Daisy.SaveAsDAISY;
-using Daisy.SaveAsDAISY.Conversion;
-using System.Globalization;
-using Daisy.SaveAsDAISY.Conversion.Events;
-using System.Text.RegularExpressions;
-using Daisy.SaveAsDAISY.Forms;
-using Script = Daisy.SaveAsDAISY.Conversion.Script;
-using Daisy.SaveAsDAISY.Conversion.Pipeline;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
 using System.Diagnostics;
-using Microsoft.Toolkit.Uwp.Notifications;
-using Daisy.SaveAsDAISY.WPF;
+using System.Globalization;
+using System.IO;
+using System.IO.Packaging;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Windows.Forms;
+using System.Windows.Threading;
+using System.Xml;
+using Converter = Daisy.SaveAsDAISY.Conversion.Converter;
+using MSword = Microsoft.Office.Interop.Word;
+using Script = Daisy.SaveAsDAISY.Conversion.Script;
 
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
@@ -161,7 +161,23 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 this.applicationObject.DocumentChange += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentChangeEventHandler(applicationObject_DocumentChange);
                 this.applicationObject.DocumentBeforeClose += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeCloseEventHandler(applicationObject_DocumentBeforeClose);
                 this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);
-                
+
+               
+                // https://stackoverflow.com/a/12768858
+                //var formPreload = new Thread(() =>
+                //{   //Force runtime to pre-load all resources for secondary windows so they will load as fast as possible
+                //    new WPF.About();
+                //    new WPF.ConversionParametersForm(null, null);
+                //    new WPF.ConversionProgress();
+                //    new WPF.SettingsForm();
+                //    new WPF.Metadata();
+                //    new WPF.ExceptionReport();
+                //});
+                //formPreload.SetApartmentState(ApartmentState.STA);
+                //formPreload.Priority = ThreadPriority.Lowest;//We don't want prefetching to delay showing of primary window
+                //formPreload.Start();
+
+
                 // Listen to notification activation
                 ToastNotificationManagerCompat.OnActivated += toastArgs =>
                 {
@@ -426,7 +442,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             { "SettingsTabButton", "gear.png" },
             { "VersionDetailsTabButton", "version.png" },
             { "OpenManualTabButton", "help.png" },
-            { "DocumentationTabMenu", "speaker.jpg" }
+            { "DocumentationTabMenu", "speaker.jpg" },
+            { "DocumentMetadataTabButton", "version.png" }
         };
         public stdole.IPictureDisp iconSelector(IRibbonControl control) {
             try
@@ -482,7 +499,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public void GetDaisySettings(IRibbonControl control) {
             //ConverterSettingsForm daisyfrm = new ConverterSettingsForm();
             //daisyfrm.ShowDialog();
-            Daisy.SaveAsDAISY.WPF.Settings settings = new Daisy.SaveAsDAISY.WPF.Settings();
+            Daisy.SaveAsDAISY.WPF.SettingsForm settings = new Daisy.SaveAsDAISY.WPF.SettingsForm();
             settings.ShowDialog();
         }
 
@@ -781,86 +798,129 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             //abtForm.ShowDialog();
         }
 
+        /// <summary>
+        /// Access document properties
+        /// </summary>
+        /// <param name="control"></param>
+        public void DocumentMetadataUI(IRibbonControl control)
+        {
+            WPF.ConversionProgress.Instance.InitializeProgress("Analyzing document metadata");
+            WPF.ConversionProgress.Instance.Show();
+            object doc = this.applicationObject.ActiveDocument;
+            Daisy.SaveAsDAISY.WPF.Metadata metadata = new Daisy.SaveAsDAISY.WPF.Metadata(
+                new DocumentPreprocessor(applicationObject),
+                ref doc
+            );
+            metadata.ShowDialog();
+            WPF.ConversionProgress.Instance.Close();
+        }
+
         #region Single document conversion
 
+
+
         /// <summary>
-        /// 
+        /// New version of the export method
         /// </summary>
         /// <param name="pipelineScript"></param>
         /// <param name="eventsHandler"></param>
-        /// <param name="conversionIntegrationTestSettings"></param>
-        //public void ApplyScriptOld(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
-        //{
-        //    try
-        //    {
-        //        IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-        //        WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-        //        Converter converter = null;
-        //        if (conversionIntegrationTestSettings != null)
-        //        {
-        //            ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
-        //            converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
-        //        }
-        //        else
-        //        {
-        //            ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-        //            converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
-        //        }
-
-        //        DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
-        //        if (conversionIntegrationTestSettings != null
-        //                || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion)
-        //        {
+        public async void ApplyScript(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
+        {
+            Dispatcher uiThread = Dispatcher.CurrentDispatcher;
+            ConversionResult result = ConversionResult.Success();
+            try {
+                object doc = this.applicationObject.ActiveDocument;
+                DocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
+                ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
+                Converter converter = new WPFConverter(preprocess, conversion, (WPFEventsHandler)eventsHandler);
+                Exception catchedException = null;
+                Conversion.DocumentProperties currentDocument = await System.Threading.Tasks.Task.Run(() =>
+                {
+                    // need to change preprocess to NOT do right now the shapes extraction
+                    try {
+                        return converter.AnalyzeDocument(this.applicationObject.ActiveDocument.FullName);
+                    }
+                    catch (Exception e) {
+                        AddinLogger.Error(e);
+                        catchedException = e;
+                        return null;
+                    }
+                });
+                if(catchedException != null) {
+                    if (conversionIntegrationTestSettings == null) {
+                        WPF.ExceptionReport report = new WPF.ExceptionReport(catchedException);
+                        report.ShowDialog();
+                    }
+                }
+                else if (currentDocument != null) {
                     
-        //            ConversionResult result = converter.Convert(currentDocument);
-        //            // Conversion test with 
-        //            //ConversionResult result = converter.Convert2(currentDocument);
-        //            if (result != null && result.Succeeded)
-        //            {
-        //                Process.Start(
-        //                    Directory.Exists(converter.ConversionParameters.OutputPath)
-        //                    ? converter.ConversionParameters.OutputPath
-        //                    : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
-        //                );
-        //            } else {
-        //                MessageBox.Show(result.UnknownErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        //            }
+                    try {
+                        WPF.ConversionParametersForm form = new WPF.ConversionParametersForm(
+                        preprocess,
+                        ref doc,
+                        conversion,
+                        currentDocument
+                    );
+                        if (form.ShowDialog()) {
+                            currentDocument = form.DocumentProps;
+                            converter.ConversionParameters = form.UpdatedConversionParameters;
+                            eventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Saving metadata in the document ..."));
+                            preprocess.updateDocumentMetadata(ref doc, currentDocument);
+                            result = await System.Threading.Tasks.Task.Run(() =>
+                            {
+                                try {
+                                    return converter.ConvertWithPipeline2(currentDocument);
+                                }
+                                catch (JobException jex) {
+                                    return ConversionResult.Fail(jex.Message);
+                                }
+                                catch (Exception e) {
+                                    AddinLogger.Error(e);
+                                    catchedException = e;
+                                    return ConversionResult.Fail(e.Message);
+                                }
+                            });
+                        }
+                    }
+                    catch (Exception e) {
+                        AddinLogger.Error(e);
+                        if (conversionIntegrationTestSettings == null) {
+                            WPF.ExceptionReport report = new WPF.ExceptionReport(e);
+                            report.ShowDialog();
+                        }
+                    }
+                }
+            } 
+            catch (Exception e) {
+                    AddinLogger.Error(e);
+                    if (conversionIntegrationTestSettings == null) {
+                        WPF.ExceptionReport report = new WPF.ExceptionReport(e);
+                        report.ShowDialog();
+                    }
+            } finally {
+                if(result.Succeeded) {
+                    WPF.ConversionProgress.Instance.Close();
+                } else if(result.Failed) {
+                    MessageBox.Show(result.ErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
 
-        //        }
-        //        else
-        //        {
-        //            eventsHandler.onConversionCanceled();
-        //        }
+        }
 
-        //        //applicationObject.ActiveDocument.Save();
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        AddinLogger.Error(e);
-        //        if (conversionIntegrationTestSettings == null)
-        //        {
-        //            ExceptionReport report = new ExceptionReport(e);
-        //            report.ShowDialog();
-        //        }
-
-        //    }
-        //}
-
-        public void ApplyScript(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
+        public void ApplyScriptV1(Script pipelineScript, IConversionEventsHandler eventsHandler, ConversionParameters conversionIntegrationTestSettings = null)
         {
             try {
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
                 Converter converter = null;
                 if (conversionIntegrationTestSettings != null) {
                     ConversionParameters conversion = conversionIntegrationTestSettings.withParameter("Version", this.applicationObject.Version);
-                    converter = new Converter(preprocess, documentConverter, conversion, eventsHandler);
+                    converter = new Converter(preprocess, conversion, eventsHandler);
                 } else {
                     ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                    converter = new GraphicalConverter(preprocess, documentConverter, conversion, (GraphicalEventsHandler)eventsHandler);
+                    converter = new GraphicalConverter(preprocess, conversion, (GraphicalEventsHandler)eventsHandler);
                 }
 
-                DocumentParameters currentDocument = converter.PreprocessDocument(this.applicationObject.ActiveDocument.FullName);
+                Conversion.DocumentProperties currentDocument = converter.AnalyzeDocument(this.applicationObject.ActiveDocument.FullName);
                 if (conversionIntegrationTestSettings != null
                         || ((GraphicalConverter)converter).requestUserParameters(currentDocument) == ConversionStatus.ReadyForConversion) {
 
@@ -874,7 +934,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             : Path.GetDirectoryName(converter.ConversionParameters.OutputPath)
                         );
                     } else {
-                        MessageBox.Show(result.UnknownErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show(result.ErrorMessage, "ConversionParametersForm failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                 } else {
@@ -898,7 +958,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             try
             {
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null 
-                    ? (IConversionEventsHandler) new GraphicalEventsHandler() 
+                    ? (IConversionEventsHandler) new WPFEventsHandler() 
                     : new SilentEventsHandler();
 
                 Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
@@ -930,7 +990,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public void SaveAsDAISY3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
                // IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
                 
                 Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
@@ -963,7 +1023,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         {
             try {
                 // IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
 
                 Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
@@ -995,7 +1055,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public void SaveAsEPUB3(IRibbonControl control, ConversionParameters conversionIntegrationTestSettings = null) {
             try {
                 //IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
 
                 Script pipelineScript = new WordToEpub3(eventsHandler);
 
@@ -1025,7 +1085,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         {
             try
             {
-                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new GraphicalEventsHandler() : new SilentEventsHandler();
+                IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
 
                 Script pipelineScript = new WordToMp3(eventsHandler);
 
@@ -1062,17 +1122,16 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 Script pipelineScript = new DtbookCleaner(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                GraphicalConverter converter = new GraphicalConverter(preprocess, conversion, eventsHandler);
                 // Note : the current form for multiple also include conversion settings update
                 List<string> documentsPathes = converter.requestUserDocumentsList();
                 if(documentsPathes != null && documentsPathes.Count > 0) {
-                    List<DocumentParameters> documents = new List<DocumentParameters>();
+                    List<Conversion.DocumentProperties> documents = new List<Conversion.DocumentProperties>();
                    
                     foreach (string inputPath in documentsPathes) {
-                        DocumentParameters subDoc = null;
+                        Conversion.DocumentProperties subDoc = null;
                         try {
-                            subDoc = converter.PreprocessDocument(inputPath);
+                            subDoc = converter.AnalyzeDocument(inputPath);
                         } catch (Exception e) {
                             string errors = "Convertion aborted due to the following errors found while preprocessing " + inputPath + ":\r\n" + e.Message;
                             eventsHandler.onPreprocessingError(inputPath, new Exception(errors, e));
@@ -1104,20 +1163,19 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 Script pipelineScript = new WordToDaisy3(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                GraphicalConverter converter = new GraphicalConverter(preprocess, conversion, eventsHandler);
                 // Note : the current form for multiple also include conversion settings update
                 List<string> documentsPathes = converter.requestUserDocumentsList();
                 if (documentsPathes != null && documentsPathes.Count > 0)
                 {
-                    List<DocumentParameters> documents = new List<DocumentParameters>();
+                    List<Conversion.DocumentProperties> documents = new List<Conversion.DocumentProperties>();
 
                     foreach (string inputPath in documentsPathes)
                     {
-                        DocumentParameters subDoc = null;
+                        Conversion.DocumentProperties subDoc = null;
                         try
                         {
-                            subDoc = converter.PreprocessDocument(inputPath);
+                            subDoc = converter.AnalyzeDocument(inputPath);
                         }
                         catch (Exception e)
                         {
@@ -1156,20 +1214,19 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 Script pipelineScript = new WordToDaisy3(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
-                WordToDTBookXMLTransform documentConverter = new WordToDTBookXMLTransform();
-                GraphicalConverter converter = new GraphicalConverter(preprocess, documentConverter, conversion, eventsHandler);
+                GraphicalConverter converter = new GraphicalConverter(preprocess, conversion, eventsHandler);
                 // Note : the current form for multiple also include conversion settings update
                 List<string> documentsPathes = converter.requestUserDocumentsList();
                 if (documentsPathes != null && documentsPathes.Count > 0)
                 {
-                    List<DocumentParameters> documents = new List<DocumentParameters>();
+                    List<Conversion.DocumentProperties> documents = new List<Conversion.DocumentProperties>();
 
                     foreach (string inputPath in documentsPathes)
                     {
-                        DocumentParameters subDoc = null;
+                        Conversion.DocumentProperties subDoc = null;
                         try
                         {
-                            subDoc = converter.PreprocessDocument(inputPath);
+                            subDoc = converter.AnalyzeDocument(inputPath);
                         }
                         catch (Exception e)
                         {
@@ -1233,8 +1290,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 MSword.Document doc = this.applicationObject.ActiveDocument;
                 if (doc.ProtectionType == Microsoft.Office.Interop.Word.WdProtectionType.wdNoProtection)
                 {
-                    AliasesManagement form = new AliasesManagement(doc, AliasesManagement.AliasType.Abbreviation);
+                    ManageAbbreviationsForm form = new ManageAbbreviationsForm(doc);
                     form.ShowDialog();
+                    //AliasesManagement form = new AliasesManagement(doc, AliasesManagement.AliasType.Abbreviation);
+                    //form.ShowDialog();
                 }
                 else
                 {
@@ -1258,8 +1317,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 MSword.Document doc = this.applicationObject.ActiveDocument;
                 if (doc.ProtectionType == Microsoft.Office.Interop.Word.WdProtectionType.wdNoProtection)
                 {
-                    AliasesManagement form = new AliasesManagement(doc, AliasesManagement.AliasType.Acronym);
+                    ManageAcronymsForm form = new ManageAcronymsForm(doc);
                     form.ShowDialog();
+                    //AliasesManagement form = new AliasesManagement(doc, AliasesManagement.AliasType.Acronym);
+                    //form.ShowDialog();
                 }
                 else
                 {
@@ -1279,6 +1340,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public void MarkAsAbbreviationUI(IRibbonControl control)
         {
             MSword.Document doc = this.applicationObject.ActiveDocument;
+            
 
             if ((this.applicationObject.Selection.Start == this.applicationObject.Selection.End) || this.applicationObject.Selection.Text.Equals("\r"))
             {
@@ -1292,19 +1354,26 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             {
                 MessageBox.Show(addinLib.GetString("AbbreviationproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (ValidateBookMark(this.applicationObject.Selection) == "Abbrtrue")
+            else if (HasAbreviationOrAcronymBookmark(this.applicationObject.Selection) == BookmarkType.Abbreviation)
             {
                 MessageBox.Show(addinLib.GetString("AbbreviationAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (ValidateBookMark(this.applicationObject.Selection) == "Acrtrue")
+            else if (HasAbreviationOrAcronymBookmark(this.applicationObject.Selection) == BookmarkType.Acronym)
             {
                 MessageBox.Show(addinLib.GetString("AcronymAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                Mark mrkForm = new Mark(doc, AliasesManagement.AliasType.Abbreviation);
-                mrkForm.ShowDialog();
+                NewAbreviationForm newAbreviationForm = new NewAbreviationForm(doc);
+                newAbreviationForm.ShowDialog();
+                //Mark mrkForm = new Mark(doc, AliasesManagement.AliasType.Abbreviation);
+                //mrkForm.ShowDialog();
             }
+        }
+
+        public enum BookmarkType
+        {
+            None, Abbreviation, Acronym
         }
 
         /// <summary>
@@ -1312,27 +1381,25 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// </summary>
         /// <param name="select">Range of text</param>
         /// <returns></returns>
-        public String ValidateBookMark(MSword.Selection select)
+        public BookmarkType HasAbreviationOrAcronymBookmark(MSword.Selection select)
         {
             MSword.Document currentDoc = this.applicationObject.ActiveDocument;
-            String bkmrkValue = "Nobookmarks";
 
             if (this.applicationObject.Selection.Bookmarks.Count > 0)
             {
-
                 foreach (object item in currentDoc.Bookmarks)
                 {
                     if (((MSword.Bookmark)item).Range.Text.Trim() == this.applicationObject.Selection.Text.Trim())
                     {
                         if (((MSword.Bookmark)item).Name.StartsWith("Abbreviations", StringComparison.CurrentCulture))
-                            bkmrkValue = "Abbrtrue";
+                            return BookmarkType.Abbreviation;
                         if (((MSword.Bookmark)item).Name.StartsWith("Acronyms", StringComparison.CurrentCulture))
-                            bkmrkValue = "Acrtrue";
+                           return BookmarkType.Acronym;
                     }
                 }
             }
 
-            return bkmrkValue;
+            return BookmarkType.None;
         }
 
         /// <summary>
@@ -1373,18 +1440,20 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             {
                 MessageBox.Show(addinLib.GetString("AcronymproperText"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (ValidateBookMark(this.applicationObject.Selection) == "Acrtrue")
+            else if (HasAbreviationOrAcronymBookmark(this.applicationObject.Selection) == BookmarkType.Acronym)
             {
                 MessageBox.Show(addinLib.GetString("AcronymAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (ValidateBookMark(this.applicationObject.Selection) == "Abbrtrue")
+            else if (HasAbreviationOrAcronymBookmark(this.applicationObject.Selection) == BookmarkType.Abbreviation)
             {
                 MessageBox.Show(addinLib.GetString("AbbreviationAlready"), addinLib.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                Mark mrkForm = new Mark(doc, AliasesManagement.AliasType.Acronym);
-                mrkForm.ShowDialog();
+                NewAcronymForm newAcronymForm = new NewAcronymForm(doc);
+                newAcronymForm.ShowDialog();
+                //Mark mrkForm = new Mark(doc, AliasesManagement.AliasType.Acronym);
+                //mrkForm.ShowDialog();
             }
         }
 
@@ -1405,149 +1474,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         #endregion
 
-        #region FootNote actions
-        public void AddFotenote(IRibbonControl control) {
-            try {
-                MSword.Document docActive = this.applicationObject.ActiveDocument;
-
-                Microsoft.Office.Interop.Word.Range footnotetext = docActive.Application.Selection.Range;
-
-                if (footnotetext.Text == null) {
-                    MessageBox.Show("Please select Footnote text from the document", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                } else {
-                    String selectedText = docActive.Application.Selection.Text;
-                    String refNumber = string.Empty;
-                    String ftNtText = string.Empty;
-                    Object refNumberObj = null;
-
-                    //To consider any text provided as index of reference
-                    string[] footNote = selectedText.Split(' ');
-                    if (footNote.Length <= 1) {
-                        throw new Exception("Selected Text is not a valid Footnote");
-                    }
-                    refNumber = footNote[0];
-                    //Remove dot at the end, if any
-                    refNumber = refNumber.TrimEnd('.');
-                    refNumberObj = refNumber;
-
-                    ftNtText = string.Empty;
-                    for (int i = 1; i < footNote.Length; i++) {
-                        ftNtText = ftNtText + footNote[i] + " ";
-                    }
-                    Object actualText = ftNtText;
-                    ftNtText = actualText.ToString();
-
-                    Object startValue = 0;
-                    //Fix for searching only the upper part of the body
-                    Object endValue = footnotetext.Start;//Object endValue = docActive.Content.End;
-
-
-                    MSword.Range rngDoc = docActive.Range(ref startValue, ref endValue);
-                    //Commented below line as a fix for Bug 6633
-                    //docActive.Application.Selection.ClearFormatting();
-                    MSword.Find fndValue = rngDoc.Find;
-                    fndValue.Forward = false;
-                    fndValue.Text = refNumber.ToLower();
-
-                    //Shaby (start) : Search for string at the end of a word or as a whole string
-                    //fndValue.MatchSuffix = true;
-                    //Shaby (end)
-
-                    footntRefrns = new ArrayList();
-                    ExecuteFind(fndValue);
-                    int occurance = 0;
-                    while (fndValue.Found) {
-                        int Strng = rngDoc.Start;
-                        Object startRng;
-                        startRng = Strng - 30;
-                        if (Convert.ToInt32(startRng) <= 0) {
-                            startRng = 0;
-                        }
-                        int rdRng = rngDoc.End;
-                        Object endRng = rdRng + 20;
-                        if (Convert.ToInt32(endRng) >= Convert.ToInt32(endValue)) {
-                            endRng = endValue;
-                        }
-                        MSword.Range getRng = docActive.Range(ref startRng, ref endRng);
-
-                        if (getRng.Text != null) {
-                            //Shaby : Below check done to avoid selecting the actual footer
-                            if (!rngDoc.InRange(footnotetext)) {
-                                //Shaby : select the apt index, if there are multiple Footnote index in selected body text 
-                                if (getRng.Text.ToLower().IndexOf(fndValue.Text) != getRng.Text.ToLower().LastIndexOf(fndValue.Text)) {
-                                    //Trimming the left position if any index exist in the left part
-                                    int leftDistanceToRef = rngDoc.Start - getRng.Start;
-                                    string leftTextToRef = getRng.Text.Substring(0, leftDistanceToRef);
-                                    if (leftTextToRef.ToLower().Contains(fndValue.Text.ToLower())) {
-                                        startRng = rngDoc.Start;
-                                    }
-                                    //Trimming the right position if any index exists in the right part
-                                    int rightDistanceFromRef = getRng.End - rngDoc.End;
-                                    int leftDistanceFromRef = rngDoc.End - getRng.Start;
-                                    string rightTextFromRef = getRng.Text.Substring(leftDistanceFromRef, rightDistanceFromRef);
-                                    if (rightTextFromRef.ToLower().Contains(fndValue.Text.ToLower())) {
-                                        endRng = rngDoc.End;
-                                    }
-                                }
-
-
-                                ////Shaby2: Trim till the last linebreak(if any), at both the sides
-                                MSword.Range lineBreakerRng = docActive.Range(ref startRng, ref endRng);
-                                while ((lineBreakerRng.Text.IndexOf("\r")) != -1) {
-                                    int indexOfFooterIndex = lineBreakerRng.Text.ToLower().IndexOf(fndValue.Text);
-                                    if ((lineBreakerRng.Text.IndexOf("\r")) < indexOfFooterIndex) {
-                                        startRng = lineBreakerRng.Start + lineBreakerRng.Text.IndexOf("\r") + 1;
-                                    } else {
-                                        endRng = lineBreakerRng.Start + lineBreakerRng.Text.IndexOf("\r");
-                                    }
-
-                                    lineBreakerRng = docActive.Range(ref startRng, ref endRng);
-                                }
-
-                                //Shaby : Below check required to filter only SuperScripts
-                                //if(getRng.Font.Superscript == 9999999)
-                                occurance = occurance + 1;
-                                footntRefrns.Add(getRng.Text + "|" + startRng + "|" + endRng + "|" + refNumberObj + "|" + occurance);
-                            }
-                        }
-
-                        ExecuteFind(fndValue);
-
-                    }
-
-                    //Shaby2
-                    if (footntRefrns.Count != 0) {
-                        SuggestedReferences suggestForm = new SuggestedReferences(docActive, footntRefrns, ftNtText);
-                        suggestForm.ShowDialog();
-                    } else {
-                        MessageBox.Show("No match found in the document to map selected footnote", "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }
-                }
-            } catch (Exception x) {
-                MessageBox.Show(x.Message, "SaveAsDAISY", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        public Boolean ExecuteFind(MSword.Find find) {
-            object missing = System.Type.Missing;
-            object text = find.Text;
-            object MatchCase = false;
-            object MatchSoundsLike = false;
-            object MatchAllWordForms = false;
-            object MatchWholeWord = false;
-            object MatchWildcards = false;
-            object Forward = false;
-            object format = false;
-
-            return find.Execute(ref text, ref MatchCase, ref MatchWholeWord,
-              ref MatchWildcards, ref MatchSoundsLike, ref MatchAllWordForms,
-              ref Forward, ref missing, ref format, ref missing, ref missing,
-              ref missing, ref missing, ref missing,
-              ref missing);
-
-        }
-
-        #endregion FootNote
 
         #region Language actions 
 

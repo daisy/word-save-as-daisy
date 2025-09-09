@@ -115,6 +115,15 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Document metadata.
+        /// </summary>
+        public static string DocumentMetadataTabButton {
+            get {
+                return ResourceManager.GetString("DocumentMetadataTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Export.
         /// </summary>
         public static string ExportGroup {
@@ -291,6 +300,15 @@ namespace Daisy.SaveAsDAISY {
         public static string MarkAcronymTabButton {
             get {
                 return ResourceManager.GetString("MarkAcronymTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Metadata.
+        /// </summary>
+        public static string MetadataGroup {
+            get {
+                return ResourceManager.GetString("MetadataGroup", resourceCulture);
             }
         }
         

@@ -38,7 +38,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// </summary>
         /// <param name="authorizedNamePattern"></param>
         /// <returns>should return either DialogResult.Yes, DialogResult.No or DialogResult.Cancel </returns>
-        DialogResult documentMustBeRenamed(StringValidator authorizedNamePattern);
+        bool? documentMustBeRenamed(StringValidator authorizedNamePattern);
 
         /// <summary>
         /// raised whem the user has choosen to rename the document manually
@@ -53,7 +53,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// </summary>
         /// <param name="documentLists"></param>
         /// <param name="conversion"></param>
-        void onDocumentListConversionStart(List<DocumentParameters> documentLists, ConversionParameters conversion);
+        void onDocumentListConversionStart(List<DocumentProperties> documentLists, ConversionParameters conversion);
 
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// </summary>
         /// <param name="document"></param>
         /// <param name="conversion"></param>
-        void onDocumentConversionStart(DocumentParameters document, ConversionParameters conversion);
+        void onDocumentConversionStart(DocumentProperties document, ConversionParameters conversion);
 
 
         /// <summary>
@@ -69,14 +69,14 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// </summary>
         /// <param name="documentLists"></param>
         /// <param name="conversion"></param>
-        void onDocumentListConversionSuccess(List<DocumentParameters> documentLists, ConversionParameters conversion);
+        void onDocumentListConversionSuccess(List<DocumentProperties> documentLists, ConversionParameters conversion);
 
         /// <summary>
         /// Method called when the conversion of a word document to the dtbook xml is successful (before post-processing)
         /// </summary>
         /// <param name="document"></param>
         /// <param name="conversion"></param>
-        void onDocumentConversionSuccess(DocumentParameters document, ConversionParameters conversion);
+        void onDocumentConversionSuccess(DocumentProperties document, ConversionParameters conversion);
 
 
         void onConversionCanceled();

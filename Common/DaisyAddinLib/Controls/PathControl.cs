@@ -18,7 +18,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
     {
 
         private string selectedPath;
-        private PathDataType linkedPathData;
+        private Conversion.PathData linkedPathData;
 
         public PathControl()
         {
@@ -35,8 +35,8 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
         public override void setLinkedParameter(ScriptParameter p)
         {
             base.setLinkedParameter(p);
-            linkedPathData = (PathDataType)p.ParameterDataType;
-            SelectedPath = p.ParameterValue.ToString();
+            linkedPathData = (Conversion.PathData)p.ParameterData;
+            SelectedPath = p.Value.ToString();
 
             parameterValue.AccessibleName = p.NiceName;
             parameterValue.AccessibleDescription = p.Description;

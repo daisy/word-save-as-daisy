@@ -1,10 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
-using System.Text.RegularExpressions;
-using Microsoft.Deployment.WindowsInstaller;
+﻿using Microsoft.Deployment.WindowsInstaller;
 using Microsoft.Win32;
+using System;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Interop;
 
 
 namespace DaisyAddin.CustomActions
@@ -121,14 +125,6 @@ namespace DaisyAddin.CustomActions
 			}
 			return lastWordVersion;
 		}
-		
-		/*
-		private static bool IsRegistryKeyExists(string keyPath)
-		{
-			RegistryKey lKey = Registry.LocalMachine.OpenSubKey(keyPath);
 
-			return lKey != null;
-		}*/
-
-	}
+    }
 }

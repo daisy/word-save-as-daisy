@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
 {
@@ -82,12 +83,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                 { "-Dorg.daisy.pipeline.logdir", LogsFolder.Replace("\\", "/") },
                 { "-Dorg.daisy.pipeline.mode", "cli" }
             };
-            //if (GlobaleSettings.AzureSpeechKey != "" && GlobaleSettings.AzureSpeechRegion != "")
-            //{
-            //    SystemProps["-Dorg.daisy.pipeline.tts.azure.key"] = GlobaleSettings.AzureSpeechKey;
-            //    SystemProps["-Dorg.daisy.pipeline.tts.azure.region"] =
-            //        GlobaleSettings.AzureSpeechRegion;
-            //}
 
             List<string> JarPathes = ClassFolders.Aggregate(
                 new List<string>(),
@@ -278,7 +273,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
 
         private static List<string> JavaOptions = new List<string>
         {
-            //"-server",
+            "-server",
             "-Dcom.sun.management.jmxremote",
             "--add-opens=java.base/java.security=ALL-UNNAMED",
             "--add-opens=java.base/java.net=ALL-UNNAMED",
@@ -570,34 +565,36 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                                     + scriptName
                                     + " conversion job has finished in error :\r\n"
                                     + string.Join("\r\n", errors);
+                                EventsHandler.onPostProcessingError(new JobException(errorMessage));
                                 throw new JobException(errorMessage);
                             case JobStatus.Fail:
-                                // open jobs folder
+                                checkStatus = false;
                                 errors = getErros(currentJob);
                                 string failedMessage =
                                     " DP2 > "
                                     + scriptName
                                     + " conversion job failed :\r\n"
                                     + string.Join("\r\n", errors);
+                                EventsHandler.onPostProcessingError(new JobException(failedMessage));
                                 throw new JobException(failedMessage);
                             default:
                                 break;
                         }
-                        System.Threading.Thread.Sleep(1000);
-#if DEBUG
-                        System.Diagnostics.Process.Start(outputPath);
-                        // Kill the instance and running jvm for pipeline debugging
-                        try {
-                            //Pipeline2.KillInstance();
-                        }
-                        catch (Exception e) {
-                            throw;
-                        }
-                        //
-#else
-                    if (!string.IsNullOrEmpty(outputPath))
-                        System.Diagnostics.Process.Start(outputPath);
-#endif
+//                        System.Threading.Thread.Sleep(1000);
+//#if DEBUG
+//                        System.Diagnostics.Process.Start(outputPath);
+//                        // Kill the instance and running jvm for pipeline debugging
+//                        try {
+//                            //Pipeline2.KillInstance();
+//                        }
+//                        catch (Exception e) {
+//                            throw;
+//                        }
+//                        //
+//#else
+//                    if (!string.IsNullOrEmpty(outputPath))
+//                        System.Diagnostics.Process.Start(outputPath);
+//#endif
                     }
                 } else {
                     throw new Exception(
@@ -613,10 +610,15 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                                     + keyvalue.Value.ToString()
                                     + "\r\n"
                             )
+                        // + "Please try to run the conversion in DAISY Pipeline 2 application directly for more informations on the issue."
                     );
                 }
-            } catch (Exception e) {
-                throw new Exception("DP2 > An error occured while launching the script "
+            }
+            catch (JobException) {
+                throw;
+            }
+            catch (Exception e) {
+                throw new Exception("DP2 > A critical error occured while launching the script "
                             + scriptName
                             + " with the parameters "
                             + options.Aggregate(

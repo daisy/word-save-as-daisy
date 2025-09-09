@@ -22,42 +22,50 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         /// </summary>
         /// <param name="inputPath">path to use for script main input</param>
         /// <param name="isQuite"></param>
-        public override void ExecuteScript(string inputPath, bool isQuite)
+        public override void ExecuteScript(string input)
         {
-            
-            if (Parameters.ContainsKey("input") && (string)Parameters["input"].ParameterValue == "")
-            {
-                Parameters["input"].ParameterValue = inputPath;
-            }
-            Dictionary<string, object> parameters = new Dictionary<string, object>();
-            foreach (KeyValuePair<string, ScriptParameter> v in Parameters)
-            {
-                // avoid passing empty values
-                if (
-                    !v.Value.IsParameterRequired
-                    && (
-                        v.Value.ParameterDataType is StringDataType
-                        || v.Value.ParameterDataType is PathDataType
-                    )
-                    && "" == (string)v.Value.ParameterValue
-                )
-                {
-                    continue;
-                }
-                parameters[v.Value.Name] = v.Value.ParameterValue;
-            }
-
             ScriptRunner runner;
+            bool useDAISYPipelineApp = _settings.UseDAISYPipelineApp;
             try {
-                runner = _settings.UseDAISYPipelineApp ? AppRunner.GetInstance(EventsHandler) : JNIRunner.GetInstance(EventsHandler);
-            } catch (System.Exception ex) {
+                runner = useDAISYPipelineApp ? AppRunner.GetInstance(EventsHandler) : JNIRunner.GetInstance(EventsHandler);
+            }
+            catch (System.Exception ex) {
                 EventsHandler.onPostProcessingError(
                     new Exception("An error occurred while launching the pipeline, fall back to / retry embedded engine", ex)
                 );
                 runner = JNIRunner.GetInstance(EventsHandler);
+                useDAISYPipelineApp = false;
             }
-            runner.StartJob(Name, parameters, Parameters["output"].ParameterValue.ToString());
 
+            if (Parameters.ContainsKey("input") && (string)Parameters["input"].Value == "")
+            {
+                Parameters["input"].Value = input;
+            }
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, ScriptParameter> v in Parameters)
+            {
+
+                // avoid passing empty values
+                if (
+                    !v.Value.IsParameterRequired
+                    && (
+                        v.Value.ParameterData is StringData
+                        || v.Value.ParameterData is PathData
+                    )
+                    && "" == (string)v.Value.Value
+                )
+                {
+                    continue;
+                }
+                // NP 2025/08/08 : Pipeline app requires file uris, while JNIRunner/SimpleAPI requires system file path
+                if(useDAISYPipelineApp && v.Value.ParameterData is PathData path) {
+                    parameters[v.Value.Name] = new Uri(path.Value.ToString()).AbsoluteUri;
+                } else {
+                    parameters[v.Value.Name] = v.Value.Value;
+                }
+            }
+
+            runner.StartJob(Name, parameters, Parameters["output"].Value.ToString());
         }
     }
 }

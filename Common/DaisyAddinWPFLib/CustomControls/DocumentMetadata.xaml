@@ -1,0 +1,214 @@
+﻿<UserControl x:Class="Daisy.SaveAsDAISY.WPF.CustomControls.DocumentMetadata"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF.CustomControls"
+             mc:Ignorable="d"
+             d:DesignWidth="500"
+             MinWidth="500">
+    <StackPanel>
+        <Grid>
+            <Label Content="Title"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Margin="5,0,5,0"
+                   x:Name="TitleLabel" />
+            <TextBox Margin="120,0,5,0"
+                     VerticalAlignment="Center"
+                     x:Name="TitleTextBox"
+                     AutomationProperties.LabeledBy="{Binding ElementName=TitleLabel}"
+                     Text="{Binding Path=DocumentTitle}"/>
+        </Grid>
+        <Grid>
+            <Label Content="Author"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Margin="5,0,5,0"
+                   x:Name="AuthorLabel" />
+            <TextBox Margin="120,0,5,0"
+                     VerticalAlignment="Center"
+                     x:Name="AuthorTextBox"
+                     AutomationProperties.LabeledBy="{Binding ElementName=AuthorLabel}"
+                     Text="{Binding Path=DocumentAuthor}"/>
+        </Grid>
+        <Grid>
+            <Label Content="Publisher"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Left"
+                   Margin="5,0,5,0"
+                   x:Name="PublisherLabel" />
+            <TextBox Margin="120,0,5,0"
+                     VerticalAlignment="Center"
+                     x:Name="PublisherTextBox"
+                     AutomationProperties.LabeledBy="{Binding ElementName=PublisherLabel}"
+                     Text="{Binding Path=DocumentPublisher}" />
+        </Grid>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="150" />
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="0">
+                <Label Content="Identifier"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="5,0,5,0"
+                       x:Name="IdentifierLabel" />
+                <TextBox Margin="120,0,0,0"
+                         VerticalAlignment="Center"
+                         x:Name="IdentifierTextBox"
+                         AutomationProperties.LabeledBy="{Binding ElementName=IdentifierLabel}"
+                         Text="{Binding Path=DocumentIdentifier}"/>
+            </Grid>
+            <Grid Grid.Column="1">
+                <Label Content="Scheme"
+                       x:Name="IdentifierSchemeLabel"
+                       VerticalAlignment="Top"
+                       HorizontalAlignment="Left"
+                       Margin="5,0,0,0"
+                       Grid.RowSpan="2" />
+                <ComboBox Margin="57,0,5,0"
+                          VerticalAlignment="Center"
+                          x:Name="IdentifierSchemeComboBox"
+                          AutomationProperties.LabeledBy="{Binding ElementName=IdentifierSchemeLabel}"
+                          IsEditable="True"
+                          Text="{Binding Path=DocumentIdentifierScheme}">
+                    <ComboBoxItem Content="ISBN" />
+                    <ComboBoxItem Content="EAN13" />
+                    <ComboBoxItem Content="ISSN" />
+                    <ComboBoxItem Content="DOI" />
+                    <ComboBoxItem Content="URI" />
+                    <ComboBoxItem Content="ARK" />
+                </ComboBox>
+            </Grid>
+        </Grid>
+        <Expander Header="Detailed metadata"
+                  x:Name="DetailedMetadataSection"
+                  ExpandDirection="Down"
+                  IsExpanded="False"
+                  BorderThickness="1"
+                  BorderBrush="Black"
+                  Margin="5,0,5,0">
+            <StackPanel>
+                <Grid>
+                    <Label Content="Document date"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="DocumentDateLabel" />
+                    <DatePicker Margin="120,0,5,0"
+                                VerticalAlignment="Center"
+                                SelectedDateFormat="Short"
+                                x:Name="DocumentDatePicker"
+                                AutomationProperties.LabeledBy="{Binding ElementName=DocumentDateLabel}"
+                                SelectedDate="{Binding Path=DocumentDate, Mode=TwoWay}" />
+                </Grid>
+                
+                <Grid>
+                    <Label Content="Contributor"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="ContributorLabel" />
+                    <TextBox Margin="120,0,5,0"
+                             VerticalAlignment="Center"
+                             x:Name="ContributorTextBox"
+                             AutomationProperties.LabeledBy="{Binding ElementName=ContributorLabel}"
+                             Text="{Binding Path=DocumentContributor}" />
+                </Grid>
+                <Grid>
+                    <Label Content="Subtitle"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="SubtitleLabel" />
+                    <TextBox Margin="120,0,5,0"
+                             VerticalAlignment="Center"
+                             x:Name="SubtitleTextBox"
+                             AutomationProperties.LabeledBy="{Binding ElementName=SubtitleLabel}"
+                             Text="{Binding Path=DocumentSubtitle}" />
+                </Grid>
+                <Grid>
+                    <Label Content="Rights"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="RightsLabel" />
+                    <TextBox Margin="120,0,5,0"
+                             VerticalAlignment="Center"
+                             x:Name="RightsTextBox"
+                             AutomationProperties.LabeledBy="{Binding ElementName=RightsLabel}"
+                             Text="{Binding Path=DocumentRights}" />
+                </Grid>
+                <StackPanel>
+                    <Label Content="Book summary"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="BookSummaryLabel" />
+                    <TextBox VerticalAlignment="Center"
+                             x:Name="BookSummaryTextBox"
+                             AutomationProperties.LabeledBy="{Binding ElementName=BookSummaryLabel}"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Margin="5,0,5,0"
+                             MinLines="2"
+                             Text="{Binding Path=DocumentSummary}" />
+                </StackPanel>
+                <Grid>
+                    <Label Content="Subject"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="SubjectLabel" />
+                    <TextBox Margin="120,0,5,0"
+                             VerticalAlignment="Center"
+                             x:Name="SubjectTextBox"
+                             AutomationProperties.LabeledBy="{Binding ElementName=SubjectLabel}"
+                             Text="{Binding Path=DocumentSubject}" />
+                </Grid>
+                <Grid>
+                    <Label Content="Source"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="SourceLabel" />
+                    <TextBox Margin="120,0,5,0"
+                             VerticalAlignment="Center"
+                             x:Name="SourceTextBox"
+                             AutomationProperties.LabeledBy="{Binding ElementName=SourceLabel}"
+                             Text="{Binding Path=DocumentSource}" />
+                </Grid>
+                <Grid>
+                    <Label Content="Source date"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="SourceDateLabel" />
+                    <DatePicker Margin="120,0,5,0"
+                                VerticalAlignment="Center"
+                                SelectedDateFormat="Short"
+                                x:Name="SourceDatePicker"
+                                AutomationProperties.LabeledBy="{Binding ElementName=SourceDateLabel}"
+                                SelectedDate="{Binding Path=DocumentSourceDate, Mode=TwoWay}" />
+                </Grid>
+                <StackPanel>
+                    <Label Content="Accessibility functions' summary"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Left"
+                           Margin="5,0,5,0"
+                           x:Name="AccessibilitySummaryLabel" />
+                    <TextBox VerticalAlignment="Center"
+                             x:Name="AccessibilitySummaryTextBox"
+                             AutomationProperties.LabeledBy="{Binding ElementName=AccessibilitySummaryLabel}"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Margin="5,0,5,2"
+                             MinLines="2"
+                             Text="{Binding DocumentAccessibilitySummary}" />
+                </StackPanel>
+            </StackPanel>
+        </Expander>
+    </StackPanel>
+</UserControl>

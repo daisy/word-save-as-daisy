@@ -4,10 +4,11 @@
 param(
 	[string]$version = "",
 	[switch]$refreshpipeline = $false,
-    [switch]$nobuild = $false
+    [switch]$nobuild = $false,
+    [switch]$debug = $false
 )
 
-$currentVersion = "2.9.2"
+$currentVersion = "2.9.3"
 $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
 
 # Create the wix directory tree for a path
@@ -117,9 +118,11 @@ if($version) {
 
 if($refreshpipeline) {
     # recompute the pipeline using the engine make tool and a makefile in the root folder
-    Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\make.exe") -ArgumentList "clean" -Wait
-    Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\make.exe") -Wait
-    Start-Sleep 1
+    # NP 2025 08 08 : problem with the new build system introduced by the pipeline ui (cleaning and rebuild raises errors, but initial build works)
+    # For now, i redo the build manually when needed
+    # Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\assembly\make.exe") -ArgumentList "clean" -Wait
+    # Start-Process -WorkingDirectory $PSScriptRoot -FilePath $(Join-Path $PSScriptRoot "engine\assembly\make.exe") -Wait
+    # Start-Sleep 1
     $_oldroot = Join-Path $PSScriptRoot "resources"
     # regenerate and update the wix project "product.wxs"
     # - compute wix components and references for daisy-pipeline folder in Lib
@@ -155,14 +158,32 @@ if($refreshpipeline) {
 
 if($nobuild) {
     exit
-}
-# build the MSIs
-MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x86";
-MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x86";
-MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinForWordSetup /p:Configuration="Release" /p:Platform="x86";
+} elseif ($debug) {
+    # Stop Microsoft Word if it is running
+    $wordProcesses = Get-Process -Name "WINWORD" -ErrorAction SilentlyContinue
+    if ($wordProcesses) {
+        Write-Host "Stopping Microsoft Word..."
+        Stop-Process -Name "WINWORD" -Force
+    } else {
+        Write-Host "Microsoft Word is not running."
+    }
+    # build the addin project and its dependencies, and copy the result to %LOCALAPPDATA%\Apps\Save-as-DAISY Word Addin
+    MSBuild.exe DaisyConverter.sln /t:Word\DaisyWord2007Addin /p:Configuration="Debug" /p:Platform="x64";
+    # copy the result in WordAddin\bin\Debug\x64 to the local app data folder
+    $addinPath = Join-Path $PSScriptRoot "WordAddin\bin\x64\Debug"
+    $localAppDataPath = Join-Path $env:LOCALAPPDATA "Apps" "Save-as-DAISY Word Addin"
+    Copy-Item -Path $addinPath\* -Destination $localAppDataPath -Recurse -Force
+    Start-Process WINWORD
 
-MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x64";
-MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x64";
-MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinForWordSetup /p:Configuration="Release" /p:Platform="x64";
-# build the installer
-MSBuild.exe DaisyConverter.sln /t:Installer\SaveAsDAISYInstaller /p:Configuration="Release" /p:Platform="Any CPU" /p:DefineConstants="UNIFIED";
+} else {
+    # build the MSIs
+    MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x86";
+    MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x86";
+    MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinForWordSetup /p:Configuration="Release" /p:Platform="x86";
+
+    MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x64";
+    MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x64";
+    MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinForWordSetup /p:Configuration="Release" /p:Platform="x64";
+    # build the installer
+    MSBuild.exe DaisyConverter.sln /t:Installer\SaveAsDAISYInstaller /p:Configuration="Release" /p:Platform="Any CPU" /p:DefineConstants="UNIFIED";
+}

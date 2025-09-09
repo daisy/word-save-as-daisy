@@ -1,17 +1,20 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace Daisy.SaveAsDAISY.Conversion {
+namespace Daisy.SaveAsDAISY.Conversion
+{
 
     /// <summary>
     /// pipeline script interface
     /// 
     /// </summary>
-    public abstract class Script {
+    public abstract class Script
+    {
 
         protected IConversionEventsHandler eventsHandler;
 
@@ -24,7 +27,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public delegate void PipelineOutputListener(object sender, EventArgs e);
         protected event PipelineOutputListener onPipelineOutput;
-        public void setPipelineOutputListener(PipelineOutputListener onPipelineOutput) {
+        public void setPipelineOutputListener(PipelineOutputListener onPipelineOutput)
+        {
             this.onPipelineOutput = onPipelineOutput;
         }
 
@@ -35,7 +39,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public delegate void PipelineErrorListener(object sender, EventArgs e);
         protected event PipelineErrorListener onPipelineError;
-        public void setPipelineErrorListener(PipelineErrorListener onPipelineError) {
+        public void setPipelineErrorListener(PipelineErrorListener onPipelineError)
+        {
             this.onPipelineError = onPipelineError;
         }
         protected PipelineErrorListener OnPipelineError {
@@ -44,7 +49,8 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         public delegate void PipelineProgressListener(object sender, EventArgs e);
         protected event PipelineProgressListener onPipelineProgress;
-        public void setPipelineProgressListener(PipelineProgressListener onPipelineProgress) {
+        public void setPipelineProgressListener(PipelineProgressListener onPipelineProgress)
+        {
             this.onPipelineProgress = onPipelineProgress;
         }
         protected PipelineProgressListener OnPipelineProgress {
@@ -55,12 +61,15 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
 
         protected Dictionary<string, ScriptParameter> _parameters;
+
         /// <summary>
         /// List of parameters available in script
         /// </summary>
         public Dictionary<string, ScriptParameter> Parameters {
             get { return _parameters; }
         }
+
+        public List<string> ExtractedShapes { get; set; } = new List<string>();
 
         protected string niceName = "";
 
@@ -85,8 +94,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// <summary>
         /// Description of the script
         /// </summary>
-        public string Description
-        {
+        public string Description {
             get { return name; }
         }
 
@@ -96,17 +104,11 @@ namespace Daisy.SaveAsDAISY.Conversion {
         public string output = string.Empty;
 
         /// <summary>
-        /// Executes script normal.
+        /// Execute the script on the given input file path.
         /// </summary>
-        /// <param name="inputPath"></param>
-        public void ExecuteScript(string inputPath) {
-            ExecuteScript(inputPath, false);
-        }
+        /// <param name="input">input file path</param>
+        public abstract void ExecuteScript(string input);
 
-        /// <summary>
-        ///  executes script
-        /// </summary>
-        public abstract void ExecuteScript(string inputPath, bool isQuite);
 
         /// <summary>
         /// Searches for input file in the given directory.
@@ -120,5 +122,33 @@ namespace Daisy.SaveAsDAISY.Conversion {
         /// </summary>
         public int StepsCount { get; protected set; } = 1;
 
+        /// <summary>
+        /// Load document parameters into the script parameters.
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="KeyNotFoundException"></exception>
+        public void OnDocument(DocumentProperties doc)
+        {
+            if (doc == null || string.IsNullOrEmpty(doc.InputPath)) {
+                throw new ArgumentException("DocumentProperties cannot be null or empty");
+            }
+
+            if (Parameters.ContainsKey("title"))
+                Parameters["title"].Value = doc.Title;
+
+            if (Parameters.ContainsKey("creator"))
+                Parameters["creator"].Value = doc.Author;
+
+            if (Parameters.ContainsKey("publisher"))
+                Parameters["publisher"].Value = doc.Publisher;
+
+            if (Parameters.ContainsKey("uid"))
+                Parameters["uid"].Value = doc.Identifier;
+
+            if (Parameters.ContainsKey("subject"))
+                Parameters["subject"].Value = doc.Subject;
+
+        }
     }
 }

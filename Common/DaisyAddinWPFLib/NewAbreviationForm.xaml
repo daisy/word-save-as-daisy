@@ -1,0 +1,40 @@
+﻿<Window x:Class="Daisy.SaveAsDAISY.WPF.NewAbreviationForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
+        mc:Ignorable="d"
+        Title="Mark as abbreviation"
+        Width="400"
+        SizeToContent="WidthAndHeight">
+    <StackPanel>
+        <Label x:Name="FullFormLabel">
+            <TextBlock>
+                <Run>Full form of</Run> <Run Text="{Binding Path=Selection}" />
+            </TextBlock>
+        </Label>
+        <TextBox x:Name="FullFormTextBox"
+                 AutomationProperties.LabeledBy="{Binding ElementName=FullFormLabel}"
+                 Margin="5" />
+        <CheckBox x:Name="ApplyEverywhere"
+                  Content="Apply for all occurences of this word in the document"
+                  Margin="5" />
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="5">
+            <Button x:Name="SaveAbbreviation"
+                    HorizontalAlignment="Right"
+                    Padding="10,2,10,2"
+                    Margin="5"
+                    Content="Save this abbreviation" 
+                    Click="SaveAbbreviation_Click"/>
+            <Button x:Name="CancelAbbreviation"
+                    HorizontalAlignment="Right"
+                    Padding="10,2,10,2"
+                    Margin="5"
+                    Content="Cancel"
+                    Click="CancelAbbreviation_Click"/>
+        </StackPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,41 @@
+﻿<Window x:Class="Daisy.SaveAsDAISY.WPF.ExceptionReport"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
+        mc:Ignorable="d"
+        Title="Exception to report"
+        SizeToContent="Height"
+        Width="500">
+    <StackPanel>
+        <Label>
+            <TextBlock TextWrapping="Wrap" Margin="5">
+                <Run>An exception was raised during the execution of the SaveAsDAISY Add-in.</Run>
+                <LineBreak />
+                <Run>You can send the following report to the DAISY pipeline development team</Run>
+                <Hyperlink NavigateUri="mailto:daisy-pipeline@mail.daisy.org">by mail</Hyperlink>
+                <Run>or</Run>
+                <Hyperlink NavigateUri="https://github.com/daisy/word-save-as-daisy/issues">check the daisy addin repository on GitHub</Hyperlink>
+                <Run>for similar issues.</Run>
+                <LineBreak />
+                <Run>You can also report this exception on GitHub by clicking on the report button below.</Run>
+            </TextBlock>
+        </Label>
+        <TextBox x:Name="ExceptionMessage"
+                 Margin="5,5,5,0"
+                 VerticalScrollBarVisibility="Auto"
+                 AcceptsReturn="True"
+                 TextWrapping="Wrap"
+                 IsReadOnly="True"
+                 Height="300" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Padding="10,2,10,2"
+                    Margin="5"
+                    Click="SendReport_Click">Report issue</Button>
+            <Button Padding="10,2,10,2"
+                    Margin="5"
+                    Click="CheckForSimilarIssues_Click">Check for similar issues on github</Button>
+        </StackPanel>
+    </StackPanel>
+</Window>

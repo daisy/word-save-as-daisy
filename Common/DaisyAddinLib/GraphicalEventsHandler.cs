@@ -134,7 +134,7 @@ namespace Daisy.SaveAsDAISY
                 ) == DialogResult.Yes;
         }
 
-        public DialogResult documentMustBeRenamed(StringValidator authorizedNamePattern)
+        public bool? documentMustBeRenamed(StringValidator authorizedNamePattern)
         {
             string BoxText =
                 authorizedNamePattern.UnauthorizedValueMessage
@@ -145,12 +145,23 @@ namespace Daisy.SaveAsDAISY
                 + "\r\n(Click Yes to save the document under a new name and use the new one, "
                 + "No to continue with the current document, "
                 + "or Cancel to abort the conversion)";
-            return MessageBox.Show(
+            
+            var result = MessageBox.Show(
                 BoxText,
                 "Unauthorized characters in the document filename",
                 MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Warning
             );
+            switch (result)
+            {
+                case DialogResult.Yes:
+                    return true;
+                case DialogResult.No:
+                    return false;
+                case DialogResult.Cancel:
+                default:
+                    return null; // cancel the conversion
+            }
         }
 
         public bool userIsRenamingDocument(ref object preprocessedObject)
@@ -177,29 +188,29 @@ namespace Daisy.SaveAsDAISY
 
         #region Conversion to dtbook
         public void onDocumentListConversionStart(
-            List<DocumentParameters> documentLists,
+            List<DocumentProperties> documentLists,
             ConversionParameters conversion
         )
         {
             TryInitializeProgress(
                 "Starting documents list conversion",
-                documentLists.Count + (conversion.PostProcessor != null ? 1 : 0)
+                documentLists.Count + (conversion.PipelineScript != null ? 1 : 0)
             );
         }
 
         public void onDocumentConversionStart(
-            DocumentParameters document,
+            DocumentProperties document,
             ConversionParameters conversion
         )
         {
             TryInitializeProgress(
                 "Converting document " + document.InputPath,
-                conversion.PostProcessor != null ? 2 : 1
+                conversion.PipelineScript != null ? 2 : 1
             );
         }
 
         public void onDocumentListConversionSuccess(
-            List<DocumentParameters> documentLists,
+            List<DocumentProperties> documentLists,
             ConversionParameters conversion
         )
         {
@@ -207,7 +218,7 @@ namespace Daisy.SaveAsDAISY
         }
 
         public void onDocumentConversionSuccess(
-            DocumentParameters document,
+            DocumentProperties document,
             ConversionParameters conversion
         )
         {
@@ -223,7 +234,7 @@ namespace Daisy.SaveAsDAISY
         {
             TryInitializeProgress(
                 "Starting pipeline processing",
-                conversion.PostProcessor.StepsCount + 1
+                conversion.PipelineScript.StepsCount + 1
             );
 
         }

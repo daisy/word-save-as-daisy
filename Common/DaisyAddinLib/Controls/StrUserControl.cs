@@ -12,7 +12,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
 {
     public partial class StrUserControl : BaseUserControl
     {
-        private StringDataType linkedStringData;
+        private StringData linkedStringData;
         public StrUserControl()
         {
             InitializeComponent();
@@ -27,8 +27,8 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
         public override void setLinkedParameter(ScriptParameter p)
         {
             base.setLinkedParameter(p);
-            linkedStringData = (StringDataType)p.ParameterDataType;
-            parameterInput.Text = p.ParameterValue.ToString();
+            linkedStringData = (StringData)p.ParameterData;
+            parameterInput.Text = p.Value.ToString();
 
             parameterInput.AccessibleName = p.NiceName;
             parameterInput.AccessibleDescription = p.Description;

@@ -67,6 +67,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -81,9 +82,53 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
+    <Compile Include="ManageAbbreviationsForm.xaml.cs">
+      <DependentUpon>ManageAbbreviationsForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ManageAcronymsForm.xaml.cs">
+      <DependentUpon>ManageAcronymsForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewAbreviationForm.xaml.cs">
+      <DependentUpon>NewAbreviationForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NewAcronymForm.xaml.cs">
+      <DependentUpon>NewAcronymForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConversionParametersForm.xaml.cs">
+      <DependentUpon>ConversionParametersForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\ScriptParameter\BooleanParameter.xaml.cs">
+      <DependentUpon>BooleanParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\DocumentMetadata.xaml.cs">
+      <DependentUpon>DocumentMetadata.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\ScriptParameter\EnumParameter.xaml.cs">
+      <DependentUpon>EnumParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\ScriptParameter\IntegerParameter.xaml.cs">
+      <DependentUpon>IntegerParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\ScriptParameter\PathParameter.xaml.cs">
+      <DependentUpon>PathParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\ScriptParameter\StringParameter.xaml.cs">
+      <DependentUpon>StringParameter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptionReport.xaml.cs">
+      <DependentUpon>ExceptionReport.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentMetadataForm.xaml.cs">
+      <DependentUpon>DocumentMetadataForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ConversionProgress.xaml.cs">
+      <DependentUpon>ConversionProgress.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsForm.xaml.cs">
+      <DependentUpon>SettingsForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WPFConverter.cs" />
+    <Compile Include="WPFEventsHandler.cs" />
     <Page Include="About.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -91,7 +136,63 @@
     <Compile Include="About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
-    <Page Include="Settings.xaml">
+    <Page Include="ManageAbbreviationsForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ManageAcronymsForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewAbreviationForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NewAcronymForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConversionParametersForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\ScriptParameter\BooleanParameter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\DocumentMetadata.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\ScriptParameter\EnumParameter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\ScriptParameter\IntegerParameter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\ScriptParameter\PathParameter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\ScriptParameter\StringParameter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ExceptionReport.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DocumentMetadataForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ConversionProgress.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="SettingsForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -125,10 +226,47 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DaisyAddinLib\DaisyAddinLib.csproj">
+      <Project>{599773ff-1e86-4ac2-8b24-34bbac707370}</Project>
+      <Name>DaisyAddinLib</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DaisyConverterLib\DaisyConverterLib.csproj">
       <Project>{8cb777eb-36ed-45d8-84ff-bdd64ad5026e}</Project>
       <Name>DaisyConverterLib</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Localization\Localization.csproj">
+      <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
+      <Name>Localization</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>8</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Word">
+      <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>7</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

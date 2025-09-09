@@ -21,11 +21,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     "input", new ScriptParameter(
                         "source",
                         "Input Docx file",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.input,
-                            PathDataType.FileOrDirectory.File
+                        new PathData(
+                            PathData.InputOrOutput.input,
+                            PathData.FileOrDirectory.File
                         ),
-                        "",
                         true,
                         "The document you want to convert."
                     )
@@ -34,11 +33,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     "output", new ScriptParameter(
                         "result",
                         "DTBook output",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
                         ),
-                        "",
                         true,
                         "Output folder of the conversion to DTBook XML"
                     )
@@ -47,8 +45,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "title",
                         "Document title",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false
                     )
                 },
@@ -56,8 +53,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "creator",
                         "Document creator or author",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false
                     )
                 },
@@ -65,8 +61,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "publisher",
                         "Document publisher",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false
                     )
                 },
@@ -74,8 +69,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "uid",
                         "Document identifier",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,
                         "Identifier to be added as dtb:uid metadata"
                     )
@@ -84,8 +78,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "subject",
                         "Subject(s)",
-                        new StringDataType(),
-                        "",
+                        new StringData(),
                         false,
                         "Subject(s) to be added as dc:Subject metadata"
                     )
@@ -94,8 +87,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "accept-revisions",
                         "Accept revisions",
-                        new BoolDataType(true),
-                        true,
+                        new BoolData(true),
                         false,
                         "If the document has revisions that are not accepted, consider them as accepted for the conversion"
                     )
@@ -104,8 +96,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "pagination",
                         "Pagination mode",
-                        PageNumberingChoice.DataType,
-                        PageNumberingChoice.Values[Instance.PagenumStyle],
+                        PageNumberingChoice.DataType(),
                         false,
                         "Define how page numbers are computed and inserted in the result",
                         false // from settings
@@ -115,8 +106,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "image-size",
                         "Image resizing",
-                        ImageOptionChoice.DataType,
-                        ImageOptionChoice.Values[Instance.ImageOption],
+                        ImageOptionChoice.DataType(),
                         false,
                         "",
                         false // from settings
@@ -126,13 +116,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "dpi",
                         "Image resampling value",
-                        new EnumDataType(new Dictionary<string, object>()
+                        new EnumData(new Dictionary<string, object>()
                         {
                             { "96", 96 },
                             { "120", 120 },
                             { "300", 300 }
-                        }, "96"),
-                        Instance.ImageResamplingValue,
+                        }, Instance.ImageResamplingValue),
                         false,
                         "Target resolution in dot-per-inch for image resampling, if resampling is requested",
                         false // from settings
@@ -143,8 +132,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "character-styles",
                         "Translate character styles",
-                        new BoolDataType(false),
-                        false,
+                        new BoolData(false),
                         false,
                         "",
                         false // from settings
@@ -155,8 +143,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "footnotes-position",
                         "Footnotes position",
-                        FootnotesPositionChoice.DataType,
-                        FootnotesPositionChoice.Values[Instance.FootnotesPosition],
+                        FootnotesPositionChoice.DataType(),
                         false,
                         "Footnotes position in content",
                         false // from settings
@@ -167,7 +154,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "footnotes-level",
                         "Footnotes insertion level",
-                        new EnumDataType(new Dictionary<string, object>()
+                        new EnumData(new Dictionary<string, object>()
                         {
                             { "0", 0 },
                             { "1", 1 },
@@ -176,8 +163,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                             { "4", 4 },
                             { "5", 5 },
                             { "6", 6 },
-                        }, "0"),
-                        Instance.FootnotesLevel,
+                        }, Instance.FootnotesLevel),
                         false,
                         "Lowest level into which notes are inserted in content. 0 means the footnotes will be inserted as close as possible of its first call.",
                         false // from settings
@@ -188,8 +174,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "footnotes-numbering",
                         "Footnotes numbering scheme",
-                        FootnotesNumberingChoice.DataType,
-                        FootnotesNumberingChoice.Values[Instance.FootnotesNumbering],
+                        FootnotesNumberingChoice.DataType(),
                         false,
                         "Customize footnotes numbering",
                         false // from settings
@@ -200,8 +185,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "footnotes-start-value",
                         "Footnotes starting value",
-                        new IntegerDataType(min:1),
-                        Instance.FootnotesStartValue,
+                        new IntegerData(min:1,int.MaxValue,Instance.FootnotesStartValue),
                         false,
                         "If footnotes numbering is required, start the notes numbering process from this value",
                         false // from settings
@@ -212,8 +196,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "footnotes-numbering-prefix",
                         "Footnotes number prefix",
-                        new StringDataType(),
-                        Instance.FootnotesNumberingPrefix,
+                        new StringData(Instance.FootnotesNumberingPrefix),
                         false,
                         "Add a prefix before the note's number if numbering is requested",
                         false // from settings
@@ -224,8 +207,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "footnotes-numbering-suffix",
                         "Footnotes number suffix",
-                        new StringDataType(),
-                        Instance.FootnotesNumberingSuffix,
+                        new StringData(Instance.FootnotesNumberingSuffix),
                         false,
                         "Add a text between the note's number and the note content.",
                         false // from settings
@@ -236,8 +218,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     new ScriptParameter(
                         "extract-shapes",
                         "Extract shapes",
-                        new BoolDataType(),
-                        false,
+                        new BoolData(false),
                         false,
                         "",
                         false // hidden
@@ -260,6 +241,17 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
         public static string SearchInputFromDirectory(DirectoryInfo inputDirectory)
         {
             return Directory.GetFiles(inputDirectory.FullName, "*.docx", SearchOption.AllDirectories)[0];
+        }
+
+        public override void ExecuteScript(string inputPath)
+        {
+            base.ExecuteScript(inputPath);
+            if(ExtractedShapes.Count > 0) {
+                foreach (string shape in ExtractedShapes)
+                {
+                    File.Copy(shape, Path.Combine(Parameters["output"].Value.ToString(), Path.GetFileName(shape)), true);
+                }
+            }
         }
     }
 }

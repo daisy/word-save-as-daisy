@@ -12,7 +12,7 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
 {
     public partial class BoolControl : BaseUserControl
     {
-        BoolDataType m_boolDataType;
+        BoolData m_boolDataType;
 
         private BoolControl() : base()
         {
@@ -33,8 +33,8 @@ namespace Daisy.SaveAsDAISY.Forms.Controls
             checkBox1.AccessibleName = s.NiceName;
             checkBox1.AccessibleDescription = s.Description;
             descriptionTooltip.SetToolTip(checkBox1, s.Description);
-            m_boolDataType = (BoolDataType)s.ParameterDataType;
-            checkBox1.Checked = (bool)s.ParameterValue;
+            m_boolDataType = (BoolData)s.ParameterData;
+            checkBox1.Checked = (bool)s.Value;
         }
 
 

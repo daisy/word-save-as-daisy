@@ -17,12 +17,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
                     new ScriptParameter(
                         "source",
                         "OPF",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.input,
-                            PathDataType.FileOrDirectory.File,
-                            "application/oebps-package+xml"
+                        new PathData(
+                            PathData.InputOrOutput.input,
+                            PathData.FileOrDirectory.File,
+                            "application/oebps-package+xml",
+                            ""
                         ),
-                        "",
                         true,
                         "The package file of the input DAISY3."
                     )
@@ -32,13 +32,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
                   new ScriptParameter(
                     "folder-depth",
                     "Folder depth",
-                    new EnumDataType(
+                    new EnumData(
                         new Dictionary<string,object>(){
                             {"1", "1"},
                             {"2", "2"},
                             {"3", "3"},
                         }, "1"),
-                    "1",
                     false,
                     "The number of folder levels in the produced folder structure.\n\n" +
                     "The book is always, if possible, contained in a single top - level folder with MP3 files or\n" +
@@ -57,11 +56,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
                     new ScriptParameter(
                         "result",
                         "MP3 Files",
-                        new PathDataType(
-                            PathDataType.InputOrOutput.output,
-                            PathDataType.FileOrDirectory.Directory
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory,
+                            "",
+                            ""
                         ),
-                        "",
                         true,
                         "The produced folder structure with MP3 files."
                     )
