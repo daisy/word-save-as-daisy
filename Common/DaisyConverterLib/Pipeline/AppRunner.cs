@@ -58,7 +58,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                 return instance;
             }
         }
-        Dictionary<Message, bool> printed = new Dictionary<Message, bool>();
+        List<Message> printed = new List<Message>();
 
         List<Message> messagesFlattened(List<Message> l)
         {
@@ -67,21 +67,36 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
             if (l == null) return res;
             if (l.Count == 0) return res;
             foreach (Message m in l) {
-                res.Add(m);
+                // 
+                res.Add(new Message()
+                {
+                    Content = m.Content,
+                    Timestamp = m.Timestamp,
+                });
                 if (m.Messages != null && m.Messages.Count > 0) {
                     res.AddRange(messagesFlattened(m.Messages));
                 }
             }
             return res.OrderBy(m => m.Timestamp).ToList();
         }
+        bool isPrinted(Message m) {
+            foreach (Message pm in printed) {
+                if (pm.Timestamp == m.Timestamp && pm.Content == m.Content) {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         void printMessages(List<Message> messages, IConversionEventsHandler events) {
             foreach (Message message in messagesFlattened(messages)) {
-                if (!printed.ContainsKey(message)) {
-                    printed[message] = true;
-                    events.onProgressMessageReceived(this, new DaisyEventArgs(message.Content));
+                if(isPrinted(message)) {
+                    continue;
+                } else {
+                    printed.Add(message);
+                    events.onProgressMessageReceived(this, new DaisyEventArgs(
+                        DateTimeOffset.FromUnixTimeMilliseconds(message.Timestamp).DateTime.ToString("yyyy-MM-dd-HH:mm:ss.fff") + " - " + message.Content));
                 }
-
             }
         }
 
