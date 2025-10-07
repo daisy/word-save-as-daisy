@@ -6,9 +6,10 @@
         xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
         mc:Ignorable="d"
         Title="SaveAsDAISY Settings"
+        SizeToContent="Height"
         Width="500">
     <StackPanel>
-        <Grid>
+        <!--<Grid>
             <Label Content="Results directory"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Left"
@@ -29,7 +30,7 @@
                     x:Name="BrowseResultsFolder"
                     Click="BrowseResultsFolder_Click"
                     Margin="0,0,5,0" />
-        </Grid>
+        </Grid>-->
         <Grid>
             <Label Content="Page numbering"
                    VerticalAlignment="Center"
