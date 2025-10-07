@@ -1,3 +1,4 @@
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -338,6 +339,23 @@ namespace Daisy.SaveAsDAISY.Conversion
             using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile))) {
                 writer.Write(AsXML(true));
                 writer.Flush();
+            }
+            // NP 2025 10 07 : launch the adequate runner based on settings
+            // Launch the pipeline in the background to start conversions asap
+            if (UseDAISYPipelineApp) {
+                try {
+                    AppRunner.GetInstance();
+                }
+                catch (Exception e) {
+                    AddinLogger.Error(e);
+                }
+            } else {
+                try {
+                    JNIRunner.GetInstance();
+                }
+                catch (Exception e) {
+                    AddinLogger.Error(e);
+                }
             }
         }
 

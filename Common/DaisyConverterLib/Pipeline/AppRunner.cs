@@ -23,7 +23,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
         {
             this.events = events ?? new SilentEventsHandler();
             LaunchApp();
-            EnsureWebserviceAlive();
+            //EnsureWebserviceAlive();
         }
 
         
@@ -54,6 +54,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                     catch (Exception ex) {
                         throw new Exception("An error occured while launching or connecting to DAISY Pipeline App", ex);
                     }
+                } else {
+                    instance.LaunchApp();
                 }
                 return instance;
             }
@@ -167,9 +169,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
                 };
-                Process.Start(startInfo);
+                var appLaunched = Process.Start(startInfo);
                 // Wait a second that the electorn app context is initialized
-                Thread.Sleep(1000);
+                if (appLaunched.WaitForExit(250) && appLaunched.ExitCode != 0) {
+                    throw new InvalidOperationException("Could not launch DAISY Pipeline app, the process has exited with error code " + appLaunched.ExitCode);
+                }
             }
         }
 
@@ -179,8 +183,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
         /// <exception cref="InvalidOperationException"></exception>
         private void EnsureWebserviceAlive()
         {
-            int attempt = 10;
+            int attempt = 20;
             do {
+                events.onProgressMessageReceived(this, new DaisyEventArgs($"Checking engine web service status ({attempt} attempts remaining)..."));
                 attempt--;
                 try {
                     _webservice = getAppWebservice();

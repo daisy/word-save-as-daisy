@@ -31,6 +31,7 @@ using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
 using Daisy.SaveAsDAISY.Forms;
 using Daisy.SaveAsDAISY.WPF;
@@ -341,6 +342,21 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// </param>
         /// <seealso class='IDTExtensibility2' />
         public void OnStartupComplete(ref System.Array custom) {
+            // Launch the pipeline in the background to start conversions asap
+            if (ConverterSettings.Instance.UseDAISYPipelineApp) {
+                try {
+                    AppRunner.GetInstance();
+                } catch(Exception e) {
+                    AddinLogger.Error(e);
+                }
+            } else {
+                try {
+                    JNIRunner.GetInstance();
+                }
+                catch (Exception e) {
+                    AddinLogger.Error(e);
+                }
+            }
         }
 
         /// <summary>
