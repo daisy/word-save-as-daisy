@@ -205,7 +205,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
             } while (_webservice == null && attempt > 0);
             if (_webservice == null) {
                 //events.OnConversionError(new InvalidOperationException("Could not connect to DAISY Pipeline app webservice after 10 attempts"));
-                throw new InvalidOperationException("Could not connect to DAISY Pipeline app webservice after 10 attempts");
+                throw new InvalidOperationException("Could not connect to DAISY Pipeline app webservice after 20 attempts");
             }
         }
 

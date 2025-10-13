@@ -343,19 +343,14 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <seealso class='IDTExtensibility2' />
         public void OnStartupComplete(ref System.Array custom) {
             // Launch the pipeline in the background to start conversions asap
-            if (ConverterSettings.Instance.UseDAISYPipelineApp) {
-                try {
+            try {
+                if (ConverterSettings.Instance.UseDAISYPipelineApp) {
                     AppRunner.GetInstance();
-                } catch(Exception e) {
-                    AddinLogger.Error(e);
-                }
-            } else {
-                try {
+                } else {
                     JNIRunner.GetInstance();
                 }
-                catch (Exception e) {
-                    AddinLogger.Error(e);
-                }
+            } catch(Exception e) {
+                AddinLogger.Error(e);
             }
         }
 
