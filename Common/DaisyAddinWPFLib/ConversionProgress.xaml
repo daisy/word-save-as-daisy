@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
         mc:Ignorable="d"
-        Title="Progression" Width="450" SizeToContent="Height" Closing="Window_Closing">
+        Title="Progression"
+        Width="450"
+        SizeToContent="Height"
+        Closing="Window_Closing">
     <StackPanel>
         <ProgressBar x:Name="ProgressionTracker"
                      Height="20"
@@ -32,7 +35,15 @@
                          IsReadOnly="True" />
             </StackPanel>
         </Expander>
-        <Button Width="75" Margin="5" HorizontalAlignment="Right"
-                Click="CancelButton_Click">Cancel</Button>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button Width="117"
+                    Margin="5"
+                    HorizontalAlignment="Right"
+                    Click="CancelButton_Click">Cancel conversion</Button>
+            <Button Width="61"
+                    Margin="5"
+                    Click="CloseButton_Click">Close</Button>
+        </StackPanel>
     </StackPanel>
 </Window>

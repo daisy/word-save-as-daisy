@@ -146,8 +146,12 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (cancelButtonClicked != null) cancelButtonClicked();
+            //if (cancelButtonClicked != null) cancelButtonClicked();
         }
 
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }
