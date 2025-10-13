@@ -1,4 +1,5 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
@@ -27,26 +28,24 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
             this.DataContext = this;
         }
 
-        //public void BindTo(DocumentProperties d)
-        //{
-        //    Document = d;
-        //}
+        public delegate void MetadataChangedEventHandler(object sender, string updatedFieldName);
 
-        public string DocumentTitle { get => Document.Title; set => Document.Title = value; }
-        public string DocumentDate { get => Document.Date; set => Document.Date = value; }
-        public string DocumentAuthor { get => Document.Author; set => Document.Author = value; }
-        public string DocumentPublisher { get => Document.Publisher; set => Document.Publisher = value; }
-        public string DocumentIdentifier { get => Document.Identifier; set => Document.Identifier = value; }
-        public string DocumentIdentifierScheme { get => Document.IdentifierScheme; set => Document.IdentifierScheme = value; }
-        public string DocumentContributor { get => Document.Contributor; set => Document.Contributor = value; }
-        public string DocumentSubtitle { get => Document.Subtitle; set => Document.Subtitle = value; }
-        public string DocumentRights { get => Document.Rights; set => Document.Rights = value; }
-        public string DocumentSummary { get => Document.Summary; set => Document.Summary = value; }
-        public string DocumentSubject { get => Document.Subject; set => Document.Subject = value; }
-        public string DocumentSource { get => Document.SourceOfPagination; set => Document.SourceOfPagination = value; }
-        public string DocumentAccessibilitySummary { get => Document.AccessibilitySummary; set => Document.AccessibilitySummary = value; }
+        public event MetadataChangedEventHandler MetadataChanged = null;
 
-        public string DocumentSourceDate { get => Document.SourceDate; set => Document.SourceDate = value; }
+        public string DocumentTitle { get => Document.Title; set { MetadataChanged?.Invoke(this, "Title"); Document.Title = value; } }
+        public string DocumentDate { get => Document.Date; set { MetadataChanged?.Invoke(this, "Date"); Document.Date = value; } }
+        public string DocumentAuthor { get => Document.Author; set { MetadataChanged?.Invoke(this, "Author"); Document.Author = value; } }
+        public string DocumentPublisher { get => Document.Publisher; set { MetadataChanged?.Invoke(this, "Publisher"); Document.Publisher = value; } }
+        public string DocumentIdentifier { get => Document.Identifier; set { MetadataChanged?.Invoke(this, "Identifier"); Document.Identifier = value; } }
+        public string DocumentIdentifierScheme { get => Document.IdentifierScheme; set { MetadataChanged?.Invoke(this, "IdentifierScheme"); Document.IdentifierScheme = value; } }
+        public string DocumentContributor { get => Document.Contributor; set { MetadataChanged?.Invoke(this, "Contributor"); Document.Contributor = value; } }
+        public string DocumentSubtitle { get => Document.Subtitle; set { MetadataChanged?.Invoke(this, "Subtitle"); Document.Subtitle = value; } }
+        public string DocumentRights { get => Document.Rights; set { MetadataChanged?.Invoke(this, "Rights"); Document.Rights = value; } }
+        public string DocumentSummary { get => Document.Summary; set { MetadataChanged?.Invoke(this, "Summary"); Document.Summary = value; } }
+        public string DocumentSubject { get => Document.Subject; set { MetadataChanged?.Invoke(this, "Subject"); Document.Subject = value; } }
+        public string DocumentSource { get => Document.SourceOfPagination; set { MetadataChanged?.Invoke(this, "SourceOfPagination"); Document.SourceOfPagination = value; } }
+        public string DocumentAccessibilitySummary { get => Document.AccessibilitySummary; set { MetadataChanged?.Invoke(this, "AccessibilitySummary"); Document.AccessibilitySummary = value; } }
+        public string DocumentSourceDate { get => Document.SourceDate; set { MetadataChanged?.Invoke(this, "SourceDate"); Document.SourceDate = value; } }
 
 
 

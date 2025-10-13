@@ -820,8 +820,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="control"></param>
         public void DocumentMetadataUI(IRibbonControl control)
         {
-            WPF.ConversionProgress.Instance.InitializeProgress("Analyzing document metadata");
-            WPF.ConversionProgress.Instance.Show();
+            //WPF.ConversionProgress.Instance.InitializeProgress("Analyzing document metadata");
+            //WPF.ConversionProgress.Instance.Show();
             object doc = this.applicationObject.ActiveDocument;
             Daisy.SaveAsDAISY.WPF.Metadata metadata = new Daisy.SaveAsDAISY.WPF.Metadata(
                 new DocumentPreprocessor(applicationObject),

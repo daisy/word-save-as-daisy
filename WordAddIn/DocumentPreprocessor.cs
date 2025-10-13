@@ -1042,8 +1042,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             TrySetPropertyValue(customProperties, "Date", data.Date);
             TrySetPropertyValue(customProperties, "Rights", data.Rights);
             TrySetPropertyValue(customProperties, "SourceDate", data.SourceDate);
-
-            currentDoc.Save();
         }
 
         #endregion

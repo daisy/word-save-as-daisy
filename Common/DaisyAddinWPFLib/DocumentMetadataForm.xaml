@@ -9,13 +9,25 @@
         Title="Accessibility metadata" SizeToContent="WidthAndHeight">
     <StackPanel>
         <cc:DocumentMetadata x:Name="MetadataForm"/>
-        <Button x:Name="SaveMetadata"
-                IsEnabled="False"
-                HorizontalAlignment="Right"
-                Padding="10,2,10,2"
-                Margin="5"
-                Click="SaveMetadata_Click">
-            Save
-        </Button>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right">
+            <Button x:Name="Cancel"
+                    IsEnabled="False"
+                    HorizontalAlignment="Right"
+                    Padding="10,2,10,2"
+                    Margin="5"
+                    Click="Cancel_Click">
+                Cancel
+            </Button>
+            <Button x:Name="SaveMetadata"
+                    IsEnabled="False"
+                    HorizontalAlignment="Right"
+                    Padding="10,2,10,2"
+                    Margin="5"
+                    Click="UpdateMetadata_Click">
+                Update and close
+            </Button>
+        </StackPanel>
+        
     </StackPanel>
 </Window>
