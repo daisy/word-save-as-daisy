@@ -108,12 +108,18 @@ namespace Daisy.SaveAsDAISY.WPF
             }
             Acronyms.Reverse();
             AcronymsList.ItemsSource = Acronyms;
+            if(AcronymsList.Items.Count > 0) {
+                AcronymsList.SelectedIndex = 0;
+            }
         }
 
         private void Acronyms_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectInDocument.IsEnabled = AcronymsList.SelectedIndex >= 0;
             UnmarkAcronym.IsEnabled = AcronymsList.SelectedIndex >= 0;
+            PreviousAcronym.IsEnabled = AcronymsList.SelectedIndex > 0;
+            NextAcronym.IsEnabled = AcronymsList.SelectedIndex >= 0 && AcronymsList.SelectedIndex < AcronymsList.Items.Count - 1;
+
             //if (AbbreviationsList.SelectedIndex >= 0) {
             //    AbbreviationItem item = (AbbreviationItem)AbbreviationsList.SelectedItem;
             //    object index = item.AbbreviationName;
@@ -144,6 +150,16 @@ namespace Daisy.SaveAsDAISY.WPF
         {
             // Remove abreviation from list and update xml part
             AcronymItem item = (AcronymItem)AcronymsList.SelectedItem;
+            if (MessageBox.Show(
+                    "Are you sure you want to unmark the acronym '" + item.OriginalText + "' ?",
+                    "Confirm unmarking",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                ) != MessageBoxResult.Yes
+            ) {
+                // early return if user does not confirm
+                return;
+            }
             // Remove bookmark from the document
             if (CurrentDocument.Bookmarks.Exists(item.AcronymName)) {
                 object val = item.AcronymName;
@@ -181,6 +197,16 @@ namespace Daisy.SaveAsDAISY.WPF
             AcronymsList.ItemsSource = Acronyms;
             AcronymsList.Items.Refresh();
             AcronymsList.SelectedIndex = -1;
+        }
+
+        private void PreviousAcronym_Click(object sender, RoutedEventArgs e)
+        {
+            AcronymsList.SelectedIndex--;
+        }
+
+        private void NextAcronym_Click(object sender, RoutedEventArgs e)
+        {
+            AcronymsList.SelectedIndex++;
         }
     }
 }

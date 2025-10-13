@@ -108,12 +108,17 @@ namespace Daisy.SaveAsDAISY.WPF
             }
             Abbreviations.Reverse();
             AbbreviationsList.ItemsSource = Abbreviations;
+            if (AbbreviationsList.Items.Count > 0) {
+                AbbreviationsList.SelectedIndex = 0;
+            }
         }
 
         private void Abbreviations_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectInDocument.IsEnabled = AbbreviationsList.SelectedIndex >= 0;
             UnmarkAbbreviation.IsEnabled = AbbreviationsList.SelectedIndex >= 0;
+            PreviousAbbreviation.IsEnabled = AbbreviationsList.SelectedIndex > 0;
+            NextAbbreviation.IsEnabled = AbbreviationsList.SelectedIndex >= 0 && AbbreviationsList.SelectedIndex < AbbreviationsList.Items.Count - 1;
             //if (AbbreviationsList.SelectedIndex >= 0) {
             //    AbbreviationItem item = (AbbreviationItem)AbbreviationsList.SelectedItem;
             //    object index = item.AbbreviationName;
@@ -142,9 +147,24 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private void UnmarkAbbreviation_Click(object sender, RoutedEventArgs e)
         {
+            // 2025/10/13: remarks from tester -
+            // > If an acronym is accidentally unmarked, there is currently no option to re-add it to the same list.
+            // > A new list has to be created instead.
+            // Not sure how to handle the "re-addition" / "undo" of an abbreviation,
+            // so I use a confirm message box for now
+
             // Remove abreviation from list and update xml part
             AbbreviationItem item = (AbbreviationItem)AbbreviationsList.SelectedItem;
-
+            if(MessageBox.Show(
+                    "Are you sure you want to unmark the abbreviation '" + item.OriginalText + "' ?",
+                    "Confirm unmarking",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question
+                ) != MessageBoxResult.Yes
+            ) {
+                // early return if user does not confirm
+                return;
+            }
             // Remove bookmark from the document
             if (CurrentDocument.Bookmarks.Exists(item.AbbreviationName)) {
                 object val = item.AbbreviationName;
@@ -182,6 +202,17 @@ namespace Daisy.SaveAsDAISY.WPF
             AbbreviationsList.ItemsSource = Abbreviations;
             AbbreviationsList.Items.Refresh();
             AbbreviationsList.SelectedIndex = -1;
+        }
+
+
+        private void PreviousAbbreviation_Click(object sender, RoutedEventArgs e)
+        {
+            AbbreviationsList.SelectedIndex--;
+        }
+
+        private void NextAbbreviation_Click(object sender, RoutedEventArgs e)
+        {
+            AbbreviationsList.SelectedIndex++;
         }
     }
 }

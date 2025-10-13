@@ -25,27 +25,45 @@
             </ListView.View>
         </ListView>
         <DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+                <Button x:Name="PreviousAcronym"
+                        AutomationProperties.Name="Previous acronym"
+                        DockPanel.Dock="Left"
+                        HorizontalAlignment="Left"
+                        IsEnabled="False"
+                        Click="PreviousAcronym_Click"
+                        Margin="5"
+                        Width="55">_Previous</Button>
+                <Button x:Name="NextAcronym"
+                        DockPanel.Dock="Right"
+                        HorizontalAlignment="Right"
+                        AutomationProperties.Name="Next acronym"
+                        IsEnabled="False"
+                        Click="NextAcronym_Click"
+                        Margin="5"
+                        Width="55">_Next</Button>
+            </DockPanel>
             <Button x:Name="SelectInDocument"
                     Height="25"
                     DockPanel.Dock="Top"
                     Margin="5"
                     Padding="10,2,10,2"
                     VerticalAlignment="Top"
-                    Click="SelectInDocument_Click">Select in document</Button>
+                    Click="SelectInDocument_Click">_Select in document</Button>
             <Button x:Name="UnmarkAcronym"
                     Height="25"
                     DockPanel.Dock="Top"
                     Margin="5"
                     Padding="10,2,10,2"
                     VerticalAlignment="Top"
-                    Click="UnmarkAcronym_Click">Unmark</Button>
+                    Click="UnmarkAcronym_Click">_Unmark</Button>
             <Button x:Name="CloseForm"
                     Height="25"
                     DockPanel.Dock="Bottom"
                     Margin="5"
                     Padding="10,2,10,2"
                     VerticalAlignment="Bottom"
-                    Click="CloseForm_Click">Close</Button>
+                    Click="CloseForm_Click">_Close</Button>
         </DockPanel>
     </StackPanel>
 </Window>
