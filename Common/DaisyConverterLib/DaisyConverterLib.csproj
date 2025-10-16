@@ -216,9 +216,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="JNET">
-      <HintPath>..\..\resources\JNET.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
@@ -232,6 +229,10 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\jnet\JNET.csproj">
+      <Project>{941df07f-3ee8-4793-abba-659f2e0598c3}</Project>
+      <Name>JNET</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Localization\Localization.csproj">
       <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
       <Name>Localization</Name>
