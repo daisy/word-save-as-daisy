@@ -46,7 +46,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "title",
                         "Document title",
                         new StringData(),
-                        false
+                        false,"",false
                     )
                 },
                 { "creator",
@@ -54,7 +54,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "creator",
                         "Document creator or author",
                         new StringData(),
-                        false
+                        false,"",false
                     )
                 },
                 { "publisher",
@@ -62,7 +62,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "publisher",
                         "Document publisher",
                         new StringData(),
-                        false
+                        false,"",false
                     )
                 },
                 { "uid",
@@ -71,7 +71,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "Document identifier",
                         new StringData(),
                         false,
-                        "Identifier to be added as dtb:uid metadata"
+                        "Identifier to be added as dtb:uid metadata",
+                        false
                     )
                 },
                 { "subject",
@@ -80,16 +81,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "Subject(s)",
                         new StringData(),
                         false,
-                        "Subject(s) to be added as dc:Subject metadata"
+                        "Subject(s) to be added as dc:Subject metadata",
+                        false
                     )
                 },
                 { "accept-revisions",
                     new ScriptParameter(
                         "accept-revisions",
                         "Accept revisions",
-                        new BoolData(true),
+                        new BoolData(false),
                         false,
-                        "If the document has revisions that are not accepted, consider them as accepted for the conversion"
+                        "If the document has revisions that are not accepted, consider them as accepted for the conversion",
+                        false
                     )
                 },
                 { "pagination",
@@ -223,6 +226,84 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         "",
                         false // hidden
                     )
+                },
+                // NP 2025/10/13 : word to dtbook now embed the cleaning steps
+                {
+                  "repair",
+                  new ScriptParameter(
+                    "repair",
+                    "Repair the dtbook",
+                    new BoolData(true),
+                    true,
+                    ""
+                  )
+                },
+                {
+                  "tidy",
+                  new ScriptParameter(
+                    "tidy",
+                    "Tidy up the dtbook",
+                    new BoolData(true),
+                    true,
+                    ""
+
+                  )
+                },
+                //{
+                //  "simplifyHeadingLayout",
+                //  new ScriptParameter(
+                //    "simplifyHeadingLayout",
+                //    "Tidy - Simplify headings layout",
+                //    new BoolData(false),
+                //    false,
+                //    "",
+                //    false
+
+                //  )
+                //},
+                //{
+                //  "externalizeWhitespace",
+                //  new ScriptParameter(
+                //    "externalizeWhitespace",
+                //    "Tidy - Externalize whitespaces",
+                //    new BoolData(false),
+                //    false,
+                //    "",
+                //    false
+
+                //  )
+                //},
+                //{
+                //  "documentLanguage",
+                //  new ScriptParameter(
+                //    "documentLanguage",
+                //    "Tidy - Document language",
+                //    new StringData(""),
+                //    false,
+                //    "",
+                //    false
+                //  )
+                //},
+                {
+                  "narrator",
+                  new ScriptParameter(
+                    "narrator",
+                    "Prepare dtbook for pipeline 1 narrator",
+                    new BoolData(false),
+                    true,
+                    ""
+
+                  )
+                },
+                {
+                  "ApplySentenceDetection",
+                  new ScriptParameter(
+                    "ApplySentenceDetection",
+                    "Apply sentences detection",
+                    new BoolData(false),
+                    true,
+                    ""
+                  )
                 },
             };
         }

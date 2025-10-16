@@ -18,7 +18,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
             this.niceName = "Export to DTBook XML";
             scripts = new List<Script>() {
                 new WordToDtbook(e),
-                new DtbookCleaner(e)
+                //new DtbookCleaner(e)
             };
             StepsCount = scripts.Count;
 
@@ -133,6 +133,16 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
                     true,
                     ""
 
+                  )
+                },
+                {
+                  "ApplySentenceDetection",
+                  new ScriptParameter(
+                    "ApplySentenceDetection",
+                    "Apply sentences detection",
+                    new BoolData(false),
+                    true,
+                    ""
                   )
                 },
             };
