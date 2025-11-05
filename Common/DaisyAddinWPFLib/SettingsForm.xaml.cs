@@ -1,4 +1,5 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
+using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
 using Microsoft.Win32;
 using System;
@@ -27,20 +28,24 @@ namespace Daisy.SaveAsDAISY.WPF
             { "Compute from Word rendered page breaks", PageNumberingChoice.Enum.Automatic },
         };
 
-        private static readonly List<int> ResamplingValues = new List<int>
+        private static readonly Dictionary<string, ImageResamplingChoice.Enum> ResamplingValues = new Dictionary<string, ImageResamplingChoice.Enum>
         {
-            72, 96, 120, 150, 300
+            { "72 dpi",  ImageResamplingChoice.Enum.dpi_72 },
+            { "96 dpi",  ImageResamplingChoice.Enum.dpi_96 },
+            { "120 dpi", ImageResamplingChoice.Enum.dpi_120 },
+            { "150 dpi", ImageResamplingChoice.Enum.dpi_150 },
+            { "300 dpi", ImageResamplingChoice.Enum.dpi_300 },
         };
 
-        private static readonly Dictionary<string, int> NotesLevelChoices = new Dictionary<string, int>
+        private static readonly Dictionary<string, FootnotesLevelChoice.Enum> NotesLevelChoices = new Dictionary<string, FootnotesLevelChoice.Enum>
         {
-            { "Note reference level", 0},
-            { "First or nearest level", 1},
-            { "Second or nearest level", 2},
-            { "Third or nearest level", 3},
-            { "Fourth or nearest level", 4},
-            { "Fifth or nearest level", 5},
-            { "Sixth or nearest level", 6}
+            { "Note reference level", FootnotesLevelChoice.Enum.Inlined},
+            { "First or nearest level",  FootnotesLevelChoice.Enum.Level_1},
+            { "Second or nearest level", FootnotesLevelChoice.Enum.Level_2},
+            { "Third or nearest level", FootnotesLevelChoice.Enum.Level_3},
+            { "Fourth or nearest level", FootnotesLevelChoice.Enum.Level_4},
+            { "Fifth or nearest level", FootnotesLevelChoice.Enum.Level_5},
+            { "Sixth or nearest level", FootnotesLevelChoice.Enum.Level_6}
         };
 
         
@@ -80,9 +85,9 @@ namespace Daisy.SaveAsDAISY.WPF
             ImageSizeOptions.ItemsSource = ImageSizeChoices.Keys;
             ImageSizeOptions.SelectedIndex= ImageSizeChoices.Values.ToList().IndexOf(GlobaleSettings.ImageOption);
 
-            Resampling.ItemsSource = ResamplingValues;
-            Resampling.SelectedIndex = Math.Max(0, ResamplingValues.IndexOf(GlobaleSettings.ImageResamplingValue)); // Default to 72 DPI
             Resampling.IsEnabled = GlobaleSettings.ImageOption == ImageOptionChoice.Enum.Resample;
+            Resampling.ItemsSource = ResamplingValues.Keys;
+            Resampling.SelectedIndex = ResamplingValues.Values.ToList().IndexOf(GlobaleSettings.ImageResamplingValue);
 
             NotesPosition.ItemsSource = NotesPositionChoices.Keys;
             NotesPosition.SelectedIndex = NotesPositionChoices.Values.ToList().IndexOf(GlobaleSettings.FootnotesPosition);
@@ -91,7 +96,7 @@ namespace Daisy.SaveAsDAISY.WPF
             NotesNumbering.SelectedIndex = NotesNumberingChoices.Values.ToList().IndexOf(GlobaleSettings.FootnotesNumbering);
 
             NotesLevel.ItemsSource = NotesLevelChoices.Keys;
-            NotesLevel.SelectedIndex = Math.Max(0, GlobaleSettings.FootnotesLevel);
+            NotesLevel.SelectedIndex = NotesLevelChoices.Values.ToList().IndexOf(GlobaleSettings.FootnotesLevel);
 
             StartNumber.IsEnabled = GlobaleSettings.FootnotesNumbering != FootnotesNumberingChoice.Enum.None;
             StartNumber.Text = GlobaleSettings.FootnotesStartValue.ToString().PadLeft(3,'_');
@@ -188,7 +193,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.CharacterStyle = TranslateCharacteStyles.IsChecked == true;
                 GlobaleSettings.DontNotifySponsorship = DisableSponsorhip.IsChecked == true;
                 GlobaleSettings.ImageOption = ImageSizeChoices.Values.ToList()[ImageSizeOptions.SelectedIndex];
-                GlobaleSettings.ImageResamplingValue = Resampling.SelectedIndex >= 0 ? ResamplingValues[Resampling.SelectedIndex] : 72; // Default to 72 DPI if not selected
+                GlobaleSettings.ImageResamplingValue = Resampling.SelectedIndex >= 0 ? ResamplingValues.Values.ToList()[Resampling.SelectedIndex] : ImageResamplingChoice.Enum.dpi_72; // Default to 72 DPI if not selected
                 GlobaleSettings.FootnotesPosition = NotesPositionChoices.Values.ToList()[NotesPosition.SelectedIndex];
                 GlobaleSettings.FootnotesLevel = NotesLevelChoices.Values.ToList()[NotesLevel.SelectedIndex];
                 GlobaleSettings.FootnotesNumbering = NotesNumberingChoices.Values.ToList()[NotesNumbering.SelectedIndex];
@@ -243,7 +248,7 @@ namespace Daisy.SaveAsDAISY.WPF
         private void PreferredVoices_Click(object sender, RoutedEventArgs e)
         {
             try {
-                ((AppRunner)AppRunner.GetInstance()).PreferredVoices();
+                Engine.PreferredVoices();
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Could not open preferred voices : " + ex.Message, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -252,7 +257,7 @@ namespace Daisy.SaveAsDAISY.WPF
         private void TTSEngines_Click(object sender, RoutedEventArgs e)
         {
             try {
-                ((AppRunner)AppRunner.GetInstance()).TTSEngines();
+                Engine.TTSEngines();
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Could not open TTS engines settings : " + ex.Message, MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -263,7 +268,7 @@ namespace Daisy.SaveAsDAISY.WPF
         {
 
             try {
-                ((AppRunner)AppRunner.GetInstance()).BrowseVoices();
+                Engine.BrowseVoices();
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Could not browse voices : " + ex.Message, MessageBoxButton.OK, MessageBoxImage.Warning);

@@ -81,6 +81,89 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
+        public static class ImageResamplingChoice
+        {
+        /// <summary>
+            /// Possible type of note numbering outputed
+            /// </summary>
+            public enum Enum
+            {
+                dpi_72,
+                dpi_96,
+                dpi_120,
+                dpi_150,
+                dpi_300,
+
+            }
+            public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
+            {
+                { Enum.dpi_72, "72" },
+                { Enum.dpi_96, "96" },
+                { Enum.dpi_120, "120" },
+                { Enum.dpi_150, "150" },
+                { Enum.dpi_300, "300" },
+            };
+            public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
+            {
+                { "72" , Enum.dpi_72 },
+                { "96" , Enum.dpi_96 },
+                { "120" , Enum.dpi_120 },
+                { "150" , Enum.dpi_150 },
+                { "300" , Enum.dpi_300 },
+            };
+            public static EnumData DataType()
+            {
+                return new EnumData(
+                    Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                    Values[Instance.ImageResamplingValue]
+                );
+            }
+        }
+
+        public static class FootnotesLevelChoice
+        {
+            /// <summary>
+            /// Possible type of note numbering outputed
+            /// </summary>
+            public enum Enum
+            {
+                Inlined,
+                Level_1,
+                Level_2,
+                Level_3,
+                Level_4,
+                Level_5,
+                Level_6,
+            }
+            public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
+            {
+                { Enum.Inlined, "0" },
+                { Enum.Level_1, "1" },
+                { Enum.Level_2, "2" },
+                { Enum.Level_3, "3" },
+                { Enum.Level_4, "4" },
+                { Enum.Level_5, "5" },
+                { Enum.Level_6, "6" }
+            };
+            public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
+            {
+                {"0" , Enum.Inlined},
+                {"1" , Enum.Level_1},
+                {"2" , Enum.Level_2},
+                {"3" , Enum.Level_3},
+                {"4" , Enum.Level_4},
+                {"5" , Enum.Level_5},
+                {"6" , Enum.Level_6}
+            };
+            public static EnumData DataType()
+            {
+                return new EnumData(
+                    Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
+                    Values[Instance.FootnotesLevel]
+                );
+            }
+        }
+
         /// <summary>
         /// @see FootnotesNumberingChoice.Enum
         /// </summary>
@@ -363,7 +446,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public ImageOptionChoice.Enum ImageOption { get => ImageOptionChoice.Keys[imgoption]; set => imgoption = ImageOptionChoice.Values[value]; }
 
-        public int ImageResamplingValue { get => int.Parse(resampleValue); set => resampleValue = value.ToString(); }
+        public ImageResamplingChoice.Enum ImageResamplingValue { get => ImageResamplingChoice.Keys[resampleValue]; set => resampleValue = ImageResamplingChoice.Values[value]; }
 
         public bool CharacterStyle { get => characterStyle != "False"; set => characterStyle = value ? "True" : "False"; }
 
@@ -384,7 +467,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// - a negative value (-N) means it will placed relative to the Nth parent of the current bloc,<br/>
         /// - a positive value (N) means it will placed relatively to the current absolute N level
         /// </summary>
-        public int FootnotesLevel { get => int.Parse(footnotesLevel); set => footnotesLevel = value.ToString(); }
+        public FootnotesLevelChoice.Enum FootnotesLevel { get => FootnotesLevelChoice.Keys[footnotesLevel]; set => footnotesLevel = FootnotesLevelChoice.Values[value]; }
 
         public FootnotesNumberingChoice.Enum FootnotesNumbering { get => FootnotesNumberingChoice.Keys[footnotesNumbering]; set => footnotesNumbering = FootnotesNumberingChoice.Values[value]; }
 

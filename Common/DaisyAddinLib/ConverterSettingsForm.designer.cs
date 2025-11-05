@@ -12,19 +12,19 @@ namespace Daisy.SaveAsDAISY.Conversion
             { "End of levels", FootnotesPositionChoice.Enum.End},
         };
 
-        readonly Dictionary<string, int> levelsMap = new Dictionary<string, int>() {
+        readonly Dictionary<string, FootnotesLevelChoice.Enum> levelsMap = new Dictionary<string, FootnotesLevelChoice.Enum>() {
             //{ "Fifth or nearest parent", "-5" },
             //{ "Fourth or nearest parent", "-4" },
             //{ "Third or nearest parent", "-3" },
             //{ "Second or nearest parent", "-2" },
             //{ "First or nearest parent", "-1" },
-            { "Note reference level", 0 },
-            { "First or nearest level", 1 },
-            { "Second or nearest level", 2 },
-            { "Third or nearest level", 3 },
-            { "Fourth or nearest level", 4 },
-            { "Fifth or nearest level", 5 },
-            { "Sixth or nearest level", 6 }
+            { "Note reference level", FootnotesLevelChoice.Enum.Inlined },
+            { "First or nearest level",  FootnotesLevelChoice.Enum.Level_1 },
+            { "Second or nearest level", FootnotesLevelChoice.Enum.Level_2 },
+            { "Third or nearest level",  FootnotesLevelChoice.Enum.Level_3 },
+            { "Fourth or nearest level", FootnotesLevelChoice.Enum.Level_4 },
+            { "Fifth or nearest level",  FootnotesLevelChoice.Enum.Level_5 },
+            { "Sixth or nearest level",  FootnotesLevelChoice.Enum.Level_6 }
         };
 
 

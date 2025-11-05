@@ -1,15 +1,11 @@
 using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
-using Daisy.SaveAsDAISY.Forms;
-using Microsoft.Office.Interop.Word;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
-using static Daisy.SaveAsDAISY.ConversionProgress;
 using MSword = Microsoft.Office.Interop.Word;
 
 namespace Daisy.SaveAsDAISY

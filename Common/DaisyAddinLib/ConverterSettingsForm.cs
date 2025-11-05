@@ -295,7 +295,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 {
 
                     GlobaleSettings.ImageOption = ConverterSettings.ImageOptionChoice.Enum.Resample;
-                    GlobaleSettings.ImageResamplingValue = int.Parse(this.combobox_resample.SelectedItem.ToString());
+                    GlobaleSettings.ImageResamplingValue = (ConverterSettings.ImageResamplingChoice.Enum)this.combobox_resample.SelectedItem;
 
                 }
 
@@ -310,10 +310,10 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 
                 string selectedLevel = (string)notesLevelSelector.SelectedItem;
-                int levelValue;
+                ConverterSettings.FootnotesLevelChoice.Enum levelValue;
                 if (!levelsMap.TryGetValue(selectedLevel, out levelValue))
                 {
-                    levelValue = 0;
+                    levelValue = ConverterSettings.FootnotesLevelChoice.Enum.Inlined;
                 }
                 GlobaleSettings.FootnotesLevel = levelValue;
 
