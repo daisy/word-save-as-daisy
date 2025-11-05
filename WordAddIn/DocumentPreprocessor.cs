@@ -16,6 +16,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Markup;
+using System.Windows.Threading;
 using COMException = System.Runtime.InteropServices.COMException;
 using ConnectFORMATETC = System.Runtime.InteropServices.ComTypes.FORMATETC;
 using ConnectSTGMEDIUM = System.Runtime.InteropServices.ComTypes.STGMEDIUM;
@@ -283,10 +284,13 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus endPreprocessing(ref object preprocessedObject, IConversionEventsHandler eventsHandler = null) {
             MSword.Document preprocessingDocument = (MSword.Document)preprocessedObject;
-            preprocessingDocument.Close(
-                SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
-                OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
-            );
+            Dispatcher.CurrentDispatcher.Invoke(() => {
+                preprocessingDocument.Close(
+                    SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
+                    OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
+                );
+            });
+            
             return ConversionStatus.PreprocessingSucceeded;
         }
 
@@ -1017,7 +1021,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             result.Rights = TryGetPropertyValue(customProperties, "Rights");
             result.SourceDate = TryGetPropertyValue(customProperties, "SourceDate");
             result.HasRevisions = currentDoc.Revisions.Count > 0;
-            currentDoc.DetectLanguage();
+            //currentDoc.DetectLanguage();
             return result;
         }
        

@@ -15,20 +15,20 @@ namespace Daisy.SaveAsDAISY.WPF
         {
             InitializeComponent();
         }
-        IDocumentPreprocessor _documentProcessor = null;
-        object _document = null;
 
-        public DocumentProperties DocumentData;
+        public DocumentProperties UpdatedDocumentData;
+        private DocumentProperties backup;
+        public bool MetadataUpdated = false;
 
-        public Metadata(IDocumentPreprocessor proc, ref object document) : this()
+        public Metadata(DocumentProperties data, bool isModifiable = true) : this()
         {
-            _documentProcessor = proc;
-            _document = document;
-            DocumentData = proc.loadDocumentParameters(ref _document);
-            MetadataForm.Document = DocumentData;
+            UpdatedDocumentData = data;
+            MetadataForm.Document = UpdatedDocumentData;
+            backup = (DocumentProperties)data.Clone();
             MetadataForm.MetadataChanged += MetadataForm_MetadataChanged;
-            
+            MetadataForm.IsReadOnly = !isModifiable;
         }
+
 
         private void MetadataForm_MetadataChanged(object sender, string updatedFieldName)
         {
@@ -37,21 +37,14 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private void UpdateMetadata_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            try {
-                _documentProcessor.updateDocumentMetadata(ref _document, DocumentData);
-            } catch (Exception ex)
-            {
-                MessageBox.Show(
-                    "Error updating metadata: " + ex.Message 
-                    + "\r\nPlease try saving the document on another place on your system before editing metadatas.", "Error",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
-
-            }
+            MetadataUpdated = true;
             Close();
         }
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            MetadataUpdated = false;
+            UpdatedDocumentData = backup;
             Close();
         }
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Threading;
 namespace Daisy.SaveAsDAISY.WPF
 {
     /// <summary>
@@ -29,21 +30,12 @@ namespace Daisy.SaveAsDAISY.WPF
                         try {
                             instance = new ConversionProgress();
                             instance.Show();
-                            //dialogThread = new Thread(() => {
-                            //    instance = new ConversionProgress();
-                            //    instance.ShowDialog();
-                            //});
-                            //dialogThread.SetApartmentState(ApartmentState.STA);
-                            //dialogThread.IsBackground = true;
-                            //dialogThread.Start();
-                            ////dialogThread.Join();
-                            //while (instance == null || !instance.IsLoaded) {
-                            //    Thread.Sleep(100); // Wait for the dialog to be initialized
-                            //}
                         }
                         catch (Exception ex) {
                             throw new Exception("An error occured while initializing progress dialog", ex);
                         }
+                    } else {
+                        instance.Show();
                     }
                     return instance;
                 }
@@ -73,11 +65,9 @@ namespace Daisy.SaveAsDAISY.WPF
                 }
                 MessageTextArea.AppendText(line + "\r\n");
             }
-            //CurrentAction.UpdateLayout();
-            //ProgressionTracker.UpdateLayout();
-            //MessageTextArea.UpdateLayout();
             MessageTextArea.ScrollToEnd();
             this.UpdateLayout();
+            this.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
         }
 
         private delegate void DelegatedInitializeProgress(string message = "", int maximum = 1, int step = 1);
@@ -100,10 +90,8 @@ namespace Daisy.SaveAsDAISY.WPF
             ProgressionTracker.Maximum = maximum;
             StepIncrement = step;
             ProgressionTracker.Value = 0;
-            //CurrentAction.UpdateLayout();
-            //ProgressionTracker.UpdateLayout();
-            //MessageTextArea.UpdateLayout();
             this.UpdateLayout();
+            this.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
         }
 
         private delegate int DelegatedProgress();

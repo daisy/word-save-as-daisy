@@ -809,21 +809,58 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             //abtForm.ShowDialog();
         }
 
+        private Dictionary<string, Conversion.DocumentProperties> DocumentPropertiesCache = new Dictionary<string, Conversion.DocumentProperties>();
+
         /// <summary>
         /// Access document properties
         /// </summary>
         /// <param name="control"></param>
         public void DocumentMetadataUI(IRibbonControl control)
         {
-            //WPF.ConversionProgress.Instance.InitializeProgress("Analyzing document metadata");
-            //WPF.ConversionProgress.Instance.Show();
+            try {
+                var dispatch = Dispatcher.CurrentDispatcher;
+                var preprocessor = new DocumentPreprocessor(applicationObject);
+                if (!DocumentPropertiesCache.ContainsKey(this.applicationObject.ActiveDocument.FullName)) {
+
+                    var progress = WPF.ConversionProgress.Instance;
+                    dispatch.Invoke(() =>
+                    {
+                        progress.InitializeProgress("Loading document metadata ...", 1, 1);
+                    });
+                    
             object doc = this.applicationObject.ActiveDocument;
-            Daisy.SaveAsDAISY.WPF.Metadata metadata = new Daisy.SaveAsDAISY.WPF.Metadata(
-                new DocumentPreprocessor(applicationObject),
-                ref doc
+                    var propsTemp = preprocessor.loadDocumentParameters(ref doc);
+                    progress.Close();
+                    DocumentPropertiesCache.Add(this.applicationObject.ActiveDocument.FullName, propsTemp);
+                }
+                var props = DocumentPropertiesCache[this.applicationObject.ActiveDocument.FullName];
+                dispatch.Invoke(() =>
+                {
+                    Metadata metadata = new Metadata(
+                        props,
+                        this.applicationObject.ActiveProtectedViewWindow == null
             );
+
             metadata.ShowDialog();
-            WPF.ConversionProgress.Instance.Close();
+                    DocumentPropertiesCache[this.applicationObject.ActiveDocument.FullName] = metadata.UpdatedDocumentData;
+                    if (metadata.MetadataUpdated) {
+                        var progress = WPF.ConversionProgress.Instance;
+                        dispatch.Invoke(() =>
+                        {
+                            progress.InitializeProgress("Updating document metadata ...", 1, 1);
+                        });
+                        object doc = this.applicationObject.ActiveDocument;
+                        //var preprocessor = new DocumentPreprocessor(applicationObject);
+                        preprocessor.updateDocumentMetadata(ref doc, metadata.UpdatedDocumentData);
+                        progress.Close();
+                    }
+                });
+                
+            }
+            catch (Exception e) {
+                AddinLogger.Error(e);
+                MessageBox.Show("The following error occured during metadata reading or saving, please contact the SaveAsDAISY team :\r\n" +e.Message, "Document Metadata error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         #region Single document conversion

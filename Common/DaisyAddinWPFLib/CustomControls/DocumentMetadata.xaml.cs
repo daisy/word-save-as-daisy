@@ -28,6 +28,47 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
             this.DataContext = this;
         }
 
+        private bool _isReadOnly = false;
+        public bool IsReadOnly
+        {
+            get { return _isReadOnly; }
+            set
+            {
+                _isReadOnly = value;
+                if (_isReadOnly) {
+                    TitleTextBox.IsEnabled = false;
+                    AuthorTextBox.IsEnabled = false;
+                    PublisherTextBox.IsEnabled = false;
+                    IdentifierTextBox.IsEnabled = false;
+                    IdentifierSchemeComboBox.IsEnabled = false;
+                    DocumentDatePicker.IsEnabled = false;
+                    ContributorTextBox.IsEnabled = false;
+                    SubtitleTextBox.IsEnabled = false;
+                    RightsTextBox.IsEnabled = false;
+                    BookSummaryTextBox.IsEnabled = false;
+                    SubjectTextBox.IsEnabled = false;
+                    SourceTextBox.IsEnabled = false;
+                    SourceDatePicker.IsEnabled = false;
+                    AccessibilitySummaryTextBox.IsEnabled = false;
+                } else {
+                    TitleTextBox.IsEnabled = true;
+                    AuthorTextBox.IsEnabled = true;
+                    PublisherTextBox.IsEnabled = true;
+                    IdentifierTextBox.IsEnabled = true;
+                    IdentifierSchemeComboBox.IsEnabled = true;
+                    DocumentDatePicker.IsEnabled = true;
+                    ContributorTextBox.IsEnabled = true;
+                    SubtitleTextBox.IsEnabled = true;
+                    RightsTextBox.IsEnabled = true;
+                    BookSummaryTextBox.IsEnabled = true;
+                    SubjectTextBox.IsEnabled = true;
+                    SourceTextBox.IsEnabled = true;
+                    SourceDatePicker.IsEnabled = true;
+                    AccessibilitySummaryTextBox.IsEnabled = true;
+                }
+            }
+        }
+
         public delegate void MetadataChangedEventHandler(object sender, string updatedFieldName);
 
         public event MetadataChangedEventHandler MetadataChanged = null;

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace Daisy.SaveAsDAISY.Conversion
     /// Document specific parameters
     /// 
     /// </summary>
-    public class DocumentProperties
+    public class DocumentProperties : ICloneable
     {
         /// <summary>
         /// Document-specific parameters
@@ -32,8 +33,43 @@ namespace Daisy.SaveAsDAISY.Conversion
             InlineIds = new List<string>();
             SubDocumentsToConvert = new List<DocumentProperties>();
             Languages = new List<string>();
-            HasRevisions = false;            
+            HasRevisions = false;
         }
+        
+        /// <summary>
+        /// Copy constructor
+        /// </summary>
+        /// <param name="toClone"></param>
+        private DocumentProperties(DocumentProperties toClone)
+        {
+            InputPath = toClone.InputPath;
+            CopyPath = toClone.CopyPath;
+
+            ObjectShapes = toClone.ObjectShapes.ToList();
+            ImageIds = toClone.ImageIds.ToList();
+            InlineShapes = toClone.InlineShapes.ToList();
+            InlineIds = toClone.InlineIds.ToList();
+            SubDocumentsToConvert = toClone.SubDocumentsToConvert.ToList();
+            Languages = toClone.Languages.ToList();
+            HasRevisions = toClone.HasRevisions;
+
+            Title = toClone.Title;
+            Subtitle = toClone.Subtitle;
+            Author = toClone.Author;
+            Date = toClone.Date;
+            Contributor = toClone.Contributor;
+            Publisher = toClone.Publisher;
+            Rights = toClone.Rights;
+            Identifier = toClone.Identifier;
+            IdentifierScheme = toClone.IdentifierScheme;
+            SourceOfPagination = toClone.SourceOfPagination;
+            SourceDate = toClone.SourceDate;
+            Summary = toClone.Summary;
+            Subject = toClone.Subject;
+            AccessibilitySummary = toClone.AccessibilitySummary;
+
+        }
+
         public List<string> Languages { get; set; }
 
 
@@ -690,31 +726,18 @@ namespace Daisy.SaveAsDAISY.Conversion
         #region Document metadata
 
         public string Title { get; set; } = "";
-
         public string Subtitle { get; set; } = "";
-
         public string Author { get; set; } = "";
-
         public string Date { get; set; } = "";
-
         public string Contributor { get; set; } = "";
-
         public string Publisher { get; set; } = "";
-
         public string Rights { get; set; } = "";
-
         public string Identifier { get; set; } = "";
-
         public string IdentifierScheme { get; set; } = "ISBN";
-
         public string SourceOfPagination { get; set; } = "";
-
         public string SourceDate { get; set; } = "";
-
         public string Summary { get; set; } = "";
-
         public string Subject { get; set; } = "";
-
         public string AccessibilitySummary { get; set; } = "";
 
 
@@ -982,7 +1005,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
-
-
+        public object Clone()
+        {
+            return new DocumentProperties(this);
+        }
     }
 }
