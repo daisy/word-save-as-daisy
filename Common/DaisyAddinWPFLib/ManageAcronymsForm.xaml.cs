@@ -120,13 +120,14 @@ namespace Daisy.SaveAsDAISY.WPF
             PreviousAcronym.IsEnabled = AcronymsList.SelectedIndex > 0;
             NextAcronym.IsEnabled = AcronymsList.SelectedIndex >= 0 && AcronymsList.SelectedIndex < AcronymsList.Items.Count - 1;
 
-            //if (AbbreviationsList.SelectedIndex >= 0) {
-            //    AbbreviationItem item = (AbbreviationItem)AbbreviationsList.SelectedItem;
-            //    object index = item.AbbreviationName;
-            //    Range rng = CurrentDocument.Bookmarks.get_Item(ref index).Range;
-            //    rng.Select();
-            //    rng.Select();
-            //}
+            if (AcronymsList.SelectedIndex >= 0) {
+                AcronymItem item = (AcronymItem)AcronymsList.SelectedItem;
+                object index = item.AcronymName;
+                Range rng = CurrentDocument.Bookmarks.get_Item(ref index).Range;
+                rng.Select();
+                //rng.HighlightColorIndex = MSWord.WdColorIndex.wdTurquoise;
+                rng.Select();
+            }
 
         }
 
@@ -137,7 +138,6 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private void SelectInDocument_Click(object sender, RoutedEventArgs e)
         {
-            CustomXMLParts xmlparts = CurrentDocument.CustomXMLParts;
             AcronymItem item = (AcronymItem)AcronymsList.SelectedItem;
             object index = item.AcronymName;
             Range rng = CurrentDocument.Bookmarks.get_Item(ref index).Range;
