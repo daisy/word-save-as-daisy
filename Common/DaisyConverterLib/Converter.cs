@@ -287,7 +287,14 @@ namespace Daisy.SaveAsDAISY.Conversion
                     this.EventsHandler.onPostProcessingError(
                         je
                     );
-                    return ConversionResult.Fail(je.Message);
+                    return ConversionResult.Fail(je);
+                }
+                catch (JobRequestError jre) {
+                    // Problem with job request
+                    this.EventsHandler.onPostProcessingError(
+                        jre
+                    );
+                    return ConversionResult.Fail(jre);
                 }
                 catch (Exception e) {
                     CurrentStatus = ConversionStatus.Error;
@@ -298,7 +305,6 @@ namespace Daisy.SaveAsDAISY.Conversion
                     throw fault;
                 }
                 this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
-                
                 return ConversionResult.Success();
             }
             
