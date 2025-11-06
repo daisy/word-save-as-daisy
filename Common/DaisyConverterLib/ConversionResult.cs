@@ -71,6 +71,11 @@ namespace Daisy.SaveAsDAISY.Conversion
 					if(ErrorDetails is JobRequestError) {
 						message += "\r\n" + ((JobRequestError)ErrorDetails).Description;
                     }
+                    var inner = ErrorDetails.InnerException;
+                    while (inner != null) {
+                        message += "\r\n" + inner.Message;
+						inner = inner.InnerException;
+                    }
                     return message;
 				}
 				return null;

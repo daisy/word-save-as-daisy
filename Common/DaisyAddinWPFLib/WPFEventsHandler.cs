@@ -17,19 +17,30 @@ namespace Daisy.SaveAsDAISY.WPF
     {
 
         public ConversionProgress Dialog = null;
+        private Dispatcher _dispatcher;
 
         #region Conversion progress dialog
         public void TryInitializeProgress(string message, int maximum = 1, int step = 1)
         {
-            if(Dialog == null) {
-                Dialog = new ConversionProgress();
-                Dialog.Closed += Dialog_Closed;
-                if(cancelButtonClicked != null) {
-                    Dialog.setCancelClickListener(cancelButtonClicked);
+            Dispatcher.CurrentDispatcher.Invoke((Action)delegate {
+                try {
+                    if (Dialog == null) {
+                        Dialog = new ConversionProgress();
+                        Dialog.Closed += Dialog_Closed;
+                        if (cancelButtonClicked != null) {
+                            Dialog.setCancelClickListener(cancelButtonClicked);
+                        }
+                        Dialog.Show();
+                        _dispatcher = Dispatcher.CurrentDispatcher;
+                    }
+                    _dispatcher.Invoke(() => Dialog.InitializeProgress(message, maximum, step));
+                    //Dialog.Dispatcher.Invoke(() => Dialog.InitializeProgress(message, maximum, step));
+
                 }
-                Dialog.Show();
-            }
-            Dialog.Dispatcher.Invoke(() => Dialog.InitializeProgress(message, maximum, step));
+                catch (Exception e) {
+                    AddinLogger.Error("Unable to show message in progress dialog: " + message);
+                }
+            });
         }
 
         private event CancelClickListener cancelButtonClicked = null;
@@ -49,12 +60,21 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private void TryShowMessage(string message, bool isProgress = false)
         {
-            if (Dialog == null) {
-                Dialog = new ConversionProgress();
-                Dialog.Closed += Dialog_Closed;
-                Dialog.Show();
-            }
-            Dialog.Dispatcher.Invoke(() => Dialog.AddMessage(message, isProgress));
+            Dispatcher.CurrentDispatcher.Invoke((Action)delegate {
+                try {
+                    if (Dialog == null) {
+                        Dialog = new ConversionProgress();
+                        Dialog.Closed += Dialog_Closed;
+                        Dialog.Show();
+                        _dispatcher = Dispatcher.CurrentDispatcher;
+                    }
+                    _dispatcher.Invoke(() => Dialog.AddMessage(message, isProgress));
+                    //Dialog.Dispatcher.Invoke(() => Dialog.AddMessage(message, isProgress));
+                }
+                catch (Exception e) {
+                    AddinLogger.Error("Unable to show message in progress dialog: " + message);
+                }
+            });
         }
 
 
@@ -223,7 +243,6 @@ namespace Daisy.SaveAsDAISY.WPF
                     + conversion.OutputPath,
                 true
             );
-            TryClosingDialog(3000);
         }
 
         #endregion
@@ -231,7 +250,6 @@ namespace Daisy.SaveAsDAISY.WPF
         public void onConversionCanceled()
         {
             TryShowMessage("Canceling conversion");
-            TryClosingDialog(3000);
         }
 
         public void onProgressMessageReceived(object sender, EventArgs e)
@@ -298,11 +316,6 @@ namespace Daisy.SaveAsDAISY.WPF
                 MessageBoxImage.Question
             );
             return continueDTBookGenerationResult == MessageBoxResult.Yes;
-        }
-
-        public void OnSuccess()
-        {
-            TryClosingDialog(3000);
         }
 
         public void OnMasterSubValidationError(string error)

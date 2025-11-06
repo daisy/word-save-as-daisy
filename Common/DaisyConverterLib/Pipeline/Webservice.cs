@@ -33,11 +33,13 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             int attempt = 20;
             bool isWorking = false;
             do {
-                events?.onProgressMessageReceived(this, new DaisyEventArgs($"Checking engine web service status ({attempt} attempts remaining)..."));
                 attempt--;
                 try {
                     AliveData data = this.Alive();
                     isWorking = !(data == null || !data.Alive);
+                    if (!isWorking) {
+                        events?.onProgressMessageReceived(this, new DaisyEventArgs($"Checking engine web service status ({attempt} attempts remaining)..."));
+                    }
                 }
                 catch (AggregateException e) {
                     isWorking = false;
@@ -126,6 +128,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 foreach (XmlElement scriptNode in scriptsElm.GetElementsByTagName("script")) {
                     scripts.Add(ScriptDefinition.FromXml(scriptNode));
                 }
+                
                 scripts = scripts.Select(s => GetScriptDetails(s)).ToList();
                 
                 return scripts;
