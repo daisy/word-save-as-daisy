@@ -481,7 +481,17 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         //public string AzureSpeechKey { get => azureSpeechKey; set => azureSpeechKey = value; }
 
-        public string TTSConfigFile { get => ttsConfigFile; set => ttsConfigFile = value; }
+        public string TTSConfigFile {
+            get {
+                if (UseDAISYPipelineApp && File.Exists(ConverterHelper.PipelineAppTTSConfigPath)) {
+                    return ConverterHelper.PipelineAppTTSConfigPath;
+                } else {
+                    return ttsConfigFile;
+                }
+            
+            } 
+            set => ttsConfigFile = value;
+        }
 
         public bool DontNotifySponsorship {
             get

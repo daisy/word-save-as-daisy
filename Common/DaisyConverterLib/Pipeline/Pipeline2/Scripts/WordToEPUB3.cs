@@ -11,6 +11,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
 {
     public class WordToEPUB3 : Pipeline2Script
     {
+
+        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
         public WordToEPUB3(IConversionEventsHandler e)
             : base(e)
         {
@@ -241,10 +243,15 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                 {"tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
-                        new PathData(PathData.InputOrOutput.input,PathData.FileOrDirectory.File),
+                        new PathData(
+                            PathData.InputOrOutput.input,
+                            PathData.FileOrDirectory.File,
+                            "",
+                            GlobaleSettings.TTSConfigFile ?? ""
+                        ),
                         false,
                         "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
-                        true,
+                        !GlobaleSettings.UseDAISYPipelineApp,
                         ParameterDirection.Input
                     )
                 },

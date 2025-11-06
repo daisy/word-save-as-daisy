@@ -64,6 +64,14 @@ namespace Daisy.SaveAsDAISY.Conversion {
                 );
             }
         }
+        public static string PipelineAppTTSConfigPath{
+            get
+            {
+                return Path.Combine(
+                    PipelineAppDataPath, "ttsConfig.xml"
+                );
+            }
+        }
 
         public static bool PipelineAppIsInstalled()
         {
