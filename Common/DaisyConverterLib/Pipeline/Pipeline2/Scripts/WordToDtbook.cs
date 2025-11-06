@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Daisy.SaveAsDAISY.Conversion.ConverterSettings;
 
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
@@ -15,6 +12,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
             : base(e)
         {
             this.name = "word-to-dtbook";
+            this.niceName = "Export to DTBook XML";
             _parameters = new Dictionary<string, ScriptParameter>
             {
                 {
@@ -249,41 +247,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
 
                   )
                 },
-                //{
-                //  "simplifyHeadingLayout",
-                //  new ScriptParameter(
-                //    "simplifyHeadingLayout",
-                //    "Tidy - Simplify headings layout",
-                //    new BoolData(false),
-                //    false,
-                //    "",
-                //    false
-
-                //  )
-                //},
-                //{
-                //  "externalizeWhitespace",
-                //  new ScriptParameter(
-                //    "externalizeWhitespace",
-                //    "Tidy - Externalize whitespaces",
-                //    new BoolData(false),
-                //    false,
-                //    "",
-                //    false
-
-                //  )
-                //},
-                //{
-                //  "documentLanguage",
-                //  new ScriptParameter(
-                //    "documentLanguage",
-                //    "Tidy - Document language",
-                //    new StringData(""),
-                //    false,
-                //    "",
-                //    false
-                //  )
-                //},
                 {
                   "narrator",
                   new ScriptParameter(

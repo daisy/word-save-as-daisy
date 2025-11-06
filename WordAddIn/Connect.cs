@@ -31,7 +31,6 @@ using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
 using Daisy.SaveAsDAISY.Forms;
 using Daisy.SaveAsDAISY.WPF;
@@ -520,9 +519,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 Engine.StartDAISYPipelineApp();
             } else {
                 Engine.StartEmbeddedEngine();
-        }
+            }
 
-
+            
         }
 
 
@@ -816,8 +815,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public void AboutUI(IRibbonControl control) {
             Daisy.SaveAsDAISY.WPF.About aboutWindow = new Daisy.SaveAsDAISY.WPF.About();
             aboutWindow.ShowDialog();
-            //About abtForm = new About();
-            //abtForm.ShowDialog();
         }
 
         private Dictionary<string, Conversion.DocumentProperties> DocumentPropertiesCache = new Dictionary<string, Conversion.DocumentProperties>();
@@ -828,6 +825,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="control"></param>
         public void DocumentMetadataUI(IRibbonControl control)
         {
+            
             try {
                 var dispatch = Dispatcher.CurrentDispatcher;
                 var preprocessor = new DocumentPreprocessor(applicationObject);
@@ -839,7 +837,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         progress.InitializeProgress("Loading document metadata ...", 1, 1);
                     });
                     
-            object doc = this.applicationObject.ActiveDocument;
+                    object doc = this.applicationObject.ActiveDocument;
                     var propsTemp = preprocessor.loadDocumentParameters(ref doc);
                     progress.Close();
                     DocumentPropertiesCache.Add(this.applicationObject.ActiveDocument.FullName, propsTemp);
@@ -850,9 +848,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     Metadata metadata = new Metadata(
                         props,
                         this.applicationObject.ActiveProtectedViewWindow == null
-            );
+                    );
 
-            metadata.ShowDialog();
+                    metadata.ShowDialog();
                     DocumentPropertiesCache[this.applicationObject.ActiveDocument.FullName] = metadata.UpdatedDocumentData;
                     if (metadata.MetadataUpdated) {
                         var progress = new WPF.ConversionProgress();
@@ -1056,7 +1054,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     : new SilentEventsHandler();
                 Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
                     //? new WordToCleanedDtbook(eventsHandler) :
-                    ? new WordToCleanedDtbook(eventsHandler) :
+                    ? new WordToDtbook(eventsHandler) :
                     null;
                 if (pipelineScript != null)
                 {
@@ -1088,7 +1086,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
                 
                 Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
-                    ? new WordToDaisy3(eventsHandler) :
+                    ? new WordToDAISY3(eventsHandler) :
                     null;
                
                 
@@ -1121,7 +1119,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
 
                 Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
-                    ? new WordToDaisy202(eventsHandler) :
+                    ? new WordToDAISY202(eventsHandler) :
                     null;
 
                 if (pipelineScript != null) {
@@ -1151,7 +1149,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 //IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
 
-                Script pipelineScript = new WordToEpub3(eventsHandler);
+                Script pipelineScript = new WordToEPUB3(eventsHandler);
 
                 if (pipelineScript != null)
                 {
@@ -1181,7 +1179,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             {
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
 
-                Script pipelineScript = new WordToMp3(eventsHandler);
+                Script pipelineScript = new WordToMP3(eventsHandler);
 
                 if (pipelineScript != null)
                 {
@@ -1254,7 +1252,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                Script pipelineScript = new WordToDaisy3(eventsHandler);
+                Script pipelineScript = new WordToDAISY3(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
                 GraphicalConverter converter = new GraphicalConverter(preprocess, conversion, eventsHandler);
@@ -1305,7 +1303,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                Script pipelineScript = new WordToDaisy3(eventsHandler);
+                Script pipelineScript = new WordToDAISY3(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
                 GraphicalConverter converter = new GraphicalConverter(preprocess, conversion, eventsHandler);

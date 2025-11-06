@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/1.15.3-SNAPSHOT" version="1.15.3-SNAPSHOT" time="2025-10-07T14:25:23Z">
+<releaseDescriptor href="http://daisy.github.io/pipeline-assembly/releases/1.15.3-SNAPSHOT" version="1.15.3-SNAPSHOT" time="2025-11-03T16:19:05Z">
     <artifact href="https://repo1.maven.org/maven2/ch/qos/logback/logback-classic/1.0.11/logback-classic-1.0.11.jar" id="ch.qos.logback/logback-classic/1.0.11" extract="false" deployPath="system/common/ch.qos.logback.logback-classic-1.0.11.jar" version="1.0.11" artifactId="logback-classic" groupId="ch.qos.logback" classifier="" overwrite-path="true"/>
     <artifact href="https://repo1.maven.org/maven2/ch/qos/logback/logback-core/1.0.11/logback-core-1.0.11.jar" id="ch.qos.logback/logback-core/1.0.11" extract="false" deployPath="system/common/ch.qos.logback.logback-core-1.0.11.jar" version="1.0.11" artifactId="logback-core" groupId="ch.qos.logback" classifier="" overwrite-path="true"/>
     <artifact href="https://repo1.maven.org/maven2/com/google/code/gson/gson/2.13.0/gson-2.13.0.jar" id="com.google.code.gson/gson/2.13.0" extract="false" deployPath="system/webservice/com.google.code.gson.gson-2.13.0.jar" version="2.13.0" artifactId="gson" groupId="com.google.code.gson" classifier="" overwrite-path="true"/>
