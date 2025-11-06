@@ -37,10 +37,9 @@
         </Expander>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right">
-            <Button Width="117"
+            <Button Width="61"
                     Margin="5"
-                    HorizontalAlignment="Right"
-                    Click="CancelButton_Click">Cancel conversion</Button>
+                    Click="CancelButton_Click">Cancel</Button>
             <Button Width="61"
                     Margin="5"
                     Click="CloseButton_Click">Close</Button>

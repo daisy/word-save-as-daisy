@@ -9,30 +9,66 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
+using static Daisy.SaveAsDAISY.WPF.ConversionProgress;
 using MSWord = Microsoft.Office.Interop.Word;
 namespace Daisy.SaveAsDAISY.WPF
 {
     public class WPFEventsHandler : Daisy.SaveAsDAISY.Conversion.Events.IConversionEventsHandler
     {
 
+        public ConversionProgress Dialog = null;
+
         #region Conversion progress dialog
         public void TryInitializeProgress(string message, int maximum = 1, int step = 1)
         {
-            Dispatcher.CurrentDispatcher.Invoke(() => ConversionProgress.Instance.InitializeProgress(message, maximum, step));
+            if(Dialog == null) {
+                Dialog = new ConversionProgress();
+                Dialog.Closed += Dialog_Closed;
+                if(cancelButtonClicked != null) {
+                    Dialog.setCancelClickListener(cancelButtonClicked);
+                }
+                Dialog.Show();
+            }
+            Dialog.Dispatcher.Invoke(() => Dialog.InitializeProgress(message, maximum, step));
+        }
+
+        private event CancelClickListener cancelButtonClicked = null;
+
+        public void setCancelClickListener(CancelClickListener cancelAction)
+        {
+            cancelButtonClicked = cancelAction;
+            if (Dialog != null) {
+                Dialog.setCancelClickListener(cancelAction);
+            }
+        }
+
+        private void Dialog_Closed(object sender, EventArgs e)
+        {
+            Dialog = null;
         }
 
         private void TryShowMessage(string message, bool isProgress = false)
         {
-            Dispatcher.CurrentDispatcher.Invoke(() => ConversionProgress.Instance.AddMessage(message, isProgress));
+            if (Dialog == null) {
+                Dialog = new ConversionProgress();
+                Dialog.Closed += Dialog_Closed;
+                Dialog.Show();
+            }
+            Dialog.Dispatcher.Invoke(() => Dialog.AddMessage(message, isProgress));
         }
+
+
 
         private void TryClosingDialog(int sleepBefore)
         {
-            //Dispatcher.CurrentDispatcher.Invoke(() => {
-            //    Thread.Sleep(sleepBefore);
-            //    ConversionProgress.Instance.Close();
-                
-            //});
+            if (Dialog == null) {
+                return;
+            }
+            Dialog.Dispatcher.Invoke(() => {
+                Thread.Sleep(sleepBefore);
+                Dialog.Close();
+                Dialog = null;
+            });
         }
         #endregion
 
@@ -267,12 +303,6 @@ namespace Daisy.SaveAsDAISY.WPF
         public void OnSuccess()
         {
             TryClosingDialog(3000);
-            MessageBox.Show(
-                Labels.SucessLabel,
-                "SaveAsDAISY - Success",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information
-            );
         }
 
         public void OnMasterSubValidationError(string error)
@@ -296,6 +326,7 @@ namespace Daisy.SaveAsDAISY.WPF
         public void onConversionSuccess()
         {
             TryShowMessage("Successfull conversion", false);
+            TryClosingDialog(3000);
         }
 
         public void onPreprocessingWarning(string message)

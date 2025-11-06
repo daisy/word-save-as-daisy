@@ -821,10 +821,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 var dispatch = Dispatcher.CurrentDispatcher;
                 var preprocessor = new DocumentPreprocessor(applicationObject);
                 if (!DocumentPropertiesCache.ContainsKey(this.applicationObject.ActiveDocument.FullName)) {
-
-                    var progress = WPF.ConversionProgress.Instance;
+                    var progress = new WPF.ConversionProgress();
                     dispatch.Invoke(() =>
                     {
+                        progress.Show();
                         progress.InitializeProgress("Loading document metadata ...", 1, 1);
                     });
                     
@@ -844,9 +844,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             metadata.ShowDialog();
                     DocumentPropertiesCache[this.applicationObject.ActiveDocument.FullName] = metadata.UpdatedDocumentData;
                     if (metadata.MetadataUpdated) {
-                        var progress = WPF.ConversionProgress.Instance;
+                        var progress = new WPF.ConversionProgress();
                         dispatch.Invoke(() =>
                         {
+                            progress.Show();
                             progress.InitializeProgress("Updating document metadata ...", 1, 1);
                         });
                         object doc = this.applicationObject.ActiveDocument;
@@ -877,6 +878,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             Dispatcher uiThread = Dispatcher.CurrentDispatcher;
             ConversionResult result = ConversionResult.Success();
             try {
+                eventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs("Starting conversion using " + pipelineScript.Name));
                 object doc = this.applicationObject.ActiveDocument;
                 DocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
                 ConversionParameters conversion = new ConversionParameters(this.applicationObject.Version, pipelineScript);
@@ -914,20 +916,27 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             converter.ConversionParameters = form.UpdatedConversionParameters;
                             eventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Saving metadata in the document ..."));
                             preprocess.updateDocumentMetadata(ref doc, currentDocument);
-                            result = await System.Threading.Tasks.Task.Run(() =>
+                            var task = System.Threading.Tasks.Task.Run(() =>
                             {
                                 try {
-                                    return converter.ConvertWithPipeline2(currentDocument);
+                                    var convresult = converter.ConvertWithPipeline2(currentDocument);
+                                    System.Diagnostics.Process.Start(finalOutput.FullName);
+                                    return convresult;
                                 }
                                 catch (JobException jex) {
-                                    return ConversionResult.Fail(jex.Message);
+                                    return ConversionResult.Fail(jex);
                                 }
                                 catch (Exception e) {
                                     AddinLogger.Error(e);
                                     catchedException = e;
-                                    return ConversionResult.Fail(e.Message);
+                                    return ConversionResult.Fail(e);
                                 }
                             });
+                            
+                            result = await task;
+
+                        } else {
+                            result = ConversionResult.Cancel();
                         }
                     }
                     catch (Exception e) {
@@ -946,9 +955,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         report.ShowDialog();
                     }
             } finally {
-                if(result.Succeeded) {
-                    WPF.ConversionProgress.Instance.Close();
-                } else if(result.Failed) {
+                if (result.Canceled) {
+                    eventsHandler.onConversionCanceled();
+                } else if (result.Succeeded) {
+                    eventsHandler.onConversionSuccess();
+                } else if (result.Failed) {
                     MessageBox.Show(result.ErrorMessage, "Conversion failed", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }

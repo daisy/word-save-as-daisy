@@ -12,8 +12,8 @@ namespace Daisy.SaveAsDAISY.WPF
             WPFEventsHandler eventsHandler
         ) : base(preprocessor, conversionParameters, eventsHandler)
         {
-            
-            ConversionProgress.Instance.setCancelClickListener(RequestConversionCancel);
+
+            eventsHandler.setCancelClickListener(RequestConversionCancel);
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Daisy.SaveAsDAISY.WPF
             //    progressDialog.Focus();
             //    return ConversionStatus.ReadyForConversion;
             //}
-            ConversionProgress.Instance.Close();
+            ((WPFEventsHandler)this.EventsHandler).Dialog.Close();
             return ConversionStatus.Canceled;
         }
 

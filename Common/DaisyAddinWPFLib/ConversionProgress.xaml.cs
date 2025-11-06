@@ -12,38 +12,12 @@ namespace Daisy.SaveAsDAISY.WPF
     {
         private string CurrentProgressMessage = "";
         private int StepIncrement = 1;
-        private ConversionProgress()
+        public ConversionProgress()
         {
             InitializeComponent();
         }
 
-        // for thread safety
-        private static readonly object padlock = new object();
-        private static ConversionProgress instance = null;
-        private static Thread dialogThread = null;
-        public static ConversionProgress Instance {
-            get
-            {
-                lock (padlock) {
-                    if (instance == null || (instance != null && !instance.IsVisible)) {
-                        
-                        try {
-                            instance = new ConversionProgress();
-                            instance.Show();
-                        }
-                        catch (Exception ex) {
-                            throw new Exception("An error occured while initializing progress dialog", ex);
-                        }
-                    } else {
-                        instance.Show();
-                    }
-                    return instance;
-                }
-            }
-        }
-
-
-
+        
 
         // For external thread calls
         public delegate void DelegatedAddMessage(string message, bool isProgress = true);
