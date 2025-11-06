@@ -26,16 +26,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         {
             ScriptRunner runner;
             bool useDAISYPipelineApp = _settings.UseDAISYPipelineApp;
-            try {
-                runner = useDAISYPipelineApp ? AppRunner.GetInstance(EventsHandler) : JNIRunner.GetInstance(EventsHandler);
-            }
-            catch (System.Exception ex) {
-                EventsHandler.onPostProcessingError(
-                    new Exception("An error occurred while launching the pipeline, fall back to / retry embedded engine", ex)
-                );
-                runner = JNIRunner.GetInstance(EventsHandler);
-                useDAISYPipelineApp = false;
-            }
+            runner = WebserviceRunner.GetInstance(EventsHandler);
 
             if (Parameters.ContainsKey("input") && (string)Parameters["input"].Value == "")
             {
@@ -57,8 +48,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 {
                     continue;
                 }
-                // NP 2025/08/08 : Pipeline app requires file uris, while JNIRunner/SimpleAPI requires system file path
-                if(useDAISYPipelineApp && v.Value.ParameterData is PathData path) {
+                // NP 2025/08/08 : Webservice requires file uris, while JNIRunner/SimpleAPI requires system file path
+                if(v.Value.ParameterData is PathData path && runner is WebserviceRunner) {
                     parameters[v.Value.Name] = new Uri(path.Value.ToString()).AbsoluteUri;
                 } else {
                     parameters[v.Value.Name] = v.Value.Value;

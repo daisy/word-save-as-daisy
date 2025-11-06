@@ -83,7 +83,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public static class ImageResamplingChoice
         {
-        /// <summary>
+            /// <summary>
             /// Possible type of note numbering outputed
             /// </summary>
             public enum Enum
@@ -427,7 +427,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             // Launch the pipeline in the background to start conversions asap
             if (UseDAISYPipelineApp) {
                 try {
-                    AppRunner.GetInstance();
+                    WebserviceRunner.GetInstance();
                 }
                 catch (Exception e) {
                     AddinLogger.Error(e);

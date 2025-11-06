@@ -13,7 +13,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		/// <summary>
 		/// Get the pipeline 2 root directory
 		/// </summary>
-		public static string Pipeline2Path {
+		public static string EmbeddedEnginePath {
 			get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\daisy-pipeline"; }
 		}
 
@@ -22,13 +22,20 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		/// </summary>
 		/// <returns></returns>
 		public static bool PipelineIsInstalled() {
-			return Directory.Exists(Pipeline2Path);
+			return Directory.Exists(EmbeddedEnginePath);
 		}
-
-		/// <summary>
-		/// Gets path to the addin directory in AppData.
-		/// </summary>
-		public static string AppDataSaveAsDAISYDirectory {
+        public static string EmbeddedEngineLauncherPath {
+            get { 
+				return Path.Combine(
+					Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+					"daisy-pipeline", "bin", "pipeline2.bat"
+				);
+			}
+        }
+        /// <summary>
+        /// Gets path to the addin directory in AppData.
+        /// </summary>
+        public static string AppDataSaveAsDAISYDirectory {
 			get { return Directory.CreateDirectory(
 				Path.Combine(
 					Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

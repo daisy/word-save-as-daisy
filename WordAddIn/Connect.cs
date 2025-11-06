@@ -48,7 +48,6 @@ using System.IO;
 using System.IO.Packaging;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml;
@@ -319,6 +318,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             // Discard notifications from the addin when word/the addin is closing
             // (avoid a relaunch of word and the addin to handle the notification action)
             ToastNotificationManagerCompat.Uninstall();
+            // kill the embedded engine if running
+            Engine.StopEmbeddedEngine();
         }
         void applicationObject_DocumentBeforeClose(Microsoft.Office.Interop.Word.Document Doc, ref bool Cancel) {
         }
@@ -345,9 +346,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             // Launch the pipeline in the background to start conversions asap
             try {
                 if (ConverterSettings.Instance.UseDAISYPipelineApp) {
-                    AppRunner.GetInstance();
+                    Engine.StartDAISYPipelineApp();
                 } else {
-                    JNIRunner.GetInstance();
+                    Engine.StopEmbeddedEngine();
+                    Engine.StartEmbeddedEngine();
                 }
             } catch(Exception e) {
                 AddinLogger.Error(e);
@@ -374,7 +376,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         string IRibbonExtensibility.GetCustomUI(string RibbonID) {
             try
             {
-                if (Directory.Exists(ConverterHelper.Pipeline2Path))
+                if (Directory.Exists(ConverterHelper.EmbeddedEnginePath))
                 {
                     // Removing the validator button for office 2010 and later
                     // For office 2007, the old validation step remains necessary
@@ -512,6 +514,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             //daisyfrm.ShowDialog();
             Daisy.SaveAsDAISY.WPF.SettingsForm settings = new Daisy.SaveAsDAISY.WPF.SettingsForm();
             settings.ShowDialog();
+
+            if (ConverterSettings.Instance.UseDAISYPipelineApp) {
+                Engine.StopEmbeddedEngine();
+                Engine.StartDAISYPipelineApp();
+            } else {
+                Engine.StartEmbeddedEngine();
+        }
+
+
         }
 
 
@@ -914,6 +925,30 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         if (form.ShowDialog()) {
                             currentDocument = form.DocumentProps;
                             converter.ConversionParameters = form.UpdatedConversionParameters;
+                            
+                            DirectoryInfo finalOutput = new DirectoryInfo(
+                                Path.Combine(
+                                    converter.ConversionParameters.OutputPath,
+                                string.Format(
+                                    "{0}_{2}_{1}",
+                                    Path.GetFileNameWithoutExtension(currentDocument.InputPath),
+                                    DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                                    pipelineScript.Name
+                                )
+                            ));
+                            // Remove and recreate result folder
+                            // Since the DaisyToEpub3 requires output folder to be empty
+                            if (finalOutput.Exists) {
+                                finalOutput.Delete(true);
+                                finalOutput.Create();
+                            }
+                            converter.ConversionParameters.OutputPath = finalOutput.FullName;
+                            if (converter.ConversionParameters.PipelineScript.Parameters.ContainsKey("output")) {
+                                converter.ConversionParameters.PipelineScript.Parameters["output"].Value = finalOutput.FullName;
+                            }
+
+                            // TODO add a chain of cancellation to stop processing if user cancel at any step
+
                             eventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Saving metadata in the document ..."));
                             preprocess.updateDocumentMetadata(ref doc, currentDocument);
                             var task = System.Threading.Tasks.Task.Run(() =>
@@ -1019,8 +1054,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null 
                     ? (IConversionEventsHandler) new WPFEventsHandler() 
                     : new SilentEventsHandler();
-
-                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
+                Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
+                    //? new WordToCleanedDtbook(eventsHandler) :
                     ? new WordToCleanedDtbook(eventsHandler) :
                     null;
                 if (pipelineScript != null)
@@ -1052,7 +1087,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
                 
-                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
+                Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
                     ? new WordToDaisy3(eventsHandler) :
                     null;
                
@@ -1085,7 +1120,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 IConversionEventsHandler eventsHandler = conversionIntegrationTestSettings == null ? (IConversionEventsHandler)new WPFEventsHandler() : new SilentEventsHandler();
                 //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
 
-                Script pipelineScript = Directory.Exists(ConverterHelper.Pipeline2Path)
+                Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
                     ? new WordToDaisy202(eventsHandler) :
                     null;
 

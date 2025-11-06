@@ -1,12 +1,17 @@
-﻿using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
+﻿using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
+
 
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline
 {
@@ -20,6 +25,37 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         private HttpClient connection;
 
         private List<ScriptDefinition> scripts = null;
+
+        
+
+        public void WaitForActivation(IConversionEventsHandler events = null)
+        {
+            int attempt = 20;
+            bool isWorking = false;
+            do {
+                events?.onProgressMessageReceived(this, new DaisyEventArgs($"Checking engine web service status ({attempt} attempts remaining)..."));
+                attempt--;
+                try {
+                    AliveData data = this.Alive();
+                    isWorking = !(data == null || !data.Alive);
+                }
+                catch (AggregateException e) {
+                    isWorking = false;
+                    System.Threading.Thread.Sleep(1000);
+                }
+                catch (Exception e) {
+                    isWorking = false;
+                    System.Threading.Thread.Sleep(1000);
+                }
+            } while (!isWorking && attempt > 0);
+            if (!isWorking) {
+                //events.OnConversionError(new InvalidOperationException("Could not connect to DAISY Pipeline app webservice after 10 attempts"));
+                throw new InvalidOperationException("Could not connect to DAISY Pipeline app webservice after 20 attempts");
+            } else {
+                // preload scripts
+                this.GetScripts();
+            }
+        }
 
         internal static class ENDPOINTS
         {
