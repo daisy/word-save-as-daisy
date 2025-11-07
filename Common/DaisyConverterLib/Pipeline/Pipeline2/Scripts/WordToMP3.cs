@@ -298,15 +298,5 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
             return Directory.GetFiles(inputDirectory.FullName, "*.docx", SearchOption.AllDirectories)[0];
         }
 
-        public override void ExecuteScript(string inputPath)
-        {
-            base.ExecuteScript(inputPath);
-            if(ExtractedShapes.Count > 0) {
-                foreach (string shape in ExtractedShapes)
-                {
-                    File.Copy(shape, Path.Combine(Parameters["output"].Value.ToString(), Path.GetFileName(shape)), true);
-                }
-            }
-        }
     }
 }

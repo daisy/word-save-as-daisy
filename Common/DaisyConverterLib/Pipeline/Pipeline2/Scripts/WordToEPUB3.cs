@@ -240,6 +240,19 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
 
                   )
                 },
+                { "validation", new ScriptParameter(
+                        "validation",
+                        "Validation",
+                        new EnumData(
+                            new Dictionary<string, object> {
+                                { "No validation", "off" },
+                                { "Report validation issues", "report" },
+                                { "Abort on validation issues", "abort" },
+                            }, "off"),
+                        false,
+                        "Whether to abort on validation issues."
+                    )
+                },
                 {"tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
@@ -285,10 +298,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
         public override void ExecuteScript(string inputPath)
         {
             base.ExecuteScript(inputPath);
-            if(ExtractedShapes.Count > 0) {
-                foreach (string shape in ExtractedShapes)
-                {
-                    File.Copy(shape, Path.Combine(Parameters["output"].Value.ToString(), Path.GetFileName(shape)), true);
+            if (ExtractedShapes.Count > 0) {
+                foreach (string shape in ExtractedShapes) {
+                    if (File.Exists(shape) == false) {
+                        // File has been already copied by the new word to dtbook script, continue parsing
+                        continue;
+                    }
+                    try {
+                        File.Copy(shape, Path.Combine(Parameters["output"].Value.ToString(), Path.GetFileName(shape)), true);
+                    }
+                    catch (Exception ex) {
+                        EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Error while copying extracted shape " + shape + ": " + ex.Message));
+                    }
                 }
             }
         }
