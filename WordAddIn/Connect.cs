@@ -902,6 +902,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         conversion,
                         currentDocument
                     );
+                        applicationObject.Activate();
                         if (form.ShowDialog()) {
                             currentDocument = form.DocumentProps;
                             converter.ConversionParameters = form.UpdatedConversionParameters;

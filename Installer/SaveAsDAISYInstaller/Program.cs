@@ -3,8 +3,11 @@ using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
+using System.Management;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.WebRequestMethods;
@@ -41,7 +44,8 @@ namespace DaisyInstaller
         public static float minimalVersionSupport = 11.0f;
         public static float maximalVersionSupport = 17.0f;
 
-        private static readonly string DAISY_APP_URL = "https://github.com/daisy/pipeline-ui/releases/download/1.9.0/daisy-pipeline-setup-1.9.0.exe";
+        private static readonly string appVersion = "1.10.0";
+        private static readonly string DAISY_APP_URL = $"https://github.com/daisy/pipeline-ui/releases/download/{appVersion}/daisy-pipeline-setup-{appVersion}.exe";
 
         /// <summary>
         /// The main entry point for the application.
@@ -49,7 +53,7 @@ namespace DaisyInstaller
         [STAThread]
         static void Main()
         {
-
+            
 #if X64INSTALLER // only
             bool installerIsForOffice32Bits = false;
 #else // x86 only installer or unified installer default version installed
@@ -164,17 +168,21 @@ namespace DaisyInstaller
                     var process = Process.Start(daisySetupPath);
                     process.WaitForExit();
                     bool installApp = true;
-                    // Offer to install the daisy pipeline app if not installed
-                    RegistryKey softwareKeys = Registry.CurrentUser.OpenSubKey(@"Software");
-                    foreach (string subKey in softwareKeys.GetSubKeyNames()) {
-                        RegistryKey software = softwareKeys.OpenSubKey(subKey);
-                        if (software.GetValue("ShortcutName") != null && software.GetValue("ShortcutName").ToString() == "DAISY Pipeline") {
+                    // Check SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall
+                    RegistryKey lKeyApp = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
+                    foreach (string subKey in lKeyApp.GetSubKeyNames()) {
+                        RegistryKey appKey = lKeyApp.OpenSubKey(subKey);
+                        string displayName = appKey.GetValue("DisplayName")?.ToString() ?? "";
+                        string displayVersion = appKey.GetValue("DisplayVersion")?.ToString() ?? "";
+                        if (
+                            displayName.StartsWith("DAISY Pipeline") && displayVersion == appVersion
+                        ) {
                             installApp = false;
                             break;
                         }
                     }
                     if (installApp) {
-                        if (MessageBox.Show("SaveAsDAISY can now use the DAISY Pipeline app as backend for the conversions.\r\n" +
+                        if (MessageBox.Show($"SaveAsDAISY can use the DAISY Pipeline app {appVersion} as backend for the conversions.\r\n" +
                                 "Do you want to download and install the DAISY Pipeline app now?\r\n", "Download DAISY Pipeline app", MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Question
                             ) == DialogResult.Yes
@@ -212,15 +220,20 @@ namespace DaisyInstaller
                                 using (var client = new System.Net.WebClient()) {
                                     ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
                                     client.DownloadFile(DAISY_APP_URL, installerPath);
-                                    progressDialog.Close();
-                                    progressDialog = null;
+                                    
                                 }
+                                label.Text = "Installing DAISY Pipeline app...";
                                 ProcessStartInfo exec = new ProcessStartInfo() {
                                     FileName = installerPath,
                                     UseShellExecute = true,
                                     Arguments = "/S" // silent install
                                 };
                                 process = System.Diagnostics.Process.Start(exec);
+                                process.WaitForExit();
+                                label.Text = "DAISY Pipeline app is installed";
+                                Thread.Sleep(3000);
+                                progressDialog.Close();
+                                progressDialog = null;
 
                             }
                             catch (Exception ex) {
