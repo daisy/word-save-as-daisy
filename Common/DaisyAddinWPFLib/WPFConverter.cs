@@ -33,7 +33,7 @@ namespace Daisy.SaveAsDAISY.WPF
             //    progressDialog.Focus();
             //    return ConversionStatus.ReadyForConversion;
             //}
-            ((WPFEventsHandler)this.EventsHandler).Dialog.Close();
+            //((WPFEventsHandler)this.EventsHandler).Dialog.Close();
             return ConversionStatus.Canceled;
         }
 

@@ -15,32 +15,44 @@ namespace Daisy.SaveAsDAISY.WPF
 {
     public class WPFEventsHandler : Daisy.SaveAsDAISY.Conversion.Events.IConversionEventsHandler
     {
+        private static ConversionProgress DialogInstance = null;
 
-        public ConversionProgress Dialog = null;
-        private Dispatcher _dispatcher;
 
         #region Conversion progress dialog
         public void TryInitializeProgress(string message, int maximum = 1, int step = 1)
         {
-            Dispatcher.CurrentDispatcher.Invoke((Action)delegate {
-                try {
-                    if (Dialog == null) {
-                        Dialog = new ConversionProgress();
-                        Dialog.Closed += Dialog_Closed;
+            try {
+                if (DialogInstance == null) {
+                    var test = new Thread(() =>
+                    {
+                        DialogInstance = new ConversionProgress();
+                        DialogInstance.Closed += Dialog_Closed;
                         if (cancelButtonClicked != null) {
-                            Dialog.setCancelClickListener(cancelButtonClicked);
+                            DialogInstance.setCancelClickListener(cancelButtonClicked);
                         }
-                        Dialog.Show();
-                        _dispatcher = Dispatcher.CurrentDispatcher;
-                    }
-                    _dispatcher.Invoke(() => Dialog.InitializeProgress(message, maximum, step));
-                    //Dialog.Dispatcher.Invoke(() => Dialog.InitializeProgress(message, maximum, step));
+                        DialogInstance.Show();
 
+                        DialogInstance.Dispatcher.Invoke(() => DialogInstance.InitializeProgress(message, maximum, step));
+                        while(DialogInstance != null) {
+                            Dispatcher.Run();
+                        }
+
+                    });
+                    test.SetApartmentState(ApartmentState.STA);
+                    test.Start();
+                    Thread.Sleep(500); // give some time to show the dialog
+
+                } else {
+                    DialogInstance.Dispatcher.Invoke(() => {
+                        DialogInstance.Activate();
+                        DialogInstance.InitializeProgress(message, maximum, step);
+                    });
                 }
-                catch (Exception e) {
-                    AddinLogger.Error("Unable to show message in progress dialog: " + message);
-                }
-            });
+
+            }
+            catch (Exception e) {
+                AddinLogger.Error("Unable to show message in progress dialog: " + message + " " + e.Message);
+            }
         }
 
         private event CancelClickListener cancelButtonClicked = null;
@@ -48,46 +60,61 @@ namespace Daisy.SaveAsDAISY.WPF
         public void setCancelClickListener(CancelClickListener cancelAction)
         {
             cancelButtonClicked = cancelAction;
-            if (Dialog != null) {
-                Dialog.setCancelClickListener(cancelAction);
+            if (DialogInstance != null) {
+                DialogInstance.setCancelClickListener(cancelAction);
             }
         }
 
         private void Dialog_Closed(object sender, EventArgs e)
         {
-            Dialog = null;
+            DialogInstance = null;
         }
 
         private void TryShowMessage(string message, bool isProgress = false)
         {
-            Dispatcher.CurrentDispatcher.Invoke((Action)delegate {
-                try {
-                    if (Dialog == null) {
-                        Dialog = new ConversionProgress();
-                        Dialog.Closed += Dialog_Closed;
-                        Dialog.Show();
-                        _dispatcher = Dispatcher.CurrentDispatcher;
-                    }
-                    _dispatcher.Invoke(() => Dialog.AddMessage(message, isProgress));
-                    //Dialog.Dispatcher.Invoke(() => Dialog.AddMessage(message, isProgress));
+            try {
+                if (DialogInstance == null) {
+                    var test = new Thread(() =>
+                    {
+                        DialogInstance = new ConversionProgress();
+                        DialogInstance.Closed += Dialog_Closed;
+                        if (cancelButtonClicked != null) {
+                            DialogInstance.setCancelClickListener(cancelButtonClicked);
+                        }
+                        DialogInstance.Show();
+
+                        DialogInstance.Dispatcher.Invoke(() => DialogInstance.AddMessage(message, isProgress));
+                        while (DialogInstance != null) {
+                            Dispatcher.Run();
+                        }
+
+                    });
+                    test.SetApartmentState(ApartmentState.STA);
+                    test.Start();
+                    Thread.Sleep(500); // give some time to show the dialog
+                } else {
+                    DialogInstance.Dispatcher.Invoke(() => {
+                        DialogInstance.Activate();
+                        DialogInstance.AddMessage(message, isProgress);
+                    });
                 }
-                catch (Exception e) {
-                    AddinLogger.Error("Unable to show message in progress dialog: " + message);
-                }
-            });
+            }
+            catch (Exception e) {
+                AddinLogger.Error("Unable to show message in progress dialog: " + message + " " + e.Message);
+            }
         }
 
 
 
         private void TryClosingDialog(int sleepBefore)
         {
-            if (Dialog == null) {
+            if (DialogInstance == null) {
                 return;
             }
-            Dialog.Dispatcher.Invoke(() => {
+            DialogInstance.Dispatcher.Invoke(() => {
                 Thread.Sleep(sleepBefore);
-                Dialog.Close();
-                Dialog = null;
+                DialogInstance.Close();
+                DialogInstance = null;
             });
         }
         #endregion
