@@ -423,23 +423,6 @@ namespace Daisy.SaveAsDAISY.Conversion
                 writer.Write(AsXML(true));
                 writer.Flush();
             }
-            // NP 2025 10 07 : launch the adequate runner based on settings
-            // Launch the pipeline in the background to start conversions asap
-            if (UseDAISYPipelineApp) {
-                try {
-                    WebserviceRunner.GetInstance();
-                }
-                catch (Exception e) {
-                    AddinLogger.Error(e);
-                }
-            } else {
-                try {
-                    JNIRunner.GetInstance();
-                }
-                catch (Exception e) {
-                    AddinLogger.Error(e);
-                }
-            }
         }
 
 

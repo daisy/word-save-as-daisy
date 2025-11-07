@@ -161,22 +161,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 this.applicationObject.DocumentBeforeClose += new Microsoft.Office.Interop.Word.ApplicationEvents4_DocumentBeforeCloseEventHandler(applicationObject_DocumentBeforeClose);
                 this.applicationObject.WindowDeactivate += new Microsoft.Office.Interop.Word.ApplicationEvents4_WindowDeactivateEventHandler(applicationObject_WindowDeactivate);
 
-               
-                // https://stackoverflow.com/a/12768858
-                //var formPreload = new Thread(() =>
-                //{   //Force runtime to pre-load all resources for secondary windows so they will load as fast as possible
-                //    new WPF.About();
-                //    new WPF.ConversionParametersForm(null, null);
-                //    new WPF.ConversionProgress();
-                //    new WPF.SettingsForm();
-                //    new WPF.Metadata();
-                //    new WPF.ExceptionReport();
-                //});
-                //formPreload.SetApartmentState(ApartmentState.STA);
-                //formPreload.Priority = ThreadPriority.Lowest;//We don't want prefetching to delay showing of primary window
-                //formPreload.Start();
-
-
                 // Listen to notification activation
                 ToastNotificationManagerCompat.OnActivated += toastArgs =>
                 {
@@ -509,8 +493,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
 
         public void GetDaisySettings(IRibbonControl control) {
-            //ConverterSettingsForm daisyfrm = new ConverterSettingsForm();
-            //daisyfrm.ShowDialog();
             Daisy.SaveAsDAISY.WPF.SettingsForm settings = new Daisy.SaveAsDAISY.WPF.SettingsForm();
             settings.ShowDialog();
 

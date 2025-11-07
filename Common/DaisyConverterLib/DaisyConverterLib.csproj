@@ -145,7 +145,6 @@
     <Compile Include="Pipeline\Pipeline2\Scripts\WordToDAISY3.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\WordToDAISY202.cs" />
     <Compile Include="Pipeline\ScriptRunner.cs" />
-    <Compile Include="Pipeline\Pipeline2\JNIRunner.cs" />
     <Compile Include="Pipeline\Pipeline2Script.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\Daisy3ToMp3.cs" />
     <Compile Include="Pipeline\Pipeline2\Scripts\DtbookCleaner.cs" />
@@ -234,10 +233,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\jnet\JNET.csproj">
-      <Project>{941df07f-3ee8-4793-abba-659f2e0598c3}</Project>
-      <Name>JNET</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Localization\Localization.csproj">
       <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
       <Name>Localization</Name>

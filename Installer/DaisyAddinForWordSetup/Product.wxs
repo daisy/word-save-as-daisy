@@ -99,10 +99,6 @@
             <Component Id="WindowsBase.dll" Guid="BF88F0CE-FBAB-4323-83B2-3D91C42DBF10">
                 <File Id="WindowsBase.dll" Name="WindowsBase.dll" Source="$(var.SolutionDir)resources\WindowsBase.dll" DiskId="1" KeyPath="yes" />
             </Component>
-            <Component Id="JNET.dll" Guid="3D17ECD0-DE44-4753-973A-0E4FBADD6AFB">
-                <File Name="$(var.JNET.TargetFileName)"
-					  Source="$(var.JNET.TargetPath)" DiskId="1" KeyPath="yes" />
-            </Component>
 			<Component Id="Localization.dll" Guid="A0430D6D-800F-4D97-9541-0A8F2BC1797A">
 				<File Id="Localization.dll.file" Source="$(var.Localization.TargetPath)" DiskId="1" KeyPath="yes"/>
 			</Component>
@@ -844,7 +840,6 @@
 			<ComponentRef Id="Localization.dll" />
             <ComponentRef Id="DaisyConverterLib.dll" />
             <ComponentRef Id="WindowsBase.dll" />
-            <ComponentRef Id="JNET.dll" />
             
 			<!--Office 2007 and up-->
             <ComponentRef Id="Help.chm" />
