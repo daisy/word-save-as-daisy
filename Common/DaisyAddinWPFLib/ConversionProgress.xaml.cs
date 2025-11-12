@@ -2,6 +2,8 @@
 using System;
 using System.Threading;
 using System.Windows;
+using System.Windows.Automation;
+using System.Windows.Automation.Peers;
 using System.Windows.Threading;
 namespace Daisy.SaveAsDAISY.WPF
 {
@@ -10,11 +12,15 @@ namespace Daisy.SaveAsDAISY.WPF
     /// </summary>
     public partial class ConversionProgress : Window
     {
-        private string CurrentProgressMessage = "";
+        public string CurrentProgressMessage { get; set; } = "";
+
+
+
         private int StepIncrement = 1;
         public ConversionProgress()
         {
             InitializeComponent();
+            DataContext = this;
         }
 
         
@@ -32,12 +38,19 @@ namespace Daisy.SaveAsDAISY.WPF
             foreach (string line in lines) {
                 if (isProgress) {
                     CurrentProgressMessage = line;
-                    CurrentAction.Content = CurrentProgressMessage;
+                    CurrentAction.Text = CurrentProgressMessage;
                     ProgressionTracker.Value += StepIncrement;
+                    
                 } else {
-                    CurrentAction.Content = CurrentProgressMessage + " - " + line;
+                    CurrentAction.Text = CurrentProgressMessage + " - " + line;
                 }
                 MessageTextArea.AppendText(line + "\r\n");
+            }
+            CurrentAction.Focus();
+            AutomationProperties.SetHelpText(CurrentAction, CurrentProgressMessage);
+            var peer = UIElementAutomationPeer.CreatePeerForElement(CurrentAction);
+            if (peer != null) {
+                peer.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
             }
             MessageTextArea.ScrollToEnd();
             this.UpdateLayout();
@@ -59,11 +72,18 @@ namespace Daisy.SaveAsDAISY.WPF
                 return;
             }
             CurrentProgressMessage = message;
-            CurrentAction.Content = CurrentProgressMessage;
+            CurrentAction.Text = CurrentProgressMessage;
+            
             this.MessageTextArea.AppendText((message.EndsWith("\n") ? message : message + "\r\n"));
             ProgressionTracker.Maximum = maximum;
             StepIncrement = step;
             ProgressionTracker.Value = 0;
+            CurrentAction.Focus();
+            AutomationProperties.SetHelpText(CurrentAction, CurrentProgressMessage);
+            var peer = UIElementAutomationPeer.CreatePeerForElement(CurrentAction);
+            if (peer != null) {
+                peer.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
+            }
             this.UpdateLayout();
             this.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => { }));
         }

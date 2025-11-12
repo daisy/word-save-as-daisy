@@ -16,7 +16,8 @@
                     Margin="5,0,5,0"
                     Width="72"
                     x:Name="BrowseButton"
-                    Click="BrowseButton_Click" />
+                    Click="BrowseButton_Click"
+                    AutomationProperties.Name="{Binding Path=BrowseLabel}" />
             <TextBox TextWrapping="NoWrap"
                      Text="{Binding Path=ParameterValue, Mode=TwoWay}"
                      x:Name="PathTextBox"

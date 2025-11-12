@@ -21,38 +21,46 @@ namespace Daisy.SaveAsDAISY.WPF
         #region Conversion progress dialog
         public void TryInitializeProgress(string message, int maximum = 1, int step = 1)
         {
-            try {
-                if (DialogInstance == null) {
-                    var test = new Thread(() =>
-                    {
-                        DialogInstance = new ConversionProgress();
-                        DialogInstance.Closed += Dialog_Closed;
-                        if (cancelButtonClicked != null) {
-                            DialogInstance.setCancelClickListener(cancelButtonClicked);
+            lock (DialogInstance) {
+                try {
+                    if (DialogInstance == null) {
+                        var test = new Thread(() =>
+                        {
+                            DialogInstance = new ConversionProgress();
+                            DialogInstance.Closed += Dialog_Closed;
+                            if (cancelButtonClicked != null) {
+                                DialogInstance.setCancelClickListener(cancelButtonClicked);
+                            }
+                            DialogInstance.Show();
+
+                            DialogInstance.Dispatcher.Invoke(() => DialogInstance.InitializeProgress(message, maximum, step));
+                            while (DialogInstance != null) {
+                                Dispatcher.Run();
+                            }
+
+                        });
+                        test.SetApartmentState(ApartmentState.STA);
+                        test.Start();
+                        int timeout = 2;
+                        while(DialogInstance == null && timeout > 0) {
+                            Thread.Sleep(1000); // give some time to show the dialog
+                            timeout--;
                         }
-                        DialogInstance.Show();
+                        
 
-                        DialogInstance.Dispatcher.Invoke(() => DialogInstance.InitializeProgress(message, maximum, step));
-                        while(DialogInstance != null) {
-                            Dispatcher.Run();
-                        }
+                    } else {
+                        DialogInstance.Dispatcher.Invoke(() => {
+                            DialogInstance.Activate();
+                            DialogInstance.InitializeProgress(message, maximum, step);
+                        });
+                    }
 
-                    });
-                    test.SetApartmentState(ApartmentState.STA);
-                    test.Start();
-                    Thread.Sleep(500); // give some time to show the dialog
-
-                } else {
-                    DialogInstance.Dispatcher.Invoke(() => {
-                        DialogInstance.Activate();
-                        DialogInstance.InitializeProgress(message, maximum, step);
-                    });
                 }
-
+                catch (Exception e) {
+                    AddinLogger.Error("Unable to show message in progress dialog: " + message + " " + e.Message);
+                }
             }
-            catch (Exception e) {
-                AddinLogger.Error("Unable to show message in progress dialog: " + message + " " + e.Message);
-            }
+            
         }
 
         private event CancelClickListener cancelButtonClicked = null;
@@ -91,7 +99,11 @@ namespace Daisy.SaveAsDAISY.WPF
                     });
                     test.SetApartmentState(ApartmentState.STA);
                     test.Start();
-                    Thread.Sleep(500); // give some time to show the dialog
+                    int timeout = 20;
+                    while (DialogInstance == null && timeout > 0) {
+                        Thread.Sleep(100); // give some time to show the dialog
+                        timeout--;
+                    }
                 } else {
                     DialogInstance.Dispatcher.Invoke(() => {
                         DialogInstance.Activate();
@@ -129,6 +141,9 @@ namespace Daisy.SaveAsDAISY.WPF
 
         public void onPreprocessingCancel()
         {
+            if( DialogInstance == null ) {
+                return;
+            }
             TryShowMessage("Preprocessing canceled ");
             TryClosingDialog(3000);
         }
@@ -276,6 +291,9 @@ namespace Daisy.SaveAsDAISY.WPF
 
         public void onConversionCanceled()
         {
+            if(DialogInstance == null) {
+                return;
+            }
             TryShowMessage("Canceling conversion");
         }
 
@@ -366,7 +384,7 @@ namespace Daisy.SaveAsDAISY.WPF
         public void onConversionSuccess()
         {
             TryShowMessage("Successfull conversion", false);
-            TryClosingDialog(3000);
+            //TryClosingDialog(3000);
         }
 
         public void onPreprocessingWarning(string message)

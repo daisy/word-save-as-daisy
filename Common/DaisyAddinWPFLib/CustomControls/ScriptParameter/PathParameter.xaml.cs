@@ -5,6 +5,7 @@ using OpenFileDialog = Microsoft.Win32.OpenFileDialog;
 using UserControl = System.Windows.Controls.UserControl;
 using System.IO;
 using System;
+using System.Windows.Automation;
 
 namespace Daisy.SaveAsDAISY.WPF.CustomControls
 {
@@ -44,6 +45,8 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
                 }
             }
         }
+
+        public string BrowseLabel { get => "Browse " + ParameterName; }
 
         public string ParameterDescription {
             get => BoundParameter != null ? BoundParameter.Description : _parameterDescription;

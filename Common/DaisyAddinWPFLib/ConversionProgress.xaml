@@ -16,10 +16,13 @@
                      Minimum="0"
                      Maximum="100"
                      Value="0"
-                     IsIndeterminate="False" />
-        <Label x:Name="CurrentAction"
-               Margin="5,5,5,0"
-               Content="" />
+                     IsIndeterminate="False"/>
+        <TextBox x:Name="CurrentAction"
+                    Margin="5,5,5,0"
+                    Text=""
+                   AutomationProperties.Name="Progress"
+                   AutomationProperties.HelpText=""
+                 IsReadOnly="True"/>
         <Expander Header="Details"
                   ExpandDirection="Down"
                   IsExpanded="True"
