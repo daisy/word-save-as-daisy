@@ -325,7 +325,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t\tstartValue=\"{footnotesStartValue}\" " +
                 $"\r\n\t\tnumberPrefix=\"{footnotesNumberingPrefix}\" " +
                 $"\r\n\t\tnumberSuffix=\"{footnotesNumberingSuffix}\" />" +
-                $"\r\n\t<TTSConfig file=\"{ttsConfigFile}\" />" +
+                $"\r\n\t<TTSConfig file=\"{(withPrivateData ? ttsConfigFile :"removed for privacy")}\" />" +
                 //(withPrivateData
                 //    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
                 //      $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
@@ -333,7 +333,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 //) +
                 $"\r\n\t<DontNotifySponsorship value=\"{dontNotifySponsorship}\" />" +
                 $"\r\n\t<UsePipelineApp value=\"{useDAISYPipelineApp.ToString().ToLower()}\" />" +
-                $"\r\n\t<ResultsFolder value=\"{resultsFolder}\" />" +
+                $"\r\n\t<ResultsFolder value=\"{(withPrivateData ? resultsFolder : "removed for privacy")}\" />" +
                 $"\r\n</Settings>";
         }
 

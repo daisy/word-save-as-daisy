@@ -1,5 +1,6 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
 using System;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Automation;
@@ -14,7 +15,7 @@ namespace Daisy.SaveAsDAISY.WPF
     {
         public string CurrentProgressMessage { get; set; } = "";
 
-
+        
 
         private int StepIncrement = 1;
         public ConversionProgress()
@@ -23,7 +24,7 @@ namespace Daisy.SaveAsDAISY.WPF
             DataContext = this;
         }
 
-        
+        private static readonly Regex EndsWithProgress = new Regex(@"(\d+)\s*\/\s*(\d+)\s*$");
 
         // For external thread calls
         public delegate void DelegatedAddMessage(string message, bool isProgress = true);
@@ -34,21 +35,40 @@ namespace Daisy.SaveAsDAISY.WPF
                 this.Dispatcher.Invoke(new DelegatedAddMessage(AddMessage), message, isProgress);
                 return;
             }
+            CurrentAction.Focus();
+            // unpractical
+            //if (isProgress) {
+            //    this.Activate();
+            //}
             string[] lines = message.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string line in lines) {
                 if (isProgress) {
                     CurrentProgressMessage = line;
+                    //CurrentAction.Text = CurrentProgressMessage;
                     CurrentAction.Text = CurrentProgressMessage;
-                    ProgressionTracker.Value += StepIncrement;
+                    AutomationProperties.SetHelpText(CurrentAction, CurrentProgressMessage);
                     
+                    if (EndsWithProgress.IsMatch(line)) {
+                        Match match = EndsWithProgress.Match(line);
+                        if(match.Groups.Count == 3) {
+                            if(int.TryParse(match.Groups[2].Value, out int maximum)) {
+                                ProgressionTracker.Maximum = maximum;
+                            }
+                            if(int.TryParse(match.Groups[1].Value, out int value)) {
+                                ProgressionTracker.Value = value;
+                            }
+                        }
+                    } else {
+                        ProgressionTracker.Value += StepIncrement;
+                    }
                 } else {
                     CurrentAction.Text = CurrentProgressMessage + " - " + line;
+                    AutomationProperties.SetHelpText(CurrentAction, CurrentProgressMessage);
                 }
                 MessageTextArea.AppendText(line + "\r\n");
             }
-            CurrentAction.Focus();
-            AutomationProperties.SetHelpText(CurrentAction, CurrentProgressMessage);
-            var peer = UIElementAutomationPeer.CreatePeerForElement(CurrentAction);
+            
+            var peer = UIElementAutomationPeer.FromElement(CurrentAction) as TextElementAutomationPeer;
             if (peer != null) {
                 peer.RaiseAutomationEvent(AutomationEvents.LiveRegionChanged);
             }
@@ -71,14 +91,15 @@ namespace Daisy.SaveAsDAISY.WPF
                 this.Dispatcher.Invoke(new DelegatedInitializeProgress(InitializeProgress), message, maximum, step);
                 return;
             }
+            this.Activate();
+            CurrentAction.Focus();
             CurrentProgressMessage = message;
             CurrentAction.Text = CurrentProgressMessage;
-            
+            //Title = "Progress - " + message;
             this.MessageTextArea.AppendText((message.EndsWith("\n") ? message : message + "\r\n"));
             ProgressionTracker.Maximum = maximum;
             StepIncrement = step;
             ProgressionTracker.Value = 0;
-            CurrentAction.Focus();
             AutomationProperties.SetHelpText(CurrentAction, CurrentProgressMessage);
             var peer = UIElementAutomationPeer.CreatePeerForElement(CurrentAction);
             if (peer != null) {
@@ -120,10 +141,17 @@ namespace Daisy.SaveAsDAISY.WPF
             cancelButtonClicked = cancelAction;
         }
 
+        public void Resume()
+        {
+            CancelButton.IsEnabled = true;
+        }
+
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            
             if (cancelButtonClicked != null) cancelButtonClicked();
-            this.Close();
+            CancelButton.IsEnabled = false;
+            //this.Close();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

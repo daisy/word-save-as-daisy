@@ -8,7 +8,7 @@ param(
     [switch]$debug = $false
 )
 
-$currentVersion = "2.9.4"
+$currentVersion = "2.9.4.1"
 $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
 
 # Create the wix directory tree for a path
@@ -91,7 +91,7 @@ function Update-Version {
 }
 
 if($version) {
-    if($version -match '\d+\.\d+\.\d+'){
+    if($version -match '\d+\.\d+\.\d+\.\d+'){
         #   - search and replace occurences of previous versions by new version
         # Search in replace in the required parts of the project
         Update-Version -path $(Join-Path $PSScriptRoot "Common") -oldVersion $currentVersion -newVersion $version

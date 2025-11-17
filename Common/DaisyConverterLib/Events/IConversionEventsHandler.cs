@@ -13,6 +13,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
     /// </summary>
     public interface IConversionEventsHandler {
 
+        void RequestCancellation();
+        bool IsCancellationRequested();
+
         #region Preprocess events
         void onDocumentPreprocessingStart(string inputPath);
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi" xmlns:util="http://schemas.microsoft.com/wix/UtilExtension"
+	 xmlns:fire="http://schemas.microsoft.com/wix/FirewallExtension">
     <!--  IMPORTANT NOTE:
               When creating a new release, 
                 - update the AddinVersion variable
@@ -9,7 +10,7 @@
         -->
     
     <!-- Preprocessor variables, update following your addin assemblies version -->
-    <?define AddinVersion = "2.9.4.0" ?>
+    <?define AddinVersion = "2.9.4.1" ?>
     
     <!-- DO NOT touch this code -->
     <?define UpgradeCode = "81FEF910-4CDE-43B9-8E7B-9F7D34A14765"?>
@@ -24,13 +25,13 @@
     <?endif ?>
     
     <!--Change this ID for update -->
-    <Product Id="64058DB1-13AB-4B0D-82DF-21010786C75B" 
+    <Product Id="4E0D6DEB-86DF-4AF0-B958-DAA53B02AC0C" 
             Name="SaveAsDAISY add-in version $(var.AddinVersion)" 
             Language="1033" Version="$(var.AddinVersion)" 
             Manufacturer="DAISY Consortium" 
             UpgradeCode="$(var.UpgradeCode)">
         <!--Change this ID for update -->
-        <Package Id="CA2D2507-1695-434E-8393-56FC4E1201D4"
+        <Package Id="1411BA84-AF21-4D6E-84AD-77D939F83CCB"
 				 Compressed="yes"
 				 InstallPrivileges="limited"
 				 InstallerVersion="200" />
@@ -278,6 +279,7 @@
                             <File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="$(var.SolutionDir)docs\Accessibility_demofile.docx" />
                             <File Id="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Name="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Source="$(var.SolutionDir)docs\Authoring_Guidelines_For_using_SaveAsDAISY.docx" />
                         </Component>
+						
 
 <!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                             PIPELINE 2 LITE DISTRIBUTION
@@ -363,7 +365,18 @@
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_instrument.dll" Name="instrument.dll" Source="$(var.SolutionDir)resources\daisy-pipeline\jre\bin\instrument.dll" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_j2gss.dll" Name="j2gss.dll" Source="$(var.SolutionDir)resources\daisy-pipeline\jre\bin\j2gss.dll" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_java.dll" Name="java.dll" Source="$(var.SolutionDir)resources\daisy-pipeline\jre\bin\java.dll" />
-                                        <File DiskId="2" Id="_daisy_pipeline_jre_bin_java.exe" Name="java.exe" Source="$(var.SolutionDir)resources\daisy-pipeline\jre\bin\java.exe" />
+										<File DiskId="2"
+											  Id="_daisy_pipeline_jre_bin_java.exe"
+											  Name="java.exe"
+											  Source="$(var.SolutionDir)resources\daisy-pipeline\jre\bin\java.exe">
+											<fire:FirewallException Id="SaveAsDAISYEngineFirewallExceptionTCP"
+													Name="SaveAsDAISY embedded engine Web Server TCP"
+													Protocol="tcp"
+													Port="49255"				
+													Scope="localSubnet"
+													IgnoreFailure="yes"
+													Profile="private" />
+										</File>
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_javajpeg.dll" Name="javajpeg.dll" Source="$(var.SolutionDir)resources\daisy-pipeline\jre\bin\javajpeg.dll" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_javaw.exe" Name="javaw.exe" Source="$(var.SolutionDir)resources\daisy-pipeline\jre\bin\javaw.exe" />
                                         <File DiskId="2" Id="_daisy_pipeline_jre_bin_jawt.dll" Name="jawt.dll" Source="$(var.SolutionDir)resources\daisy-pipeline\jre\bin\jawt.dll" />
@@ -1126,15 +1139,12 @@
                                 </Directory><!--webservice-->
                             </Directory><!--system-->
                         </Directory><!--daisy-pipeline-->
-
-
-
-
-
                     </Directory>
                 </Directory>
             </Directory>
         </Directory>
+
+		
         <!--Feature list-->
         <Feature Id="ProductFeature" Title="SaveAsDAISY Word Addin" Level="1">
 
@@ -1172,7 +1182,7 @@
             
             <!--<ComponentRef Id="Daisy_Translator_Instruction_Manual_01_March_2011_v2_5_gk2_i.jpg" />-->
             <ComponentRef Id="Documentation" />
-
+			
 			<!-- DAISY Pipeline 2 -->
 			<ComponentRef Id="_daisy_pipeline_files"/>
             <ComponentRef Id="_daisy_pipeline_bin_files"/>

@@ -3,11 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Threading;
 using static Daisy.SaveAsDAISY.WPF.ConversionProgress;
 using MSWord = Microsoft.Office.Interop.Word;
@@ -15,13 +12,14 @@ namespace Daisy.SaveAsDAISY.WPF
 {
     public class WPFEventsHandler : Daisy.SaveAsDAISY.Conversion.Events.IConversionEventsHandler
     {
+        public static object mutex = new object();
         private static ConversionProgress DialogInstance = null;
-
+        private static bool IsCanceled = false;
 
         #region Conversion progress dialog
         public void TryInitializeProgress(string message, int maximum = 1, int step = 1)
         {
-            lock (DialogInstance) {
+            lock (mutex) {
                 try {
                     if (DialogInstance == null) {
                         var test = new Thread(() =>
@@ -49,9 +47,10 @@ namespace Daisy.SaveAsDAISY.WPF
                         
 
                     } else {
-                        DialogInstance.Dispatcher.Invoke(() => {
-                            DialogInstance.Activate();
-                            DialogInstance.InitializeProgress(message, maximum, step);
+                        DialogInstance.Dispatcher?.Invoke(() => {
+                            DialogInstance?.Activate();
+                            DialogInstance?.Resume();
+                            DialogInstance?.InitializeProgress(message, maximum, step);
                         });
                     }
 
@@ -78,41 +77,86 @@ namespace Daisy.SaveAsDAISY.WPF
             DialogInstance = null;
         }
 
-        private void TryShowMessage(string message, bool isProgress = false)
+        private void TryShowEvent(DaisyEventArgs e, bool isProgress = false)
         {
-            try {
-                if (DialogInstance == null) {
-                    var test = new Thread(() =>
-                    {
-                        DialogInstance = new ConversionProgress();
-                        DialogInstance.Closed += Dialog_Closed;
-                        if (cancelButtonClicked != null) {
-                            DialogInstance.setCancelClickListener(cancelButtonClicked);
-                        }
-                        DialogInstance.Show();
+            lock (mutex) {
+                try {
+                    if (DialogInstance == null) {
+                        var test = new Thread(() =>
+                        {
+                            DialogInstance = new ConversionProgress();
+                            DialogInstance.Closed += Dialog_Closed;
+                            if (cancelButtonClicked != null) {
+                                DialogInstance.setCancelClickListener(cancelButtonClicked);
+                            }
+                            DialogInstance.Show();
+                            
+                            DialogInstance.Dispatcher.Invoke(() => 
+                                DialogInstance.AddMessage(isProgress ? e.Message : e.TimestampedMessage, isProgress)
+                            );
+                            while (DialogInstance != null) {
+                                Dispatcher.Run();
+                            }
 
-                        DialogInstance.Dispatcher.Invoke(() => DialogInstance.AddMessage(message, isProgress));
-                        while (DialogInstance != null) {
-                            Dispatcher.Run();
+                        });
+                        test.SetApartmentState(ApartmentState.STA);
+                        test.Start();
+                        int timeout = 20;
+                        while (DialogInstance == null && timeout > 0) {
+                            Thread.Sleep(100); // give some time to show the dialog
+                            timeout--;
                         }
-
-                    });
-                    test.SetApartmentState(ApartmentState.STA);
-                    test.Start();
-                    int timeout = 20;
-                    while (DialogInstance == null && timeout > 0) {
-                        Thread.Sleep(100); // give some time to show the dialog
-                        timeout--;
+                    } else {
+                        DialogInstance.Dispatcher?.Invoke(() =>
+                        {
+                            // Note : This could be called while Dialog has already be closed
+                            DialogInstance.AddMessage(isProgress ? e.Message : e.TimestampedMessage, isProgress);
+                        });
                     }
-                } else {
-                    DialogInstance.Dispatcher.Invoke(() => {
-                        DialogInstance.Activate();
-                        DialogInstance.AddMessage(message, isProgress);
-                    });
+                }
+                catch (Exception ex) {
+                    AddinLogger.Error("Unable to show message in progress dialog: " + e.Message + " " + ex.Message);
                 }
             }
-            catch (Exception e) {
-                AddinLogger.Error("Unable to show message in progress dialog: " + message + " " + e.Message);
+        }
+
+        private void TryShowMessage(string message, bool isProgress = false)
+        {
+            lock (mutex) {
+                try {
+                    if (DialogInstance == null) {
+                        var test = new Thread(() =>
+                        {
+                            DialogInstance = new ConversionProgress();
+                            DialogInstance.Closed += Dialog_Closed;
+                            if (cancelButtonClicked != null) {
+                                DialogInstance.setCancelClickListener(cancelButtonClicked);
+                            }
+                            DialogInstance.Show();
+                            DialogInstance.Dispatcher.Invoke(() => DialogInstance.AddMessage(message, isProgress));
+                            while (DialogInstance != null) {
+                                Dispatcher.Run();
+                            }
+
+                        });
+                        test.SetApartmentState(ApartmentState.STA);
+                        test.Start();
+                        int timeout = 20;
+                        while (DialogInstance == null && timeout > 0) {
+                            Thread.Sleep(100); // give some time to show the dialog
+                            timeout--;
+                        }
+                    } else {
+                        DialogInstance.Dispatcher?.Invoke(() =>
+                        {
+                            // Note : This could be called while Dialog has already be closed
+                            DialogInstance?.AddMessage(message, isProgress);
+                        });
+                    }
+                }
+                catch (Exception e) {
+                    AddinLogger.Error("Unable to show message in progress dialog: " + message + " " + e.Message);
+                }
             }
         }
 
@@ -123,7 +167,7 @@ namespace Daisy.SaveAsDAISY.WPF
             if (DialogInstance == null) {
                 return;
             }
-            DialogInstance.Dispatcher.Invoke(() => {
+            DialogInstance.Dispatcher?.Invoke(() => {
                 Thread.Sleep(sleepBefore);
                 DialogInstance.Close();
                 DialogInstance = null;
@@ -135,17 +179,19 @@ namespace Daisy.SaveAsDAISY.WPF
         #region Preprocessing
         public void onDocumentPreprocessingStart(string inputPath)
         {
+            IsCanceled = false;
             // Intialize progress bar for preprocessing / document analysis before conversion (4 steps)
             TryInitializeProgress("Preprocessing " + inputPath, 4);
         }
 
         public void onPreprocessingCancel()
         {
-            if( DialogInstance == null ) {
+            IsCanceled = true;
+            if ( DialogInstance == null ) {
                 return;
             }
-            TryShowMessage("Preprocessing canceled ");
-            TryClosingDialog(3000);
+            TryShowMessage("Preprocessing canceled ", true);
+            //TryClosingDialog(3000);
         }
 
         public void onPreprocessingError(string inputPath, Exception errors)
@@ -157,7 +203,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 e = e.InnerException;
             }
             AddinLogger.Error("Some errors were reported during preprocessing: \r\n" + message);
-            TryShowMessage("An error occured in preprocessing : " + errors.Message, true);
+            TryShowMessage("An error occured in preprocessing : " + message, true);
         }
 
         public void onPreprocessingSuccess()
@@ -199,6 +245,7 @@ namespace Daisy.SaveAsDAISY.WPF
                     return false; // user wants to continue with the current document
                 case MessageBoxResult.Cancel:
                     default:
+                    IsCanceled = true;
                     return null; // user wants to cancel the conversion
             }
         }
@@ -231,6 +278,7 @@ namespace Daisy.SaveAsDAISY.WPF
             ConversionParameters conversion
         )
         {
+            IsCanceled = false;
             TryInitializeProgress(
                 "Starting documents list conversion",
                 documentLists.Count + (conversion.PipelineScript != null ? 1 : 0)
@@ -242,6 +290,7 @@ namespace Daisy.SaveAsDAISY.WPF
             ConversionParameters conversion
         )
         {
+            IsCanceled = false;
             TryInitializeProgress(
                 "Converting _document " + document.InputPath,
                 conversion.PipelineScript != null ? 2 : 1
@@ -253,7 +302,7 @@ namespace Daisy.SaveAsDAISY.WPF
             ConversionParameters conversion
         )
         {
-            TryClosingDialog(3000);
+            //TryClosingDialog(3000);
         }
 
         public void onDocumentConversionSuccess(
@@ -271,6 +320,7 @@ namespace Daisy.SaveAsDAISY.WPF
         #region Post processing
         public void onPostProcessingStart(ConversionParameters conversion)
         {
+            IsCanceled = false;
             TryInitializeProgress(
                 "Starting pipeline processing",
                 conversion.PipelineScript.StepsCount + 1
@@ -291,25 +341,27 @@ namespace Daisy.SaveAsDAISY.WPF
 
         public void onConversionCanceled()
         {
-            if(DialogInstance == null) {
+            IsCanceled = true;
+            if (DialogInstance == null) {
                 return;
             }
-            TryShowMessage("Canceling conversion");
+            TryShowMessage("Canceling conversion", true);
         }
 
         public void onProgressMessageReceived(object sender, EventArgs e)
         {
-            TryShowMessage(((DaisyEventArgs)e).Message, true);
+            TryShowEvent(((DaisyEventArgs)e), true);
+           
         }
 
         public void onFeedbackMessageReceived(object sender, EventArgs e)
         {
-            TryShowMessage(((DaisyEventArgs)e).Message);
+            TryShowEvent(((DaisyEventArgs)e));
         }
 
         public void onFeedbackValidationMessageReceived(object sender, EventArgs e)
         {
-            TryShowMessage(((DaisyEventArgs)e).Message);
+            TryShowEvent(((DaisyEventArgs)e));
         }
 
         public void OnSuccessMasterSubValidation(string message)
@@ -327,7 +379,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 e = e.InnerException;
             }
             AddinLogger.Error("An error occured during conversion: \r\n" + message);
-            TryShowMessage("Error during conversion : " + errors.Message, true);
+            TryShowMessage("Error during conversion : " + message, true);
         }
 
         public void OnValidationErrors(List<SaveAsDAISY.Conversion.ValidationError> errors, string outputFile)
@@ -402,5 +454,19 @@ namespace Daisy.SaveAsDAISY.WPF
             TryShowMessage(message, false);
         }
 
+        
+        public void RequestCancellation()
+        {
+            IsCanceled = true;
+            DialogInstance?.Dispatcher?.Invoke(() =>
+            {
+                if(DialogInstance != null) DialogInstance.CancelButton.IsEnabled = false;
+            });
+        }
+
+        public bool IsCancellationRequested()
+        {
+            return IsCanceled;
+        }
     }
 }

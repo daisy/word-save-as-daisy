@@ -35,10 +35,12 @@ namespace Daisy.SaveAsDAISY.Conversion
     public class DaisyEventArgs:EventArgs
     {
         private string message;
+        private long timestamp;
 
-        public DaisyEventArgs(string message)
+        public DaisyEventArgs(string message, long timestamp = 0 )
         {
             this.message = message;
+            this.timestamp = timestamp == 0 ? DateTimeOffset.Now.ToUnixTimeMilliseconds() : timestamp;
         }
 
         public string Message
@@ -46,6 +48,22 @@ namespace Daisy.SaveAsDAISY.Conversion
             get
             {
                 return message;
+            }
+        }
+
+        public long Timestamp {
+            get
+            {
+                return timestamp;
+            }
+        }
+
+        public string TimestampedMessage
+        {
+            get
+            {
+                DateTimeOffset dto = DateTimeOffset.FromUnixTimeMilliseconds(timestamp);
+                return dto.DateTime.ToString("yyyy-MM-dd-HH:mm:ss.fff") + " - " + message;
             }
         }
 

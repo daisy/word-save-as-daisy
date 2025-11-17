@@ -83,8 +83,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                     continue;
                 } else {
                     printed.Add(message);
+                    // DateTimeOffset.FromUnixTimeMilliseconds(message.Timestamp).DateTime.ToString("yyyy-MM-dd-HH:mm:ss.fff") + " - " + 
                     events.onProgressMessageReceived(this, new DaisyEventArgs(
-                        DateTimeOffset.FromUnixTimeMilliseconds(message.Timestamp).DateTime.ToString("yyyy-MM-dd-HH:mm:ss.fff") + " - " + message.Content));
+                        message.Content, message.Timestamp
+                    ) );
                 }
             }
         }
@@ -101,11 +103,23 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                 Uri outputFolder = new Uri(outputPath != "" ? outputPath
                     : Path.GetTempFileName()
                 );
+                long timestamp = DateTimeOffset.Now.ToUnixTimeMilliseconds();
+
+                bool cancelRequested = false;
                 do {
                     Thread.Sleep(1000);
                     data = _webservice.CheckJobUpdate(data).Result;
                     switch (data.Status) {
                         case JobStatus.Idle:
+                            printMessages(new List<Message>()
+                            {
+                                new Message()
+                                {
+                                    Content = scriptName + " job is idle, waiting for activation...",
+                                    Timestamp = timestamp
+                                }
+                            }, events);
+                            break;
                         case JobStatus.Running:
                             printMessages(data.Messages, events);
                             break;
@@ -123,14 +137,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
 
                             break;
                     }
-                } while (data.Status != null && running.Contains(data.Status.Value));
+
+                    cancelRequested = events?.IsCancellationRequested() ?? false;
+                } while (data.Status != null && running.Contains(data.Status.Value) && !cancelRequested);
                 
             }
             catch(JobException) {
                 throw;
             }
             catch (AggregateException e) {
-                events.OnConversionError(new Exception("An error occured during the job launch or its monitoring", e));
+                var ex = new Exception("An error occured during the job launch or its monitoring", e);
+                events.OnConversionError(ex);
+                throw ex;
             }
         }
 

@@ -257,7 +257,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         {
             try {
                 var response = await connection.GetAsync(job.Href);
-
+                
                 XmlDocument doc = new XmlDocument();
                 doc.LoadXml(await response.Content.ReadAsStringAsync());
                 if (doc.DocumentElement == null) {

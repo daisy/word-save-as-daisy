@@ -31,6 +31,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
     /// </summary>
     public class DocumentPreprocessor : IDocumentPreprocessor {
 
+        #region Images processing
         /// <summary>
         /// Saves the meta file. (source : https://keestalkstech.com/2016/06/rasterizing-emf-files-png-net-csharp/)
         /// </summary>
@@ -172,9 +173,61 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             }
         }
 
+        #endregion
+
+        #region IDocumentPreprocessor implementation
         protected MSword.Application currentInstance;
         public DocumentPreprocessor(MSword.Application WordInstance) {
             currentInstance = WordInstance;
+        }
+
+        private string TryGetPropertyValue(Microsoft.Office.Core.DocumentProperties properties, string property)
+        {
+            try {
+                return properties[property]?.Value?.ToString() ?? "";
+            }
+            catch (Exception) {
+                // If the property is not available, return an empty string
+                return "";
+            }
+        }
+        private void TrySetPropertyValue(Microsoft.Office.Core.DocumentProperties properties, string property, string value)
+        {
+            try {
+                properties[property].Value = value;
+            }
+            catch (Exception) {
+                // If the property is not available, return an empty string
+                properties.Add(property, false, MsoDocProperties.msoPropertyTypeString, value);
+            }
+        }
+
+        public Conversion.DocumentProperties loadDocumentParameters(ref object documentObject)
+        {
+            MSword.Document currentDoc = (MSword.Document)documentObject;
+            Conversion.DocumentProperties result = new Conversion.DocumentProperties(currentDoc.FullName);
+            Microsoft.Office.Core.DocumentProperties properties = (Microsoft.Office.Core.DocumentProperties)currentDoc.BuiltInDocumentProperties;
+            Microsoft.Office.Core.DocumentProperties customProperties = (Microsoft.Office.Core.DocumentProperties)currentDoc.CustomDocumentProperties;
+            result.Title = TryGetPropertyValue(properties, "Title");
+            result.Author = TryGetPropertyValue(properties, "Author");
+            result.Subject = TryGetPropertyValue(properties, "Subject");
+            result.Publisher = TryGetPropertyValue(customProperties, "Publisher");
+            if (string.IsNullOrEmpty(result.Publisher)) {
+                // Fallback to the built-in property if custom property is not set
+                result.Publisher = TryGetPropertyValue(properties, "Company");
+            }
+            result.Identifier = TryGetPropertyValue(customProperties, "ISBN");
+            result.Contributor = TryGetPropertyValue(customProperties, "Contributor");
+            result.Summary = TryGetPropertyValue(customProperties, "Description");
+            result.SourceOfPagination = TryGetPropertyValue(customProperties, "Source");
+            result.AccessibilitySummary = TryGetPropertyValue(customProperties, "AccessibilitySummary");
+            result.Subtitle = TryGetPropertyValue(customProperties, "Subtitle");
+            result.Date = TryGetPropertyValue(customProperties, "Date");
+            result.Rights = TryGetPropertyValue(customProperties, "Rights");
+            result.SourceDate = TryGetPropertyValue(customProperties, "SourceDate");
+            result.HasRevisions = currentDoc.Revisions.Count > 0;
+            //currentDoc.DetectLanguage();
+            return result;
         }
 
         public ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
@@ -284,12 +337,20 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus endPreprocessing(ref object preprocessedObject, IConversionEventsHandler eventsHandler = null) {
             MSword.Document preprocessingDocument = (MSword.Document)preprocessedObject;
-            Dispatcher.CurrentDispatcher.Invoke(() => {
+            try {
                 preprocessingDocument.Close(
                     SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
                     OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
                 );
-            });
+            }
+            catch (Exception e) {
+                if(eventsHandler?.IsCancellationRequested() == true) {
+                    return ConversionStatus.Canceled;
+                } else {
+                    AddinLogger.Error(e);
+                    throw new Exception("An error occured while closing the preprocessing document:\r\n" + e.Message, e);
+                }
+            }
             
             return ConversionStatus.PreprocessingSucceeded;
         }
@@ -546,11 +607,14 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public object startPreprocessing(Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             // reset the focus on the document (or open it as visible) in the word app if it is not a subdoc
-            return currentInstance.Documents.Open(
-                FileName: document.InputPath,
-                AddToRecentFiles: false,
-                Visible: document.ResourceId == null
-            );
+            currentInstance.ActiveDocument.Activate();
+            return currentInstance.ActiveDocument;
+            // Test without reopening the document : raises an error with temporary documents
+            //return currentInstance.Documents.Open(
+            //    FileName: document.InputPath,
+            //    AddToRecentFiles: false,
+            //    Visible: document.ResourceId == null
+            //);
         }
 
         public ConversionStatus ValidateName(ref object preprocessedObject, StringValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
@@ -577,6 +641,30 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             } while (!nameIsValid);
             return ConversionStatus.ValidatedName;
         }
+
+        public void updateDocumentMetadata(ref object documentObject, Conversion.DocumentProperties data)
+        {
+            MSword.Document currentDoc = (MSword.Document)documentObject;
+            Microsoft.Office.Core.DocumentProperties properties = (Microsoft.Office.Core.DocumentProperties)currentDoc.BuiltInDocumentProperties;
+            Microsoft.Office.Core.DocumentProperties customProperties = (Microsoft.Office.Core.DocumentProperties)currentDoc.CustomDocumentProperties;
+            TrySetPropertyValue(properties, "Title", data.Title);
+            TrySetPropertyValue(properties, "Author", data.Author);
+            TrySetPropertyValue(properties, "Subject", data.Subject);
+            TrySetPropertyValue(properties, "Company", data.Publisher);
+
+            TrySetPropertyValue(customProperties, "Publisher", data.Publisher);
+            TrySetPropertyValue(customProperties, "ISBN", data.Identifier);
+            TrySetPropertyValue(customProperties, "Contributor", data.Contributor);
+            TrySetPropertyValue(customProperties, "Description", data.Summary);
+            TrySetPropertyValue(customProperties, "Source", data.SourceOfPagination);
+            TrySetPropertyValue(customProperties, "AccessibilitySummary", data.AccessibilitySummary);
+            TrySetPropertyValue(customProperties, "Subtitle", data.Subtitle);
+            TrySetPropertyValue(customProperties, "Date", data.Date);
+            TrySetPropertyValue(customProperties, "Rights", data.Rights);
+            TrySetPropertyValue(customProperties, "SourceDate", data.SourceDate);
+        }
+
+        #endregion
 
         #region Imports from dll and COMs
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
@@ -972,82 +1060,5 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
         #endregion
 
-        #region Metadata
-
-        private string TryGetPropertyValue(Microsoft.Office.Core.DocumentProperties properties, string property)
-        {
-            try
-            {
-                return properties[property]?.Value?.ToString() ?? "";
-            }
-            catch (Exception)
-            {
-                // If the property is not available, return an empty string
-                return "";
-            }
-        }
-        private void TrySetPropertyValue(Microsoft.Office.Core.DocumentProperties properties, string property, string value)
-        {
-            try {
-                properties[property].Value = value;
-            }
-            catch (Exception) {
-                // If the property is not available, return an empty string
-                properties.Add(property, false, MsoDocProperties.msoPropertyTypeString, value);
-            }
-        }
-
-        public Conversion.DocumentProperties loadDocumentParameters(ref object documentObject)
-        {
-            MSword.Document currentDoc = (MSword.Document)documentObject;
-            Conversion.DocumentProperties result = new Conversion.DocumentProperties(currentDoc.FullName);
-            Microsoft.Office.Core.DocumentProperties properties = (Microsoft.Office.Core.DocumentProperties)currentDoc.BuiltInDocumentProperties;
-            Microsoft.Office.Core.DocumentProperties customProperties = (Microsoft.Office.Core.DocumentProperties)currentDoc.CustomDocumentProperties;
-            result.Title = TryGetPropertyValue(properties, "Title");
-            result.Author = TryGetPropertyValue(properties, "Author");
-            result.Subject = TryGetPropertyValue(properties, "Subject");
-            result.Publisher = TryGetPropertyValue(customProperties, "Publisher");
-            if(string.IsNullOrEmpty(result.Publisher)) {
-                // Fallback to the built-in property if custom property is not set
-                result.Publisher = TryGetPropertyValue(properties, "Company");
-            }
-            result.Identifier = TryGetPropertyValue(customProperties, "ISBN");
-            result.Contributor = TryGetPropertyValue(customProperties, "Contributor");
-            result.Summary = TryGetPropertyValue(customProperties, "Description");
-            result.SourceOfPagination = TryGetPropertyValue(customProperties, "Source");
-            result.AccessibilitySummary = TryGetPropertyValue(customProperties, "AccessibilitySummary");
-            result.Subtitle = TryGetPropertyValue(customProperties, "Subtitle");
-            result.Date = TryGetPropertyValue(customProperties, "Date");
-            result.Rights = TryGetPropertyValue(customProperties, "Rights");
-            result.SourceDate = TryGetPropertyValue(customProperties, "SourceDate");
-            result.HasRevisions = currentDoc.Revisions.Count > 0;
-            //currentDoc.DetectLanguage();
-            return result;
-        }
-       
-
-        public void updateDocumentMetadata(ref object documentObject, Conversion.DocumentProperties data)
-        {
-            MSword.Document currentDoc = (MSword.Document)documentObject;
-            Microsoft.Office.Core.DocumentProperties properties = (Microsoft.Office.Core.DocumentProperties)currentDoc.BuiltInDocumentProperties;
-            Microsoft.Office.Core.DocumentProperties customProperties = (Microsoft.Office.Core.DocumentProperties)currentDoc.CustomDocumentProperties;
-            TrySetPropertyValue(properties, "Title", data.Title);
-            TrySetPropertyValue(properties, "Author", data.Author);
-            TrySetPropertyValue(properties, "Subject", data.Subject);
-            TrySetPropertyValue(properties, "Company", data.Publisher);
-
-            TrySetPropertyValue(customProperties, "Publisher", data.Publisher);
-            TrySetPropertyValue(customProperties, "ISBN", data.Identifier);
-            TrySetPropertyValue(customProperties, "Contributor", data.Contributor);
-            TrySetPropertyValue(customProperties, "Description", data.Summary);
-            TrySetPropertyValue(customProperties, "Source", data.SourceOfPagination);
-            TrySetPropertyValue(customProperties, "AccessibilitySummary", data.AccessibilitySummary);
-            TrySetPropertyValue(customProperties, "Subtitle", data.Subtitle);
-            TrySetPropertyValue(customProperties, "Date", data.Date);
-            TrySetPropertyValue(customProperties, "Rights", data.Rights);
-            TrySetPropertyValue(customProperties, "SourceDate", data.SourceDate);
-        }
-
-        #endregion
     }
 }

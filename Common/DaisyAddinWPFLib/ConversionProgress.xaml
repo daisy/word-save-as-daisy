@@ -6,46 +6,58 @@
         xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
         mc:Ignorable="d"
         Title="Progression"
-        Width="450"
+        Width="477"
         SizeToContent="Height"
         Closing="Window_Closing">
-    <StackPanel>
-        <ProgressBar x:Name="ProgressionTracker"
-                     Height="20"
+    <DockPanel Height="Auto" VerticalAlignment="Stretch">
+        <StackPanel DockPanel.Dock="Top">
+            <ProgressBar x:Name="ProgressionTracker"
+                         Height="20"
+                         Margin="5,5,5,0"
+                         Minimum="0"
+                         Maximum="100"
+                         Value="0"
+                         IsIndeterminate="False" />
+
+            
+            <TextBox x:Name="CurrentAction"
                      Margin="5,5,5,0"
-                     Minimum="0"
-                     Maximum="100"
-                     Value="0"
-                     IsIndeterminate="False"/>
-        <TextBox x:Name="CurrentAction"
-                    Margin="5,5,5,0"
-                    Text=""
-                   AutomationProperties.Name="Progress"
-                   AutomationProperties.HelpText=""
-                 IsReadOnly="True"/>
-        <Expander Header="Details"
+                     Text=""
+                     AutomationProperties.Name="Progress"
+                     AutomationProperties.HelpText=""
+                     AutomationProperties.LiveSetting="Assertive"
+                     IsReadOnly="True" />
+        </StackPanel>
+        
+        <Expander HorizontalAlignment="Stretch"
+                  Header="Details"
                   ExpandDirection="Down"
                   IsExpanded="True"
                   BorderThickness="1"
                   BorderBrush="Black"
-                  Margin="5,5,5,0">
+                  Margin="5,5,5,0"
+                  Height="Auto"
+                  DockPanel.Dock="Top" >
             <StackPanel>
                 <TextBox TextWrapping="Wrap"
                          Margin="5"
                          x:Name="MessageTextArea"
-                         Height="200"
+                         Height="250"
                          VerticalScrollBarVisibility="Auto"
                          IsReadOnly="True" />
             </StackPanel>
         </Expander>
         <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Right">
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    DockPanel.Dock="Bottom">
             <Button Width="61"
                     Margin="5"
-                    Click="CancelButton_Click">Cancel</Button>
+                    Click="CancelButton_Click"
+                    x:Name="CancelButton">Cancel</Button>
             <Button Width="61"
                     Margin="5"
                     Click="CloseButton_Click">Close</Button>
         </StackPanel>
-    </StackPanel>
+    </DockPanel>
 </Window>

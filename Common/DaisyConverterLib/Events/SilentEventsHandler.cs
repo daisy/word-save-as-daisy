@@ -13,22 +13,26 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
     /// - Continue process on lost elements found
     /// </summary>
 	public class SilentEventsHandler : IConversionEventsHandler {
-       
+
+
+
+        private bool _cancellationRequested = false;
+
         public bool AskForTranslatingSubdocuments() {
             return false;
         }
 
 
         public void onDocumentListConversionStart(List<DocumentProperties> documentLists, ConversionParameters conversion) {
-
+            _cancellationRequested = false;
         }
 
         public void onDocumentConversionStart(DocumentProperties document, ConversionParameters conversion) {
-
+            _cancellationRequested = false;
         }
 
         public void onPostProcessingStart(ConversionParameters conversion) {
-
+            _cancellationRequested = false;
         }
 
         public void onDocumentListConversionSuccess(List<DocumentProperties> documentLists, ConversionParameters conversion) {
@@ -85,6 +89,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         }
 
         public void onDocumentPreprocessingStart(string inputPath) {
+            _cancellationRequested = false;
         }
 
         public void onPreprocessingCancel() {
@@ -134,6 +139,14 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
 
         public void onPostProcessingInfo(string message)
         {
+        }
+        public void RequestCancellation()
+        {
+            _cancellationRequested = true;
+        }
+        public bool IsCancellationRequested()
+        {
+            return _cancellationRequested;
         }
     }
 

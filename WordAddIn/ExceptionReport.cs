@@ -18,12 +18,18 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             Exception current = raised;
             string exceptionText = current.Message;
             string trace = raised.StackTrace;
-            while (current.InnerException != null) {
-                current = current.InnerException;
-                exceptionText += "\r\n- " + current.Message;
-                trace += "\r\n" + current.StackTrace;
+            if (current is AggregateException aggEx) {
+                foreach (var inner in aggEx.InnerExceptions) {
+                    exceptionText += "\r\n- " + inner.Message;
+                    trace += "\r\n" + inner.StackTrace;
+                }
+            } else {
+                while (current.InnerException != null) {
+                    current = current.InnerException;
+                    exceptionText += "\r\n- " + current.Message;
+                    trace += "\r\n" + current.StackTrace;
+                }
             }
-
             this.ExceptionMessage.Text = string.Format(
                 "- Addin Version: {0}\r\n" +
                 "- Running Architecture: {1}\r\n" +

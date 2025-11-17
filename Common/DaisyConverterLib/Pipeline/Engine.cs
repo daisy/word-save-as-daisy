@@ -99,13 +99,21 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             if (!ConverterHelper.PipelineIsInstalled()) {
                 throw new InvalidOperationException("Embedded engine was not found");
             }
-            // Check if a java app from SaveAsDAISY is running
-            var allProcesses = Process.GetProcessesByName("java")
-                .Where((p) =>
-                {
-                    return p.MainModule.FileName.StartsWith(ConverterHelper.EmbeddedEnginePath);
-                }).ToArray();
-            if (allProcesses.Length == 0) {
+            var allProcesses = Process.GetProcessesByName("java");
+            bool found = false;
+            foreach (var process in allProcesses) {
+                // Using try catch instead of linq, could get sometimes a "Only part of a ReadProcessMemory or WriteProcessMemory request was completed" on MainModule access
+                try {
+                    if (process.MainModule.FileName.StartsWith(ConverterHelper.EmbeddedEnginePath)) {
+                        found = true;
+                        break;
+                    }
+                } catch (Exception e) {
+                    AddinLogger.Error("Could not access process info for embedded engine detection", e);
+                    // Access denied to process info, skip it
+                }
+            }
+            if (!found) {
                 _embeddedWebservice = null; // reset webservice instance
                 // If not running, start the embedded engine using the batch script
                 var startInfo = new ProcessStartInfo
@@ -132,7 +140,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                     return p.MainModule.FileName.StartsWith(ConverterHelper.EmbeddedEnginePath);
                 }).ToArray();
             if (allProcesses.Length > 0) {
-                allProcesses[0].Kill();
+                try {
+                    allProcesses[0].Kill();
+                } catch (Exception ex) {
+                    AddinLogger.Error("Could not stop embedded engine",ex);
+                }
             }
         }
 

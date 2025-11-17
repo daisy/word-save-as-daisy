@@ -363,5 +363,15 @@ namespace Daisy.SaveAsDAISY
         public void onPostProcessingInfo(string message)
         {
         }
+
+        public void RequestCancellation()
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsCancellationRequested()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

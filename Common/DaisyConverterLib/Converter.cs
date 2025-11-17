@@ -31,8 +31,6 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private string validationErrorMsg = string.Empty;
 
-        private CancellationTokenSource xmlConversionCancel;
-
         private ConversionStatus currentStatus = ConversionStatus.None;
 
         /// <summary>
@@ -97,6 +95,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     Assembly.GetExecutingAssembly()
                 )
             );
+            
         }
 
         /// <summary>
@@ -106,17 +105,37 @@ namespace Daisy.SaveAsDAISY.Conversion
         public void PrepareForConversion(ref DocumentProperties docprops)
         {
             try {
+                if(this.eventsHandler?.IsCancellationRequested() == true) {
+                    CurrentStatus = ConversionStatus.Canceled;
+                    return;
+                }
                 EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Preparing the conversion"));
                 // Reopen or focus the document
                 object preprocessedObject = DocumentPreprocessor.startPreprocessing(docprops, EventsHandler);
                 // Update the working copy
+                if (this.eventsHandler?.IsCancellationRequested() == true) {
+                    CurrentStatus = ConversionStatus.Canceled;
+                    return;
+                }
                 EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Updating the working copy ..."));
                 DocumentPreprocessor.CreateWorkingCopy(ref preprocessedObject, ref docprops, EventsHandler);
                 // Export shapes and Equations
+                if (this.eventsHandler?.IsCancellationRequested() == true) {
+                    CurrentStatus = ConversionStatus.Canceled;
+                    return;
+                }
                 EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Processing shapes..."));
                 CurrentStatus = DocumentPreprocessor.ProcessShapes(ref preprocessedObject, ref docprops, EventsHandler);
+                if (this.eventsHandler?.IsCancellationRequested() == true) {
+                    CurrentStatus = ConversionStatus.Canceled;
+                    return;
+                }
                 EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Processing Math..."));
                 CurrentStatus = DocumentPreprocessor.ProcessEquations(ref preprocessedObject, ref docprops, EventsHandler);
+                if (this.eventsHandler?.IsCancellationRequested() == true) {
+                    CurrentStatus = ConversionStatus.Canceled;
+                    return;
+                }
                 // Close the document to let it be accessible for conversion
                 CurrentStatus = DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
             }
@@ -135,7 +154,6 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <returns>A document ready for conversion or null if an error has occured or if the preprocess has been canceled</returns>
         public DocumentProperties AnalyzeDocument(string inputPath, string resourceId = null)
         {
-            EventsHandler.onDocumentPreprocessingStart(inputPath);
             DocumentProperties result = new DocumentProperties(inputPath)
             {
                 ResourceId = resourceId ?? null,
@@ -147,36 +165,38 @@ namespace Daisy.SaveAsDAISY.Conversion
 
             try {
                 do {
-                    switch (CurrentStatus) {
-                        case ConversionStatus.None: // Starting by validating file name
-                            EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Validating file name"));
-                            CurrentStatus = DocumentPreprocessor.ValidateName(ref preprocessedObject, ConversionParameters.NameValidator, EventsHandler);
-                            break;
-                        case ConversionStatus.ValidatedName: // make the working copy
-                            EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Name validated, creating a working copy"));
-                            CurrentStatus = DocumentPreprocessor.CreateWorkingCopy(ref preprocessedObject, ref result, EventsHandler);
-                            break;
-                        case ConversionStatus.CreatedWorkingCopy: // Load properties and languages from the working copy
-                            EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Working copy created, reading properties and languages from it"));
-                            CurrentStatus = DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
-                            result.updatePropertiesFromCopy();
-                            break;
-                        //case ConversionStatus.ProcessedShapes: // start processing math
-                        //    EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Shapes processed, processing mathml"));
-                        //    CurrentStatus = DocumentPreprocessor.ProcessEquations(ref preprocessedObject, ref result, EventsHandler);
-                        //    break;
-                        //case ConversionStatus.ProcessedMathML: // finalize preprocessing
-                        //    EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("MathML processed"));
-                        //    CurrentStatus = DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
-                        //    break;
-                    }
+                    if(eventsHandler?.IsCancellationRequested() == true) {
+                        CurrentStatus = ConversionStatus.Canceled;
+                    } else switch (CurrentStatus) {
+                            case ConversionStatus.None: // Starting by validating file name
+                                EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Validating file name"));
+                                CurrentStatus = DocumentPreprocessor.ValidateName(ref preprocessedObject, ConversionParameters.NameValidator, EventsHandler);
+                                break;
+                            case ConversionStatus.ValidatedName: // make the working copy
+                                EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Name validated, creating a working copy"));
+                                CurrentStatus = DocumentPreprocessor.CreateWorkingCopy(ref preprocessedObject, ref result, EventsHandler);
+                                break;
+                            case ConversionStatus.CreatedWorkingCopy: // Load properties and languages from the working copy
+                                EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Working copy created, reading properties and languages from it"));
+                                CurrentStatus = DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
+                                result.updatePropertiesFromCopy();
+                                break;
+                                //case ConversionStatus.ProcessedShapes: // start processing math
+                                //    EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Shapes processed, processing mathml"));
+                                //    CurrentStatus = DocumentPreprocessor.ProcessEquations(ref preprocessedObject, ref result, EventsHandler);
+                                //    break;
+                                //case ConversionStatus.ProcessedMathML: // finalize preprocessing
+                                //    EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("MathML processed"));
+                                //    CurrentStatus = DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
+                                //    break;
+                        }
                 } while (CurrentStatus != ConversionStatus.Canceled &&
                         CurrentStatus != ConversionStatus.Error &&
                         CurrentStatus != ConversionStatus.PreprocessingSucceeded);
             }
             catch (Exception e)
             {
-                Exception fault = new Exception("An error occured after " + CurrentStatus.ToString() + " status preprossing:\r\n" + e.Message, e);
+                Exception fault = new Exception("An error occured after " + CurrentStatus.ToString() + " status preprossing", e);
                 EventsHandler.onPreprocessingError(inputPath, fault);
                 throw fault;
             }
@@ -220,11 +240,14 @@ namespace Daisy.SaveAsDAISY.Conversion
         public ConversionResult ConvertWithPipeline2(DocumentProperties document, ConversionParameters conversion = null)
         {
             ConversionParameters _conversion = conversion ?? this.ConversionParameters;
-            this.EventsHandler.onDocumentConversionStart(document, _conversion);
-            xmlConversionCancel = new CancellationTokenSource();
+            
             CurrentStatus = ConversionStatus.HasStartedConversion;
             
             PrepareForConversion(ref document);
+            if (CurrentStatus == ConversionStatus.Canceled) { // Conversion is aborted
+                this.EventsHandler.onConversionCanceled();
+                return ConversionResult.Cancel();
+            }
 
             // If conversion is to be post processed output the xsl transfo to temp
             string outputDirectory = _conversion.OutputPath.EndsWith(".xml") ?
@@ -280,6 +303,10 @@ namespace Daisy.SaveAsDAISY.Conversion
                 try {
                     _conversion.PipelineScript.ExtractedShapes = document.InlineShapes;
                     _conversion.PipelineScript.ExecuteScript(document.CopyPath);
+                    if(eventsHandler.IsCancellationRequested()) {
+                        this.EventsHandler.onConversionCanceled();
+                        return ConversionResult.Cancel();
+                    }
                 }
                 catch (JobException je) {
                     // Job finished in error, not sure if i should  return a failed result
@@ -302,7 +329,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                     this.EventsHandler.onPostProcessingError(
                         fault
                     );
-                    throw fault;
+                    return ConversionResult.Fail(e);
                 }
                 this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
                 return ConversionResult.Success();
@@ -437,7 +464,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         protected void RequestConversionCancel()
         {
-            xmlConversionCancel?.Cancel();
+            eventsHandler.RequestCancellation();
             CurrentStatus = ConversionStatus.Canceled;
 
         }
