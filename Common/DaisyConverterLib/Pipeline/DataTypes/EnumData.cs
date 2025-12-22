@@ -13,8 +13,10 @@ namespace Daisy.SaveAsDAISY.Conversion
         private List<object> valuesList;
         private List<string> valuesNameList;
         private int selectedIndex;
+        public bool IsEditable { get; set; }
+        public string CustomValue { get; set; }
 
-        public EnumData(Dictionary<string, object> itemsList, object defaultValue = null) : base()
+        public EnumData(Dictionary<string, object> itemsList, object defaultValue = null, bool isEditable = false) : base()
         {
             valuesList = new List<object>();
             valuesNameList = new List<string>();
@@ -24,9 +26,16 @@ namespace Daisy.SaveAsDAISY.Conversion
                 valuesNameList.Add(item.Key);
                 valuesList.Add(item.Value);
             }
-
-            if (defaultValue != null && valuesList.Contains(defaultValue))
-                selectedIndex = valuesList.IndexOf(defaultValue);
+            IsEditable = isEditable;
+            if (defaultValue != null) {
+                if (valuesList.Contains(defaultValue)) {
+                    selectedIndex = valuesList.IndexOf(defaultValue);
+                } else if (IsEditable) {
+                    CustomValue = defaultValue.ToString();
+                    selectedIndex = -1;
+                }
+            }
+                
         }
 
         public List<object> Values { get { return valuesList; } }
@@ -49,12 +58,16 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public object SelectedItemValue
         {
-            get { return selectedIndex > -1 ? valuesList[selectedIndex] : null; }
+            get { return selectedIndex > -1 ? valuesList[selectedIndex] : (IsEditable ? CustomValue : null); }
             set
             {
                 if (value != null && valuesList.Contains(value))
                     SetSelectedIndexAndUpdateScript(valuesList.BinarySearch(value));
-                else throw new System.Exception("NotAbleToSelectItem");
+                else if (IsEditable)
+                {
+                    CustomValue = value.ToString();
+                    selectedIndex = -1;
+                } else throw new System.Exception("NotAbleToSelectItem");
             }
         }
 
@@ -66,7 +79,10 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 if (value != null && valuesNameList.Contains(value))
                     SetSelectedIndexAndUpdateScript(valuesNameList.BinarySearch(value));
-                else throw new System.Exception("NotAbleToSelectItem");
+                else if (IsEditable) {
+                    CustomValue = value.ToString();
+                    selectedIndex = -1;
+                } else throw new System.Exception("NotAbleToSelectItem");
             }
         }
 

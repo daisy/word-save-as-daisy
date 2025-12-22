@@ -21,6 +21,9 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
 
         private Dictionary<string, object> _parameterValues = new Dictionary<string, object>();
 
+        public bool IsEditable { get; set; } = false;
+        
+
         public EnumParameter(ScriptParameter p)
             : this()
         {
@@ -30,6 +33,7 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
                 for (int i = 0; i < enumData.Values.Count; i++) {
                     _parameterValues.Add(enumData.Keys[i], enumData.Values[i]);
                 }
+                IsEditable = enumData.IsEditable;
             }
             
         }

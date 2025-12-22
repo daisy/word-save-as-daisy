@@ -15,7 +15,7 @@
                   SelectedValuePath="Value"
                   DisplayMemberPath="Key"
                   SelectedValue="{Binding Path=ParameterValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                  
+                  IsEditable="{Binding Path=IsEditable}"
                   VerticalAlignment="Center"
                   Margin="5,0,5,0"
                   AutomationProperties.Name="{Binding Path=ParameterName}"
