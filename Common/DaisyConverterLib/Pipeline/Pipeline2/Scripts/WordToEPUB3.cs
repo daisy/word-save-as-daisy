@@ -220,6 +220,16 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                     )
                 },
                 {
+                  "language",
+                  new ScriptParameter(
+                    "language",
+                    "Language code",
+                    new EnumData(new Dictionary<string, object>(),isEditable:true),
+                    true,
+                    "Language code of the input document."
+                  )
+                },
+                {
                   "repair",
                   new ScriptParameter(
                     "repair",

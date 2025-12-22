@@ -46,7 +46,7 @@ namespace Daisy.SaveAsDAISY.WPF
                         _script.Parameters["language"] = new ScriptParameter(
                             sp.Name,
                             sp.NiceName,
-                            new EnumData(DocumentProps.Languages.ToDictionary(s => s, s => (object)s), DocumentProps.Languages[0]),
+                            new EnumData(DocumentProps.Languages.ToDictionary(s => s, s => (object)s), DocumentProps.Languages[0], true),
                             sp.IsParameterRequired,
                             sp.Description,
                             sp.IsParameterDisplayed,
