@@ -19,7 +19,7 @@ namespace DaisyInstaller.Properties {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,9 +63,9 @@ namespace DaisyInstaller.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        internal static byte[] DaisyAddinForWordSetup_x64 {
+        internal static byte[] DaisyAddinMSI_x64 {
             get {
-                object obj = ResourceManager.GetObject("DaisyAddinForWordSetup_x64", resourceCulture);
+                object obj = ResourceManager.GetObject("DaisyAddinMSI_x64", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -73,9 +73,9 @@ namespace DaisyInstaller.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Byte[].
         /// </summary>
-        internal static byte[] DaisyAddinForWordSetup_x86 {
+        internal static byte[] DaisyAddinMSI_x86 {
             get {
-                object obj = ResourceManager.GetObject("DaisyAddinForWordSetup_x86", resourceCulture);
+                object obj = ResourceManager.GetObject("DaisyAddinMSI_x86", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -124,6 +124,9 @@
     <Compile Include="ConversionProgress.xaml.cs">
       <DependentUpon>ConversionProgress.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Pipeline2Properties.xaml.cs">
+      <DependentUpon>Pipeline2Properties.xaml</DependentUpon>
+    </Compile>
     <Compile Include="SettingsForm.xaml.cs">
       <DependentUpon>SettingsForm.xaml</DependentUpon>
     </Compile>
@@ -189,6 +192,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ConversionProgress.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pipeline2Properties.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

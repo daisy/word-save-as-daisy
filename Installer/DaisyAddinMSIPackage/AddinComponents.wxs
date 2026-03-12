@@ -1,0 +1,146 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Fragment>
+    <ComponentGroup Id="AddinComponents" Directory="APPLICATIONFOLDER">
+		
+		<Component Id="JapanResources" Directory="JapanResourcesFolder" Guid="B39378F7-84D4-4F69-946A-2A055EA1A40C">
+			<File Id="jp.DaisyAddinLib.resources.dll.file" Name="DaisyAddinLib.resources.dll" Source="$(var.DaisyAddinLib.TargetDir)ja-JP\DaisyAddinLib.resources.dll" Checksum="yes" />
+			<File Id="jp.DaisyWord2007AddIn.resources.dll.file" Name="DaisyWord2007AddIn.resources.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)ja-JP\DaisyWord2007AddIn.resources.dll" Checksum="yes" />
+		</Component>
+		
+		<Component Id="RussianResources" Directory="RussianResourcesFolder" Guid="8FDDF65E-31CD-4C7A-A2F2-D9423B1055B5">
+			<File Id="ru.DaisyAddinLib.resources.dll.file" Name="DaisyAddinLib.resources.dll" Source="$(var.DaisyAddinLib.TargetDir)ru-RU\DaisyAddinLib.resources.dll" Checksum="yes" />
+			<File Id="ru.DaisyWord2007AddIn.resources.dll.file" Name="DaisyWord2007AddIn.resources.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)ru-RU\DaisyWord2007AddIn.resources.dll" Checksum="yes" />
+		</Component>
+		
+		<Component Id="FrenchResources" Directory="FrenchResourcesFolder">
+			<File Id="fr.Localization.resources.dll.file" Name="Localization.resources.dll" Source="$(var.Localization.TargetDir)fr\Localization.resources.dll" KeyPath="yes" Checksum="yes" />
+		</Component>
+		
+		<Component Id="DaisyAddinLib.dll" Guid="8E8F0D07-E9DF-4426-920E-3047069249A5" >
+			<File Id="___var.DaisyAddinLib.TargetFileName_" Name="$(var.DaisyAddinLib.TargetFileName)" Source="$(var.DaisyAddinLib.TargetPath)" KeyPath="yes" Checksum="yes" />
+		</Component>
+		<Component Id="DaisyAddinWPFLib.dll" Guid="B2FF2F6C-6DEB-47DD-88E9-CD238962E334" >
+			<File Id="___var.DaisyAddinWPFLib.TargetFileName_" Name="$(var.DaisyAddinWPFLib.TargetFileName)" Source="$(var.DaisyAddinWPFLib.TargetPath)" KeyPath="yes" Checksum="yes" />
+		</Component>
+		<Component Id="DaisyConverterLib.dll" Guid="6A2E273F-22B9-4016-8A1F-B0A03B4DCB1B" >
+			<File Id="___var.DaisyConverterLib.TargetFileName_" Name="$(var.DaisyConverterLib.TargetFileName)" Source="$(var.DaisyConverterLib.TargetPath)" KeyPath="yes" Checksum="yes" />
+		</Component>
+		<!--<Component Id="CustomActionAddin.dll" Guid="6A0369E5-E406-4D35-9D0B-AC6B5E7BF4AE" >
+			<File Id="___var.CustomActionAddin.TargetFileName_" Name="$(var.CustomActionAddin.TargetFileName)" Source="$(var.CustomActionAddin.TargetPath)" KeyPath="yes" Checksum="yes" />
+		</Component>-->
+		<Component Id="WindowsBase.dll" Guid="BF88F0CE-FBAB-4323-83B2-3D91C42DBF10">
+			<File Id="WindowsBase.dll" Name="WindowsBase.dll" Source="$(var.SolutionDir)resources\WindowsBase.dll" KeyPath="yes" />
+		</Component>
+		<Component Id="Localization.dll" Guid="A0430D6D-800F-4D97-9541-0A8F2BC1797A">
+			<File Id="Localization.dll.file" Source="$(var.Localization.TargetPath)" KeyPath="yes" />
+		</Component>
+
+		<Component Id="Help.chm" Guid="D8C0BEAD-7D7E-4D2C-A180-7967AFB0B36F">
+			<File Id="Help.chm" Name="Help.chm" Source="$(var.SolutionDir)resources\Help.chm" KeyPath="yes" />
+		</Component>
+		<Component Id="Help.ico" Guid="63445A1D-55DA-4A13-9869-197355B04DD8">
+			<File Id="Help.ico" Name="Help.ico" Source="$(var.SolutionDir)resources\Help.ico" KeyPath="yes" />
+		</Component>
+		<Component Id="daisy_high.ico" Guid="A539C228-C778-44B3-8615-AAF60B932544">
+			<File Id="daisy_high.ico" Name="daisy_high.ico" Source="$(var.SolutionDir)resources\images\logos\daisy_high.ico" KeyPath="yes" />
+		</Component>
+		<!--Components for Office2007 and superior-->
+		<Component Id="Microsoft.Office.Interop.Word.dll" Guid="55416793-B4F2-4194-BCB3-A52C2199D882" Condition="LATESTWORDVERSION&gt;=&quot;12.0&quot;">
+			<File Id="Microsoft.Office.Interop.Word.dll" Name="Microsoft.Office.Interop.Word.dll" Source="$(var.SolutionDir)resources\Word2007\Microsoft.Office.Interop.Word.dll" KeyPath="yes" />
+		</Component>
+		<Component Id="OFFICE.DLL" Guid="8381F602-8610-4E93-B819-C26C271CCCE9" Condition="LATESTWORDVERSION&gt;=&quot;12.0&quot;">
+			<File Id="OFFICE.DLL" Name="OFFICE.DLL" Source="$(var.SolutionDir)resources\Word2007\OFFICE.DLL" KeyPath="yes" />
+		</Component>
+		<Component Id="template2007.dotx" Guid="E108FE8D-B29D-4D30-A93C-524F6F745A58" Condition="LATESTWORDVERSION&gt;=&quot;12.0&quot;">
+			<File Id="template2007.dotx" Name="template2007.dotx" Source="$(var.SolutionDir)resources\template2007.dotx" KeyPath="yes" />
+		</Component>
+
+		<Component Id="DaisyWord2007AddIn.dll" Guid="685BF2E1-273F-4817-90E8-B715B4BE10B4" Condition="LATESTWORDVERSION&gt;=&quot;12.0&quot;" >
+			<!-- Generated wix data with Harvest tool (heat.exe)
+				 You may need to harvest again using heat.exe file path/to/dll and update the class elements and the RegistryValue items
+            -->
+			<Class Id="{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}" Context="InprocServer32" Description="Daisy.SaveAsDAISY.Addins.Word2007.Connect" ThreadingModel="both" ForeignServer="mscoree.dll">
+				<ProgId Id="DaisyWord2007AddIn.Connect" Description="Daisy.SaveAsDAISY.Addins.Word2007.Connect" />
+			</Class>
+			<Class Id="{3F067A03-E801-3A50-9643-D8303F695EE4}" Context="InprocServer32" Description="Daisy.SaveAsDAISY.Addins.Word2007.frmValidate2007" ThreadingModel="both" ForeignServer="mscoree.dll">
+				<ProgId Id="Daisy.SaveAsDAISY.Addins.Word2007.frmValidate2007" Description="Daisy.SaveAsDAISY.Addins.Word2007.frmValidate2007" />
+			</Class>
+
+			<File Id="Microsoft.Toolkit.Uwp.Notifications.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Microsoft.Toolkit.Uwp.Notifications.dll" />
+			<File Id="Newtonsoft.Json.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Newtonsoft.Json.dll" />
+			<File Id="System.ValueTuple.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\System.ValueTuple.dll" />
+
+			<File Id="filE87E1845171015B8772E9D7B2E2B8495" KeyPath="yes" Source="$(var.DaisyWord2007AddIn.TargetPath)" />
+			<ProgId Id="Record" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\$(var.AddinVersion)" Name="Class" Value="Daisy.SaveAsDAISY.Addins.Word2007.Connect" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filE87E1845171015B8772E9D7B2E2B8495]" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="Class" Value="Daisy.SaveAsDAISY.Addins.Word2007.Connect" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{18CBC6A8-BCB5-45ED-8FF3-655599E1F872}\InprocServer32" Name="CodeBase" Value="file:///[#filE87E1845171015B8772E9D7B2E2B8495]" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\Implemented Categories\{62C8FE65-4EBB-45e7-B440-6E39B2CDBF29}" Value="" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\InprocServer32\$(var.AddinVersion)" Name="Class" Value="Daisy.SaveAsDAISY.Addins.Word2007.frmValidate2007" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\InprocServer32\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\InprocServer32\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\InprocServer32\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filE87E1845171015B8772E9D7B2E2B8495]" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\InprocServer32" Name="Class" Value="Daisy.SaveAsDAISY.Addins.Word2007.frmValidate2007" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\InprocServer32" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\InprocServer32" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{3F067A03-E801-3A50-9643-D8303F695EE4}\InprocServer32" Name="CodeBase" Value="file:///[#filE87E1845171015B8772E9D7B2E2B8495]" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="Class" Value="Extensibility.ext_ConnectMode" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{289E9AF1-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filE87E1845171015B8772E9D7B2E2B8495]" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="Class" Value="Extensibility.ext_DisconnectMode" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{289E9AF2-4973-11D1-AE81-00A0C90F26F4}\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filE87E1845171015B8772E9D7B2E2B8495]" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{8FC423B4-CF11-3106-AFF1-35964F9E1480}\$(var.AddinVersion)" Name="Class" Value="Daisy.SaveAsDAISY.Addins.Word2007.DocumentPreprocessor+OLECLOSE" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{8FC423B4-CF11-3106-AFF1-35964F9E1480}\$(var.AddinVersion)" Name="Assembly" Value="DaisyWord2007AddIn, Version=$(var.AddinVersion), Culture=neutral, PublicKeyToken=b32eb409b38936d8" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{8FC423B4-CF11-3106-AFF1-35964F9E1480}\$(var.AddinVersion)" Name="RuntimeVersion" Value="v4.0.30319" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="Record\{8FC423B4-CF11-3106-AFF1-35964F9E1480}\$(var.AddinVersion)" Name="CodeBase" Value="file:///[#filE87E1845171015B8772E9D7B2E2B8495]" Type="string" Action="write" />
+		</Component>
+
+		<Component Id="extensibility.dll" Guid="8BF0BBF9-245C-47DF-9F8E-A940C06D5F50">
+			<File Id="extensibility.dll" Name="extensibility.dll" Source="$(var.SolutionDir)resources\extensibility.dll" KeyPath="yes" />
+		</Component>
+		<Component Id="Stdole.dll" Guid="EEC64143-8004-4EEB-935B-DA03E6E82CF3">
+			<File Id="Stdole.dll" Name="stdole.dll" Source="$(var.SolutionDir)resources\stdole.dll" KeyPath="yes" Checksum="yes" />
+			<RegistryValue Root="HKCR" Key="CLSID\{0BE35203-8F91-11CE-9DE3-00AA004BB851}\InprocServer32" Name="Class" Value="stdole.StdFontClass" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{0BE35203-8F91-11CE-9DE3-00AA004BB851}\InprocServer32" Name="Assembly" Value="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{0BE35203-8F91-11CE-9DE3-00AA004BB851}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{0BE35204-8F91-11CE-9DE3-00AA004BB851}\InprocServer32" Name="Class" Value="stdole.StdPictureClass" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{0BE35204-8F91-11CE-9DE3-00AA004BB851}\InprocServer32" Name="Assembly" Value="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="CLSID\{0BE35204-8F91-11CE-9DE3-00AA004BB851}\InprocServer32" Name="RuntimeVersion" Value="v1.0.3705" Type="string" Action="write" />
+			<RegistryValue Root="HKCR" Key="TypeLib\{00020430-0000-0000-C000-000000000046}\2.0" Name="PrimaryInteropAssemblyName" Value="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" Type="string" Action="write" />
+		</Component>
+		<Component Id="Readme" Guid="F4BBBA14-F1F0-473f-9F17-5294C35798B4">
+			<File Id="Readme" Name="Readme.html" Source="$(var.SolutionDir)resources\Readme.htm" KeyPath="yes" />
+		</Component>
+		<!--++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                            REGISTRY SETTINGS
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<Component Id="RegistryEntriesWord2007" Guid="4971F640-3107-439D-94F4-A22FC704BBB1" Condition="LATESTWORDVERSION&gt;=&quot;12.0&quot;">
+
+			<RegistryKey Id="RegKeyAddinMachineWord2007" Root="HKMU" Key="SOFTWARE\Microsoft\Office\Word\Addins\DaisyWord2007AddIn.Connect" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+				<RegistryValue Id="RegLoadBehaviorAddinMachineWord2007" Type="integer" Name="LoadBehavior" Value="3" />
+				<RegistryValue Id="RegFriendlyNameAddinMachineWord2007" Type="string" Name="FriendlyName" Value="SaveAsDAISY" />
+				<RegistryValue Id="RegVersionAddinMachineWord2007" Type="string" Name="Description" Value="SaveAsDAISY Addin to convert word document to DTbook XML and DAISY book files" />
+			</RegistryKey>
+		</Component>
+
+		<Component Id="log4net.dll" Guid="944F8F0B-3F51-4BC8-8DF3-EF3C44DC0FBE">
+			<File Id="log4net.dll" Name="log4net.dll" Source="$(var.SolutionDir)resources\log4net.dll" />
+		</Component>
+		<Component Id="Documentation" Guid="D0EEE0DF-BA91-4317-A63A-1D93C11B43ED">
+			<File Id="SaveAsDAISY_Instruction_Manual_July_2023.docx" Name="SaveAsDAISY_Instruction_Manual_July_2023.docx" Source="$(var.SolutionDir)docs\SaveAsDAISY_Instruction_Manual_July_2023.docx" />
+			<File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="$(var.SolutionDir)docs\Accessibility_demofile.docx" />
+			<File Id="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Name="Authoring_Guidelines_For_using_SaveAsDAISY.docx" Source="$(var.SolutionDir)docs\Authoring_Guidelines_For_using_SaveAsDAISY.docx" />
+		</Component>
+
+    </ComponentGroup>
+  </Fragment>
+</Wix>
