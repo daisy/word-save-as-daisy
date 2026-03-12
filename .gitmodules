@@ -1,3 +1,6 @@
 [submodule "engine"]
 	path = engine
 	url = https://github.com/daisy/pipeline.git
+[submodule "jnet"]
+	path = jnet
+	url = git@github.com:NPavie/jnet.git
