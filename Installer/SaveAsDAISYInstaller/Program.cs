@@ -153,14 +153,14 @@ namespace DaisyInstaller
                     if (File.Exists(pipelineCabPath)) File.Delete(pipelineCabPath);
 #if UNIFIED
                     File.WriteAllBytes(daisySetupPath, officeIs64bits ? 
-                        DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x64 :
-                        DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x86);
+                        DaisyInstaller.Properties.Resources.DaisyAddinMSI_x64 :
+                        DaisyInstaller.Properties.Resources.DaisyAddinMSI_x86);
                     File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
 #elif X64INSTALLER
-                    File.WriteAllBytes(daisySetupPath, DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x64);
+                    File.WriteAllBytes(daisySetupPath, DaisyInstaller.Properties.Resources.DaisyAddinMSI_x64);
                     File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
 #else
-                    File.WriteAllBytes(daisySetupPath, DaisyInstaller.Properties.Resources.DaisyAddinForWordSetup_x86);
+                    File.WriteAllBytes(daisySetupPath, DaisyInstaller.Properties.Resources.DaisyAddinMSI_x86);
                     File.WriteAllBytes(pipelineCabPath, DaisyInstaller.Properties.Resources.pipeline_cab);
 #endif
 

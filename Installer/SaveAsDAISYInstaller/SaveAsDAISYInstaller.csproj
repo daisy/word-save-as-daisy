@@ -31,7 +31,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>2.9.4.1.%2a</ApplicationVersion>
+    <ApplicationVersion>2.9.4.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -161,8 +161,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="README.md" />
-    <None Include="Resources\DaisyAddinForWordSetup_x64" />
-    <None Include="Resources\DaisyAddinForWordSetup_x86" />
+    <None Include="Resources\DaisyAddinMSI_x64" />
+    <None Include="Resources\DaisyAddinMSI_x86" />
     <None Include="Resources\pipeline_cab" />
     <None Include="SelfSignedCertificate.pfx" />
   </ItemGroup>

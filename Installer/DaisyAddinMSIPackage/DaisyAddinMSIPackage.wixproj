@@ -1,0 +1,32 @@
+﻿<Project Sdk="WixToolset.Sdk/6.0.2">
+  <ItemGroup>
+    <PackageReference Include="WixToolset.UI.wixext" Version="6.0.2" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="6.0.2" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj" />
+    <ProjectReference Include="..\..\Common\DaisyAddinWPFLib\DaisyAddinWPFLib.csproj" />
+    <ProjectReference Include="..\..\Common\DaisyConverterLib\DaisyConverterLib.csproj" />
+    <ProjectReference Include="..\..\Common\Localization\Localization.csproj" />
+    <ProjectReference Include="..\..\Common\ManagedAggregator\ManagedAggregator.csproj" />
+    <ProjectReference Include="..\..\WordAddIn\DaisyWord2007AddIn.csproj" />
+    <ProjectReference Include="..\DetectWordAction\DetectWordAction.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="resources\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <GenerateAdditionalCabinets>true</GenerateAdditionalCabinets>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DefineConstants>
+		ProductName=Save as DAISY Add-in for Microsoft Word;
+		Manufacturer=Daisy Consortium;
+		AddinVersion=2.9.4.2;
+		UpgradeCode=81FEF910-4CDE-43B9-8E7B-9F7D34A14765;
+	</DefineConstants>
+  </PropertyGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="IF NOT EXIST &quot;$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources&quot; mkdir &quot;$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\DaisyAddinMSI_$(PlatformName)&quot; DEL &quot;$(SolutionDir)DaisyInstaller\Resources\DaisyAddinMSI_$(PlatformName)&quot;&#xD;&#xA;IF EXIST &quot;$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline_cab&quot; DEL &quot;$(SolutionDir)DaisyInstaller\Resources\pipeline_cab&quot;&#xD;&#xA;COPY &quot;$(TargetPath)&quot; &quot;$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\DaisyAddinMSI_$(PlatformName)&quot; /Y&#xD;&#xA;COPY &quot;$(TargetPath)\..\pipeline.cab&quot; &quot;$(SolutionDir)Installer\SaveAsDAISYInstaller\Resources\pipeline_cab&quot; /Y" />
+  </Target>
+</Project>

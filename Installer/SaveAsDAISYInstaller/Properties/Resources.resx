@@ -118,11 +118,11 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="DaisyAddinForWordSetup_x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DaisyAddinForWordSetup_x64;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="DaisyAddinMSI_x64" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DaisyAddinMSI_x64;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="DaisyAddinForWordSetup_x86" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\DaisyAddinForWordSetup_x86;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="DaisyAddinMSI_x86" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\DaisyAddinMSI_x86;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="pipeline_cab" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\pipeline_cab;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>

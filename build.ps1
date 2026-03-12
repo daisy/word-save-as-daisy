@@ -8,10 +8,10 @@ param(
     [switch]$debug = $false
 )
 
-$currentVersion = "2.9.4.1"
+$currentVersion = "2.9.4.2"
 $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
 
-# Create the wix directory tree for a path
+$newWixFragmentPath = Join-Path $PSScriptRoot "Installer\DaisyAddinMSIPackage\EngineComponents.wxs"
 function Update-WixTree {
     param (
         [string]$oldroot,
@@ -131,28 +131,24 @@ if($refreshpipeline) {
         -path $(Join-Path $_oldroot "daisy-pipeline") `
         -newroot "`$(var.SolutionDir)resources" `
         -mediaId 2 `
-        -level 6 `
+        -level 3 `
         -indent "    "
-    # Replace the text in range between markers (also replacing start markers)
-    $refMarker = "<!--daisy-pipeline refs-->"
-    $dirMarker = "<!--daisy-pipeline-->"
-
-
-    $wixProductContent = Get-Content -Raw $wixProductPath
-    $dirMarkerStart = $wixProductContent.IndexOf("<Directory Id=`"_daisy_pipeline`"")
-    $dirMarkerEnd = $wixProductContent.IndexOf($dirMarker) + $dirMarker.Length #because this marker is readded by the print-wix function
-    $refMarkerStart = $wixProductContent.IndexOf("<ComponentRef Id=`"_daisy_pipeline_files`"/>")
-    $refMarkerEnd = $wixProductContent.IndexOf($refMarker)
-    $beforeDirectoryStart = $wixProductContent.Substring(0, $dirMarkerStart)
-    $betweenDirectoryEndAndRefStart = $wixProductContent.Substring($dirMarkerEnd + 1, $refMarkerStart - $dirMarkerEnd - 1)
-    $afterRefEnd = $wixProductContent.Substring($refMarkerEnd)
-    if(($dirMarkerStart -gt -1) -and ($dirMarkerEnd -gt -1) -and ($refMarkerStart -gt -1) -and ($refMarkerEnd -gt -1)){
-        Set-Content -Path $wixProductPath `
-            -Value "$beforeDirectoryStart$_cont$betweenDirectoryEndAndRefStart$_refs$("    " * 3)$afterRefEnd" `
-            -Encoding UTF8
-    } else {
-        Write-Host "Can't update wix project, could not find every markers in content'"
-    }
+    
+    # Replace content of the engine wix fragment
+    Set-Content -Path $newWixFragmentPath `
+        -Value "<Wix xmlns=""http://wixtoolset.org/schemas/v4/wxs"">
+  <Fragment>
+	  <Media Id=""2"" Cabinet=""pipeline.cab"" EmbedCab=""no"" CompressionLevel=""high""/>
+	  <DirectoryRef Id=""APPLICATIONFOLDER"">
+		  $_cont
+	  </DirectoryRef>
+	  <ComponentGroup Id=""EmbeddedEngineFiles"" Directory=""APPLICATIONFOLDER"" >
+		  $_refs
+	  </ComponentGroup>
+  </Fragment>
+</Wix>
+" `
+        -Encoding UTF8
     
 }
 
@@ -179,11 +175,11 @@ if($nobuild) {
     # build the MSIs
     MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x86";
     MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x86";
-    MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinForWordSetup /p:Configuration="Release" /p:Platform="x86";
+    MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinMSIPackage /p:Configuration="Release" /p:Platform="x86";
 
     MSBuild.exe DaisyConverter.sln /t:clean /p:Configuration="Release" /p:Platform="x64";
     MSBuild.exe DaisyConverter.sln /t:restore /p:Configuration="Release" /p:Platform="x64";
-    MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinForWordSetup /p:Configuration="Release" /p:Platform="x64";
+    MSBuild.exe DaisyConverter.sln /t:Installer\DaisyAddinMSIPackage /p:Configuration="Release" /p:Platform="x64";
     # build the installer
     MSBuild.exe DaisyConverter.sln /t:Installer\SaveAsDAISYInstaller /p:Configuration="Release" /p:Platform="Any CPU" /p:DefineConstants="UNIFIED";
 }
