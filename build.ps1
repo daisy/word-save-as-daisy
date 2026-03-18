@@ -138,7 +138,7 @@ if($refreshpipeline) {
     Set-Content -Path $newWixFragmentPath `
         -Value "<Wix xmlns=""http://wixtoolset.org/schemas/v4/wxs"">
   <Fragment>
-	  <Media Id=""2"" Cabinet=""pipeline.cab"" EmbedCab=""no"" CompressionLevel=""high""/>
+	  <Media Id=""2"" Cabinet=""pipeline.cab"" EmbedCab=""no"" />
 	  <DirectoryRef Id=""APPLICATIONFOLDER"">
 		  $_cont
 	  </DirectoryRef>
