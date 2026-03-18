@@ -305,6 +305,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         //private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
         private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
         private string dontNotifySponsorship = ""; // notify the user about sponsorship
+        private bool useWebserviceRunner = true; // use the webservice runner to run the conversion instead of jni
         private bool useDAISYPipelineApp = true; // use the pipeline app to run the conversion instead of the embedded engine
         private string resultsFolder = DefaultResultsFolder; // Default results folder
         /// <summary>
@@ -333,6 +334,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 //) +
                 $"\r\n\t<DontNotifySponsorship value=\"{dontNotifySponsorship}\" />" +
                 $"\r\n\t<UsePipelineApp value=\"{useDAISYPipelineApp.ToString().ToLower()}\" />" +
+                $"\r\n\t<UseWebserviceRunner value=\"{useWebserviceRunner.ToString().ToLower()}\" />" +
                 $"\r\n\t<ResultsFolder value=\"{(withPrivateData ? resultsFolder : "removed for privacy")}\" />" +
                 $"\r\n</Settings>";
         }
@@ -406,6 +408,12 @@ namespace Daisy.SaveAsDAISY.Conversion
             if (UsePipelineAppSettings != null) {
                 var nodeValue = UsePipelineAppSettings.Attributes["value"]?.InnerXml;
                 useDAISYPipelineApp = ConverterHelper.PipelineAppIsInstalled() && (nodeValue == null ? useDAISYPipelineApp : nodeValue == "true");
+            }
+            XmlNode UseWebserviceSettings = settingsDocument.SelectSingleNode("//Settings/UseWebserviceRunner");
+            if (UseWebserviceSettings != null)
+            {
+                var nodeValue = UseWebserviceSettings.Attributes["value"]?.InnerXml;
+                useWebserviceRunner = nodeValue == "true";
             }
 
 
@@ -492,6 +500,12 @@ namespace Daisy.SaveAsDAISY.Conversion
         public bool UseDAISYPipelineApp {
             get => useDAISYPipelineApp;
             set => useDAISYPipelineApp = value;
+        }
+
+        public bool UseWebserviceRunner
+        {
+            get => useWebserviceRunner;
+            set => useWebserviceRunner = value;
         }
 
         public string ResultsFolder {

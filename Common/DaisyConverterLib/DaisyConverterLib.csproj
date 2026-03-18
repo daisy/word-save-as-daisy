@@ -131,7 +131,7 @@
     <Compile Include="Converter.cs" />
     <Compile Include="Events\SilentEventsHandler.cs" />
     <Compile Include="Pipeline\Engine.cs" />
-    <Compile Include="Pipeline\JNIRunner.cs" />
+    <Compile Include="Pipeline\JNIWrapperRunner.cs" />
     <Compile Include="Pipeline\ParameterDataBase.cs" />
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
     <Compile Include="Pipeline\ChainedScripts\WordToDaisy202Chain.cs" />
@@ -234,10 +234,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\_Perso\word-save-as-daisy\jnet\JNET.csproj">
-      <Project>{941df07f-3ee8-4793-abba-659f2e0598c3}</Project>
-      <Name>JNET</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Localization\Localization.csproj">
       <Project>{2d39282d-07b3-49cd-8cf6-ebfb4bae83d9}</Project>
       <Name>Localization</Name>

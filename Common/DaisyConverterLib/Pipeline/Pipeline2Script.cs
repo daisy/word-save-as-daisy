@@ -25,9 +25,13 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         public override void ExecuteScript(string input)
         {
             ScriptRunner runner;
-            bool useDAISYPipelineApp = _settings.UseDAISYPipelineApp;
-            runner = WebserviceRunner.GetInstance(EventsHandler);
-
+            if(_settings.UseWebserviceRunner)
+            {
+                runner = WebserviceRunner.GetInstance(EventsHandler);
+            } else
+            {
+                runner = JNIWrapperRunner.GetInstance(EventsHandler);
+            }
             if (Parameters.ContainsKey("input") && (string)Parameters["input"].Value == "")
             {
                 Parameters["input"].Value = input;
