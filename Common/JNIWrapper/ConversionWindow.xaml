@@ -1,0 +1,21 @@
+﻿<Window x:Class="ConversionApp.ConversionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ConversionApp"
+        mc:Ignorable="d"
+        Title="Conversion" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Text="Conversion Progress" x:Name="ConversionProgressText" Margin="10" FontSize="16"/>
+        <ProgressBar Grid.Row="1" x:Name="ProgressBar" Height="20" Margin="10" Minimum="0" Maximum="100"/>
+        <TextBox Grid.Row="2" x:Name="LogTextBox" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
+        <Button Grid.Row="3" x:Name="CancelButton" Content="Cancel" Margin="10" HorizontalAlignment="Right" Width="80" Click="CancelButton_Click"/>
+    </Grid>
+</Window>
