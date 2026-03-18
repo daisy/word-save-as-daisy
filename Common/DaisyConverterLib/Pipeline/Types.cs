@@ -356,6 +356,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
         public string Type { get; set; }
         public string Description { get; set; }
         public string Trace { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Type} - {Description}\nTrace: {Trace}";
+        }
     }
 
     public class ScriptItemBase

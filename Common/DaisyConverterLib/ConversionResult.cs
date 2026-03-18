@@ -29,9 +29,12 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// Creates success result.
 		/// </summary>
 		/// <returns></returns>
-		public static ConversionResult Success()
+		public static ConversionResult Success(string result = "")
 		{
-			return new ConversionResult(Type.Success);
+			return new ConversionResult(Type.Success)
+			{
+				ResultPath = result
+			};
 		}
 
 		/// <summary>
@@ -61,7 +64,9 @@ namespace Daisy.SaveAsDAISY.Conversion
 		/// </summary>
 		public Exception ErrorDetails { get; set; }
 
-		public string ErrorMessage
+		public string ResultPath { get; set; } = string.Empty;
+
+        public string ErrorMessage
 		{
 			get
 			{

@@ -325,14 +325,13 @@ namespace Daisy.SaveAsDAISY.Conversion
                 }
                 catch (Exception e) {
                     CurrentStatus = ConversionStatus.Error;
-                    Exception fault = new Exception("Error while converting with DAISY Pipeline 2", e);
                     this.EventsHandler.onPostProcessingError(
-                        fault
+                        e
                     );
                     return ConversionResult.Fail(e);
                 }
                 this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
-                return ConversionResult.Success();
+                return ConversionResult.Success(outputDirectory);
             }
             
         }

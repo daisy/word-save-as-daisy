@@ -145,6 +145,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
             catch(JobException) {
                 throw;
             }
+            catch (JobRequestError jre)
+            {
+                var ex = new Exception(jre.ToString());
+                events.OnConversionError(ex);
+                throw ex;
+            }
             catch (AggregateException e) {
                 var ex = new Exception("An error occured during the job launch or its monitoring", e);
                 events.OnConversionError(ex);
@@ -159,11 +165,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
         public void LaunchEngine()
         {
             if(ConverterSettings.Instance.UseDAISYPipelineApp == false) {
-                Engine.StartEmbeddedEngine();
-                _webservice = Engine.getEmbeddedWebservice();
+                _webservice = Engine.StartEmbeddedWebservice();
             } else {
-                Engine.StartDAISYPipelineApp();
-                _webservice = Engine.getAppWebservice();
+                _webservice = Engine.StartDAISYPipelineAppWebservice();
             }
            
         }
