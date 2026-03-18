@@ -222,6 +222,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="SelfSignedCertificate.pfx" />
     <Resource Include="resources\Images\about_screen.png" />
     <None Include="DaisyTranslatorPhaseTwo.snk" />
     <None Include="Properties\Settings.settings">

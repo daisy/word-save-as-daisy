@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Daisy.SaveAsDAISY.WPF"
         mc:Ignorable="d"
         Title="Progression"
-        Width="477"
+        Width="450"
         SizeToContent="Height"
         Closing="Window_Closing">
     <DockPanel Height="Auto" VerticalAlignment="Stretch">
@@ -19,7 +19,7 @@
                          Value="0"
                          IsIndeterminate="False" />
 
-            
+
             <TextBox x:Name="CurrentAction"
                      Margin="5,5,5,0"
                      Text=""
@@ -28,24 +28,23 @@
                      AutomationProperties.LiveSetting="Assertive"
                      IsReadOnly="True" />
         </StackPanel>
-        
-        <Expander HorizontalAlignment="Stretch"
+
+        <Expander
                   Header="Details"
                   ExpandDirection="Down"
                   IsExpanded="True"
                   BorderThickness="1"
                   BorderBrush="Black"
                   Margin="5,5,5,0"
-                  Height="Auto"
-                  DockPanel.Dock="Top" >
-            <StackPanel>
+                  DockPanel.Dock="Top" Height="300" >
+            <Grid>
                 <TextBox TextWrapping="Wrap"
+                         MinHeight="200"
                          Margin="5"
                          x:Name="MessageTextArea"
-                         Height="250"
                          VerticalScrollBarVisibility="Auto"
                          IsReadOnly="True" />
-            </StackPanel>
+            </Grid>
         </Expander>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"

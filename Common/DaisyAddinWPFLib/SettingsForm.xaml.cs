@@ -103,7 +103,10 @@ namespace Daisy.SaveAsDAISY.WPF
             NumberPrefix.Text = GlobaleSettings.FootnotesNumberingPrefix;
             NotesTextPrefix.Text = GlobaleSettings.FootnotesNumberingSuffix;
 
-            UseDAISYPipelineApp.IsChecked = ConverterHelper.PipelineAppIsInstalled() && GlobaleSettings.UseDAISYPipelineApp;
+            UseWebserviceRunner.IsChecked = GlobaleSettings.UseWebserviceRunner;
+
+            UseDAISYPipelineApp.IsEnabled = UseWebserviceRunner.IsChecked == true;
+            UseDAISYPipelineApp.IsChecked = UseWebserviceRunner.IsChecked == true && ConverterHelper.PipelineAppIsInstalled() && GlobaleSettings.UseDAISYPipelineApp;
             PreferredVoices.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
             TTSEngines.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
             BrowseVoices.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
@@ -202,6 +205,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.FootnotesNumberingSuffix = NotesTextPrefix.Text;
                 GlobaleSettings.UseDAISYPipelineApp = UseDAISYPipelineApp.IsChecked == true;
                 GlobaleSettings.TTSConfigFile = TTSConfigFile.Text.Trim();
+                GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
                 // Save
                 GlobaleSettings.Save();
               this.Close();
@@ -216,6 +220,11 @@ namespace Daisy.SaveAsDAISY.WPF
             StartNumber.IsEnabled = NotesNumberingChoices.Values.ToList()[NotesNumbering.SelectedIndex] != FootnotesNumberingChoice.Enum.None;
         }
 
+        
+        //private void UseWebserviceInteractions_Checked(object sender, RoutedEventArgs e)
+        //{
+
+        //}
         private void UseDAISYPipelineApp_Checked(object sender, RoutedEventArgs e)
         {
             if(!ConverterHelper.PipelineAppIsInstalled()) {
@@ -240,9 +249,20 @@ namespace Daisy.SaveAsDAISY.WPF
                 PreferredVoices.IsEnabled = true;
                 TTSEngines.IsEnabled = true;
                 BrowseVoices.IsEnabled = true;
+
                 TTSConfigFile.IsEnabled = false;
                 BrowseTTSConfigFile.IsEnabled = false;
             }
+        }
+        private void UseDAISYPipelineApp_Unchecked(object sender, RoutedEventArgs e)
+        {
+            PreferredVoices.IsEnabled = false;
+            TTSEngines.IsEnabled = false;
+            BrowseVoices.IsEnabled = false;
+
+            TTSConfigFile.IsEnabled = true;
+            BrowseTTSConfigFile.IsEnabled = true;
+
         }
 
         private void PreferredVoices_Click(object sender, RoutedEventArgs e)
@@ -275,16 +295,7 @@ namespace Daisy.SaveAsDAISY.WPF
             }
         }
 
-        private void UseDAISYPipelineApp_Unchecked(object sender, RoutedEventArgs e)
-        {
-            PreferredVoices.IsEnabled = false;
-            TTSEngines.IsEnabled = false;
-            BrowseVoices.IsEnabled = false;
 
-            TTSConfigFile.IsEnabled = true;
-            BrowseTTSConfigFile.IsEnabled = true;
-
-        }
 
         private void BrowseTTSConfigFile_Click(object sender, RoutedEventArgs e)
         {
@@ -340,6 +351,62 @@ namespace Daisy.SaveAsDAISY.WPF
         private void BrowseResultsFolder_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void UseWebserviceRunner_Checked(object sender, RoutedEventArgs e)
+        {
+            // If it is not already enabled, confirm with the user that they want to enable it, as it may require allowing firewall access which can cause 'Access Denied' errors if not allowed
+            if (!GlobaleSettings.UseWebserviceRunner)
+            {
+                var result = MessageBox.Show(
+                      "The use of webservice interactions requires to have access to firewall security notices to allow the engine webservice.\r\n" +
+                      "If you don't have this acces, you may encounter an 'Access Denied' error when trying to convert a document.\r\n" +
+                      "Do you still want to enable the webservice interactions ?",
+                      "DAISY Pipeline App Not Found",
+                      MessageBoxButton.YesNo,
+                      MessageBoxImage.Warning
+                );
+                if (result == MessageBoxResult.Yes)
+                {
+                    UseWebserviceRunner.IsChecked = true;
+                    UseDAISYPipelineApp.IsEnabled = true;
+                    PreferredVoices.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
+                    TTSEngines.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
+                    BrowseVoices.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
+                    TTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked != true;
+                    BrowseTTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked != true;
+                }
+                else
+                {
+                    UseWebserviceRunner.IsChecked = false;
+                    UseDAISYPipelineApp.IsEnabled = false;
+                    PreferredVoices.IsEnabled = false;
+                    TTSEngines.IsEnabled = false;
+                    BrowseVoices.IsEnabled = false;
+                    TTSConfigFile.IsEnabled = true;
+                    BrowseTTSConfigFile.IsEnabled = true;
+                }
+            } else
+            {
+                UseWebserviceRunner.IsChecked = true;
+                UseDAISYPipelineApp.IsEnabled = true;
+                PreferredVoices.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
+                TTSEngines.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
+                BrowseVoices.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
+                TTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked != true;
+                BrowseTTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked != true;
+            }
+        }
+
+        private void UseWebserviceRunner_Unchecked(object sender, RoutedEventArgs e)
+        {
+            UseWebserviceRunner.IsChecked = false;
+            UseDAISYPipelineApp.IsEnabled = false;
+            PreferredVoices.IsEnabled = false;
+            TTSEngines.IsEnabled = false;
+            BrowseVoices.IsEnabled = false;
+            TTSConfigFile.IsEnabled = true;
+            BrowseTTSConfigFile.IsEnabled = true;
         }
     }
 }

@@ -375,8 +375,8 @@ namespace Daisy.SaveAsDAISY.WPF
             Exception e = errors;
             string message = e.Message;
             while (e.InnerException != null) {
-                message += "\r\n- " + e.Message;
                 e = e.InnerException;
+                message += "\r\n- " + e.Message;
             }
             AddinLogger.Error("An error occured during conversion: \r\n" + message);
             TryShowMessage("Error during conversion : " + message, true);

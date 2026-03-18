@@ -158,6 +158,12 @@
         <GroupBox Header="DAISY Pipeline engine"
                   Margin="5">
             <StackPanel>
+                <CheckBox Content="Enable webservice interactions"
+                      VerticalAlignment="Center"
+                      Margin="5"
+                      x:Name="UseWebserviceRunner"
+                      Checked="UseWebserviceRunner_Checked"
+                      Unchecked="UseWebserviceRunner_Unchecked"/>
                 <CheckBox Content="Use DAISY Pipeline App instead of embedded engine"
                           VerticalAlignment="Center"
                           Margin="5"
