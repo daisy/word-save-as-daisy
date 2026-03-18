@@ -167,6 +167,9 @@ namespace DaisyInstaller
                     // launch the msi
                     var process = Process.Start(daisySetupPath);
                     process.WaitForExit();
+                    if(process.ExitCode != 0) {
+                        return;
+                    }
                     bool installApp = true;
                     // Check SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall
                     RegistryKey lKeyApp = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
