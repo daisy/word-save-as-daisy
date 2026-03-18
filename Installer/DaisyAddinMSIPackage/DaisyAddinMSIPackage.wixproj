@@ -7,8 +7,10 @@
     <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj" />
     <ProjectReference Include="..\..\Common\DaisyAddinWPFLib\DaisyAddinWPFLib.csproj" />
     <ProjectReference Include="..\..\Common\DaisyConverterLib\DaisyConverterLib.csproj" />
+    <ProjectReference Include="..\..\Common\JNIWrapper\JNIWrapper.csproj" />
     <ProjectReference Include="..\..\Common\Localization\Localization.csproj" />
     <ProjectReference Include="..\..\Common\ManagedAggregator\ManagedAggregator.csproj" />
+    <ProjectReference Include="..\..\jnet\JNET.csproj" />
     <ProjectReference Include="..\..\WordAddIn\DaisyWord2007AddIn.csproj" />
     <ProjectReference Include="..\DetectWordAction\DetectWordAction.csproj" />
   </ItemGroup>

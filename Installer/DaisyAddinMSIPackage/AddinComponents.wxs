@@ -25,16 +25,20 @@
 		<Component Id="DaisyConverterLib.dll" Guid="6A2E273F-22B9-4016-8A1F-B0A03B4DCB1B" >
 			<File Id="___var.DaisyConverterLib.TargetFileName_" Name="$(var.DaisyConverterLib.TargetFileName)" Source="$(var.DaisyConverterLib.TargetPath)" KeyPath="yes" Checksum="yes" />
 		</Component>
-		<!--<Component Id="CustomActionAddin.dll" Guid="6A0369E5-E406-4D35-9D0B-AC6B5E7BF4AE" >
-			<File Id="___var.CustomActionAddin.TargetFileName_" Name="$(var.CustomActionAddin.TargetFileName)" Source="$(var.CustomActionAddin.TargetPath)" KeyPath="yes" Checksum="yes" />
-		</Component>-->
-		<Component Id="WindowsBase.dll" Guid="BF88F0CE-FBAB-4323-83B2-3D91C42DBF10">
-			<File Id="WindowsBase.dll" Name="WindowsBase.dll" Source="$(var.SolutionDir)resources\WindowsBase.dll" KeyPath="yes" />
+		<Component Id="JNIWrapper.exe" Guid="8DE5E300-B1FD-45B2-871C-4606C43C437E" >
+			<File Id="___var.JNIWrapper.TargetFileName_" Name="$(var.JNIWrapper.TargetFileName)" Source="$(var.JNIWrapper.TargetPath)" KeyPath="yes" Checksum="yes" />
 		</Component>
 		<Component Id="Localization.dll" Guid="A0430D6D-800F-4D97-9541-0A8F2BC1797A">
 			<File Id="Localization.dll.file" Source="$(var.Localization.TargetPath)" KeyPath="yes" />
 		</Component>
 
+		<!-- Vendored JNET dll - regenerate and copy jnet into resources for updating it-->
+		<Component Id="JNET.dll">
+			<File Id="JNET.dll" Name="JNET.dll" Source="$(var.SolutionDir)resources\JNET.dll" KeyPath="yes" />
+		</Component>
+		<Component Id="WindowsBase.dll" Guid="BF88F0CE-FBAB-4323-83B2-3D91C42DBF10">
+			<File Id="WindowsBase.dll" Name="WindowsBase.dll" Source="$(var.SolutionDir)resources\WindowsBase.dll" KeyPath="yes" />
+		</Component>
 		<Component Id="Help.chm" Guid="D8C0BEAD-7D7E-4D2C-A180-7967AFB0B36F">
 			<File Id="Help.chm" Name="Help.chm" Source="$(var.SolutionDir)resources\Help.chm" KeyPath="yes" />
 		</Component>
