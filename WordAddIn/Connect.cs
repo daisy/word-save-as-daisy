@@ -459,15 +459,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             // Launch the pipeline in the background to start conversions asap
             try
             {
-                if (ConverterSettings.Instance.UseDAISYPipelineApp)
-                {
-                    Engine.StartDAISYPipelineApp();
-                }
-                else
-                {
-                    Engine.StopEmbeddedEngine();
-                    Engine.StartEmbeddedEngine();
-                }
+                //if (ConverterSettings.Instance.UseDAISYPipelineApp)
+                //{
+                //    Engine.StartDAISYPipelineAppWebservice();
+                //}
+                //else
+                //{
+                //    Engine.StopEmbeddedEngine();
+                //    Engine.StartEmbeddedWebservice();
+                //}
             }
             catch (Exception e)
             {
@@ -653,12 +653,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             {
                 if (ConverterSettings.Instance.UseDAISYPipelineApp)
                 {
-                    Engine.StartDAISYPipelineApp();
+                    Engine.StartDAISYPipelineAppWebservice();
                 }
-                else
+                else if(ConverterSettings.Instance.UseWebserviceRunner)
                 {
                     Engine.StopEmbeddedEngine();
-                    Engine.StartEmbeddedEngine();
+                    Engine.StartEmbeddedWebservice();
+                } else
+                {
+                    Engine.StopEmbeddedEngine();
                 }
             }
             catch (Exception e)
@@ -1384,7 +1387,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                         try
                         {
                             var convresult = converter.ConvertWithPipeline2(currentDocument);
-                            System.Diagnostics.Process.Start(finalOutput.FullName);
                             return convresult;
                         }
                         catch (JobException jex)
@@ -1465,6 +1467,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                 else if (result.Succeeded)
                 {
                     eventsHandler.onConversionSuccess();
+                    Process.Start(result.ResultPath);
+
                 }
                 else if (result.Failed)
                 {
@@ -1505,12 +1509,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             }
             catch (Exception e)
             {
-                AddinLogger.Error(e);
-                var inner = e.InnerException;
-                while (inner != null)
+                var chain = e;
+                AddinLogger.Error(chain);
+                while (chain.InnerException != null)
                 {
-                    AddinLogger.Error(e.InnerException);
-                    inner = e.InnerException;
+                    chain = e.InnerException;
+                    AddinLogger.Error(chain);
                 }
                 ExceptionReport report = new ExceptionReport(e);
                 report.ShowDialog();
@@ -1589,18 +1593,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             }
             catch (Exception e)
             {
-                AddinLogger.Error(e);
-                var inner = e.InnerException;
-                while (inner != null)
+                var chain = e;
+                AddinLogger.Error(chain);
+                while (chain.InnerException != null)
                 {
-                    AddinLogger.Error(e.InnerException);
-                    inner = e.InnerException;
+                    chain = e.InnerException;
+                    AddinLogger.Error(chain);
                 }
-                if (true)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
+                ExceptionReport report = new ExceptionReport(e);
+                report.ShowDialog();
             }
         }
 
@@ -1676,18 +1677,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             }
             catch (Exception e)
             {
-                AddinLogger.Error(e);
-                var inner = e.InnerException;
-                while (inner != null)
+                var chain = e;
+                AddinLogger.Error(chain);
+                while (chain.InnerException != null)
                 {
-                    AddinLogger.Error(e.InnerException);
-                    inner = e.InnerException;
+                    chain = e.InnerException;
+                    AddinLogger.Error(chain);
                 }
-                if (true)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
+                ExceptionReport report = new ExceptionReport(e);
+                report.ShowDialog();
             }
         }
 
@@ -1761,18 +1759,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             }
             catch (Exception e)
             {
-                AddinLogger.Error(e);
-                var inner = e.InnerException;
-                while (inner != null)
+                var chain = e;
+                AddinLogger.Error(chain);
+                while (chain.InnerException != null)
                 {
-                    AddinLogger.Error(e.InnerException);
-                    inner = e.InnerException;
+                    chain = e.InnerException;
+                    AddinLogger.Error(chain);
                 }
-                if (true)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
+                ExceptionReport report = new ExceptionReport(e);
+                report.ShowDialog();
             }
         }
 

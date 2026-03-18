@@ -255,7 +255,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             // Open back the copy as invisible
             MSword.Document copy = currentInstance.Documents.Open(
                 FileName: tmpFileName,
+#if DEBUG
+                Visible: true
+#else
                 Visible: false
+#endif
             );
 
             if(ConverterSettings.Instance.PagenumStyle == ConverterSettings.PageNumberingChoice.Enum.Automatic) {
@@ -338,6 +342,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public ConversionStatus endPreprocessing(ref object preprocessedObject, IConversionEventsHandler eventsHandler = null) {
             MSword.Document preprocessingDocument = (MSword.Document)preprocessedObject;
             try {
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 preprocessingDocument.Close(
                     SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
                     OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
@@ -664,7 +672,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             TrySetPropertyValue(customProperties, "SourceDate", data.SourceDate);
         }
 
-        #endregion
+#endregion
 
         #region Imports from dll and COMs
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
