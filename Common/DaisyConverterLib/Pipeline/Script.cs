@@ -1,8 +1,10 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Events;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime;
 
 namespace Daisy.SaveAsDAISY.Conversion
 {
@@ -16,9 +18,12 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         protected IConversionEventsHandler eventsHandler;
 
+        private ConverterSettings _settings = ConverterSettings.Instance;
+
         public Script(IConversionEventsHandler eventsHandler = null)
         {
             this.eventsHandler = eventsHandler ?? new SilentEventsHandler();
+            _parameters = new Dictionary<string, ScriptParameter>();
         }
 
         public IConversionEventsHandler EventsHandler { get { return eventsHandler; } set { eventsHandler = value; } }
@@ -56,9 +61,9 @@ namespace Daisy.SaveAsDAISY.Conversion
         }
 
 
-
-
         protected Dictionary<string, ScriptParameter> _parameters;
+
+        protected bool _alsoExportShapes = false;
 
         /// <summary>
         /// List of parameters available in script
@@ -105,7 +110,70 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// Execute the script on the given input file path.
         /// </summary>
         /// <param name="input">input file path</param>
-        public abstract void ExecuteScript(string input);
+        public virtual void ExecuteScript(string input)
+        {
+            Runner runner;
+            if (_settings.UseWebserviceRunner)
+            {
+                runner = WebserviceRunner.GetInstance(EventsHandler);
+            }
+            else
+            {
+                runner = JNIWrapperRunner.GetInstance(EventsHandler);
+            }
+            if (Parameters.ContainsKey("input") && (string)Parameters["input"].Value == "")
+            {
+                Parameters["input"].Value = input;
+            }
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            foreach (KeyValuePair<string, ScriptParameter> v in Parameters)
+            {
+
+                // avoid passing empty values
+                if (
+                    !v.Value.IsParameterRequired
+                    && (
+                        v.Value.ParameterData is StringData
+                        || v.Value.ParameterData is PathData
+                    )
+                    && "" == (string)v.Value.Value
+                )
+                {
+                    continue;
+                }
+                // NP 2025/08/08 : Webservice requires file uris, while JNIRunner/SimpleAPI requires system file path
+                if (v.Value.ParameterData is PathData path && runner is WebserviceRunner)
+                {
+                    parameters[v.Value.Name] = new Uri(path.Value.ToString()).AbsoluteUri;
+                }
+                else
+                {
+                    parameters[v.Value.Name] = v.Value.Value;
+                }
+            }
+
+            runner.StartJob(Name, parameters, Parameters["output"].Value.ToString());
+
+            if (_alsoExportShapes && ExtractedShapes.Count > 0)
+            {
+                foreach (string shape in ExtractedShapes)
+                {
+                    if (File.Exists(shape) == false)
+                    {
+                        // File has been already copied by the new word to dtbook script, continue parsing
+                        continue;
+                    }
+                    try
+                    {
+                        File.Copy(shape, Path.Combine(Parameters["output"].Value.ToString(), Path.GetFileName(shape)), true);
+                    }
+                    catch (Exception ex)
+                    {
+                        EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Error while copying extracted shape " + shape + ": " + ex.Message));
+                    }
+                }
+            }
+        }
 
 
         /// <summary>

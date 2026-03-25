@@ -1,5 +1,5 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Events;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts;
 using System;
 using System.Collections.Generic;
 using System.IO;

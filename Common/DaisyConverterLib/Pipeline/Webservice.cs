@@ -2,13 +2,10 @@
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -24,7 +21,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
 
         private HttpClient connection;
 
-        private List<ScriptDefinition> scripts = null;
+        public List<ScriptDefinition> LoadedScripts = null;
 
         
 
@@ -56,6 +53,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             } else {
                 // preload scripts
                 this.GetScripts();
+                //List<EngineProperty> properties = this.GetEngineProperties();
+                foreach (var prop in PipelineUserProperties.Instance.Items)
+                {
+                    this.SetEngineProperty(prop.Name, prop.Value);
+                }
+
             }
         }
 
@@ -77,7 +80,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             Host = host;
             Port = port;
             Path = path.StartsWith("/") ? path.TrimEnd('/') : $"/{path.TrimEnd('/')}";
-
             connection = new HttpClient
             {
                 BaseAddress = new Uri($"http://{Host}:{Port}{Path}")
@@ -119,23 +121,23 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
 
         public List<ScriptDefinition> GetScripts()
         {
-            if (scripts != null) return scripts;
+            if (LoadedScripts != null) return LoadedScripts;
             try {
                 var response = connection.GetAsync(connection.BaseAddress + ENDPOINTS.SCRIPTS).Result;
-                scripts = new List<ScriptDefinition>();
+                LoadedScripts = new List<ScriptDefinition>();
                 XmlElement scriptsElm = ParseXml(response.Content.ReadAsStringAsync().Result, "scripts");
 
                 foreach (XmlElement scriptNode in scriptsElm.GetElementsByTagName("script")) {
-                    scripts.Add(ScriptDefinition.FromXml(scriptNode));
+                    LoadedScripts.Add(ScriptDefinition.FromXml(scriptNode));
                 }
                 
-                scripts = scripts.Select(s => GetScriptDetails(s)).ToList();
+                LoadedScripts = LoadedScripts.Select(s => GetScriptDetails(s)).ToList();
                 
-                return scripts;
+                return LoadedScripts;
 
             }
             catch (Exception e) {
-                scripts = null;
+                LoadedScripts = null;
                 AddinLogger.Error(new Exception($"Could not retrieve the list of scripts from the engine", e));
                 return new List<ScriptDefinition>();
             }
@@ -150,6 +152,51 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             catch (Exception e) {
                 AddinLogger.Error(new Exception($"Could not retrieve the details of script {s.Id} from the engine", e));
                 return s;
+            }
+        }
+
+        public List<EngineProperty> GetEngineProperties()
+        {
+            try {
+                var response = connection.GetAsync(connection.BaseAddress + ENDPOINTS.ADMIN_PROPERTIES).Result;
+                List<EngineProperty> properties = new List<EngineProperty>();
+                XmlElement propertiesElm = ParseXml(response.Content.ReadAsStringAsync().Result, "properties");
+                foreach (XmlElement propertyNode in propertiesElm.GetElementsByTagName("property")) {
+                    properties.Add(EngineProperty.FromXml(propertyNode));
+                }
+                return properties;
+            }
+            catch (Exception e) {
+                AddinLogger.Error(new Exception($"Could not retrieve the list of engine properties from the engine", e));
+                return new List<EngineProperty>();
+            }
+        }
+
+        /// <summary>
+        /// Convert an EngineProperty to a proper xml string that can be used to update a property on the engine.
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="value"></param>
+        public void SetEngineProperty(string propertyName, string value)
+        {
+            try {
+                EngineProperty temp = new EngineProperty()
+                {
+                    Name= propertyName,
+                    Value = value ?? "",
+                };
+                
+                var response = connection.PutAsync(
+                    connection.BaseAddress + string.Format(ENDPOINTS.ADMIN_PROPERTY, propertyName),
+                    new StringContent(temp.ToUpdateString(), System.Text.Encoding.UTF8, "application/xml")
+                ).Result;
+                if (!response.IsSuccessStatusCode) {
+                    throw new Exception($"Failed to set engine property '{propertyName}' to value '{value}'. Server responded with status code {response.StatusCode}.");
+                }
+            }
+            catch (Exception e) {
+                AddinLogger.Error(new Exception($"Could not set engine property '{propertyName}' to value '{value}'", e));
+                //throw e;
             }
         }
 

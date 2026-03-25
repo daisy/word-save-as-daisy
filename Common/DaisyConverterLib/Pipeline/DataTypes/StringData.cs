@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion

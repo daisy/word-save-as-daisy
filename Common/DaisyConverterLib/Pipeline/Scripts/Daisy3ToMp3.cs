@@ -2,11 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
-namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts {
-    public class Daisy3ToMp3 : Pipeline2Script {
+namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
+{
+    public class Daisy3ToMp3 : Script {
 
         public Daisy3ToMp3(IConversionEventsHandler eventsHandler) : base(eventsHandler) {
             this.name = "daisy3-to-mp3";

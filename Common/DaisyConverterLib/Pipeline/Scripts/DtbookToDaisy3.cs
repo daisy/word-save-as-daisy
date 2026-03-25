@@ -7,9 +7,9 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
+namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
 {
-    public class DtbookToDaisy3 : Pipeline2Script
+    public class DtbookToDaisy3 : Script
     {
         public DtbookToDaisy3(IConversionEventsHandler eventsHandler) : base(eventsHandler)
         {

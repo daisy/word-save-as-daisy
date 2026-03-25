@@ -1,120 +1,57 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Events;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline
 {
+    public sealed class EmbeddedEngineProperties
+    {
+        private static readonly Lazy<EmbeddedEngineProperties> lazy
+            = new Lazy<EmbeddedEngineProperties>(() => new EmbeddedEngineProperties());
+
+        public static EmbeddedEngineProperties Instance => lazy.Value;
+
+        
+        public List<EngineProperty> Items { get; private set; }
+
+        private EmbeddedEngineProperties()
+        {
+            string propertiesPath = ConverterHelper.EmbeddedEngineProperties;
+            if (!File.Exists(propertiesPath))
+            {
+                throw new FileNotFoundException("Could not find embedded engine properties file at " + propertiesPath);
+            }
+            try
+            {
+                System.Xml.XmlDocument propsDoc = new System.Xml.XmlDocument();
+                propsDoc.LoadXml(propertiesPath);
+                XmlElement propertiesNode = propsDoc.GetElementsByTagName("properties")[0] as XmlElement;
+                Items = EngineProperty.ListFromXml(propertiesNode);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occured while loading embedded engine properties file", ex);
+            }
+
+        }
+    }
+
     /// <summary>
     /// Utility class to manage the DAISY Pipeline engine, either embedded or app. <br/>
     /// </summary>
     public class Engine
     {
-        private static readonly Regex SeekWebserviceHostJSON = new Regex(@"[""\']?host[""']?\s*:\s*[""']?([^""',]+)[""']?\s*\}?,?", RegexOptions.Compiled);
-        private static readonly Regex SeekWebservicePortJSON = new Regex(@"[""\']?port[""']?\s*:\s*[""']?([^""',]+)[""']?\s*\}?,?", RegexOptions.Compiled);
-        private static readonly Regex SeekWebservicePathJSON = new Regex(@"[""\']?path[""']?\s*:\s*[""']?([^""',]+)[""']?\s*\}?,?", RegexOptions.Compiled);
-
-
-        private static readonly Regex SeekWebserviceHostXML = new Regex(
-            @"org\.daisy\.pipeline\.ws\.host=\s*[""']?([^""',\r\n]+)[""']?\r?\n",
-            RegexOptions.Compiled
-        );
-        private static readonly Regex SeekWebservicePortXML = new Regex(
-            @"org\.daisy\.pipeline\.ws\.port=\s*[""']?([^""',\r\n]+)[""']?\r?\n",
-            RegexOptions.Compiled
-        );
-        private static readonly Regex SeekWebservicePathXML = new Regex(
-            @"org\.daisy\.pipeline\.ws\.path=\s*[""']?([^""',\r\n]+)[""']?\r?\n",
-            RegexOptions.Compiled
-        );
-
-        public static Webservice StartDAISYPipelineAppWebservice(IConversionEventsHandler events = null)
-        {
-            if (!ConverterHelper.PipelineAppIsInstalled()) {
-                throw new InvalidOperationException("DAISY Pipeline application is not installed.");
-            }
-            // Check if the app is running
-            var processes = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(ConverterHelper.PipelineAppPath));
-            if (processes.Length == 0) {
-                events?.onProgressMessageReceived(null, new DaisyEventArgs("Starting DAISY Pipeline app..."));
-                // If not running, start the app
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = ConverterHelper.PipelineAppPath,
-                    Arguments = "--bg --hidden",
-                    UseShellExecute = true,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                };
-                var appLaunched = Process.Start(startInfo);
-                // Wait a second that the electorn app context is initialized
-                if (appLaunched.WaitForExit(250) && appLaunched.ExitCode != 0) {
-                    throw new InvalidOperationException("Could not launch DAISY Pipeline app, the process has exited with error code " + appLaunched.ExitCode);
-                }
-                //return appLaunched;
-            } // else return processes[0];
-
-            string settingsData = File.ReadAllText(System.IO.Path.Combine(ConverterHelper.PipelineAppDataPath, "settings.json"));
-            string host = SeekWebserviceHostJSON.Match(settingsData).Groups[1].Value;
-            string port = SeekWebservicePortJSON.Match(settingsData).Groups[1].Value;
-            string path = SeekWebservicePathJSON.Match(settingsData).Groups[1].Value;
-            return new Webservice(host, int.Parse(port), path);
-
-        }
-
-
-        public static Webservice StartEmbeddedWebservice(IConversionEventsHandler events = null)
-        {
-
-            if (!ConverterHelper.PipelineIsInstalled()) {
-                throw new InvalidOperationException("Embedded engine was not found");
-            }
-            var allProcesses = Process.GetProcessesByName("java");
-            bool found = false;
-            foreach (var process in allProcesses) {
-                // Using try catch instead of linq, could get sometimes a "Only part of a ReadProcessMemory or WriteProcessMemory request was completed" on MainModule access
-                try {
-                    if (process.MainModule.FileName.StartsWith(ConverterHelper.EmbeddedEnginePath)) {
-                        found = true;
-                        break;
-                    }
-                } catch (Exception e) {
-                    AddinLogger.Error("Could not access process info for embedded engine detection", e);
-                    // Access denied to process info, skip it
-                }
-            }
-            if (!found) {
-                // If not running, start the embedded engine using the batch script
-                var startInfo = new ProcessStartInfo
-                {
-                    FileName = ConverterHelper.EmbeddedEngineLauncherPath,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                    WindowStyle = ProcessWindowStyle.Hidden
-                };
-                var appLaunched = Process.Start(startInfo);
-                if (appLaunched.WaitForExit(250) && appLaunched.ExitCode != 0) {
-                    throw new InvalidOperationException("Could not launch DAISY Pipeline app, the process has exited with error code " + appLaunched.ExitCode);
-                }
-                //return appLaunched;
-            }// else return allProcesses[0];
-
-            string pipelineSettingsPath = System.IO.Path.Combine(
-               ConverterHelper.EmbeddedEnginePath,
-               "etc", "pipeline.properties"
-           );
-            string settingsData = File.ReadAllText(pipelineSettingsPath);
-            string host = SeekWebserviceHostXML.Match(settingsData).Groups[1].Value;
-            string port = SeekWebservicePortXML.Match(settingsData).Groups[1].Value;
-            string path = SeekWebservicePathXML.Match(settingsData).Groups[1].Value;
-            return new Webservice(host, int.Parse(port), path);
-        }
-
+       
         public static void StopEmbeddedEngine(IConversionEventsHandler events = null)
         {
             var allProcesses = Process.GetProcessesByName("java")
@@ -131,56 +68,5 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             }
         }
 
-        /// <summary>
-        /// Open the DAISY Pipeline app "Browse voices" settings.
-        /// </summary>
-        public static void BrowseVoices()
-        {
-
-            Engine.StartDAISYPipelineAppWebservice();
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = ConverterHelper.PipelineAppPath,
-                Arguments = "browse-voices",
-                UseShellExecute = true,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-            Process.Start(startInfo);
-        }
-
-        /// <summary>
-        /// Open the DAISY Pipeline app "Preferred voices" settings.
-        /// </summary>
-        public static void PreferredVoices()
-        {
-            Engine.StartDAISYPipelineAppWebservice();
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = ConverterHelper.PipelineAppPath,
-                Arguments = "preferred-voices",
-                UseShellExecute = true,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-            Process.Start(startInfo);
-        }
-
-        /// <summary>
-        /// Open the DAISY Pipeline app "Engines" settings.
-        /// </summary>
-        public static void TTSEngines()
-        {
-            Engine.StartDAISYPipelineAppWebservice();
-            var startInfo = new ProcessStartInfo
-            {
-                FileName = ConverterHelper.PipelineAppPath,
-                Arguments = "engines",
-                UseShellExecute = true,
-                CreateNoWindow = true,
-                WindowStyle = ProcessWindowStyle.Hidden
-            };
-            Process.Start(startInfo);
-        }
     }
 }

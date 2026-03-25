@@ -1,14 +1,11 @@
 ﻿using Daisy.SaveAsDAISY.Conversion.Events;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
 using static System.Resources.ResXFileRef;
@@ -307,6 +304,11 @@ namespace Daisy.SaveAsDAISY.Conversion
                         this.EventsHandler.onConversionCanceled();
                         return ConversionResult.Cancel();
                     }
+                }
+                catch (OperationCanceledException oce) {
+                    // Job was canceled, return a cancel result without error
+                    this.EventsHandler.onConversionCanceled();
+                    return ConversionResult.Cancel();
                 }
                 catch (JobException je) {
                     // Job finished in error, not sure if i should  return a failed result

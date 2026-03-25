@@ -93,7 +93,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 dpi_120,
                 dpi_150,
                 dpi_300,
-
+                dpi_600
             }
             public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
             {
@@ -102,6 +102,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { Enum.dpi_120, "120" },
                 { Enum.dpi_150, "150" },
                 { Enum.dpi_300, "300" },
+                { Enum.dpi_600, "600" },
             };
             public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
             {
@@ -110,6 +111,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 { "120" , Enum.dpi_120 },
                 { "150" , Enum.dpi_150 },
                 { "300" , Enum.dpi_300 },
+                { "600" , Enum.dpi_600 },
             };
             public static EnumData DataType()
             {

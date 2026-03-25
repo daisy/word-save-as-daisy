@@ -16,12 +16,16 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		public static string EmbeddedEnginePath {
 			get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\daisy-pipeline"; }
 		}
+        public static string EmbeddedEngineProperties
+        {
+            get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\daisy-pipeline\settable-properties.xml"; }
+        }
 
-		/// <summary>
-		/// Indicates if pipeline exists.
-		/// </summary>
-		/// <returns></returns>
-		public static bool PipelineIsInstalled() {
+        /// <summary>
+        /// Indicates if pipeline exists.
+        /// </summary>
+        /// <returns></returns>
+        public static bool PipelineIsInstalled() {
 			return Directory.Exists(EmbeddedEnginePath);
 		}
         public static string EmbeddedEngineLauncherPath {

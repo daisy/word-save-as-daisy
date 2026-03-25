@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
+namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
 {
-    public class DtbookCleaner : Pipeline2Script
+    public class DtbookCleaner : Script
     {
         public DtbookCleaner(IConversionEventsHandler eventsHandler) : base(eventsHandler)
         {

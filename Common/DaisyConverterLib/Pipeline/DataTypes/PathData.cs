@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.IO;
-using System.Xml;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion
@@ -108,6 +104,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                     return ".opf";
                 case "application/xml":
                     return ".xml";
+                case "application/vnd.oasis.opendocument.text-template":
+                    return ".ott";
                 default:
                     return string.Empty;
             }

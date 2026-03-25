@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.Xml;
-using System.Windows.Forms;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
 
 namespace Daisy.SaveAsDAISY.Conversion

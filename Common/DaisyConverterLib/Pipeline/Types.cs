@@ -100,6 +100,49 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
         public string Href { get; set; }
         public string Desc { get; set; }
         public string Value { get; set; }
+
+        public static EngineProperty FromXml(XmlElement propertyElem)
+        {
+            return new EngineProperty
+            {
+                Name = propertyElem.GetAttribute("name"),
+                Href = propertyElem.GetAttribute("href"),
+                Desc = propertyElem.GetAttribute("desc"),
+                Value = propertyElem.GetAttribute("value")
+            };
+        }
+
+        public static List<EngineProperty> ListFromXml(XmlElement propertiesElem)
+        {
+            var properties = new List<EngineProperty>();
+            foreach (XmlElement propertyElem in propertiesElem.GetElementsByTagName("property")) {
+                // On ne garde que les enfants directs
+                if (propertyElem.ParentNode == propertiesElem) {
+                    properties.Add(FromXml(propertyElem));
+                }
+            }
+            return properties;
+        }
+
+        public override string ToString()
+        {
+            return $"{Name} = {Value} ({Desc})";
+        }
+
+        public string ToUpdateString()
+        {
+            return $"<property  xmlns=\"http://www.daisy.org/ns/pipeline/data\" name=\"{Name}\" value=\"{(Value == null ? "" : Value)}\"/>";
+        }
+
+        public XmlElement ToXml(XmlDocument doc)
+        {
+            XmlElement propertyElem = doc.CreateElement("property");
+            propertyElem.SetAttribute("name", Name);
+            propertyElem.SetAttribute("href", Href);
+            propertyElem.SetAttribute("desc", Desc);
+            propertyElem.SetAttribute("value", Value);
+            return propertyElem;
+        }
     }
 
     public class AliveData
@@ -451,6 +494,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
         public bool Batchable { get; set; }
         public bool Multidoc { get; set; }
 
+        public static List<ScriptDefinition> ListFromXml(XmlElement scriptsElem)
+        {
+            var scripts = new List<ScriptDefinition>();
+            foreach (XmlElement scriptElm in scriptsElem.GetElementsByTagName("script")) {
+                // On ne garde que les enfants directs
+                if (scriptElm.ParentNode == scriptsElem) {
+                    scripts.Add(FromXml(scriptElm));
+                }
+            }
+            return scripts;
+        }
+
         public static ScriptDefinition FromXml(XmlElement scriptElm)
         {
             var inputs = new List<ScriptInput>();
@@ -481,6 +536,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
                 Multidoc = firstRequired?.Sequence == true,
             };
         }
+
     }
 
     public class NameValue
@@ -553,12 +609,70 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
     {
         public string Href { get; set; }
         public string Id { get; set; }
+
+        // TODO : datatypes can be either of type "choice" with enum of <value></value><documentation></documentation>
+        // or of type "data" with type string that contains a element a:documentation and an element "param" @type=pattern
         public List<DatatypeChoice> Choices { get; set; }
+
+        public static Datatype FromXml(XmlElement datatypeElm)
+        {
+           // T
+            return new Datatype
+            {
+                Href = datatypeElm.GetAttribute("href"),
+                Id = datatypeElm.GetAttribute("id"),
+                
+            };
+        }
     }
+
+    
 
     public class DatatypeChoice
     {
         public string Documentation { get; set; }
+
+        //public static DatatypeChoice FromXml(XmlElement choiceElm)
+        //{
+            
+   //         var children =  Array.from(choiceElm.childNodes).filter(
+   //    (n) => n.nodeType == n.ELEMENT_NODE
+   //)
+   // let choices = []
+   // for (let i = 0; i < children.length; i++)
+   //         {
+   //             let c = children[i]
+   //     //@ts-ignore
+   //     if (c.tagName == 'data')
+   //             {
+   //                 choices.push(dataElementToJson(c))
+   //         //@ts-ignore
+   //     }
+   //             else if (c.tagName == 'value')
+   //             {
+   //                 //@ts-ignore
+   //                 let value = c.textContent?.trim()
+   //         let documentation = ''
+   //         // look ahead for a sibling 'documentation' element
+   //         if (i + 1 < children.length)
+   //                 {
+   //                     if (
+   //                         //@ts-ignore
+   //                         children[i + 1].tagName == 'documentation' ||
+   //                         //@ts-ignore
+   //                         children[i + 1].tagName == 'a:documentation'
+   //                     )
+   //                     {
+   //                         //@ts-ignore
+   //                         documentation = children[++i].textContent.trim()
+   //                     }
+   //                 }
+   //                 let valueChoice: ValueChoice = { value, documentation }
+   //                 choices.push(valueChoice)
+   //     }
+   //         }
+   //         return choices
+        //}
     }
 
     public class ValueChoice : DatatypeChoice
@@ -570,7 +684,102 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
     {
         public string Type { get; set; }
         public string Pattern { get; set; }
+
+        public static TypeChoice FromXml(XmlElement datatypeElm)
+        {
+            var documentationElms = datatypeElm.GetElementsByTagName("documentation");
+            var paramElms = datatypeElm.GetElementsByTagName("param");
+            var retval = new TypeChoice
+            {
+                Type = datatypeElm.GetAttribute("type"),
+            };
+            if (documentationElms.Count > 0)
+            {
+                retval.Documentation = documentationElms[0].InnerText.Trim();
+            }
+            if (
+                paramElms.Count > 0)
+            {
+                XmlElement param = (XmlElement)paramElms[0];
+                if (param.HasAttribute("name") && param.GetAttribute("name") == "pattern")
+                {
+                    retval.Pattern = param.InnerText.Trim();
+                }
+            }
+            return retval;
+        }
     }
+
+    /*
+     * 
+    function datatypeXmlToJson(href, id, xmlString): Datatype {
+    let root = sniffRoot(xmlString)
+    let datatype = { id, href }
+    if (root == 'choice') {
+        let choiceElm = parseXml(xmlString, 'choice')
+        return { ...datatype, choices: choiceElementToJson(choiceElm) }
+    } else if (root == 'data') {
+        let dataElm = parseXml(xmlString, 'data')
+        return { ...datatype, choices: [dataElementToJson(dataElm)] }
+    } else {
+        return null
+    }
+}
+
+function choiceElementToJson(choiceElm: Element): DatatypeChoice[] {
+    //@ts-ignore
+    let children = Array.from(choiceElm.childNodes).filter(
+        (n) => n.nodeType == n.ELEMENT_NODE
+    )
+    let choices = []
+    for (let i = 0; i < children.length; i++) {
+        let c = children[i]
+        //@ts-ignore
+        if (c.tagName == 'data') {
+            choices.push(dataElementToJson(c))
+            //@ts-ignore
+        } else if (c.tagName == 'value') {
+            //@ts-ignore
+            let value = c.textContent?.trim()
+            let documentation = ''
+            // look ahead for a sibling 'documentation' element
+            if (i + 1 < children.length) {
+                if (
+                    //@ts-ignore
+                    children[i + 1].tagName == 'documentation' ||
+                    //@ts-ignore
+                    children[i + 1].tagName == 'a:documentation'
+                ) {
+                    //@ts-ignore
+                    documentation = children[++i].textContent.trim()
+                }
+            }
+            let valueChoice: ValueChoice = { value, documentation }
+            choices.push(valueChoice)
+        }
+    }
+    return choices
+}
+
+function dataElementToJson(dataElm): TypeChoice {
+    let documentationElms = dataElm.getElementsByTagName('documentation')
+    let paramElms = dataElm.getElementsByTagName('param')
+    let retval: TypeChoice = {
+        type: dataElm.getAttribute('type'),
+    }
+    if (documentationElms.length > 0) {
+        retval.documentation = documentationElms[0].textContent.trim()
+    }
+    if (
+        paramElms.length > 0 &&
+        paramElms[0].hasAttribute('name') &&
+        paramElms[0].getAttribute('name') == 'pattern'
+    ) {
+        retval.pattern = paramElms[0].textContent.trim()
+    }
+    return retval
+}
+    */
 
     public class Filetype
     {

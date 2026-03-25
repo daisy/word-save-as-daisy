@@ -6,27 +6,48 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
+namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
 {
-    public class Epub3ToDaisy202 : Pipeline2Script
+    public class DtbookToEpub3 : Script
     {
-        public Epub3ToDaisy202(IConversionEventsHandler eventsHandler) : base(eventsHandler)
+        public DtbookToEpub3(IConversionEventsHandler eventsHandler) : base(eventsHandler)
         {
-            this.name = "epub3-to-daisy202";
+            this.name = "dtbook-to-epub3";
             _parameters = new Dictionary<string, ScriptParameter>
             {
                 { "input", new ScriptParameter(
                         "source",
-                        "EPUB 3 Publication",
+                        "OPF",
                         new PathData(
                             PathData.InputOrOutput.input,
                             PathData.FileOrDirectory.File,
-                            "application/epub+zip"
+                            "application/oebps-package+xml"
                         ),
                         true,
                         "The package file of the input DTB.",
                         true,
                         ParameterDirection.Input
+                    )
+                },
+                {"tts-log", new ScriptParameter(
+                        "tts-log",
+                        "TTS log output directory",
+                        new PathData(
+                            PathData.InputOrOutput.output,
+                            PathData.FileOrDirectory.Directory
+                        ),
+                        false,
+                        "TTS log output directory",
+                         true,
+                        ParameterDirection.Output
+                    )
+                },
+                {"language", new ScriptParameter(
+                        "language",
+                        "Language code",
+                        new StringData(),
+                        false,
+                        "Language code of the input document."
                     )
                 },
                 {"output", new ScriptParameter(
@@ -66,6 +87,33 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
                         ParameterDirection.Output
                     )
                 },
+                {"nimas", new ScriptParameter(
+                        "nimas",
+                        "NIMAS input",
+                        new BoolData(false),
+                        false,
+                        "Whether the input DTBook is a NIMAS 1.1-conformant XML content file.",
+                        false // not sure this option should available in save as daisy
+                    )
+                },
+                {"tts-config", new ScriptParameter(
+                        "tts-config",
+                        "Text-to-speech configuration file",
+                        new PathData(PathData.InputOrOutput.input,PathData.FileOrDirectory.File),
+                        false,
+                        "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
+                        true,
+                        ParameterDirection.Input
+                    )
+                },
+                {"audio", new ScriptParameter(
+                        "audio",
+                        "Enable text-to-speech",
+                        new BoolData(false),
+                        false,
+                        "Whether to use a speech synthesizer to produce audio files."
+                    )
+                },
             };
         }
 
@@ -82,7 +130,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts
 
         public static string SearchInputFromDirectory(DirectoryInfo inputDirectory)
         {
-            return Directory.GetFiles(inputDirectory.FullName, "*.epub", SearchOption.AllDirectories)[0];
+            return Directory.GetFiles(inputDirectory.FullName, "*.xml", SearchOption.AllDirectories)[0];
         }
     }
 }
