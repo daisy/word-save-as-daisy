@@ -114,6 +114,7 @@ namespace Daisy.SaveAsDAISY.WPF
             TTSConfigFile.Text = GlobaleSettings.TTSConfigFile;
             TTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
             BrowseTTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
+            OpenPipelineProperties.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
         }
 
         private void ImageSizeOptions_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -146,6 +147,7 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private void Cancel_Click(object sender, RoutedEventArgs e)
         {
+            DialogResult = false;
             this.Close();
         }
 
@@ -208,7 +210,8 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
                 // Save
                 GlobaleSettings.Save();
-              this.Close();
+                DialogResult = true;
+                this.Close();
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Could not save settings", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -244,6 +247,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 BrowseVoices.IsEnabled = false;
                 TTSConfigFile.IsEnabled = true;
                 BrowseTTSConfigFile.IsEnabled = true;
+                OpenPipelineProperties.IsEnabled = true;
             } else {
                 GlobaleSettings.UseDAISYPipelineApp = true;
                 PreferredVoices.IsEnabled = true;
@@ -252,6 +256,7 @@ namespace Daisy.SaveAsDAISY.WPF
 
                 TTSConfigFile.IsEnabled = false;
                 BrowseTTSConfigFile.IsEnabled = false;
+                OpenPipelineProperties.IsEnabled = false;
             }
         }
         private void UseDAISYPipelineApp_Unchecked(object sender, RoutedEventArgs e)
@@ -268,7 +273,16 @@ namespace Daisy.SaveAsDAISY.WPF
         private void PreferredVoices_Click(object sender, RoutedEventArgs e)
         {
             try {
-                Engine.PreferredVoices();
+                WebserviceRunner.StartDAISYPipelineAppWebservice();
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = ConverterHelper.PipelineAppPath,
+                    Arguments = "preferred-voices",
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+                Process.Start(startInfo);
             } catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Could not open preferred voices : " + ex.Message, MessageBoxButton.OK, MessageBoxImage.Warning);
             }
@@ -277,7 +291,16 @@ namespace Daisy.SaveAsDAISY.WPF
         private void TTSEngines_Click(object sender, RoutedEventArgs e)
         {
             try {
-                Engine.TTSEngines();
+                WebserviceRunner.StartDAISYPipelineAppWebservice();
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = ConverterHelper.PipelineAppPath,
+                    Arguments = "engines",
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+                Process.Start(startInfo);
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Could not open TTS engines settings : " + ex.Message, MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -288,7 +311,16 @@ namespace Daisy.SaveAsDAISY.WPF
         {
 
             try {
-                Engine.BrowseVoices();
+                WebserviceRunner.StartDAISYPipelineAppWebservice();
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = ConverterHelper.PipelineAppPath,
+                    Arguments = "browse-voices",
+                    UseShellExecute = true,
+                    CreateNoWindow = true,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+                Process.Start(startInfo);
             }
             catch (Exception ex) {
                 MessageBox.Show(ex.Message, "Could not browse voices : " + ex.Message, MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -359,15 +391,15 @@ namespace Daisy.SaveAsDAISY.WPF
             if (!GlobaleSettings.UseWebserviceRunner)
             {
                 var result = MessageBox.Show(
-                      "The use of webservice interactions requires to have access to firewall security notices to allow the engine webservice.\r\n" +
+                      "The use of webservice interactions can speed up consecutive conversions of a document, but requires to have access to firewall security notices to allow the engine webservice.\r\n" +
                       "If you don't have this acces, you may encounter an 'Access Denied' error when trying to convert a document.\r\n" +
                       "Do you still want to enable the webservice interactions ?",
-                      "DAISY Pipeline App Not Found",
+                      "Activating Webservice Interactions",
                       MessageBoxButton.YesNo,
                       MessageBoxImage.Warning
                 );
                 if (result == MessageBoxResult.Yes)
-                {
+                {   
                     UseWebserviceRunner.IsChecked = true;
                     UseDAISYPipelineApp.IsEnabled = true;
                     PreferredVoices.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
@@ -375,6 +407,7 @@ namespace Daisy.SaveAsDAISY.WPF
                     BrowseVoices.IsEnabled = UseDAISYPipelineApp.IsChecked == true;
                     TTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked != true;
                     BrowseTTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked != true;
+
                 }
                 else
                 {
@@ -407,6 +440,34 @@ namespace Daisy.SaveAsDAISY.WPF
             BrowseVoices.IsEnabled = false;
             TTSConfigFile.IsEnabled = true;
             BrowseTTSConfigFile.IsEnabled = true;
+        }
+
+        private void OpenPipelineProperties_Click(object sender, RoutedEventArgs e)
+        {
+            // get current selected runtime descriptors
+            if(UseWebserviceRunner.IsChecked != true)
+            {
+                try
+                {
+                    var dialog = new Pipeline2Properties(JNIWrapperRunner.GetInstance().GetSettableProperties(), PipelineUserProperties.Instance.Items);
+                    if (dialog.ShowDialog() == true)
+                    {
+                        PipelineUserProperties.Instance.ReplaceBy(dialog.UpdatedProperties);
+                        PipelineUserProperties.Instance.Save();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Could not open pipeline properties : " + ex.Message, MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            } else {
+                var dialog = new Pipeline2Properties(WebserviceRunner.GetInstance().GetSettableProperties(), PipelineUserProperties.Instance.Items);
+                if (dialog.ShowDialog() == true)
+                {
+                    PipelineUserProperties.Instance.UpdateOrAddRange(dialog.UpdatedProperties);
+                    PipelineUserProperties.Instance.Save();
+                }
+            }
         }
     }
 }

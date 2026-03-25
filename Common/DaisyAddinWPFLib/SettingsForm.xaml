@@ -7,8 +7,9 @@
         mc:Ignorable="d"
         Title="SaveAsDAISY Settings"
         SizeToContent="Height"
-        Width="500">
-    <StackPanel>
+        Width="500" Height="620">
+    <DockPanel>
+    <StackPanel DockPanel.Dock="Top">
         <!--<Grid>
             <Label Content="Results directory"
                    VerticalAlignment="Center"
@@ -156,7 +157,7 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Header="DAISY Pipeline engine"
-                  Margin="5">
+                  Margin="5" Height="181">
             <StackPanel>
                 <CheckBox Content="Enable webservice interactions"
                       VerticalAlignment="Center"
@@ -212,24 +213,36 @@
                             Click="BrowseTTSConfigFile_Click" />
 
                 </Grid>
-            </StackPanel>
+                    <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Left">
+                        <Button Width="200" Margin="5" HorizontalAlignment="Left" x:Name="OpenPipelineProperties" Click="OpenPipelineProperties_Click">Embedded Pipeline Properties</Button>
+                        <Label x:Name="LoadingPropertiesStatus"
+                            Content=""
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Margin="5,0,5,5" />
+                    </StackPanel>
+                    
+                </StackPanel>
         </GroupBox>
-        <StackPanel Orientation="Horizontal"
-                    FlowDirection="RightToLeft"
-                    VerticalAlignment="Bottom"
-                    Margin="5,0,5,5">
-            <Button Content="OK"
-                    x:Name="Save"
-                    Click="Save_Click"
-                    Width="75"
-                    Margin="5"
-                    VerticalAlignment="Center" />
-            <Button Content="Cancel"
-                    x:Name="Cancel"
-                    Click="Cancel_Click"
-                    Margin="5"
-                    Width="75"
-                    VerticalAlignment="Center" />
-        </StackPanel>
+        
     </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                FlowDirection="RightToLeft"
+                VerticalAlignment="Bottom"
+                Margin="5,0,5,5">
+            <Button Content="OK"
+                x:Name="Save"
+                Click="Save_Click"
+                Width="75"
+                Margin="5"
+                VerticalAlignment="Center" />
+                <Button Content="Cancel"
+                x:Name="Cancel"
+                Click="Cancel_Click"
+                Margin="5"
+                Width="75"
+                VerticalAlignment="Center" />
+        </StackPanel>
+    </DockPanel>
 </Window>

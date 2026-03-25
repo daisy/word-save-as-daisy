@@ -13,7 +13,7 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
             this.DataContext = this;
         }
 
-        private ScriptParameter BoundParameter = null;
+        public ScriptParameter BoundParameter = null;
 
         public StringParameter(ScriptParameter p)
             : this()
