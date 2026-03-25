@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
+using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
 
-namespace ConversionApp
+namespace org.daisy.jniwrapper
 {
     /// <summary>
     /// Logique d'interaction pour App.xaml
@@ -20,10 +19,23 @@ namespace ConversionApp
 
             for (int i = 2; i < args.Length; i++) // Start from 2 to skip the executable name an script name
             {
-                if (args[i].StartsWith("--"))
+                
+                if (args[i].StartsWith("--")) // script options are expected to be in the form --option value or --option (for boolean flags)
                 {
                     string key = args[i].Substring(2);
-                    if (i + 1 < args.Length && !args[i + 1].StartsWith("--"))
+                    if (i + 1 < args.Length && !(args[i + 1].StartsWith("--") || args[i + 1].StartsWith("-D")))
+                    {
+                        options[key] = args[i + 1];
+                        i++;
+                    }
+                    else
+                    {
+                        options[key] = "true";
+                    }
+                } else if (args[i].StartsWith("-D")) // properties to be passed to the jni runtime
+                {
+                    string key = args[i];
+                    if (i + 1 < args.Length && !args[i + 1].StartsWith("-"))
                     {
                         options[key] = args[i + 1];
                         i++;
@@ -41,40 +53,75 @@ namespace ConversionApp
         [STAThread]
         public static int Main()
         {
-            var application = new App();
-            application.InitializeComponent();
-
             
+            Window main = null;
 
             string[] args = Environment.GetCommandLineArgs();
             if (args.Length < 2)
             {
-                MessageBox.Show("Usage: ConversionApp.exe <scriptName> [--option value]...");
+                MessageBox.Show("Usage: JNIWrapper.exe <scriptName> [--option value] [-Dorg.daisy.property value]...");
                 return 1;
             }
             string scriptOrCommand;
             Dictionary<string, string> options = ParseCommandLineArgs(args, out scriptOrCommand);
-
+            // resplit command line options in properties (starting with -D) and regular options,
+            // properties will be passed to the jni runtime and regular options will be passed to the script
+            Dictionary<string, string> properties = options.Where(kv => kv.Key.StartsWith("-D")).ToDictionary(kv => kv.Key, kv => kv.Value);
+            options = options.Where(kv => !kv.Key.StartsWith("-D")).ToDictionary(kv => kv.Key, kv => kv.Value);
+            JNITaskRunner.Command command = JNITaskRunner.Command.None;
             switch (scriptOrCommand.ToLower())
             {
-                case "scripts":
-                    // export available scripts descriptors
+                case "scripts": // List of available scripts
+                    command = JNITaskRunner.Command.Scripts;
                     break;
-                case "datatypes":
-                    // export available datatypes
+                case "script": // definition of a script
+                    command = JNITaskRunner.Command.ScriptDetails;
                     break;
-                case "properties":
-                    // opens a properties editor, that would allow users to edit properties of the pipeline
-                    // if the properties file exists, it should be loaded when starting the JVM
+                case "datatypes": // List of datatype
+                    // Export datatypes list to an output file
+                    command = JNITaskRunner.Command.Datatypes;
                     break;
-                default:
-                    ConversionWindow window = new ConversionWindow(scriptOrCommand, options);
-                    application.MainWindow = window;
-                    window.Show();
+                case "datatype": // Precise definition of a datatype
+                    // Export datatypes list to an output file
+                    command = JNITaskRunner.Command.DatatypeDetails;
+                    break;
+                case "descriptors":
+                    command = JNITaskRunner.Command.Descriptors;
+                    //string outputDir = options.ContainsKey("output") ? options["output"] : Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                    //if(!Directory.Exists(outputDir))
+                    //{
+                    //    MessageBox.Show($"Output directory '{outputDir}' does not exist.");
+                    //    return 2;
+                    //}
+                    //// no need for a window, we can run the generation directly and exit
+
+                    //return JNITaskRunner.ExecuteCommand(
+                    //    JNITaskRunner.Command.Descriptors, options, default, 
+                    //    (info) => {Console.Out.WriteLine(info);},
+                    //    null, 
+                    //    (error) => {Console.Error.WriteLine(error);},
+                    //    properties
+                    //).Result;
                     break;
             }
-            
-            return application.Run();
+            if(command != JNITaskRunner.Command.None)
+            {
+                // It's a command, run it and exit
+                return JNITaskRunner.ExecuteCommand(command, options, default,
+                        (info) => { Console.Out.WriteLine(info); },
+                        null,
+                        (error) => { Console.Error.WriteLine(error); }, properties
+                ).Result;
+            } else  // (command == JNITaskRunner.Command.None)
+            {
+                // Not a command, assume it's a script name and open the window to run it
+                main = new ConversionWindow(scriptOrCommand, options, properties);
+                var application = new App();
+                application.InitializeComponent();
+                application.MainWindow = main;
+                main.Show();
+                return application.Run();
+            }
 
         }
     }

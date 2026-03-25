@@ -1,17 +1,10 @@
-﻿
-using Daisy.SaveAsDAISY.Conversion.Pipeline;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
-using org.daisy.jnet;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace ConversionApp
+namespace org.daisy.jniwrapper
 {
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
@@ -20,9 +13,8 @@ namespace ConversionApp
     {
         
         private CancellationTokenSource cancellationTokenSource;
-        private Dictionary<string, string> parsedOptions;
 
-        public ConversionWindow(string scriptName, Dictionary<string, string> parsedOptions)
+        public ConversionWindow(string scriptName, Dictionary<string, string> options, Dictionary<string, string> properties = null)
         {
 
             InitializeComponent();
@@ -33,14 +25,14 @@ namespace ConversionApp
             this.Title = "DAISY Pipeline 2 - " + scriptName + " conversion in progress...";
             ConversionProgressText.Text = "Running " + scriptName + " conversion...";
             LogTextBox.AppendText("Starting conversion with the following options:\r\n");
-            foreach (KeyValuePair<string, string> option in parsedOptions)
+            foreach (KeyValuePair<string, string> option in options)
             {
                 LogTextBox.AppendText($"--{option.Key} \"{option.Value}\"\r\n");
             }
             LogTextBox.ScrollToEnd();
             cancellationTokenSource = new CancellationTokenSource();
 
-            JNITaskRunner.StartJob(scriptName, parsedOptions, cancellationTokenSource.Token,
+            JNITaskRunner.LaunchConversion(scriptName, options, cancellationTokenSource.Token,
                 info: (m =>
                     {
                         Dispatcher.Invoke(() =>
@@ -67,7 +59,8 @@ namespace ConversionApp
                             ProgressBar.Maximum = t;
                             ProgressBar.Value = p;
                         });
-                    })
+                    }),
+                properties: properties
             ).ContinueWith(t =>
             {
                 Dispatcher.Invoke(() =>

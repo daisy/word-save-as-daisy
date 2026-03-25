@@ -7,12 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Threading;
+using static org.daisy.jniwrapper.JNITaskRunner;
 
-namespace ConversionApp
+namespace org.daisy.jniwrapper
 {
     internal class JNITaskRunner
     {
@@ -248,20 +248,205 @@ namespace ConversionApp
             return messages;
         }
 
-        public delegate void JobStandardOutput(string message);
+        public delegate void StandardOutput(string message);
 
-        public delegate void JobProgressOutput(int current, int total = int.MaxValue);
+        public delegate void ProgressOutput(int current, int total = int.MaxValue);
 
-        public delegate void JobErrorOutput(string message);
+        public delegate void ErrorOutput(string message);
 
+        public enum Command
+        {
+            None = 0,
+            Descriptors = 1,
+            Scripts = 2,
+            ScriptDetails = 3,
+            Datatypes = 4,
+            DatatypeDetails = 5,
+            SettableProperties = 6,
+        }
 
-        public static async Task<int> StartJob(
-            string scriptOrCommand,
+        public static async Task<int> ExecuteCommand(
+            Command command,
             Dictionary<string, string> options = null,
             CancellationToken cancellationToken = default,
-            JobStandardOutput info = null,
-            JobProgressOutput progress = null,
-            JobErrorOutput error = null
+            StandardOutput info = null,
+            ProgressOutput progress = null,
+            ErrorOutput error = null,
+            Dictionary<string, string> properties = null
+        ) {
+            try
+            {
+                await Task.Run(() =>
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+                    try
+                    {
+                        info?.Invoke($"Starting JVM and conversion pipeline...");
+
+                        JavaNativeInterface jni = startJNIBridge(properties: properties);
+                        IntPtr SimpleAPISPIClass = jni.GetJavaClass("SimpleAPI_SPI");
+                        IntPtr SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
+                        IntPtr SimpleAPIInstance = jni.NewObject(SimpleAPISPIClass);
+
+                        string outputDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        string outputFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                        
+                        if (options.ContainsKey("output"))
+                        {
+                            outputDirectory = options["output"];
+                            outputFile = options["output"];
+                            // Output selected is a directory, we create a file name based on the command inside it
+                            if (Directory.Exists(outputFile))
+                            {
+                                outputFile = Path.Combine(outputFile, $"{command.ToString().ToLower()}.xml");
+                            } else
+                            {
+                                outputDirectory = Path.GetDirectoryName(outputFile);
+                            }
+                        }
+
+                        string scriptsDescriptors;
+                        string datatypesDescriptors;
+                        string result;
+                        switch (command)
+                        {
+                            case Command.Descriptors:
+                                info?.Invoke($"Retrieving all descriptors...");
+                                scriptsDescriptors = jni.CallMethod<string>(
+                                    SimpleAPIClass,
+                                    SimpleAPIInstance,
+                                    "getScripts",
+                                    "(Z)Ljava/lang/String;",
+                                    true
+                                );
+                                File.WriteAllText(Path.Combine(outputDirectory, "scripts.xml"), scriptsDescriptors);
+                                datatypesDescriptors = jni.CallMethod<string>(
+                                    SimpleAPIClass,
+                                    SimpleAPIInstance,
+                                    "getDatatypes",
+                                    "()Ljava/lang/String;"
+                                );
+                                File.WriteAllText(Path.Combine(outputDirectory, "datatypes.xml"), datatypesDescriptors);
+                                break;
+                            case Command.Scripts:
+                                info?.Invoke($"Retrieving scripts descriptors...");
+                                result = jni.CallMethod<string>(
+                                    SimpleAPIClass,
+                                    SimpleAPIInstance,
+                                    "getScripts",
+                                    "(Z)Ljava/lang/String;",
+                                    true
+                                );
+                                File.WriteAllText(outputFile, result);
+                                break;
+                            case Command.ScriptDetails:
+                                if (!options.ContainsKey("id"))
+                                {
+                                    throw new Exception("The 'id' option is required for the ScriptDetails command");
+                                }
+                                string scriptId = options["id"];
+                                info?.Invoke($"Retrieving details for script {scriptId}...");
+                                result = jni.CallMethod<string>(
+                                    SimpleAPIClass,
+                                    SimpleAPIInstance,
+                                    "getScriptDetails",
+                                    "(Ljava/lang/String;)Ljava/lang/String;",
+                                    scriptId
+                                );
+                                File.WriteAllText(outputFile, result);
+                                break;
+                            case Command.Datatypes:
+                                info?.Invoke($"Retrieving datatypes descriptors...");
+                                result = jni.CallMethod<string>(
+                                    SimpleAPIClass,
+                                    SimpleAPIInstance,
+                                    "getDatatypes",
+                                    "()Ljava/lang/String;"
+                                );
+                                File.WriteAllText(outputFile, result);
+                                break;
+                            case Command.DatatypeDetails:
+                                if (!options.ContainsKey("id"))
+                                {
+                                    throw new Exception("The 'id' option is required for the DatatypeDetails command");
+                                }
+                                string datatypeId = options["id"];
+                                info?.Invoke($"Retrieving details for datatype {datatypeId}...");
+                                result = jni.CallMethod<string>(
+                                    SimpleAPIClass,
+                                    SimpleAPIInstance,
+                                    "getDatatypeDetails",
+                                    "(Ljava/lang/String;)Ljava/lang/String;",
+                                    datatypeId
+                                );
+                                File.WriteAllText(outputFile, result);
+                                break;
+                            case Command.SettableProperties:
+                                info?.Invoke($"Retrieving settable properties descriptors...");
+                                result = jni.CallMethod<string>(
+                                    SimpleAPIClass,
+                                    SimpleAPIInstance,
+                                    "getSettableProperties",
+                                    "()Ljava/lang/String;"
+                                );
+                                File.WriteAllText(outputFile, result);
+                                break;
+                            default:
+                                throw new Exception("Unknown command : " + command.ToString());
+                        }
+
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                });
+            }
+            catch (OperationCanceledException)
+            {
+                info?.Invoke("Export was cancelled.");
+                return 1;
+            }
+            catch (AggregateException aggEx)
+            {
+                error?.Invoke("An error occured during the export : ");
+                foreach (var ex in aggEx.InnerExceptions)
+                {
+                    error?.Invoke(ex.Message);
+                    error?.Invoke(ex.StackTrace);
+                }
+                return 2;
+            }
+            catch (Exception ex)
+            {
+                AddinLogger.Error(new Exception("An error occured while executing the command : " + command.ToString(), ex));
+                error?.Invoke(ex.Message);
+                error?.Invoke(ex.StackTrace);
+                return 3;
+            }
+
+            return 0;
+        }
+
+        /// <summary>
+        /// Launch a conversion using the SimpleAPI class through JNI
+        /// The method will start the JVM, launch the conversion and monitor its status until completion, error or cancellation.
+        /// </summary>
+        /// <param name="script"></param>
+        /// <param name="options"></param>
+        /// <param name="cancellationToken"></param>
+        /// <param name="info"></param>
+        /// <param name="progress"></param>
+        /// <param name="error"></param>
+        /// <returns></returns>
+        public static async Task<int> LaunchConversion(
+            string script,
+            Dictionary<string, string> options = null,
+            CancellationToken cancellationToken = default,
+            StandardOutput info = null,
+            ProgressOutput progress = null,
+            ErrorOutput error = null,
+            Dictionary<string, string> properties = null
         )
         {
             try
@@ -273,25 +458,12 @@ namespace ConversionApp
                     {
                         info?.Invoke($"Starting JVM and conversion pipeline...");
                         
-                        JavaNativeInterface jni = startJNIBridge();
+                        JavaNativeInterface jni = startJNIBridge(properties: properties);
                         IntPtr SimpleAPISPIClass = jni.GetJavaClass("SimpleAPI_SPI");
                         IntPtr SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
                         IntPtr CommandLineJobClass = jni.GetJavaClass("SimpleAPI$CommandLineJob");
                         IntPtr JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
                         IntPtr SimpleAPIInstance = jni.NewObject(SimpleAPISPIClass);
-
-                        switch (scriptOrCommand)
-                        {
-                            case "datatypes":
-                                break;
-                            case "properties":
-                                break;
-                            case "scripts":
-                                break;
-                            default:
-                                // The command is a script
-                                break;
-                        }
 
 
                         IntPtr currentJob = IntPtr.Zero;
@@ -306,41 +478,31 @@ namespace ConversionApp
                                 {
                                     // Note : the hashmap expects list of strings as options values
                                     stringifiedOptions[option.Key] = new List<string>()
-                                {
-                                    StringifyOption(jni, option.Value),
-                                    //option.Value.ToString() // possible only after referenced pipeline framework is updated to enable a more relaxed value check (https://github.com/daisy/pipeline-framework/commit/46dc1aeb6918da24640d327c7f6cd2b0c44b1dd5)
-                                };
+                                    {
+                                        StringifyOption(jni, option.Value),
+                                    };
                                 }
 
                             }
                             IntPtr hashMap = jni.NewJavaWrapperObject(stringifiedOptions);
                             info?.Invoke($"Launching the conversion job...");
-                            //Dispatcher.Invoke(() =>
-                            //{
-                            //    string message = $"Launching the conversion job...";
-                            //    ConversionProgressText.Text = message;
-                            //    Console.WriteLine(message);
-                            //    LogTextBox.AppendText(message + "\r\n");
-                            //    LogTextBox.ScrollToEnd();
-                            //});
 
                             currentJob = jni.CallMethod<IntPtr>(
                                 SimpleAPIClass,
                                 SimpleAPIInstance,
                                 "startJob",
                                 "(Ljava/lang/String;Ljava/util/Map;)LSimpleAPI$CommandLineJob;",
-                                scriptOrCommand,
+                                script,
                                 hashMap
                             );
                         }
                         catch (Exception e)
                         {
                             Exception scriptError = new Exception(
-                                $"Script {scriptOrCommand} raised an error",
+                                $"Script {script} raised an error",
                                 e
                             );
                             throw scriptError;
-                            //return IntPtr.Zero;
                         }
 
                         if (currentJob != IntPtr.Zero)
@@ -355,13 +517,6 @@ namespace ConversionApp
                                 )
                                 {
                                     info?.Invoke(message);
-                                    //Dispatcher.Invoke(() =>
-                                    //{
-                                    //    ConversionProgressText.Text = message;
-                                    //    LogTextBox.AppendText("DP2 > " + message + "\r\n");
-                                    //    LogTextBox.ScrollToEnd();
-                                    //});
-                                    //Console.WriteLine("DP2 > " + message);
                                 }
                                 progress?.Invoke(_progress++);
                                 switch (getStatus(jni, currentJob, CommandLineJobClass, JobStatusClass))
@@ -377,9 +532,7 @@ namespace ConversionApp
                                         break;
                                     case JobStatus.Error:
                                         errors = getErros(jni, currentJob, CommandLineJobClass);
-                                        string errorMessage =
-                                            " DP2 > "
-                                            + scriptOrCommand
+                                        string errorMessage = script
                                             + " conversion job has finished in error :\r\n"
                                             + string.Join("\r\n", errors);
                                        
@@ -387,9 +540,7 @@ namespace ConversionApp
                                     case JobStatus.Fail:
                                         checkStatus = false;
                                         errors = getErros(jni, currentJob, CommandLineJobClass);
-                                        string failedMessage =
-                                            " DP2 > "
-                                            + scriptOrCommand
+                                        string failedMessage = script
                                             + " conversion job failed :\r\n"
                                             + string.Join("\r\n", errors);
                                        
@@ -403,15 +554,14 @@ namespace ConversionApp
                         else
                         {
                             throw new Exception(
-                                "DP2 > An unknown error occured while launching the script "
-                                    + scriptOrCommand
+                                "An unknown error occured while launching the script "
+                                    + script
                                     + " with the parameters "
                                     + options.Aggregate(
                                         "",
                                         (result, keyvalue) =>
                                             result + keyvalue.Key + "=" + keyvalue.Value.ToString() + "\r\n"
                                     )
-                            // + "Please try to run the conversion in DAISY Pipeline 2 application directly for more informations on the issue."
                             );
                         }
                     }
@@ -452,8 +602,12 @@ namespace ConversionApp
             }
             catch (Exception ex)
             {
+                AddinLogger.Error(new Exception("An error occured during a conversion ", ex));
                 error?.Invoke(ex.Message);
                 error?.Invoke(ex.StackTrace);
+#if DEBUG
+                Thread.Sleep(15000);
+#endif
                 return 3;
             }
         }
@@ -484,7 +638,7 @@ namespace ConversionApp
             get { return Directory.CreateDirectory(Path.Combine(AppDataFolder, "log")).FullName; }
         }
 
-        public static JavaNativeInterface startJNIBridge(IConversionEventsHandler events = null)
+        public static JavaNativeInterface startJNIBridge(IConversionEventsHandler events = null, Dictionary<string, string> properties = null)
         {
             List<string> ClassFolders = new List<string>
             {
@@ -495,7 +649,6 @@ namespace ConversionApp
 
             List<string> JavaOptions = new List<string>
             {
-                //"-server",
                 "--add-opens=java.base/java.security=ALL-UNNAMED",
                 "--add-opens=java.base/java.net=ALL-UNNAMED",
                 "--add-opens=java.base/java.lang=ALL-UNNAMED",
@@ -551,6 +704,42 @@ namespace ConversionApp
                 { "-Dorg.daisy.pipeline.mode", "cli" }
             };
 
+            if (properties != null && properties.Count > 0)
+            {
+                
+                foreach (var prop in properties)
+                {
+                    if (SystemProps.ContainsKey(prop.Key))
+                    {
+                        SystemProps[prop.Key] = prop.Value;
+                    }
+                    else
+                    {
+                        SystemProps.Add(prop.Key, prop.Value);
+                    }
+                }
+            }
+
+            // Load properties in the JNI runner
+            //if (ConverterHelper.EmbeddedEngineProperties != null && File.Exists(ConverterHelper.EmbeddedEngineProperties))
+            //{
+            //    try
+            //    {
+            //        System.Xml.XmlDocument xmlDoc = new System.Xml.XmlDocument();
+            //        xmlDoc.Load(ConverterHelper.EmbeddedEngineProperties);
+            //        var element = xmlDoc.GetElementsByTagName("properties");
+            //        var props = EngineProperty.ListFromXml((System.Xml.XmlElement)element.Item(0));
+            //        foreach (var prop in props)
+            //        {
+            //            SystemProps.Add("-D" + prop.Name, prop.Value);
+            //        }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        // No loading of the settable properties file if it is not a well-formed XML, but log the error and continue with the default properties
+            //    }
+            //}
+
             List<string> JarPathes = ClassFolders.Aggregate(
                 new List<string>(),
                 (classPath, path) =>
@@ -589,9 +778,6 @@ namespace ConversionApp
             return new JavaNativeInterface(options, jvmDllPath, false);
 
         }
-
-
-
 
     }
 }

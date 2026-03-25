@@ -1,7 +1,7 @@
-﻿<Application x:Class="ConversionApp.App"
+﻿<Application x:Class="org.daisy.jniwrapper.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ConversionApp">
+             xmlns:local="clr-namespace:org.daisy.jniwrapper">
     <Application.Resources>
          
     </Application.Resources>
