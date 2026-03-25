@@ -29,7 +29,8 @@
 
 using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2.Scripts;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts;
 using Daisy.SaveAsDAISY.Forms;
 using Daisy.SaveAsDAISY.WPF;
 using Extensibility;
@@ -49,6 +50,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml;
+using static System.Resources.ResXFileRef;
 using Converter = Daisy.SaveAsDAISY.Conversion.Converter;
 using MSword = Microsoft.Office.Interop.Word;
 using Script = Daisy.SaveAsDAISY.Conversion.Script;
@@ -585,6 +587,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             { "ManageAcronymsTabButton", "ACR2.png" },
             { "toggleValidateTabButton", "validate.png" },
             { "ImportDaisyStylesTabButton", "import.png" },
+            { "ImportTabMenu", "import.png" },
+            { "ImportODTTabButton", "import.png" },
+            { "ImportRTFTabButton", "import.png" },
+            { "ImportPDFTabButton", "import.png" },
             { "AddFootnotesTabButton", "footnotes.png" },
             { "DocumentLanguageTabButton", "Language.png" },
             { "SettingsTabButton", "gear.png" },
@@ -647,18 +653,19 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
 
         public void GetDaisySettings(IRibbonControl control)
         {
+            
             Daisy.SaveAsDAISY.WPF.SettingsForm settings = new Daisy.SaveAsDAISY.WPF.SettingsForm();
             settings.ShowDialog();
             try
             {
                 if (ConverterSettings.Instance.UseDAISYPipelineApp)
                 {
-                    Engine.StartDAISYPipelineAppWebservice();
+                    Engine.StopEmbeddedEngine();
+                    WebserviceRunner.StartDAISYPipelineAppWebservice();
                 }
                 else if(ConverterSettings.Instance.UseWebserviceRunner)
                 {
-                    Engine.StopEmbeddedEngine();
-                    Engine.StartEmbeddedWebservice();
+                    WebserviceRunner.StartEmbeddedWebservice();
                 } else
                 {
                     Engine.StopEmbeddedEngine();
@@ -1855,6 +1862,163 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             }
         }
 
+        #endregion
+
+        #region Import actions
+
+        public void ImportODT(IRibbonControl control)
+        {
+            try
+            {
+                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+                Script pipelineScript = new DtbookToODT(eventsHandler);
+                ImportForm import = new ImportForm(pipelineScript);
+                if(import.ShowDialog() == true)
+                {
+                    eventsHandler.onPostProcessingStart(null);
+                    eventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs("Launching conversion of the dtbook..."));
+                    try
+                    {
+                        string inputFile = import.ScriptToRun.Parameters["input"].Value.ToString();
+                        DirectoryInfo finalOutput = new DirectoryInfo(
+                            Path.Combine(
+                                import.ScriptToRun.Parameters["output"].Value.ToString(),
+                                string.Format(
+                                    "{0}_{2}_{1}",
+                                    Path.GetFileNameWithoutExtension(inputFile),
+                                    DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                                    pipelineScript.Name
+                                )
+                            )
+                        );
+
+                        // Update the output to create the intermediate folder for the conversion result
+                        import.ScriptToRun.Parameters["output"].Value = finalOutput.FullName;
+                        
+                        import.ScriptToRun.ExecuteScript("");
+
+                        // search ODT file in output folder
+                        var odtFile = finalOutput.GetFiles("*.odt");
+                        if (odtFile != null && odtFile.Length > 0)
+                        {
+                            this.applicationObject.Documents.Open(odtFile[0].FullName);
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "Conversion completed but no ODT file found in the output folder",
+                                "Conversion completed",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                        }
+                    }
+                    catch(OperationCanceledException)
+                    {
+                        eventsHandler.onConversionCanceled();
+                    }
+                    catch (JobException jex)
+                    {
+                        AddinLogger.Error(jex);
+                        MessageBox.Show(
+                            jex.Message,
+                            "Conversion failed",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        AddinLogger.Error(e);
+                        ExceptionReport report = new ExceptionReport(e);
+                        report.ShowDialog();
+                    }
+                    
+                }
+            }
+            catch (Exception e)
+            {
+                ExceptionReport report = new ExceptionReport(e);
+                report.ShowDialog();
+            }
+        }
+
+        public void ImportRTF(IRibbonControl control)
+        {
+            try
+            {
+                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+                Script pipelineScript = new DtbookToRTF(eventsHandler);
+                ImportForm import = new ImportForm(pipelineScript);
+                if (import.ShowDialog() == true)
+                {
+                    eventsHandler.onPostProcessingStart(null);
+                    eventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs("Launching conversion of the dtbook..."));
+                    try
+                    {
+                        string inputFile = import.ScriptToRun.Parameters["input"].Value.ToString();
+                        DirectoryInfo finalOutput = new DirectoryInfo(
+                            Path.Combine(
+                                import.ScriptToRun.Parameters["output"].Value.ToString(),
+                                string.Format(
+                                    "{0}_{2}_{1}",
+                                    Path.GetFileNameWithoutExtension(inputFile),
+                                    DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                                    pipelineScript.Name
+                                )
+                            )
+                        );
+
+                        // Update the output to create the intermediate folder for the conversion result
+                        import.ScriptToRun.Parameters["output"].Value = finalOutput.FullName;
+
+                        import.ScriptToRun.ExecuteScript("");
+
+                        // search RTF file in output folder
+                        var rtfFile = finalOutput.GetFiles("*.rtf");
+                        if (rtfFile != null && rtfFile.Length > 0)
+                        {
+                            this.applicationObject.Documents.Open(rtfFile[0].FullName);
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "Conversion completed but no RTF file found in the output folder",
+                                "Conversion completed",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        eventsHandler.onConversionCanceled();
+                    }
+                    catch (JobException jex)
+                    {
+                        AddinLogger.Error(jex);
+                        MessageBox.Show(
+                            jex.Message,
+                            "Conversion failed",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        AddinLogger.Error(e);
+                        ExceptionReport report = new ExceptionReport(e);
+                        report.ShowDialog();
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                ExceptionReport report = new ExceptionReport(e);
+                report.ShowDialog();
+            }
+        }
         #endregion
 
         #region Multiple documents conversion

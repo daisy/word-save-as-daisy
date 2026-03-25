@@ -229,8 +229,7 @@ namespace Daisy.SaveAsDAISY
         public void onPostProcessingStart(ConversionParameters conversion)
         {
             TryInitializeProgress(
-                "Starting pipeline processing",
-                conversion.PipelineScript.StepsCount + 1
+                "Starting pipeline processing"
             );
 
         }

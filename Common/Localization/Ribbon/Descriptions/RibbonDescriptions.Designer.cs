@@ -19,7 +19,7 @@ namespace Daisy.SaveAsDAISY {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class RibbonDescriptions {
@@ -246,6 +246,42 @@ namespace Daisy.SaveAsDAISY {
         public static string ImportDaisyStylesTabButton {
             get {
                 return ResourceManager.GetString("ImportDaisyStylesTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string ImportODTTabButton {
+            get {
+                return ResourceManager.GetString("ImportODTTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string ImportPDFTabButton {
+            get {
+                return ResourceManager.GetString("ImportPDFTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string ImportRTFTabButton {
+            get {
+                return ResourceManager.GetString("ImportRTFTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à .
+        /// </summary>
+        public static string ImportTabMenu {
+            get {
+                return ResourceManager.GetString("ImportTabMenu", resourceCulture);
             }
         }
         

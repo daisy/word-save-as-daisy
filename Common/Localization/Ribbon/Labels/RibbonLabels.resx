@@ -178,7 +178,7 @@
     <value>Help</value>
   </data>
   <data name="ImportDaisyStylesTabButton" xml:space="preserve">
-    <value>&amp;Import</value>
+    <value>&amp;Load DAISY styles</value>
   </data>
   <data name="LanguageGroup" xml:space="preserve">
     <value>Language</value>
@@ -227,5 +227,17 @@
   </data>
   <data name="DocumentMetadataTabButton" xml:space="preserve">
     <value>Document metadata</value>
+  </data>
+  <data name="ImportTabMenu" xml:space="preserve">
+    <value>&amp;Import document</value>
+  </data>
+  <data name="ImportODTTabButton" xml:space="preserve">
+    <value>DTBook XML to ODT</value>
+  </data>
+  <data name="ImportRTFTabButton" xml:space="preserve">
+    <value>DTBook XML to RTF</value>
+  </data>
+  <data name="ImportPDFTabButton" xml:space="preserve">
+    <value>PDF to Word</value>
   </data>
 </root>

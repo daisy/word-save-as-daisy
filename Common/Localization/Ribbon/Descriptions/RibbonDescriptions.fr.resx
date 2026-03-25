@@ -222,4 +222,11 @@
   <data name="VersionDetailsTabButton" xml:space="preserve">
     <value>Affichés les informations de versions du logiciel SaveAsDAISY.</value>
   </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="ImportPDFTabButton" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
+  <data name="ImportTabMenu" type="System.Resources.ResXNullRef, System.Windows.Forms">
+    <value />
+  </data>
 </root>

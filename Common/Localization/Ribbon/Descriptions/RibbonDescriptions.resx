@@ -222,4 +222,16 @@
   <data name="VersionDetailsTabButton" xml:space="preserve">
     <value />
   </data>
+  <data name="ImportPDFTabButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportTabMenu" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportODTTabButton" xml:space="preserve">
+    <value />
+  </data>
+  <data name="ImportRTFTabButton" xml:space="preserve">
+    <value />
+  </data>
 </root>

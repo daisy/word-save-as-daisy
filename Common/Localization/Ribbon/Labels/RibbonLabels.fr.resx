@@ -228,4 +228,16 @@
   <data name="DocumentMetadataTabButton" xml:space="preserve">
     <value>Métadonnées du document</value>
   </data>
+  <data name="ImportTabMenu" xml:space="preserve">
+    <value>Importer un document</value>
+  </data>
+  <data name="ImportODTTabButton" xml:space="preserve">
+    <value>DTBook XML vers ODT</value>
+  </data>
+  <data name="ImportRTFTabButton" xml:space="preserve">
+    <value>DTBook XML vers RTF</value>
+  </data>
+  <data name="ImportPDFTabButton" xml:space="preserve">
+    <value>PDF vers Word</value>
+  </data>
 </root>
