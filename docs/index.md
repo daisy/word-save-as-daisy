@@ -11,7 +11,7 @@ If Office is not found by the installer (like preinstalled or windows store vers
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
 - Or access to the [last release page](https://github.com/daisy/word-save-as-daisy/releases/latest)
 
-## Latest test version: 2.9.4.1 beta (released on November, 2024)
+## Latest test version: 2.9.4.1 beta (released on November, 2025)
 
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.9.4.1-beta/SaveAsDAISYInstaller-2.9.4.1-beta.exe)
 - Or access the [last pre-release version page](https://github.com/daisy/word-save-as-daisy/releases/tag/v2.9.4.1-beta)
@@ -29,7 +29,7 @@ Any constructive feedbacks are also welcome to help us improve the DAISY Pipelin
 If you happen to also have the [DAISY Pipeline app]() installed, you can use the text-to-speech configuration file of the app for the addin conversion :
 When browsing for a Text-to-speech configuration in the conversion form, look for the file `%APPDATA%\pipeline-ui\ttsConfig.xml` in your explorer (Or `C:\Users\<YourUserName>\AppData\Roaming\pipeline-ui\ttsConfig.xml`) and select it. 
 
-Be aware that the SaveAsDAISY Addin does not currently support the connexion to Azure or Google text-to-speech engines.
+Be aware that the SaveAsDAISY Addin does not currently support the connexion to Azure or Google text-to-speech engines *(that will change soon)*
 In the case you would need to use those text-to-speech engines, we currently recommend to export your document as Dtbook XML with the addin,
 and then use the DAISY Pipeline App to perform the conversion to other formats.
 
@@ -95,7 +95,7 @@ This release includes the following changes :
 - *(ongoig development)* The user can now activate more capabilities of the embedded engine through the settings of the addin :
   - a new "Embedded engine properties" button will open a new form that allows to set properties required to activate specific services,
     like online TTS or Mistral OCR.
-- We are now exposing a new "Import" experimental feature within the ribbon ,that allows users to import directly as a new Word document :
+- We are now exposing a new "Import" experimental feature within the ribbon, that allows users to import directly as a new Word document :
   - DTBook XMLs converted to ODT document (using the `dtbook-to-odt` pipeline script)
     - be aware that this script 
       - is not using the SaveAsDAISY styles (but a mapping of the styles could be investigated if enough users request it)
