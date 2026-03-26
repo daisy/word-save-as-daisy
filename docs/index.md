@@ -11,10 +11,10 @@ If Office is not found by the installer (like preinstalled or windows store vers
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
 - Or access to the [last release page](https://github.com/daisy/word-save-as-daisy/releases/latest)
 
-## Latest test version: 2.9.0 beta (released on November, 2024)
+## Latest test version: 2.9.4.1 beta (released on November, 2024)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.9.0-beta/SaveAsDAISYInstaller-2.9.0-beta.exe)
-- Or access the [last pre-release version page](https://github.com/daisy/word-save-as-daisy/releases/tag/v2.9.0-beta)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.9.4.1-beta/SaveAsDAISYInstaller-2.9.4.1-beta.exe)
+- Or access the [last pre-release version page](https://github.com/daisy/word-save-as-daisy/releases/tag/v2.9.4.1-beta)
 
 ## Report issues
 
@@ -82,6 +82,92 @@ This has been reported to Microsoft through their Feedback channel, but if anyon
 we would really appreciate it.
 
 # Changelog
+
+## 2.9.5 beta (ongoing development)
+
+This release includes the following changes :
+- Embedded pipeline is updated to version 1.15.4-SNAPSHOT :
+  - An upgraded snapshot of the word to dtbook script is included
+    - MathML-core is now the targeted mathml version when converting math from a word document
+- For security hardened windows environment (where users cannot authorize webservice to run without an administrator)
+  JNI communication with the embedded engine has been reinstated and improved :
+  - A new "JNI Wrapper" tool is provided within the addin to launch and communicate directly with the embedded DAISY Pipeline
+- *(ongoig development)* The user can now activate more capabilities of the embedded engine through the settings of the addin :
+  - a new "Embedded engine properties" button will open a new form that allows to set properties required to activate specific services,
+    like online TTS or Mistral OCR.
+- We are now exposing a new "Import" experimental feature within the ribbon ,that allows users to import directly as a new Word document :
+  - DTBook XMLs converted to ODT document (using the `dtbook-to-odt` pipeline script)
+    - be aware that this script 
+      - is not using the SaveAsDAISY styles (but a mapping of the styles could be investigated if enough users request it)
+      - does not yet properly handle some elements of the dtbook structure (like sidebars)
+  - DTBook XMLs converted to RTF document (using the `dtbook-to-rtf` pipeline script)
+  - *(ongoing developement)* PDF document converted docx (using the experimental `pdf-to-word` script)
+    - To be activated, this script requires to provide an API Key from Mistral OCR services in the pipeline properties form
+
+
+## 2.9.4 beta (November 2025)
+
+This release includes the following changes :
+- Embedded pipeline is updated to version 1.15.3
+  - An upgraded snapshot of the word to dtbook script is included to fix additionnal issues 
+    - Corrected content blocks closure
+    - Fixed a documentDate unauthorized empty-sequence error 
+    - Added accessibility metadata transposition in the resulting dtbook
+  - Previous internal chains of scripts are replaced by the new word-based pipeline scripts
+- Embedded pipeline is now used through the DAISY pipeline webservice interface instead of JNI
+- Installer will check for the presence of DAISY Pipeline app 1.10 on the user system and offer to download and install it if not found
+- Acronyms and abbreviations management dialogs usability has been improved with navigation buttons and a confirmation dialog before suppression of an acronym
+- Fixed an issue where saving metadata from a onedrive hosted document would raise an "invalid command" exception.
+- Fixed some issues with dialog started from background thread hiding some other errors
+- Improved the addin log information report for bug analysis
+
+
+**Full Changelog**: https://github.com/daisy/word-save-as-daisy/compare/v2.9.3-beta...v2.9.4.1-beta
+
+## 2.9.3 beta (September 2025)
+
+The following changes are included in this release :
+- Dialogs from the addin have been upgraded to use Windows Presentation Framework for improved rendering and simplified maintenance
+  - Some bugs were found in acronyms and abreviations dialogs that should be now fixed with their new version
+- A new metadata editor is now available through an additional button in the "accessibility" ribbon
+  - The metadata format is compatible with WordToEPUB addin so that both addin can be used to edit them
+  - Note that the EPUB export of SaveAsDAISY does not yet use them all, but it is part of the work plan.
+- The addin can connect to the latest DAISY Pipeline app engine through its webservice, to use it as primary conversion engine
+  - Installation of the app remains optional, but user is now asked if the DAISY Pipeline app should be installed at the end of the addin install process
+  - If installed, the app backend can be selected in the addin settings, along shortcuts to TTS engines and voices settings of the app
+  - The previous embedded engine is still available as fallback and has been updated to the same version as the one in the app
+- When a conversion is successful, the destination folder is now opened instead of the root level of results
+
+**Full Changelog**: https://github.com/daisy/word-save-as-daisy/compare/v2.9.2-beta...v2.9.3-beta
+
+## 2.9.2 beta (May 2025)
+
+This release include the following changes : 
+- Embedded pipeline is updated to version 1.15.2-SNAPSHOT, including some fixes to the scripts used to convert the word documents to the dtbook and epub formats
+- Fixed an error in the megavoice export folder name
+- Fixed a typo in some buttons ID that was making buttons crash
+- Added 4 new paragraphs styles in the styles imported by the `Import DAISY styles` buttons, to create dtbook's `sidebar` elements in a document : 
+  - `Sidebar - Optional (DAISY)`  creates if necessary a `<sidebar render="optional">` element and adds paragraphs to it
+  - `Sidebar - Required (DAISY)`  creates if necessary a `<sidebar render="required">` element and adds paragraphs to it
+  - `Sidebar header - Optional (DAISY)` creates if necessary a `<sidebar render="optional">`  and adds a `hd` element to it
+  - `Sidebar header - Required (DAISY)` creates if necessary a `<sidebar render="required">`  and adds a `hd` element to it
+- Disabled the experimental Azure TTS settings fields from the settings form tested in version 2.9.1
+  - Plan is to study the possibility to use of the pipeline app engines and TTS voices settings UI
+
+
+**Full Changelog**: https://github.com/daisy/word-save-as-daisy/compare/v2.9.1-beta...v2.9.2-beta
+
+## 2.9.1 beta (December 2024)
+
+This release introduces a bugfix regarding addin logging, where a missing folder in the DAISY Pipeline 2 application data folder would make the embedded java runtime to raise an error.
+
+Some additional changes are also included
+- (Experimental) The addin can now export word document to DAISY2.02 format from the SaveAsDAISY export button on the ribbon
+- (Experimental, for testing purpose, use with caution) Azure TTS region and key can be configured in the addin settings to enable Azure voices usage directly from the addin embedded DAISY Pipeline 2 engine.
+  - Note that a TTS configuration file still needs to be prepared to control Azure voices usage.
+  For users that have the DAISY Pipeline app installed and have configured the voices they want to use in the DAISY pipeline app settings, a corresponding TTS configuration file should be available at `%APPDATA%\pipeline-ui\ttsConfig.xml` and can be used as TTS configuration for the addin.
+
+**Full Changelog**: https://github.com/daisy/word-save-as-daisy/compare/v2.9.0-beta...v2.9.1-beta
 
 ## 2.9 beta (November 2024 pre-release)
 
