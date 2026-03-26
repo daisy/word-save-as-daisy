@@ -1870,13 +1870,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
         {
             try
             {
-                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+                WPFEventsHandler eventsHandler = new WPFEventsHandler();
                 Script pipelineScript = new DtbookToODT(eventsHandler);
                 ImportForm import = new ImportForm(pipelineScript);
                 if(import.ShowDialog() == true)
                 {
-                    eventsHandler.onPostProcessingStart(null);
-                    eventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs("Launching conversion of the dtbook..."));
+                    eventsHandler.onPipelineProcessingInfo("Launching conversion of the dtbook...");
                     try
                     {
                         string inputFile = import.ScriptToRun.Parameters["input"].Value.ToString();
@@ -1901,17 +1900,18 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                         var odtFile = finalOutput.GetFiles("*.odt");
                         if (odtFile != null && odtFile.Length > 0)
                         {
-                            this.applicationObject.Documents.Open(odtFile[0].FullName);
+                            eventsHandler?.onPipelineProcessingInfo("Conversion completed, loading the ODT file in Word and remap SaveAsDAISY styles...");
                         }
                         else
                         {
                             MessageBox.Show(
                                 "Conversion completed but no ODT file found in the output folder",
-                                "Conversion completed",
+                                "Conversion warning",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning
                             );
                         }
+                        eventsHandler?.onConversionSuccess();
                     }
                     catch(OperationCanceledException)
                     {
@@ -1947,13 +1947,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
         {
             try
             {
-                GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
+                WPFEventsHandler eventsHandler = new WPFEventsHandler();
                 Script pipelineScript = new DtbookToRTF(eventsHandler);
                 ImportForm import = new ImportForm(pipelineScript);
                 if (import.ShowDialog() == true)
                 {
-                    eventsHandler.onPostProcessingStart(null);
-                    eventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs("Launching conversion of the dtbook..."));
+                    eventsHandler.onPipelineProcessingInfo("Launching conversion of the dtbook...");
                     try
                     {
                         string inputFile = import.ScriptToRun.Parameters["input"].Value.ToString();

@@ -296,7 +296,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
                 if (_conversion.PipelineScript == null) throw new Exception("No script selected for conversion");
                 // launch the pipeline post processing
-                this.EventsHandler.onPostProcessingStart(_conversion);
+                this.EventsHandler.onPipelineProcessingStart(_conversion);
                 try {
                     _conversion.PipelineScript.ExtractedShapes = document.InlineShapes;
                     _conversion.PipelineScript.ExecuteScript(document.CopyPath);
@@ -313,26 +313,26 @@ namespace Daisy.SaveAsDAISY.Conversion
                 catch (JobException je) {
                     // Job finished in error, not sure if i should  return a failed result
                     // or throw back to allow a report
-                    this.EventsHandler.onPostProcessingError(
+                    this.EventsHandler.onPipelineProcessingError(
                         je
                     );
                     return ConversionResult.Fail(je);
                 }
                 catch (JobRequestError jre) {
                     // Problem with job request
-                    this.EventsHandler.onPostProcessingError(
+                    this.EventsHandler.onPipelineProcessingError(
                         jre
                     );
                     return ConversionResult.Fail(jre);
                 }
                 catch (Exception e) {
                     CurrentStatus = ConversionStatus.Error;
-                    this.EventsHandler.onPostProcessingError(
+                    this.EventsHandler.onPipelineProcessingError(
                         e
                     );
                     return ConversionResult.Fail(e);
                 }
-                this.EventsHandler.onPostProcessingSuccess(ConversionParameters);
+                this.EventsHandler.onPipelineProcessingSuccess(ConversionParameters);
                 return ConversionResult.Success(outputDirectory);
             }
             

@@ -31,7 +31,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
             _cancellationRequested = false;
         }
 
-        public void onPostProcessingStart(ConversionParameters conversion) {
+        public void onPipelineProcessingStart(ConversionParameters conversion = null) {
             _cancellationRequested = false;
         }
 
@@ -43,7 +43,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
 
         }
 
-        public void onPostProcessingSuccess(ConversionParameters conversion) {
+        public void onPipelineProcessingSuccess(ConversionParameters conversion) {
 
         }
 
@@ -120,7 +120,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         {
         }
 
-        public void onPostProcessingError(Exception error)
+        public void onPipelineProcessingError(Exception error)
         {
         }
 
@@ -137,7 +137,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         {
         }
 
-        public void onPostProcessingInfo(string message)
+        public void onPipelineProcessingInfo(string message)
         {
         }
         public void RequestCancellation()

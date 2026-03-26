@@ -191,7 +191,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 return;
             }
             TryShowMessage("Preprocessing canceled ", true);
-            //TryClosingDialog(3000);
+            TryClosingDialog(3000);
         }
 
         public void onPreprocessingError(string inputPath, Exception errors)
@@ -302,7 +302,13 @@ namespace Daisy.SaveAsDAISY.WPF
             ConversionParameters conversion
         )
         {
-            //TryClosingDialog(3000);
+            TryClosingDialog(
+#if DEBUG
+                3000
+#else
+                0
+#endif
+                );
         }
 
         public void onDocumentConversionSuccess(
@@ -318,17 +324,17 @@ namespace Daisy.SaveAsDAISY.WPF
         #endregion
 
         #region Post processing
-        public void onPostProcessingStart(ConversionParameters conversion)
+        public void onPipelineProcessingStart(ConversionParameters conversion = null)
         {
             IsCanceled = false;
             TryInitializeProgress(
                 "Starting pipeline processing",
-                conversion.PipelineScript.StepsCount + 1
+                conversion?.PipelineScript?.StepsCount + 1 ?? 1
             );
 
         }
 
-        public void onPostProcessingSuccess(ConversionParameters conversion)
+        public void onPipelineProcessingSuccess(ConversionParameters conversion)
         {
             TryShowMessage(
                 "Successfully processed or converted _document, result stored in "
@@ -421,7 +427,7 @@ namespace Daisy.SaveAsDAISY.WPF
             infoBox.ShowDialog();
         }
 
-        public void onPostProcessingError(Exception errors)
+        public void onPipelineProcessingError(Exception errors)
         {
             Exception e = errors;
             string message = e.Message;
@@ -436,7 +442,13 @@ namespace Daisy.SaveAsDAISY.WPF
         public void onConversionSuccess()
         {
             TryShowMessage("Successfull conversion", false);
-            //TryClosingDialog(3000);
+            TryClosingDialog(
+#if DEBUG
+                3000
+#else
+                0
+#endif
+            );
         }
 
         public void onPreprocessingWarning(string message)
@@ -449,7 +461,7 @@ namespace Daisy.SaveAsDAISY.WPF
             TryShowMessage(message, false);
         }
 
-        public void onPostProcessingInfo(string message)
+        public void onPipelineProcessingInfo(string message)
         {
             TryShowMessage(message, false);
         }

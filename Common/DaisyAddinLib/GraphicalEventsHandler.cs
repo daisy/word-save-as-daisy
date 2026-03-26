@@ -226,7 +226,7 @@ namespace Daisy.SaveAsDAISY
         #endregion
 
         #region Post processing
-        public void onPostProcessingStart(ConversionParameters conversion)
+        public void onPipelineProcessingStart(ConversionParameters conversion)
         {
             TryInitializeProgress(
                 "Starting pipeline processing"
@@ -234,7 +234,7 @@ namespace Daisy.SaveAsDAISY
 
         }
 
-        public void onPostProcessingSuccess(ConversionParameters conversion)
+        public void onPipelineProcessingSuccess(ConversionParameters conversion)
         {
             TryShowMessage(
                 "Successfully processed or converted document, result stored in "
@@ -335,7 +335,7 @@ namespace Daisy.SaveAsDAISY
             infoBox.ShowDialog();
         }
 
-        public void onPostProcessingError(Exception errors)
+        public void onPipelineProcessingError(Exception errors)
         {
             Exception e = errors;
             string message = e.Message;
@@ -359,7 +359,7 @@ namespace Daisy.SaveAsDAISY
         {
         }
 
-        public void onPostProcessingInfo(string message)
+        public void onPipelineProcessingInfo(string message)
         {
         }
 

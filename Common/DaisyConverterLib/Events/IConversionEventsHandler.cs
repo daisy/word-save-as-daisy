@@ -150,21 +150,21 @@ namespace Daisy.SaveAsDAISY.Conversion.Events {
         /// Method called when post processing starts
         /// </summary>
         /// <param name="conversion"></param>
-        void onPostProcessingStart(ConversionParameters conversion);
+        void onPipelineProcessingStart(ConversionParameters conversion = null);
 
-        void onPostProcessingInfo(string message);
+        void onPipelineProcessingInfo(string message);
 
         /// <summary>
         /// Method called when post processing starts
         /// </summary>
         /// <param name="conversion"></param>
-        void onPostProcessingError(Exception error);
+        void onPipelineProcessingError(Exception error);
 
         /// <summary>
         /// Method called when the post processing pass has successfully finished 
         /// </summary>
         /// <param name="conversion"></param>
-        void onPostProcessingSuccess(ConversionParameters conversion);
+        void onPipelineProcessingSuccess(ConversionParameters conversion);
         #endregion Post processing events
 
 
