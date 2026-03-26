@@ -87,6 +87,9 @@ namespace org.daisy.jniwrapper
                     break;
                 case "descriptors":
                     command = JNITaskRunner.Command.Descriptors;
+                    break;
+                case "settable-properties":
+                    command = JNITaskRunner.Command.SettableProperties;
                     //string outputDir = options.ContainsKey("output") ? options["output"] : Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                     //if(!Directory.Exists(outputDir))
                     //{

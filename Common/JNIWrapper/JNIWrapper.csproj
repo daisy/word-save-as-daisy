@@ -150,12 +150,14 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
-REM --- pipeline for dtbook to daisy
+REM --- Pipeline distribution for debugging or single usage
 
 IF EXIST "$(TargetDir)daisy-pipeline" rd /S /Q "$(TargetDir)daisy-pipeline"
 
-
 xcopy /E  "$(SolutionDir)resources\daisy-pipeline"  "$(TargetDir)daisy-pipeline\"
-</PostBuildEvent>
+
+REM -- Update the pipeline with the preextracted settable properties description file
+
+cmd /c $(TargetPath) settable-properties --output "$(SolutionDir)resources\daisy-pipeline\settable-properties.xml"</PostBuildEvent>
   </PropertyGroup>
 </Project>
