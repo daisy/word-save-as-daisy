@@ -41,16 +41,16 @@ namespace org.daisy.jniwrapper
                             LogTextBox.AppendText(m + "\r\n");
                             LogTextBox.ScrollToEnd();
                         });
-                        Console.WriteLine("DP2 > " + m);
+                        Console.WriteLine(m);
                     }),
                 error: (m =>
                     {
                         Dispatcher.Invoke(() =>
                         {
-                            LogTextBox.AppendText("DP2 > " + m + "\r\n");
+                            LogTextBox.AppendText(m + "\r\n");
                             LogTextBox.ScrollToEnd();
                         });
-                        Console.WriteLine("DP2 > " + m);
+                        Console.WriteLine(m);
                     }),
                 progress: ((p,t) =>
                     {

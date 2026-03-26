@@ -50,6 +50,32 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
             }
         }
 
+        #region Folders used by the JNI wrapper and the embedded engine
+        public static string AppDataFolder
+        {
+            get
+            {
+                return Directory
+                    .CreateDirectory(
+                        Path.Combine(
+                            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                            "DAISY Pipeline 2"
+                        )
+                    )
+                    .FullName;
+            }
+        }
+
+        public static string LogsFolder
+        {
+            get { return Directory.CreateDirectory(Path.Combine(AppDataFolder, "log")).FullName; }
+        }
+
+        public static string JNILogsPath
+        {
+            get { return Directory.CreateDirectory(Path.Combine(AppDataFolder, "jni-logs")).FullName; }
+        }
+        #endregion
 
         private List<ScriptDefinition> _scripts;
         //private List<Datatype> _datatypes; // Datatype descriptors format is a bit of a mess with lots of namespaces without a real consistence in that definition
@@ -117,7 +143,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 case 1:
                     throw new OperationCanceledException("Conversion was cancelled by the user");
                 default:
-                    throw new JobException($"Embedded pipeline exited with code {conversion.ExitCode}");
+                    throw new JobException($"Embedded pipeline returned an error, please check the latest error logs in {JNILogsPath}");
             }
         }
 

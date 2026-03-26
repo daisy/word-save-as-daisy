@@ -451,6 +451,37 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
             };
         }
     }
+    public class ScriptOutput : ScriptItemBase
+    {
+        public new string Type { get; set; } = "anyDirURI";
+        public new string Kind { get; set; } = "output";
+        public new bool Ordered { get; set; }
+        public bool Batchable { get; set; }
+
+        public static ScriptOutput FromXml(XmlElement outputElm)
+        {
+            var mediaType = new List<string>();
+            string mediaTypeVal = outputElm.GetAttribute("mediaType") ?? "";
+            if (mediaTypeVal != "")
+            {
+                mediaType = mediaTypeVal.Split(' ').ToList();
+            }
+            return new ScriptOutput()
+            {
+                Desc = outputElm.GetAttribute("desc") ?? "",
+                MediaType = mediaType,
+                Name = outputElm.GetAttribute("name") ?? "",
+                Sequence = outputElm.GetAttribute("sequence") == "true",
+                Required = outputElm.GetAttribute("required") == "true",
+                Nicename = outputElm.GetAttribute("nicename") ?? "",
+                Type = "anyFileURI",
+                Kind = "output",
+                Ordered = false,
+                IsStylesheetParameter = false,
+                Batchable = false,
+            };
+        }
+    }
 
     public class ScriptOption : ScriptItemBase
     {
@@ -490,6 +521,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
         public string Version { get; set; }
         public List<ScriptInput> Inputs { get; set; }
         public List<ScriptOption> Options { get; set; }
+
+        public List<ScriptOutput> Outputs { get; set; }
+
         public string Homepage { get; set; }
         public bool Batchable { get; set; }
         public bool Multidoc { get; set; }
@@ -510,6 +544,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
         {
             var inputs = new List<ScriptInput>();
             var options = new List<ScriptOption>();
+            var outputs = new List<ScriptOutput>();
             ScriptInput firstRequired = null;
             foreach (XmlElement inputElm in scriptElm.GetElementsByTagName("input")) {
                 ScriptInput scriptInput = ScriptInput.FromXml(inputElm);
@@ -521,7 +556,13 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
             foreach (XmlElement optionElm in scriptElm.GetElementsByTagName("option")) {
                 options.Add(ScriptOption.FromXml(optionElm));
             }
-            
+
+            foreach (XmlElement outputElm in scriptElm.GetElementsByTagName("output"))
+            {
+                outputs.Add(ScriptOutput.FromXml(outputElm));
+            }
+
+
             return new ScriptDefinition()
             {
                 Id = scriptElm.GetAttribute("id") ?? "",
@@ -530,6 +571,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Types
                 Description = scriptElm.GetElementsByTagName("description")?.Item(0)?.InnerText ?? "",
                 Version = scriptElm.GetElementsByTagName("version")?.Item(0)?.InnerText ?? "",
                 Inputs = inputs,
+                Outputs = outputs,
                 Options = options,
                 Homepage = scriptElm.GetElementsByTagName("homepage")?.Item(0)?.InnerText ?? "",
                 Batchable = options.Find(o => o.Name == "stylesheet-parameters") == null && inputs.Find(input => input.Sequence == true) == null,

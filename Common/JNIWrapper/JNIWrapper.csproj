@@ -74,6 +74,9 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>org.daisy.jniwrapper.App</StartupObject>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -145,4 +148,14 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+REM --- pipeline for dtbook to daisy
+
+IF EXIST "$(TargetDir)daisy-pipeline" rd /S /Q "$(TargetDir)daisy-pipeline"
+
+
+xcopy /E  "$(SolutionDir)resources\daisy-pipeline"  "$(TargetDir)daisy-pipeline\"
+</PostBuildEvent>
+  </PropertyGroup>
 </Project>

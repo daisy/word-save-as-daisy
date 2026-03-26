@@ -8,8 +8,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Xml;
 using static org.daisy.jniwrapper.JNITaskRunner;
 
 namespace org.daisy.jniwrapper
@@ -409,19 +412,35 @@ namespace org.daisy.jniwrapper
             }
             catch (AggregateException aggEx)
             {
-                error?.Invoke("An error occured during the export : ");
+                StringBuilder errorLog = new StringBuilder($"An error occured during command {command} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+                
+                error?.Invoke($"An error occured during command {command} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
                 foreach (var ex in aggEx.InnerExceptions)
                 {
-                    error?.Invoke(ex.Message);
-                    error?.Invoke(ex.StackTrace);
+                    errorLog.AppendLine(ex.Message);
+                    errorLog.AppendLine(ex.StackTrace);
                 }
+                string path = Path.Combine(JNILogsPath, $"{command}-error-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                File.WriteAllText(path, errorLog.ToString());
+                error?.Invoke($"For more details, consult the error log at {path}");
                 return 2;
             }
             catch (Exception ex)
             {
-                AddinLogger.Error(new Exception("An error occured while executing the command : " + command.ToString(), ex));
-                error?.Invoke(ex.Message);
-                error?.Invoke(ex.StackTrace);
+                StringBuilder errorLog = new StringBuilder($"An error occured during command {command} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+
+                error?.Invoke($"An error occured during command {command} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+                while (ex != null)
+                {
+                    error?.Invoke($"{ex.Message}");
+                    errorLog.AppendLine(ex.Message);
+                    errorLog.AppendLine(ex.StackTrace);
+                    ex = ex.InnerException;
+                }
+                string path = Path.Combine(JNILogsPath, $"{command}-error-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                File.WriteAllText(path, errorLog.ToString());
+                error?.Invoke($"For more details, consult the error log at {path}");
+
                 return 3;
             }
 
@@ -465,24 +484,60 @@ namespace org.daisy.jniwrapper
                         IntPtr JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
                         IntPtr SimpleAPIInstance = jni.NewObject(SimpleAPISPIClass);
 
-
+                        // Retrieve the script definition
+                        string definition = jni.CallMethod<string>(
+                                    SimpleAPIClass,
+                                    SimpleAPIInstance,
+                                    "getScriptDetails",
+                                    "(Ljava/lang/String;)Ljava/lang/String;",
+                                    script
+                                );
+                        XmlDocument definitionDoc = new XmlDocument();
+                        definitionDoc.LoadXml(definition);
+                        ScriptDefinition scriptDefinition = ScriptDefinition.FromXml(definitionDoc.DocumentElement);
+                       
+                        
                         IntPtr currentJob = IntPtr.Zero;
-
+                        List<string> missingRequiredItems = scriptDefinition.Options
+                                    .Concat<ScriptItemBase>(scriptDefinition.Inputs)
+                                    .Concat<ScriptItemBase>(scriptDefinition.Outputs)
+                                    .Where(ScriptItemBase => ScriptItemBase.Required == true)
+                                    .Select(ScriptItemBase=> ScriptItemBase.Name)
+                                    .Where(o => !options.ContainsKey(o) || options[o] == null)
+                                    .ToList();
+                        if (missingRequiredItems.Count > 0)
+                        {
+                            throw new JobException($"The following required fields are missing or empty for the script {script} : {string.Join(", ", missingRequiredItems)}");
+                        }
                         try
                         {
                             Dictionary<string, List<string>> stringifiedOptions =
                                 new Dictionary<string, List<string>>();
+
                             foreach (KeyValuePair<string, string> option in options)
                             {
-                                if (option.Value != null)
+                                ScriptItemBase item = scriptDefinition.Options
+                                    .Concat<ScriptItemBase>(scriptDefinition.Inputs)
+                                    .Concat<ScriptItemBase>(scriptDefinition.Outputs)
+                                    .FirstOrDefault(opt => opt.Name == option.Key);
+                                if (item == null)
                                 {
+                                    info?.Invoke(
+                                        $"Warning : the field {option.Key} is not defined for the script {script}, it will be ignored"
+                                    );
+                                }
+                                else if (option.Value == null)
+                                {
+                                    info?.Invoke(
+                                        $"Warning : the field {option.Key} is set to null, it will be ignored"
+                                    );
+                                } else {
                                     // Note : the hashmap expects list of strings as options values
                                     stringifiedOptions[option.Key] = new List<string>()
                                     {
                                         StringifyOption(jni, option.Value),
                                     };
                                 }
-
                             }
                             IntPtr hashMap = jni.NewJavaWrapperObject(stringifiedOptions);
                             info?.Invoke($"Launching the conversion job...");
@@ -499,7 +554,7 @@ namespace org.daisy.jniwrapper
                         catch (Exception e)
                         {
                             Exception scriptError = new Exception(
-                                $"Script {script} raised an error",
+                                $"Could not start a job for {script} with the provided options.",
                                 e
                             );
                             throw scriptError;
@@ -584,30 +639,72 @@ namespace org.daisy.jniwrapper
                 info?.Invoke("Conversion was cancelled.");
                 return 1;
             }
-            catch (AggregateException aggEx)
+            catch (JobException ex)
             {
-                error?.Invoke("An error occured during the conversion : ");
-                foreach (var ex in aggEx.InnerExceptions)
-                {
-                    error?.Invoke(ex.Message);
-                    error?.Invoke(ex.StackTrace);
-                }
+                StringBuilder errorLog = new StringBuilder($"An error occured running {script} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+
+                error?.Invoke($"An error occured running {script} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+                error?.Invoke($"{ex.Message}");
+                errorLog.AppendLine(ex.Message);
+                errorLog.AppendLine(ex.StackTrace);
+                
+                string path = Path.Combine(JNILogsPath, $"{script}-joberror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                File.WriteAllText(path, errorLog.ToString());
+                error?.Invoke($"For more details, consult the error log at {path}");
+                MessageBox.Show(
+                    $"An error occured during the conversion : \r\n {ex.Message}",
+                    "Error",
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Error
+                );
+
                 return 2;
             }
-            catch (JobException jobEx)
+            catch (AggregateException aggEx)
             {
-                error?.Invoke(jobEx.Message);
-                error?.Invoke(jobEx.StackTrace);
+                StringBuilder errorLog = new StringBuilder($"An error occured running {script} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+
+                error?.Invoke($"An error occured running {script} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+                foreach (var ex in aggEx.InnerExceptions)
+                {
+                    errorLog.AppendLine(ex.Message);
+                    errorLog.AppendLine(ex.StackTrace);
+                }
+                string path = Path.Combine(AppDataFolder, $"{script}-criticalerror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                File.WriteAllText(path, errorLog.ToString());
+                error?.Invoke($"For more details, consult the error log at {path}");
                 return 2;
             }
             catch (Exception ex)
             {
-                AddinLogger.Error(new Exception("An error occured during a conversion ", ex));
-                error?.Invoke(ex.Message);
-                error?.Invoke(ex.StackTrace);
-#if DEBUG
-                Thread.Sleep(15000);
-#endif
+                StringBuilder errorLog = new StringBuilder($"An error occured running {script} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+
+                error?.Invoke($"An error occured running {script} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+                while (ex != null)
+                {
+                    error?.Invoke($"{ex.Message}");
+                    errorLog.AppendLine(ex.Message);
+                    errorLog.AppendLine(ex.StackTrace);
+                    ex = ex.InnerException;
+                }
+                string path = Path.Combine(JNILogsPath, $"export-error-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                File.WriteAllText(path, errorLog.ToString());
+                error?.Invoke($"For more details, consult the error log at {path}");
+
+                if (MessageBox.Show(
+                    $"An error occured during the conversion. Do you want to consult the error log at {path}?",
+                    "Error",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Error
+                ) == MessageBoxResult.Yes)
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = path,
+                        UseShellExecute = true
+                    });
+                }
+
                 return 3;
             }
         }
@@ -636,6 +733,11 @@ namespace org.daisy.jniwrapper
         public static string LogsFolder
         {
             get { return Directory.CreateDirectory(Path.Combine(AppDataFolder, "log")).FullName; }
+        }
+
+        public static string JNILogsPath
+        {
+            get { return Directory.CreateDirectory(Path.Combine(AppDataFolder, "jni-logs")).FullName; }
         }
 
         public static JavaNativeInterface startJNIBridge(IConversionEventsHandler events = null, Dictionary<string, string> properties = null)
