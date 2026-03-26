@@ -687,7 +687,7 @@ namespace org.daisy.jniwrapper
                     errorLog.AppendLine(ex.StackTrace);
                     ex = ex.InnerException;
                 }
-                string path = Path.Combine(JNILogsPath, $"export-error-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                string path = Path.Combine(JNILogsPath, $"{script}-criticalerror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
                 File.WriteAllText(path, errorLog.ToString());
                 error?.Invoke($"For more details, consult the error log at {path}");
 
