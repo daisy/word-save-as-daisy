@@ -16,6 +16,12 @@ namespace Daisy.SaveAsDAISY.Conversion {
 		public static string EmbeddedEnginePath {
 			get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\daisy-pipeline"; }
 		}
+
+        public static string DTBookToODTTemplate
+        {
+            get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\dtbook-to-odt.ott"; }
+        }
+
         public static string EmbeddedEngineProperties
         {
             get { return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\daisy-pipeline\settable-properties.xml"; }

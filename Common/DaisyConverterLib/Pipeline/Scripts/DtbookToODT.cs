@@ -40,7 +40,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new PathData(
                     PathData.InputOrOutput.input,
                     PathData.FileOrDirectory.File,
-                    "application/vnd.oasis.opendocument.text-template"
+                    "application/vnd.oasis.opendocument.text-template",
+                    ConverterHelper.DTBookToODTTemplate
                 ),
                 false,
                 "OpenOffice template file (.ott) that contains the style definitions."
