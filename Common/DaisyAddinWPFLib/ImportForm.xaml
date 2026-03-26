@@ -7,8 +7,8 @@
         xmlns:cc="clr-namespace:Daisy.SaveAsDAISY.WPF.CustomControls"
         mc:Ignorable="d"
         Title="{Binding Path=ConversionTitle}"
-        MinWidth="400"
-        SizeToContent="WidthAndHeight">
+        Width="450"
+        SizeToContent="Height">
     <DockPanel>
         <StackPanel DockPanel.Dock="Top">
             <cc:PathParameter x:Name="InputSelection"
