@@ -7,10 +7,43 @@ The code available in this GitHub project has been initially copied from its ori
 
 ## Building requirement
 
-The project is being updated to build with visual studio 2019, using the dotnet4 plugin and the wix toolser in its version 3.11.
+The project is being updated to build with visual studio 2026.
+
+The MSI packages are build using a wix toolset project, and requires [Wix toolset version 6](https://github.com/wixtoolset/wix/releases/tag/v6.0.2) to be installed.
+
+To ease the building of releases, a `build.ps1` powershell script is provided (tested with powershell 7+).
+This scripts requires to have the MSBuild tools directory registered in your PATH variable 
+(if you use visual studio 2026, you can add the entry `%PROGRAMFILES%\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin` to you path)
+
+## Build the current release
+
+Just launch `build.ps1` and it should launch the packaging process.
+The final installer should be then found in the `Installer\SaveAsDAISYInstaller\bin\Release` on success
+
+You can update the version of the release package by using the flag `-version` followed by the new version code (in format \d+.\d+.\d+.\d+)
+For example `build.ps1 -version 2.9.4.2`
+
+## Updating the embedded engine
+
+The embedded daisy pipeline version for SaveAsDAISY can be found here : https://github.com/NPavie/pipeline/tree/save-as-daisy
+Just clone the repo somewhere, install the requirements (java8 JDK and maven) and use the following command from the pipeline repository root folder
+`.\assembly\make.exe FIXED_BUILD=true dist-zip-sad`
+
+After replacing the `resources\daisy-pipeline` it is recommended to do a quick debug build of the `Common\JNIWrapper` project, to get the updated pipeline properties descriptor file and ensure it works.
+
+You can then use the command `build.ps1 -refreshPipeline -nobuild` to update the wix project (but without triggering the whole build with the `-nobuild` flag to gain some time)
+
+## Debugging the addin
+
+If you need to debug the addin, you need to first install the last beta release available.
+After that you can just close Microsoft word if it is open and launch `build.ps1 -debug` to build the addin in debug mode.
+The command will then open word, and you can debug it by attaching Visual studio to the word instance.
+
+Note that the debug command will also redeploy the embedded pipeline in the addin install repository.
 
 ## Notes
 
 In case of multiple crash of the addin, it might be registered in Word's addin blocklist.
 `HKEY_CURRENT_USER\Software\Microsoft\Office\16.0\Word\Resiliency\DisabledItem`
+
 
