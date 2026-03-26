@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="SaveAsDAISY Settings"
         SizeToContent="Height"
-        Width="500" Height="620">
+        Width="500" Height="694">
     <DockPanel>
     <StackPanel DockPanel.Dock="Top">
         <!--<Grid>
@@ -156,43 +156,51 @@
                 </Grid>
             </StackPanel>
         </GroupBox>
-        <GroupBox Header="DAISY Pipeline engine"
-                  Margin="5" Height="181">
+         <GroupBox Header="Import script settings" Margin="5" >
+                <StackPanel>
+                    <Label Content="Default template for dtbook to ODT imports"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        x:Name="OpenOfficeTemplateLabel" />
+                    <Grid>
+                        <TextBox TextWrapping="NoWrap"
+                            Text=""
+                            VerticalAlignment="Center"
+                            x:Name="OpenOfficeTemplate"
+                            Margin="0,0,77,0"
+                            AutomationProperties.LabeledBy="{Binding ElementName=OpenOfficeTemplateLabel}" />
+                        <Button Content="Browse"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            AutomationProperties.HelpText="Browse for a configuration file"
+                            Width="72"
+                            x:Name="BrowseOpenOfficeTemplate"
+                            Click="BrowseOpenOfficeTemplate_Click" />
+
+                    </Grid>
+                    <!-- shortcut to mistral API key for OCR ? -->
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="DAISY Pipeline engine"
+                  Margin="5" Height="176">
+            
             <StackPanel>
-                <CheckBox Content="Enable webservice interactions"
+                    <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Left">
+                                        <Button Width="200" Margin="5" HorizontalAlignment="Left" x:Name="OpenPipelineProperties" Click="OpenPipelineProperties_Click">Embedded Pipeline Properties</Button>
+                                        <Label x:Name="LoadingPropertiesStatus"
+                        Content=""
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Margin="5,0,5,5" />
+                    </StackPanel>
+                    <CheckBox Content="Enable webservice interactions"
                       VerticalAlignment="Center"
                       Margin="5"
                       x:Name="UseWebserviceRunner"
                       Checked="UseWebserviceRunner_Checked"
                       Unchecked="UseWebserviceRunner_Unchecked"/>
-                <CheckBox Content="Use DAISY Pipeline App instead of embedded engine"
-                          VerticalAlignment="Center"
-                          Margin="5"
-                          x:Name="UseDAISYPipelineApp"
-                          Checked="UseDAISYPipelineApp_Checked"
-                          Unchecked="UseDAISYPipelineApp_Unchecked" />
-                <UniformGrid Columns="3"
-                             Height="23"
-                             VerticalAlignment="Center">
-                    <Button Content="Browse voices"
-                            Width="100"
-                            x:Name="BrowseVoices"
-                            Click="BrowseVoices_Click"
-                            AutomationProperties.HelpText="Open DAISY Pipeline App voices browser"
-                            Height="20" />
-                    <Button Content="Preferred voices"
-                            x:Name="PreferredVoices"
-                            Click="PreferredVoices_Click"
-                            AutomationProperties.HelpText="Open DAISY Pipeline App preferred voices settings"
-                            Width="150"
-                            Height="20" />
-                    <Button Content="TTS engines"
-                            x:Name="TTSEngines"
-                            Click="TTSEngines_Click"
-                            AutomationProperties.HelpText="Open DAISY Pipeline App Text-to-speech engines settings"
-                            Height="20"
-                            Width="100" />
-                </UniformGrid>
+                
                 <Label Content="Embedded engine Text-to-speech configuration"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Center"
@@ -213,16 +221,36 @@
                             Click="BrowseTTSConfigFile_Click" />
 
                 </Grid>
-                    <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Left">
-                        <Button Width="200" Margin="5" HorizontalAlignment="Left" x:Name="OpenPipelineProperties" Click="OpenPipelineProperties_Click">Embedded Pipeline Properties</Button>
-                        <Label x:Name="LoadingPropertiesStatus"
-                            Content=""
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Center"
-                           Margin="5,0,5,5" />
-                    </StackPanel>
                     
+                    <CheckBox Content="Use DAISY Pipeline App instead of embedded engine"
+          VerticalAlignment="Center"
+          Margin="5"
+          x:Name="UseDAISYPipelineApp"
+          Checked="UseDAISYPipelineApp_Checked"
+          Unchecked="UseDAISYPipelineApp_Unchecked" />
+                    <UniformGrid Columns="3"
+             Height="23"
+             VerticalAlignment="Center">
+                        <Button Content="Browse voices"
+            Width="100"
+            x:Name="BrowseVoices"
+            Click="BrowseVoices_Click"
+            AutomationProperties.HelpText="Open DAISY Pipeline App voices browser"
+            Height="20" />
+                        <Button Content="Preferred voices"
+            x:Name="PreferredVoices"
+            Click="PreferredVoices_Click"
+            AutomationProperties.HelpText="Open DAISY Pipeline App preferred voices settings"
+            Width="150"
+            Height="20" />
+                        <Button Content="TTS engines"
+            x:Name="TTSEngines"
+            Click="TTSEngines_Click"
+            AutomationProperties.HelpText="Open DAISY Pipeline App Text-to-speech engines settings"
+            Height="20"
+            Width="100" />
+                    </UniformGrid>
+
                 </StackPanel>
         </GroupBox>
         

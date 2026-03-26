@@ -103,6 +103,8 @@ namespace Daisy.SaveAsDAISY.WPF
             NumberPrefix.Text = GlobaleSettings.FootnotesNumberingPrefix;
             NotesTextPrefix.Text = GlobaleSettings.FootnotesNumberingSuffix;
 
+            OpenOfficeTemplate.Text = GlobaleSettings.OTTTemplateFile;
+
             UseWebserviceRunner.IsChecked = GlobaleSettings.UseWebserviceRunner;
 
             UseDAISYPipelineApp.IsEnabled = UseWebserviceRunner.IsChecked == true;
@@ -207,6 +209,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.FootnotesNumberingSuffix = NotesTextPrefix.Text;
                 GlobaleSettings.UseDAISYPipelineApp = UseDAISYPipelineApp.IsChecked == true;
                 GlobaleSettings.TTSConfigFile = TTSConfigFile.Text.Trim();
+                GlobaleSettings.OTTTemplateFile = OpenOfficeTemplate.Text.Trim();
                 GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
                 // Save
                 GlobaleSettings.Save();
@@ -378,6 +381,24 @@ namespace Daisy.SaveAsDAISY.WPF
 
             }
             
+        }
+
+        private void BrowseOpenOfficeTemplate_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+
+            openFileDialog.InitialDirectory = "c:\\";
+            openFileDialog.Filter = "OTT file (*.ott)|*.ott";
+            openFileDialog.FilterIndex = 1;
+            openFileDialog.RestoreDirectory = true;
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+
+                OpenOfficeTemplate.Text = openFileDialog.FileName;
+                
+            }
+
         }
 
         private void BrowseResultsFolder_Click(object sender, RoutedEventArgs e)

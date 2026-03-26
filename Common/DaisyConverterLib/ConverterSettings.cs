@@ -306,6 +306,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         //private string azureSpeechRegion = ""; // region defined in the Azure console for the speech service
         //private string azureSpeechKey = ""; // one of the two keys provided to connect to to Azure speech synthesis service
         private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
+        private string ottTemplateFile = ConverterHelper.DTBookToODTTemplate; // default template for the ODT output of the converter, used for the "Convert to ODT" feature in the pipeline
         private string dontNotifySponsorship = ""; // notify the user about sponsorship
         private bool useWebserviceRunner = true; // use the webservice runner to run the conversion instead of jni
         private bool useDAISYPipelineApp = true; // use the pipeline app to run the conversion instead of the embedded engine
@@ -329,6 +330,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t\tnumberPrefix=\"{footnotesNumberingPrefix}\" " +
                 $"\r\n\t\tnumberSuffix=\"{footnotesNumberingSuffix}\" />" +
                 $"\r\n\t<TTSConfig file=\"{(withPrivateData ? ttsConfigFile :"removed for privacy")}\" />" +
+                $"\r\n\t<OTTTemplate file=\"{(withPrivateData ? ottTemplateFile : "removed for privacy")}\" />" +
                 //(withPrivateData
                 //    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
                 //      $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
@@ -400,6 +402,11 @@ namespace Daisy.SaveAsDAISY.Conversion
             XmlNode TTSConfigSettings = settingsDocument.SelectSingleNode("//Settings/TTSConfig");
             if (TTSConfigSettings != null) {
                 ttsConfigFile = (TTSConfigSettings.Attributes["file"].InnerXml) ?? ttsConfigFile;
+            }
+            XmlNode OTTTemplateSettings = settingsDocument.SelectSingleNode("//Settings/OTTTemplate");
+            if (OTTTemplateSettings != null)
+            {
+                ottTemplateFile = (OTTTemplateSettings.Attributes["file"].InnerXml) ?? ottTemplateFile;
             }
 
             XmlNode DontNotifySponsorshipSettings = settingsDocument.SelectSingleNode("//Settings/DontNotifySponsorship");
@@ -484,6 +491,15 @@ namespace Daisy.SaveAsDAISY.Conversion
             
             } 
             set => ttsConfigFile = value;
+        }
+
+        public string OTTTemplateFile
+        {
+            get
+            {
+                return ottTemplateFile;
+            }
+            set => ottTemplateFile = value;
         }
 
         public bool DontNotifySponsorship {
