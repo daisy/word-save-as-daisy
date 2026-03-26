@@ -64,7 +64,13 @@ namespace Daisy.SaveAsDAISY.Conversion
 
 		public static void Error(Exception ex)
 		{
-			_log.Error("Error", ex);
+			Exception e = ex;
+            
+			while (e != null)
+			{
+                _log.Error(e.Message, e);
+				e = e.InnerException;
+            }
 		}
         public static void Error(string errorMessage, Exception ex)
         {
@@ -84,6 +90,12 @@ namespace Daisy.SaveAsDAISY.Conversion
         public static void Warning(string messsage, Exception ex)
         {
             _log.Warn(messsage, ex);
+            Exception e = ex;
+            while (e != null)
+            {
+                _log.Warn(e.Message, e);
+                e = e.InnerException;
+            }
         }
     }
 }
