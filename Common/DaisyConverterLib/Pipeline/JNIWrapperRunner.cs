@@ -170,7 +170,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                     try
                     {
                         doc.Load(propsPath);
-                        _properties = EngineProperty.ListFromXml((XmlElement)doc.GetElementsByTagName("properties")[0]);
+                        _properties = EngineProperty.ListFromXml((XmlElement)doc.GetElementsByTagName("properties")[0]).OrderBy(p => p.Name).ToList();
                     }
                     catch (Exception ex)
                     {
