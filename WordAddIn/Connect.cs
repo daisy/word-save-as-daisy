@@ -647,6 +647,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
         public void OnLoad(IRibbonUI ribbon)
         {
             daisyRibbon = ribbon;
+            daisyRibbon.Invalidate();
         }
 
         private bool showViewTabBool = false;
@@ -1895,12 +1896,101 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                         import.ScriptToRun.Parameters["output"].Value = finalOutput.FullName;
                         
                         import.ScriptToRun.ExecuteScript("");
-
+                       
                         // search ODT file in output folder
                         var odtFile = finalOutput.GetFiles("*.odt");
                         if (odtFile != null && odtFile.Length > 0)
                         {
-                            eventsHandler?.onPipelineProcessingInfo("Conversion completed, loading the ODT file in Word and remap SaveAsDAISY styles...");
+                            eventsHandler?.onPipelineProcessingInfo("Conversion completed, opening the document in word...");
+                            var doc = this.applicationObject.Documents.Open(odtFile[0].FullName);
+                            // Load daisy style in document
+                            // remap odt styles to SaveAsDAISY styles to be able to reuse the same template for the conversion to daisy
+                            // TODO : import and remap dtb: styles to (DAISY) styles
+                            //object copyTempName = null;
+                            //MSword.Document docTemplate = new Microsoft.Office.Interop.Word.Document();
+                            //MSword.Document docActive = this.applicationObject.Documents.Open(odtFile[0].FullName);
+                            //object missing = Type.Missing;
+                            //try
+                            //{
+                            //    string templateName = (docActive.get_AttachedTemplate() as MSword.Template).Name;
+                            //    //TODO: rename template
+                            //    string templatePath = Path.Combine(
+                            //        Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                            //        "template2007.dotx"
+                            //    );
+                            //    object newTemp = false;
+                            //    object documentType = Microsoft
+                            //        .Office
+                            //        .Interop
+                            //        .Word
+                            //        .WdNewDocumentType
+                            //        .wdNewBlankDocument;
+                            //    object visble = false;
+
+                            //    copyTempName = Path.GetTempFileName() + ".dotx";
+
+                            //    if (!File.Exists(copyTempName.ToString()))
+                            //    {
+                            //        File.Copy(templatePath, copyTempName.ToString());
+                            //    }
+
+                            //    object tempPath = (object)templatePath;
+                            //    docTemplate = applicationObject.Documents.Add(
+                            //        ref tempPath,
+                            //        ref newTemp,
+                            //        ref documentType,
+                            //        ref visble
+                            //    );
+
+                            //    foreach (MSword.Style styleObj in docTemplate.Styles)
+                            //    {
+                            //        if (styleObj.NameLocal.EndsWith("(DAISY)"))
+                            //        {
+                            //            this.applicationObject.OrganizerCopy(
+                            //                copyTempName.ToString(),
+                            //                docActive.FullName,
+                            //                styleObj.NameLocal,
+                            //                MSword.WdOrganizerObject.wdOrganizerObjectStyles
+                            //            );
+                            //        }
+                            //    }
+                            //    object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdDoNotSaveChanges;
+                            //    docTemplate.Close(ref saveChanges, ref missing, ref missing);
+                            //    docTemplate = null;
+                            //    this.applicationObject.NormalTemplate.Save();
+
+                            //    if (File.Exists(copyTempName.ToString()))
+                            //    {
+                            //        File.Delete(copyTempName.ToString());
+                            //    }
+
+                            //    showViewTabBool = true;
+                            //    if (daisyRibbon != null)
+                            //        daisyRibbon.InvalidateControl("ImportDaisyStylesTabButton");
+                            //}
+                            //catch (Exception ex)
+                            //{
+                            //    string stre = ex.Message;
+                            //    MessageBox.Show(
+                            //        ex.Message.ToString(),
+                            //        "SaveAsDAISY",
+                            //        MessageBoxButtons.OK,
+                            //        MessageBoxIcon.Error
+                            //    );
+                            //}
+                            //finally
+                            //{
+                            //    if (docTemplate != null)
+                            //    {
+                            //        object saveChanges = Microsoft
+                            //            .Office
+                            //            .Interop
+                            //            .Word
+                            //            .WdSaveOptions
+                            //            .wdDoNotSaveChanges;
+                            //        docTemplate.Close(ref saveChanges, ref missing, ref missing);
+                            //    }
+                            //}
                         }
                         else
                         {
