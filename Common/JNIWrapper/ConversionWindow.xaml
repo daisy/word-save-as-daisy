@@ -13,7 +13,11 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Text="Conversion Progress" x:Name="ConversionProgressText" Margin="10" FontSize="16"/>
+        <DockPanel Grid.Row="0" Margin="10">
+            <TextBlock Grid.Row="0" Text="Conversion Progress" x:Name="ConversionProgressText" FontSize="16" DockPanel.Dock="Left"/>
+            <TextBlock x:Name="ConversionProgressPercentage" FontSize="16" DockPanel.Dock="Right" TextAlignment="Right"/>
+        </DockPanel>
+        
         <ProgressBar Grid.Row="1" x:Name="ProgressBar" Height="20" Margin="10" Minimum="0" Maximum="100"/>
         <TextBox Grid.Row="2" x:Name="LogTextBox" Margin="10" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" IsReadOnly="True"/>
         <Button Grid.Row="3" x:Name="CancelButton" Content="Cancel" Margin="10" HorizontalAlignment="Right" Width="80" Click="CancelButton_Click"/>

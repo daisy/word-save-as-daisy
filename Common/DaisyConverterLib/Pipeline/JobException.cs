@@ -11,5 +11,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         public JobException(string message) : base(message)
         {
         }
+
+        public JobException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
     }
 }
