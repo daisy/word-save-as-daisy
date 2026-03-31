@@ -243,7 +243,7 @@
             AutomationProperties.HelpText="Open DAISY Pipeline App preferred voices settings"
             Width="150"
             Height="20" />
-                        <Button Content="TTS engines"
+                        <Button Content="External services"
             x:Name="TTSEngines"
             Click="TTSEngines_Click"
             AutomationProperties.HelpText="Open DAISY Pipeline App Text-to-speech engines settings"

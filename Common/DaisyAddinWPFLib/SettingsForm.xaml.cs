@@ -298,7 +298,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 var startInfo = new ProcessStartInfo
                 {
                     FileName = ConverterHelper.PipelineAppPath,
-                    Arguments = "engines",
+                    Arguments = "external-services",
                     UseShellExecute = true,
                     CreateNoWindow = true,
                     WindowStyle = ProcessWindowStyle.Hidden
