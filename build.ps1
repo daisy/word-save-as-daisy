@@ -9,7 +9,7 @@ param(
     [switch]$beta = $false
 )
 
-$currentVersion = "2.9.4.2"
+$currentVersion = "2.9.4.3"
 $wixProductPath = Join-Path $PSScriptRoot "Installer\DaisyAddinForWordSetup\Product.wxs"
 
 $newWixFragmentPath = Join-Path $PSScriptRoot "Installer\DaisyAddinMSIPackage\EngineComponents.wxs"
