@@ -193,7 +193,7 @@ namespace org.daisy.jniwrapper
             );
         }
 
-        public static double getUpdatedProgress(JavaNativeInterface jni,
+        public static int getUpdatedProgress(JavaNativeInterface jni,
             IntPtr commandLinejob,
             IntPtr CommandLineJobClass)
         {
@@ -201,11 +201,26 @@ namespace org.daisy.jniwrapper
             {
                 throw new Exception("Progress requested on non-existing job");
             }
-            return jni.CallMethod<double>(
+            return jni.CallMethod<int>(
                 CommandLineJobClass,
                 commandLinejob,
                 "getUpdatedProgress",
-                "()D"
+                "()I"
+            );
+        }
+        public static int getUpdatedTotal(JavaNativeInterface jni,
+            IntPtr commandLinejob,
+            IntPtr CommandLineJobClass)
+        {
+            if (commandLinejob == IntPtr.Zero)
+            {
+                throw new Exception("Progress requested on non-existing job");
+            }
+            return jni.CallMethod<int>(
+                CommandLineJobClass,
+                commandLinejob,
+                "getUpdatedTotal",
+                "()I"
             );
         }
 
@@ -590,8 +605,9 @@ namespace org.daisy.jniwrapper
                     {
                         if (isProgressUpdated(jni, currentJob, CommandLineJobClass))
                         {
-                            double progressValue = getUpdatedProgress(jni, currentJob, CommandLineJobClass);
-                            progress?.Invoke((int)(progressValue * 100), 100);
+                        int progressValue = getUpdatedProgress(jni, currentJob, CommandLineJobClass);
+                        int totalValue = getUpdatedTotal(jni, currentJob, CommandLineJobClass);
+                        progress?.Invoke(progressValue, totalValue);
                         }
                         foreach (
                             string message in getNewMessages(jni, currentJob, CommandLineJobClass)
