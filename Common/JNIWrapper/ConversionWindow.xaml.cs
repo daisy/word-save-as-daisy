@@ -3,7 +3,6 @@ using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -11,6 +10,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Path = System.IO.Path;
 
 namespace org.daisy.jniwrapper
 {
@@ -39,131 +39,108 @@ namespace org.daisy.jniwrapper
             }
             LogTextBox.ScrollToEnd();
             cancellationTokenSource = new CancellationTokenSource();
-            Task.Run(() => JNITaskRunner.RunConversion(scriptName, options, cancellationTokenSource.Token,
-                info: (m =>
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        ConversionProgressText.Text = m;
-                        LogTextBox.AppendText(m + "\r\n");
-                        LogTextBox.ScrollToEnd();
-                    });
-                    Console.WriteLine(m);
-                }),
-                error: (m =>
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        LogTextBox.AppendText(m + "\r\n");
-                        LogTextBox.ScrollToEnd();
-                    });
-                    Console.WriteLine(m);
-                }),
-                progress: ((p, t) =>
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        ProgressBar.Maximum = t;
-                        ProgressBar.Value = p;
-                        ConversionProgressPercentage.Text = $"{(double)(p * 100) / (double)t} %";
-                    });
-                }),
-                properties: properties
-            ).ContinueWith(t =>
+            Task.Run(async () =>
             {
-                if (t.IsCanceled)
+                try
                 {
-                    Dispatcher.Invoke(() =>
+                    await JNITaskRunner.RunConversion(scriptName, options, cancellationTokenSource.Token,
+                    info: (m =>
                     {
-                        ConversionProgressText.Text = "Conversion was cancelled.";
+                        Dispatcher.Invoke(() =>
+                        {
+                            ConversionProgressText.Text = m;
+                            LogTextBox.AppendText(m + "\r\n");
+                            LogTextBox.ScrollToEnd();
+                        });
+                        Console.WriteLine(m);
+                    }),
+                    error: (m =>
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            LogTextBox.AppendText(m + "\r\n");
+                            LogTextBox.ScrollToEnd();
+                        });
+                        Console.WriteLine(m);
+                    }),
+                    progress: ((p, t) =>
+                    {
+                        Dispatcher.Invoke(() =>
+                        {
+                            ProgressBar.Maximum = t;
+                            ProgressBar.Value = p;
+                            ConversionProgressPercentage.Text = $"{p}/{t}";
+                        });
+                    }),
+                    properties: properties);
+                    App.Current.Shutdown(0);
+                }
+                catch (Exception iex)
+                {
+                    string path = System.IO.Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-unknowerror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                    StringBuilder errorLog = new StringBuilder($"An error occured running {scriptName} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}\r\n");
+                    LogTextBox.AppendText($"An error occured running {scriptName} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}" + "\r\n");
+                    StringBuilder errorMessage = new StringBuilder();
+                    LogTextBox.ScrollToEnd();
+                    var ex = iex;
+                    int errorCode = 1;
+                    while (ex != null)
+                    {
+                        errorMessage.AppendLine(ex.Message);
+                        LogTextBox.AppendText($"{ex.Message}\r\n");
+                        LogTextBox.ScrollToEnd();
+                        errorLog.AppendLine(ex.Message);
+                        errorLog.AppendLine(ex.StackTrace);
+                        ex = ex.InnerException;
+                    }
+                    if (iex is OperationCanceledException)
+                    {
                         LogTextBox.AppendText("Conversion was cancelled." + "\r\n");
                         LogTextBox.ScrollToEnd();
-                        Application.Current.Shutdown(1);
-                    });
-                }
-                else if (t.IsFaulted)
-                {
-                    Dispatcher.Invoke(() =>
+                        Console.WriteLine("Conversion was cancelled.");
+
+                    }
+                    else if (iex is JobException jex)
                     {
-                        string path = Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-unknowerror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
-                        AggregateException aggex = t.Exception;
-                        foreach (Exception iex in aggex.InnerExceptions)
+                        path = Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-joberror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                        errorCode = 2;
+                    }
+                    else
+                    {
+                        path = Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-criticalerror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                        errorCode = 3;
+                    }
+                    if (errorCode == 1)
+                    {
+                        // Cancel action, don't report anything, just shutdown
+                        App.Current.Shutdown(errorCode);
+                        this.Close();
+                    }
+                    else
+                    {
+                        File.WriteAllText(path, errorLog.ToString());
+
+                        if (MessageBox.Show(
+                                $"The following error occured during the conversion:" +
+                                $"\r\n{errorMessage}" +
+                                $"\r\n Do you want to open the error log at {path} for more details?",
+                                "Error during conversion",
+                                MessageBoxButton.YesNo,
+                                MessageBoxImage.Error
+                            ) == MessageBoxResult.Yes
+                        )
                         {
-                            StringBuilder errorLog = new StringBuilder($"An error occured running {scriptName} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}\r\n");
-                            LogTextBox.AppendText($"An error occured running {scriptName} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}" + "\r\n");
-                            StringBuilder errorMessage = new StringBuilder();
-                            LogTextBox.ScrollToEnd();
-                            var ex = iex;
-                            int errorCode = 1;
-                            while (ex != null)
+                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
                             {
-                                errorMessage.AppendLine(ex.Message);
-                                LogTextBox.AppendText($"{ex.Message}\r\n");
-                                LogTextBox.ScrollToEnd();
-                                errorLog.AppendLine(ex.Message);
-                                errorLog.AppendLine(ex.StackTrace);
-                                ex = ex.InnerException;
-                            }
-                            if (iex is OperationCanceledException)
-                            {
-                                LogTextBox.AppendText("Conversion was cancelled." + "\r\n");
-                                LogTextBox.ScrollToEnd();
-                                Console.WriteLine("Conversion was cancelled.");
-
-                            }
-                            else if (iex is JobException jex)
-                            {
-                                path = Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-joberror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
-                                errorCode = 2;
-                            }
-                            else
-                            {
-                                path = Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-criticalerror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
-                                errorCode = 3;
-                            }
-                            if (errorCode == 1)
-                            {
-                                // Cancel action, don't report anything, just shutdown
-                                Application.Current.Shutdown(errorCode);
-                            }
-                            else
-                            {
-                                File.WriteAllText(path, errorLog.ToString());
-
-                                if (MessageBox.Show(
-                                        $"The following error occured during the conversion:" +
-                                        $"\r\n{errorMessage}" +
-                                        $"\r\n Do you want to open the error log at {path} for more details?",
-                                        "Error during conversion",
-                                        MessageBoxButton.YesNo,
-                                        MessageBoxImage.Error
-                                    ) == MessageBoxResult.Yes
-                                )
-                                {
-                                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                                    {
-                                        FileName = path,
-                                        UseShellExecute = true
-                                    });
-                                }
-                                Application.Current.Shutdown(errorCode);
-                            }
+                                FileName = path,
+                                UseShellExecute = true
+                            });
                         }
-                    });
+                        App.Current.Shutdown(errorCode);
+                        this.Close();
+                    }
                 }
-                else
-                {
-                    Dispatcher.Invoke(() =>
-                    {
-                        ConversionProgressText.Text = "Conversion completed successfully.";
-                        LogTextBox.AppendText("Conversion completed successfully." + "\r\n");
-                        LogTextBox.ScrollToEnd();
-                        Application.Current.Shutdown(0);
-                    });
-                }
-
-            }));
-
+            });
         }
         
         
@@ -173,8 +150,8 @@ namespace org.daisy.jniwrapper
             LogTextBox.AppendText("Conversion cancelled by user.\r\n");
             LogTextBox.ScrollToEnd();
             Console.WriteLine("Conversion cancelled by user.");
+            App.Current.Shutdown(1);
             this.Close();
-            Application.Current.Shutdown(1);
         }
 
 

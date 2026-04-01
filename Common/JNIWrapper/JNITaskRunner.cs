@@ -509,169 +509,156 @@ namespace org.daisy.jniwrapper
         )
         {
             cancellationToken.ThrowIfCancellationRequested();
-            try
-            {
-                info?.Invoke($"Starting JVM and conversion pipeline...");
+            
+            info?.Invoke($"Starting JVM and conversion pipeline...");
 
-                JavaNativeInterface jni = startJNIBridge(properties: properties);
-                IntPtr SimpleAPISPIClass = jni.GetJavaClass("SimpleAPI_SPI");
-                IntPtr SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
-                IntPtr CommandLineJobClass = jni.GetJavaClass("SimpleAPI$CommandLineJob");
-                IntPtr JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
-                IntPtr SimpleAPIInstance = jni.NewObject(SimpleAPISPIClass);
+            JavaNativeInterface jni = startJNIBridge(properties: properties);
+            IntPtr SimpleAPISPIClass = jni.GetJavaClass("SimpleAPI_SPI");
+            IntPtr SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
+            IntPtr CommandLineJobClass = jni.GetJavaClass("SimpleAPI$CommandLineJob");
+            IntPtr JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
+            IntPtr SimpleAPIInstance = jni.NewObject(SimpleAPISPIClass);
 
-                // Retrieve the script definition
-                string definition = jni.CallMethod<string>(
-                            SimpleAPIClass,
-                            SimpleAPIInstance,
-                            "getScriptDetails",
-                            "(Ljava/lang/String;)Ljava/lang/String;",
-                            script
-                        );
-                XmlDocument definitionDoc = new XmlDocument();
-                definitionDoc.LoadXml(definition);
-                ScriptDefinition scriptDefinition = ScriptDefinition.FromXml(definitionDoc.DocumentElement);
-
-
-                IntPtr currentJob = IntPtr.Zero;
-                List<string> missingRequiredItems = scriptDefinition.Options
-                            .Concat<ScriptItemBase>(scriptDefinition.Inputs)
-                            .Concat<ScriptItemBase>(scriptDefinition.Outputs)
-                            .Where(ScriptItemBase => ScriptItemBase.Required == true)
-                            .Select(ScriptItemBase => ScriptItemBase.Name)
-                            .Where(o => !options.ContainsKey(o) || options[o] == null)
-                            .ToList();
-                if (missingRequiredItems.Count > 0)
-                {
-                    throw new JobException($"The following required fields are missing or empty for the script {script} : {string.Join(", ", missingRequiredItems)}");
-                }
-                try
-                {
-                    Dictionary<string, List<string>> stringifiedOptions =
-                        new Dictionary<string, List<string>>();
-
-                    foreach (KeyValuePair<string, string> option in options)
-                    {
-                        ScriptItemBase item = scriptDefinition.Options
-                            .Concat<ScriptItemBase>(scriptDefinition.Inputs)
-                            .Concat<ScriptItemBase>(scriptDefinition.Outputs)
-                            .FirstOrDefault(opt => opt.Name == option.Key);
-                        if (item == null)
-                        {
-                            info?.Invoke(
-                                $"Warning : the field {option.Key} is not defined for the script {script}, it will be ignored"
-                            );
-                        }
-                        else if (option.Value == null)
-                        {
-                            info?.Invoke(
-                                $"Warning : the field {option.Key} is set to null, it will be ignored"
-                            );
-                        }
-                        else
-                        {
-                            // Note : the hashmap expects list of strings as options values
-                            stringifiedOptions[option.Key] = new List<string>()
-                                    {
-                                        StringifyOption(jni, option.Value),
-                                    };
-                        }
-                    }
-                    IntPtr hashMap = jni.NewJavaWrapperObject(stringifiedOptions);
-                    info?.Invoke($"Launching the conversion job...");
-
-                    currentJob = jni.CallMethod<IntPtr>(
+            // Retrieve the script definition
+            string definition = jni.CallMethod<string>(
                         SimpleAPIClass,
                         SimpleAPIInstance,
-                        "startJob",
-                        "(Ljava/lang/String;Ljava/util/Map;)LSimpleAPI$CommandLineJob;",
-                        script,
-                        hashMap
+                        "getScriptDetails",
+                        "(Ljava/lang/String;)Ljava/lang/String;",
+                        script
                     );
-                }
-                catch (Exception e)
-                {
-                    throw new JobException(
-                        $"Could not start a job for {script} with the provided options.",
-                        e
-                    );
-                }
+            XmlDocument definitionDoc = new XmlDocument();
+            definitionDoc.LoadXml(definition);
+            ScriptDefinition scriptDefinition = ScriptDefinition.FromXml(definitionDoc.DocumentElement);
 
-                if (currentJob != IntPtr.Zero)
+
+            IntPtr currentJob = IntPtr.Zero;
+            List<string> missingRequiredItems = scriptDefinition.Options
+                        .Concat<ScriptItemBase>(scriptDefinition.Inputs)
+                        .Concat<ScriptItemBase>(scriptDefinition.Outputs)
+                        .Where(ScriptItemBase => ScriptItemBase.Required == true)
+                        .Select(ScriptItemBase => ScriptItemBase.Name)
+                        .Where(o => !options.ContainsKey(o) || options[o] == null)
+                        .ToList();
+            if (missingRequiredItems.Count > 0)
+            {
+                throw new JobException($"The following required fields are missing or empty for the script {script} : {string.Join(", ", missingRequiredItems)}");
+            }
+            try
+            {
+                Dictionary<string, List<string>> stringifiedOptions =
+                    new Dictionary<string, List<string>>();
+
+                foreach (KeyValuePair<string, string> option in options)
                 {
-                    bool checkStatus = true;
-                    List<string> errors;
-                    while (checkStatus && !cancellationToken.IsCancellationRequested)
+                    ScriptItemBase item = scriptDefinition.Options
+                        .Concat<ScriptItemBase>(scriptDefinition.Inputs)
+                        .Concat<ScriptItemBase>(scriptDefinition.Outputs)
+                        .FirstOrDefault(opt => opt.Name == option.Key);
+                    if (item == null)
                     {
-                        if (isProgressUpdated(jni, currentJob, CommandLineJobClass))
-                        {
+                        info?.Invoke(
+                            $"Warning : the field {option.Key} is not defined for the script {script}, it will be ignored"
+                        );
+                    }
+                    else if (option.Value == null)
+                    {
+                        info?.Invoke(
+                            $"Warning : the field {option.Key} is set to null, it will be ignored"
+                        );
+                    }
+                    else
+                    {
+                        // Note : the hashmap expects list of strings as options values
+                        stringifiedOptions[option.Key] = new List<string>()
+                                {
+                                    StringifyOption(jni, option.Value),
+                                };
+                    }
+                }
+                IntPtr hashMap = jni.NewJavaWrapperObject(stringifiedOptions);
+                info?.Invoke($"Launching the conversion job...");
+
+                currentJob = jni.CallMethod<IntPtr>(
+                    SimpleAPIClass,
+                    SimpleAPIInstance,
+                    "startJob",
+                    "(Ljava/lang/String;Ljava/util/Map;)LSimpleAPI$CommandLineJob;",
+                    script,
+                    hashMap
+                );
+            }
+            catch (Exception e)
+            {
+                throw new JobException(
+                    $"Could not start a job for {script} with the provided options.",
+                    e
+                );
+            }
+
+            if (currentJob != IntPtr.Zero)
+            {
+                bool checkStatus = true;
+                List<string> errors;
+                while (checkStatus && !cancellationToken.IsCancellationRequested)
+                {
+                    if (isProgressUpdated(jni, currentJob, CommandLineJobClass))
+                    {
                         int progressValue = getUpdatedProgress(jni, currentJob, CommandLineJobClass);
                         int totalValue = getUpdatedTotal(jni, currentJob, CommandLineJobClass);
                         progress?.Invoke(progressValue, totalValue);
-                        }
-                        foreach (
-                            string message in getNewMessages(jni, currentJob, CommandLineJobClass)
-                        )
-                        {
-                            info?.Invoke(message);
-                        }
-                        // TODO : get progress 
-                        switch (getStatus(jni, currentJob, CommandLineJobClass, JobStatusClass))
-                        {
-                            case JobStatus.Idle:
-                                break;
-                            case JobStatus.Running:
-                                break;
-                            case JobStatus.Success:
-                                checkStatus = false;
-                                info?.Invoke("Conversion completed successfully.");
-                                progress?.Invoke(100, 100);
-                                break;
-                            case JobStatus.Error:
-                                errors = getErros(jni, currentJob, CommandLineJobClass);
-                                string errorMessage = script
-                                    + " conversion job has finished in error :\r\n"
-                                    + string.Join("\r\n", errors);
+                    }
+                    foreach (
+                        string message in getNewMessages(jni, currentJob, CommandLineJobClass)
+                    )
+                    {
+                        info?.Invoke(message);
+                    }
+                    // TODO : get progress 
+                    switch (getStatus(jni, currentJob, CommandLineJobClass, JobStatusClass))
+                    {
+                        case JobStatus.Idle:
+                            break;
+                        case JobStatus.Running:
+                            break;
+                        case JobStatus.Success:
+                            checkStatus = false;
+                            info?.Invoke("Conversion completed successfully.");
+                            progress?.Invoke(100, 100);
+                            break;
+                        case JobStatus.Error:
+                            errors = getErros(jni, currentJob, CommandLineJobClass);
+                            string errorMessage = script
+                                + " conversion job has finished in error :\r\n"
+                                + string.Join("\r\n", errors);
 
-                                throw new JobException(errorMessage);
-                            case JobStatus.Fail:
-                                checkStatus = false;
-                                errors = getErros(jni, currentJob, CommandLineJobClass);
-                                string failedMessage = script
-                                    + " conversion job failed :\r\n"
-                                    + string.Join("\r\n", errors);
+                            throw new JobException(errorMessage);
+                        case JobStatus.Fail:
+                            checkStatus = false;
+                            errors = getErros(jni, currentJob, CommandLineJobClass);
+                            string failedMessage = script
+                                + " conversion job failed :\r\n"
+                                + string.Join("\r\n", errors);
 
-                                throw new JobException(failedMessage);
-                            default:
-                                break;
-                        }
-                        cancellationToken.ThrowIfCancellationRequested();
+                            throw new JobException(failedMessage);
+                        default:
+                            break;
                     }
                 }
-                else
-                {
-                    throw new Exception(
-                        "An unknown error occured while launching the script "
-                            + script
-                            + " with the parameters "
-                            + options.Aggregate(
-                                "",
-                                (result, keyvalue) =>
-                                    result + keyvalue.Key + "=" + keyvalue.Value.ToString() + "\r\n"
-                            )
-                    );
-                }
+                cancellationToken.ThrowIfCancellationRequested();
             }
-            catch (JobException)
+            else
             {
-                throw;
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-            finally
-            {
+                throw new Exception(
+                    "An unknown error occured while launching the script "
+                        + script
+                        + " with the parameters "
+                        + options.Aggregate(
+                            "",
+                            (result, keyvalue) =>
+                                result + keyvalue.Key + "=" + keyvalue.Value.ToString() + "\r\n"
+                        )
+                );
             }
         }
 
