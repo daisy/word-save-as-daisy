@@ -244,5 +244,10 @@ if($nobuild) {
         $installerName += "-beta"
     }
     $installerName += ".exe"
+    if (!(Test-Path (Join-Path $PSScriptRoot "Release"))) {
+        New-Item -ItemType Directory -Path (Join-Path $PSScriptRoot "Release") | Out-Null
+    }
     Copy-Item -Path (Join-Path $PSScriptRoot "Installer\SaveAsDAISYInstaller\bin\Release\SaveAsDAISYInstaller.exe") -Destination (Join-Path $PSScriptRoot "Release\$installerName") -Force
+
+    Write-Host "Build completed. Installer available at:" (Join-Path $PSScriptRoot "Release\$installerName")
 }
