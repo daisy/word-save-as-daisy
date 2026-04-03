@@ -24,7 +24,7 @@
     <DefineConstants>
 		ProductName=Save as DAISY Add-in for Microsoft Word;
 		Manufacturer=Daisy Consortium;
-		AddinVersion=2.9.4.3;
+		AddinVersion=2.9.4.4;
 		UpgradeCode=81FEF910-4CDE-43B9-8E7B-9F7D34A14765;
 	</DefineConstants>
   </PropertyGroup>

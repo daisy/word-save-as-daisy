@@ -103,7 +103,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             }
             catch (Exception e)
             {
-                AddinLogger.Error(e);
+                AddinLogger.Error("An error occured while initializing the addin resources", e);
                 MessageBox.Show(e.Message);
                 //throw;
             }
@@ -231,16 +231,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                     typeof(Connect).Assembly.GetName().Version,
                     System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture,
                     System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-                    isProgramFiles ? "admin" : "user",
+                    isProgramFiles ? "system" : "user",
                     ConverterSettings.Instance.AsXML(false).Replace("\r\n", "").Replace("\t", "")
                 );
                 AddinLogger.Info(start);
             }
             catch (Exception e)
             {
-                AddinLogger.Error(e);
+                AddinLogger.Error("An error occured while connecting the addin", e);
                 MessageBox.Show(e.Message);
-                //throw;
             }
         }
 
