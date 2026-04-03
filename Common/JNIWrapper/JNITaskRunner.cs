@@ -595,11 +595,19 @@ namespace org.daisy.jniwrapper
                     e
                 );
             }
-
+            IntPtr systemClass = jni.GetJavaClass("java/lang/System");
+            
             if (currentJob != IntPtr.Zero)
             {
+                jni.CallVoidMethod(
+                    systemClass,
+                    IntPtr.Zero,
+                    "gc",
+                    "()V"
+                );
                 bool checkStatus = true;
                 List<string> errors;
+                int gccheck = 0;
                 while (checkStatus && !cancellationToken.IsCancellationRequested)
                 {
                     if (isProgressUpdated(jni, currentJob, CommandLineJobClass))
@@ -643,6 +651,22 @@ namespace org.daisy.jniwrapper
                             throw new JobException(failedMessage);
                         default:
                             break;
+                    }
+                    Thread.Sleep(330);
+                    // Note : it seems jni calls are preventing garbage collection of the jvm ...
+                    // saw something similar reported in opencv jni wrapper here : https://github.com/opencv/opencv/issues/7919
+                    // as a workaround, we call gc every 9 loops (every 3 seconds) to prevent memory leaks and out of memory crashes
+                    gccheck++;
+                    if (gccheck % 9 == 0)
+                    {
+                        jni.CallVoidMethod(
+                            systemClass,
+                            IntPtr.Zero,
+                            "gc",
+                            "()V"
+                        );
+                        GC.Collect();
+                        gccheck = 0;
                     }
                 }
                 cancellationToken.ThrowIfCancellationRequested();
