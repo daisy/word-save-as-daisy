@@ -73,7 +73,6 @@ namespace org.daisy.jniwrapper
                         });
                     }),
                     properties: properties);
-                    App.Current.Shutdown(0);
                 }
                 catch (Exception iex)
                 {
@@ -140,6 +139,8 @@ namespace org.daisy.jniwrapper
                         this.Close();
                     }
                 }
+                App.Current.Shutdown(0);
+                this.Close();
             });
         }
         
