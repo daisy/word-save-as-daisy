@@ -143,7 +143,7 @@
     <Compile Include="Pipeline\PipelineUserProperties.cs" />
     <Compile Include="Pipeline\Scripts\DtbookToODT.cs" />
     <Compile Include="Pipeline\Scripts\DtbookToRTF.cs" />
-    <Compile Include="Pipeline\Scripts\PDFToWord.cs" />
+    <Compile Include="Pipeline\Scripts\PDFToWordMistralOCR.cs" />
     <Compile Include="Pipeline\WordBasedScript.cs" />
     <Compile Include="Pipeline\WebserviceRunner.cs" />
     <Compile Include="Pipeline\Scripts\WordToMP3.cs" />

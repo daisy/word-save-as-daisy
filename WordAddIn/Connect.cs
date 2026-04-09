@@ -254,6 +254,10 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             {
                 return false;
             }
+            if(control.Id == "ImportPDFTabButton" && ConverterSettings.Instance.MistralApiKey == "")
+            {
+                return false;
+            }
             return true;
         }
 
@@ -658,15 +662,20 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             settings.ShowDialog();
             try
             {
+                // Reload the ribbon to update the visibility of controls depending on the settings
+                if (daisyRibbon != null)
+                    daisyRibbon.InvalidateControl("ImportPDFTabButton");
+
                 if (ConverterSettings.Instance.UseDAISYPipelineApp)
                 {
                     Engine.StopEmbeddedEngine();
                     WebserviceRunner.StartDAISYPipelineAppWebservice();
                 }
-                else if(ConverterSettings.Instance.UseWebserviceRunner)
-                {
-                    WebserviceRunner.StartEmbeddedWebservice();
-                } else
+                //else if(ConverterSettings.Instance.UseWebserviceRunner)
+                //{
+                //    WebserviceRunner.StartEmbeddedWebservice();
+                //} 
+                else
                 {
                     Engine.StopEmbeddedEngine();
                 }
@@ -1875,7 +1884,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                 ImportForm import = new ImportForm(pipelineScript);
                 if(import.ShowDialog() == true)
                 {
-                    eventsHandler.onPipelineProcessingInfo("Launching conversion of the dtbook...");
+                    eventsHandler.onPipelineProcessingInfo("Launching conversion ...");
                     try
                     {
                         string inputFile = import.ScriptToRun.Parameters["input"].Value.ToString();
@@ -2041,7 +2050,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                 ImportForm import = new ImportForm(pipelineScript);
                 if (import.ShowDialog() == true)
                 {
-                    eventsHandler.onPipelineProcessingInfo("Launching conversion of the dtbook...");
+                    eventsHandler.onPipelineProcessingInfo("Launching conversion ...");
                     try
                     {
                         string inputFile = import.ScriptToRun.Parameters["input"].Value.ToString();
@@ -2072,6 +2081,82 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                         {
                             MessageBox.Show(
                                 "Conversion completed but no RTF file found in the output folder",
+                                "Conversion completed",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        eventsHandler.onConversionCanceled();
+                    }
+                    catch (JobException jex)
+                    {
+                        AddinLogger.Error(jex);
+                        MessageBox.Show(
+                            jex.Message,
+                            "Conversion failed",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        AddinLogger.Error(e);
+                        ExceptionReport report = new ExceptionReport(e);
+                        report.ShowDialog();
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                ExceptionReport report = new ExceptionReport(e);
+                report.ShowDialog();
+            }
+        }
+
+        public void ImportPDF(IRibbonControl control)
+        {
+            try
+            {
+                WPFEventsHandler eventsHandler = new WPFEventsHandler();
+                Script pipelineScript = new PDFToWordMistralOCR(eventsHandler);
+                ImportForm import = new ImportForm(pipelineScript);
+                if (import.ShowDialog() == true)
+                {
+                    eventsHandler.onPipelineProcessingInfo("Launching conversion ...");
+                    try
+                    {
+                        string inputFile = import.ScriptToRun.Parameters["input"].Value.ToString();
+                        DirectoryInfo finalOutput = new DirectoryInfo(
+                            Path.Combine(
+                                import.ScriptToRun.Parameters["output"].Value.ToString(),
+                                string.Format(
+                                    "{0}_{2}_{1}",
+                                    Path.GetFileNameWithoutExtension(inputFile),
+                                    DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                                    pipelineScript.Name
+                                )
+                            )
+                        );
+
+                        // Update the output to create the intermediate folder for the conversion result
+                        import.ScriptToRun.Parameters["output"].Value = Path.Combine(finalOutput.FullName, Path.GetFileNameWithoutExtension(inputFile) + ".docx");
+
+                        import.ScriptToRun.ExecuteScript("");
+
+                        // search RTF file in output folder
+                        var docxFile = finalOutput.GetFiles("*.docx");
+                        if (docxFile != null && docxFile.Length > 0)
+                        {
+                            this.applicationObject.Documents.Open(docxFile[0].FullName);
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "Conversion completed but no DOCX file found in the output folder",
                                 "Conversion completed",
                                 MessageBoxButtons.OK,
                                 MessageBoxIcon.Warning

@@ -108,13 +108,13 @@
 						        getImage="iconSelector"
 						        getDescription="getRibbonDescription"
 						        getScreentip="getRibbonDescription"/>
-						<!--<button id="ImportPDFTabButton"
+						<button id="ImportPDFTabButton"
 						        getLabel="getRibbonLabel"
 						        onAction="ImportPDF"
 						        getEnabled="ribbonButtonsEnabled"
 						        getImage="iconSelector"
 						        getDescription="getRibbonDescription"
-						        getScreentip="getRibbonDescription"/>-->
+						        getScreentip="getRibbonDescription"/>
 					</menu>
 				</group>
 				<group id="AbbreviationsGroup"

@@ -202,6 +202,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                     .Where(p => p.Value != null && p.Value != string.Empty)
                     .Select(p => $"-D{p.Name} \"{p.Value}\"")
             );
+            if (ConverterSettings.Instance.MistralApiKey!= string.Empty) {
+                optionsString += " -Dorg.daisy.pipeline.ocr.mistral.apikey \"" + ConverterSettings.Instance.MistralApiKey + "\"";
+            }
             
 
             ProcessStartInfo startInfo = new ProcessStartInfo()

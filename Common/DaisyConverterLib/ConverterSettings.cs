@@ -311,6 +311,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         private bool useWebserviceRunner = true; // use the webservice runner to run the conversion instead of jni
         private bool useDAISYPipelineApp = true; // use the pipeline app to run the conversion instead of the embedded engine
         private string resultsFolder = DefaultResultsFolder; // Default results folder
+        private string mistralApiKey = "";
         /// <summary>
         /// Get the current settings as XML string
         /// </summary>
@@ -340,6 +341,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t<UsePipelineApp value=\"{useDAISYPipelineApp.ToString().ToLower()}\" />" +
                 $"\r\n\t<UseWebserviceRunner value=\"{useWebserviceRunner.ToString().ToLower()}\" />" +
                 $"\r\n\t<ResultsFolder value=\"{(withPrivateData ? resultsFolder : "removed for privacy")}\" />" +
+                $"\r\n\t<MistralApiKey value=\"{(withPrivateData ? mistralApiKey : "removed for privacy")}\" />" +
                 $"\r\n</Settings>";
         }
 
@@ -423,6 +425,10 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 var nodeValue = UseWebserviceSettings.Attributes["value"]?.InnerXml;
                 useWebserviceRunner = nodeValue == "true";
+            }
+            XmlNode MistralApiKeySettings = settingsDocument.SelectSingleNode("//Settings/MistralApiKey");
+            if (MistralApiKeySettings != null) {
+                mistralApiKey = (MistralApiKeySettings.Attributes["value"]?.InnerXml) ?? mistralApiKey;
             }
 
 
@@ -524,6 +530,11 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             get => useWebserviceRunner;
             set => useWebserviceRunner = value;
+        }
+
+        public string MistralApiKey {
+            get => mistralApiKey;
+            set => mistralApiKey = value;
         }
 
         public string ResultsFolder {

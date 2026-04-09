@@ -106,6 +106,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                     return ".xml";
                 case "application/vnd.oasis.opendocument.text-template":
                     return ".ott";
+                case "application/pdf":
+                    return ".pdf";
                 default:
                     return string.Empty;
             }

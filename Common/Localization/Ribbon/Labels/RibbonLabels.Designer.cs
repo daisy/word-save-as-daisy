@@ -268,7 +268,7 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à PDF to Word.
+        ///   Recherche une chaîne localisée semblable à PDF to Word with Mistral OCR (experimental).
         /// </summary>
         public static string ImportPDFTabButton {
             get {

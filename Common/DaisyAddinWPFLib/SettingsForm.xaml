@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="SaveAsDAISY Settings"
         SizeToContent="Height"
-        Width="500" Height="694">
+        Width="500" Height="757">
     <DockPanel>
     <StackPanel DockPanel.Dock="Top">
         <!--<Grid>
@@ -178,11 +178,22 @@
                             Click="BrowseOpenOfficeTemplate_Click" />
 
                     </Grid>
+                    <Label Content="Mistral API key for PDF OCR"
+    HorizontalAlignment="Left"
+    VerticalAlignment="Center"
+    x:Name="MistralApiKeyLabel" />
+                    <Grid>
+                        <TextBox TextWrapping="NoWrap"
+                            Text=""
+                            VerticalAlignment="Center"
+                            x:Name="MistralApiKey"
+                            AutomationProperties.LabeledBy="{Binding ElementName=MistralApiKeyLabel}" />
+                    </Grid>
                     <!-- shortcut to mistral API key for OCR ? -->
                 </StackPanel>
             </GroupBox>
             <GroupBox Header="DAISY Pipeline engine"
-                  Margin="5" Height="176">
+                  Margin="5" Height="153">
             
             <StackPanel>
                     <StackPanel Orientation="Horizontal"
@@ -194,12 +205,12 @@
                         VerticalAlignment="Center"
                         Margin="5,0,5,5" />
                     </StackPanel>
-                    <CheckBox Content="Enable webservice interactions"
+                    <!--<CheckBox Content="Enable webservice interactions"
                       VerticalAlignment="Center"
                       Margin="5"
                       x:Name="UseWebserviceRunner"
                       Checked="UseWebserviceRunner_Checked"
-                      Unchecked="UseWebserviceRunner_Unchecked"/>
+                      Unchecked="UseWebserviceRunner_Unchecked"/>-->
                 
                 <Label Content="Embedded engine Text-to-speech configuration"
                        HorizontalAlignment="Left"

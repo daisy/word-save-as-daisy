@@ -238,6 +238,6 @@
     <value>DTBook XML vers RTF</value>
   </data>
   <data name="ImportPDFTabButton" xml:space="preserve">
-    <value>PDF vers Word</value>
+    <value>PDF vers Word via Mistral OCR (experimental)</value>
   </data>
 </root>
