@@ -58,7 +58,7 @@
 		<Component Id="template2007.dotx" Guid="E108FE8D-B29D-4D30-A93C-524F6F745A58" Condition="LATESTWORDVERSION&gt;=&quot;12.0&quot;">
 			<File Id="template2007.dotx" Name="template2007.dotx" Source="$(var.SolutionDir)resources\template2007.dotx" KeyPath="yes" />
 		</Component>
-		<Component Id="dtbook_to_odt.ott" Guid="E108FE8D-B29D-4D30-A93C-524F6F745A58" Condition="LATESTWORDVERSION&gt;=&quot;12.0&quot;">
+		<Component Id="dtbook_to_odt.ott" Guid="E108FE8D-B29D-4D30-A93C-524F6F745A59" Condition="LATESTWORDVERSION&gt;=&quot;12.0&quot;">
 			<File Id="dtbook_to_odt.ott" Name="dtbook-to-odt.ott" Source="$(var.SolutionDir)resources\dtbook-to-odt.ott" KeyPath="yes" />
 		</Component>
 
