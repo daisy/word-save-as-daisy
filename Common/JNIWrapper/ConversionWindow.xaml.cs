@@ -69,7 +69,7 @@ namespace org.daisy.jniwrapper
                         {
                             ProgressBar.Maximum = t;
                             ProgressBar.Value = p;
-                            ConversionProgressPercentage.Text = $"{p}/{t}";
+                            ConversionProgressPercentage.Text = $"{(100.0 * ProgressBar.Value / ProgressBar.Maximum):0.00}%";
                         });
                     }),
                     properties: properties);
@@ -112,8 +112,12 @@ namespace org.daisy.jniwrapper
                     if (errorCode == 1)
                     {
                         // Cancel action, don't report anything, just shutdown
-                        App.Current.Shutdown(errorCode);
-                        this.Close();
+                        Dispatcher.Invoke(() =>
+                        {
+                            App.Current.Shutdown(errorCode);
+                            this.Close();
+                        });
+                        return;
                     }
                     else
                     {
@@ -135,12 +139,20 @@ namespace org.daisy.jniwrapper
                                 UseShellExecute = true
                             });
                         }
-                        App.Current.Shutdown(errorCode);
-                        this.Close();
+                        Dispatcher.Invoke(() =>
+                        {
+                            App.Current.Shutdown(errorCode);
+                            this.Close();
+                        });
+                        return;
                     }
                 }
-                App.Current.Shutdown(0);
-                this.Close();
+                Dispatcher.Invoke(() =>
+                {
+                    App.Current.Shutdown(0);
+                    this.Close();
+                });
+                return;
             });
         }
         

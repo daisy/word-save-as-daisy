@@ -110,11 +110,13 @@ namespace org.daisy.jniwrapper
             if(command != JNITaskRunner.Command.None)
             {
                 // It's a command, run it and exit
-                return JNITaskRunner.ExecuteCommand(command, options, default,
+                var code = JNITaskRunner.ExecuteCommand(command, options, default,
                         (info) => { Console.Out.WriteLine(info); },
                         null,
-                        (error) => { Console.Error.WriteLine(error); }, properties
+                        (error) => { Console.Error.WriteLine(error); },
+                        properties
                 ).Result;
+                return code;
             } else  // (command == JNITaskRunner.Command.None)
             {
                 // Not a command, assume it's a script name and open the window to run it
@@ -123,7 +125,8 @@ namespace org.daisy.jniwrapper
                 application.InitializeComponent();
                 application.MainWindow = main;
                 main.Show();
-                return application.Run();
+                int testCode = application.Run();
+                return testCode;
             }
 
         }

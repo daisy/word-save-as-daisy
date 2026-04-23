@@ -193,7 +193,7 @@ namespace org.daisy.jniwrapper
             );
         }
 
-        public static int getUpdatedProgress(JavaNativeInterface jni,
+        public static double getUpdatedProgress(JavaNativeInterface jni,
             IntPtr commandLinejob,
             IntPtr CommandLineJobClass)
         {
@@ -201,28 +201,28 @@ namespace org.daisy.jniwrapper
             {
                 throw new Exception("Progress requested on non-existing job");
             }
-            return jni.CallMethod<int>(
+            return jni.CallMethod<double>(
                 CommandLineJobClass,
                 commandLinejob,
                 "getUpdatedProgress",
-                "()I"
+                "()D"
             );
         }
-        public static int getUpdatedTotal(JavaNativeInterface jni,
-            IntPtr commandLinejob,
-            IntPtr CommandLineJobClass)
-        {
-            if (commandLinejob == IntPtr.Zero)
-            {
-                throw new Exception("Progress requested on non-existing job");
-            }
-            return jni.CallMethod<int>(
-                CommandLineJobClass,
-                commandLinejob,
-                "getUpdatedTotal",
-                "()I"
-            );
-        }
+        //public static int getUpdatedTotal(JavaNativeInterface jni,
+        //    IntPtr commandLinejob,
+        //    IntPtr CommandLineJobClass)
+        //{
+        //    if (commandLinejob == IntPtr.Zero)
+        //    {
+        //        throw new Exception("Progress requested on non-existing job");
+        //    }
+        //    return jni.CallMethod<int>(
+        //        CommandLineJobClass,
+        //        commandLinejob,
+        //        "getUpdatedTotal",
+        //        "()I"
+        //    );
+        //}
 
 
         public static List<string> getNewMessages(
@@ -292,7 +292,7 @@ namespace org.daisy.jniwrapper
 
         public delegate void StandardOutput(string message);
 
-        public delegate void ProgressOutput(int current, int total = int.MaxValue);
+        public delegate void ProgressOutput(double current, int total = int.MaxValue);
 
         public delegate void ErrorOutput(string message);
 
@@ -331,8 +331,9 @@ namespace org.daisy.jniwrapper
                         IntPtr SimpleAPIInstance = jni.NewObject(SimpleAPISPIClass);
 
                         string outputDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                        string outputFile = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                        
+                        string outputFile = Path.Combine(outputDirectory, $"{command.ToString().ToLower()}.xml");
+
+
                         if (options.ContainsKey("output"))
                         {
                             outputDirectory = options["output"];
@@ -510,28 +511,39 @@ namespace org.daisy.jniwrapper
         {
             cancellationToken.ThrowIfCancellationRequested();
             
-            info?.Invoke($"Starting JVM and conversion pipeline...");
+            info?.Invoke($"Starting JVM...");
 
             JavaNativeInterface jni = startJNIBridge(properties: properties);
             IntPtr SimpleAPISPIClass = jni.GetJavaClass("SimpleAPI_SPI");
             IntPtr SimpleAPIClass = jni.GetJavaClass("SimpleAPI");
             IntPtr CommandLineJobClass = jni.GetJavaClass("SimpleAPI$CommandLineJob");
             IntPtr JobStatusClass = jni.GetJavaClass("org/daisy/pipeline/job/Job$Status");
+            info?.Invoke($"Starting conversion pipeline...");
             IntPtr SimpleAPIInstance = jni.NewObject(SimpleAPISPIClass);
 
+            ScriptDefinition scriptDefinition;
+            try
+            {
+                // Retrieve the script definition
+                info?.Invoke($"Retrieve script definition for {script} ...");
+                string definition = jni.CallMethod<string>(
+                            SimpleAPIClass,
+                            SimpleAPIInstance,
+                            "getScriptDetails",
+                            "(Ljava/lang/String;)Ljava/lang/String;",
+                            script
+                        );
+                XmlDocument definitionDoc = new XmlDocument();
+                definitionDoc.LoadXml(definition);
+                scriptDefinition = ScriptDefinition.FromXml(definitionDoc.DocumentElement);
+            }
+            catch (Exception ex)
+            {
+                throw new JobException($"Could not retrieve script definition for {script}.", ex);
+            }
+
             // Retrieve the script definition
-            string definition = jni.CallMethod<string>(
-                        SimpleAPIClass,
-                        SimpleAPIInstance,
-                        "getScriptDetails",
-                        "(Ljava/lang/String;)Ljava/lang/String;",
-                        script
-                    );
-            XmlDocument definitionDoc = new XmlDocument();
-            definitionDoc.LoadXml(definition);
-            ScriptDefinition scriptDefinition = ScriptDefinition.FromXml(definitionDoc.DocumentElement);
-
-
+            info?.Invoke($"Checking required options ...");
             IntPtr currentJob = IntPtr.Zero;
             List<string> missingRequiredItems = scriptDefinition.Options
                         .Concat<ScriptItemBase>(scriptDefinition.Inputs)
@@ -612,8 +624,10 @@ namespace org.daisy.jniwrapper
                 {
                     if (isProgressUpdated(jni, currentJob, CommandLineJobClass))
                     {
-                        int progressValue = getUpdatedProgress(jni, currentJob, CommandLineJobClass);
-                        int totalValue = getUpdatedTotal(jni, currentJob, CommandLineJobClass);
+                        double progressValue = getUpdatedProgress(jni, currentJob, CommandLineJobClass) * 100.0;
+                        //int totalValue = getUpdatedTotal(jni, currentJob, CommandLineJobClass);
+                        // Progress is now sent as double in percentage
+                        int totalValue = 100;
                         progress?.Invoke(progressValue, totalValue);
                     }
                     foreach (
@@ -633,13 +647,14 @@ namespace org.daisy.jniwrapper
                             checkStatus = false;
                             info?.Invoke("Conversion completed successfully.");
                             progress?.Invoke(100, 100);
-                            break;
+                            return;
                         case JobStatus.Error:
+                            checkStatus = false;
                             errors = getErros(jni, currentJob, CommandLineJobClass);
                             string errorMessage = script
                                 + " conversion job has finished in error :\r\n"
                                 + string.Join("\r\n", errors);
-
+                            info?.Invoke($"Conversion finished with errors.\r\n{errorMessage}");
                             throw new JobException(errorMessage);
                         case JobStatus.Fail:
                             checkStatus = false;
@@ -647,7 +662,7 @@ namespace org.daisy.jniwrapper
                             string failedMessage = script
                                 + " conversion job failed :\r\n"
                                 + string.Join("\r\n", errors);
-
+                            info?.Invoke($"Conversion failed\r\n{failedMessage}");
                             throw new JobException(failedMessage);
                         default:
                             break;
