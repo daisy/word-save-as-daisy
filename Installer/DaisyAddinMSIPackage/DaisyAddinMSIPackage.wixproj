@@ -1,7 +1,7 @@
-<Project Sdk="WixToolset.Sdk/6.0.2">
+<Project Sdk="WixToolset.Sdk/7.0.0">
   <ItemGroup>
-    <PackageReference Include="WixToolset.UI.wixext" Version="6.0.2" />
-    <PackageReference Include="WixToolset.Util.wixext" Version="6.0.2" />
+    <PackageReference Include="WixToolset.UI.wixext" Version="7.0.0" />
+    <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj" />
@@ -19,6 +19,7 @@
   </ItemGroup>
   <PropertyGroup>
     <GenerateAdditionalCabinets>true</GenerateAdditionalCabinets>
+	<AcceptEula>wix7</AcceptEula>
   </PropertyGroup>
   <PropertyGroup>
     <DefineConstants>

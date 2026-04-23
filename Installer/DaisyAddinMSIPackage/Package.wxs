@@ -5,7 +5,7 @@
 		   Manufacturer="$(var.Manufacturer)"
 		   UpgradeCode="$(var.UpgradeCode)"
 		   InstallerVersion="200"
-		   ProductCode="AC2FE149-7EE8-488A-ABFC-548811AB5382"
+		   ProductCode="*"
 		   Scope="perUser">
     <!--<MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)" AllowSameVersionUpgrades="yes" />-->
 
@@ -30,8 +30,8 @@
 		  <UpgradeVersion Property="NEWAPPFOUND" Minimum="$(var.AddinVersion)" IncludeMinimum="no" OnlyDetect="yes" />
 	  </Upgrade>
 
+	
 
-	  
 
 	  <!--wix variables-->
 	  <WixVariable Id="VersionNumber" Value="$(var.AddinVersion)" />
@@ -68,13 +68,17 @@
 					DllEntry="DetectLatestMsWordVersion"
 					Execute="immediate"
 					Id="DetectLatestMsWordVersion" />
-	  <InstallExecuteSequence>
-		  <!-- Prevent downgrading -->
+
+	  <MajorUpgrade
+		  DowngradeErrorMessage="Une version plus récente de [ProductName] est déjà installée."
+		  Schedule="afterInstallValidate" />
+	  <!--<InstallExecuteSequence>
+		  --><!-- Prevent downgrading --><!--
 		  <Custom Action="NewerVersionDetected" After="FindRelatedProducts" Condition="NEWAPPFOUND"/>
 		  <Custom Action="SetARPREADME" After="InstallValidate"></Custom>
 		  <Custom Action="DetectLatestMsWordVersion" Before="LaunchConditions" Condition="NOT Installed"/>
 		  <RemoveExistingProducts Before="InstallInitialize" />
-	  </InstallExecuteSequence>
+	  </InstallExecuteSequence>-->
 	  
 	  <UI Id="MyUI">
 		  <Property Id="WixAppFolder" Value="WixPerUserFolder" />

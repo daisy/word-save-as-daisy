@@ -75,7 +75,6 @@
 
 			<File Id="Microsoft.Toolkit.Uwp.Notifications.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Microsoft.Toolkit.Uwp.Notifications.dll" />
 			<File Id="Newtonsoft.Json.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Newtonsoft.Json.dll" />
-			<File Id="System.ValueTuple.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\System.ValueTuple.dll" />
 
 			<File Id="filE87E1845171015B8772E9D7B2E2B8495" KeyPath="yes" Source="$(var.DaisyWord2007AddIn.TargetPath)" />
 			<ProgId Id="Record" />
