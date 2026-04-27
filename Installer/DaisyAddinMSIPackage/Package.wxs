@@ -12,26 +12,28 @@
 	  <!-- default cab, needed to copy pipeline in different cab -->
 	<Media Id="1" Cabinet="addin.cab" EmbedCab="yes"/>
 	  
-    <Feature Id="Main">
+    <Feature Id="Main" >
 		<ComponentGroupRef Id="AddinComponents" />
 		<ComponentGroupRef Id="EmbeddedEngineFiles" />
 
 		<ComponentRef Id="ApplicationDataComponent" />
 		<ComponentRef Id="ApplicationShortcut" />
     </Feature>
+	  
+	<!-- TODO : add the download of daisy pipeline app as a feature to activate in the installer -->	  
+	 <!--<Feature Id="DaisyPipelineApp" AllowAbsent="yes" >
+		 
+	 </Feature>-->
 
 
-	  <Upgrade Id="4EB56DA5-96B7-48AA-BEE1-4BDCDFF54105">
+	  <!--<Upgrade Id="4EB56DA5-96B7-48AA-BEE1-4BDCDFF54105">
 		  <UpgradeVersion Property="OLDAPPFOUND_WORD" OnlyDetect="no" IncludeMinimum="yes" Minimum="0.0.0" IncludeMaximum="no" Maximum="2.0.10" />
 	  </Upgrade>
 
 	  <Upgrade Id="$(var.UpgradeCode)">
 		  <UpgradeVersion Property="OLDAPPFOUND" Minimum="0.0.0.0" Maximum="$(var.AddinVersion)" IncludeMinimum="yes" IncludeMaximum="yes" />
 		  <UpgradeVersion Property="NEWAPPFOUND" Minimum="$(var.AddinVersion)" IncludeMinimum="no" OnlyDetect="yes" />
-	  </Upgrade>
-
-	
-
+	  </Upgrade>-->
 
 	  <!--wix variables-->
 	  <WixVariable Id="VersionNumber" Value="$(var.AddinVersion)" />
@@ -69,16 +71,14 @@
 					Execute="immediate"
 					Id="DetectLatestMsWordVersion" />
 
-	  <MajorUpgrade
-		  DowngradeErrorMessage="Une version plus récente de [ProductName] est déjà installée."
-		  Schedule="afterInstallValidate" />
-	  <!--<InstallExecuteSequence>
-		  --><!-- Prevent downgrading --><!--
-		  <Custom Action="NewerVersionDetected" After="FindRelatedProducts" Condition="NEWAPPFOUND"/>
+	  <MajorUpgrade Schedule="afterInstallValidate" AllowDowngrades="yes"/>
+	  <!--DowngradeErrorMessage="Une version plus récente de [ProductName] est déjà installée."-->
+	  <InstallExecuteSequence>
+		  <!--<Custom Action="NewerVersionDetected" After="FindRelatedProducts" Condition="NEWAPPFOUND"/>-->
 		  <Custom Action="SetARPREADME" After="InstallValidate"></Custom>
 		  <Custom Action="DetectLatestMsWordVersion" Before="LaunchConditions" Condition="NOT Installed"/>
-		  <RemoveExistingProducts Before="InstallInitialize" />
-	  </InstallExecuteSequence>-->
+		  <!--<RemoveExistingProducts Before="InstallInitialize" />-->
+	  </InstallExecuteSequence>
 	  
 	  <UI Id="MyUI">
 		  <Property Id="WixAppFolder" Value="WixPerUserFolder" />
