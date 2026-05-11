@@ -78,69 +78,78 @@ namespace org.daisy.jniwrapper
                 {
                     string path = System.IO.Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-unknowerror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
                     StringBuilder errorLog = new StringBuilder($"An error occured running {scriptName} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}\r\n");
-                    LogTextBox.AppendText($"An error occured running {scriptName} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}" + "\r\n");
-                    StringBuilder errorMessage = new StringBuilder();
-                    LogTextBox.ScrollToEnd();
+                    StringBuilder errorMessage = new StringBuilder();     
                     var ex = iex;
                     int errorCode = 1;
                     while (ex != null)
                     {
-                        errorMessage.AppendLine(ex.Message);
-                        LogTextBox.AppendText($"{ex.Message}\r\n");
-                        LogTextBox.ScrollToEnd();
-                        errorLog.AppendLine(ex.Message);
-                        errorLog.AppendLine(ex.StackTrace);
+                        if(!ex.Message.StartsWith("file:/")) // Avoid the detailed log
+                        {
+                            errorMessage.AppendLine(ex.Message);
+                            errorLog.AppendLine(ex.Message);
+                            errorLog.AppendLine(ex.StackTrace);
+                        }
                         ex = ex.InnerException;
                     }
                     if (iex is OperationCanceledException)
                     {
-                        LogTextBox.AppendText("Conversion was cancelled." + "\r\n");
-                        LogTextBox.ScrollToEnd();
                         Console.WriteLine("Conversion was cancelled.");
 
                     }
                     else if (iex is JobException jex)
                     {
                         path = Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-joberror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                        
+                        if (iex.Message.StartsWith("file:/"))
+                        {
+                            try
+                            {
+                                string newPath = new Uri(iex.Message).LocalPath;
+                                errorLog.AppendLine($"Please send the log at the following path to the DAISY Pipeline team for additional troubleshooting :");
+                                errorLog.AppendLine($"{newPath}");
+                                File.WriteAllText(path, errorLog.ToString());
+                                path = newPath;
+                            } catch (UriFormatException)
+                            {
+                                // If it fails, keep the original path where we logged the error
+                            }
+                        } else
+                        {
+                            File.WriteAllText(path, errorLog.ToString());
+                        }
                         errorCode = 2;
                     }
                     else
                     {
                         path = Path.Combine(JNITaskRunner.JNILogsPath, $"{scriptName}-criticalerror-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log");
+                        File.WriteAllText(path, errorLog.ToString());
                         errorCode = 3;
                     }
                     if (errorCode == 1)
                     {
-                        // Cancel action, don't report anything, just shutdown
-                        Dispatcher.Invoke(() =>
-                        {
-                            App.Current.Shutdown(errorCode);
-                            this.Close();
-                        });
                         return;
                     }
                     else
                     {
-                        File.WriteAllText(path, errorLog.ToString());
-
-                        if (MessageBox.Show(
-                                $"The following error occured during the conversion:" +
-                                $"\r\n{errorMessage}" +
-                                $"\r\n Do you want to open the error log at {path} for more details?",
-                                "Error during conversion",
-                                MessageBoxButton.YesNo,
-                                MessageBoxImage.Error
-                            ) == MessageBoxResult.Yes
-                        )
-                        {
-                            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
-                            {
-                                FileName = path,
-                                UseShellExecute = true
-                            });
-                        }
                         Dispatcher.Invoke(() =>
                         {
+                            if (MessageBox.Show(
+                                    $"The following error occured during the conversion:" +
+                                    $"\r\n{errorMessage}" +
+                                    $"\r\nDo you want to open the conversion log for more details?" +
+                                    $"\r\n(Please send those logs after review to the DAISY Pipeline team if you need additional troubleshooting.)",
+                                    "Error during conversion",
+                                    MessageBoxButton.YesNo,
+                                    MessageBoxImage.Error
+                                ) == MessageBoxResult.Yes
+                            )
+                            {
+                                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                                {
+                                    FileName = path,
+                                    UseShellExecute = true
+                                });
+                            }
                             App.Current.Shutdown(errorCode);
                             this.Close();
                         });

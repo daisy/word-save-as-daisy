@@ -132,6 +132,25 @@ namespace org.daisy.jniwrapper
             return value;
         }
 
+        private static string getLogFile(
+            JavaNativeInterface jni,
+            IntPtr commandLinejob,
+            IntPtr CommandLineJobClass
+        )
+        {
+            if (commandLinejob == IntPtr.Zero)
+            {
+                throw new Exception("requested getLogFile on non existing job");
+            }
+            return jni.CallMethod<string>(
+                CommandLineJobClass,
+                commandLinejob,
+                "getLogFile",
+                "()Ljava/lang/String;"
+            );
+
+        }
+
         /// <summary>
         /// Retrieve the current status of a pipeline job
         /// </summary>
@@ -654,16 +673,20 @@ namespace org.daisy.jniwrapper
                             string errorMessage = script
                                 + " conversion job has finished in error :\r\n"
                                 + string.Join("\r\n", errors);
-                            info?.Invoke($"Conversion finished with errors.\r\n{errorMessage}");
-                            throw new JobException(errorMessage);
+                            //info?.Invoke($"Conversion finished with errors.\r\n{errorMessage}");
+                            error?.Invoke($"Conversion job has finished in error, running {script} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+                            error?.Invoke(string.Join("\r\n", errors));
+                            throw new JobException(getLogFile(jni, currentJob, CommandLineJobClass), new Exception(errorMessage));
                         case JobStatus.Fail:
                             checkStatus = false;
                             errors = getErros(jni, currentJob, CommandLineJobClass);
                             string failedMessage = script
                                 + " conversion job failed :\r\n"
                                 + string.Join("\r\n", errors);
-                            info?.Invoke($"Conversion failed\r\n{failedMessage}");
-                            throw new JobException(failedMessage);
+                            //info?.Invoke($"Conversion failed\r\n{failedMessage}");
+                            error?.Invoke($"Conversion job has failed, running {script} with options : {string.Join(" ", options.Select(kv => "--" + kv.Key + " \"" + kv.Value + "\""))}");
+                            error?.Invoke(string.Join("\r\n", errors));
+                            throw new JobException(getLogFile(jni, currentJob, CommandLineJobClass), new Exception(failedMessage));
                         default:
                             break;
                     }
