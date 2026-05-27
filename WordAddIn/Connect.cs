@@ -1833,7 +1833,29 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                         var docxFile = finalOutput.GetFiles("*.docx");
                         if (docxFile != null && docxFile.Length > 0)
                         {
-                            this.applicationObject.Documents.Open(docxFile[0].FullName);
+
+                            try
+                            {  
+                                var doc = this.applicationObject.Documents.Open(FileName: docxFile[0].FullName, Visible: true, ConfirmConversions: true);
+                                if(doc == null)
+                                {
+                                    throw new Exception("The converted file could not be opened directly from Word (maybe filename is too long).");
+                                }
+                            } catch (Exception ex) {
+                                AddinLogger.Error(ex);
+                                MessageBox.Show(
+                                    "Conversion completed but an error occured while opening the converted file in Word :\r\n" 
+                                    + ex.Message +
+                                    "\r\nPlease try to manually open the file from its location at: " + docxFile[0].FullName,
+                                    "Conversion completed",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning
+                                );
+                            }
+                            // Check if the document has been opened
+                            
+
+                            //this.applicationObject.Documents.Open(docxFile[0].FullName);
                         }
                         else
                         {
