@@ -14,7 +14,7 @@
 				</RegistryKey>
 			</Component>
 			<Component Id="DPAppFakeComponent" Guid="3183e249-7e6c-4199-863d-adabec0089d7">
-				<RegistryValue Root="HKCU" Key="Software\Microsoft\SaveAsDAISY" Name="WithDPAPP" Type="integer" Value="1" KeyPath="yes" />
+				<RegistryValue Root="HKCU" Key="Software\DAISY\Save-as-DAISY Word Addin" Name="WithDPAPP" Type="integer" Value="1" KeyPath="yes" />
 			</Component>
 		</Directory>
 	</StandardDirectory>
