@@ -9,9 +9,9 @@ using System.Text;
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
     public class WordToMp3Chain : Script {
 
-        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
+        private static readonly ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
-        List<Script> scripts;
+        private readonly List<Script> scripts;
         public WordToMp3Chain(IConversionEventsHandler e): base(e) {
             this.niceName = "Export to Megavoice MP3 fileset";
             scripts = new List<Script>() {

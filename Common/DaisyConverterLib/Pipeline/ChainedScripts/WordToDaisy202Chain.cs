@@ -11,9 +11,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts
     public class WordToDaisy202Chain : Script
     {
 
-        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
+        private static readonly ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
-        List<Script> scripts;
+        private readonly List<Script> scripts;
 
         public WordToDaisy202Chain(IConversionEventsHandler e) : base(e)
         {

@@ -4,188 +4,188 @@
 	<ribbon>
 		<officeMenu>
 			<menu id="SaveAsDaisyOfficeMenu"
-			      getLabel="getRibbonLabel"
+			      getLabel="GetRibbonLabel"
 			      insertAfterMso="FileSaveAsMenu"
 			      itemSize="large"
-			      getImage="iconSelector">
+			      getImage="IconSelector">
 				<button id="ExportToXMLOfficeButton"
-				        getLabel="getRibbonLabel"
+				        getLabel="GetRibbonLabel"
 				        onAction="SaveAsDTBookXML"
-				        getEnabled="ribbonButtonsEnabled"
-				        getImage="iconSelector"
-				        getScreentip="getRibbonDescription"
-				        getDescription="getRibbonDescription"
+				        getEnabled="RibbonButtonsEnabled"
+				        getImage="IconSelector"
+				        getScreentip="GetRibbonDescription"
+				        getDescription="GetRibbonDescription"
 						/>
 				<button id="ExportToDaisy3OfficeButton"
-				        getLabel="getRibbonLabel"
+				        getLabel="GetRibbonLabel"
 				        onAction="SaveAsDAISY3"
-				        getEnabled="ribbonButtonsEnabled"
-				        getImage="iconSelector"
-				        getDescription="getRibbonDescription"
-				        getScreentip="getRibbonDescription"
+				        getEnabled="RibbonButtonsEnabled"
+				        getImage="IconSelector"
+				        getDescription="GetRibbonDescription"
+				        getScreentip="GetRibbonDescription"
 						/>
 				<button id="ExportToEpub3OfficeButton"
-				        getLabel="getRibbonLabel"
+				        getLabel="GetRibbonLabel"
 				        onAction="SaveAsEPUB3"
-				        getEnabled="ribbonButtonsEnabled"
-				        getImage="iconSelector"
-				        getDescription="getRibbonDescription"
-				        getScreentip="getRibbonDescription"
+				        getEnabled="RibbonButtonsEnabled"
+				        getImage="IconSelector"
+				        getDescription="GetRibbonDescription"
+				        getScreentip="GetRibbonDescription"
 						/>
 				<button id="ExportToMP33OfficeButton"
-				        getLabel="getRibbonLabel"
+				        getLabel="GetRibbonLabel"
 				        onAction="SaveAsMP3"
-				        getEnabled="ribbonButtonsEnabled"
-				        getImage="iconSelector"
-				        getDescription="getRibbonDescription"
-				        getScreentip="getRibbonDescription"/>
+				        getEnabled="RibbonButtonsEnabled"
+				        getImage="IconSelector"
+				        getDescription="GetRibbonDescription"
+				        getScreentip="GetRibbonDescription"/>
 			</menu>
 		</officeMenu>
 		<tabs>
 			<tab id="SaveAsDAISYTab"
-			     getLabel="getRibbonLabel">
+			     getLabel="GetRibbonLabel">
 				<group id="ExportGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<menu id="ExportTabMenu"
-					      getLabel="getRibbonLabel"
+					      getLabel="GetRibbonLabel"
 					      size="large"
-					      getImage="iconSelector">
+					      getImage="IconSelector">
 						<button id="ExportToXMLTabButton"
-						        getLabel="getRibbonLabel"
+						        getLabel="GetRibbonLabel"
 						        onAction="SaveAsDTBookXML"
-						        getEnabled="ribbonButtonsEnabled"
-						        getImage="iconSelector"
-						        getScreentip="getRibbonDescription"
-						        getDescription="getRibbonDescription"
+						        getEnabled="RibbonButtonsEnabled"
+						        getImage="IconSelector"
+						        getScreentip="GetRibbonDescription"
+						        getDescription="GetRibbonDescription"
 								/>
 						<button id="ExportToDaisy3TabButton"
-						        getLabel="getRibbonLabel"
+						        getLabel="GetRibbonLabel"
 						        onAction="SaveAsDAISY3"
-						        getEnabled="ribbonButtonsEnabled"
-						        getImage="iconSelector"
-						        getDescription="getRibbonDescription"
-						        getScreentip="getRibbonDescription"
+						        getEnabled="RibbonButtonsEnabled"
+						        getImage="IconSelector"
+						        getDescription="GetRibbonDescription"
+						        getScreentip="GetRibbonDescription"
 								/>
 						<button id="ExportToEpub3TabButton"
-						        getLabel="getRibbonLabel"
+						        getLabel="GetRibbonLabel"
 						        onAction="SaveAsEPUB3"
-						        getEnabled="ribbonButtonsEnabled"
-						        getImage="iconSelector"
-						        getDescription="getRibbonDescription"
-						        getScreentip="getRibbonDescription"
+						        getEnabled="RibbonButtonsEnabled"
+						        getImage="IconSelector"
+						        getDescription="GetRibbonDescription"
+						        getScreentip="GetRibbonDescription"
 								/>
 						<button id="ExportToMP3TabButton"
-						        getLabel="getRibbonLabel"
+						        getLabel="GetRibbonLabel"
 						        onAction="SaveAsMP3"
-						        getEnabled="ribbonButtonsEnabled"
-						        getImage="iconSelector"
-						        getDescription="getRibbonDescription"
-						        getScreentip="getRibbonDescription"/>
+						        getEnabled="RibbonButtonsEnabled"
+						        getImage="IconSelector"
+						        getDescription="GetRibbonDescription"
+						        getScreentip="GetRibbonDescription"/>
 					</menu>
 				</group>
 				<group id="AbbreviationsGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<button id="MarkAbbreviationTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="MarkAsAbbreviationUI"
-					        getImage="iconSelector"
-					        getEnabled="ribbonButtonsEnabled"
+					        getImage="IconSelector"
+					        getEnabled="RibbonButtonsEnabled"
 							/>
 					<button id="ManageAbbreviationsTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="ManageAbbreviation"
-					        getImage="iconSelector"
-					        getEnabled="ribbonButtonsEnabled"
+					        getImage="IconSelector"
+					        getEnabled="RibbonButtonsEnabled"
 							/>
 				</group>
 				<group id="AcronymsGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<button id="MarkAcronymTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="MarkAsAcronymUI"
-					        getImage="iconSelector"
-					        getEnabled="ribbonButtonsEnabled"
+					        getImage="IconSelector"
+					        getEnabled="RibbonButtonsEnabled"
 							/>
 					<button id="ManageAcronymsTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="ManageAcronym"
-					        getImage="iconSelector"
-					        getEnabled="ribbonButtonsEnabled"
+					        getImage="IconSelector"
+					        getEnabled="RibbonButtonsEnabled"
 							/>
 				</group>
 				<group id="ValidateGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<toggleButton id="toggleValidateTabButton"
-					              getLabel="getRibbonLabel"
-					              getScreentip="getRibbonDescription"
-					              getDescription="getRibbonDescription"
+					              getLabel="GetRibbonLabel"
+					              getScreentip="GetRibbonDescription"
+					              getDescription="GetRibbonDescription"
 					              size="large"
 					              onAction="Validate"
-					              getPressed="buttonValidatePressed"
-					              getEnabled="getValidateEnabled"
-					              getImage="iconSelector"
+					              getPressed="ButtonValidatePressed"
+					              getEnabled="GetValidateEnabled"
+					              getImage="IconSelector"
 								  />
 				</group>
 				<group id="DaisyStylesGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<button id="ImportDaisyStylesTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="Update_Styles"
-					        getEnabled="getEnabled"
-					        getImage="iconSelector"
+					        getEnabled="GetEnabled"
+					        getImage="IconSelector"
 							/>
 				</group>
 				<group id="FootnotesGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<button id="AddFootnotesTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="AddFotenote"
-					        getImage="iconSelector"
+					        getImage="IconSelector"
 							/>
 				</group>
 				<group id="LanguageGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<button id="DocumentLanguageTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="GetlanguageSettings"
-					        getImage="iconSelector"
-					        getEnabled="ribbonButtonsEnabled"
+					        getImage="IconSelector"
+					        getEnabled="RibbonButtonsEnabled"
 							/>
 				</group>
 				<group id="SettingsGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<button id="SettingsTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="GetDaisySettings"
-					        getImage="iconSelector"
+					        getImage="IconSelector"
 							/>
 				</group>
 				<group id="HelpGroup"
-				       getLabel="getRibbonLabel">
+				       getLabel="GetRibbonLabel">
 					<button id="VersionDetailsTabButton"
-					        getLabel="getRibbonLabel"
+					        getLabel="GetRibbonLabel"
 					        size="large"
 					        onAction="AboutUI"
-					        getImage="iconSelector"
+					        getImage="IconSelector"
 							/>
 					<menu id="DocumentationTabMenu"
-					      getLabel="getRibbonLabel"
+					      getLabel="GetRibbonLabel"
 					      size="large"
-					      getImage="iconSelector">
+					      getImage="IconSelector">
 						<button id="OpenManualTabButton"
-						        getLabel="getRibbonLabel"
+						        getLabel="GetRibbonLabel"
 						        onAction="ShowWordManual"
 								/>
 						<button id="OpenGuidelinesTabButton"
-						        getLabel="getRibbonLabel"
+						        getLabel="GetRibbonLabel"
 						        onAction="ShowAuthoringGuidelines"
 								/>
 					</menu>
