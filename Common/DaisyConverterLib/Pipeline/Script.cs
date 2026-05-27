@@ -106,21 +106,25 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         public string output = string.Empty;
 
+        protected virtual Runner getRunner()
+        {
+            if (_settings.UseWebserviceRunner)
+            {
+                return WebserviceRunner.GetInstance(EventsHandler);
+            }
+            else
+            {
+                return JNIWrapperRunner.GetInstance(EventsHandler);
+            }
+        }
+
         /// <summary>
         /// Execute the script on the given input file path.
         /// </summary>
         /// <param name="input">input file path</param>
         public virtual void ExecuteScript(string input)
         {
-            Runner runner;
-            if (_settings.UseWebserviceRunner)
-            {
-                runner = WebserviceRunner.GetInstance(EventsHandler);
-            }
-            else
-            {
-                runner = JNIWrapperRunner.GetInstance(EventsHandler);
-            }
+            Runner runner = getRunner();
             if (Parameters.ContainsKey("input") && (string)Parameters["input"].Value == "")
             {
                 Parameters["input"].Value = input;

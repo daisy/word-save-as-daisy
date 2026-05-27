@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
+
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
 {
     public class PDFToWordMistralOCR : Script
@@ -60,6 +61,14 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
         {
             throw new NotImplementedException();
         }
+
+        // Force using the embedded engine for PDF to word conversion
+        protected override Runner getRunner()
+        {
+            return JNIWrapperRunner.GetInstance(EventsHandler);
+        }
+
+
     }
 }
 
