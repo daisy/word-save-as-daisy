@@ -1276,22 +1276,22 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             );
         }
 
-        public ConversionResult ApplyScript(Script pipelineScript, WPFEventsHandler eventsHandler)
-        {
 
+
+        /// <summary>
+        /// Generic function to apply a conversion script on the active document, 
+        /// with a given events handler to report progress and messages to the user
+        /// </summary>
+        /// <param name="pipelineScript"></param>
+        /// <param name="eventsHandler"></param>
+        public void ApplyScript(Script pipelineScript, WPFEventsHandler eventsHandler)
+        {
+            NotifyDonationRequest();
+            try
+            {
             Dispatcher uiThread = Dispatcher.CurrentDispatcher;
 
-            if (!this.applicationObject.ActiveDocument.Saved) {
-                try {
-                    this.applicationObject.ActiveDocument.Save();
-                }
-                catch (Exception ex) {
-                    return ConversionResult.Fail(new Exception("The document must be saved before conversion.", ex));
-                }
-            }
-            if (!this.applicationObject.ActiveDocument.Saved) {
-                return ConversionResult.Fail(new Exception("The document must be saved before conversion."));
-            }
+           
             ConversionResult result = ConversionResult.Success();
             Conversion.DocumentProperties currentDocument = null;
             //eventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs("Starting conversion using " + pipelineScript.Name));
@@ -1304,8 +1304,25 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             Converter converter = new WPFConverter(preprocess, conversion, eventsHandler);
             
             string filePath = this.applicationObject.ActiveDocument.FullName;
+            
             try
             {
+                if (!this.applicationObject.ActiveDocument.Saved)
+                {
+                    try
+                    {
+                        this.applicationObject.ActiveDocument.Save();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception("The document must be saved before conversion.", ex);
+                    }
+                }
+                if (!this.applicationObject.ActiveDocument.Saved)
+                {
+                    throw new Exception("The document must be saved before conversion.");
+                }
+
                 eventsHandler.onDocumentPreprocessingStart(filePath);
                 var preprocessTask = System.Threading.Tasks.Task.Run(
                     () => converter.AnalyzeDocument(filePath)
@@ -1320,30 +1337,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                 {
                     if (converter.CurrentStatus == ConversionStatus.Canceled)
                     {
-                        return ConversionResult.Cancel();
+                        throw new OperationCanceledException();
                     }
                     uiThread.Invoke(DispatcherPriority.Background, new Action(delegate { }));
                 }
-                currentDocument = preprocessTask.Result;
-            }
-            catch (AggregateException aex)
-            {
-                return ConversionResult.Fail(
-                    new Exception("An error occured while preprocession document ", aex)
-                );
-            }
-            catch (Exception ex)
-            {
-                return ConversionResult.Fail(
-                    new Exception("An error occured while preprocession document ", ex)
-                );
-            }
-            if (currentDocument == null)
-            {
-                return ConversionResult.Cancel();
-            }
-            try
-            {
+                    currentDocument = preprocessTask.Result ?? throw new OperationCanceledException();
                 applicationObject.Activate();
                 WPF.ConversionParametersForm form = new WPF.ConversionParametersForm(
                     preprocess,
@@ -1425,26 +1423,30 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                     {
                         if (converter.CurrentStatus == ConversionStatus.Canceled)
                         {
-                            return ConversionResult.Cancel();
+                            throw new OperationCanceledException();
                         }
                         if (eventsHandler.IsCancellationRequested())
                         {
-                            return ConversionResult.Cancel();
+                            throw new OperationCanceledException();
                         }
                         uiThread.Invoke(DispatcherPriority.Background, new Action(delegate { }));
                         //Dispatcher.Run();
                     }
-                    return conversionTask.Result;
+                    result = conversionTask.Result;
                 }
                 else
                 {
                     eventsHandler?.RequestCancellation();
-                    return ConversionResult.Cancel();
+                    throw new OperationCanceledException();
                 }
+            }
+            catch (OperationCanceledException)
+            {
+                result = ConversionResult.Cancel();
             }
             catch (AggregateException aex)
             {
-                return ConversionResult.Fail(
+                result = ConversionResult.Fail(
                     new Exception(
                         "An error occured while executing script " + pipelineScript.Name,
                         aex
@@ -1453,65 +1455,49 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             }
             catch (Exception ex)
             {
-                return ConversionResult.Fail(
+                result = ConversionResult.Fail(
                     new Exception(
                         "An error occured while preparing execution of " + pipelineScript.Name,
                         ex
                     )
                 );
             }
-        }
-
-        public void SaveAsDTBookXML(IRibbonControl control)
-        {
-            try
+            if (result.Canceled)
             {
-                Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
-                    //? new WordToCleanedDtbook(eventsHandler) :
-                    ? new WordToDtbook(eventsHandler)
-                    : null;
-                if (pipelineScript != null)
-                {
-                    pipelineScript.EventsHandler = eventsHandler;
-                }
-                NotifyDonationRequest();
-                var result = ApplyScript(pipelineScript, eventsHandler);
-                if (result.Canceled)
-                {
-                    eventsHandler.onConversionCanceled();
-                }
-                else if (result.Succeeded)
-                {
-                    eventsHandler.onConversionSuccess();
-                    Process.Start(result.ResultPath);
+                eventsHandler.onConversionCanceled();
+            }
+            else if (result.Succeeded)
+            {
+                eventsHandler.onConversionSuccess();
+                Process.Start(result.ResultPath);
 
-                }
-                else if (result.Failed)
+            }
+            else if (result.Failed)
+            {
+                AddinLogger.Error("Conversion failed", result.ErrorDetails);
+                if (result.ErrorDetails is AggregateException agex)
                 {
-                    AddinLogger.Error("Conversion failed", result.ErrorDetails);
-                    if (result.ErrorDetails is AggregateException agex)
+                    foreach (var iex in agex.InnerExceptions)
                     {
-                        foreach (var iex in agex.InnerExceptions)
-                        {
-                            AddinLogger.Error(iex);
-                        }
+                        AddinLogger.Error(iex);
                     }
-                    else
-                    {
-                        var inner = result.ErrorDetails?.InnerException;
-                        while (inner != null)
-                        {
-                            AddinLogger.Error("From", inner);
-                            inner = inner.InnerException;
-                        }
-                    }
-                    MessageBox.Show(
-                        result.ErrorMessage,
-                        "Conversion failed",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
                 }
+                else
+                {
+                    var inner = result.ErrorDetails?.InnerException;
+                    while (inner != null)
+                    {
+                        AddinLogger.Error("From", inner);
+                        inner = inner.InnerException;
+                    }
+                }
+                MessageBox.Show(
+                    result.ErrorMessage,
+                    "Conversion failed",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
+            }
             }
             catch (AggregateException e)
             {
@@ -1535,6 +1521,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                 ExceptionReport report = new ExceptionReport(e);
                 report.ShowDialog();
             }
+        }
+
+        public void SaveAsDTBookXML(IRibbonControl _)
+        {
+            ApplyScript(new WordToDtbook(eventsHandler), eventsHandler);
         }
 
         /// <summary>
@@ -1543,167 +1534,17 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
         /// <param name="control"></param>
         public void SaveAsDAISY3(IRibbonControl control)
         {
-            try
-            {
-                // IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                //WPFEventsHandler eventsHandler = new WPFEventsHandler();
-                //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
-
-                Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
-                    ? new WordToDAISY3(eventsHandler)
-                    : null;
-
-                if (pipelineScript != null)
-                {
-                    pipelineScript.EventsHandler = eventsHandler;
+            ApplyScript(new WordToDAISY3(eventsHandler), eventsHandler);
                 }
-                NotifyDonationRequest();
-                var result = ApplyScript(pipelineScript, eventsHandler);
-                if (result.Canceled)
-                {
-                    eventsHandler.onConversionCanceled();
-                }
-                else if (result.Succeeded)
-                {
-                    eventsHandler.onConversionSuccess();
-                }
-                else if (result.Failed)
-                {
-                    AddinLogger.Error("Conversion failed", result.ErrorDetails);
-                    if (result.ErrorDetails is AggregateException agex)
-                    {
-                        foreach (var iex in agex.InnerExceptions)
-                        {
-                            AddinLogger.Error(iex);
-                        }
-                    }
-                    else
-                    {
-                        var inner = result.ErrorDetails?.InnerException;
-                        while (inner != null)
-                        {
-                            AddinLogger.Error("From", inner);
-                            inner = inner.InnerException;
-                        }
-                    }
-                    MessageBox.Show(
-                        result.ErrorMessage,
-                        "Conversion failed",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-            }
-            catch (AggregateException e)
-            {
-                AddinLogger.Error(e);
-                foreach (var ex in e.InnerExceptions)
-                {
-                    AddinLogger.Error(ex);
-                }
-                if (true)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
-            }
-            catch (Exception e)
-            {
-                var chain = e;
-                AddinLogger.Error(chain);
-                while (chain.InnerException != null)
-                {
-                    chain = e.InnerException;
-                    AddinLogger.Error(chain);
-                }
-                ExceptionReport report = new ExceptionReport(e);
-                report.ShowDialog();
-            }
-        }
 
         /// <summary>
         /// UI Call : request conversion of the current active document to DAISY book
         /// </summary>
         /// <param name="control"></param>
-        public void SaveAsDAISY202(IRibbonControl control)
+        public void SaveAsDAISY202(IRibbonControl _)
         {
-            try
-            {
-                // IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                //WPFEventsHandler eventsHandler = new WPFEventsHandler();
-                //Script pipelineScript = control != null ? this.PostprocessingPipeline?.getScript(control.Tag) : null;
-
-                Script pipelineScript = Directory.Exists(ConverterHelper.EmbeddedEnginePath)
-                    ? new WordToDAISY202(eventsHandler)
-                    : null;
-
-                if (pipelineScript != null)
-                {
-                    pipelineScript.EventsHandler = eventsHandler;
-                }
-                NotifyDonationRequest();
-                var result = ApplyScript(pipelineScript, eventsHandler);
-                if (result.Canceled)
-                {
-                    eventsHandler.onConversionCanceled();
-                }
-                else if (result.Succeeded)
-                {
-                    eventsHandler.onConversionSuccess();
-                }
-                else if (result.Failed)
-                {
-                    AddinLogger.Error("Conversion failed", result.ErrorDetails);
-                    if (result.ErrorDetails is AggregateException agex)
-                    {
-                        foreach (var iex in agex.InnerExceptions)
-                        {
-                            AddinLogger.Error(iex);
-                        }
-                    }
-                    else
-                    {
-                        var inner = result.ErrorDetails?.InnerException;
-                        while (inner != null)
-                        {
-                            AddinLogger.Error("From", inner);
-                            inner = inner.InnerException;
-                        }
-                    }
-                    MessageBox.Show(
-                        result.ErrorMessage,
-                        "Conversion failed",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
+            ApplyScript(new WordToDAISY202(eventsHandler), eventsHandler);
             }
-            catch (AggregateException e)
-            {
-                AddinLogger.Error(e);
-                foreach (var ex in e.InnerExceptions)
-                {
-                    AddinLogger.Error(ex);
-                }
-                if (true)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
-            }
-            catch (Exception e)
-            {
-                var chain = e;
-                AddinLogger.Error(chain);
-                while (chain.InnerException != null)
-                {
-                    chain = e.InnerException;
-                    AddinLogger.Error(chain);
-                }
-                ExceptionReport report = new ExceptionReport(e);
-                report.ShowDialog();
-            }
-        }
 
         /// <summary>
         /// Experimental conversion to epub3
@@ -1712,79 +1553,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
         /// <param name="conversionIntegrationTestSettings"></param>
         public void SaveAsEPUB3(IRibbonControl control)
         {
-            try
-            {
-                //IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                //WPFEventsHandler eventsHandler = new WPFEventsHandler();
-
-                Script pipelineScript = new WordToEPUB3(eventsHandler);
-
-                if (pipelineScript != null)
-                {
-                    pipelineScript.EventsHandler = eventsHandler;
-                }
-                NotifyDonationRequest();
-                var result = ApplyScript(pipelineScript, eventsHandler);
-                if (result.Canceled)
-                {
-                    eventsHandler.onConversionCanceled();
-                }
-                else if (result.Succeeded)
-                {
-                    eventsHandler.onConversionSuccess();
-                }
-                else if (result.Failed)
-                {
-                    AddinLogger.Error("Conversion failed", result.ErrorDetails);
-                    if (result.ErrorDetails is AggregateException agex)
-                    {
-                        foreach (var iex in agex.InnerExceptions)
-                        {
-                            AddinLogger.Error(iex);
-                        }
-                    }
-                    else
-                    {
-                        var inner = result.ErrorDetails?.InnerException;
-                        while (inner != null)
-                        {
-                            AddinLogger.Error("From", inner);
-                            inner = inner.InnerException;
-                        }
-                    }
-                    MessageBox.Show(
-                        result.ErrorMessage,
-                        "Conversion failed",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-            }
-            catch (AggregateException e)
-            {
-                AddinLogger.Error(e);
-                foreach (var ex in e.InnerExceptions)
-                {
-                    AddinLogger.Error(ex);
-                }
-                if (true)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
-            }
-            catch (Exception e)
-            {
-                var chain = e;
-                AddinLogger.Error(chain);
-                while (chain.InnerException != null)
-                {
-                    chain = e.InnerException;
-                    AddinLogger.Error(chain);
-                }
-                ExceptionReport report = new ExceptionReport(e);
-                report.ShowDialog();
-            }
+            ApplyScript(new WordToEPUB3(eventsHandler), eventsHandler);
         }
 
         /// <summary>
@@ -1794,82 +1563,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
         /// <param name="conversionIntegrationTestSettings"></param>
         public void SaveAsMP3(IRibbonControl control)
         {
-            try
-            {
-                //WPFEventsHandler eventsHandler = new WPFEventsHandler();
-
-                Script pipelineScript = new WordToMP3(eventsHandler);
-
-                if (pipelineScript != null)
-                {
-                    pipelineScript.EventsHandler = eventsHandler;
+            ApplyScript(new WordToMP3(eventsHandler), eventsHandler);
                 }
-                NotifyDonationRequest();
-                var result = ApplyScript(pipelineScript, eventsHandler);
-                if (result.Canceled)
-                {
-                    eventsHandler.onConversionCanceled();
-                }
-                else if (result.Succeeded)
-                {
-                    eventsHandler.onConversionSuccess();
-                }
-                else if (result.Failed)
-                {
-                    AddinLogger.Error("Conversion failed", result.ErrorDetails);
-                    if (result.ErrorDetails is AggregateException agex)
-                    {
-                        foreach (var iex in agex.InnerExceptions)
-                        {
-                            AddinLogger.Error(iex);
-                        }
-                    }
-                    else
-                    {
-                        var inner = result.ErrorDetails?.InnerException;
-                        while (inner != null)
-                        {
-                            AddinLogger.Error("From", inner);
-                            inner = inner.InnerException;
-                        }
-                    }
-                    MessageBox.Show(
-                        result.ErrorMessage,
-                        "Conversion failed",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Error
-                    );
-                }
-            }
-            catch (AggregateException e)
-            {
-                AddinLogger.Error(e);
-                foreach (var ex in e.InnerExceptions)
-                {
-                    AddinLogger.Error(ex);
-                }
-                if (true)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
-            }
-            catch (Exception e)
-            {
-                AddinLogger.Error(e);
-                var inner = e.InnerException;
-                while (inner != null)
-                {
-                    AddinLogger.Error(e.InnerException);
-                    inner = e.InnerException;
-                }
-                if (true)
-                {
-                    ExceptionReport report = new ExceptionReport(e);
-                    report.ShowDialog();
-                }
-            }
-        }
 
         #endregion
 
@@ -2147,7 +1842,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
 
                         import.ScriptToRun.ExecuteScript("");
 
-                        // search RTF file in output folder
+                        // search docx file in output folder
                         var docxFile = finalOutput.GetFiles("*.docx");
                         if (docxFile != null && docxFile.Length > 0)
                         {
@@ -2767,12 +2462,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                                     Enum.Parse(typeof(MSword.WdLanguageID), item);
                                 list.Add(value);
                             }
-
+                            
                             Language lng = new Language(
-                                list,
-                                currentDoc.Application.Selection.Range,
-                                currentDoc
-                            );
+                                    list,
+                                    currentDoc.Application.Selection.Range,
+                                    currentDoc
+                                );
                             lng.ShowDialog();
                         }
                         else
