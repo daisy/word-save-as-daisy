@@ -50,7 +50,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
             ));
 
         }
-        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        public override string SearchInputFromDirectory(DirectoryInfo inputDirectory)
         {
 
             throw new NotImplementedException();

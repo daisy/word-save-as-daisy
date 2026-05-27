@@ -9,7 +9,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 {
 	public sealed class AddinLogger
 	{
-		private static ILog _log = LogManager.GetLogger(typeof(AddinLogger));
+		private static readonly ILog _log = LogManager.GetLogger(typeof(AddinLogger));
 
 		#region initialization
 

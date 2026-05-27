@@ -209,7 +209,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
                     if (i > 0) {
                         // chain last output to next input for non-first scripts
                         try {
-                            input = scripts[i].searchInputFromDirectory(outputDir);
+                            input = scripts[i].SearchInputFromDirectory(outputDir);
                         }
                         catch {
                             throw new FileNotFoundException($"Could not find result of previous script {scripts[i - 1].Name} in intermediate folder", outputDir.FullName);
@@ -249,7 +249,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.ChainedScripts {
             }
         }
 
-        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        public override string SearchInputFromDirectory(DirectoryInfo inputDirectory)
         {
             throw new NotImplementedException();
         }

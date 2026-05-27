@@ -8,7 +8,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
 {
     public class PDFToWordMistralOCR : Script
     {
-        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
+        //private static readonly ConverterSettings GlobaleSettings = ConverterSettings.Instance;
         public PDFToWordMistralOCR(IConversionEventsHandler e)
             : base(e)
         {
@@ -44,7 +44,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                     { "mistral-ocr-2512",   "mistral-ocr-2512"},
                     { "mistral-ocr-latest", "mistral-ocr-latest"},
                     { "mistral-ocr-2505",   "mistral-ocr-2505"}
-                }, "mistral-ocr-2512"),
+                }, "mistral-ocr-latest"),
                 false,
                 "The Mistral OCR model to be used."
             ));
@@ -57,13 +57,13 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
             ));
 
         }
-        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
+        public override string SearchInputFromDirectory(DirectoryInfo inputDirectory)
         {
             throw new NotImplementedException();
         }
 
         // Force using the embedded engine for PDF to word conversion
-        protected override Runner getRunner()
+        protected override Runner GetRunner()
         {
             return JNIWrapperRunner.GetInstance(EventsHandler);
         }

@@ -18,7 +18,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         protected IConversionEventsHandler eventsHandler;
 
-        private ConverterSettings _settings = ConverterSettings.Instance;
+        private readonly ConverterSettings _settings = ConverterSettings.Instance;
 
         public Script(IConversionEventsHandler eventsHandler = null)
         {
@@ -27,38 +27,6 @@ namespace Daisy.SaveAsDAISY.Conversion
         }
 
         public IConversionEventsHandler EventsHandler { get { return eventsHandler; } set { eventsHandler = value; } }
-
-        public delegate void PipelineOutputListener(object sender, EventArgs e);
-        protected event PipelineOutputListener onPipelineOutput;
-        public void setPipelineOutputListener(PipelineOutputListener onPipelineOutput)
-        {
-            this.onPipelineOutput = onPipelineOutput;
-        }
-
-        protected PipelineOutputListener OnPipelineOutput {
-            get => this.onPipelineOutput;
-        }
-
-
-        public delegate void PipelineErrorListener(object sender, EventArgs e);
-        protected event PipelineErrorListener onPipelineError;
-        public void setPipelineErrorListener(PipelineErrorListener onPipelineError)
-        {
-            this.onPipelineError = onPipelineError;
-        }
-        protected PipelineErrorListener OnPipelineError {
-            get => this.onPipelineError;
-        }
-
-        public delegate void PipelineProgressListener(object sender, EventArgs e);
-        protected event PipelineProgressListener onPipelineProgress;
-        public void setPipelineProgressListener(PipelineProgressListener onPipelineProgress)
-        {
-            this.onPipelineProgress = onPipelineProgress;
-        }
-        protected PipelineProgressListener OnPipelineProgress {
-            get => this.onPipelineProgress;
-        }
 
 
         protected Dictionary<string, ScriptParameter> _parameters;
@@ -106,7 +74,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         public string output = string.Empty;
 
-        protected virtual Runner getRunner()
+        protected virtual Runner GetRunner()
         {
             if (_settings.UseWebserviceRunner)
             {
@@ -124,7 +92,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// <param name="input">input file path</param>
         public virtual void ExecuteScript(string input)
         {
-            Runner runner = getRunner();
+            Runner runner = GetRunner();
             if (Parameters.ContainsKey("input") && (string)Parameters["input"].Value == "")
             {
                 Parameters["input"].Value = input;
@@ -185,7 +153,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         /// <param name="inputDirectory"></param>
         /// <returns></returns>
-        public abstract string searchInputFromDirectory(DirectoryInfo inputDirectory);
+        public abstract string SearchInputFromDirectory(DirectoryInfo inputDirectory);
 
         /// <summary>
         /// Number of steps for progression

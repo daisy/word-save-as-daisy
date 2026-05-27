@@ -62,8 +62,7 @@ namespace org.daisy.jniwrapper
                 MessageBox.Show("Usage: JNIWrapper.exe <scriptName> [--option value] [-Dorg.daisy.property value]...");
                 return 1;
             }
-            string scriptOrCommand;
-            Dictionary<string, string> options = ParseCommandLineArgs(args, out scriptOrCommand);
+            Dictionary<string, string> options = ParseCommandLineArgs(args, out string scriptOrCommand);
             // resplit command line options in properties (starting with -D) and regular options,
             // properties will be passed to the jni runtime and regular options will be passed to the script
             Dictionary<string, string> properties = options.Where(kv => kv.Key.StartsWith("-D")).ToDictionary(kv => kv.Key, kv => kv.Value);

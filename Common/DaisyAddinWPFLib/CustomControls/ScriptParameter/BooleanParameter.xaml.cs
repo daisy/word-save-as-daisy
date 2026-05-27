@@ -31,7 +31,7 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
         public bool ParameterValue {
             get
             {
-                return BoundParameter != null ? (bool)BoundParameter.Value : false;
+                return BoundParameter != null && (bool)BoundParameter.Value;
             }
             set {
                 if (BoundParameter != null) {

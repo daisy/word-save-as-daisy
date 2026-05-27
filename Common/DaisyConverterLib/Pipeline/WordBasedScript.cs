@@ -251,12 +251,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
         /// <param name="inputDirectory"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentOutOfRangeException">if the file was not found</exception>
-        public override string searchInputFromDirectory(DirectoryInfo inputDirectory)
-        {
-            return SearchInputFromDirectory(inputDirectory);
-        }
-
-        public static string SearchInputFromDirectory(DirectoryInfo inputDirectory)
+        public override string SearchInputFromDirectory(DirectoryInfo inputDirectory)
         {
             return Directory.GetFiles(inputDirectory.FullName, "*.docx", SearchOption.AllDirectories)[0];
         }

@@ -162,7 +162,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// </summary>
         /// <param name="emfBuffer"></param>
         /// <param name="destinationFilePath"></param>
-        public static void convertEmfBufferToPng(byte[] emfBuffer, string destinationFilePath)
+        public static void ConvertEmfBufferToPng(byte[] emfBuffer, string destinationFilePath)
         {
             using (var source = new MemoryStream(emfBuffer))
             {
@@ -366,7 +366,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public ConversionStatus ProcessEquations(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             Int16 showMsg = 0;
             MSword.Range rng;
-            String storyName = "";
+            string storyName;
             int iNumShapesViewed = 0;
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
 
@@ -392,9 +392,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                     if (shape != null && shape.OLEFormat != null) {
                                         bool bRetVal = false;
                                         string strProgID;
-                                        Guid autoConvert;
                                         strProgID = shape.OLEFormat.ProgID;
-                                        bRetVal = GetFinalCLSID(ref strProgID, out autoConvert);
+                                        bRetVal = GetFinalCLSID(ref strProgID, out Guid autoConvert);
 
                                         // if we are successful with the conversion of the CLSID we now need to query
                                         //  the application to see if it can actually do the work
@@ -408,8 +407,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                             //Make sure that the server of interest is insertable and not-insertable
                                             if (bInsertable && bNotInsertable) {
                                                 bool bServerExists = false;
-                                                string strPathToExe;
-                                                bServerExists = DoesServerExist(out strPathToExe, ref autoConvert);
+                                                bServerExists = DoesServerExist(out string strPathToExe, ref autoConvert);
 
                                                 //if the server exists then see if MathML can be retrieved for the shape
                                                 if (bServerExists) {
@@ -421,7 +419,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
                                                     bMathML = DoesServerSupportMathML(ref autoConvert, ref strVerb, out indexForVerb);
                                                     if (bMathML) {
-                                                        storeMathMLEquation(ref shape, indexForVerb, listmathML);
+                                                        StoreMathMLEquation(ref shape, indexForVerb, listmathML);
                                                     }
                                                 }
                                             } else {
@@ -530,7 +528,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                                 //shape.Select();
                                                 //WordInstance.Selection.CopyAsPicture();
                                                 byte[] buffer = (byte[])item.Range.EnhMetaFileBits;
-                                                convertEmfBufferToPng(buffer, shapeOutputPath);
+                                                ConvertEmfBufferToPng(buffer, shapeOutputPath);
                                                 eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
                                                     "Exported inlined shape " + shapeOutputPath
                                                 ));
@@ -627,8 +625,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus ValidateName(ref object preprocessedObject, StringValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
             MSword.Document currentDoc = (MSword.Document)preprocessedObject;
-            MSword.Application WordInstance = currentDoc.Application;
-            bool nameIsValid = false;
+            bool nameIsValid;
             do {
                 bool docIsRenamed = false;
                 if (!authorizedNamePattern.AuthorisationPattern.IsMatch(currentDoc.Name)) { // check only name (i assume it may still lead to problem if path has commas)
@@ -712,11 +709,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         #region MathType parsing requirements
         static private bool GetFinalCLSID(ref string ProgID, out Guid finalCLSID) {
             bool bRetVal = false;
-            Guid oGuid;
-            int iCOMRetVal = 0;
-
-            iCOMRetVal = CLSIDFromProgID(ProgID, out oGuid);
-
+            int iCOMRetVal = CLSIDFromProgID(ProgID, out Guid oGuid);
             if (iCOMRetVal == 0) { // S_OK => Prog is associated to a Class
                 FindFinalCLSID(ref oGuid, out finalCLSID);
                 bRetVal = true;
@@ -734,9 +727,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         /// <param name="oldCLSID">original class ID</param>
         /// <param name="newCLSID">CLSID of the class that is at the end of the auto-conversion chain</param>
         static private void FindFinalCLSID(ref Guid oldCLSID, out Guid newCLSID) {
-            int iCOMRetVal = 0;
             // Check if the class pointed by oldCLSID is set to be automatically to an other CLSID
-            iCOMRetVal = OleGetAutoConvert(ref oldCLSID, out newCLSID);
+            int iCOMRetVal = OleGetAutoConvert(ref oldCLSID, out newCLSID);
             if (iCOMRetVal == 0) { // S_OK : no error during the call
                 // Check if the new CLSID is not the old one (meaning we found the final CLSID)
                 bool bGuidTheSame = false;
@@ -803,7 +795,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 strPathToExe = "";
                 try {
                     strPathToExe = (string)regkey.GetValue(valnames[0]);
-                } catch (Exception e) {
+                } catch (Exception) {
                 }
 
                 if (strPathToExe.Length > 0) {
@@ -887,7 +879,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 //Lets make sure that we have some values before preceeding.
                 if (regkey.SubKeyCount > 0) {
                     int x = 0;
-                    int iCount = 0;
+                    int iCount;
 
                     string[] valnames = regkey.GetSubKeyNames();
 
@@ -928,7 +920,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             return indexForVerb;
         }
 
-        static private void storeMathMLEquation(
+        static private void StoreMathMLEquation(
             ref Microsoft.Office.Interop.Word.InlineShape shape,
             int indexForVerb,
             List<string> listmathML
@@ -951,7 +943,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     MessageBox.Show(e.Message);
                 }
 
-                IOleObject oleObject = null;
+                IOleObject oleObject;
 
                 //This is a C# version of a QueryInterface
                 if (dataObject != null) {
@@ -979,7 +971,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 oFormat = DataFormats.GetFormat("MathML");
 
                 if (mDataObject != null) {
-                    int iRetVal = 0;
+                    int iRetVal;
 
                     //Initialize a FORMATETC structure to get the requested data
                     oFormatEtc.cfFormat = (Int16)oFormat.Id;
@@ -1027,7 +1019,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             List<string> listmathML
         ) {
             IntPtr ptr;
-            byte[] rawArray = null;
+            byte[] rawArray;
 
 
             //Verify that our data contained within the STGMEDIUM is non-null
@@ -1053,7 +1045,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     // I will now display the text.  Create a string from the rawArray
                     string str = Encoding.ASCII.GetString(rawArray);
                     str = str.Substring(str.IndexOf("<mml:math"), str.IndexOf("</mml:math>") - str.IndexOf("<mml:math"));
-                    str = str + "</mml:math>";
+                    str += "</mml:math>";
                     str = str.Replace("xmlns:mml='http://www.w3.org/1998/Math/MathML'", "");
 
                     listmathML.Add(str);

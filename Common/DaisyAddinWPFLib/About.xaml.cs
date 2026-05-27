@@ -34,7 +34,7 @@ namespace Daisy.SaveAsDAISY.WPF
         private string _currentVersion;
 
 
-        private int computeVersionComparator(string version)
+        private int ComputeVersionComparator(string version)
         {
             Regex versionSeek = new Regex(@"(\d+)\.(\d+)\.(\d+)");
             Match found = versionSeek.Match(version);
@@ -83,7 +83,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 string lastTag = response.ResponseUri.ToString().Split('/').Last();
                 response.Close();
 
-                if (computeVersionComparator(lastTag) > computeVersionComparator(GetCurrentversion())) {
+                if (ComputeVersionComparator(lastTag) > ComputeVersionComparator(GetCurrentversion())) {
                     MessageBoxResult result = MessageBox.Show(
                         "New version of SaveAsDAISY Add-in is available. Do you want to download it now?\r\n" +
                         "(You will be redirected to the latest release download page)",

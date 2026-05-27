@@ -20,7 +20,7 @@ namespace Daisy.SaveAsDAISY.WPF
     /// </summary>
     public partial class SettingsForm : Window
     {
-        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
+        private static readonly ConverterSettings GlobaleSettings = ConverterSettings.Instance;
 
         private static readonly Dictionary<string, PageNumberingChoice.Enum> PageNumberingChoices = new Dictionary<string, PageNumberingChoice.Enum>
         {
@@ -339,12 +339,13 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private void BrowseTTSConfigFile_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-           
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "XML file (*.xml)|*.xml";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.RestoreDirectory = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Filter = "XML file (*.xml)|*.xml",
+                FilterIndex = 1,
+                RestoreDirectory = true
+            };
 
             if (openFileDialog.ShowDialog() == true) {
 
@@ -390,12 +391,13 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private void BrowseOpenOfficeTemplate_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "OTT file (*.ott)|*.ott";
-            openFileDialog.FilterIndex = 1;
-            openFileDialog.RestoreDirectory = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Filter = "OTT file (*.ott)|*.ott",
+                FilterIndex = 1,
+                RestoreDirectory = true
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
