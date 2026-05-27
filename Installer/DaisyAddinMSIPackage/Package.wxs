@@ -12,21 +12,20 @@
 	  <!-- default cab, needed to copy pipeline in different cab -->
 	<Media Id="1" Cabinet="addin.cab" EmbedCab="yes"/>
 	  
-    <Feature Id="Main" >
+    <Feature Id="Main" Title="SaveAsDAISY and its embedded engine" AllowAdvertise="no" AllowAbsent="no">
 		<ComponentGroupRef Id="AddinComponents" />
 		<ComponentGroupRef Id="EmbeddedEngineFiles" />
 
 		<ComponentRef Id="ApplicationDataComponent" />
 		<ComponentRef Id="ApplicationShortcut" />
-    </Feature>
+	</Feature>
+	<Feature Id="DownloadAndLaunchDPApp" Title="Download and Launch DAISY Pipeline App" Level="1" AllowAdvertise="no" AllowAbsent="yes">
+		<ComponentRef Id="DPAppFakeComponent" />
+	</Feature>
+	
 	  
-	<!-- TODO : add the download of daisy pipeline app as a feature to activate in the installer -->	  
-	 <!--<Feature Id="DaisyPipelineApp" AllowAbsent="yes" >
-		 
-	 </Feature>-->
 
-
-	  <!--<Upgrade Id="4EB56DA5-96B7-48AA-BEE1-4BDCDFF54105">
+	<!--<Upgrade Id="4EB56DA5-96B7-48AA-BEE1-4BDCDFF54105">
 		  <UpgradeVersion Property="OLDAPPFOUND_WORD" OnlyDetect="no" IncludeMinimum="yes" Minimum="0.0.0" IncludeMaximum="no" Maximum="2.0.10" />
 	  </Upgrade>
 
@@ -65,11 +64,16 @@
 	  <!--<CustomAction Id="ShowReadme" BinaryRef="Wix4UtilCA_$(sys.BUILDARCHSHORT)" DllEntry="WixShellExec" Impersonate="yes" />-->
 	  <!--Get latest word version-->
 	  <!-- Custom actions dll, from the DaisyAddin.CustomActions project -->
-	  <Binary Id="DetectWordAction" SourceFile="$(var.DetectWordAction.TargetDir)\DetectWordAction.CA.dll" />
-	  <CustomAction BinaryRef="DetectWordAction"
+	  <Binary Id="WixCustomActions" SourceFile="$(var.WixCustomActions.TargetDir)\WixCustomActions.CA.dll" />
+	  <CustomAction BinaryRef="WixCustomActions"
 					DllEntry="DetectLatestMsWordVersion"
 					Execute="immediate"
 					Id="DetectLatestMsWordVersion" />
+
+	  <CustomAction BinaryRef="WixCustomActions"
+					DllEntry="DownloadAndLaunchDPApp"
+					Execute="immediate"
+					Id="DownloadAndLaunchDPApp" />
 
 	  <MajorUpgrade Schedule="afterInstallValidate" AllowDowngrades="yes"/>
 	  <!--DowngradeErrorMessage="Une version plus récente de [ProductName] est déjà installée."-->
@@ -77,6 +81,8 @@
 		  <!--<Custom Action="NewerVersionDetected" After="FindRelatedProducts" Condition="NEWAPPFOUND"/>-->
 		  <Custom Action="SetARPREADME" After="InstallValidate"></Custom>
 		  <Custom Action="DetectLatestMsWordVersion" Before="LaunchConditions" Condition="NOT Installed"/>
+		  
+		  <Custom Action="DownloadAndLaunchDPApp" After="InstallFinalize" />
 		  <!--<RemoveExistingProducts Before="InstallInitialize" />-->
 	  </InstallExecuteSequence>
 	  
@@ -85,7 +91,9 @@
 
 		  <!-- Using default advanced installation process to allow for non-administration installation 
 			under localAppData/Apps folder-->
-		  <ui:WixUI Id="WixUI_Advanced" />
+		  <ui:WixUI Id="WixUI_Advanced"  />
+		  
+		  <ProgressText Action="DownloadAndLaunchDPApp" Message="Checking DPApp Feature installation..." />
 
 		  <Property Id="ARPNOMODIFY" Value="1" />
 	  </UI>

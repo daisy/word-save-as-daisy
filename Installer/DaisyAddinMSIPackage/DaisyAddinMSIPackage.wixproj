@@ -1,4 +1,4 @@
-<Project Sdk="WixToolset.Sdk/7.0.0">
+﻿<Project Sdk="WixToolset.Sdk/7.0.0">
   <ItemGroup>
     <PackageReference Include="WixToolset.UI.wixext" Version="7.0.0" />
     <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
@@ -12,20 +12,20 @@
     <ProjectReference Include="..\..\Common\ManagedAggregator\ManagedAggregator.csproj" />
     <ProjectReference Include="..\..\jnet\JNET.csproj" />
     <ProjectReference Include="..\..\WordAddIn\DaisyWord2007AddIn.csproj" />
-    <ProjectReference Include="..\DetectWordAction\DetectWordAction.csproj" />
+    <ProjectReference Include="..\WixCustomActions\WixCustomActions.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="resources\" />
   </ItemGroup>
   <PropertyGroup>
     <GenerateAdditionalCabinets>true</GenerateAdditionalCabinets>
-	<AcceptEula>wix7</AcceptEula>
+    <AcceptEula>wix7</AcceptEula>
   </PropertyGroup>
   <PropertyGroup>
     <DefineConstants>
 		ProductName=Save as DAISY Add-in for Microsoft Word;
 		Manufacturer=Daisy Consortium;
-		AddinVersion=2.9.4.4;
+		AddinVersion=2.9.5.0;
 		UpgradeCode=81FEF910-4CDE-43B9-8E7B-9F7D34A14765;
 	</DefineConstants>
   </PropertyGroup>

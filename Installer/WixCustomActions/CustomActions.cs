@@ -1,12 +1,13 @@
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
+using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
 using WixToolset.Dtf.WindowsInstaller;
 
-namespace DetectWordAction
+namespace WixCustomActions
 {
     public class CustomActions
     {
@@ -94,7 +95,7 @@ namespace DetectWordAction
 
 
 
-                bool is64system = IntPtr.Size * 8 == 64 ? true : false;
+                bool is64system = IntPtr.Size * 8 == 64;
 
                 // FIXME Due to possible "Windows Apps" installation of word that does not provide an installation registry key, 
                 // we use the office 2007 version number as default targeted version to install components for.
@@ -116,6 +117,102 @@ namespace DetectWordAction
                 return ActionResult.Failure;
             }
             
+        }
+
+        [CustomAction]
+        public static ActionResult DownloadAndLaunchDPApp(Session session)
+        {
+            if (session.Features["DownloadAndLaunchDPApp"].RequestState == InstallState.Local)
+            {
+                using (Record rec = new Record(3))
+                {
+                    rec.SetString(1, "DownloadAndLaunchDPApp");
+                    rec.SetString(2, "Downloading the DAISY Pipeline app installer...");
+                    session.Message(InstallMessage.ActionStart, rec);
+                }
+
+                using (Record rec = new Record(3))
+                {
+                    rec.SetInteger(1, 0);
+                    rec.SetInteger(2, 100);
+                    session.Message(InstallMessage.Progress, rec);
+                }
+
+                try
+                {
+                    // Download the install from DAISY Pipeline app
+                    string installerPath = Path.Combine(Path.GetTempPath(), "daisy-pipeline-setup.exe");
+                    if (File.Exists(installerPath)) File.Delete(installerPath);
+                    using (var client = new System.Net.WebClient())
+                    {
+                        ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
+                        client.DownloadFile(
+                            "https://github.com/daisy/pipeline-ui/releases/download/1.11.0/daisy-pipeline-setup-1.11.0-mistral.exe",
+                            installerPath);
+                        using (Record rec = new Record(3))
+                        {
+                            rec.SetInteger(1, 33);
+                            rec.SetInteger(2, 100);
+                            session.Message(InstallMessage.Progress, rec);
+                        }
+                    }
+                    using (Record rec = new Record(3))
+                    {
+                        rec.SetString(1, "DownloadAndLaunchDPApp");
+                        rec.SetString(2, "Silent installation of DAISY Pipeline app...");
+                        session.Message(InstallMessage.ActionStart, rec);
+                    }
+                    using (Record rec = new Record(3))
+                    {
+                        rec.SetInteger(1, 50);
+                        rec.SetInteger(2, 100);
+                        session.Message(InstallMessage.Progress, rec);
+                    }
+                    ProcessStartInfo exec = new ProcessStartInfo()
+                    {
+                        FileName = installerPath,
+                        UseShellExecute = true,
+                        Arguments = "/S" // silent install
+                    };
+                    var process = System.Diagnostics.Process.Start(exec);
+                    using (Record rec = new Record(3))
+                    {
+                        rec.SetInteger(1, 75);
+                        rec.SetInteger(2, 100);
+                        session.Message(InstallMessage.Progress, rec);
+                    }
+                    process.WaitForExit();
+                    using (Record rec = new Record(3))
+                    {
+                        rec.SetString(1, "DownloadAndLaunchDPApp");
+                        rec.SetString(2, "Silent installation of DAISY Pipeline app completed.");
+                        session.Message(InstallMessage.ActionStart, rec);
+                    }
+                    using (Record rec = new Record(3))
+                    {
+                        rec.SetInteger(1, 100);
+                        rec.SetInteger(2, 100);
+                        session.Message(InstallMessage.Progress, rec);
+                    }
+                    return ActionResult.Success;
+                }
+                catch (Exception ex)
+                {
+                    session.Log("Could not install DPApp : " + ex.ToString());
+                    //return ActionResult.Failure;
+                    //MessageBox.Show("An error occurred while trying to launch the DAISY Pipeline app installer.\r\n" +
+                    //    ex.Message + "\r\n" +
+                    //    "Please try to install it manually from \r\n" +
+                    //    "https://github.com/daisy/pipeline-ui/releases/latest", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                session.Log("DownloadAndLaunchDPApp feature is not selected, skipping.");
+                
+            }
+            return ActionResult.Success;
+
         }
     }
 }
