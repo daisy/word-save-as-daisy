@@ -57,15 +57,15 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
             //        ParameterDirection.Output
             //    )
             //},
-            _parameters.Add("language",
-                new ScriptParameter(
-                        "language",
-                        "Language code",
-                        new StringData(),
-                        false,
-                        "Language code of the input document."
-                    )
-                );
+            //_parameters.Add("language",
+            //    new ScriptParameter(
+            //            "language",
+            //            "Language code",
+            //            new StringData(),
+            //            false,
+            //            "Language code of the input document."
+            //        )
+            //    );
             _parameters.Add("tts-config", new ScriptParameter(
                         "tts-config",
                         "Text-to-speech configuration file",
