@@ -241,7 +241,8 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à .
+        ///   Recherche une chaîne localisée semblable à Import the (DAISY) styles in the current document.
+        ///Those can be used to improve the semantic of the DAISY XML..
         /// </summary>
         public static string ImportDaisyStylesTabButton {
             get {
@@ -250,7 +251,7 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à .
+        ///   Recherche une chaîne localisée semblable à Convert a DAISY XML into ODT and open the result in Word.
         /// </summary>
         public static string ImportODTTabButton {
             get {
@@ -259,7 +260,8 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à .
+        ///   Recherche une chaîne localisée semblable à Convert a PDF into DOCX using MistralOCR and open the result in Word.
+        ///(Requires an API key set in addin settings).
         /// </summary>
         public static string ImportPDFTabButton {
             get {
@@ -268,7 +270,7 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à .
+        ///   Recherche une chaîne localisée semblable à Convert a DAISY XML into RTF and open the result in Word.
         /// </summary>
         public static string ImportRTFTabButton {
             get {
@@ -277,7 +279,7 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à .
+        ///   Recherche une chaîne localisée semblable à Import non-word files.
         /// </summary>
         public static string ImportTabMenu {
             get {

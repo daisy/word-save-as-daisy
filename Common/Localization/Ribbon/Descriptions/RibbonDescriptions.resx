@@ -178,7 +178,8 @@
     <value />
   </data>
   <data name="ImportDaisyStylesTabButton" xml:space="preserve">
-    <value />
+    <value>Import the (DAISY) styles in the current document.
+Those can be used to improve the semantic of the DAISY XML.</value>
   </data>
   <data name="LanguageGroup" xml:space="preserve">
     <value />
@@ -223,15 +224,16 @@
     <value />
   </data>
   <data name="ImportPDFTabButton" xml:space="preserve">
-    <value />
+    <value>Convert a PDF into DOCX using MistralOCR and open the result in Word.
+(Requires an API key set in addin settings)</value>
   </data>
   <data name="ImportTabMenu" xml:space="preserve">
-    <value />
+    <value>Import non-word files</value>
   </data>
   <data name="ImportODTTabButton" xml:space="preserve">
-    <value />
+    <value>Convert a DAISY XML into ODT and open the result in Word</value>
   </data>
   <data name="ImportRTFTabButton" xml:space="preserve">
-    <value />
+    <value>Convert a DAISY XML into RTF and open the result in Word</value>
   </data>
 </root>

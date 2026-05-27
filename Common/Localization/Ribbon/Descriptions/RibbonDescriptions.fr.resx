@@ -178,7 +178,8 @@
     <value />
   </data>
   <data name="ImportDaisyStylesTabButton" xml:space="preserve">
-    <value />
+    <value>Importer les styles (DAISY) dans le document.
+Vous pouvez utilisez ces styles pour améliorer la sémantique du DAISY XML.</value>
   </data>
   <data name="LanguageGroup" xml:space="preserve">
     <value />
@@ -222,11 +223,17 @@
   <data name="VersionDetailsTabButton" xml:space="preserve">
     <value>Affichés les informations de versions du logiciel SaveAsDAISY.</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="ImportPDFTabButton" type="System.Resources.ResXNullRef, System.Windows.Forms">
+  <data name="ImportPDFTabButton" xml:space="preserve">
+    <value>Convertit un PDF en DOCX via MistralOCR.
+(Requiert une clé API définie dans les réglages du complément)</value>
+  </data>
+  <data name="ImportTabMenu" xml:space="preserve">
     <value />
   </data>
-  <data name="ImportTabMenu" type="System.Resources.ResXNullRef, System.Windows.Forms">
-    <value />
+  <data name="ImportODTTabButton" xml:space="preserve">
+    <value>Convertit un XML DAISY en ODT et l'ouvre dans Word.</value>
+  </data>
+  <data name="ImportRTFTabButton" xml:space="preserve">
+    <value>Convertit un XML DAISY en ODT et l'ouvre dans Word.</value>
   </data>
 </root>
