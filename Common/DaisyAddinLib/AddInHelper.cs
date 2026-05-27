@@ -19,7 +19,7 @@ namespace Daisy.SaveAsDAISY.Forms
 		/// </summary>
 		/// <param name="buttonName"></param>
 		/// <returns></returns>
-		public static bool buttonIsSingleWordToXMLConversion(string buttonName)
+		public static bool ButtonIsSingleWordToXMLConversion(string buttonName)
 		{
 			return buttonName == "DaisySingle" || buttonName == "DaisyTabSingle" || 
 			       buttonName == "Daisy" ||  buttonName == "Button1";
@@ -33,7 +33,7 @@ namespace Daisy.SaveAsDAISY.Forms
 		/// <returns></returns>
 		public static bool IsSingleDaisyTranslate(string buttonName)
 		{
-			return buttonIsSingleWordToXMLConversion(buttonName) || !ConverterHelper.PipelineIsInstalled();
+			return ButtonIsSingleWordToXMLConversion(buttonName) || !ConverterHelper.PipelineIsInstalled();
 		}
 
 		/// <summary>

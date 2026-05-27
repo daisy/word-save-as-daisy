@@ -43,7 +43,7 @@ namespace Daisy.SaveAsDAISY
     /// </summary>
     public class AddinResources
     {
-        private ChainResourceManager resourceManager;
+        private readonly ChainResourceManager resourceManager;
 
         /// <summary>
         /// Constructor
