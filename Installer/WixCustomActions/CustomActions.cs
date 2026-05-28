@@ -119,11 +119,84 @@ namespace WixCustomActions
             
         }
 
+        private static readonly Regex versionNumber = new Regex("(?<maj>[0-9]+)\\.(?<min>[0-9]+)\\.(?<patch>[0-9]+).*");
+
+        private static readonly int minVersion = 10000 * 1 + 100 * 11 + 0; // version 1.11.0
+
         [CustomAction]
         public static ActionResult DownloadAndLaunchDPApp(Session session)
         {
             if (session.Features["DownloadAndLaunchDPApp"].RequestState == InstallState.Local)
             {
+                // Check SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall
+                //RegistryKey lKeyApp = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall");
+                using (RegistryKey lKeyApp = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"))
+                {
+                    foreach (string subKey in lKeyApp.GetSubKeyNames())
+                    {
+                        RegistryKey appKey = lKeyApp.OpenSubKey(subKey);
+                        string displayName = appKey.GetValue("DisplayName")?.ToString() ?? "";
+                        string displayVersion = appKey.GetValue("DisplayVersion")?.ToString() ?? "";
+
+                        if (displayName.StartsWith("DAISY Pipeline") && versionNumber.Match(displayVersion) is Match m && m.Success)
+                        {
+                            // computing a simple version number to compare versions (major*10000 + minor*100 + patch)
+                            // (assumes that major, minor and patch are all in range [0..99])
+                            int versionNumberValue = int.Parse(m.Groups["maj"].Value) * 10000 +
+                                                int.Parse(m.Groups["min"].Value) * 100 +
+                                                int.Parse(m.Groups["patch"].Value);
+                            // Avoid installing the app if a compatible version is already installed (version 1.11.0 or superior)
+                            if (versionNumberValue >= minVersion)
+                            {
+                                using (Record rec = new Record(3))
+                                {
+                                    rec.SetString(1, "DownloadAndLaunchDPApp");
+                                    rec.SetString(2, "Compatible DAISY Pipeline App already installed");
+                                    session.Message(InstallMessage.ActionStart, rec);
+                                    return ActionResult.Success;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                try
+                {
+                    using (RegistryKey lKeyApp = Registry.CurrentUser.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"))
+                    {
+                        foreach (string subKey in lKeyApp.GetSubKeyNames())
+                        {
+                            RegistryKey appKey = lKeyApp.OpenSubKey(subKey);
+                            string displayName = appKey.GetValue("DisplayName")?.ToString() ?? "";
+                            string displayVersion = appKey.GetValue("DisplayVersion")?.ToString() ?? "";
+
+                            if (displayName.StartsWith("DAISY Pipeline") && versionNumber.Match(displayVersion) is Match m && m.Success)
+                            {
+                               // computing a simple version number to compare versions (major*10000 + minor*100 + patch)
+                                // (assumes that major, minor and patch are all in range [0..99])
+                                int versionNumberValue = int.Parse(m.Groups["maj"].Value) * 10000 +
+                                                    int.Parse(m.Groups["min"].Value) * 100 +
+                                                    int.Parse(m.Groups["patch"].Value);
+                                // Avoid installing the app if a compatible version is already installed (version 1.11.0 or superior)
+                                if (versionNumberValue >= minVersion)
+                                {
+                                    using (Record rec = new Record(3))
+                                    {
+                                        rec.SetString(1, "DownloadAndLaunchDPApp");
+                                        rec.SetString(2, "Compatible DAISY Pipeline App already installed");
+                                        session.Message(InstallMessage.ActionStart, rec);
+                                        return ActionResult.Success;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    session.Log("Could not look into the HKLM registry, proceed with user-based dpapp installation... (ex : " + ex.ToString() + ")");
+                }
+                
                 using (Record rec = new Record(3))
                 {
                     rec.SetString(1, "DownloadAndLaunchDPApp");
