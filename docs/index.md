@@ -11,10 +11,10 @@ If Office is not found by the installer (like preinstalled or windows store vers
 - [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.7.2-beta/SaveAsDAISYInstaller.exe)
 - Or access to the [last release page](https://github.com/daisy/word-save-as-daisy/releases/latest)
 
-## Latest test version: 2.9.4.1 beta (released on November, 2025)
+## Latest beta version: 2.9.5.0 (released on May, 2026)
 
-- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.9.4.1-beta/SaveAsDAISYInstaller-2.9.4.1-beta.exe)
-- Or access the [last pre-release version page](https://github.com/daisy/word-save-as-daisy/releases/tag/v2.9.4.1-beta)
+- [Download universal installer](https://github.com/daisy/word-save-as-daisy/releases/download/v2.9.5.0-beta/SaveAsDAISYInstaller-2.9.5.0-beta.exe)
+- Or access the [last pre-release version page](https://github.com/daisy/word-save-as-daisy/releases/tag/v2.9.5.0-beta)
 
 ## Report issues
 
@@ -83,7 +83,7 @@ we would really appreciate it.
 
 # Changelog
 
-## 2.9.5 beta (June 2026)
+## 2.9.5.0 beta (May 2026)
 
 This release includes the following changes :
 - Embedded pipeline is updated to version 1.15.4 :
