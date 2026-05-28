@@ -83,25 +83,30 @@ we would really appreciate it.
 
 # Changelog
 
-## 2.9.5 beta (ongoing development)
+## 2.9.5 beta (June 2026)
 
 This release includes the following changes :
 - Embedded pipeline is updated to version 1.15.4 :
   - A slightly modified version of the word to dtbook script is included for progress reporting
-    - MathML-core is now the targeted mathml version when converting math from a word document
+  - MathML-core is now the targeted mathml version when converting math from a word document
+- DAISY Pipeline app 1.11.0 is now targeted for download and install along the addin if no app (or if an older version of the app) is present on the user system
 - For security hardened windows environment (where users cannot authorize webservice to run without an administrator)
   JNI communication with the embedded engine has been reinstated and improved :
   - A new "JNI Wrapper" tool is provided within the addin to launch and communicate directly with the embedded DAISY Pipeline
-- *(ongoig development)* The user can now activate more capabilities of the embedded engine through the settings of the addin :
-  - a new "Embedded engine properties" button will open a new form that allows to set properties required to activate specific services,
-    like online TTS.
 - We are now exposing a new "Import" experimental feature within the ribbon, that allows users to import directly as a new Word document :
   - DTBook XMLs converted to ODT document (using the `dtbook-to-odt` pipeline script)
     - be aware that this script 
       - is not using the SaveAsDAISY styles (but a mapping of the styles could be investigated if enough users request it)
       - does not yet properly handle some elements of the dtbook structure (like sidebars)
   - DTBook XMLs converted to RTF document (using the `dtbook-to-rtf` pipeline script)
+  - PDF converted to DOCX document (using the `pdf-to-docx-mistral` script)
+    - The script is only available when a Mistral API key is set in the addin settings
+    - The conversion is performed through Mistral API, so it requires an internet connection and is limited by the Mistral API usage limits.
+- *(Experimental, ongoing development)* The user can now activate more capabilities of the embedded engine through the settings of the addin :
+  - a new "Embedded engine properties" button will open a new form that allows to set properties required to activate specific services, like online TTS, with the embedded engine.
+    > It is still recommended to use the DAISY Pipeline app if you want to use online TTS voices, as it provides a more feature-rich experience regarding TTS configuration.
 
+**Full Changelog**: https://github.com/daisy/word-save-as-daisy/compare/v2.9.4.1-beta...v2.9.5.0-beta
 
 ## 2.9.4 beta (November 2025)
 
