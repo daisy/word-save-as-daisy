@@ -9,7 +9,7 @@ The code available in this GitHub project has been initially copied from its ori
 
 The project is being updated to build with visual studio 2026.
 
-The MSI packages are build using a wix toolset project, and requires [Wix toolset version 6](https://github.com/wixtoolset/wix/releases/tag/v6.0.2) to be installed.
+The MSI packages are build using a wix toolset project, and requires [Wix toolset version 7](https://github.com/wixtoolset/wix/releases/tag/v7.0.0) to be installed.
 We recommend to also add the Wix toolset [Heatwave](https://marketplace.visualstudio.com/items?itemName=FireGiant.FireGiantHeatWaveDev17) extension in Visual Studio.
 
 To ease the debugging and building of releases, a `build.ps1` powershell script is provided.
@@ -18,10 +18,10 @@ We recommend to have powershell 7+ installed (instead of the default powershell 
 
 This scripts requires to have the MSBuild tools directory registered in your PATH variable, and we recommend to also register the Wix toolset utilites in it.
 
-For short, when using visual studio 2026 and Wix toolset v6, you can add the following entries in your path
+For short, when using visual studio 2026 and Wix toolset v7, you can add the following entries in your path
  - `%PROGRAMFILES%\Microsoft Visual Studio\18\Community\MSBuild\Current\Bin`
- - `%PROGRAMFILES%\WiX Toolset v6.0\bin\x64`
- - `%PROGRAMFILES%\WiX Toolset v6.0\bin`
+ - `%PROGRAMFILES%\WiX Toolset v7.0\bin\x64`
+ - `%PROGRAMFILES%\WiX Toolset v7.0\bin`
 
 
 ## Build the current release
@@ -52,7 +52,13 @@ Note that the debug command will also redeploy the embedded pipeline in the addi
 
 ## Notes
 
-In case of multiple crash of the addin, it might be registered in Word's addin blocklist.
-`HKEY_CURRENT_USER\Software\Microsoft\Office\16.0\Word\Resiliency\DisabledItem`
+In case of multiple crash of the addin, it might be registered in Word's addin blocklist, that can be found in the registry with the command :
+```
+reg query "HKEY_CURRENT_USER\Software\Microsoft\Office\16.0\Word\Resiliency\DisabledItems"
+```
 
+To clean this blocklist, you can use the following command (but be careful as it will clean the whole blocklist, and not only the entry for SaveAsDAISY)
+```
+reg delete "HKEY_CURRENT_USER\Software\Microsoft\Office\16.0\Word\Resiliency\DisabledItems" /f
+```
 
