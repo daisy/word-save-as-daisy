@@ -64,7 +64,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new ScriptParameter(
                     "audio",
                     "Enable text-to-speech",
-                    new BoolData(true),
+                    new BoolData(false),
                     false,
                     "Whether to use a speech synthesizer to produce audio files."
                 )
