@@ -82,7 +82,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
             else
             {
-                return JNIWrapperRunner.GetInstance(EventsHandler);
+                return EmbeddedRunner.GetInstance(EventsHandler);
             }
         }
 

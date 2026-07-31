@@ -65,7 +65,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
         // Force using the embedded engine for PDF to word conversion
         protected override Runner GetRunner()
         {
-            return JNIWrapperRunner.GetInstance(EventsHandler);
+            return EmbeddedRunner.GetInstance(EventsHandler);
         }
 
 
