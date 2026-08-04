@@ -24,8 +24,12 @@ namespace Daisy.SaveAsDAISY.WPF
 
         private static readonly Dictionary<string, PageNumberingChoice.Enum> PageNumberingChoices = new Dictionary<string, PageNumberingChoice.Enum>
         {
-            { "Compute from 'Page number (DAISY)' elements", PageNumberingChoice.Enum.Custom },
-            { "Compute from Word rendered page breaks", PageNumberingChoice.Enum.Automatic },
+            { "Compute from 'Page Number (DAISY)' elements", PageNumberingChoice.Enum.DaisyPagenumStyle },
+            { "Compute from Headers and Footers", PageNumberingChoice.Enum.WordHeadersAndFooters },
+            { "Compute from Word rendered page breaks", PageNumberingChoice.Enum.Word },
+            { "Compute from 'Heading 6' styled paragraph", PageNumberingChoice.Enum.HeadingsH6 },
+            { "Compute from a textual marker", PageNumberingChoice.Enum.PrintPageMarker },
+            { "Disable page numbering", PageNumberingChoice.Enum.None },
         };
 
         private static readonly Dictionary<string, ImageResamplingChoice.Enum> ResamplingValues = new Dictionary<string, ImageResamplingChoice.Enum>

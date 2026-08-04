@@ -264,23 +264,48 @@ namespace Daisy.SaveAsDAISY.Conversion
             public enum Enum
             {
                 /// <summary>
+                /// (Default) Use numbers tagged with style PagenumberDAISY to insert page numbers in content
+                /// </summary>
+                DaisyPagenumStyle,
+                /// <summary>
                 /// Use numbers tagged with style PagenumberDAISY to insert page numbers in content
                 /// </summary>
-                Custom,
+                WordHeadersAndFooters,
                 /// <summary>
                 /// Use word page break to compute and insert page numbers in content
                 /// </summary>
-                Automatic
+                Word,
+                /// <summary>
+                /// Use numbers tagged with style PagenumberDAISY to insert page numbers in content
+                /// </summary>
+                PrintPageMarker,
+                /// <summary>
+                /// Use numbers tagged with style PagenumberDAISY to insert page numbers in content
+                /// </summary>
+                HeadingsH6,
+                /// <summary>
+                /// Disable page numbering in output
+                /// </summary>
+                None
+
             }
             public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
             {
-                { Enum.Custom, "custom" },
-                { Enum.Automatic, "automatic" },
+                { Enum.DaisyPagenumStyle, "daisy" },
+                { Enum.Word, "wordpage" },
+                { Enum.WordHeadersAndFooters, "headerfooter" },
+                { Enum.PrintPageMarker, "pagemarker" },
+                { Enum.HeadingsH6, "heading6" },
+                { Enum.None, "none" },
             };
             public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
             {
-                { "custom", Enum.Custom },
-                { "automatic", Enum.Automatic },
+                { "daisy", Enum.DaisyPagenumStyle },
+                { "wordpage", Enum.Word },
+                { "headerfooter", Enum.WordHeadersAndFooters },
+                { "pagemarker", Enum.PrintPageMarker },
+                { "heading6", Enum.HeadingsH6 },
+                { "none", Enum.None },
             };
             public static EnumData DataType()
             {
@@ -296,7 +321,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string imgoption = ImageOptionChoice.Values[ImageOptionChoice.Enum.Original];
         private string resampleValue = "96";
         private string characterStyle = "False";
-        private string pagenumStyle = PageNumberingChoice.Values[PageNumberingChoice.Enum.Custom];
+        private string pagenumStyle = PageNumberingChoice.Values[PageNumberingChoice.Enum.DaisyPagenumStyle];
         private string footnotesLevel = "0"; // 0 mean current paragraphe level, < 0 means parent level going upward, > 1 means absolute dtbook level
         private string footnotesPosition = FootnotesPositionChoice.Values[FootnotesPositionChoice.Enum.Inline]; // Should be inline, end, or page
         private string footnotesNumbering = FootnotesNumberingChoice.Values[FootnotesNumberingChoice.Enum.None]; // should be number, none, or word
@@ -312,6 +337,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         private bool useDAISYPipelineApp = true; // use the pipeline app to run the conversion instead of the embedded engine
         private string resultsFolder = DefaultResultsFolder; // Default results folder
         private string mistralApiKey = "";
+        private string printpagemarker = "PRINT PAGE ";
         /// <summary>
         /// Get the current settings as XML string
         /// </summary>
@@ -548,6 +574,12 @@ namespace Daisy.SaveAsDAISY.Conversion
                     //throw new DirectoryNotFoundException($"The results folder '{value}' does not exist.");
                 }
             }
+        }
+
+        public string PrintPageMarker
+        {
+            get => printpagemarker;
+            set => printpagemarker = value;
         }
     }
 }

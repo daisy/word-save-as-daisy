@@ -82,7 +82,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 new ScriptParameter(
                     "pagination",
                     "Pagination mode",
-                    PageNumberingChoice.DataType(),
+                    new StringData("custom"), // all pagination schemes are now computed as Page number (DAISY) text in preprocess
                     false,
                     "Define how page numbers are computed and inserted in the result",
                     false // from settings
