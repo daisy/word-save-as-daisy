@@ -1,4 +1,6 @@
 ﻿
+using static Daisy.SaveAsDAISY.Conversion.ConverterSettings;
+
 namespace Daisy.SaveAsDAISY.Conversion {
 
     /// <summary>
@@ -28,6 +30,7 @@ namespace Daisy.SaveAsDAISY.Conversion {
 
         ConversionStatus ProcessEquations(ref object preprocessedObject, ref DocumentProperties document, Events.IConversionEventsHandler eventsHandler = null);
 
+        ConversionStatus ProcessPagesAndMarkers(ref object preprocessedObject, PageNumberingChoice.Enum pageNumberingChoice, Events.IConversionEventsHandler eventsHandler = null);
         ConversionStatus endPreprocessing(ref object preprocessedObject, Events.IConversionEventsHandler eventsHandler = null);
 
         void updateDocumentMetadata(ref object documentObject, DocumentProperties data);
