@@ -14,6 +14,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         CreatedWorkingCopy,
         ProcessedShapes,
         ProcessedMathML,
+        ProcessedPagesAndMarkers,
         PreprocessingSucceeded,
         ReadyForConversion,
         HasStartedConversion,

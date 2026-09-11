@@ -1341,6 +1341,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
 
                         currentDocument = form.DocumentProps;
                         converter.ConversionParameters = form.UpdatedConversionParameters;
+                        // TODO : add the possibility to select the page numbering style in the conversion parameters form
+                        converter.ConversionParameters.PageNumbering = ConverterSettings.Instance.PageNumbering;
 
 
                         DirectoryInfo finalOutput = new DirectoryInfo(

@@ -96,10 +96,10 @@ namespace Daisy.SaveAsDAISY.Conversion
         }
 
         /// <summary>
-        /// Second preprocessing path to update the document metadata and extract shapess
+        /// Second preprocessing path to update the document metadata, extract shapes, math equations, and process pagination and markers
         /// </summary>
         /// <param name="docprops"></param>
-        public void PrepareForConversion(ref DocumentProperties docprops)
+        public void PrepareForConversion(ref DocumentProperties docprops, ref ConversionParameters conversionParameters)
         {
             try {
                 if(this.eventsHandler?.IsCancellationRequested() == true) {
@@ -133,6 +133,14 @@ namespace Daisy.SaveAsDAISY.Conversion
                     CurrentStatus = ConversionStatus.Canceled;
                     return;
                 }
+                EventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Processing pages and markers..."));
+                CurrentStatus = DocumentPreprocessor.ProcessPagesAndMarkers(ref preprocessedObject, conversionParameters.PageNumbering, EventsHandler);
+                if (this.eventsHandler?.IsCancellationRequested() == true)
+                {
+                    CurrentStatus = ConversionStatus.Canceled;
+                    return;
+                }
+
                 // Close the document to let it be accessible for conversion
                 CurrentStatus = DocumentPreprocessor.endPreprocessing(ref preprocessedObject, EventsHandler);
             }
@@ -240,7 +248,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             
             CurrentStatus = ConversionStatus.HasStartedConversion;
             
-            PrepareForConversion(ref document);
+            PrepareForConversion(ref document, ref _conversion);
             if (CurrentStatus == ConversionStatus.Canceled) { // Conversion is aborted
                 this.EventsHandler.onConversionCanceled();
                 return ConversionResult.Cancel();

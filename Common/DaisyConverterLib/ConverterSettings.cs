@@ -311,7 +311,7 @@ namespace Daisy.SaveAsDAISY.Conversion
             {
                 return new EnumData(
                     Values.ToDictionary(kvp => kvp.Key.ToString(), kvp => (object)kvp.Value),
-                    Values[Instance.PagenumStyle] // Default value is now stored here
+                    Values[Instance.PageNumbering] // Default value is now stored here
                 );
             }
         }
@@ -356,7 +356,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t\tstartValue=\"{footnotesStartValue}\" " +
                 $"\r\n\t\tnumberPrefix=\"{footnotesNumberingPrefix}\" " +
                 $"\r\n\t\tnumberSuffix=\"{footnotesNumberingSuffix}\" />" +
-                $"\r\n\t<TTSConfig file=\"{(withPrivateData ? ttsConfigFile :"removed for privacy")}\" />" +
+                $"\r\n\t<TTSConfig file=\"{(withPrivateData ? ttsConfigFile : "removed for privacy")}\" />" +
                 $"\r\n\t<OTTTemplate file=\"{(withPrivateData ? ottTemplateFile : "removed for privacy")}\" />" +
                 //(withPrivateData
                 //    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
@@ -376,10 +376,12 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public void CreateDefaultSettings()
         {
-            if (!Directory.Exists(ApplicationDataFolder)) {
+            if (!Directory.Exists(ApplicationDataFolder))
+            {
                 Directory.CreateDirectory(ApplicationDataFolder);
             }
-            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile))) {
+            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
+            {
                 writer.Write(AsXML());
                 writer.Flush();
             }
@@ -390,30 +392,39 @@ namespace Daisy.SaveAsDAISY.Conversion
         private ConverterSettings()
         {
             XmlDocument settingsDocument = new XmlDocument();
-            if (!File.Exists(ConverterSettingsFile)) {
+            if (!File.Exists(ConverterSettingsFile))
+            {
                 // Save the default settings
                 Save();
             }
 
             settingsDocument.Load(ConverterSettingsFile);
             XmlNode ImageSizesNode = settingsDocument.SelectSingleNode("//Settings/ImageSizes");
-            if (ImageSizesNode != null) {
+            if (ImageSizesNode != null)
+            {
                 imgoption = (ImageSizesNode.Attributes["value"]?.InnerXml) ?? imgoption;
                 resampleValue = (ImageSizesNode.Attributes["samplingvalue"]?.InnerXml) ?? imgoption;
             }
 
             XmlNode CharacterStylesNode = settingsDocument.SelectSingleNode("//Settings/CharacterStyles");
-            if (CharacterStylesNode != null) {
+            if (CharacterStylesNode != null)
+            {
                 characterStyle = (CharacterStylesNode.Attributes["value"]?.InnerXml) ?? characterStyle;
             }
 
             XmlNode PageNumbersNode = settingsDocument.SelectSingleNode("//Settings/PageNumbers");
-            if (PageNumbersNode != null) {
+            if (PageNumbersNode != null)
+            {
                 pagenumStyle = ((PageNumbersNode.Attributes["value"]?.InnerXml) ?? pagenumStyle).ToLowerInvariant();
+                if(pagenumStyle == "custom") // change of settings
+                {
+                    pagenumStyle = "daisy";
+                }
             }
 
             XmlNode FootnotesSettings = settingsDocument.SelectSingleNode("//Settings/Footnotes");
-            if (FootnotesSettings != null) {
+            if (FootnotesSettings != null)
+            {
                 footnotesLevel = (FootnotesSettings.Attributes["level"].InnerXml) ?? footnotesLevel;
                 footnotesPosition = (FootnotesSettings.Attributes["position"]?.InnerXml) ?? footnotesPosition;
                 footnotesNumbering = (FootnotesSettings.Attributes["numbering"]?.InnerXml) ?? footnotesNumbering;
@@ -428,7 +439,8 @@ namespace Daisy.SaveAsDAISY.Conversion
             //    azureSpeechKey = (AzureSettings.Attributes["key"].InnerXml) ?? azureSpeechKey;
             //}
             XmlNode TTSConfigSettings = settingsDocument.SelectSingleNode("//Settings/TTSConfig");
-            if (TTSConfigSettings != null) {
+            if (TTSConfigSettings != null)
+            {
                 ttsConfigFile = (TTSConfigSettings.Attributes["file"].InnerXml) ?? ttsConfigFile;
             }
             XmlNode OTTTemplateSettings = settingsDocument.SelectSingleNode("//Settings/OTTTemplate");
@@ -438,11 +450,13 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
 
             XmlNode DontNotifySponsorshipSettings = settingsDocument.SelectSingleNode("//Settings/DontNotifySponsorship");
-            if (DontNotifySponsorshipSettings != null) {
+            if (DontNotifySponsorshipSettings != null)
+            {
                 dontNotifySponsorship = (DontNotifySponsorshipSettings.Attributes["value"].InnerXml) ?? dontNotifySponsorship;
             }
             XmlNode UsePipelineAppSettings = settingsDocument.SelectSingleNode("//Settings/UsePipelineApp");
-            if (UsePipelineAppSettings != null) {
+            if (UsePipelineAppSettings != null)
+            {
                 var nodeValue = UsePipelineAppSettings.Attributes["value"]?.InnerXml;
                 useDAISYPipelineApp = ConverterHelper.PipelineAppIsInstalled() && (nodeValue == null ? useDAISYPipelineApp : nodeValue == "true");
             }
@@ -453,7 +467,8 @@ namespace Daisy.SaveAsDAISY.Conversion
                 useWebserviceRunner = nodeValue == "true";
             }
             XmlNode MistralApiKeySettings = settingsDocument.SelectSingleNode("//Settings/MistralApiKey");
-            if (MistralApiKeySettings != null) {
+            if (MistralApiKeySettings != null)
+            {
                 mistralApiKey = (MistralApiKeySettings.Attributes["value"]?.InnerXml) ?? mistralApiKey;
             }
 
@@ -465,10 +480,12 @@ namespace Daisy.SaveAsDAISY.Conversion
         /// </summary>
         public void Save()
         {
-            if (!Directory.Exists(ApplicationDataFolder)) {
+            if (!Directory.Exists(ApplicationDataFolder))
+            {
                 Directory.CreateDirectory(ApplicationDataFolder);
             }
-            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile))) {
+            using (StreamWriter writer = new StreamWriter(File.Create(ConverterSettingsFile)))
+            {
                 writer.Write(AsXML(true));
                 writer.Flush();
             }
@@ -482,7 +499,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public bool CharacterStyle { get => characterStyle != "False"; set => characterStyle = value ? "True" : "False"; }
 
-        public PageNumberingChoice.Enum PagenumStyle { get => PageNumberingChoice.Keys[pagenumStyle]; set => pagenumStyle = PageNumberingChoice.Values[value]; }
+        public PageNumberingChoice.Enum PageNumbering { get => PageNumberingChoice.Keys[pagenumStyle]; set => pagenumStyle = PageNumberingChoice.Values[value]; }
 
         /// <summary>
         /// Position of the notes relatively to the selected level <br/>
@@ -513,15 +530,20 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         //public string AzureSpeechKey { get => azureSpeechKey; set => azureSpeechKey = value; }
 
-        public string TTSConfigFile {
-            get {
-                if (UseDAISYPipelineApp && File.Exists(ConverterHelper.PipelineAppTTSConfigPath)) {
+        public string TTSConfigFile
+        {
+            get
+            {
+                if (UseDAISYPipelineApp && File.Exists(ConverterHelper.PipelineAppTTSConfigPath))
+                {
                     return ConverterHelper.PipelineAppTTSConfigPath;
-                } else {
+                }
+                else
+                {
                     return ttsConfigFile;
                 }
-            
-            } 
+
+            }
             set => ttsConfigFile = value;
         }
 
@@ -534,20 +556,24 @@ namespace Daisy.SaveAsDAISY.Conversion
             set => ottTemplateFile = value;
         }
 
-        public bool DontNotifySponsorship {
+        public bool DontNotifySponsorship
+        {
             get
             {
-                try {
+                try
+                {
                     return dontNotifySponsorship.Length > 0 && bool.Parse(dontNotifySponsorship);
                 }
-                catch (Exception) {
+                catch (Exception)
+                {
                     return false;
                 }
             }
             set => dontNotifySponsorship = value.ToString();
         }
 
-        public bool UseDAISYPipelineApp {
+        public bool UseDAISYPipelineApp
+        {
             get => useDAISYPipelineApp;
             set => useDAISYPipelineApp = value;
         }
@@ -558,18 +584,24 @@ namespace Daisy.SaveAsDAISY.Conversion
             set => useWebserviceRunner = value;
         }
 
-        public string MistralApiKey {
+        public string MistralApiKey
+        {
             get => mistralApiKey;
             set => mistralApiKey = value;
         }
 
-        public string ResultsFolder {
+        public string ResultsFolder
+        {
             get => resultsFolder;
-            set {
+            set
+            {
                 resultsFolder = value ?? DefaultResultsFolder; // If null, use the default results folder
-                if (Directory.Exists(value)) {
+                if (Directory.Exists(value))
+                {
                     resultsFolder = value;
-                } else {
+                }
+                else
+                {
                     resultsFolder = DefaultResultsFolder;
                     //throw new DirectoryNotFoundException($"The results folder '{value}' does not exist.");
                 }

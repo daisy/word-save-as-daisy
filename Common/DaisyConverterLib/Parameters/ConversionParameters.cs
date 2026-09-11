@@ -47,6 +47,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public StringValidator NameValidator { get; set; }
 
+        public PageNumberingChoice.Enum PageNumbering { get; set; } = PageNumberingChoice.Enum.DaisyPagenumStyle;
+
         public Script PipelineScript { get; set; } = null;
 
         /// <summary>
@@ -210,7 +212,7 @@ namespace Daisy.SaveAsDAISY.Conversion
 
                 parameters.Add("CharacterStyles", GlobalSettings.CharacterStyle);
 
-                parameters.Add("Custom", PageNumberingChoice.Values[GlobalSettings.PagenumStyle]);
+                parameters.Add("Custom", PageNumberingChoice.Values[GlobalSettings.PageNumbering]);
                 // 20220402 : adding footnotes positioning settings
                 // might be "page", "inline", "end" or "after"
                 parameters.Add("FootnotesPosition", FootnotesPositionChoice.Values[GlobalSettings.FootnotesPosition]);

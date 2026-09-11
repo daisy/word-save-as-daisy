@@ -1,11 +1,8 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
-using Daisy.SaveAsDAISY.Conversion.Pipeline.Types;
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Word;
 using Microsoft.Win32;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -15,14 +12,13 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using System.Windows.Markup;
-using System.Windows.Threading;
+using static Daisy.SaveAsDAISY.Conversion.ConverterSettings;
 using COMException = System.Runtime.InteropServices.COMException;
 using ConnectFORMATETC = System.Runtime.InteropServices.ComTypes.FORMATETC;
 using ConnectSTGMEDIUM = System.Runtime.InteropServices.ComTypes.STGMEDIUM;
 using IConnectDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
-using MSword = Microsoft.Office.Interop.Word;
 using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
+using MSWord = Microsoft.Office.Interop.Word;
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
@@ -176,8 +172,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         #endregion
 
         #region IDocumentPreprocessor implementation
-        protected MSword.Application currentInstance;
-        public DocumentPreprocessor(MSword.Application WordInstance) {
+        protected MSWord.Application currentInstance;
+        public DocumentPreprocessor(MSWord.Application WordInstance) {
             currentInstance = WordInstance;
         }
 
@@ -204,7 +200,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public Conversion.DocumentProperties loadDocumentParameters(ref object documentObject)
         {
-            MSword.Document currentDoc = (MSword.Document)documentObject;
+            MSWord.Document currentDoc = (MSWord.Document)documentObject;
             Conversion.DocumentProperties result = new Conversion.DocumentProperties(currentDoc.FullName);
             Microsoft.Office.Core.DocumentProperties properties = (Microsoft.Office.Core.DocumentProperties)currentDoc.BuiltInDocumentProperties;
             Microsoft.Office.Core.DocumentProperties customProperties = (Microsoft.Office.Core.DocumentProperties)currentDoc.CustomDocumentProperties;
@@ -231,11 +227,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public ConversionStatus CreateWorkingCopy(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
-            MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            MSWord.Document currentDoc = (MSWord.Document)preprocessedObject;
             object currentFile = currentDoc.FullName;
             object tmpFileName = Path.Combine(
                     Path.GetDirectoryName(document.CopyPath),
-                    Path.GetFileNameWithoutExtension(document.CopyPath)+Path.GetExtension((string)currentFile)
+                    Path.GetFileNameWithoutExtension(document.CopyPath) + Path.GetExtension((string)currentFile)
                 );
 
             if (File.Exists((string)tmpFileName)) {
@@ -253,7 +249,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 AddToRecentFiles: false
             );
             // Open back the copy as invisible
-            MSword.Document copy = currentInstance.Documents.Open(
+            MSWord.Document copy = currentInstance.Documents.Open(
                 FileName: tmpFileName,
 #if DEBUG
                 Visible: true
@@ -262,7 +258,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 #endif
             );
 
-            if(ConverterSettings.Instance.PagenumStyle == ConverterSettings.PageNumberingChoice.Enum.Automatic) {
+            if (ConverterSettings.Instance.PageNumbering == ConverterSettings.PageNumberingChoice.Enum.Word) {
                 // TODO : freeze page breaks
                 eventsHandler?.onProgressMessageReceived(this, new DaisyEventArgs(
                     "Computing page breaks"
@@ -284,7 +280,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             copy.SaveAs2(
                 FileName: document.CopyPath,
                 AddToRecentFiles: false,
-                FileFormat: MSword.WdSaveFormat.wdFormatXMLDocument
+                FileFormat: MSWord.WdSaveFormat.wdFormatXMLDocument
             );
             // Check if the document is a master document
             if (currentDoc.Subdocuments.Count > 0) {
@@ -296,20 +292,20 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                         // merge the subdocuments into the master document
                         for (int i = 1; i <= currentDoc.Subdocuments.Count; i++) {
                             string documentPath = currentDoc.Subdocuments[i].Name; // has the full path of the file
-                            
-                            MSword.Document subdocCopy = currentInstance.Documents.Open(
+
+                            MSWord.Document subdocCopy = currentInstance.Documents.Open(
                                 FileName: documentPath,
                                 Visible: false
                             );
-                            
-                            MSword.Range target = copy.Subdocuments[1].Range;
+
+                            MSWord.Range target = copy.Subdocuments[1].Range;
                             copy.Subdocuments[1].Delete();
                             target.Delete();
                             subdocCopy.Content.Copy();
                             target.Paste();
                             subdocCopy.Close(
-                                SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
-                                OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
+                                SaveChanges: MSWord.WdSaveOptions.wdDoNotSaveChanges,
+                                OriginalFormat: MSWord.WdOriginalFormat.wdOriginalDocumentFormat
                             );
                         }
                         copy.Save();
@@ -318,8 +314,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     MessageBox.Show($"An error occured while merging subdocuments: {e.Message}\r\n" +
                         $"The document will be converted without them.");
                     copy.Close(
-                        SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
-                        OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
+                        SaveChanges: MSWord.WdSaveOptions.wdDoNotSaveChanges,
+                        OriginalFormat: MSWord.WdOriginalFormat.wdOriginalDocumentFormat
                     );
                     copy = currentInstance.Documents.Open(
                         FileName: document.CopyPath,
@@ -340,43 +336,43 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public ConversionStatus endPreprocessing(ref object preprocessedObject, IConversionEventsHandler eventsHandler = null) {
-            MSword.Document preprocessingDocument = (MSword.Document)preprocessedObject;
+            MSWord.Document preprocessingDocument = (MSWord.Document)preprocessedObject;
             try {
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
                 GC.WaitForPendingFinalizers();
                 preprocessingDocument.Close(
-                    SaveChanges: MSword.WdSaveOptions.wdDoNotSaveChanges,
-                    OriginalFormat: MSword.WdOriginalFormat.wdOriginalDocumentFormat
+                    SaveChanges: MSWord.WdSaveOptions.wdDoNotSaveChanges,
+                    OriginalFormat: MSWord.WdOriginalFormat.wdOriginalDocumentFormat
                 );
             }
             catch (Exception e) {
-                if(eventsHandler?.IsCancellationRequested() == true) {
+                if (eventsHandler?.IsCancellationRequested() == true) {
                     return ConversionStatus.Canceled;
                 } else {
                     AddinLogger.Error(e);
                     throw new Exception("An error occured while closing the preprocessing document:\r\n" + e.Message, e);
                 }
             }
-            
+
             return ConversionStatus.PreprocessingSucceeded;
         }
 
         public ConversionStatus ProcessEquations(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             Int16 showMsg = 0;
-            MSword.Range rng;
+            MSWord.Range rng;
             string storyName;
             int iNumShapesViewed = 0;
-            MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            MSWord.Document currentDoc = (MSWord.Document)preprocessedObject;
 
-            foreach (MSword.Range tmprng in currentDoc.StoryRanges) {
+            foreach (MSWord.Range tmprng in currentDoc.StoryRanges) {
                 List<string> listmathML = new List<string>();
                 rng = tmprng;
                 storyName = rng.StoryType.ToString();
                 while (rng != null) {
                     storyName = rng.StoryType.ToString();
-                    MSword.InlineShapes shapes = rng.InlineShapes;
+                    MSWord.InlineShapes shapes = rng.InlineShapes;
                     if (shapes != null && shapes.Count > 0) {
                         int iCount = 1;
                         int iNumShapes = 0;
@@ -450,7 +446,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public ConversionStatus ProcessShapes(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
-            MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            MSWord.Document currentDoc = (MSWord.Document)preprocessedObject;
             List<string> shapesPath = new List<string>();
             //List<string> objectShapes = new List<string>();
             //List<string> imageIds = new List<string>();
@@ -466,12 +462,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
                             List<string> warnings = new List<string>();
                             String fileName = currentDoc.Name.ToString().Replace(" ", "_");
-                            MSword.Application WordInstance = currentDoc.Application;
+                            MSWord.Application WordInstance = currentDoc.Application;
                             WordInstance.Activate();
 
                             System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
 
-                            foreach (MSword.Shape shape in currentDoc.Shapes) {
+                            foreach (MSWord.Shape shape in currentDoc.Shapes) {
                                 string name = shape.Name.ToString();
                                 string type = shape.Type.ToString();
                                 if (!shape.Name.Contains("Text Box")) {
@@ -480,7 +476,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                     string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
                                     WordInstance.Selection.CopyAsPicture();
                                     try {
-                                        
+
                                         System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
                                         byte[] Ret;
                                         MemoryStream ms = new MemoryStream();
@@ -507,15 +503,15 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                     }
                                 }
                             }
-                            MSword.Range rng;
-                            foreach (MSword.Range tmprng in currentDoc.StoryRanges) {
+                            MSWord.Range rng;
+                            foreach (MSWord.Range tmprng in currentDoc.StoryRanges) {
                                 rng = tmprng;
                                 while (rng != null) {
-                                    foreach (MSword.InlineShape item in rng.InlineShapes) {
+                                    foreach (MSWord.InlineShape item in rng.InlineShapes) {
                                         string type = item.Type.ToString();
                                         if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
                                             item.Select();
-                                            MSword.Shape shape = item.ConvertToShape();
+                                            MSWord.Shape shape = item.ConvertToShape();
                                             string bookmark = "Shape_" + shape.ID.ToString();
                                             string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
                                             //object range = item.Range;
@@ -624,7 +620,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         public ConversionStatus ValidateName(ref object preprocessedObject, StringValidator authorizedNamePattern, IConversionEventsHandler eventsHandler = null) {
-            MSword.Document currentDoc = (MSword.Document)preprocessedObject;
+            MSWord.Document currentDoc = (MSWord.Document)preprocessedObject;
             bool nameIsValid;
             do {
                 bool docIsRenamed = false;
@@ -649,7 +645,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public void updateDocumentMetadata(ref object documentObject, Conversion.DocumentProperties data)
         {
-            MSword.Document currentDoc = (MSword.Document)documentObject;
+            MSWord.Document currentDoc = (MSWord.Document)documentObject;
             Microsoft.Office.Core.DocumentProperties properties = (Microsoft.Office.Core.DocumentProperties)currentDoc.BuiltInDocumentProperties;
             Microsoft.Office.Core.DocumentProperties customProperties = (Microsoft.Office.Core.DocumentProperties)currentDoc.CustomDocumentProperties;
             TrySetPropertyValue(properties, "Title", data.Title);
@@ -669,7 +665,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             TrySetPropertyValue(customProperties, "SourceDate", data.SourceDate);
         }
 
-#endregion
+        #endregion
 
         #region Imports from dll and COMs
         [DllImport("kernel32.dll", CharSet = CharSet.Auto, ExactSpelling = true, SetLastError = true)]
@@ -953,7 +949,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                     //There was an issue with the addin trying to start with the verb we
                     // knew.  A backup is to call the with the primary verb and start the 
                     //  application normally.
-                    objVerb = MSword.WdOLEVerb.wdOLEVerbPrimary;
+                    objVerb = MSWord.WdOLEVerb.wdOLEVerbPrimary;
                     shape.OLEFormat.DoVerb(ref objVerb);
 
                     dataObject = shape.OLEFormat.Object;
@@ -1058,7 +1054,474 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                 }
             }
         }
-        #endregion
 
+        // NP 2026/07 : new preprocessing step to parse markers similarly as what is done in WordToEPUB
+        public ConversionStatus ProcessPagesAndMarkers(ref object preprocessedObject, PageNumberingChoice.Enum pageNumberingChoice, IConversionEventsHandler eventsHandler = null)
+        {
+            MSWord.Document currentDoc = (MSWord.Document)preprocessedObject;
+            // Load 
+            string pageNumberDaisyStyleName = "Page Number (DAISY)";
+            MSWord.Styles styleList = currentDoc.Styles;
+            MSWord.Style pageNumberDaisyStyle = null;
+            try
+            {
+                pageNumberDaisyStyle = styleList[pageNumberDaisyStyleName];
+            }
+            catch (Exception)
+            {
+                pageNumberDaisyStyle = null;
+            }
+            if (pageNumberingChoice != PageNumberingChoice.Enum.None && pageNumberDaisyStyle == null)
+            {
+                // Create a "Page Number (DAISY)" style if it does not exist
+                pageNumberDaisyStyle = styleList.Add(pageNumberDaisyStyleName, MSWord.WdStyleType.wdStyleTypeCharacter);
+            }
+
+            int pageCount = 0;
+            switch (pageNumberingChoice)
+            {
+
+                case PageNumberingChoice.Enum.WordHeadersAndFooters:
+                    { 
+                        // disable daisy pagenums
+                        MSWord.Find styleFinder = currentDoc.Content.Find;
+                        styleFinder.ClearFormatting();
+                        styleFinder.set_Style(pageNumberDaisyStyle);
+                        while (styleFinder.Execute())
+                        {
+                            MSWord.Range parentRange = (MSWord.Range)styleFinder.Parent;
+                            currentDoc.Range(parentRange.Start, parentRange.End).Delete();
+                        }
+                    }
+
+                    string[] sectionNumberStyle = new string[currentDoc.Sections.Count + 1];
+
+                    // We will insert markers to indicate the page number at the start of each Word page
+                    eventsHandler.onProgressMessageReceived(
+                            this,
+                            new DaisyEventArgs("Repaginating the document ...")
+                        );
+                    currentDoc.Repaginate();
+
+                    // Get the number of pages in the document
+                    pageCount = (int)currentDoc.Content.Information[MSWord.WdInformation.wdNumberOfPagesInDocument];
+                    eventsHandler.onProgressMessageReceived(
+                            this,
+                            new DaisyEventArgs($"Pages detected in document: {pageCount}")
+                        );
+
+                    // Analyze each document section
+                    for (int thisSectionIndex = currentDoc.Sections.Count; thisSectionIndex >= 1; thisSectionIndex--)
+                    {
+                        sectionNumberStyle[thisSectionIndex] = "NoNumber";
+                        MSWord.Section thisSection = currentDoc.Sections[thisSectionIndex];
+                        int thisHeaderFooterIndex = 1;
+
+                        // While no page number found, look in the headers
+                        while (thisHeaderFooterIndex <= thisSection.Headers.Count && sectionNumberStyle[thisSectionIndex] == "NoNumber")
+                        {
+                            // Look in this header
+                            MSWord.WdHeaderFooterIndex headerFooterIndex = (MSWord.WdHeaderFooterIndex)thisHeaderFooterIndex;
+                            if (thisSection.Headers[headerFooterIndex].PageNumbers.Count > 0)
+                            {
+                                // There is a page number in here, note which type
+                                sectionNumberStyle[thisSectionIndex] = thisSection.Headers[headerFooterIndex].PageNumbers.NumberStyle.ToString();
+                            }
+                            thisHeaderFooterIndex++;
+                        }
+
+                        // While no page number found, look in the footers
+                        thisHeaderFooterIndex = 1;
+                        while (thisHeaderFooterIndex <= thisSection.Footers.Count && sectionNumberStyle[thisSectionIndex] == "NoNumber")
+                        {
+                            // Look in this footer
+                            MSWord.WdHeaderFooterIndex footerIndex = (MSWord.WdHeaderFooterIndex)thisHeaderFooterIndex;
+                            if (thisSection.Footers[footerIndex].PageNumbers.Count > 0)
+                            {
+                                // There is a page number in here, note which type
+                                sectionNumberStyle[thisSectionIndex] = thisSection.Footers[footerIndex].PageNumbers.NumberStyle.ToString();
+                            }
+                            thisHeaderFooterIndex++;
+                        }
+                    }
+
+                    MSWord.Range rng;
+
+                    // Insert markers for the page numbers in the text
+                    int lastPage = -1; // Initialize the variable that records the previous page number with a dummy value
+
+                    // We will work from the last page to the first
+                    for (int index = pageCount; index >= 1; index--)
+                    {
+                        // Jump to the start of the target page
+                        rng = currentDoc.GoTo(What: MSWord.WdGoToItem.wdGoToPage, Count: index);
+
+                        // Get the page number value (it may be set by the user)
+                        int thisPage = (int)rng.Information[MSWord.WdInformation.wdActiveEndAdjustedPageNumber];
+
+                        // Check that we are not on the same page as before
+                        if (thisPage != lastPage)
+                        {
+                            // Detect the section number we are in
+                            int sectionNumber = (int)rng.Information[MSWord.WdInformation.wdActiveEndSectionNumber];
+                            string thisPageString = "";
+
+                            // Assemble the appropriate page number string
+                            switch (sectionNumberStyle[sectionNumber])
+                            {
+                                case "NoNumber":
+                                    thisPageString = "";
+                                    break;
+                                case "wdPageNumberStyleLowercaseRoman":
+                                    thisPageString = NumberToRoman(thisPage).ToLower();
+                                    break;
+                                case "wdPageNumberStyleUppercaseRoman":
+                                    thisPageString = NumberToRoman(thisPage).ToUpper();
+                                    break;
+                                default:
+                                    thisPageString = thisPage.ToString();
+                                    break;
+                            }
+
+                            if (!string.IsNullOrEmpty(thisPageString))
+                            {
+                                // If this is math, create a new para before this
+                                if (rng.OMaths.Count > 0)
+                                {
+                                    rng.InsertParagraphBefore();
+                                    rng.Move(Unit: MSWord.WdUnits.wdParagraph, Count: -1);
+                                    rng.set_Style(MSWord.WdBuiltinStyle.wdStyleNormal);
+                                }
+
+                                rng.InsertBefore(thisPageString);
+                                MSWord.Range pagenum = currentDoc.Range(rng.Start, rng.Start + thisPageString.Length);
+                                pagenum.set_Style(pageNumberDaisyStyle);
+
+                                eventsHandler.onProgressMessageReceived(
+                                    this,
+                                    new DaisyEventArgs($"Inserting navigation for page {(pageCount - index)}/{pageCount}")
+                                );
+                            }
+                        }
+
+                        // Make a record of the page we are on, this is to avoid duplicate IDs
+                        lastPage = thisPage;
+                    }
+                    break;
+                case PageNumberingChoice.Enum.Word:
+                    {
+                        // disable daisy pagenums
+                        MSWord.Find styleFinder = currentDoc.Content.Find;
+                        styleFinder.ClearFormatting();
+                        styleFinder.set_Style(pageNumberDaisyStyle);
+                        while (styleFinder.Execute())
+                        {
+                            MSWord.Range parentRange = (MSWord.Range)styleFinder.Parent;
+                            currentDoc.Range(parentRange.Start, parentRange.End).Delete();
+                        }
+                    }
+                    eventsHandler.onProgressMessageReceived(this, new DaisyEventArgs("Repaginating the document ..."));
+                    currentDoc.Repaginate();
+
+                    int wordPageCount = currentDoc.ActiveWindow.Panes[1].Pages.Count;
+                    eventsHandler.onProgressMessageReceived(this, new DaisyEventArgs($"Pages detected in document: {wordPageCount}"));
+
+                    MSWord.Range wordRng;
+                    int wordLastPage = -1;
+
+                    for (int index = wordPageCount; index >= 1; index--)
+                    {
+                        wordRng = currentDoc.GoTo(What: MSWord.WdGoToItem.wdGoToPage, Count: index);
+                        int thisPage = (int)wordRng.Information[MSWord.WdInformation.wdActiveEndAdjustedPageNumber];
+
+                        if (thisPage != wordLastPage)
+                        {
+                            string thisPageString = thisPage.ToString();
+                            if (!string.IsNullOrEmpty(thisPageString))
+                            {
+                                if (wordRng.OMaths.Count > 0)
+                                {
+                                    wordRng.InsertParagraphBefore();
+                                    wordRng.Move(Unit: MSWord.WdUnits.wdParagraph, Count: -1);
+                                    wordRng.set_Style(MSWord.WdBuiltinStyle.wdStyleNormal);
+                                }
+
+                                wordRng.InsertBefore(thisPageString);
+                                MSWord.Range pagenum = currentDoc.Range(wordRng.Start, wordRng.Start + thisPageString.Length);
+                                pagenum.set_Style(pageNumberDaisyStyle);
+                                eventsHandler.onProgressMessageReceived(
+                                    this,
+                                    new DaisyEventArgs($"Inserting navigation for page {(wordPageCount - index + 1)}/{wordPageCount}")
+                                );
+                            }
+                        }
+                        wordLastPage = thisPage;
+                    }
+                    currentDoc.Save();
+                    break;
+                case PageNumberingChoice.Enum.PrintPageMarker:
+                    {
+                        // disable daisy pagenums
+                        MSWord.Find styleFinder = currentDoc.Content.Find;
+                        styleFinder.ClearFormatting();
+                        styleFinder.set_Style(pageNumberDaisyStyle);
+                        while (styleFinder.Execute())
+                        {
+                            MSWord.Range parentRange = (MSWord.Range)styleFinder.Parent;
+                            currentDoc.Range(parentRange.Start, parentRange.End).Delete();
+                        }
+                    }
+                    // get the marker from settings
+                    string pageMarker = ConverterSettings.Instance.PrintPageMarker;
+
+                    if(string.IsNullOrEmpty(pageMarker.Trim()))
+                    {
+                        eventsHandler.onProgressMessageReceived(
+                            this,
+                            new DaisyEventArgs("No print page marker defined in settings, skipping this step.")
+                        );
+                        break;
+                    } else
+                    {
+                        currentDoc.Repaginate();
+                        try
+                        {
+                            MSWord.Find markerFinder = currentDoc.Content.Find;
+                            markerFinder.ClearFormatting();
+                            
+                            // replace the occurrences of identified page breaks with the a page number marked text, so that the pipeline can identify them and replace them with the appropriate page number
+                            while (markerFinder.Execute(MatchWildcards: true, FindText: pageMarker + "(<*>)", MatchCase: true, Wrap: MSWord.WdFindWrap.wdFindStop))
+                            {
+
+                                MSWord.Range pagenum = markerFinder.Parent as MSWord.Range;
+                                MSWord.Range previous = currentDoc.Range(pagenum.Start - 1, pagenum.Start);
+                                // In word to epub, pagenum must be preceeded by a whitespace character (note: word use some of those for separation, like \r for new paragraph start)
+                                // this is done using a Regex("(?<!\S)(" & My.Settings.Default.PgNumMarked & ")(\S+)")
+                                // => maching (if not preceeded by a Non-whitespace character) the page marker, followed by a non-whitespace character
+                                // the (<*>) widlcard should match the (\S+) regex but not 100% sure
+                                if (previous != null && previous.Text != null && previous.Text.Length > 0  && string.IsNullOrWhiteSpace(previous.Text)
+                                ) {
+                                    pagenum.Text = pagenum.Text.Replace(pageMarker, "");
+                                    pagenum.set_Style(pageNumberDaisyStyle);
+                                    pageCount++;
+                                    eventsHandler.onProgressMessageReceived(
+                                        this,
+                                        new DaisyEventArgs($"Inserting navigation for page {pagenum}")
+                                    );
+                                }
+                            }
+                            
+                            markerFinder = currentDoc.Content.Find;
+                            markerFinder.ClearFormatting();
+                            // In current "PRINTPAGE" mode of word to epub, the current code does not remove the marker :
+                            // on matching the regex Regex("(?<!"")(" & My.Settings.Default.PgNumMarked & ")"), it replace it by the marker
+                            // (if the marker is not preceeded by a double quote character)
+                            while (markerFinder.Execute(MatchWildcards: true, FindText: pageMarker, MatchCase: true, Wrap: MSWord.WdFindWrap.wdFindStop))
+                            {
+                                MSWord.Range pagenum = markerFinder.Parent as MSWord.Range;
+                                MSWord.Range previous = currentDoc.Range(pagenum.Start - 1, pagenum.Start);
+                                if (previous != null && previous.Text != null && previous.Text.Length > 0 && !string.IsNullOrWhiteSpace(previous.Text) && previous.Text != "\"")
+                                {
+                                    if(true)
+                                    {
+                                        pagenum.Text = pageMarker;
+                                    } else
+                                    {
+                                        pagenum.Text = "";
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            eventsHandler.onFeedbackMessageReceived(this, new DaisyEventArgs(e.Message));
+                        }
+
+                    }
+                    currentDoc.Save();
+                    break;
+                case PageNumberingChoice.Enum.HeadingsH6:
+                    {
+                        // disable daisy pagenums
+                        MSWord.Find styleFinder = currentDoc.Content.Find;
+                        styleFinder.ClearFormatting();
+                        styleFinder.set_Style(pageNumberDaisyStyle);
+                        while (styleFinder.Execute())
+                        {
+                            MSWord.Range parentRange = (MSWord.Range)styleFinder.Parent;
+                            currentDoc.Range(parentRange.Start, parentRange.End).Delete();
+                        }
+                    }
+                    // For each heading 6 paragraphs
+                    // - remove numbering
+                    // If the heading is only a pagenumber 
+                    List<MSWord.Style> heading6Styles = currentDoc.Styles.Cast<MSWord.Style>()
+                        .Where(
+                                s => s.Type == MSWord.WdStyleType.wdStyleTypeParagraph 
+                                && s.ParagraphFormat.OutlineLevel == MSWord.WdOutlineLevel.wdOutlineLevel6
+                        ).ToList();
+                    string lastpagefound = "none";
+                    foreach(MSWord.Style st in heading6Styles)
+                    {
+                        MSWord.Find headingFinder = currentDoc.Content.Find;
+                        headingFinder.ClearFormatting();
+                        headingFinder.set_Style(st);
+                        while (headingFinder.Execute())
+                        {
+                            /* VB code to port
+                            Dim thisPageString As String = para.InnerText
+                            Dim newPageString As String = thisPageString
+
+                            ' remove leading and trailing spaces
+                            newPageString = Trim(newPageString)
+
+                            ' if the word "page" is at the start of the text then remove it
+                            If UCase(Strings.Left(newPageString, 4)) = "PAGE" Then
+                                newPageString = Trim(Strings.Right(newPageString, Len(newPageString) - 4))
+                            End If
+                            ' If there is a space then take only up to the space
+                            If InStr(newPageString, " ") > 0 Then
+                                newPageString = Strings.Left(newPageString, InStr(newPageString, " ") - 1)
+                            End If
+                            lastPageFound = newPageString
+                            ' insert a marker with the page number
+                            newPageString = "{{{{" & Strings.Left(newPageString, Len(newPageString)) & "}}}}" & vbCr
+                            logger.Debug("Page markup detected: " & thisPageString & " to " & newPageString)
+                            ' insert the page markup
+                            para.RemoveAllChildren()
+                            para.AppendChild(New Wordprocessing.Run(New Wordprocessing.Text(newPageString)))
+                            ' remove the heading style from the paragraph
+                            ' para.ParagraphProperties.ParagraphStyleId.Val = "Normal"
+                            ' update the count of the number of pages marked up
+                            pageCount += 1
+                            DynamicMessage($"{statusMessage}{vbNewLine}Page detection progress, last page found {lastPageFound}")
+
+                            */
+                            MSWord.Range parentRange = (MSWord.Range)headingFinder.Parent;
+                            // remove leading and trailing spaces
+                            string newPageString = parentRange.Text.Trim();
+                            if (!string.IsNullOrEmpty(newPageString))
+                            {
+                                // if the word "page" is at the start of the text then remove it
+                                if (newPageString.ToLower().StartsWith("page"))
+                                {
+                                    newPageString = newPageString.Substring(4).Trim();
+                                }
+                                if(newPageString.Contains(" "))
+                                {
+                                    newPageString = newPageString.Substring(0, newPageString.IndexOf(" "));
+                                }
+                                lastpagefound = newPageString;
+                                MSWord.Range position = currentDoc.Range(parentRange.Start, parentRange.End);
+                                position.Text = newPageString;
+                                // remove the heading style from the paragraph
+                                position.Delete();
+                                position.InsertAfter(newPageString);
+                                position = currentDoc.Range(parentRange.Start, parentRange.Start + newPageString.Length);
+                                position.set_Style(pageNumberDaisyStyle);
+                                //// Insert pagenum in next paragraph
+                                //MSWord.Range nextParaRange = currentDoc.Range(position.Start, position.Start);
+                                //nextParaRange.InsertAfter(newPageString);
+                                //nextParaRange = currentDoc.Range(nextParaRange.Start, nextParaRange.Start + newPageString.Length);
+                                //nextParaRange.set_Style(pageNumberDaisyStyle);
+                                eventsHandler.onProgressMessageReceived(
+                                        this,
+                                        new DaisyEventArgs($"Inserting navigation for page {newPageString}")
+                                    );
+                            }
+                        }
+                    }
+                    currentDoc.Save();
+                    break;
+                case PageNumberingChoice.Enum.None:
+                    {
+                        // Disable pagenumbering :
+                        // for now : remove text with style "Page Number (DAISY)"
+                        MSWord.Find styleFinder = currentDoc.Content.Find;
+                        styleFinder.ClearFormatting();
+                        styleFinder.set_Style(pageNumberDaisyStyle);
+                        while (styleFinder.Execute())
+                        {
+                            MSWord.Range parentRange = (MSWord.Range)styleFinder.Parent;
+                            currentDoc.Range(parentRange.Start, parentRange.End).Delete();
+                        }
+                        currentDoc.Save();
+                    }
+                    break;
+                case PageNumberingChoice.Enum.DaisyPagenumStyle:
+                default:
+                    // Default choice, this is the case handled by the pipeline itself, no need to do anything here
+                    break;
+            }
+            return ConversionStatus.ProcessedPagesAndMarkers;
+        }
+
+
+        /// <summary>
+        /// Convert an Arabic number to a Roman numeral representation.
+        /// </summary>
+        /// <param name="nArabicValue">Value to convert.</param>
+        /// <returns>Representation in Roman numerals.</returns>
+        private string NumberToRoman(int nArabicValue)
+        {
+            int nThousands, nFiveHundreds, nHundreds, nFifties, nTens, nFives, nOnes;
+            string tmp;
+
+            nOnes = nArabicValue;
+            nThousands = nOnes / 1000;
+            nOnes -= nThousands * 1000;
+            nFiveHundreds = nOnes / 500;
+            nOnes -= nFiveHundreds * 500;
+            nHundreds = nOnes / 100;
+            nOnes -= nHundreds * 100;
+            nFifties = nOnes / 50;
+            nOnes -= nFifties * 50;
+            nTens = nOnes / 10;
+            nOnes -= nTens * 10;
+            nFives = nOnes / 5;
+            nOnes -= nFives * 5;
+
+            tmp = new string('M', nThousands);
+
+            if (nHundreds == 4)
+            {
+                if (nFiveHundreds == 1)
+                    tmp += "CM";
+                else
+                    tmp += "CD";
+            }
+            else
+            {
+                tmp = tmp + new string('D', nFiveHundreds) + new string('C', nHundreds);
+            }
+
+            if (nTens == 4)
+            {
+                if (nFifties == 1)
+                    tmp += "XC";
+                else
+                    tmp += "XL";
+            }
+            else
+            {
+                tmp = tmp + new string('L', nFifties) + new string('X', nTens);
+            }
+
+            if (nOnes == 4)
+            {
+                if (nFives == 1)
+                    tmp += "IX";
+                else
+                    tmp += "IV";
+            }
+            else
+            {
+                tmp = tmp + new string('V', nFives) + new string('I', nOnes);
+            }
+
+            return tmp;
+        
+        }
+        #endregion
     }
 }
