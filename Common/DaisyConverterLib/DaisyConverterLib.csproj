@@ -130,6 +130,7 @@
     <Compile Include="AddinLogger.cs" />
     <Compile Include="Converter.cs" />
     <Compile Include="Events\SilentEventsHandler.cs" />
+    <Compile Include="Pipeline\EmbeddedRunner.cs" />
     <Compile Include="Pipeline\Engine.cs" />
     <Compile Include="Pipeline\JNIWrapperRunner.cs" />
     <Compile Include="Pipeline\ParameterDataBase.cs" />
