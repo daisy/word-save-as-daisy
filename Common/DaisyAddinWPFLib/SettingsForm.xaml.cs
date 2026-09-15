@@ -478,7 +478,7 @@ namespace Daisy.SaveAsDAISY.WPF
         {
             try
             {
-                var dialog = new Pipeline2Properties(JNIWrapperRunner.GetInstance().GetSettableProperties(), PipelineUserProperties.Instance.Items);
+                var dialog = new Pipeline2Properties(EmbeddedRunner.GetInstance().GetSettableProperties(), PipelineUserProperties.Instance.Items);
                 if (dialog.ShowDialog() == true)
                 {
                     PipelineUserProperties.Instance.ReplaceBy(dialog.UpdatedProperties);
