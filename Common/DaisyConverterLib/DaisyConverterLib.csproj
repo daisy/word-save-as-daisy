@@ -132,7 +132,6 @@
     <Compile Include="Events\SilentEventsHandler.cs" />
     <Compile Include="Pipeline\EmbeddedRunner.cs" />
     <Compile Include="Pipeline\Engine.cs" />
-    <Compile Include="Pipeline\JNIWrapperRunner.cs" />
     <Compile Include="Pipeline\ParameterDataBase.cs" />
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
     <Compile Include="Pipeline\ChainedScripts\WordToDaisy202Chain.cs" />
