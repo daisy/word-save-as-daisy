@@ -238,6 +238,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 ? ConverterHelper.EmbeddedEnginePath + @"\jre" + (IntPtr.Size * 8).ToString()
                 : ConverterHelper.EmbeddedEnginePath + @"\jre";
             string javaexe = Path.Combine(jrePath, "bin", "java.exe");
+            string jabswitchexe = Path.Combine(jrePath, "bin", "jabswitch.exe");
 
 #if DEBUG
             if (File.Exists(Path.Combine(jrePath, "release")) &&
@@ -311,7 +312,29 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                     .Where(kv => kv.Value != null)
                     .Select(kv => $"--{kv.Key} \"{(kv.Value is bool ? kv.Value.ToString().ToLower() : kv.Value)}\"")
             );
-
+            // First execute the jabswitch.exe /enable command to ensure swing UI is accessible (if not, announcement will not work)
+            if (File.Exists(jabswitchexe))
+            {
+                ProcessStartInfo jabswitchInfo = new ProcessStartInfo()
+                {
+                    FileName = jabswitchexe,
+                    Arguments = "/enable",
+                    UseShellExecute = false,
+                    RedirectStandardError = true,
+                    RedirectStandardOutput = true,
+                    CreateNoWindow = true,
+                };
+                using (Process jabswitchProcess = new Process() { StartInfo = jabswitchInfo })
+                {
+                    jabswitchProcess.Start();
+                    jabswitchProcess.WaitForExit();
+                    if (jabswitchProcess.ExitCode != 0)
+                    {
+                        string errorData = jabswitchProcess.StandardError.ReadToEnd();
+                        //throw new Exception($"jabswitch.exe exited with code {jabswitchProcess.ExitCode} while trying to enable the JVM. Error: {errorData}");
+                    }
+                }
+            }
             ProcessStartInfo startInfo = new ProcessStartInfo()
             {
                 FileName = javaexe,
