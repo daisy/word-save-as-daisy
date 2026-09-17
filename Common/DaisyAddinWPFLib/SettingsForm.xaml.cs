@@ -81,10 +81,10 @@ namespace Daisy.SaveAsDAISY.WPF
             InitializeComponent();
 
             TranslateCharacteStyles.IsChecked = GlobaleSettings.CharacterStyle;
-            DisableSponsorhip.IsChecked = GlobaleSettings.DontNotifySponsorship;
+            DisableSponsorship.IsChecked = GlobaleSettings.DontNotifySponsorship;
 
             PageNumbering.ItemsSource = PageNumberingChoices.Keys;
-            PageNumbering.SelectedIndex = PageNumberingChoices.Values.ToList().IndexOf(GlobaleSettings.PagenumStyle);
+            PageNumbering.SelectedIndex = PageNumberingChoices.Values.ToList().IndexOf(GlobaleSettings.PageNumbering);
 
             ImageSizeOptions.ItemsSource = ImageSizeChoices.Keys;
             ImageSizeOptions.SelectedIndex= ImageSizeChoices.Values.ToList().IndexOf(GlobaleSettings.ImageOption);
@@ -125,6 +125,9 @@ namespace Daisy.SaveAsDAISY.WPF
             OpenPipelineProperties.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
 
             MistralApiKey.Text = GlobaleSettings.MistralApiKey;
+
+            PageMarkerGrid.IsEnabled = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex] == PageNumberingChoice.Enum.PrintPageMarker;
+            PageMarker.Text = GlobaleSettings.PrintPageMarker;
         }
 
         private void ImageSizeOptions_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -204,9 +207,9 @@ namespace Daisy.SaveAsDAISY.WPF
             }
             try {
                 // Update fields
-                GlobaleSettings.PagenumStyle = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex];
+                GlobaleSettings.PageNumbering = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex];
                 GlobaleSettings.CharacterStyle = TranslateCharacteStyles.IsChecked == true;
-                GlobaleSettings.DontNotifySponsorship = DisableSponsorhip.IsChecked == true;
+                GlobaleSettings.DontNotifySponsorship = DisableSponsorship.IsChecked == true;
                 GlobaleSettings.ImageOption = ImageSizeChoices.Values.ToList()[ImageSizeOptions.SelectedIndex];
                 GlobaleSettings.ImageResamplingValue = Resampling.SelectedIndex >= 0 ? ResamplingValues.Values.ToList()[Resampling.SelectedIndex] : ImageResamplingChoice.Enum.dpi_72; // Default to 72 DPI if not selected
                 GlobaleSettings.FootnotesPosition = NotesPositionChoices.Values.ToList()[NotesPosition.SelectedIndex];
@@ -219,6 +222,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.TTSConfigFile = TTSConfigFile.Text.Trim();
                 GlobaleSettings.OTTTemplateFile = OpenOfficeTemplate.Text.Trim();
                 GlobaleSettings.MistralApiKey = MistralApiKey.Text.Trim();
+                GlobaleSettings.PrintPageMarker = PageMarker.Text;
                 //GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
                 // Save
                 GlobaleSettings.Save();
@@ -514,6 +518,11 @@ namespace Daisy.SaveAsDAISY.WPF
             //        PipelineUserProperties.Instance.Save();
             //    }
             //}
+        }
+
+        private void PageNumbering_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            PageMarkerGrid.IsEnabled = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex] == PageNumberingChoice.Enum.PrintPageMarker;
         }
     }
 }

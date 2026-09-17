@@ -337,7 +337,8 @@ namespace Daisy.SaveAsDAISY.Conversion
         private bool useDAISYPipelineApp = true; // use the pipeline app to run the conversion instead of the embedded engine
         private string resultsFolder = DefaultResultsFolder; // Default results folder
         private string mistralApiKey = "";
-        private string printpagemarker = "PRINT PAGE ";
+        private string datalabApiKey = "";
+        private string printPageMarker = "PRINT PAGE ";
         /// <summary>
         /// Get the current settings as XML string
         /// </summary>
@@ -358,6 +359,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t\tnumberSuffix=\"{footnotesNumberingSuffix}\" />" +
                 $"\r\n\t<TTSConfig file=\"{(withPrivateData ? ttsConfigFile : "removed for privacy")}\" />" +
                 $"\r\n\t<OTTTemplate file=\"{(withPrivateData ? ottTemplateFile : "removed for privacy")}\" />" +
+                $"\r\n\t<PrintPageMarker value=\"{printPageMarker}\" />" +
                 //(withPrivateData
                 //    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
                 //      $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
@@ -368,6 +370,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t<UseWebserviceRunner value=\"{useWebserviceRunner.ToString().ToLower()}\" />" +
                 $"\r\n\t<ResultsFolder value=\"{(withPrivateData ? resultsFolder : "removed for privacy")}\" />" +
                 $"\r\n\t<MistralApiKey value=\"{(withPrivateData ? mistralApiKey : "removed for privacy")}\" />" +
+                $"\r\n\t<DatalabApiKey value=\"{(withPrivateData ? datalabApiKey : "removed for privacy")}\" />" +
                 $"\r\n</Settings>";
         }
 
@@ -472,6 +475,17 @@ namespace Daisy.SaveAsDAISY.Conversion
                 mistralApiKey = (MistralApiKeySettings.Attributes["value"]?.InnerXml) ?? mistralApiKey;
             }
 
+            XmlNode DatalabApiKeySettings = settingsDocument.SelectSingleNode("//Settings/DatalabApiKey");
+            if (DatalabApiKeySettings != null)
+            {
+                datalabApiKey = (DatalabApiKeySettings.Attributes["value"]?.InnerXml) ?? datalabApiKey;
+            }
+
+            XmlNode PrintPageMarkerSettings = settingsDocument.SelectSingleNode("//Settings/PrintPageMarker");
+            if (PrintPageMarkerSettings != null)
+            {
+                printPageMarker = (PrintPageMarkerSettings.Attributes["value"]?.InnerXml) ?? printPageMarker;
+            }
 
         }
 
@@ -590,6 +604,12 @@ namespace Daisy.SaveAsDAISY.Conversion
             set => mistralApiKey = value;
         }
 
+        public string DatalabApiKey
+        {
+            get => datalabApiKey;
+            set => datalabApiKey = value;
+        }
+
         public string ResultsFolder
         {
             get => resultsFolder;
@@ -610,8 +630,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public string PrintPageMarker
         {
-            get => printpagemarker;
-            set => printpagemarker = value;
+            get => printPageMarker;
+            set => printPageMarker = value;
         }
     }
 }
