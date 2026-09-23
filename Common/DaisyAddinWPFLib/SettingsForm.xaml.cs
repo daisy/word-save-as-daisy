@@ -125,6 +125,7 @@ namespace Daisy.SaveAsDAISY.WPF
             OpenPipelineProperties.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
 
             MistralApiKey.Text = GlobaleSettings.MistralApiKey;
+            DatalabApiKey.Text = GlobaleSettings.DatalabApiKey;
 
             PageMarkerGrid.IsEnabled = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex] == PageNumberingChoice.Enum.PrintPageMarker;
             PageMarker.Text = GlobaleSettings.PrintPageMarker;
@@ -222,6 +223,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.TTSConfigFile = TTSConfigFile.Text.Trim();
                 GlobaleSettings.OTTTemplateFile = OpenOfficeTemplate.Text.Trim();
                 GlobaleSettings.MistralApiKey = MistralApiKey.Text.Trim();
+                GlobaleSettings.DatalabApiKey = DatalabApiKey.Text.Trim();
                 GlobaleSettings.PrintPageMarker = PageMarker.Text;
                 //GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
                 // Save
