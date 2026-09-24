@@ -6,16 +6,15 @@ using System.IO;
 
 namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
 {
-    public class PDFToWordMistralOCR : Script
+    public class PDFToWordDatalabOCR : Script
     {
         //private static readonly ConverterSettings GlobaleSettings = ConverterSettings.Instance;
-        public PDFToWordMistralOCR(IConversionEventsHandler e)
+        public PDFToWordDatalabOCR(IConversionEventsHandler e)
             : base(e)
         {
-            this.name = "pdf-to-word-mistral";
-            this.niceName = "PDF to Word using Mistral OCR (experimental)";
-            this.description = "Transforms a PDF into a Microsoft Office Word (.docx) document, powered by Mistral OCR.\r\nThis script is an early development phase and has not been tested with a wide range of input documents yet.";
-
+            this.name = "pdf-to-word-datalab";
+            this.niceName = "PDF to Word using Datalab (experimental)";
+            this.description = "Transforms a PDF into a Microsoft Office Word (.docx) document, powered by Datalab.\r\nThis script is an early development phase and has not been tested with a wide range of input documents yet.";
             _parameters.Add("input", new ScriptParameter(
                 "source",
                 "PDF file",
@@ -25,7 +24,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                     "application/pdf"
                 ),
                 true,
-                "The PDF file to be converted"
+                "The PDF you want to convert."
             ));
             _parameters.Add("output", new ScriptParameter(
                 "result",
@@ -42,19 +41,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 "Model version",
                 new EnumData(new Dictionary<string, object>()
                 {
-                    { "mistral-ocr-2512",   "mistral-ocr-2512"},
-                    { "mistral-ocr-latest", "mistral-ocr-latest"},
-                    { "mistral-ocr-2505",   "mistral-ocr-2505"}
-                }, "mistral-ocr-latest"),
+                    { "fast",   "fast"},
+                    { "balanced", "balanced"},
+                    { "accurate",   "accurate"}
+                }, "balanced"),
                 false,
-                "The Mistral OCR model to be used."
-            ));
-            _parameters.Add("include-page-numbers", new ScriptParameter(
-                "include-page-numbers",
-                "Include Page Numbers",
-                new BoolData(false),
-                false,
-                "Whether or not to include print page break indicators"
+                "The Datalab model to be used."
             ));
             _parameters.Add("include-html", new ScriptParameter(
                 "include-html",
@@ -75,8 +67,6 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
         {
             return EmbeddedRunner.GetInstance(EventsHandler);
         }
-
-
     }
 }
 

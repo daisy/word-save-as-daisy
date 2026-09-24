@@ -282,6 +282,19 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
                 }
             }
 
+            if (ConverterSettings.Instance.DatalabApiKey != string.Empty)
+            {
+                //optionsString += " -Dorg.daisy.pipeline.ocr.datalab.apikey \"" + ConverterSettings.Instance.DatalabApiKey + "\"";
+                if (SystemProps.ContainsKey("-Dorg.daisy.pipeline.ocr.datalab.apikey"))
+                {
+                    SystemProps["-Dorg.daisy.pipeline.ocr.datalab.apikey"] = ConverterSettings.Instance.DatalabApiKey;
+                }
+                else
+                {
+                    SystemProps.Add("-Dorg.daisy.pipeline.ocr.datalab.apikey", ConverterSettings.Instance.DatalabApiKey);
+                }
+            }
+
             string ClassPath = Path.Combine(ConverterHelper.EmbeddedEnginePath, "system", "common") + "\\*"
                 + Path.PathSeparator.ToString() + Path.Combine(ConverterHelper.EmbeddedEnginePath, "system", "simple-api")
                 + Path.PathSeparator.ToString() + Path.Combine(ConverterHelper.EmbeddedEnginePath, "system", "simple-api", "ui")
