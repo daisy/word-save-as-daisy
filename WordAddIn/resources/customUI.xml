@@ -94,27 +94,43 @@
 					      getLabel="GetRibbonLabel"
 					      size="large"
 					      getImage="IconSelector">
-						<button id="ImportODTTabButton"
+						<menu id="ImportDTBookTabMenu"
+						      getLabel="GetRibbonLabel"
+						      getImage="IconSelector">
+							<button id="ImportODTTabButton"
 						        getLabel="GetRibbonLabel"
 						        onAction="ImportODT"
 						        getEnabled="RibbonButtonsEnabled"
 						        getImage="IconSelector"
 						        getDescription="GetRibbonDescription"
 						        getScreentip="GetRibbonDescription"/>
-						<button id="ImportRTFTabButton"
-						        getLabel="GetRibbonLabel"
-						        onAction="ImportRTF"
-						        getEnabled="RibbonButtonsEnabled"
-						        getImage="IconSelector"
-						        getDescription="GetRibbonDescription"
-						        getScreentip="GetRibbonDescription"/>
-						<button id="ImportPDFTabButton"
-						        getLabel="GetRibbonLabel"
-						        onAction="ImportPDF"
-						        getEnabled="RibbonButtonsEnabled"
-						        getImage="IconSelector"
-						        getDescription="GetRibbonDescription"
-						        getScreentip="GetRibbonDescription"/>
+							<button id="ImportRTFTabButton"
+								getLabel="GetRibbonLabel"
+								onAction="ImportRTF"
+								getEnabled="RibbonButtonsEnabled"
+								getImage="IconSelector"
+								getDescription="GetRibbonDescription"
+								getScreentip="GetRibbonDescription"/>
+						</menu>
+
+						<menu id="ImportPDFTabMenu"
+						      getLabel="GetRibbonLabel"
+						      getImage="IconSelector">
+							<button id="ImportPDFMistralTabButton"
+									getLabel="GetRibbonLabel"
+									onAction="ImportPDFMistral"
+									getEnabled="RibbonButtonsEnabled"
+									getImage="IconSelector"
+									getDescription="GetRibbonDescription"
+									getScreentip="GetRibbonDescription"/>
+							<button id="ImportPDFDatalabTabButton"
+									getLabel="GetRibbonLabel"
+									onAction="ImportPDFDatalab"
+									getEnabled="RibbonButtonsEnabled"
+									getImage="IconSelector"
+									getDescription="GetRibbonDescription"
+									getScreentip="GetRibbonDescription"/>
+						</menu>
 					</menu>
 				</group>
 				<group id="AbbreviationsGroup"

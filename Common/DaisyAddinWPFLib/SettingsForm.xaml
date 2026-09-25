@@ -224,6 +224,10 @@
                             x:Name="DatalabApiKey"
                             AutomationProperties.LabeledBy="{Binding ElementName=DatalabApiKeyLabel}" />
                     </Grid>
+                    <CheckBox Content="Disable the external services' warning dialog"
+                      VerticalAlignment="Center"
+                      Margin="5"
+                      x:Name="DisableExternalServiceWarning" />
                 </StackPanel>
             </TabItem>
 

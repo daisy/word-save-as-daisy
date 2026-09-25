@@ -217,4 +217,21 @@
     <value>Validation error found while translating the following documents.
 </value>
   </data>
+  <data name="UnableToCreateOutputLabel" xml:space="preserve">
+    <value>Cannot create the target file</value>
+  </data>
+  <data name="WarningExternalService" xml:space="preserve">
+    <value>This action relies on {0} as an external / AI service.
+The selected file will leave your computer for treatment on the service infrastructure.
+The service may bill the account tied to the API key provided in the addin settings.
+
+Please consult your api key provider for more information regarding the usage of your file and the conversion costs.
+
+Do you want to proceed with the conversion ?
+
+You can disable this warning by checking the "Disable external services' warning" option in the addin settings under the "Import script settings" tab.</value>
+  </data>
+  <data name="WarningExternalServiceTitle" xml:space="preserve">
+    <value>Warning, this conversion relies on an online service</value>
+  </data>
 </root>

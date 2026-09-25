@@ -340,6 +340,11 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string mistralApiKey = "";
         private string datalabApiKey = "";
         private string printPageMarker = "PRINT PAGE ";
+
+        private string disableExternalServiceWarning = ""; // disable the warning dialog when using external services like Mistral or Datalab
+
+
+
         /// <summary>
         /// Get the current settings as XML string
         /// </summary>
@@ -372,6 +377,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t<ResultsFolder value=\"{(withPrivateData ? resultsFolder : "removed for privacy")}\" />" +
                 $"\r\n\t<MistralApiKey value=\"{(withPrivateData ? mistralApiKey : "removed for privacy")}\" />" +
                 $"\r\n\t<DatalabApiKey value=\"{(withPrivateData ? datalabApiKey : "removed for privacy")}\" />" +
+                $"\r\n\t<DisableExternalServiceWarning value=\"{disableExternalServiceWarning}\" />" +
                 $"\r\n</Settings>";
         }
 
@@ -488,6 +494,12 @@ namespace Daisy.SaveAsDAISY.Conversion
                 printPageMarker = (PrintPageMarkerSettings.Attributes["value"]?.InnerXml) ?? printPageMarker;
             }
 
+            XmlNode DisableExternalServiceWarningSettings = settingsDocument.SelectSingleNode("//Settings/DisableExternalServiceWarning");
+            if (DisableExternalServiceWarningSettings != null)
+            {
+                disableExternalServiceWarning = (DisableExternalServiceWarningSettings.Attributes["value"].InnerXml) ?? disableExternalServiceWarning;
+            }
+
         }
 
         /// <summary>
@@ -585,6 +597,22 @@ namespace Daisy.SaveAsDAISY.Conversion
                 }
             }
             set => dontNotifySponsorship = value.ToString();
+        }
+
+        public bool DisableExternalServiceWarning
+        {
+            get
+            {
+                try
+                {
+                    return disableExternalServiceWarning.Length > 0 && bool.Parse(disableExternalServiceWarning);
+                }
+                catch (Exception)
+                {
+                    return false;
+                }
+            }
+            set => disableExternalServiceWarning = value.ToString();
         }
 
         public bool UseDAISYPipelineApp

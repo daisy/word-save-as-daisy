@@ -232,12 +232,21 @@
     <value>&amp;Import document</value>
   </data>
   <data name="ImportODTTabButton" xml:space="preserve">
-    <value>DTBook XML to ODT</value>
+    <value>Convert to ODT</value>
   </data>
   <data name="ImportRTFTabButton" xml:space="preserve">
-    <value>DTBook XML to RTF</value>
+    <value>Convert to RTF</value>
   </data>
-  <data name="ImportPDFTabButton" xml:space="preserve">
-    <value>PDF to Word with Mistral OCR (experimental)</value>
+  <data name="ImportPDFMistralTabButton" xml:space="preserve">
+    <value>using MistralAIservice (experimental)</value>
+  </data>
+  <data name="ImportPDFTabMenu" xml:space="preserve">
+    <value>PDF (OCR)</value>
+  </data>
+  <data name="ImportDTBookTabMenu" xml:space="preserve">
+    <value>DAISY (DTBook) XML file</value>
+  </data>
+  <data name="ImportPDFDatalabTabButton" xml:space="preserve">
+    <value>using Datalab service (experimental)</value>
   </data>
 </root>
