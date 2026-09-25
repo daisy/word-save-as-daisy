@@ -166,10 +166,10 @@
     <value>&amp;Megavoice MP3 (experimental)</value>
   </data>
   <data name="ExportToXMLOfficeButton" xml:space="preserve">
-    <value>DAISY &amp;XML</value>
+    <value>&amp;XML DTBook</value>
   </data>
   <data name="ExportToXMLTabButton" xml:space="preserve">
-    <value>DAISY &amp;XML</value>
+    <value>&amp;XML DTBook</value>
   </data>
   <data name="FootnotesGroup" xml:space="preserve">
     <value>Notes de bas de pages</value>
@@ -232,12 +232,21 @@
     <value>Importer un document</value>
   </data>
   <data name="ImportODTTabButton" xml:space="preserve">
-    <value>DTBook XML vers ODT</value>
+    <value>Convertis en ODT</value>
   </data>
   <data name="ImportRTFTabButton" xml:space="preserve">
-    <value>DTBook XML vers RTF</value>
+    <value>Convertis en RTF</value>
   </data>
-  <data name="ImportPDFTabButton" xml:space="preserve">
-    <value>PDF vers Word via Mistral OCR (experimental)</value>
+  <data name="ImportPDFMistralTabButton" xml:space="preserve">
+    <value>via le service MistralAI (expérimental)</value>
+  </data>
+  <data name="ImportPDFTabMenu" xml:space="preserve">
+    <value>PDF (OCR)</value>
+  </data>
+  <data name="ImportDTBookTabMenu" xml:space="preserve">
+    <value>XML DTBook</value>
+  </data>
+  <data name="ImportPDFDatalabTabButton" xml:space="preserve">
+    <value>via le service Datalab (expérimental)</value>
   </data>
 </root>

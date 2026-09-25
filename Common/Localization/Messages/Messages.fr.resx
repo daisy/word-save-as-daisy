@@ -213,10 +213,24 @@
   <data name="TrackConfirmation" xml:space="preserve">
     <value>Le suivi des modifications est défini pour ce document. Voulez-vous accepter toutes les modifications ? </value>
   </data>
+  <data name="WellDaisyFormat" xml:space="preserve">
+    <value>Erreur de validation détectée lors de la traduction des documents suivants.</value>
+  </data>
   <data name="UnableToCreateOutputLabel" xml:space="preserve">
     <value>Impossible de créer le fichier cible</value>
   </data>
-  <data name="WellDaisyFormat" xml:space="preserve">
-    <value>Erreur de validation détectée lors de la traduction des documents suivants.</value>
+  <data name="WarningExternalService" xml:space="preserve">
+    <value>Cette action utilise le service en ligne {0}.
+Le fichier sélectionné sera transféré à l'infrastructure du service en ligne pour réaliser le traitement.
+Ce service peut facturer son utilisation au compte ayant émis la clé d'API renseignée dans les options du compléments.
+
+Veuillez consulter le fournisseur de votre clé d'API pour plus d'information sur l'usage de votre fichier et les coûts de conversion.
+
+Voulez-vous continuer la conversion ?
+
+Vous pouvez désactiver cet avertissement en cochant l'option "Disable external services' warning" sous l'onglet "Import script settings" des options du complément.</value>
+  </data>
+  <data name="WarningExternalServiceTitle" xml:space="preserve">
+    <value>Attention, cette conversion dépend d'un service en ligne.</value>
   </data>
 </root>

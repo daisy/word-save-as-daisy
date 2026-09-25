@@ -231,9 +231,23 @@ Those can be used to improve the semantic of the DAISY XML.</value>
     <value>Import non-word files</value>
   </data>
   <data name="ImportODTTabButton" xml:space="preserve">
-    <value>Convert a DAISY XML into ODT and open the result in Word</value>
+    <value>Convert the DAISY XML into ODT and open the result in Word</value>
   </data>
   <data name="ImportRTFTabButton" xml:space="preserve">
     <value>Convert a DAISY XML into RTF and open the result in Word</value>
+  </data>
+  <data name="ImportDTBookTabMenu" xml:space="preserve">
+    <value>DTBook XML file</value>
+  </data>
+  <data name="ImportPDFTabMenu" xml:space="preserve">
+    <value>Convert a PDF file into a Word document, using online AI-based OCR services.
+(Requires API keys set in addin settings. The document will be transfered to those online services for the treatment)</value>
+  </data>
+  <data name="ImportPDFDatalabTabButton" xml:space="preserve">
+    <value>using Datalab service (experimental)</value>
+  </data>
+  <data name="ImportPDFMistralTabButton" xml:space="preserve">
+    <value>Convert a PDF into DOCX using MistralOCR and open the result in Word.
+(Requires an API key set in addin settings)</value>
   </data>
 </root>

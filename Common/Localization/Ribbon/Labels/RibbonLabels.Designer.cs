@@ -259,7 +259,16 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à DTBook XML to ODT.
+        ///   Recherche une chaîne localisée semblable à DAISY (DTBook) XML file.
+        /// </summary>
+        public static string ImportDTBookTabMenu {
+            get {
+                return ResourceManager.GetString("ImportDTBookTabMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Convert to ODT.
         /// </summary>
         public static string ImportODTTabButton {
             get {
@@ -268,16 +277,34 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à PDF to Word with Mistral OCR (experimental).
+        ///   Recherche une chaîne localisée semblable à using Datalab service (experimental).
         /// </summary>
-        public static string ImportPDFTabButton {
+        public static string ImportPDFDatalabTabButton {
             get {
-                return ResourceManager.GetString("ImportPDFTabButton", resourceCulture);
+                return ResourceManager.GetString("ImportPDFDatalabTabButton", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à DTBook XML to RTF.
+        ///   Recherche une chaîne localisée semblable à using MistralAIservice (experimental).
+        /// </summary>
+        public static string ImportPDFMistralTabButton {
+            get {
+                return ResourceManager.GetString("ImportPDFMistralTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à PDF (OCR).
+        /// </summary>
+        public static string ImportPDFTabMenu {
+            get {
+                return ResourceManager.GetString("ImportPDFTabMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Convert to RTF.
         /// </summary>
         public static string ImportRTFTabButton {
             get {

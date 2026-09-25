@@ -129,6 +129,7 @@ namespace Daisy.SaveAsDAISY.WPF
 
             PageMarkerGrid.IsEnabled = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex] == PageNumberingChoice.Enum.PrintPageMarker;
             PageMarker.Text = GlobaleSettings.PrintPageMarker;
+            DisableExternalServiceWarning.IsChecked = GlobaleSettings.DisableExternalServiceWarning;
         }
 
         private void ImageSizeOptions_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -225,6 +226,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.MistralApiKey = MistralApiKey.Text.Trim();
                 GlobaleSettings.DatalabApiKey = DatalabApiKey.Text.Trim();
                 GlobaleSettings.PrintPageMarker = PageMarker.Text;
+                GlobaleSettings.DisableExternalServiceWarning = DisableExternalServiceWarning.IsChecked == true;
                 //GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
                 // Save
                 GlobaleSettings.Save();

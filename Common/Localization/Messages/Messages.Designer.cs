@@ -19,7 +19,7 @@ namespace Daisy.SaveAsDAISY {
     // à l'aide d'un outil, tel que ResGen ou Visual Studio.
     // Pour ajouter ou supprimer un membre, modifiez votre fichier .ResX, puis réexécutez ResGen
     // avec l'option /str ou régénérez votre projet VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Messages {
@@ -345,6 +345,41 @@ namespace Daisy.SaveAsDAISY {
         public static string TrackConfirmation {
             get {
                 return ResourceManager.GetString("TrackConfirmation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Cannot create the target file.
+        /// </summary>
+        public static string UnableToCreateOutputLabel {
+            get {
+                return ResourceManager.GetString("UnableToCreateOutputLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à This action relies on {0} as an external / AI service.
+        ///The selected file will leave your computer for treatment on the service infrastructure.
+        ///The service may bill the account tied to the API key provided in the addin settings.
+        ///
+        ///Please consult your api key provider for more information regarding the usage of your file and the conversion costs.
+        ///
+        ///Do you want to proceed with the conversion ?
+        ///
+        ///You can disable this warning by checking the &quot;Disable external services&apos; warning&quot; option in the addin settings  [le reste de la chaîne a été tronqué]&quot;;.
+        /// </summary>
+        public static string WarningExternalService {
+            get {
+                return ResourceManager.GetString("WarningExternalService", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Warning, this conversion relies on an online service.
+        /// </summary>
+        public static string WarningExternalServiceTitle {
+            get {
+                return ResourceManager.GetString("WarningExternalServiceTitle", resourceCulture);
             }
         }
         

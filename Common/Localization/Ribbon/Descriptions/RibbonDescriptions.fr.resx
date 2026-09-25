@@ -228,12 +228,26 @@ Vous pouvez utilisez ces styles pour améliorer la sémantique du DAISY XML.</va
 (Requiert une clé API définie dans les réglages du complément)</value>
   </data>
   <data name="ImportTabMenu" xml:space="preserve">
-    <value />
+    <value>Importer un document dont le format ne peux être ouvert nativement dans Word (PDF, DTBook XML)</value>
   </data>
   <data name="ImportODTTabButton" xml:space="preserve">
-    <value>Convertit un XML DAISY en ODT et l'ouvre dans Word.</value>
+    <value>Convertit le fichier XML en ODT et l'ouvre dans Word.</value>
   </data>
   <data name="ImportRTFTabButton" xml:space="preserve">
-    <value>Convertit un XML DAISY en ODT et l'ouvre dans Word.</value>
+    <value>Convertit le fichier XML en RTF et l'ouvre dans Word.</value>
+  </data>
+  <data name="ImportDTBookTabMenu" xml:space="preserve">
+    <value>Importer un fichier XML DAISY (aussi appelé DTBook XML) convertis dans un format compatible avec Word.</value>
+  </data>
+  <data name="ImportPDFTabMenu" xml:space="preserve">
+    <value>Convertit un PDF en fichier Word, en utilisant des services IA d'OCR en lignes.
+(Requiert des clé API définies dans les réglages du complément. Le document sera transféré à ces services en ligne pour le traitement.)</value>
+  </data>
+  <data name="ImportPDFDatalabTabButton" xml:space="preserve">
+    <value>via le service Datalab (expérimental)</value>
+  </data>
+  <data name="ImportPDFMistralTabButton" xml:space="preserve">
+    <value>Convertit un PDF en DOCX via MistralOCR.
+(Requiert une clé API définie dans les réglages du complément)</value>
   </data>
 </root>

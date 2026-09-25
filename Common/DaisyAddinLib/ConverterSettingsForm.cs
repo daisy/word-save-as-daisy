@@ -188,7 +188,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         {
             notesNumberingStartValue.Mask = "000";
 
-            if (GlobaleSettings.PagenumStyle == ConverterSettings.PageNumberingChoice.Enum.Custom)
+            if (GlobaleSettings.PageNumbering == ConverterSettings.PageNumberingChoice.Enum.DaisyPagenumStyle)
             {
                 this.radiobtn_custom.Checked = true;
             }
@@ -276,9 +276,9 @@ namespace Daisy.SaveAsDAISY.Conversion
             try
             {
                 // Update fields
-                GlobaleSettings.PagenumStyle = this.radiobtn_custom.Checked 
-                    ? ConverterSettings.PageNumberingChoice.Enum.Custom 
-                    : ConverterSettings.PageNumberingChoice.Enum.Automatic;
+                GlobaleSettings.PageNumbering = this.radiobtn_custom.Checked 
+                    ? ConverterSettings.PageNumberingChoice.Enum.DaisyPagenumStyle 
+                    : ConverterSettings.PageNumberingChoice.Enum.Word;
                 GlobaleSettings.CharacterStyle = this.checkbox_translate.Checked;
 
                 if (this.radiobtn_originalimage.Checked == true)

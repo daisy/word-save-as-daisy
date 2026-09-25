@@ -251,11 +251,39 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Convert a DAISY XML into ODT and open the result in Word.
+        ///   Recherche une chaîne localisée semblable à DTBook XML file.
+        /// </summary>
+        public static string ImportDTBookTabMenu {
+            get {
+                return ResourceManager.GetString("ImportDTBookTabMenu", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Convert the DAISY XML into ODT and open the result in Word.
         /// </summary>
         public static string ImportODTTabButton {
             get {
                 return ResourceManager.GetString("ImportODTTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à using Datalab service (experimental).
+        /// </summary>
+        public static string ImportPDFDatalabTabButton {
+            get {
+                return ResourceManager.GetString("ImportPDFDatalabTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Convert a PDF into DOCX using MistralOCR and open the result in Word.
+        ///(Requires an API key set in addin settings).
+        /// </summary>
+        public static string ImportPDFMistralTabButton {
+            get {
+                return ResourceManager.GetString("ImportPDFMistralTabButton", resourceCulture);
             }
         }
         
@@ -266,6 +294,16 @@ namespace Daisy.SaveAsDAISY {
         public static string ImportPDFTabButton {
             get {
                 return ResourceManager.GetString("ImportPDFTabButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Convert a PDF file into a Word document, using online AI-based OCR services.
+        ///(Requires API keys set in addin settings. The document will be transfered to those online services for the treatment).
+        /// </summary>
+        public static string ImportPDFTabMenu {
+            get {
+                return ResourceManager.GetString("ImportPDFTabMenu", resourceCulture);
             }
         }
         
