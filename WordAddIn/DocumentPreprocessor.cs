@@ -1010,9 +1010,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                 lastpagefound = newPageString;
                                 MSWord.Range position = currentDoc.Range(parentRange.Start, parentRange.End);
                                 position.Text = newPageString;
-                                // remove the heading style from the paragraph
-                                position.Delete();
-                                position.InsertAfter(newPageString);
+                                // reset the paragraph style to normal
+                                position.set_Style(MSWord.WdBuiltinStyle.wdStyleNormal);
                                 position = currentDoc.Range(parentRange.Start, parentRange.Start + newPageString.Length);
                                 position.set_Style(pageNumberDaisyStyle);
                                 //// Insert pagenum in next paragraph
