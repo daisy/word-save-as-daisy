@@ -200,6 +200,8 @@ if($nobuild) {
     # copy the result in WordAddin\bin\Debug\x64 to the local app data folder
     $addinPath = Join-Path $PSScriptRoot "WordAddin\bin\x64\Debug"
     $localAppDataPath = Join-Path $env:LOCALAPPDATA "Apps" "Save-as-DAISY Word Addin"
+    # replace daisy pipeline folder by the last version, in case it has been updated
+    Remove-Item -Path $localAppDataPath\daisy-pipeline -Recurse -Force
     Copy-Item -Path $addinPath\* -Destination $localAppDataPath -Recurse -Force
     Start-Process WINWORD
 
