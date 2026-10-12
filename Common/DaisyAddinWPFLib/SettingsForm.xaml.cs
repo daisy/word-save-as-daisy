@@ -74,7 +74,14 @@ namespace Daisy.SaveAsDAISY.WPF
             {"End of levels", FootnotesPositionChoice.Enum.End}
         };
 
-        
+        private static readonly Dictionary<string, CheckEpubWithAceChoice.Enum> CheckEpubWithAceChoices = new Dictionary<string, CheckEpubWithAceChoice.Enum>
+        {
+            {"Always control epubs",CheckEpubWithAceChoice.Enum.Yes },
+            {"Ask when epub generation has succeeded", CheckEpubWithAceChoice.Enum.Ask},
+            {"Never control epubs", CheckEpubWithAceChoice.Enum.No}
+        };
+
+
 
         public SettingsForm()
         {
@@ -130,6 +137,10 @@ namespace Daisy.SaveAsDAISY.WPF
             PageMarkerGrid.IsEnabled = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex] == PageNumberingChoice.Enum.PrintPageMarker;
             PageMarker.Text = GlobaleSettings.PrintPageMarker;
             DisableExternalServiceWarning.IsChecked = GlobaleSettings.DisableExternalServiceWarning;
+
+            CheckEpubsWithAce.IsEnabled = ConverterHelper.FindAceByDaisyExecutable() != null;
+            CheckEpubsWithAce.ItemsSource = CheckEpubWithAceChoices.Keys;
+            CheckEpubsWithAce.SelectedIndex = CheckEpubWithAceChoices.Values.ToList().IndexOf(GlobaleSettings.CheckEpubWithAce);
         }
 
         private void ImageSizeOptions_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -227,6 +238,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.DatalabApiKey = DatalabApiKey.Text.Trim();
                 GlobaleSettings.PrintPageMarker = PageMarker.Text;
                 GlobaleSettings.DisableExternalServiceWarning = DisableExternalServiceWarning.IsChecked == true;
+                GlobaleSettings.CheckEpubWithAce = CheckEpubWithAceChoices.Values.ToList()[CheckEpubsWithAce.SelectedIndex];
                 //GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
                 // Save
                 GlobaleSettings.Save();
@@ -244,6 +256,9 @@ namespace Daisy.SaveAsDAISY.WPF
         }
 
         
+
+
+
         //private void UseWebserviceInteractions_Checked(object sender, RoutedEventArgs e)
         //{
 

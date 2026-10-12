@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
@@ -143,7 +144,83 @@ namespace Daisy.SaveAsDAISY.Conversion {
         };
 		public static StringValidator DAISYFileNameFormat { get => _DAISYFileNameFormat; }
 
+        /// <summary>
+        /// Looks for the Ace by DAISY executable in its usual installation locations
+        /// and in the PATH environment variable.
+        /// </summary>
+        /// <returns>The full path of the Ace by DAISY executable, or null if it is not installed</returns>
+        public static string FindAceByDaisyExecutable()
+        {
+            const string aceExecutableName = "Ace by DAISY.exe";
+            List<string> candidates = new List<string>();
+            foreach (string envVar in new[] { "LocalAppData", "ProgramFiles", "ProgramFiles(x86)", "ProgramW6432" })
+            {
+                string root = Environment.GetEnvironmentVariable(envVar);
+                if (string.IsNullOrEmpty(root))
+                {
+                    continue;
+                }
+                // Per-user installation (default install location of the Ace by DAISY setup)
+                candidates.Add(Path.Combine(root, "Programs", "Ace by DAISY", aceExecutableName));
+                // Per-machine installation
+                candidates.Add(Path.Combine(root, "Ace by DAISY", aceExecutableName));
+            }
+            string pathEnv = Environment.GetEnvironmentVariable("PATH");
+            if (!string.IsNullOrEmpty(pathEnv))
+            {
+                foreach (string dir in pathEnv.Split(';'))
+                {
+                    if (!string.IsNullOrWhiteSpace(dir))
+                    {
+                        candidates.Add(Path.Combine(dir.Trim(), aceExecutableName));
+                    }
+                }
+            }
+            foreach (string candidate in candidates)
+            {
+                if (File.Exists(candidate))
+                {
+                    return candidate;
+                }
+            }
+            return null;
+        }
 
 
-	}
+        /// <summary>
+        /// Launches Ace by DAISY with the epub file as argument.
+        /// As Ace by DAISY may not run correctly on first launch, it is first started without
+        /// any argument, then relaunched with the epub file after a 2 seconds delay.
+        /// </summary>
+        /// <param name="acePath">Path of the Ace by DAISY executable</param>
+        /// <param name="epubFile">Path of the epub file</param>
+        public static void LaunchAceByDaisyOnEpub(string acePath, string epubFile)
+        {
+            try
+            {
+                AddinLogger.Info($"Launching Ace by DAISY on \"{epubFile}\"");
+                // Launch in a background task to avoid freezing the Word UI during the 2 seconds delay
+                System.Threading.Tasks.Task.Run(() =>
+                {
+                    try
+                    {
+                        // First launch without argument: Ace by DAISY may not run correctly on first launch
+                        Process.Start(new ProcessStartInfo(acePath) { UseShellExecute = true });
+                        System.Threading.Thread.Sleep(2000);
+                        // Relaunch with the epub file as argument
+                        Process.Start(new ProcessStartInfo(acePath, $"\"{epubFile}\"") { UseShellExecute = true });
+                    }
+                    catch (Exception e)
+                    {
+                        AddinLogger.Error("An error occured while launching Ace by DAISY", e);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                AddinLogger.Error("An error occured while looking for an epub file to open in Ace by DAISY", e);
+            }
+        }
+
+    }
 }

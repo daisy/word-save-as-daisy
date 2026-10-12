@@ -234,4 +234,10 @@ You can disable this warning by checking the "Disable external services' warning
   <data name="WarningExternalServiceTitle" xml:space="preserve">
     <value>Warning, this conversion relies on an online service</value>
   </data>
+  <data name="AskEpubControlWithAceTitle" xml:space="preserve">
+    <value>Control the epub with Ace by DAISY</value>
+  </data>
+  <data name="AskEpubControlWithAce" xml:space="preserve">
+    <value>Ace by DAISY is available on your computer. Do you want to control the accessibility of your EPUB with it ?</value>
+  </data>
 </root>

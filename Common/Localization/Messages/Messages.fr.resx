@@ -233,4 +233,10 @@ Vous pouvez désactiver cet avertissement en cochant l'option "Disable external 
   <data name="WarningExternalServiceTitle" xml:space="preserve">
     <value>Attention, cette conversion dépend d'un service en ligne.</value>
   </data>
+  <data name="AskEpubControlWithAceTitle" xml:space="preserve">
+    <value>Contrôler l'EPUB avec Ace by DAISY</value>
+  </data>
+  <data name="AskEpubControlWithAce" xml:space="preserve">
+    <value>Ace by DAISY est disponible sur votre ordinateur. Voulez-vous l'utiliser pour contrôler l'accessibilité de votre EPUB ?</value>
+  </data>
 </root>
