@@ -89,6 +89,7 @@
                   IsExpanded="False"
                   BorderThickness="1"
                   BorderBrush="Black"
+                  AutomationProperties.HelpText="Additional metadata to make the document more accessible in reading and distribution systems"
                   Margin="5,0,5,0">
             <StackPanel>
                 <Grid>
@@ -97,12 +98,17 @@
                            HorizontalAlignment="Left"
                            Margin="5,0,5,0"
                            x:Name="DocumentDateLabel" />
-                    <DatePicker Margin="120,0,5,0"
+                    <TextBox Margin="120,0,5,0"
+                        VerticalAlignment="Center"
+                        x:Name="DocumentDatePicker"
+                        AutomationProperties.LabeledBy="{Binding ElementName=DocumentDateLabel}"
+                        Text="{Binding Path=DocumentDate, Mode=TwoWay}" />
+                    <!--<DatePicker Margin="120,0,5,0"
                                 VerticalAlignment="Center"
                                 SelectedDateFormat="Short"
                                 x:Name="DocumentDatePicker"
                                 AutomationProperties.LabeledBy="{Binding ElementName=DocumentDateLabel}"
-                                SelectedDate="{Binding Path=DocumentDate, Mode=TwoWay}" />
+                                SelectedDate="{Binding Path=DocumentDate, Mode=TwoWay}" />-->
                 </Grid>
                 
                 <Grid>
@@ -186,12 +192,17 @@
                            HorizontalAlignment="Left"
                            Margin="5,0,5,0"
                            x:Name="SourceDateLabel" />
-                    <DatePicker Margin="120,0,5,0"
+                    <TextBox Margin="120,0,5,0"
+                        VerticalAlignment="Center"
+                        x:Name="SourceDatePicker"
+                        AutomationProperties.LabeledBy="{Binding ElementName=SourceDateLabel}"
+                        Text="{Binding Path=DocumentSourceDate, Mode=TwoWay}" />
+                    <!--<DatePicker Margin="120,0,5,0"
                                 VerticalAlignment="Center"
                                 SelectedDateFormat="Short"
                                 x:Name="SourceDatePicker"
                                 AutomationProperties.LabeledBy="{Binding ElementName=SourceDateLabel}"
-                                SelectedDate="{Binding Path=DocumentSourceDate, Mode=TwoWay}" />
+                                SelectedDate="{Binding Path=DocumentSourceDate, Mode=TwoWay}" />-->
                 </Grid>
                 <StackPanel>
                     <Label Content="Accessibility functions' summary"
