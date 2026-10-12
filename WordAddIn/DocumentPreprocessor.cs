@@ -888,7 +888,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                             {
 
                                 MSWord.Range pagenum = markerFinder.Parent as MSWord.Range;
-                                MSWord.Range previous = currentDoc.Range(pagenum.Start - 1, pagenum.Start);
+                                MSWord.Range previous = currentDoc.Range(Math.Max(pagenum.Start - 1, 0), pagenum.Start);
                                 // In word to epub, pagenum must be preceeded by a whitespace character (note: word use some of those for separation, like \r for new paragraph start)
                                 // this is done using a Regex("(?<!\S)(" & My.Settings.Default.PgNumMarked & ")(\S+)")
                                 // => maching (if not preceeded by a Non-whitespace character) the page marker, followed by a non-whitespace character
