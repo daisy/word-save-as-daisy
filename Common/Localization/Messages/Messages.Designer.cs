@@ -142,6 +142,24 @@ namespace Daisy.SaveAsDAISY {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Ace by DAISY is available on your computer. Do you want to control the accessibility of your EPUB with it ?.
+        /// </summary>
+        public static string AskEpubControlWithAce {
+            get {
+                return ResourceManager.GetString("AskEpubControlWithAce", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Control the epub with Ace by DAISY.
+        /// </summary>
+        public static string AskEpubControlWithAceTitle {
+            get {
+                return ResourceManager.GetString("AskEpubControlWithAceTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Select the destination folder.
         /// </summary>
         public static string ChoseDestination {

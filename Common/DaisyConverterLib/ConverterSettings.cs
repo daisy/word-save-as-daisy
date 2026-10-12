@@ -317,6 +317,40 @@ namespace Daisy.SaveAsDAISY.Conversion
             }
         }
 
+        public static class CheckEpubWithAceChoice
+        {
+            /// <summary>
+            /// Possible type of page numbering computation
+            /// </summary>
+            public enum Enum
+            {
+                /// <summary>
+                /// Always perform the check
+                /// </summary>
+                Yes,
+                /// <summary>
+                /// Never perform the check
+                /// </summary>
+                No,
+                /// <summary>
+                /// Ask the user before performing the check
+                /// </summary>
+                Ask
+            }
+            public static readonly Dictionary<Enum, string> Values = new Dictionary<Enum, string>()
+            {
+                { Enum.Yes, "yes" },
+                { Enum.No, "no" },
+                { Enum.Ask, "ask" },
+            };
+            public static readonly Dictionary<string, Enum> Keys = new Dictionary<string, Enum>()
+            {
+                { "yes", Enum.Yes },
+                { "no", Enum.No },
+                { "ask", Enum.Ask },
+            };
+        }
+
         #region Private fields with default values
 
         private string imgoption = ImageOptionChoice.Values[ImageOptionChoice.Enum.Original];
@@ -343,7 +377,12 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private string disableExternalServiceWarning = ""; // disable the warning dialog when using external services like Mistral or Datalab
 
-
+        /// <summary>
+        /// Perform an accessibility check on the output file using Ace (
+        /// expected values are "yes" (always perform), "no" (dont run ace) or "ask" (to ask the user before performing the check)
+        /// Default to "ask"
+        /// </summary>
+        private string checkEpubWithAce = CheckEpubWithAceChoice.Values[CheckEpubWithAceChoice.Enum.Ask];
 
         /// <summary>
         /// Get the current settings as XML string
@@ -378,6 +417,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t<MistralApiKey value=\"{(withPrivateData ? mistralApiKey : "removed for privacy")}\" />" +
                 $"\r\n\t<DatalabApiKey value=\"{(withPrivateData ? datalabApiKey : "removed for privacy")}\" />" +
                 $"\r\n\t<DisableExternalServiceWarning value=\"{disableExternalServiceWarning}\" />" +
+                $"\r\n\t<CheckEpubWithAce value=\"{checkEpubWithAce}\" />" +
                 $"\r\n</Settings>";
         }
 
@@ -500,6 +540,12 @@ namespace Daisy.SaveAsDAISY.Conversion
                 disableExternalServiceWarning = (DisableExternalServiceWarningSettings.Attributes["value"].InnerXml) ?? disableExternalServiceWarning;
             }
 
+            XmlNode CheckEpubWithAceSettings = settingsDocument.SelectSingleNode("//Settings/CheckEpubWithAce");
+            if (CheckEpubWithAceSettings != null)
+            {
+                checkEpubWithAce = (CheckEpubWithAceSettings.Attributes["value"].InnerXml) ?? checkEpubWithAce;
+            }
+
         }
 
         /// <summary>
@@ -553,6 +599,8 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public string FootnotesNumberingSuffix { get => footnotesNumberingSuffix; set => footnotesNumberingSuffix = value; }
 
+
+        public CheckEpubWithAceChoice.Enum CheckEpubWithAce { get => CheckEpubWithAceChoice.Keys[checkEpubWithAce]; set => checkEpubWithAce = CheckEpubWithAceChoice.Values[value]; }
         //public string AzureSpeechRegion { get => azureSpeechRegion; set => azureSpeechRegion = value; }
 
         //public string AzureSpeechKey { get => azureSpeechKey; set => azureSpeechKey = value; }

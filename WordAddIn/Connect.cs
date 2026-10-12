@@ -1467,7 +1467,34 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                 {
                     eventsHandler.onConversionSuccess();
                     Process.Start(result.ResultPath);
+                    string[] epubFiles = Directory.GetFiles(result.ResultPath, "*.epub");
+                    if (epubFiles.Length == 0)
+                    {
+                        return;
+                    }
+                    string epubFile = epubFiles[0];
+                    string acePath = ConverterHelper.FindAceByDaisyExecutable();
+                    if (acePath == null)
+                    {
+                        return;
+                    } else
+                    {
 
+                        bool performAceCheck = false;
+                        if(ConverterSettings.Instance.CheckEpubWithAce == ConverterSettings.CheckEpubWithAceChoice.Enum.Ask)
+                        {
+                            var res = MessageBox.Show(Messages.AskEpubControlWithAce, Messages.AskEpubControlWithAceTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            performAceCheck = res == DialogResult.Yes;
+                        } else if (ConverterSettings.Instance.CheckEpubWithAce == ConverterSettings.CheckEpubWithAceChoice.Enum.Yes)
+                        {
+                            performAceCheck = true;
+                }
+                        if(performAceCheck)
+                        {
+                            ConverterHelper.LaunchAceByDaisyOnEpub(acePath, epubFile);
+                        }
+                    }
+                    
                 }
                 else if (result.Failed)
                 {
