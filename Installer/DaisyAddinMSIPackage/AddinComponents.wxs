@@ -69,6 +69,9 @@
 
 			<File Id="Microsoft.Toolkit.Uwp.Notifications.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Microsoft.Toolkit.Uwp.Notifications.dll" />
 			<File Id="Newtonsoft.Json.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Newtonsoft.Json.dll" />
+			<!-- NP 2026/10/14 : additionnal dependencies -->
+			<File Id="Microsoft.Vbe.Interop.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Microsoft.Vbe.Interop.dll" />
+			<File Id="log4net.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\log4net.dll" />
 
 			<File Id="filE87E1845171015B8772E9D7B2E2B8495" KeyPath="yes" Source="$(var.DaisyWord2007AddIn.TargetPath)" />
 			<ProgId Id="Record" />
@@ -132,9 +135,6 @@
 			</RegistryKey>
 		</Component>
 
-		<Component Id="log4net.dll" Guid="944F8F0B-3F51-4BC8-8DF3-EF3C44DC0FBE">
-			<File Id="log4net.dll" Name="log4net.dll" Source="$(var.SolutionDir)resources\log4net.dll" />
-		</Component>
 		<Component Id="Documentation" Guid="D0EEE0DF-BA91-4317-A63A-1D93C11B43ED">
 			<File Id="SaveAsDAISY_Instruction_Manual_July_2023.docx" Name="SaveAsDAISY_Instruction_Manual_July_2023.docx" Source="$(var.SolutionDir)docs\SaveAsDAISY_Instruction_Manual_July_2023.docx" />
 			<File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="$(var.SolutionDir)docs\Accessibility_demofile.docx" />
