@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <customUI xmlns="http://schemas.microsoft.com/office/2006/01/customui"
-          onLoad="OnLoad">
+          onLoad="OnLoad"
+		  xmlns:DAISYNS="DAISYAddinsNamespace">
 	<ribbon>
 		<officeMenu>
 			<menu id="SaveAsDaisyOfficeMenu"
@@ -46,8 +47,7 @@
 			</menu>
 		</officeMenu>
 		<tabs>
-			<tab id="SaveAsDAISYTab"
-			     getLabel="GetRibbonLabel">
+			<tab idQ="DAISYNS:DAISYTab" label="DAISY">
 				<group id="ExportGroup"
 				       getLabel="GetRibbonLabel">
 					<menu id="ExportTabMenu"
