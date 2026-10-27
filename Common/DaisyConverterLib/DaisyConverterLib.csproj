@@ -134,11 +134,6 @@
     <Compile Include="Pipeline\Engine.cs" />
     <Compile Include="Pipeline\ParameterDataBase.cs" />
     <Compile Include="Parameters\PrepopulateDaisyOutput.cs" />
-    <Compile Include="Pipeline\ChainedScripts\WordToDaisy202Chain.cs" />
-    <Compile Include="Pipeline\ChainedScripts\WordToMp3Chain.cs" />
-    <Compile Include="Pipeline\ChainedScripts\WordToDaisy3Chain.cs" />
-    <Compile Include="Pipeline\ChainedScripts\WordToEpub3Chain.cs" />
-    <Compile Include="Pipeline\ChainedScripts\WordToDtbookChain.cs" />
     <Compile Include="Pipeline\JobException.cs" />
     <Compile Include="Pipeline\PipelineUserProperties.cs" />
     <Compile Include="Pipeline\Scripts\DtbookToODT.cs" />
@@ -152,11 +147,6 @@
     <Compile Include="Pipeline\Scripts\WordToDAISY3.cs" />
     <Compile Include="Pipeline\Scripts\WordToDAISY202.cs" />
     <Compile Include="Pipeline\Runner.cs" />
-    <Compile Include="Pipeline\Scripts\Daisy3ToMp3.cs" />
-    <Compile Include="Pipeline\Scripts\DtbookCleaner.cs" />
-    <Compile Include="Pipeline\Scripts\DtbookToDaisy3.cs" />
-    <Compile Include="Pipeline\Scripts\DtbookToEpub3.cs" />
-    <Compile Include="Pipeline\Scripts\Epub3ToDaisy202.cs" />
     <Compile Include="Pipeline\Scripts\WordToDtbook.cs" />
     <Compile Include="Pipeline\Types.cs" />
     <Compile Include="Pipeline\Webservice.cs" />
