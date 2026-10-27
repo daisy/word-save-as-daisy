@@ -377,6 +377,27 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         private string disableExternalServiceWarning = ""; // disable the warning dialog when using external services like Mistral or Datalab
 
+        private Dictionary<string, Dictionary<string, string>> exportScriptsDefaults = new Dictionary<string, Dictionary<string, string>>(); // default values for the export scripts parameters
+
+
+
+        public Dictionary<string, Dictionary<string, string>> ExportScriptsDefaults
+        {
+            get { return exportScriptsDefaults; }
+        }
+
+
+
+        public void SetScriptDefault(string scriptName, string parameters, string value)
+        {
+            if (!exportScriptsDefaults.ContainsKey(scriptName))
+            {
+                exportScriptsDefaults[scriptName] = new Dictionary<string, string>();
+            }
+            exportScriptsDefaults[scriptName][parameters] = value;
+        }
+
+
         /// <summary>
         /// Perform an accessibility check on the output file using Ace (
         /// expected values are "yes" (always perform), "no" (dont run ace) or "ask" (to ask the user before performing the check)
@@ -405,11 +426,6 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t<TTSConfig file=\"{(withPrivateData ? ttsConfigFile : "removed for privacy")}\" />" +
                 $"\r\n\t<OTTTemplate file=\"{(withPrivateData ? ottTemplateFile : "removed for privacy")}\" />" +
                 $"\r\n\t<PrintPageMarker value=\"{printPageMarker}\" />" +
-                //(withPrivateData
-                //    ? $"\r\n\t<Azure region=\"{azureSpeechRegion}\" " +
-                //      $"\r\n\t\tkey=\"{azureSpeechKey}\" />"
-                //    : ""
-                //) +
                 $"\r\n\t<DontNotifySponsorship value=\"{dontNotifySponsorship}\" />" +
                 $"\r\n\t<UsePipelineApp value=\"{useDAISYPipelineApp.ToString().ToLower()}\" />" +
                 $"\r\n\t<UseWebserviceRunner value=\"{useWebserviceRunner.ToString().ToLower()}\" />" +
@@ -418,6 +434,12 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t<DatalabApiKey value=\"{(withPrivateData ? datalabApiKey : "removed for privacy")}\" />" +
                 $"\r\n\t<DisableExternalServiceWarning value=\"{disableExternalServiceWarning}\" />" +
                 $"\r\n\t<CheckEpubWithAce value=\"{checkEpubWithAce}\" />" +
+                $"\r\n\t<ExportScriptsDefaults>" +
+                (exportScriptsDefaults.Count > 0 ? exportScriptsDefaults.Select(
+                    kvp => kvp.Value?.Count > 0 ? $"\r\n\t\t<Script name=\"{kvp.Key}\">" +
+                        kvp.Value.Select(param => $"\r\n\t\t\t<Parameter name=\"{param.Key}\" value=\"{param.Value}\" />").Aggregate((a, b) => a + b) +
+                    $"\r\n\t\t</Script>" : "").Aggregate((a, b) => a + b) : "") +
+                $"\r\n\t</ExportScriptsDefaults>" +
                 $"\r\n</Settings>";
         }
 
@@ -544,6 +566,26 @@ namespace Daisy.SaveAsDAISY.Conversion
             if (CheckEpubWithAceSettings != null)
             {
                 checkEpubWithAce = (CheckEpubWithAceSettings.Attributes["value"].InnerXml) ?? checkEpubWithAce;
+            }
+            XmlNode ExportScriptsDefaults = settingsDocument.SelectSingleNode("//Settings/ExportScriptsDefaults");
+            if (ExportScriptsDefaults != null)
+            {
+                foreach (XmlNode scriptNode in ExportScriptsDefaults.SelectNodes("Script"))
+                {
+                    string scriptName = scriptNode.Attributes["name"]?.InnerXml;
+                    if (!string.IsNullOrEmpty(scriptName))
+                    {
+                        foreach (XmlNode paramNode in scriptNode.SelectNodes("Parameter"))
+                        {
+                            string paramName = paramNode.Attributes["name"]?.InnerXml;
+                            string paramValue = paramNode.Attributes["value"]?.InnerXml;
+                            if (!string.IsNullOrEmpty(paramName) && !string.IsNullOrEmpty(paramValue))
+                            {
+                                SetScriptDefault(scriptName, paramName, paramValue);
+                            }
+                        }
+                    }
+                }
             }
 
         }

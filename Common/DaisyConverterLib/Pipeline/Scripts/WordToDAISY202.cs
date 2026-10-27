@@ -11,11 +11,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
 {
     public class WordToDAISY202 : WordBasedScript
     {
-        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
         public WordToDAISY202(IConversionEventsHandler e)
-            : base(e)
+            : base("word-to-daisy202", e)
         {
-            this.name = "word-to-daisy202";
             this.niceName = "Export to DAISY2.02";
             _parameters.Add("output",
                 new ScriptParameter(
@@ -39,7 +37,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                                 { "No validation", "off" },
                                 { "Report validation issues", "report" },
                                 { "Abort on validation issues", "abort" },
-                        }, "off"),
+                        }, Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("validation") ?? "off"),
                     false,
                     "Whether to abort on validation issues."
                 )
@@ -73,18 +71,18 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                             PathData.InputOrOutput.input,
                             PathData.FileOrDirectory.File,
                             "",
-                            GlobaleSettings.TTSConfigFile ?? ""
+                            Instance.TTSConfigFile ?? ""
                         ),
                         false,
                         "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
-                        !GlobaleSettings.UseDAISYPipelineApp,
+                        !Instance.UseDAISYPipelineApp,
                         ParameterDirection.Input
                     )
                 );
             _parameters.Add("audio", new ScriptParameter(
                         "audio",
                         "Enable text-to-speech",
-                        new BoolData(false),
+                        new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("audio") ?? "False")),
                         false,
                         "Whether to use a speech synthesizer to produce audio files."
                     )

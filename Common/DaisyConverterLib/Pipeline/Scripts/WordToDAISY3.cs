@@ -12,11 +12,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
     public class WordToDAISY3 : WordBasedScript
     {
 
-        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
         public WordToDAISY3(IConversionEventsHandler e)
-            : base(e)
+            : base("word-to-daisy3", e)
         {
-            this.name = "word-to-daisy3";
             this.niceName = "Export to DAISY3";
             _parameters.Add("output",
                 new ScriptParameter(
@@ -48,12 +46,12 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                         PathData.InputOrOutput.input,
                         PathData.FileOrDirectory.File,
                         "",
-                        GlobaleSettings.TTSConfigFile ?? ""
+                        Instance.TTSConfigFile ?? ""
                     ),
                     false,
                     "Configuration file for the text-to-speech.\r\n\r\n" +
                     "[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
-                    !GlobaleSettings.UseDAISYPipelineApp,
+                    !Instance.UseDAISYPipelineApp,
                     ParameterDirection.Input
                 )
             ); 
@@ -61,7 +59,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new ScriptParameter(
                     "audio",
                     "Enable text-to-speech",
-                    new BoolData(true),
+                    new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("audio") ?? "True")),
                     false,
                     "Whether to use a speech synthesizer to produce audio files."
                 )
@@ -70,7 +68,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new ScriptParameter(
                     "with-text",
                     "With text",
-                    new BoolData(true),
+                    new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("with-text") ?? "True")),
                     false,
                     "Includes DTBook in output, as opposed to audio only."
                 )
@@ -79,7 +77,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new ScriptParameter(
                     "word-detection",
                     "Apply word detection",
-                    new BoolData(false),
+                    new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("word-detection") ?? "False")),
                     false,
                     "Whether to detect and mark up words with <w> tags.\r\n" +
                     "\r\n" +

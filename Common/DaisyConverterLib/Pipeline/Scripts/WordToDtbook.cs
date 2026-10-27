@@ -9,9 +9,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
     public class WordToDtbook : WordBasedScript
     {
         public WordToDtbook(IConversionEventsHandler e)
-            : base(e)
+            : base("word-to-dtbook", e)
         {
-            this.name = "word-to-dtbook";
             this.niceName = "Export to DTBook XML";
             _parameters.Add("output", 
                 new ScriptParameter(
@@ -29,7 +28,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new ScriptParameter(
                 "narrator",
                 "Prepare dtbook for pipeline 1 narrator",
-                new BoolData(false),
+                new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("narrator") ?? "False")),
                 true,
                 ""
 
@@ -39,7 +38,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new ScriptParameter(
                 "ApplySentenceDetection",
                 "Apply sentences detection",
-                new BoolData(false),
+                new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("ApplySentenceDetection") ?? "False")),
                 true,
                 ""
                 )

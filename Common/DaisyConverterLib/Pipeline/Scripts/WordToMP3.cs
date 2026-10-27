@@ -12,11 +12,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
     public class WordToMP3 : WordBasedScript
     {
 
-        private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
         public WordToMP3(IConversionEventsHandler e)
-            : base(e)
+            : base("word-to-mp3", e)
         {
-            this.name = "word-to-mp3";
             this.niceName = "Export to MP3";
             _alsoExportShapes = false;
             _parameters.Add("output", 
@@ -39,11 +37,11 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                         PathData.InputOrOutput.input,
                         PathData.FileOrDirectory.File,
                         "",
-                        GlobaleSettings.TTSConfigFile ?? ""
+                        Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("tts-config") ?? Instance.TTSConfigFile ?? ""
                     ),
                     false,
                     "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
-                    !GlobaleSettings.UseDAISYPipelineApp,
+                    !Instance.UseDAISYPipelineApp,
                     ParameterDirection.Input
                 )
             );
@@ -56,7 +54,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                         {"1", "1"},
                         {"2", "2"},
                         {"3", "3"},
-                    }, "1"),
+                    },
+                    Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("folder-depth") ?? "1"),
                 false,
                 "The number of folder levels in the produced folder structure.\n\n" +
                 "The book is always, if possible, contained in a single top - level folder with MP3 files or\n" +

@@ -14,6 +14,14 @@
                           ParameterName="Output directory"
                           ParameterValue=""/>
         <cc:DocumentMetadata x:Name="DocumentMetadata" />
+        <!--<TabPanel x:Name="ConversionOptionsTabs">
+            <TabItem Header="General options">
+                <StackPanel x:Name="GeneralOptions"></StackPanel>
+            </TabItem>
+            <TabItem Header="Script options">
+                <StackPanel x:Name="ScriptOptions"></StackPanel>
+            </TabItem>
+        </TabPanel>-->
         <Expander Header="Conversion options"
                   x:Name="ConversionOptionsSection"
                   ExpandDirection="Down"
@@ -23,7 +31,7 @@
                   Margin="5,0,5,0"
                   Expanded="ConversionOptionsSection_Expanded"
                   Collapsed="ConversionOptionsSection_Expanded">
-            <StackPanel x:Name="ScriptOptions"></StackPanel>
+            
         </Expander>
         <StackPanel Orientation="Horizontal" FlowDirection="RightToLeft">
             <Button x:Name="ConvertButton"

@@ -1,6 +1,8 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts;
+using Daisy.SaveAsDAISY.WPF.CustomControls;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -81,6 +83,14 @@ namespace Daisy.SaveAsDAISY.WPF
             {"Never control epubs", CheckEpubWithAceChoice.Enum.No}
         };
 
+        List<Script> ExportScripts = new List<Script>()
+        {
+            new WordToDtbook(null),
+            new WordToDAISY3(null),
+            new WordToDAISY202(null),
+            new WordToEPUB3(null),
+            new WordToMP3(null)
+        };
 
 
         public SettingsForm()
@@ -141,6 +151,13 @@ namespace Daisy.SaveAsDAISY.WPF
             CheckEpubsWithAce.IsEnabled = ConverterHelper.FindAceByDaisyExecutable() != null;
             CheckEpubsWithAce.ItemsSource = CheckEpubWithAceChoices.Keys;
             CheckEpubsWithAce.SelectedIndex = CheckEpubWithAceChoices.Values.ToList().IndexOf(GlobaleSettings.CheckEpubWithAce);
+            foreach (var script in ExportScripts)
+            {
+                ExportScriptsTabControl.Items.Add(
+                    new ScriptTabItem(script)
+                );
+            }
+            
         }
 
         private void ImageSizeOptions_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -240,7 +257,25 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.DisableExternalServiceWarning = DisableExternalServiceWarning.IsChecked == true;
                 GlobaleSettings.CheckEpubWithAce = CheckEpubWithAceChoices.Values.ToList()[CheckEpubsWithAce.SelectedIndex];
                 //GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
-                // Save
+                foreach (ScriptTabItem tab in ExportScriptsTabControl.Items)
+                {
+                    foreach (var item in tab.Script.Parameters.Where(kv => kv.Key != "input" && kv.Key != "output"))
+                    {
+                        ScriptParameter sp = item.Value;
+                        ParameterDataBase parameter = sp.ParameterData;
+
+                        if (sp.IsParameterRequired || sp.IsParameterDisplayed)
+                        {
+                            if (!GlobaleSettings.ExportScriptsDefaults.ContainsKey(tab.Script.Name))
+                            {
+                                GlobaleSettings.ExportScriptsDefaults[tab.Script.Name] = new Dictionary<string, string>();
+                            }
+                            string value = sp.Value?.ToString() ?? "";
+                            GlobaleSettings.ExportScriptsDefaults[tab.Script.Name][item.Key] = value;
+                        }
+                    }
+                }
+                // Save settings to disk
                 GlobaleSettings.Save();
                 DialogResult = true;
                 this.Close();
