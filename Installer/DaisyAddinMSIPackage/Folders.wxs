@@ -6,7 +6,8 @@
 	  <StandardDirectory Id="AppDataFolder">
 		<Directory Id="SaveAsDAISYAppData" Name="SaveAsDAISY" >
 			<Component Id="ApplicationDataComponent" Guid="cc509cb7-c1a1-46cf-8c62-7cbb0017783c">
-				<RemoveFolder Id="RemoveAppRootDirectory" On="uninstall" />
+				<!-- Note: avoid removing previous settings on update
+				<RemoveFolder Id="RemoveAppRootDirectory" On="uninstall" />-->
 				<!-- Validation xml -->
 				<File Id="prepopulated_validationVer21.xml" Name="prepopulated_validationVer21.xml" Source="$(var.SolutionDir)resources\prepopulated_validationVer21.xml" />
 				<RegistryKey Root="HKCU" Key="Software\DAISY\Save-as-DAISY Word Addin" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
