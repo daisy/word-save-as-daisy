@@ -8,9 +8,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
 {
     public class WordBasedScript : Script
     {
-        public WordBasedScript(IConversionEventsHandler e)
+        public WordBasedScript(string name, IConversionEventsHandler e)
             : base(e)
         {
+            this.name = name;
             _alsoExportShapes = true;
             _parameters.Add("input",
                 new ScriptParameter(
@@ -217,7 +218,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
               new ScriptParameter(
                 "repair",
                 "Repair the dtbook",
-                new BoolData(true),
+                new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("repair") ?? "True")),
                 true,
                 ""
               )
@@ -227,7 +228,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline
               new ScriptParameter(
                 "tidy",
                 "Tidy up the dtbook",
-                new BoolData(true),
+                new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("tidy") ?? "True")),
                 true,
                 ""
 

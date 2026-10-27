@@ -129,6 +129,7 @@
   <ItemGroup>
     <Compile Include="AddinLogger.cs" />
     <Compile Include="Converter.cs" />
+    <Compile Include="DictionaryExtensions.cs" />
     <Compile Include="Events\SilentEventsHandler.cs" />
     <Compile Include="Pipeline\EmbeddedRunner.cs" />
     <Compile Include="Pipeline\Engine.cs" />

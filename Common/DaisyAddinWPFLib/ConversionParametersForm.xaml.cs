@@ -1,5 +1,6 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
+using Daisy.SaveAsDAISY.WPF.CustomControls;
 using System;
 using System.IO;
 using System.Linq;
@@ -54,27 +55,7 @@ namespace Daisy.SaveAsDAISY.WPF
                             );
                     }
                 }
-
-                foreach (var item in _script.Parameters.Where(kv => kv.Key != "input" && kv.Key != "output")) {
-                    ScriptParameter sp = item.Value;
-                    ParameterDataBase parameter = sp.ParameterData;
-
-                    if (sp.IsParameterRequired || sp.IsParameterDisplayed) {
-                        if (parameter is BoolData) {
-                            ScriptOptions.Children.Add(new CustomControls.BooleanParameter(sp));
-                        } else if (parameter is EnumData) {
-                            ScriptOptions.Children.Add(new CustomControls.EnumParameter(sp));
-                        } else if (parameter is StringData) {
-                            ScriptOptions.Children.Add(new CustomControls.StringParameter(sp));
-                        } else if (parameter is PathData) {
-                            ScriptOptions.Children.Add(new CustomControls.PathParameter(sp));
-                        } else if (parameter is IntegerData) {
-                            ScriptOptions.Children.Add(new CustomControls.IntegerParameter(sp));
-                        } else {
-                            ScriptOptions.Children.Add(new CustomControls.StringParameter(sp));
-                        }
-                    }
-                }
+                ConversionOptionsSection.Content = new ScriptForm(_script);
                 DataContext = this;
                 ConversionTitle = _script.NiceName;
                 this.UpdatedConversionParameters = new ConversionParameters()

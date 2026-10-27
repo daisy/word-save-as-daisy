@@ -2075,7 +2075,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                Script pipelineScript = new DtbookCleaner(eventsHandler);
+                Script pipelineScript = new WordToDtbook(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(
                     this.applicationObject.Version,

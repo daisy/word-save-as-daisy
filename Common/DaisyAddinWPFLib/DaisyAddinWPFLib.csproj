@@ -82,6 +82,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomControls\ScriptForm.xaml.cs">
+      <DependentUpon>ScriptForm.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\ScriptTabItem.xaml.cs">
+      <DependentUpon>ScriptTabItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImportForm.xaml.cs">
       <DependentUpon>ImportForm.xaml</DependentUpon>
     </Compile>
@@ -142,6 +148,14 @@
     <Compile Include="About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
+    <Page Include="CustomControls\ScriptForm.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="CustomControls\ScriptTabItem.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImportForm.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -90,7 +90,7 @@
                   BorderThickness="1"
                   BorderBrush="Black"
                   AutomationProperties.HelpText="Additional metadata to make the document more accessible in reading and distribution systems"
-                  Margin="5,0,5,0">
+                  Margin="5,0,5,0" MaxWidth="600">
             <StackPanel>
                 <Grid>
                     <Label Content="Document date"
