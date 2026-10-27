@@ -430,10 +430,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         public ConversionStatus ProcessShapes(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             MSWord.Document currentDoc = (MSWord.Document)preprocessedObject;
             List<string> shapesPath = new List<string>();
-            //List<string> objectShapes = new List<string>();
-            //List<string> imageIds = new List<string>();
-            //List<string> inlineShapes = new List<string>();
-            //List<string> inlineShapeIds = new List<string>();
             try {
                 Exception threadEx = null;
                 Thread staThread = new Thread(
@@ -455,7 +451,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
                                 if (!shape.Name.Contains("Text Box")) {
                                     shape.Select(ref missing);
                                     string bookmark = "Shape_" + shape.ID.ToString();
-                                    string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
+                                    string shapeOutputPath = Path.Combine(outputPath, "Shape" + shape.ID.ToString() + ".png");
                                     WordInstance.Selection.CopyAsPicture();
                                     try {
 
