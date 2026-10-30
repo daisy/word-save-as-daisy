@@ -24,6 +24,26 @@ Any constructive feedbacks are also welcome to help us improve the DAISY Pipelin
 
 ## Feedbacks / Known issues
 
+### 2.7.2 - "The request was aborted: could not create SSL/TLS secure channel" error during conversion
+
+Following a recent update of the DAISY Consortium server hosting the dtbook-2005-3 dtd file, a user reported this error being raised and blocking the conversion.
+The server force the use of more modern security protocols for https communications, and implements redirections from http calls to the matching https pathes to the corresponding file.
+
+The error reported by the addin can be have several known causes :
+- Firewall or proxy settings blocking redirections
+- The install dotnet framework is not updated
+- The install dotnet framework is set to run in compatibility mode
+
+For the latest, this could be the case if you upgraded to Windows 11 from a previous version of Windows, making the dotnet framework to use deprecated security protocols to initiate communication with modern servers that can have those protocols rejected.
+
+A solution provided by a user that fixed the issue was to force the framework to use strong cryptographic protocols by running the following commands in "CMD" : 
+```bat
+reg add "HKLM\SOFTWARE\Microsoft\.NETFramework\v4.0.30319" /v SchUseStrongCrypto /t REG_DWORD /d 1 /f
+
+reg add "HKLM\SOFTWARE\Wow6432Node\Microsoft\.NETFramework\v4.0.30319" /v SchUseStrongCrypto /t REG_DWORD /d 1 /f
+```
+
+
 ### Reuse pipeline app text-to-speech configuration
 
 If you happen to also have the [DAISY Pipeline app]() installed, you can use the text-to-speech configuration file of the app for the addin conversion :
