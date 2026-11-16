@@ -51,7 +51,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                         PathData.InputOrOutput.input,
                         PathData.FileOrDirectory.File,
                         "",
-                        GlobaleSettings.TTSConfigFile ?? ""
+                        Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("tts-config") ?? Instance.TTSConfigFile ?? ""
                     ),
                     false,
                     "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
@@ -63,7 +63,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new ScriptParameter(
                     "audio",
                     "Enable text-to-speech",
-                    new BoolData(false),
+                    new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("audio") ?? "False")),
                     false,
                     "Whether to use a speech synthesizer to produce audio files."
                 )
