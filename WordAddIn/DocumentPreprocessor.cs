@@ -1,6 +1,7 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Events;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -17,8 +18,8 @@ using COMException = System.Runtime.InteropServices.COMException;
 using ConnectFORMATETC = System.Runtime.InteropServices.ComTypes.FORMATETC;
 using ConnectSTGMEDIUM = System.Runtime.InteropServices.ComTypes.STGMEDIUM;
 using IConnectDataObject = System.Runtime.InteropServices.ComTypes.IDataObject;
-using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
 using MSWord = Microsoft.Office.Interop.Word;
+using TYMED = System.Runtime.InteropServices.ComTypes.TYMED;
 
 namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
@@ -427,163 +428,139 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
             return ConversionStatus.ProcessedMathML;
         }
 
-        public ConversionStatus ProcessShapes(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
-            MSWord.Document currentDoc = (MSWord.Document)preprocessedObject;
-            List<string> shapesPath = new List<string>();
-            try {
-                Exception threadEx = null;
-                Thread staThread = new Thread(
-                    delegate () {
-                        try {
-                            object missing = Type.Missing;
-                            string outputPath = ConverterHelper.AppDataSaveAsDAISYDirectory;
 
-                            List<string> warnings = new List<string>();
-                            String fileName = currentDoc.Name.ToString().Replace(" ", "_");
-                            MSWord.Application WordInstance = currentDoc.Application;
-                            WordInstance.Activate();
+        #region Shapes processing
 
-                            System.Diagnostics.Process objProcess = System.Diagnostics.Process.GetCurrentProcess();
+        public ConversionStatus ProcessShapes(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null)
+        {
 
-                            foreach (MSWord.Shape shape in currentDoc.Shapes) {
-                                string name = shape.Name.ToString();
-                                string type = shape.Type.ToString();
-                                if (!shape.Name.Contains("Text Box")) {
-                                    shape.Select(ref missing);
-                                    string bookmark = "Shape_" + shape.ID.ToString();
-                                    string shapeOutputPath = Path.Combine(outputPath, "Shape" + shape.ID.ToString() + ".png");
-                                    WordInstance.Selection.CopyAsPicture();
-                                    try {
+            try
+            {
+                MSWord.Document doc = (MSWord.Document)preprocessedObject;
+                string outputPath = ConverterHelper.AppDataSaveAsDAISYDirectory;
+                string fileName = doc.Name.ToString().Replace(" ", "_");
+                string shapeOutputPrefix = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName));
 
-                                        System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                                        byte[] Ret;
-                                        MemoryStream ms = new MemoryStream();
-                                        image.Save(ms, ImageFormat.Png);
-                                        Ret = ms.ToArray();
-                                        FileStream fs = new FileStream(shapeOutputPath, FileMode.Create, FileAccess.Write);
+                Dictionary<int, Tuple<ShapeType, int>> shapesOrder = new Dictionary<int, Tuple<ShapeType, int>>();
 
-                                        fs.Write(Ret, 0, Ret.Length);
-                                        fs.Flush();
-                                        fs.Dispose();
-
-                                        eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
-                                            "Exported shape " + shapeOutputPath
-                                        ));
-                                        shapesPath.Add(shapeOutputPath);
-                                        //objectShapes.Add(pathShape);
-                                        //imageIds.Add(item.ID.ToString());
-                                    } catch (ClipboardDataException cde) {
-                                        warnings.Add("- Shape " + shape.ID.ToString() + ": " + cde.Message);
-                                    } catch (Exception e) {
-                                        throw e;
-                                    } finally {
-                                        Clipboard.Clear();
-                                    }
-                                }
-                            }
-                            MSWord.Range rng;
-                            foreach (MSWord.Range tmprng in currentDoc.StoryRanges) {
-                                rng = tmprng;
-                                while (rng != null) {
-                                    foreach (MSWord.InlineShape item in rng.InlineShapes) {
-                                        string type = item.Type.ToString();
-                                        if ((item.Type.ToString() != "wdInlineShapeEmbeddedOLEObject") && ((item.Type.ToString() != "wdInlineShapePicture"))) {
-                                            item.Select();
-                                            MSWord.Shape shape = item.ConvertToShape();
-                                            string bookmark = "Shape_" + shape.ID.ToString();
-                                            string shapeOutputPath = Path.Combine(outputPath, Path.GetFileNameWithoutExtension(fileName) + "-Shape" + shape.ID.ToString() + ".png");
-                                            //object range = item.Range;
-                                            //item.Range.Bookmarks.Add(bookmark, ref range);
-                                            //item.Select();
-                                            //item.Range.CopyAsPicture();
-                                            /* does not work anymore with a recent word update
-                                             * - the EnhMetaFileBits now only contains empty data ... */
-                                            try {
-                                                //shape.Select();
-                                                //WordInstance.Selection.CopyAsPicture();
-                                                byte[] buffer = (byte[])item.Range.EnhMetaFileBits;
-                                                ConvertEmfBufferToPng(buffer, shapeOutputPath);
-                                                eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
-                                                    "Exported inlined shape " + shapeOutputPath
-                                                ));
-                                                shapesPath.Add(shapeOutputPath);
-                                                //objectShapes.Add(shapeOutputPath);
-                                                //imageIds.Add(shape.ID.ToString());
-                                                //inlineShapes.Add(shapeOutputPath);
-                                            }
-                                            catch (ClipboardDataException cde) {
-                                                warnings.Add("- InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + cde.Message);
-                                                item.Select();
-                                                WordInstance.Selection.CopyAsPicture();
-                                                try {
-
-                                                    System.Drawing.Image image = ClipboardEx.GetEMF(objProcess.MainWindowHandle);
-                                                    byte[] Ret;
-                                                    MemoryStream ms = new MemoryStream();
-                                                    image.Save(ms, ImageFormat.Png);
-                                                    Ret = ms.ToArray();
-                                                    FileStream fs = new FileStream(shapeOutputPath, FileMode.Create, FileAccess.Write);
-
-                                                    fs.Write(Ret, 0, Ret.Length);
-                                                    fs.Flush();
-                                                    fs.Dispose();
-
-                                                    eventsHandler?.onFeedbackMessageReceived(this, new DaisyEventArgs(
-                                                        "Exported shape " + shapeOutputPath
-                                                    ));
-                                                    shapesPath.Add(shapeOutputPath);
-                                                    //objectShapes.Add(pathShape);
-                                                    //imageIds.Add(item.ID.ToString());
-                                                }
-                                                catch (ClipboardDataException cde2) {
-                                                    warnings.Add("- Second attemp for InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + cde2.Message);
-                                                }
-                                                catch (Exception e) {
-                                                    warnings.Add("- Second attemp for InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + e.Message);
-                                                }
-                                            }
-                                            catch (Exception e) {
-                                                warnings.Add("- InlineShape " + shape.ID.ToString() + " with AltText \"" + item.AlternativeText.ToString() + "\": " + e.Message);
-                                            } finally {
-                                                Clipboard.Clear();
-
-                                            }
-                                        }
-                                    }
-                                    rng = rng.NextStoryRange;
-                                }
-                            }
-                            if (warnings.Count > 0) {
-                                string warningMessage = "Some shapes could not be exported from the document " + currentDoc.Name;
-                                foreach (string warning in warnings) {
-                                    warningMessage += "\r\n" + warning;
-                                }
-                                throw new Exception(warningMessage);
-                            }
-                        } catch (Exception ex) {
-                            threadEx = ex;
-                        }
-                    });
-                staThread.SetApartmentState(ApartmentState.STA);
-                staThread.Start();
-                staThread.Join();
-                document.InlineShapes = shapesPath;
-                if (threadEx != null) {
-                    throw threadEx;
+                for (int i = 1; i <= doc.InlineShapes.Count; i++)
+                {
+                    MSWord.InlineShape inlineShape = doc.InlineShapes[i];
+                    int order = inlineShape.Range.Start;
+                    shapesOrder.Add(order, new Tuple<ShapeType, int>(ShapeType.Inlined, i));
                 }
-                // not used
-                //document.ObjectShapes = objectShapes;
-                //document.InlineShapes = inlineShapes;
-                //document.ImageIds = imageIds;
-                //document.InlineIds = inlineShapeIds;
-            } catch (Exception e) {
+
+                for (int i = 1; i <= doc.Shapes.Count; i++)
+                {
+                    MSWord.Shape shape = doc.Shapes[i];
+                    int order = shape.Anchor.Start;
+                    shapesOrder.Add(order, new Tuple<ShapeType, int>(ShapeType.Anchored, i));
+                }
+
+                List<Tuple<ShapeType, int>> orderedShapes = shapesOrder.OrderBy(x => x.Key).Select(x => x.Value).ToList();
+
+                for (int i = 0; i < orderedShapes.Count; i++)
+                {
+                    int shapeIndex = i + 1;
+                    string message = "";
+                    Thread thread = new Thread(() => message = SaveShape(shapeIndex, orderedShapes[i], doc, shapeOutputPrefix));
+                    thread.SetApartmentState(ApartmentState.STA); // Nécessaire pour le Clipboard
+                    thread.Start();
+                    thread.Join();
+                    eventsHandler?.onPreprocessingWarning(message);
+                }
+
+            }
+            catch (Exception e)
+            {
                 eventsHandler?.onPreprocessingWarning(
                     "An error occured while preprocessing shapes and may prevent the rest of the conversion to success:" +
                     "\r\n- " + e.Message +
                     "\r\n" + e.StackTrace);
             }
+
+
             return ConversionStatus.ProcessedShapes;
         }
+
+        private enum ShapeType
+        {
+            Inlined,
+            Anchored
+        }
+        private static string SaveShape(int id, Tuple<ShapeType, int> realIndex, MSWord.Document doc, string outputPrefix)
+        {
+            try
+            {
+                switch (realIndex.Item1)
+                {
+                    case ShapeType.Inlined:
+                        MSWord.InlineShape inlineShape = doc.InlineShapes[realIndex.Item2];
+                        inlineShape.Select();
+
+                        //MSWord.Shape shape = inlineShape.ConvertToShape();
+                        //string id = shape.ID.ToString();
+                        //string alt = shape.AlternativeText;
+                        switch (inlineShape.Type)
+                        {
+                            //case WdInlineShapeType.wdInlineShapePicture:
+                            //    return $@"Shape {id} ({realIndex.Item1}: {realIndex.Item2}) is a picture, it will be extracted during conversion";
+                            case WdInlineShapeType.wdInlineShapeEmbeddedOLEObject:
+                                return $@"Shape {id} ({realIndex.Item1}: {realIndex.Item2}) is an embedded OLE object, it will not be exported";
+                        }
+                        break;
+                    case ShapeType.Anchored:
+                        MSWord.Shape shape = doc.Shapes[realIndex.Item2];
+                        shape.Select();
+
+                        if (shape.Type == MsoShapeType.msoTextBox)
+                        {
+                            return $@"Shape {id} ({realIndex.Item1}: {realIndex.Item2}) is a text box and will not be saved as an image";
+                        }
+
+                        if (shape.Type == MsoShapeType.msoGroup)
+                        {
+                            // Word only puts "Ole Private Data" on the clipboard for a group shape
+                            // (no CF_BITMAP/CF_DIB/CF_ENHMETAFILE), so Clipboard.ContainsImage() is always false here.
+                            // Read the EMF bits straight from the shape's anchor range instead (no clipboard needed).
+                            byte[] emf = shape.Anchor.EnhMetaFileBits as byte[];
+                            if (emf != null && emf.Length > 0)
+                            {
+                                ConvertEmfBufferToPng(emf, $@"{outputPrefix}-Shape{id}.png");
+                                return $@"Shape {id} ({realIndex.Item1}: {realIndex.Item2}) saved as {outputPrefix}-Shape{id}.png";
+                            }
+                            return $@"Shape {id} ({realIndex.Item1}: {realIndex.Item2}) group could not be saved as image";
+                        }
+
+                        break;
+                    default:
+                        return $@"Unknown shape type {realIndex.Item1} for index {id}";
+                }
+
+                doc.Application.Selection.Copy();
+
+                System.Windows.Forms.IDataObject data = Clipboard.GetDataObject();
+                if (data != null && data.GetDataPresent(DataFormats.Bitmap))
+                {
+                    System.Drawing.Image img = (System.Drawing.Image)data.GetData(DataFormats.Bitmap, true);
+                    using (Bitmap bitmap = new Bitmap(img))
+                    {
+                        bitmap.Save($@"{outputPrefix}-Shape{id}.png", ImageFormat.Png);
+                    }
+                    return $@"Shape {id} ({realIndex.Item1}: {realIndex.Item2}) saved as {outputPrefix}-Shape{id}.png";
+                }
+                else
+                {
+                    return $@"Shape {id} ({realIndex.Item1}: {realIndex.Item2}) could not be saved as image";
+                }
+            }
+            catch (Exception e)
+            {
+                return $@"Shape {id} ({realIndex.Item1}: {realIndex.Item2}) could not be extracted : {e.Message}";
+            }
+        }
+
+        #endregion
 
         public object startPreprocessing(Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null) {
             // reset the focus on the document (or open it as visible) in the word app if it is not a subdoc
@@ -1506,5 +1483,6 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
         }
 
         #endregion
+
     }
 }
