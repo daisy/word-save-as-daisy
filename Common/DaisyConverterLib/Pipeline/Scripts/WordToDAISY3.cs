@@ -46,7 +46,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                         PathData.InputOrOutput.input,
                         PathData.FileOrDirectory.File,
                         "",
-                        Instance.TTSConfigFile ?? ""
+                        Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("tts-config") ?? Instance.TTSConfigFile ?? ""
                     ),
                     false,
                     "Configuration file for the text-to-speech.\r\n\r\n" +

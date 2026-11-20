@@ -368,8 +368,7 @@ namespace Daisy.SaveAsDAISY.Conversion
         private string ttsConfigFile = ""; // A tts config file to use for speech synthesis with pipeline 2
         private string ottTemplateFile = ConverterHelper.DTBookToODTTemplate; // default template for the ODT output of the converter, used for the "Convert to ODT" feature in the pipeline
         private string dontNotifySponsorship = ""; // notify the user about sponsorship
-        private bool useWebserviceRunner = true; // use the webservice runner to run the conversion instead of jni
-        private bool useDAISYPipelineApp = true; // use the pipeline app to run the conversion instead of the embedded engine
+        private bool useDAISYPipelineApp = false; // use the pipeline app to run the conversion instead of the embedded engine
         private string resultsFolder = DefaultResultsFolder; // Default results folder
         private string mistralApiKey = "";
         private string datalabApiKey = "";
@@ -428,7 +427,6 @@ namespace Daisy.SaveAsDAISY.Conversion
                 $"\r\n\t<PrintPageMarker value=\"{printPageMarker}\" />" +
                 $"\r\n\t<DontNotifySponsorship value=\"{dontNotifySponsorship}\" />" +
                 $"\r\n\t<UsePipelineApp value=\"{useDAISYPipelineApp.ToString().ToLower()}\" />" +
-                $"\r\n\t<UseWebserviceRunner value=\"{useWebserviceRunner.ToString().ToLower()}\" />" +
                 $"\r\n\t<ResultsFolder value=\"{(withPrivateData ? resultsFolder : "removed for privacy")}\" />" +
                 $"\r\n\t<MistralApiKey value=\"{(withPrivateData ? mistralApiKey : "removed for privacy")}\" />" +
                 $"\r\n\t<DatalabApiKey value=\"{(withPrivateData ? datalabApiKey : "removed for privacy")}\" />" +
@@ -532,12 +530,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                 var nodeValue = UsePipelineAppSettings.Attributes["value"]?.InnerXml;
                 useDAISYPipelineApp = ConverterHelper.PipelineAppIsInstalled() && (nodeValue == null ? useDAISYPipelineApp : nodeValue == "true");
             }
-            XmlNode UseWebserviceSettings = settingsDocument.SelectSingleNode("//Settings/UseWebserviceRunner");
-            if (UseWebserviceSettings != null)
-            {
-                var nodeValue = UseWebserviceSettings.Attributes["value"]?.InnerXml;
-                useWebserviceRunner = nodeValue == "true";
-            }
+            
             XmlNode MistralApiKeySettings = settingsDocument.SelectSingleNode("//Settings/MistralApiKey");
             if (MistralApiKeySettings != null)
             {
@@ -711,11 +704,6 @@ namespace Daisy.SaveAsDAISY.Conversion
             set => useDAISYPipelineApp = value;
         }
 
-        public bool UseWebserviceRunner
-        {
-            get => useWebserviceRunner;
-            set => useWebserviceRunner = value;
-        }
 
         public string MistralApiKey
         {
