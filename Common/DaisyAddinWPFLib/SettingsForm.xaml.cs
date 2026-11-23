@@ -139,7 +139,7 @@ namespace Daisy.SaveAsDAISY.WPF
             TTSConfigFile.Text = GlobaleSettings.TTSConfigFile;
             TTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
             BrowseTTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
-            OpenPipelineProperties.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
+            //OpenPipelineProperties.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
 
             MistralApiKey.Text = GlobaleSettings.MistralApiKey;
             DatalabApiKey.Text = GlobaleSettings.DatalabApiKey;
@@ -317,7 +317,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 BrowseVoices.IsEnabled = false;
                 TTSConfigFile.IsEnabled = true;
                 BrowseTTSConfigFile.IsEnabled = true;
-                OpenPipelineProperties.IsEnabled = true;
+                //OpenPipelineProperties.IsEnabled = true;
             } else {
                 GlobaleSettings.UseDAISYPipelineApp = true;
                 PreferredVoices.IsEnabled = true;
@@ -326,7 +326,7 @@ namespace Daisy.SaveAsDAISY.WPF
 
                 TTSConfigFile.IsEnabled = false;
                 BrowseTTSConfigFile.IsEnabled = false;
-                OpenPipelineProperties.IsEnabled = false;
+                //OpenPipelineProperties.IsEnabled = false;
             }
         }
         private void UseDAISYPipelineApp_Unchecked(object sender, RoutedEventArgs e)
