@@ -1,4 +1,4 @@
-﻿<Project Sdk="WixToolset.Sdk/7.0.0">
+<Project Sdk="WixToolset.Sdk/7.0.0">
   <ItemGroup>
     <PackageReference Include="WixToolset.UI.wixext" Version="7.0.0" />
     <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
@@ -23,7 +23,7 @@
     <DefineConstants>
 		ProductName=Save as DAISY Add-in for Microsoft Word;
 		Manufacturer=Daisy Consortium;
-		AddinVersion=2.9.5.0;
+		AddinVersion=2.9.6.0;
 		UpgradeCode=81FEF910-4CDE-43B9-8E7B-9F7D34A14765;
 	</DefineConstants>
   </PropertyGroup>

@@ -433,7 +433,9 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007 {
 
         public ConversionStatus ProcessShapes(ref object preprocessedObject, ref Conversion.DocumentProperties document, IConversionEventsHandler eventsHandler = null)
         {
-
+            // TODO : Forwarding the export to DAISY Pipeline for future versions when pipeline app integrates the latest updates on shapes processing
+            //eventsHandler?.onPreprocessingWarning("Shapes processing is now forwarded to DAISY Pipeline");
+            //return ConversionStatus.ProcessedShapes;
             try
             {
                 MSWord.Document doc = (MSWord.Document)preprocessedObject;

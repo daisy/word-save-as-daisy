@@ -40,7 +40,7 @@
             DockPanel.Dock="Top"
          />
         <TabControl Margin="5" DockPanel.Dock="Top">
-            <TabItem Header="General Conversion settings">
+            <TabItem Header="General conversion settings">
                 <StackPanel Margin="5">
                     <Grid>
                         <Label Content="Page numbering"
