@@ -462,8 +462,9 @@ namespace Daisy.SaveAsDAISY.Conversion
                         // in it
                         // NP 2024/06/12 : Richard had a VB code used in WordToEpub to evaluate more accurately the language of a run
                         // I try to adapt the logic here
+                        // NP 2026/11/25 : prioritize paragraph count over runners count, as to align with the word-to-dtbook script updated behaviour
+                        Dictionary<string, int> paralanguagesCount = new Dictionary<string, int>();
                         Languages = new List<string>();
-                        List<int> languagesCount = new List<int>();
                         if (stylesDocument != null && wordContentDocument != null) {
                             string defaultLatin = "";
                             string defaultEastAsia = "";
@@ -559,7 +560,7 @@ namespace Daisy.SaveAsDAISY.Conversion
                                         paragraphComplex = paragraphLanguages[0].Attributes["w:bidi"].Value;
                                     }
                                 }
-
+                                Dictionary<string, int> runlanguagesCount = new Dictionary<string, int>();
                                 XmlNodeList runners = paragraphNode.SelectNodes("./w:r", nsManager);
                                 foreach (XmlNode run in runners) {
                                     // Default to the paragraph languages
@@ -633,26 +634,31 @@ namespace Daisy.SaveAsDAISY.Conversion
                                         langToAdd = runComplex;
                                     }
 
-                                    int langId = Languages.IndexOf(langToAdd);
-                                    if (langId == -1) {
-                                        Languages.Add(langToAdd);
-                                        languagesCount.Add(runText.Length);
+                                    if (!runlanguagesCount.ContainsKey(langToAdd)) {
+                                        runlanguagesCount[langToAdd] = runText.Length;
                                     } else {
-                                        languagesCount[langId] += runText.Length;
+                                        runlanguagesCount[langToAdd] += runText.Length;
                                     }
-
+                                    if(!paralanguagesCount.ContainsKey(langToAdd))
+                                    {
+                                        paralanguagesCount[langToAdd] = 1;
+                                    }
+                                }
+                                if(runlanguagesCount.Count > 0)
+                                {
+                                    string key = runlanguagesCount.ToList().OrderByDescending(x => x.Value).Select(x => x.Key).First();
+                                    if (!paralanguagesCount.ContainsKey(key))
+                                    {
+                                        paralanguagesCount[key] = 1;
+                                    }
+                                    else
+                                    {
+                                        paralanguagesCount[key] += 1;
+                                    }
                                 }
                             }
                         }
-                        if(Languages.Count > 0) {
-                            // sort languages based on their associated counter
-                            // ( descending order )
-                            Languages = Languages
-                                .Select((x, i) => (x, i))
-                                .OrderByDescending(t => languagesCount[t.i])
-                                .Select(t => t.x)
-                                .ToList();
-                        }
+                        Languages = paralanguagesCount.ToList().OrderByDescending(x => x.Value).Select(x => x.Key).ToList();
 
                         // retrieve custom properties
                         XmlDocument customProperties = getFirstDocumentFromRelationshipOrUri(
