@@ -92,7 +92,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
         public override void StartJob(string scriptName, Dictionary<string, object> options = null, string outputPath = "") {
             
             try {
-                LaunchEngine(); // ensure the app is running if it as been closed
+                LaunchEngine(true, events); // ensure the app is running if it as been closed
                 _webservice.WaitForActivation(events);
                 JobData data = _webservice.LaunchJob(scriptName, options);
                 List<JobStatus> running = new List<JobStatus>() {
@@ -160,7 +160,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
         /// Check if the app is installed and launch it if it is not already running.
         /// </summary>
         /// <exception cref="InvalidOperationException"></exception>
-        public void LaunchEngine(bool restart = false)
+        public void LaunchEngine(bool restart = false, IConversionEventsHandler events = null)
         {
             if(restart || _webservice == null)
             {
@@ -171,7 +171,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                 else
                 {
                     Engine.StopEmbeddedEngine();
-                    _webservice = StartDAISYPipelineAppWebservice();
+                    _webservice = StartDAISYPipelineAppWebservice(events);
                 }
             }
             
@@ -223,7 +223,10 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2
                     throw new InvalidOperationException("Could not launch DAISY Pipeline app, the process has exited with error code " + appLaunched.ExitCode);
                 }
                 //return appLaunched;
-            } // else return processes[0];
+            } else
+            {
+                events?.onProgressMessageReceived(null, new DaisyEventArgs("DAISY Pipeline app is running."));
+            }
 
             string settingsData = File.ReadAllText(System.IO.Path.Combine(ConverterHelper.PipelineAppDataPath, "settings.json"));
             string host = SeekWebserviceHostJSON.Match(settingsData).Groups[1].Value;
