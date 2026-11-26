@@ -19,7 +19,9 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
             Script = script;
             Header = Script.NiceName;
             AutomationProperties.SetHelpText(this, Script.Description);
-            Content = new ScriptForm(Script);
+            // TODO : for now we hide the default settings keys here, this might need a change
+            // Only language is hidden, as it is computed from the document properties
+            Content = new ScriptForm(Script, new System.Collections.Generic.List<string>() { "language" });
         }
     }
 }

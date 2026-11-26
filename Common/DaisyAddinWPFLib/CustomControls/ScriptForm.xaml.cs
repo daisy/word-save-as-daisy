@@ -23,10 +23,13 @@ namespace Daisy.SaveAsDAISY.WPF.CustomControls
     /// </summary>
     public partial class ScriptForm : StackPanel
     {
-        public ScriptForm(Script script)
+        public ScriptForm(Script script, List<string> hiddenFieldsKeys = null)
         {
             InitializeComponent();
-            foreach (var item in script.Parameters.Where(kv => kv.Key != "input" && kv.Key != "output"))
+            List<string> hiddenFieldsKeysCombined = 
+                (hiddenFieldsKeys ?? new List<string>())
+                .Concat(new List<string> { "input", "output" }).ToList();
+            foreach (var item in script.Parameters.Where(kv => !hiddenFieldsKeysCombined.Contains(kv.Key)))
             {
                 ScriptParameter sp = item.Value;
                 ParameterDataBase parameter = sp.ParameterData;
