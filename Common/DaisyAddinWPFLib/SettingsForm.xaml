@@ -208,28 +208,65 @@
                         x:Name="BrowseOpenOfficeTemplate"
                         Click="BrowseOpenOfficeTemplate_Click" />
                     </Grid>
-                    <Label Content="Mistral API key for PDF OCR"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   x:Name="MistralApiKeyLabel" />
-                    <Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Mistral API key for PDF OCR"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            x:Name="MistralApiKeyLabel" />
+                        <Label Content=""
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            x:Name="MistralApiKeyStatus" />
+                    </StackPanel>
+                    
+                    <DockPanel LastChildFill="True">
+                        <Button Content="Check"
+                            DockPanel.Dock="Right"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            AutomationProperties.HelpText="Check if the Mistral API key is valid"
+                            Width="72"
+                            x:Name="CheckMistralApiKey"
+                            Click="CheckMistralApiKey_Click" />
                         <TextBox TextWrapping="NoWrap"
-                         Text=""
-                         VerticalAlignment="Center"
-                         x:Name="MistralApiKey"
-                         AutomationProperties.LabeledBy="{Binding ElementName=MistralApiKeyLabel}" />
-                    </Grid>
-                    <Label Content="Datalab API key for PDF OCR"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        x:Name="DatalabApiKeyLabel" />
-                    <Grid>
+                             Text=""
+                             VerticalAlignment="Center"
+                             x:Name="MistralApiKey"
+                             TextChanged="MistralApiKey_TextChanged"
+                             AutomationProperties.LabeledBy="{Binding ElementName=MistralApiKeyLabel}"
+                             AutomationProperties.HelpText="{Binding ElementName=MistralApiKeyStatus, Path=Content}"
+                             Margin="0,0,5,0" />
+                    </DockPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Datalab API key for PDF OCR"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            x:Name="DatalabApiKeyLabel" />
+                        <Label Content=""
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            x:Name="DatalabApiKeyStatus" />
+                    </StackPanel>
+                    
+                    <DockPanel LastChildFill="True">
+                        <Button Content="Check"
+                            DockPanel.Dock="Right"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            AutomationProperties.HelpText="Check if the Datalab API key is valid"
+                            Width="72"
+                            x:Name="CheckDatalabApiKey"
+                            Click="CheckDatalabApiKey_Click" /> 
                         <TextBox TextWrapping="NoWrap"
                             Text=""
                             VerticalAlignment="Center"
                             x:Name="DatalabApiKey"
-                            AutomationProperties.LabeledBy="{Binding ElementName=DatalabApiKeyLabel}" />
-                    </Grid>
+                            TextChanged="DatalabApiKey_TextChanged"
+                            AutomationProperties.LabeledBy="{Binding ElementName=DatalabApiKeyLabel}"
+                            AutomationProperties.HelpText="{Binding ElementName=DatalabApiKeyStatus, Path=Content}"
+                            Margin="0,0,5,0" />
+
+                    </DockPanel>
                     <CheckBox Content="Disable the external services' warning dialog"
                       VerticalAlignment="Center"
                       Margin="5"

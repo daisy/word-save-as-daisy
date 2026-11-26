@@ -744,30 +744,13 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         public bool MistralKeyIsValid()
         {
-            if(string.IsNullOrWhiteSpace(mistralApiKey))
-            {
-                return false;
-            }
-            var url = "https://api.mistral.ai/v1/models";
-            // tries to fetch available model from mistral API to check if the key is valid. If it is not valid, it will throw an exception.
-            HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", mistralApiKey);
-            var response  = client.GetAsync(url).GetAwaiter().GetResult();
-            return response.IsSuccessStatusCode;
+            return ConverterHelper.CheckIfMistralKeyIsValid(mistralApiKey);
         }
 
         public bool DatalabKeyIsValid()
         {
-            if(string.IsNullOrWhiteSpace(datalabApiKey))
-            {
-                return false;
-            }
-            var url = "https://www.datalab.to/api/v1/user_health";
-            HttpClient client = new HttpClient();
-            // Datalab uses a X-API-Key header for authentication
-            client.DefaultRequestHeaders.Add("X-API-Key", datalabApiKey);
-            var response = client.GetAsync(url).GetAwaiter().GetResult();
-            return response.IsSuccessStatusCode;
+            return ConverterHelper.CheckIfDatalabKeyIsValid(datalabApiKey);
+
         }
     }
 }

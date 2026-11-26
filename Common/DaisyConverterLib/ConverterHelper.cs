@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Packaging;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -220,6 +221,52 @@ namespace Daisy.SaveAsDAISY.Conversion {
             {
                 AddinLogger.Error("An error occured while looking for an epub file to open in Ace by DAISY", e);
             }
+        }
+
+        public static bool CheckIfMistralKeyIsValid(string mistralApiKey)
+        {
+            if (string.IsNullOrWhiteSpace(mistralApiKey))
+            {
+                return false;
+            }
+            try
+            {
+                // Disabling testing of the Mistral API key for now, as it may cause issues if the API is down or if the user has no internet connection.
+                var url = "https://api.mistral.ai/v1/models";
+                // tries to fetch available model from mistral API to check if the key is valid. If it is not valid, it will throw an exception.
+                HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", mistralApiKey);
+                var response = client.GetAsync(url).GetAwaiter().GetResult();
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                AddinLogger.Error($"Error while checking Mistral API key: {e.Message}", e);
+                return false;
+            }
+        }
+
+        public static bool CheckIfDatalabKeyIsValid(string datalabApiKey)
+        {
+            if (string.IsNullOrWhiteSpace(datalabApiKey))
+            {
+                return false;
+            }
+            try
+            {
+                var url = "https://www.datalab.to/api/v1/user_health";
+                HttpClient client = new HttpClient();
+                // Datalab uses a X-API-Key header for authentication
+                client.DefaultRequestHeaders.Add("X-API-Key", datalabApiKey);
+                var response = client.GetAsync(url).GetAwaiter().GetResult();
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception e)
+            {
+                AddinLogger.Error($"Error while checking Datalab API key: {e.Message}", e);
+                return false;
+            }
+
         }
 
     }

@@ -157,7 +157,17 @@ namespace Daisy.SaveAsDAISY.WPF
                     new ScriptTabItem(script)
                 );
             }
-            
+            if(!string.IsNullOrEmpty(GlobaleSettings.DatalabApiKey))
+            {
+                DatalabApiKeyStatus.Content = ConverterHelper.CheckIfDatalabKeyIsValid(GlobaleSettings.DatalabApiKey) ? "(key is valid)" : "(key is invalid)";
+                CheckDatalabApiKey.IsEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(GlobaleSettings.MistralApiKey))
+            {
+                MistralApiKeyStatus.Content = ConverterHelper.CheckIfMistralKeyIsValid(GlobaleSettings.MistralApiKey) ? "(key is valid)" : "(key is invalid)";
+                CheckMistralApiKey.IsEnabled = false;
+            }
+
         }
 
         private void ImageSizeOptions_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -577,6 +587,94 @@ namespace Daisy.SaveAsDAISY.WPF
         private void PageNumbering_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             PageMarkerGrid.IsEnabled = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex] == PageNumberingChoice.Enum.PrintPageMarker;
+        }
+
+        private void CheckMistralApiKey_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(MistralApiKey.Text))
+            {
+                MessageBox.Show("Please enter a Mistral API key before checking it.", "Missing API Key", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                bool isValid = ConverterHelper.CheckIfMistralKeyIsValid(MistralApiKey.Text.Trim());
+                if (isValid)
+                {
+                    MessageBox.Show("The Mistral API key is valid.", "API Key Valid", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MistralApiKeyStatus.Content = "(key is valid)";
+                }
+                else
+                {
+                    MessageBox.Show("The Mistral API key is invalid.", "API Key Invalid", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MistralApiKeyStatus.Content = "(key is invalid)";
+                }
+                CheckMistralApiKey.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while checking the Mistral API key: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        private void CheckDatalabApiKey_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(DatalabApiKey.Text))
+            {
+                MessageBox.Show("Please enter a Datalab API key before checking it.", "Missing API Key", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                bool isValid = ConverterHelper.CheckIfDatalabKeyIsValid(DatalabApiKey.Text.Trim());
+                if (isValid)
+                {
+                    MessageBox.Show("The Datalab API key is valid.", "API Key Valid", MessageBoxButton.OK, MessageBoxImage.Information);
+                    DatalabApiKeyStatus.Content = "(key is valid)";
+                }
+                else
+                {
+                    MessageBox.Show("The Datalab API key is invalid.", "API Key Invalid", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DatalabApiKeyStatus.Content = "(key is invalid)";
+                }
+                CheckDatalabApiKey.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while checking the Datalab API key: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MistralApiKey_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(MistralApiKey.Text))
+            {
+                MistralApiKeyStatus.Content = "";
+                CheckMistralApiKey.IsEnabled = false;
+            }
+            else
+            {
+                MistralApiKeyStatus.Content = "(click on the check button to confirm your key is valid)";
+                CheckMistralApiKey.IsEnabled = true;
+            }
+
+        }
+
+        private void DatalabApiKey_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(DatalabApiKey.Text))
+            {
+                DatalabApiKeyStatus.Content = "";
+                CheckDatalabApiKey.IsEnabled = false;
+            }
+            else
+            {
+                DatalabApiKeyStatus.Content = "(click on the check button to confirm your key is valid)";
+                CheckDatalabApiKey.IsEnabled = true;
+            }
         }
     }
 }
