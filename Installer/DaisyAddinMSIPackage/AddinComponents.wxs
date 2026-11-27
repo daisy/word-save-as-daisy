@@ -25,17 +25,11 @@
 		<Component Id="DaisyConverterLib.dll" Guid="6A2E273F-22B9-4016-8A1F-B0A03B4DCB1B" >
 			<File Id="___var.DaisyConverterLib.TargetFileName_" Name="$(var.DaisyConverterLib.TargetFileName)" Source="$(var.DaisyConverterLib.TargetPath)" KeyPath="yes" Checksum="yes" />
 		</Component>
-		<Component Id="JNIWrapper.exe" Guid="8DE5E300-B1FD-45B2-871C-4606C43C437E" >
-			<File Id="___var.JNIWrapper.TargetFileName_" Name="$(var.JNIWrapper.TargetFileName)" Source="$(var.JNIWrapper.TargetPath)" KeyPath="yes" Checksum="yes" />
-		</Component>
 		<Component Id="Localization.dll" Guid="A0430D6D-800F-4D97-9541-0A8F2BC1797A">
 			<File Id="Localization.dll.file" Source="$(var.Localization.TargetPath)" KeyPath="yes" />
 		</Component>
 
-		<!-- Vendored JNET dll - regenerate and copy jnet into resources for updating it-->
-		<Component Id="JNET.dll">
-			<File Id="JNET.dll" Name="JNET.dll" Source="$(var.SolutionDir)resources\JNET.dll" KeyPath="yes" />
-		</Component>
+
 		<Component Id="WindowsBase.dll" Guid="BF88F0CE-FBAB-4323-83B2-3D91C42DBF10">
 			<File Id="WindowsBase.dll" Name="WindowsBase.dll" Source="$(var.SolutionDir)resources\WindowsBase.dll" KeyPath="yes" />
 		</Component>
@@ -75,6 +69,9 @@
 
 			<File Id="Microsoft.Toolkit.Uwp.Notifications.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Microsoft.Toolkit.Uwp.Notifications.dll" />
 			<File Id="Newtonsoft.Json.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Newtonsoft.Json.dll" />
+			<!-- NP 2026/10/14 : additionnal dependencies -->
+			<File Id="Microsoft.Vbe.Interop.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\Microsoft.Vbe.Interop.dll" />
+			<File Id="log4net.dll" Source="$(var.DaisyWord2007AddIn.TargetDir)\log4net.dll" />
 
 			<File Id="filE87E1845171015B8772E9D7B2E2B8495" KeyPath="yes" Source="$(var.DaisyWord2007AddIn.TargetPath)" />
 			<ProgId Id="Record" />
@@ -138,9 +135,6 @@
 			</RegistryKey>
 		</Component>
 
-		<Component Id="log4net.dll" Guid="944F8F0B-3F51-4BC8-8DF3-EF3C44DC0FBE">
-			<File Id="log4net.dll" Name="log4net.dll" Source="$(var.SolutionDir)resources\log4net.dll" />
-		</Component>
 		<Component Id="Documentation" Guid="D0EEE0DF-BA91-4317-A63A-1D93C11B43ED">
 			<File Id="SaveAsDAISY_Instruction_Manual_July_2023.docx" Name="SaveAsDAISY_Instruction_Manual_July_2023.docx" Source="$(var.SolutionDir)docs\SaveAsDAISY_Instruction_Manual_July_2023.docx" />
 			<File Id="Accessibility_demofile.docx" Name="Accessibility_demofile.docx" Source="$(var.SolutionDir)docs\Accessibility_demofile.docx" />

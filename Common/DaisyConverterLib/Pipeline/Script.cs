@@ -76,13 +76,13 @@ namespace Daisy.SaveAsDAISY.Conversion
 
         protected virtual Runner GetRunner()
         {
-            if (_settings.UseWebserviceRunner)
+            if (_settings.UseDAISYPipelineApp)
             {
                 return WebserviceRunner.GetInstance(EventsHandler);
             }
             else
             {
-                return JNIWrapperRunner.GetInstance(EventsHandler);
+                return EmbeddedRunner.GetInstance(EventsHandler);
             }
         }
 

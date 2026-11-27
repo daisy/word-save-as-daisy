@@ -254,7 +254,11 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             {
                 return false;
             }
-            if(control.Id == "ImportPDFTabButton" && ConverterSettings.Instance.MistralApiKey == "")
+            if(control.Id == "ImportPDFMistralTabButton" && !ConverterSettings.Instance.MistralKeyIsValid())
+            {
+                return false;
+            }
+            if(control.Id == "ImportPDFDatalabTabButton" && !ConverterSettings.Instance.DatalabKeyIsValid())
             {
                 return false;
             }
@@ -589,9 +593,12 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             { "toggleValidateTabButton", "validate.png" },
             { "ImportDaisyStylesTabButton", "import.png" },
             { "ImportTabMenu", "import.png" },
+            { "ImportDTBookTabMenu", "import.png" },
             { "ImportODTTabButton", "import.png" },
             { "ImportRTFTabButton", "import.png" },
-            { "ImportPDFTabButton", "import.png" },
+            { "ImportPDFTabMenu", "import.png" },
+            { "ImportPDFMistralTabButton", "import.png" },
+            { "ImportPDFDatalabTabButton", "import.png" },
             { "AddFootnotesTabButton", "footnotes.png" },
             { "DocumentLanguageTabButton", "Language.png" },
             { "SettingsTabButton", "gear.png" },
@@ -661,7 +668,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             try
             {
                 // Reload the ribbon to update the visibility of controls depending on the settings
-                daisyRibbon?.InvalidateControl("ImportPDFTabButton");
+                daisyRibbon?.InvalidateControl("ImportPDFMistralTabButton");
+                daisyRibbon?.InvalidateControl("ImportPDFDatalabTabButton");
 
                 if (ConverterSettings.Instance.UseDAISYPipelineApp)
                 {
@@ -1341,6 +1349,8 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
 
                         currentDocument = form.DocumentProps;
                         converter.ConversionParameters = form.UpdatedConversionParameters;
+                        // TODO : add the possibility to select the page numbering style in the conversion parameters form
+                        converter.ConversionParameters.PageNumbering = ConverterSettings.Instance.PageNumbering;
 
 
                         DirectoryInfo finalOutput = new DirectoryInfo(
@@ -1457,7 +1467,34 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                 {
                     eventsHandler.onConversionSuccess();
                     Process.Start(result.ResultPath);
+                    string[] epubFiles = Directory.GetFiles(result.ResultPath, "*.epub");
+                    if (epubFiles.Length == 0)
+                    {
+                        return;
+                    }
+                    string epubFile = epubFiles[0];
+                    string acePath = ConverterHelper.FindAceByDaisyExecutable();
+                    if (acePath == null)
+                    {
+                        return;
+                    } else
+                    {
 
+                        bool performAceCheck = false;
+                        if(ConverterSettings.Instance.CheckEpubWithAce == ConverterSettings.CheckEpubWithAceChoice.Enum.Ask)
+                        {
+                            var res = MessageBox.Show(Messages.AskEpubControlWithAce, Messages.AskEpubControlWithAceTitle, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            performAceCheck = res == DialogResult.Yes;
+                        } else if (ConverterSettings.Instance.CheckEpubWithAce == ConverterSettings.CheckEpubWithAceChoice.Enum.Yes)
+                        {
+                            performAceCheck = true;
+                }
+                        if(performAceCheck)
+                        {
+                            ConverterHelper.LaunchAceByDaisyOnEpub(acePath, epubFile);
+                        }
+                    }
+                    
                 }
                 else if (result.Failed)
                 {
@@ -1799,10 +1836,23 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             }
         }
 
-        public void ImportPDF(IRibbonControl _)
+        public void ImportPDFMistral(IRibbonControl _)
         {
             try
             {
+                if (!ConverterSettings.Instance.DisableExternalServiceWarning)
+                {
+                    DialogResult result = MessageBox.Show(
+                        string.Format(Messages.ResourceManager.GetString("WarningExternalService"), "MistralAI"),
+                        Messages.ResourceManager.GetString("WarningExternalServiceTitle"),
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+                    if (result == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
                 WPFEventsHandler eventsHandler = new WPFEventsHandler();
                 Script pipelineScript = new PDFToWordMistralOCR(eventsHandler);
                 ImportForm import = new ImportForm(pipelineScript);
@@ -1896,6 +1946,121 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
                 report.ShowDialog();
             }
         }
+
+        public void ImportPDFDatalab(IRibbonControl _)
+        {
+            try
+            {
+                if(!ConverterSettings.Instance.DisableExternalServiceWarning)
+                {
+                    DialogResult result = MessageBox.Show(
+                        string.Format(Messages.ResourceManager.GetString("WarningExternalService"), "Datalab"),
+                        Messages.ResourceManager.GetString("WarningExternalServiceTitle"),
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning
+                    );
+                    if (result == DialogResult.No)
+                    {
+                        return;
+                    }
+                }
+                
+                WPFEventsHandler eventsHandler = new WPFEventsHandler();
+                Script pipelineScript = new PDFToWordDatalabOCR(eventsHandler);
+                ImportForm import = new ImportForm(pipelineScript);
+                if (import.ShowDialog() == true)
+                {
+                    eventsHandler.onPipelineProcessingInfo("Launching conversion ...");
+                    try
+                    {
+                        string inputFile = import.ScriptToRun.Parameters["input"].Value.ToString();
+                        DirectoryInfo finalOutput = new DirectoryInfo(
+                            Path.Combine(
+                                import.ScriptToRun.Parameters["output"].Value.ToString(),
+                                string.Format(
+                                    "{0}_{2}_{1}",
+                                    Path.GetFileNameWithoutExtension(inputFile),
+                                    DateTime.Now.ToString("yyyyMMddHHmmssffff"),
+                                    pipelineScript.Name
+                                )
+                            )
+                        );
+
+                        // Update the output to create the intermediate folder for the conversion result
+                        import.ScriptToRun.Parameters["output"].Value = Path.Combine(finalOutput.FullName, Path.GetFileNameWithoutExtension(inputFile) + ".docx");
+
+                        import.ScriptToRun.ExecuteScript("");
+
+                        // search docx file in output folder
+                        var docxFile = finalOutput.GetFiles("*.docx");
+                        if (docxFile != null && docxFile.Length > 0)
+                        {
+
+                            try
+                            {
+                                var doc = this.applicationObject.Documents.Open(FileName: docxFile[0].FullName, Visible: true, ConfirmConversions: true);
+                                if (doc == null)
+                                {
+                                    throw new Exception("The converted file could not be opened directly from Word (maybe filename is too long).");
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                AddinLogger.Error(ex);
+                                MessageBox.Show(
+                                    "Conversion completed but an error occured while opening the converted file in Word :\r\n"
+                                    + ex.Message +
+                                    "\r\nPlease try to manually open the file from its location at: " + docxFile[0].FullName,
+                                    "Conversion completed",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Warning
+                                );
+                            }
+                            // Check if the document has been opened
+
+
+                            //this.applicationObject.Documents.Open(docxFile[0].FullName);
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "Conversion completed but no DOCX file found in the output folder",
+                                "Conversion completed",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning
+                            );
+                        }
+                    }
+                    catch (OperationCanceledException)
+                    {
+                        eventsHandler.onConversionCanceled();
+                    }
+                    catch (JobException jex)
+                    {
+                        AddinLogger.Error(jex);
+                        MessageBox.Show(
+                            jex.Message,
+                            "Conversion failed",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                        );
+                    }
+                    catch (Exception e)
+                    {
+                        AddinLogger.Error(e);
+                        ExceptionReport report = new ExceptionReport(e);
+                        report.ShowDialog();
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                ExceptionReport report = new ExceptionReport(e);
+                report.ShowDialog();
+            }
+        }
+
         #endregion
 
         #region Multiple documents conversion
@@ -1910,7 +2075,7 @@ namespace Daisy.SaveAsDAISY.Addins.Word2007
             {
                 GraphicalEventsHandler eventsHandler = new GraphicalEventsHandler();
                 IDocumentPreprocessor preprocess = new DocumentPreprocessor(applicationObject);
-                Script pipelineScript = new DtbookCleaner(eventsHandler);
+                Script pipelineScript = new WordToDtbook(eventsHandler);
 
                 ConversionParameters conversion = new ConversionParameters(
                     this.applicationObject.Version,

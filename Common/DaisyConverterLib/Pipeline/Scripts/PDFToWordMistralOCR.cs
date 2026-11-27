@@ -12,8 +12,9 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
         public PDFToWordMistralOCR(IConversionEventsHandler e)
             : base(e)
         {
-            this.name = "pdf-to-word-mistral-ocr";
+            this.name = "pdf-to-word-mistral";
             this.niceName = "PDF to Word using Mistral OCR (experimental)";
+            this.description = "Transforms a PDF into a Microsoft Office Word (.docx) document, powered by Mistral OCR.\r\nThis script is an early development phase and has not been tested with a wide range of input documents yet.";
 
             _parameters.Add("input", new ScriptParameter(
                 "source",
@@ -48,6 +49,13 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 false,
                 "The Mistral OCR model to be used."
             ));
+            _parameters.Add("include-page-numbers", new ScriptParameter(
+                "include-page-numbers",
+                "Include Page Numbers",
+                new BoolData(false),
+                false,
+                "Whether or not to include print page break indicators"
+            ));
             _parameters.Add("include-html", new ScriptParameter(
                 "include-html",
                 "Include HTML",
@@ -65,7 +73,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
         // Force using the embedded engine for PDF to word conversion
         protected override Runner GetRunner()
         {
-            return JNIWrapperRunner.GetInstance(EventsHandler);
+            return EmbeddedRunner.GetInstance(EventsHandler);
         }
 
 

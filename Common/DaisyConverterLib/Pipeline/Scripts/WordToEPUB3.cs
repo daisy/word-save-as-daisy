@@ -14,9 +14,8 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
 
         private static ConverterSettings GlobaleSettings = ConverterSettings.Instance;
         public WordToEPUB3(IConversionEventsHandler e)
-            : base(e)
+            : base("word-to-epub3", e)
         {
-            this.name = "word-to-epub3";
             this.niceName = "Export to EPUB3";
             _parameters.Add("output", 
                 new ScriptParameter(
@@ -39,7 +38,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                             { "No validation", "off" },
                             { "Report validation issues", "report" },
                             { "Abort on validation issues", "abort" },
-                        }, "off"),
+                        }, Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("validation") ?? "off"),
                     false,
                     "Whether to abort on validation issues."
                 )
@@ -52,7 +51,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                         PathData.InputOrOutput.input,
                         PathData.FileOrDirectory.File,
                         "",
-                        GlobaleSettings.TTSConfigFile ?? ""
+                        Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("tts-config") ?? Instance.TTSConfigFile ?? ""
                     ),
                     false,
                     "Configuration file for the text-to-speech.\r\n\r\n[More details on the configuration file format](http://daisy.github.io/pipeline/Get-Help/User-Guide/Text-To-Speech/).",
@@ -64,7 +63,7 @@ namespace Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts
                 new ScriptParameter(
                     "audio",
                     "Enable text-to-speech",
-                    new BoolData(false),
+                    new BoolData(bool.Parse(Instance.ExportScriptsDefaults.GetValue(name)?.GetValue("audio") ?? "False")),
                     false,
                     "Whether to use a speech synthesizer to produce audio files."
                 )

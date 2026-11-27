@@ -1,4 +1,4 @@
-﻿<Project Sdk="WixToolset.Sdk/7.0.0">
+<Project Sdk="WixToolset.Sdk/7.0.0">
   <ItemGroup>
     <PackageReference Include="WixToolset.UI.wixext" Version="7.0.0" />
     <PackageReference Include="WixToolset.Util.wixext" Version="7.0.0" />
@@ -7,10 +7,8 @@
     <ProjectReference Include="..\..\Common\DaisyAddinLib\DaisyAddinLib.csproj" />
     <ProjectReference Include="..\..\Common\DaisyAddinWPFLib\DaisyAddinWPFLib.csproj" />
     <ProjectReference Include="..\..\Common\DaisyConverterLib\DaisyConverterLib.csproj" />
-    <ProjectReference Include="..\..\Common\JNIWrapper\JNIWrapper.csproj" />
     <ProjectReference Include="..\..\Common\Localization\Localization.csproj" />
     <ProjectReference Include="..\..\Common\ManagedAggregator\ManagedAggregator.csproj" />
-    <ProjectReference Include="..\..\jnet\JNET.csproj" />
     <ProjectReference Include="..\..\WordAddIn\DaisyWord2007AddIn.csproj" />
     <ProjectReference Include="..\WixCustomActions\WixCustomActions.csproj" />
   </ItemGroup>
@@ -25,7 +23,7 @@
     <DefineConstants>
 		ProductName=Save as DAISY Add-in for Microsoft Word;
 		Manufacturer=Daisy Consortium;
-		AddinVersion=2.9.5.0;
+		AddinVersion=2.9.6.0;
 		UpgradeCode=81FEF910-4CDE-43B9-8E7B-9F7D34A14765;
 	</DefineConstants>
   </PropertyGroup>

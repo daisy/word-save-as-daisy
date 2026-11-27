@@ -3,22 +3,15 @@
 
 	  
 	  <!-- Application data folder where are stored the default settings and prepopulated validation xml -->
-	  <StandardDirectory Id="AppDataFolder">
+	  <!--<StandardDirectory Id="AppDataFolder">
 		<Directory Id="SaveAsDAISYAppData" Name="SaveAsDAISY" >
 			<Component Id="ApplicationDataComponent" Guid="cc509cb7-c1a1-46cf-8c62-7cbb0017783c">
-				<RemoveFolder Id="RemoveAppRootDirectory" On="uninstall" />
-				<!-- Validation xml -->
-				<File Id="prepopulated_validationVer21.xml" Name="prepopulated_validationVer21.xml" Source="$(var.SolutionDir)resources\prepopulated_validationVer21.xml" />
-				<RegistryKey Root="HKCU" Key="Software\DAISY\Save-as-DAISY Word Addin" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
-					<RegistryValue Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes" />
-				</RegistryKey>
-			</Component>
-			<Component Id="DPAppFakeComponent" Guid="3183e249-7e6c-4199-863d-adabec0089d7">
-				<RegistryValue Root="HKCU" Key="Software\DAISY\Save-as-DAISY Word Addin" Name="WithDPAPP" Type="integer" Value="1" KeyPath="yes" />
+				
 			</Component>
 		</Directory>
-	</StandardDirectory>
+	</StandardDirectory>-->
 	<StandardDirectory Id="ProgramMenuFolder">
+		
 		<Directory Id="SaveAsDAISYShortcuts" Name="Save-as-DAISY Word Addin"  >
 			<Component Id="ApplicationShortcut" Guid="26FA1CA4-6C3E-4383-936B-19D84B3ED531">
 				<Shortcut Id="ApplicationStartMenuShortcut1" Name="SaveAsDAISY Instruction Manual" Description="SaveAsDAISY Instruction Manual" Target="[INSTALLDIR]SaveAsDAISY_Instruction_Manual_July_2023.docx" WorkingDirectory="APPLICATIONFOLDER" />
@@ -34,6 +27,15 @@
 		  <Directory Id="DAISYDIR" Name="DAISY Consortium"  >
 			  <!-- Program Files/Daisy/SaveAsDAISY -->
 			  <Directory Id="APPLICATIONFOLDER" Name="Save-as-DAISY Word Addin">
+				  <Component Id="DPAppFakeComponent" Guid="3183e249-7e6c-4199-863d-adabec0089d7">
+					  <RegistryValue Root="HKCU" Key="Software\DAISY\Save-as-DAISY Word Addin" Name="WithDPAPP" Type="integer" Value="1" KeyPath="yes" />
+				  </Component>
+				  <Component Id="ApplicationDataComponent" Guid="cc509cb7-c1a1-46cf-8c62-7cbb0017783c">
+					  <File Id="prepopulated_validationVer21.xml" Name="prepopulated_validationVer21.xml" Source="$(var.SolutionDir)resources\prepopulated_validationVer21.xml" />
+					  <RegistryKey Root="HKCU" Key="Software\DAISY\Save-as-DAISY Word Addin" ForceCreateOnInstall="yes" ForceDeleteOnUninstall="yes">
+						  <RegistryValue Name="Version" Value="[ProductVersion]" Type="string" KeyPath="yes" />
+					  </RegistryKey>
+				  </Component>
 				  <Directory Id="JapanResourcesFolder" Name="ja-JP" />
 				  <Directory Id="RussianResourcesFolder" Name="ru-RU" />
 				  <Directory Id="FrenchResourcesFolder" Name="fr" />

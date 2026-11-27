@@ -1,6 +1,8 @@
 ﻿using Daisy.SaveAsDAISY.Conversion;
 using Daisy.SaveAsDAISY.Conversion.Pipeline;
 using Daisy.SaveAsDAISY.Conversion.Pipeline.Pipeline2;
+using Daisy.SaveAsDAISY.Conversion.Pipeline.Scripts;
+using Daisy.SaveAsDAISY.WPF.CustomControls;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -74,17 +76,32 @@ namespace Daisy.SaveAsDAISY.WPF
             {"End of levels", FootnotesPositionChoice.Enum.End}
         };
 
-        
+        private static readonly Dictionary<string, CheckEpubWithAceChoice.Enum> CheckEpubWithAceChoices = new Dictionary<string, CheckEpubWithAceChoice.Enum>
+        {
+            {"Always control epubs",CheckEpubWithAceChoice.Enum.Yes },
+            {"Ask when epub generation has succeeded", CheckEpubWithAceChoice.Enum.Ask},
+            {"Never control epubs", CheckEpubWithAceChoice.Enum.No}
+        };
+
+        List<Script> ExportScripts = new List<Script>()
+        {
+            new WordToDtbook(null),
+            new WordToDAISY3(null),
+            new WordToDAISY202(null),
+            new WordToEPUB3(null),
+            new WordToMP3(null)
+        };
+
 
         public SettingsForm()
         {
             InitializeComponent();
 
             TranslateCharacteStyles.IsChecked = GlobaleSettings.CharacterStyle;
-            DisableSponsorhip.IsChecked = GlobaleSettings.DontNotifySponsorship;
+            DisableSponsorship.IsChecked = GlobaleSettings.DontNotifySponsorship;
 
             PageNumbering.ItemsSource = PageNumberingChoices.Keys;
-            PageNumbering.SelectedIndex = PageNumberingChoices.Values.ToList().IndexOf(GlobaleSettings.PagenumStyle);
+            PageNumbering.SelectedIndex = PageNumberingChoices.Values.ToList().IndexOf(GlobaleSettings.PageNumbering);
 
             ImageSizeOptions.ItemsSource = ImageSizeChoices.Keys;
             ImageSizeOptions.SelectedIndex= ImageSizeChoices.Values.ToList().IndexOf(GlobaleSettings.ImageOption);
@@ -122,9 +139,35 @@ namespace Daisy.SaveAsDAISY.WPF
             TTSConfigFile.Text = GlobaleSettings.TTSConfigFile;
             TTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
             BrowseTTSConfigFile.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
-            OpenPipelineProperties.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
+            //OpenPipelineProperties.IsEnabled = UseDAISYPipelineApp.IsChecked == false;
 
             MistralApiKey.Text = GlobaleSettings.MistralApiKey;
+            DatalabApiKey.Text = GlobaleSettings.DatalabApiKey;
+
+            PageMarkerGrid.IsEnabled = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex] == PageNumberingChoice.Enum.PrintPageMarker;
+            PageMarker.Text = GlobaleSettings.PrintPageMarker;
+            DisableExternalServiceWarning.IsChecked = GlobaleSettings.DisableExternalServiceWarning;
+
+            CheckEpubsWithAce.IsEnabled = ConverterHelper.FindAceByDaisyExecutable() != null;
+            CheckEpubsWithAce.ItemsSource = CheckEpubWithAceChoices.Keys;
+            CheckEpubsWithAce.SelectedIndex = CheckEpubWithAceChoices.Values.ToList().IndexOf(GlobaleSettings.CheckEpubWithAce);
+            foreach (var script in ExportScripts)
+            {
+                ExportScriptsTabControl.Items.Add(
+                    new ScriptTabItem(script)
+                );
+            }
+            if(!string.IsNullOrEmpty(GlobaleSettings.DatalabApiKey))
+            {
+                DatalabApiKeyStatus.Content = ConverterHelper.CheckIfDatalabKeyIsValid(GlobaleSettings.DatalabApiKey) ? "(key is valid)" : "(key is invalid)";
+                CheckDatalabApiKey.IsEnabled = false;
+            }
+            if (!string.IsNullOrEmpty(GlobaleSettings.MistralApiKey))
+            {
+                MistralApiKeyStatus.Content = ConverterHelper.CheckIfMistralKeyIsValid(GlobaleSettings.MistralApiKey) ? "(key is valid)" : "(key is invalid)";
+                CheckMistralApiKey.IsEnabled = false;
+            }
+
         }
 
         private void ImageSizeOptions_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -204,9 +247,9 @@ namespace Daisy.SaveAsDAISY.WPF
             }
             try {
                 // Update fields
-                GlobaleSettings.PagenumStyle = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex];
+                GlobaleSettings.PageNumbering = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex];
                 GlobaleSettings.CharacterStyle = TranslateCharacteStyles.IsChecked == true;
-                GlobaleSettings.DontNotifySponsorship = DisableSponsorhip.IsChecked == true;
+                GlobaleSettings.DontNotifySponsorship = DisableSponsorship.IsChecked == true;
                 GlobaleSettings.ImageOption = ImageSizeChoices.Values.ToList()[ImageSizeOptions.SelectedIndex];
                 GlobaleSettings.ImageResamplingValue = Resampling.SelectedIndex >= 0 ? ResamplingValues.Values.ToList()[Resampling.SelectedIndex] : ImageResamplingChoice.Enum.dpi_72; // Default to 72 DPI if not selected
                 GlobaleSettings.FootnotesPosition = NotesPositionChoices.Values.ToList()[NotesPosition.SelectedIndex];
@@ -219,8 +262,30 @@ namespace Daisy.SaveAsDAISY.WPF
                 GlobaleSettings.TTSConfigFile = TTSConfigFile.Text.Trim();
                 GlobaleSettings.OTTTemplateFile = OpenOfficeTemplate.Text.Trim();
                 GlobaleSettings.MistralApiKey = MistralApiKey.Text.Trim();
+                GlobaleSettings.DatalabApiKey = DatalabApiKey.Text.Trim();
+                GlobaleSettings.PrintPageMarker = PageMarker.Text;
+                GlobaleSettings.DisableExternalServiceWarning = DisableExternalServiceWarning.IsChecked == true;
+                GlobaleSettings.CheckEpubWithAce = CheckEpubWithAceChoices.Values.ToList()[CheckEpubsWithAce.SelectedIndex];
                 //GlobaleSettings.UseWebserviceRunner = UseWebserviceRunner.IsChecked == true;
-                // Save
+                foreach (ScriptTabItem tab in ExportScriptsTabControl.Items)
+                {
+                    foreach (var item in tab.Script.Parameters.Where(kv => kv.Key != "input" && kv.Key != "output"))
+                    {
+                        ScriptParameter sp = item.Value;
+                        ParameterDataBase parameter = sp.ParameterData;
+
+                        if (sp.IsParameterRequired || sp.IsParameterDisplayed)
+                        {
+                            if (!GlobaleSettings.ExportScriptsDefaults.ContainsKey(tab.Script.Name))
+                            {
+                                GlobaleSettings.ExportScriptsDefaults[tab.Script.Name] = new Dictionary<string, string>();
+                            }
+                            string value = sp.Value?.ToString() ?? "";
+                            GlobaleSettings.ExportScriptsDefaults[tab.Script.Name][item.Key] = value;
+                        }
+                    }
+                }
+                // Save settings to disk
                 GlobaleSettings.Save();
                 DialogResult = true;
                 this.Close();
@@ -236,6 +301,9 @@ namespace Daisy.SaveAsDAISY.WPF
         }
 
         
+
+
+
         //private void UseWebserviceInteractions_Checked(object sender, RoutedEventArgs e)
         //{
 
@@ -259,7 +327,7 @@ namespace Daisy.SaveAsDAISY.WPF
                 BrowseVoices.IsEnabled = false;
                 TTSConfigFile.IsEnabled = true;
                 BrowseTTSConfigFile.IsEnabled = true;
-                OpenPipelineProperties.IsEnabled = true;
+                //OpenPipelineProperties.IsEnabled = true;
             } else {
                 GlobaleSettings.UseDAISYPipelineApp = true;
                 PreferredVoices.IsEnabled = true;
@@ -268,7 +336,7 @@ namespace Daisy.SaveAsDAISY.WPF
 
                 TTSConfigFile.IsEnabled = false;
                 BrowseTTSConfigFile.IsEnabled = false;
-                OpenPipelineProperties.IsEnabled = false;
+                //OpenPipelineProperties.IsEnabled = false;
             }
         }
         private void UseDAISYPipelineApp_Unchecked(object sender, RoutedEventArgs e)
@@ -478,7 +546,7 @@ namespace Daisy.SaveAsDAISY.WPF
         {
             try
             {
-                var dialog = new Pipeline2Properties(JNIWrapperRunner.GetInstance().GetSettableProperties(), PipelineUserProperties.Instance.Items);
+                var dialog = new Pipeline2Properties(EmbeddedRunner.GetInstance().GetSettableProperties(), PipelineUserProperties.Instance.Items);
                 if (dialog.ShowDialog() == true)
                 {
                     PipelineUserProperties.Instance.ReplaceBy(dialog.UpdatedProperties);
@@ -514,6 +582,99 @@ namespace Daisy.SaveAsDAISY.WPF
             //        PipelineUserProperties.Instance.Save();
             //    }
             //}
+        }
+
+        private void PageNumbering_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            PageMarkerGrid.IsEnabled = PageNumberingChoices.Values.ToList()[PageNumbering.SelectedIndex] == PageNumberingChoice.Enum.PrintPageMarker;
+        }
+
+        private void CheckMistralApiKey_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(MistralApiKey.Text))
+            {
+                MessageBox.Show("Please enter a Mistral API key before checking it.", "Missing API Key", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                bool isValid = ConverterHelper.CheckIfMistralKeyIsValid(MistralApiKey.Text.Trim());
+                if (isValid)
+                {
+                    MessageBox.Show("The Mistral API key is valid.", "API Key Valid", MessageBoxButton.OK, MessageBoxImage.Information);
+                    MistralApiKeyStatus.Content = "(key is valid)";
+                }
+                else
+                {
+                    MessageBox.Show("The Mistral API key is invalid.", "API Key Invalid", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MistralApiKeyStatus.Content = "(key is invalid)";
+                }
+                CheckMistralApiKey.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while checking the Mistral API key: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+
+        private void CheckDatalabApiKey_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(DatalabApiKey.Text))
+            {
+                MessageBox.Show("Please enter a Datalab API key before checking it.", "Missing API Key", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                bool isValid = ConverterHelper.CheckIfDatalabKeyIsValid(DatalabApiKey.Text.Trim());
+                if (isValid)
+                {
+                    MessageBox.Show("The Datalab API key is valid.", "API Key Valid", MessageBoxButton.OK, MessageBoxImage.Information);
+                    DatalabApiKeyStatus.Content = "(key is valid)";
+                }
+                else
+                {
+                    MessageBox.Show("The Datalab API key is invalid.", "API Key Invalid", MessageBoxButton.OK, MessageBoxImage.Error);
+                    DatalabApiKeyStatus.Content = "(key is invalid)";
+                }
+                CheckDatalabApiKey.IsEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while checking the Datalab API key: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void MistralApiKey_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(MistralApiKey.Text))
+            {
+                MistralApiKeyStatus.Content = "";
+                CheckMistralApiKey.IsEnabled = false;
+            }
+            else
+            {
+                MistralApiKeyStatus.Content = "(click on the check button to confirm your key is valid)";
+                CheckMistralApiKey.IsEnabled = true;
+            }
+
+        }
+
+        private void DatalabApiKey_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if(string.IsNullOrWhiteSpace(DatalabApiKey.Text))
+            {
+                DatalabApiKeyStatus.Content = "";
+                CheckDatalabApiKey.IsEnabled = false;
+            }
+            else
+            {
+                DatalabApiKeyStatus.Content = "(click on the check button to confirm your key is valid)";
+                CheckDatalabApiKey.IsEnabled = true;
+            }
         }
     }
 }
